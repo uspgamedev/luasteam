@@ -1,5 +1,6 @@
 #include "include/steam_api.h"
 #include <cstdio>
+#include <string>
 
 extern "C" {
 #include <lua.h>
@@ -16,12 +17,29 @@ int luasteam_shutdown(lua_State *L){
     SteamAPI_Shutdown();
     return 0;
 }
+
+//bool GetUserAchievement(const char *pchName, bool *pbAchieved );
+int luasteam_getAchievement(lua_State *L){
+    lua_settop(L,1);
+    if (!lua_isstring(L,1)){
+        lua_pushstring(L, "incorrect type for argument2 (string expected)");
+        return lua_error(L);
+    }
+    std::string ach_name = lua_tostring(L,1);
+    lua_settop(L,0);
+    bool achieved = false;
+    bool success = SteamUserStats()->GetAchievement(ach_name.c_str(),&achieved);
+    lua_pushboolean(L,success);
+    lua_pushboolean(L,achieved);
+    return 2;
+}
 }
 
 //Table with all our functions
-luaL_Reg luasteam_module[2] = {
+luaL_Reg luasteam_module[3] = {
     {"init",luasteam_init},
-    {"shutdown",luasteam_shutdown}
+    {"shutdown",luasteam_shutdown},
+    {"getAchievement", luasteam_getAchievement}
 };
 
 extern "C" int luaopen_steam(lua_State *L){
