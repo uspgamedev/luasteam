@@ -6,6 +6,7 @@
 steam_api.h
 /include
 /lib
+steam_appid.txt
 
 ### C++ ###
 # Prerequisites
