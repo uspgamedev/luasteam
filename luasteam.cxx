@@ -63,6 +63,23 @@ int luasteam_resetAllStats(lua_State *L){
     return 1;
 }
 
+//bool StoreStats();
+int luasteam_storeStats(lua_State *L){
+    lua_settop(L,0);
+    bool success = SteamUserStats()->StoreStats();
+    lua_pushboolean(L,success);
+    return 1;
+}
+
+//bool RequestCurrentStats();
+int luasteam_requestCurrentStats(lua_State *L){
+    lua_settop(L,0);
+    bool success = SteamUserStats()->RequestCurrentStats();
+    lua_pushboolean(L,success);
+    return 1;
+}
+
+
 } // extern "C"
 
 
@@ -73,6 +90,8 @@ luaL_Reg luasteam_module[] = {
     {"getAchievement", luasteam_getAchievement},
     {"setAchievement", luasteam_setAchievement},
     {"resetAllStats", luasteam_resetAllStats},
+    {"storeStats", luasteam_storeStats},
+    {"requestCurrentStats", luasteam_requestCurrentStats},
     { nullptr, nullptr }
 };
 
