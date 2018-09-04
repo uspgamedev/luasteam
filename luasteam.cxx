@@ -15,6 +15,7 @@ int luasteam_init(lua_State *L){
     lua_pushboolean(L,SteamAPI_Init());
     return 1;
 }
+
 int luasteam_shutdown(lua_State *L){
     SteamAPI_Shutdown();
     return 0;
@@ -61,16 +62,18 @@ int luasteam_resetAllStats(lua_State *L){
     lua_pushboolean(L,success);
     return 1;
 }
-}
+
+} // extern "C"
 
 
 //Table with all our functions
-luaL_Reg luasteam_module[5] = {
+luaL_Reg luasteam_module[] = {
     {"init",luasteam_init},
     {"shutdown",luasteam_shutdown},
     {"getAchievement", luasteam_getAchievement},
     {"setAchievement", luasteam_setAchievement},
     {"resetAllStats", luasteam_resetAllStats}
+    { nullptr, nullptr }
 };
 
 extern "C" int luaopen_steam(lua_State *L){
