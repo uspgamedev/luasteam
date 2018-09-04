@@ -72,7 +72,7 @@ luaL_Reg luasteam_module[] = {
     {"shutdown",luasteam_shutdown},
     {"getAchievement", luasteam_getAchievement},
     {"setAchievement", luasteam_setAchievement},
-    {"resetAllStats", luasteam_resetAllStats}
+    {"resetAllStats", luasteam_resetAllStats},
     { nullptr, nullptr }
 };
 
