@@ -57,6 +57,9 @@ steam_appid.txt
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
+# Vim temp files
+*.swp
+
 ### Lua ###
 # Compiled Lua sources
 luac.out
