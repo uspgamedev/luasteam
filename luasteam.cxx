@@ -107,9 +107,3 @@ extern "C" int luaopen_steam(lua_State *L){
     }
     return 1;
 }
-
-// Create steam.so (linux)
-// g++ luasteam.cxx -o steam.so -shared -fPIC -L./lib/linux64 -lsteam_api -I/usr/include/luajit-2.0 -L/usr/lib/x86_64-linux-gnu -lluajit-5.1 -std=c++11
-
-//Run luajit with proper path to lib, for testing purpose (linux)
-//LD_LIBRARY_PATH=./lib/linux64 luajit
