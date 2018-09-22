@@ -12,16 +12,19 @@ GNU_FLAGS=$(GNU_IPATHS) $(STDLIB_VER)
 WINDOWS_LIBS=lua51.lib steam_api.lib
 WINDOWS_IPATHS=-I.\luajit
 
-.PHONY: all osx linux windows32 windows64
+.PHONY: all osx linux32 linux64 windows32 windows64
 
 all:
-	@echo "choose platform: linux | windows32 | windows64 | osx"
+	@echo "choose platform: linux64 | linux32 | windows32 | windows64 | osx"
 
 osx:
 	$(CXX) $(SRC) -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
 
-linux:
-	$(CXX) $(SRC) -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
+linux32:
+	$(CXX) $(SRC) libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
+
+linux64:
+	$(CXX) $(SRC) libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 
 windows32:
 	$(CXX) $(SRC) lua51.lib steam_api.lib $(WINDOWS_IPATHS) /LD /EHsc
