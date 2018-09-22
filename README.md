@@ -33,7 +33,7 @@ Install package `libluajit-5.1-dev`. Copy `sdk/redistributable_bin/linux64/libst
 
 ### OS X
 
-**TODO**
+Install luajit (`brew install luajit`). Copy `sdk/redistributable_bin/osx32/libsteam_api.dylib` to this directory. Run `make osx`.
 
 ### Windows 32 and 64
 

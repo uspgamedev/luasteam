@@ -18,7 +18,7 @@ all:
 	@echo "choose platform: linux64 | linux32 | windows32 | windows64 | osx"
 
 osx:
-	$(CXX) $(SRC) -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) libsteam_api.dylib -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
 
 linux32:
 	$(CXX) $(SRC) libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
