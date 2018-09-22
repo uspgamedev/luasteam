@@ -2,21 +2,25 @@
 #include <cstdio>
 #include <string>
 
+#ifdef _WIN32
+	#define EXTERN extern "C" __declspec( dllexport )
+#else
+	#define EXTERN extern "C"
+#endif
+
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
 }
 
-extern "C" {
 //GENERAL FUNCTIONS
-
-int luasteam_init(lua_State *L){
+EXTERN int luasteam_init(lua_State *L){
     lua_settop(L,0); //Reset lua stack
     lua_pushboolean(L,SteamAPI_Init());
     return 1;
 }
 
-int luasteam_shutdown(lua_State *L){
+EXTERN int luasteam_shutdown(lua_State *L){
     SteamAPI_Shutdown();
     return 0;
 }
@@ -24,7 +28,7 @@ int luasteam_shutdown(lua_State *L){
 //ACHIEVEMENTS FUNCTIONS
 
 //bool GetUserAchievement(const char *pchName, bool *pbAchieved );
-int luasteam_getAchievement(lua_State *L){
+EXTERN int luasteam_getAchievement(lua_State *L){
     lua_settop(L,1);
     if (!lua_isstring(L,1)){
         lua_pushstring(L, "incorrect type for argument1 (string expected)");
@@ -40,7 +44,7 @@ int luasteam_getAchievement(lua_State *L){
 }
 
 //bool SetAchievement( const char *pchName );
-int luasteam_setAchievement(lua_State *L){
+EXTERN int luasteam_setAchievement(lua_State *L){
     lua_settop(L,1);
     if (!lua_isstring(L,1)){
         lua_pushstring(L, "incorrect type for argument1 (string expected)");
@@ -54,7 +58,7 @@ int luasteam_setAchievement(lua_State *L){
 }
 
 //bool ResetAllStats( bool bAchievementsToo );
-int luasteam_resetAllStats(lua_State *L){
+EXTERN int luasteam_resetAllStats(lua_State *L){
     lua_settop(L,1);
     bool achievements_too = lua_toboolean(L,1);
     lua_settop(L,0);
@@ -64,7 +68,7 @@ int luasteam_resetAllStats(lua_State *L){
 }
 
 //bool StoreStats();
-int luasteam_storeStats(lua_State *L){
+EXTERN int luasteam_storeStats(lua_State *L){
     lua_settop(L,0);
     bool success = SteamUserStats()->StoreStats();
     lua_pushboolean(L,success);
@@ -72,15 +76,13 @@ int luasteam_storeStats(lua_State *L){
 }
 
 //bool RequestCurrentStats();
-int luasteam_requestCurrentStats(lua_State *L){
+EXTERN int luasteam_requestCurrentStats(lua_State *L){
     lua_settop(L,0);
     bool success = SteamUserStats()->RequestCurrentStats();
     lua_pushboolean(L,success);
     return 1;
 }
 
-
-} // extern "C"
 
 
 //Table with all our functions
@@ -95,7 +97,7 @@ luaL_Reg luasteam_module[] = {
     { nullptr, nullptr }
 };
 
-extern "C" int luaopen_steam(lua_State *L){
+EXTERN int luaopen_luasteam(lua_State *L){
     lua_createtable(L,0,sizeof(luasteam_module));
     luaL_register(L,nullptr,luasteam_module);
     if (SteamAPI_Init()) {
