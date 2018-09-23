@@ -3,10 +3,8 @@
 
 ### Steam Stuff ###
 
-steam_api.h
-/include
-/lib
-steam_appid.txt
+/sdk
+/luajit
 
 ### C++ ###
 # Prerequisites

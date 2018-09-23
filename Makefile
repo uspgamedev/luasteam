@@ -17,17 +17,19 @@ WINDOWS_IPATHS=-I.\luajit
 all:
 	@echo "choose platform: linux64 | linux32 | windows32 | windows64 | osx"
 
+STEAM_LIB=sdk/redistributable_bin
+
 osx:
-	$(CXX) $(SRC) libsteam_api.dylib -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) ${STEAM_LIB}/osx32/libsteam_api.dylib -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
 
 linux32:
-	$(CXX) $(SRC) libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
+	$(CXX) $(SRC) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 
 linux64:
-	$(CXX) $(SRC) libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
+	$(CXX) $(SRC) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 
 windows32:
-	$(CXX) $(SRC) lua51.lib steam_api.lib $(WINDOWS_IPATHS) /LD /EHsc
+	$(CXX) $(SRC) lua51.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_IPATHS) /LD /EHsc
 
 windows64:
-	$(CXX) $(SRC) lua51.lib steam_api64.lib $(WINDOWS_IPATHS) /LD /EHsc
+	$(CXX) $(SRC) lua51.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_IPATHS) /LD /EHsc
