@@ -3,11 +3,11 @@ STDLIB_VER=-std=c++11
 
 OSX_OUT=luasteam.so
 OSX_IPATHS=-I/usr/local/include/luajit-2.0
-OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER)
+OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER) -lluajit-5.1
 
 GNU_OUT=luasteam.so
 GNU_IPATHS=-I/usr/include/luajit-2.0
-GNU_FLAGS=$(GNU_IPATHS) $(STDLIB_VER)
+GNU_FLAGS=$(GNU_IPATHS) $(STDLIB_VER) -lluajit-5.1
 
 WINDOWS_LIBS=lua51.lib steam_api.lib
 WINDOWS_IPATHS=-I.\luajit
