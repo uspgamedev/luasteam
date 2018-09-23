@@ -33,7 +33,7 @@ Install package `libluajit-5.1-dev`. Run `make linux64`.
 
 ### Linux 32
 
-Install package `libluajit-5.1-dev:i386`. Run `make linux32`.
+Install package `libluajit-5.1-dev:i386`. Run `make linux32`. This assumes you're using a 64 bit OS.
 
 ### OS X
 
