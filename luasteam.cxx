@@ -13,26 +13,15 @@ extern "C" {
 #include <lua.h>
 }
 
-// ========================
-// ======= SteamAPI =======
-// ========================
+namespace {
 
-// GENERAL FUNCTIONS
-EXTERN int luasteam_init(lua_State *L) {
-    lua_settop(L, 0); // Reset lua stack
-    lua_pushboolean(L, SteamAPI_Init());
-    return 1;
-}
+class SteamFriendsListener;
 
-EXTERN int luasteam_shutdown(lua_State *L) {
-    SteamAPI_Shutdown();
-    return 0;
-}
+lua_State *L = nullptr;
+int friends_ref = LUA_NOREF;
+SteamFriendsListener *friends_listener = nullptr;
 
-EXTERN int luasteam_runCallbacks(lua_State *L) {
-    SteamAPI_RunCallbacks();
-    return 0;
-}
+} // namespace
 
 // ==============================
 // ======= SteamUserStats =======
@@ -98,25 +87,24 @@ EXTERN int luasteam_requestCurrentStats(lua_State *L) {
 // ======= SteamFriends =======
 // ============================
 
+// void ActivateGameOverlay( const char *pchDialog );
 EXTERN int luasteam_activateGameOverlay(lua_State *L) {
     const char *dialog = luaL_checkstring(L, 1);
     SteamFriends()->ActivateGameOverlay(dialog);
     return 0;
 }
 
+// void ActivateGameOverlayToWebPage( const char *pchURL );
 EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
     const char *url = luaL_checkstring(L, 1);
     SteamFriends()->ActivateGameOverlayToWebPage(url);
     return 0;
 }
 
-class SteamFriendsListener {
-  public:
-    SteamFriendsListener(lua_State *L_, int ref) : L(L_), friends_ref(ref) {}
+namespace {
 
+class SteamFriendsListener {
   private:
-    lua_State *L;
-    int friends_ref;
     STEAM_CALLBACK(SteamFriendsListener, OnGameOverlayActivated, GameOverlayActivated_t);
 };
 
@@ -133,6 +121,37 @@ void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) 
         lua_pop(L, 1);
     }
 }
+
+} // namespace
+
+// ========================
+// ======= SteamAPI =======
+// ========================
+
+// bool SteamAPI_Init();
+EXTERN int luasteam_init(lua_State *L) {
+    lua_pushboolean(L, SteamAPI_Init());
+    return 1;
+}
+
+// void SteamAPI_Shutdown();
+EXTERN int luasteam_shutdown(lua_State *L) {
+    SteamAPI_Shutdown();
+    // Cleaning up
+    ::L = nullptr;
+    luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
+    friends_ref = LUA_NOREF;
+    delete friends_listener;
+    friends_listener = nullptr;
+    return 0;
+}
+
+// void SteamAPI_RunCallbacks();
+EXTERN int luasteam_runCallbacks(lua_State *L) {
+    SteamAPI_RunCallbacks();
+    return 0;
+}
+
 // ====================================
 // ======= End of API functions =======
 // ====================================
@@ -146,7 +165,8 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
 }
 
 void add_base(lua_State *L) {
-    add_func(L, "init", luasteam_init);
+    // Not adding this since we call it ourselves
+    // add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
 }
@@ -162,30 +182,31 @@ void add_user_stats(lua_State *L) {
     lua_rawset(L, -3);
 }
 
-int add_friends(lua_State *L) {
+void add_friends(lua_State *L) {
     lua_pushstring(L, "friends"); // name of the table, used in the end of the function
     lua_createtable(L, 0, 2);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
-    lua_pushvalue(L, -1);                    // copying table
-    int id = luaL_ref(L, LUA_REGISTRYINDEX); // used in the listener
+    lua_pushvalue(L, -1);
+    friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    friends_listener = new SteamFriendsListener();
     lua_rawset(L, -3);
-    return id;
 }
 
 } // namespace
 
 EXTERN int luaopen_luasteam(lua_State *L) {
-    lua_createtable(L, 0, 5);
-    add_base(L);
-    add_user_stats(L);
-    int friends_ref = add_friends(L);
     if (SteamAPI_Init()) {
         printf("Sucessfully connected to steam!\n");
     } else {
         printf("Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
         lua_pushboolean(L, false);
+        return 1;
     }
-    new SteamFriendsListener(L, friends_ref);
+    ::L = L;
+    lua_createtable(L, 0, 4);
+    add_base(L);
+    add_user_stats(L);
+    add_friends(L);
     return 1;
 }
