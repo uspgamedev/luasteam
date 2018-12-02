@@ -17,7 +17,7 @@ namespace {
 
 class SteamFriendsListener;
 
-lua_State *L = nullptr;
+lua_State *global_lua_state = nullptr;
 int friends_ref = LUA_NOREF;
 SteamFriendsListener *friends_listener = nullptr;
 
@@ -29,15 +29,9 @@ SteamFriendsListener *friends_listener = nullptr;
 
 // bool GetUserAchievement(const char *pchName, bool *pbAchieved );
 EXTERN int luasteam_getAchievement(lua_State *L) {
-    lua_settop(L, 1);
-    if (!lua_isstring(L, 1)) {
-        lua_pushstring(L, "incorrect type for argument1 (string expected)");
-        return lua_error(L);
-    }
-    std::string ach_name = lua_tostring(L, 1);
-    lua_settop(L, 0);
+    const char *ach_name = luaL_checkstring(L, 1);
     bool achieved = false;
-    bool success = SteamUserStats()->GetAchievement(ach_name.c_str(), &achieved);
+    bool success = SteamUserStats()->GetAchievement(ach_name, &achieved);
     lua_pushboolean(L, success);
     lua_pushboolean(L, achieved);
     return 2;
@@ -45,23 +39,15 @@ EXTERN int luasteam_getAchievement(lua_State *L) {
 
 // bool SetAchievement( const char *pchName );
 EXTERN int luasteam_setAchievement(lua_State *L) {
-    lua_settop(L, 1);
-    if (!lua_isstring(L, 1)) {
-        lua_pushstring(L, "incorrect type for argument1 (string expected)");
-        return lua_error(L);
-    }
-    std::string ach_name = lua_tostring(L, 1);
-    lua_settop(L, 0);
-    bool success = SteamUserStats()->SetAchievement(ach_name.c_str());
+    const char *ach_name = luaL_checkstring(L, 1);
+    bool success = SteamUserStats()->SetAchievement(ach_name);
     lua_pushboolean(L, success);
     return 1;
 }
 
 // bool ResetAllStats( bool bAchievementsToo );
 EXTERN int luasteam_resetAllStats(lua_State *L) {
-    lua_settop(L, 1);
     bool achievements_too = lua_toboolean(L, 1);
-    lua_settop(L, 0);
     bool success = SteamUserStats()->ResetAllStats(achievements_too);
     lua_pushboolean(L, success);
     return 1;
@@ -69,7 +55,6 @@ EXTERN int luasteam_resetAllStats(lua_State *L) {
 
 // bool StoreStats();
 EXTERN int luasteam_storeStats(lua_State *L) {
-    lua_settop(L, 0);
     bool success = SteamUserStats()->StoreStats();
     lua_pushboolean(L, success);
     return 1;
@@ -77,7 +62,6 @@ EXTERN int luasteam_storeStats(lua_State *L) {
 
 // bool RequestCurrentStats();
 EXTERN int luasteam_requestCurrentStats(lua_State *L) {
-    lua_settop(L, 0);
     bool success = SteamUserStats()->RequestCurrentStats();
     lua_pushboolean(L, success);
     return 1;
@@ -109,6 +93,7 @@ class SteamFriendsListener {
 };
 
 void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
+    lua_State *L = global_lua_state;
     if (!lua_checkstack(L, 3))
         return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, friends_ref);
@@ -138,7 +123,7 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
-    ::L = nullptr;
+    global_lua_state = nullptr;
     luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
     friends_ref = LUA_NOREF;
     delete friends_listener;
@@ -159,9 +144,8 @@ EXTERN int luasteam_runCallbacks(lua_State *L) {
 namespace {
 
 void add_func(lua_State *L, const char *name, lua_CFunction func) {
-    lua_pushstring(L, name);
     lua_pushcfunction(L, func);
-    lua_rawset(L, -3);
+    lua_setfield(L, -2, name);
 }
 
 void add_base(lua_State *L) {
@@ -172,25 +156,23 @@ void add_base(lua_State *L) {
 }
 
 void add_user_stats(lua_State *L) {
-    lua_pushstring(L, "userStats"); // name of the table, used in the end of the function
     lua_createtable(L, 0, 5);
     add_func(L, "getAchievement", luasteam_getAchievement);
     add_func(L, "setAchievement", luasteam_setAchievement);
     add_func(L, "resetAllStats", luasteam_resetAllStats);
     add_func(L, "storeStats", luasteam_storeStats);
     add_func(L, "requestCurrentStats", luasteam_requestCurrentStats);
-    lua_rawset(L, -3);
+    lua_setfield(L, -2, "userStats");
 }
 
 void add_friends(lua_State *L) {
-    lua_pushstring(L, "friends"); // name of the table, used in the end of the function
     lua_createtable(L, 0, 2);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
     lua_pushvalue(L, -1);
     friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     friends_listener = new SteamFriendsListener();
-    lua_rawset(L, -3);
+    lua_setfield(L, -2, "friends");
 }
 
 } // namespace
@@ -203,7 +185,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
         lua_pushboolean(L, false);
         return 1;
     }
-    ::L = L;
+    global_lua_state = L;
     lua_createtable(L, 0, 4);
     add_base(L);
     add_user_stats(L);
