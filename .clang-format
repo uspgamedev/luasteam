@@ -1,0 +1,7 @@
+IndentWidth: 4
+IndentPPDirectives: AfterHash
+# If this is 0 instead of a large values, it doesn't add
+# spaces after the start of comments, for some reason
+ColumnLimit: 1000000
+FixNamespaceComments: true
+SpacesBeforeTrailingComments: 1
