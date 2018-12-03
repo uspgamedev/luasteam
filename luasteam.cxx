@@ -35,6 +35,12 @@ const char *sort_methods[] = {"Ascending", "Descending", nullptr};
 const char *display_types[] = {"Numeric", "TimeSeconds", "TimeMilliSeconds", nullptr};
 char tmp_25[25];
 
+SteamLeaderboard_t checkLeaderboard(lua_State *L, int nParam) {
+    uint64 handle = strtoull(luaL_checkstring(L, 1), nullptr, 10);
+    luaL_argcheck(L, handle != 0, 1, "must be a valid handle");
+    return handle;
+}
+
 class SteamUserStatsListener {
   public:
     // LeaderboardFindResult
@@ -134,6 +140,46 @@ EXTERN int luasteam_findOrCreateLeaderboard(lua_State *L) {
     return 0;
 }
 
+// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+EXTERN int luasteam_getLeaderboardDisplayType(lua_State *L) {
+    SteamLeaderboard_t leaderboard = checkLeaderboard(L, 1);
+    ELeaderboardDisplayType m = SteamUserStats()->GetLeaderboardDisplayType(leaderboard);
+    if (m == k_ELeaderboardDisplayTypeNone)
+        lua_pushnil(L);
+    else
+        lua_pushstring(L, display_types[static_cast<int>(m) - 1]);
+    return 1;
+}
+
+// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+EXTERN int luasteam_getLeaderboardSortMethod(lua_State *L) {
+    SteamLeaderboard_t leaderboard = checkLeaderboard(L, 1);
+    ELeaderboardSortMethod m = SteamUserStats()->GetLeaderboardSortMethod(leaderboard);
+    if (m == k_ELeaderboardSortMethodNone)
+        lua_pushnil(L);
+    else
+        lua_pushstring(L, sort_methods[static_cast<int>(m) - 1]);
+    return 1;
+}
+
+// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+EXTERN int luasteam_getLeaderboardEntryCount(lua_State *L) {
+    SteamLeaderboard_t leaderboard = checkLeaderboard(L, 1);
+    int count = SteamUserStats()->GetLeaderboardEntryCount(leaderboard);
+    lua_pushnumber(L, count);
+    return 1;
+}
+
+// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+EXTERN int luasteam_getLeaderboardName(lua_State *L) {
+    SteamLeaderboard_t leaderboard = checkLeaderboard(L, 1);
+    const char *name = SteamUserStats()->GetLeaderboardName(leaderboard);
+    if (name == nullptr || *name == '\0')
+        lua_pushnil(L);
+    else
+        lua_pushstring(L, name);
+    return 1;
+}
 
 // ============================
 // ======= SteamFriends =======
@@ -224,7 +270,7 @@ void add_base(lua_State *L) {
 }
 
 void add_user_stats(lua_State *L) {
-    lua_createtable(L, 0, 7);
+    lua_createtable(L, 0, 11);
     add_func(L, "getAchievement", luasteam_getAchievement);
     add_func(L, "setAchievement", luasteam_setAchievement);
     add_func(L, "resetAllStats", luasteam_resetAllStats);
@@ -232,6 +278,10 @@ void add_user_stats(lua_State *L) {
     add_func(L, "requestCurrentStats", luasteam_requestCurrentStats);
     add_func(L, "findLeaderboard", luasteam_findLeaderboard);
     add_func(L, "findOrCreateLeaderboard", luasteam_findOrCreateLeaderboard);
+    add_func(L, "getLeaderboardEntryCount", luasteam_getLeaderboardEntryCount);
+    add_func(L, "getLeaderboardName", luasteam_getLeaderboardName);
+    add_func(L, "getLeaderboardSortMethod", luasteam_getLeaderboardSortMethod);
+    add_func(L, "getLeaderboardDisplayType", luasteam_getLeaderboardDisplayType);
     lua_pushvalue(L, -1);
     userStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     userStats_listener = new SteamUserStatsListener();
