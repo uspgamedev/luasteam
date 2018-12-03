@@ -15,17 +15,61 @@ extern "C" {
 
 namespace {
 
-class SteamFriendsListener;
-
 lua_State *global_lua_state = nullptr;
-int friends_ref = LUA_NOREF;
+class SteamFriendsListener;
 SteamFriendsListener *friends_listener = nullptr;
+int friends_ref = LUA_NOREF;
+class SteamUserStatsListener;
+SteamUserStatsListener *userStats_listener = nullptr;
+int userStats_ref = LUA_NOREF;
 
 } // namespace
 
 // ==============================
 // ======= SteamUserStats =======
 // ==============================
+
+namespace {
+
+const char *sort_methods[] = {"Ascending", "Descending", nullptr};
+const char *display_types[] = {"Numeric", "TimeSeconds", "TimeMilliSeconds", nullptr};
+char tmp_25[25];
+
+class SteamUserStatsListener {
+  public:
+    // LeaderboardFindResult
+    int leaderboardFindResultCallback_ref = LUA_NOREF;
+    void OnLeaderboardFindResult(LeaderboardFindResult_t *data, bool io_fail);
+    CCallResult<SteamUserStatsListener, LeaderboardFindResult_t> leaderboardFindResult;
+    // LeaderboardScoreUploaded
+    int leaderboardScoreUploadedCallback_ref = LUA_NOREF;
+    void OnLeaderboardScoreUploaded(LeaderboardScoreUploaded_t *data, bool io_fail);
+    CCallResult<SteamUserStatsListener, LeaderboardScoreUploaded_t> leaderboardScoreUploaded;
+};
+
+void SteamUserStatsListener::OnLeaderboardFindResult(LeaderboardFindResult_t *data, bool io_fail) {
+    lua_State *L = global_lua_state;
+    // getting stored callback function
+    lua_rawgeti(L, LUA_REGISTRYINDEX, leaderboardFindResultCallback_ref);
+    luaL_unref(L, LUA_REGISTRYINDEX, leaderboardFindResultCallback_ref);
+    leaderboardFindResultCallback_ref = LUA_NOREF;
+    // calling function
+    if (io_fail)
+        lua_pushnil(L);
+    else {
+        lua_createtable(L, 0, 2);
+        // This is converted to a string since Lua can't deal with 64 bit integers
+        sprintf(tmp_25, "%llu", data->m_hSteamLeaderboard);
+        lua_pushstring(L, tmp_25);
+        lua_setfield(L, -2, "steamLeaderboard");
+        lua_pushboolean(L, data->m_bLeaderboardFound != 0);
+        lua_setfield(L, -2, "leaderboardFound");
+    }
+    lua_pushboolean(L, io_fail);
+    lua_call(L, 2, 0);
+}
+
+} // namespace
 
 // bool GetUserAchievement(const char *pchName, bool *pbAchieved );
 EXTERN int luasteam_getAchievement(lua_State *L) {
@@ -67,23 +111,33 @@ EXTERN int luasteam_requestCurrentStats(lua_State *L) {
     return 1;
 }
 
+EXTERN int luasteam_findLeaderboard(lua_State *L) {
+    const char *name = luaL_checkstring(L, 1);
+    luaL_checktype(L, 2, LUA_TFUNCTION);
+    luaL_unref(L, LUA_REGISTRYINDEX, userStats_listener->leaderboardFindResultCallback_ref);
+    userStats_listener->leaderboardFindResultCallback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    SteamAPICall_t call = SteamUserStats()->FindLeaderboard(name);
+    userStats_listener->leaderboardFindResult.Set(call, userStats_listener, &SteamUserStatsListener::OnLeaderboardFindResult);
+    return 0;
+}
+
+// SteamAPICall_t FindOrCreateLeaderboard( const char *pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType eLeaderboardDisplayType );
+EXTERN int luasteam_findOrCreateLeaderboard(lua_State *L) {
+    const char *name = luaL_checkstring(L, 1);
+    int sort_method = luaL_checkoption(L, 2, nullptr, sort_methods) + 1;
+    int display_type = luaL_checkoption(L, 3, nullptr, display_types) + 1;
+    luaL_checktype(L, 4, LUA_TFUNCTION);
+    luaL_unref(L, LUA_REGISTRYINDEX, userStats_listener->leaderboardFindResultCallback_ref);
+    userStats_listener->leaderboardFindResultCallback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    SteamAPICall_t call = SteamUserStats()->FindOrCreateLeaderboard(name, static_cast<ELeaderboardSortMethod>(sort_method), static_cast<ELeaderboardDisplayType>(display_type));
+    userStats_listener->leaderboardFindResult.Set(call, userStats_listener, &SteamUserStatsListener::OnLeaderboardFindResult);
+    return 0;
+}
+
+
 // ============================
 // ======= SteamFriends =======
 // ============================
-
-// void ActivateGameOverlay( const char *pchDialog );
-EXTERN int luasteam_activateGameOverlay(lua_State *L) {
-    const char *dialog = luaL_checkstring(L, 1);
-    SteamFriends()->ActivateGameOverlay(dialog);
-    return 0;
-}
-
-// void ActivateGameOverlayToWebPage( const char *pchURL );
-EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
-    const char *url = luaL_checkstring(L, 1);
-    SteamFriends()->ActivateGameOverlayToWebPage(url);
-    return 0;
-}
 
 namespace {
 
@@ -108,6 +162,20 @@ void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) 
 }
 
 } // namespace
+
+// void ActivateGameOverlay( const char *pchDialog );
+EXTERN int luasteam_activateGameOverlay(lua_State *L) {
+    const char *dialog = luaL_checkstring(L, 1);
+    SteamFriends()->ActivateGameOverlay(dialog);
+    return 0;
+}
+
+// void ActivateGameOverlayToWebPage( const char *pchURL );
+EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
+    const char *url = luaL_checkstring(L, 1);
+    SteamFriends()->ActivateGameOverlayToWebPage(url);
+    return 0;
+}
 
 // ========================
 // ======= SteamAPI =======
@@ -156,12 +224,17 @@ void add_base(lua_State *L) {
 }
 
 void add_user_stats(lua_State *L) {
-    lua_createtable(L, 0, 5);
+    lua_createtable(L, 0, 7);
     add_func(L, "getAchievement", luasteam_getAchievement);
     add_func(L, "setAchievement", luasteam_setAchievement);
     add_func(L, "resetAllStats", luasteam_resetAllStats);
     add_func(L, "storeStats", luasteam_storeStats);
     add_func(L, "requestCurrentStats", luasteam_requestCurrentStats);
+    add_func(L, "findLeaderboard", luasteam_findLeaderboard);
+    add_func(L, "findOrCreateLeaderboard", luasteam_findOrCreateLeaderboard);
+    lua_pushvalue(L, -1);
+    userStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    userStats_listener = new SteamUserStatsListener();
     lua_setfield(L, -2, "userStats");
 }
 
