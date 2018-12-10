@@ -344,6 +344,14 @@ EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
     return 0;
 }
 
+// const char * GetFriendPersonaName( CSteamID steamIDFriend );
+EXTERN int luasteam_getFriendPersonaName(lua_State *L) {
+    CSteamID id(checkuint64(L, 1));
+    const char *name = SteamFriends()->GetFriendPersonaName(id);
+    lua_pushstring(L, name);
+    return 1;
+}
+
 // ========================
 // ======= SteamAPI =======
 // ========================
@@ -414,9 +422,10 @@ void add_user_stats(lua_State *L) {
 }
 
 void add_friends(lua_State *L) {
-    lua_createtable(L, 0, 2);
+    lua_createtable(L, 0, 3);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
+    add_func(L, "getFriendPersonaName", luasteam_getFriendPersonaName);
     lua_pushvalue(L, -1);
     friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     friends_listener = new SteamFriendsListener();
