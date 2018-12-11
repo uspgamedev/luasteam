@@ -308,6 +308,8 @@ EXTERN int luasteam_downloadLeaderboardEntries(lua_State *L) {
 
 namespace {
 
+const char *dialog_types[] = {"friends", "community", "players", "settings", "officialgamegroup", "stats", "achievements", NULL};
+
 class SteamFriendsListener {
   private:
     STEAM_CALLBACK(SteamFriendsListener, OnGameOverlayActivated, GameOverlayActivated_t);
@@ -334,7 +336,7 @@ void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) 
 
 // void ActivateGameOverlay( const char *pchDialog );
 EXTERN int luasteam_activateGameOverlay(lua_State *L) {
-    const char *dialog = luaL_checkstring(L, 1);
+    const char *dialog = dialog_types[luaL_checkoption(L, 1, NULL, dialog_types)];
     SteamFriends()->ActivateGameOverlay(dialog);
     return 0;
 }
