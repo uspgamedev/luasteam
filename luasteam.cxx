@@ -322,7 +322,9 @@ void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) 
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
+        lua_createtable(L, 0, 1);
         lua_pushboolean(L, data->m_bActive);
+        lua_setfield(L, -2, "active");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
