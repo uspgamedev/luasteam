@@ -9,7 +9,7 @@
 luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you're building games with Love2D.
 
 Using luasteam
-================
+----------------
 
 To get started, check the `SteamWorks API Reference <https://partner.steamgames.com/doc/api>`_. The lua bindings are very similar to the C++ API, so for example
 
@@ -101,6 +101,8 @@ Code in luasteam
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   ISteamFriends <friends>
 
 Indices and tables
 ==================
