@@ -70,6 +70,11 @@ class SteamUserStatsListener {
     int leaderboardScoresDownloadedCallback_ref = LUA_NOREF;
     void OnLeaderboardScoresDownloaded(LeaderboardScoresDownloaded_t *data, bool io_fail);
     CCallResult<SteamUserStatsListener, LeaderboardScoresDownloaded_t> leaderboardScoresDownloaded;
+
+  private:
+    STEAM_CALLBACK(SteamUserStatsListener, OnUserStatsReceived, UserStatsReceived_t);
+    STEAM_CALLBACK(SteamUserStatsListener, OnUserStatsStored, UserStatsStored_t);
+    STEAM_CALLBACK(SteamUserStatsListener, OnUserAchievementStored, UserAchievementStored_t);
 };
 
 void SteamUserStatsListener::OnLeaderboardFindResult(LeaderboardFindResult_t *data, bool io_fail) {
@@ -159,6 +164,75 @@ void SteamUserStatsListener::OnLeaderboardScoresDownloaded(LeaderboardScoresDown
     lua_call(L, 2, 0);
 }
 
+void SteamUserStatsListener::OnUserStatsReceived(UserStatsReceived_t *data) {
+    if (data == nullptr)
+        return;
+    lua_State *L = global_lua_state;
+    if (!lua_checkstack(L, 4))
+        return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
+    lua_getfield(L, -1, "onUserStatsReceived");
+    if (lua_isnil(L, -1))
+        lua_pop(L, 2);
+    else {
+        lua_createtable(L, 0, 3);
+        pushuint64(L, data->m_nGameID);
+        lua_setfield(L, -2, "gameID");
+        lua_pushnumber(L, static_cast<int>(data->m_eResult));
+        lua_setfield(L, -2, "result");
+        pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDUser");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void SteamUserStatsListener::OnUserStatsStored(UserStatsStored_t *data) {
+    if (data == nullptr)
+        return;
+    lua_State *L = global_lua_state;
+    if (!lua_checkstack(L, 4))
+        return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
+    lua_getfield(L, -1, "onUserStatsStored");
+    if (lua_isnil(L, -1))
+        lua_pop(L, 2);
+    else {
+        lua_createtable(L, 0, 3);
+        pushuint64(L, data->m_nGameID);
+        lua_setfield(L, -2, "gameID");
+        lua_pushnumber(L, static_cast<int>(data->m_eResult));
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void SteamUserStatsListener::OnUserAchievementStored(UserAchievementStored_t *data) {
+    if (data == nullptr)
+        return;
+    lua_State *L = global_lua_state;
+    if (!lua_checkstack(L, 4))
+        return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
+    lua_getfield(L, -1, "onUserAchievementsStored");
+    if (lua_isnil(L, -1))
+        lua_pop(L, 2);
+    else {
+        lua_createtable(L, 0, 3);
+        pushuint64(L, data->m_nGameID);
+        lua_setfield(L, -2, "gameID");
+        lua_pushstring(L, data->m_rgchAchievementName);
+        lua_setfield(L, -2, "achievementName");
+        lua_pushnumber(L, data->m_nCurProgress);
+        lua_setfield(L, -2, "curProgress");
+        lua_pushnumber(L, data->m_nMaxProgress);
+        lua_setfield(L, -2, "maxProgress");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
 } // namespace
 
 // bool GetAchievement(const char *pchName, bool *pbAchieved );
@@ -167,7 +241,7 @@ EXTERN int luasteam_getAchievement(lua_State *L) {
     bool achieved = false;
     bool success = SteamUserStats()->GetAchievement(ach_name, &achieved);
     lua_pushboolean(L, success);
-    if(success) {
+    if (success) {
         lua_pushboolean(L, achieved);
         return 2;
     } else
@@ -319,14 +393,16 @@ class SteamFriendsListener {
 };
 
 void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
+    if (data == nullptr)
+        return;
     lua_State *L = global_lua_state;
-    if (!lua_checkstack(L, 3))
+    if (!lua_checkstack(L, 4))
         return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, friends_ref);
     lua_getfield(L, -1, "onGameOverlayActivated");
-    if (lua_isnil(L, -1)) {
+    if (lua_isnil(L, -1))
         lua_pop(L, 2);
-    } else {
+    else {
         lua_createtable(L, 0, 1);
         lua_pushboolean(L, data->m_bActive);
         lua_setfield(L, -2, "active");
@@ -366,7 +442,7 @@ EXTERN int luasteam_getFriendPersonaName(lua_State *L) {
 // bool SteamAPI_Init();
 EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
-    if(!success)
+    if (!success)
         fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
     lua_pushboolean(L, success);
     return 1;
