@@ -4,6 +4,7 @@ SteamAPI Core Functions
 
 List of Functions
 -----------------
+* :func:`init`
 * :func:`shutdown`
 * :func:`runCallbacks`
 
@@ -11,6 +12,34 @@ List of Functions
 Function Reference
 ------------------
 
+.. function:: init()
+
+    :returns: (`boolean`)
+        **true** indicates that all required interfaces have been acquired and are accessible.
+        **false** indicates one of the following conditions:
+
+        * The Steam client isn't running. A running Steam client is required to provide implementations of the various Steamworks interfaces.
+
+        * The Steam client couldn't determine the App ID of game. If you're running your application from the executable or debugger directly then you must have a ``steam_appid.txt`` in your game directory next to the executable, with your app ID in it and nothing else. Steam will look for this file in the current working directory. If you are running your executable from a different directory you may need to relocate the ``steam_appid.txt`` file.
+
+        * Your application is not running under the same OS user context as the Steam client, such as a different user or administration access level.
+
+        * Ensure that you own a license for the App ID on the currently active Steam account. Your game must show up in your Steam library.
+
+        * Your App ID is not completely set up, i.e. in ``Release State: Unavailable``, or it's missing default packages.
+    :SteamWorks: `SteamAPI_Init <https://partner.steamgames.com/doc/api/steam_api#SteamAPI_Init>`_
+
+    Initializes the Steamworks API. **Must** be the first thing you call after loading the library, do it before anything else in your game.
+
+    See `Initialization and Shutdown <https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown>`_ for additional information.
+
+**Example**::
+
+    local Steam = require 'luasteam'
+
+    if not Steam.init() then
+        error("Steam couldn't initialize")
+    end
 
 .. function:: shutdown()
 
