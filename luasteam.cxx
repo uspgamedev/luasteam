@@ -215,7 +215,7 @@ void SteamUserStatsListener::OnUserAchievementStored(UserAchievementStored_t *da
     if (!lua_checkstack(L, 4))
         return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
-    lua_getfield(L, -1, "onUserAchievementsStored");
+    lua_getfield(L, -1, "onUserAchievementStored");
     if (lua_isnil(L, -1))
         lua_pop(L, 2);
     else {
