@@ -15,7 +15,9 @@ To learn how to use luasteam, check our `Getting Started <getting_started.html>`
     :caption: Contents:
 
     Getting Started <getting_started>
+    Core Functions <steam_api>
     ISteamFriends <friends>
+    ISteamUserStats <user_stats>
 
 Indices and tables
 ==================
