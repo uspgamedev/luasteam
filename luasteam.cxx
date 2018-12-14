@@ -144,10 +144,10 @@ void SteamUserStatsListener::OnLeaderboardScoresDownloaded(LeaderboardScoresDown
                 lua_setfield(L, -2, "globalRank");
                 lua_pushnumber(L, entry.m_nScore);
                 lua_setfield(L, -2, "score");
-                pushuint64(L, entry.m_hUGC);
-                lua_setfield(L, -2, "UGC");
                 lua_pushlstring(L, reinterpret_cast<const char *>(details), entry.m_cDetails * 4);
                 lua_setfield(L, -2, "details");
+                pushuint64(L, entry.m_hUGC);
+                lua_setfield(L, -2, "UGC");
                 lua_rawseti(L, -2, ++count);
             } else {
                 // There really is no reason for this to fail, according to the API
@@ -161,14 +161,17 @@ void SteamUserStatsListener::OnLeaderboardScoresDownloaded(LeaderboardScoresDown
 
 } // namespace
 
-// bool GetUserAchievement(const char *pchName, bool *pbAchieved );
+// bool GetAchievement(const char *pchName, bool *pbAchieved );
 EXTERN int luasteam_getAchievement(lua_State *L) {
     const char *ach_name = luaL_checkstring(L, 1);
     bool achieved = false;
     bool success = SteamUserStats()->GetAchievement(ach_name, &achieved);
     lua_pushboolean(L, success);
-    lua_pushboolean(L, achieved);
-    return 2;
+    if(success) {
+        lua_pushboolean(L, achieved);
+        return 2;
+    } else
+        return 1;
 }
 
 // bool SetAchievement( const char *pchName );
@@ -362,7 +365,10 @@ EXTERN int luasteam_getFriendPersonaName(lua_State *L) {
 
 // bool SteamAPI_Init();
 EXTERN int luasteam_init(lua_State *L) {
-    lua_pushboolean(L, SteamAPI_Init());
+    bool success = SteamAPI_Init();
+    if(!success)
+        fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
+    lua_pushboolean(L, success);
     return 1;
 }
 
@@ -398,8 +404,7 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
 }
 
 void add_base(lua_State *L) {
-    // Not adding this since we call it ourselves
-    // add_func(L, "init", luasteam_init);
+    add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
 }
@@ -439,17 +444,10 @@ void add_friends(lua_State *L) {
 } // namespace
 
 EXTERN int luaopen_luasteam(lua_State *L) {
-    if (SteamAPI_Init()) {
-        printf("Sucessfully connected to steam!\n");
-    } else {
-        printf("Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
-        lua_pushboolean(L, false);
-        return 1;
-    }
     global_lua_state = L;
     lua_createtable(L, 0, 0);
     uint64Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_createtable(L, 0, 4);
+    lua_createtable(L, 0, 5);
     add_base(L);
     add_user_stats(L);
     add_friends(L);
