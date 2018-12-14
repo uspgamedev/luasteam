@@ -30,8 +30,32 @@ Then copy this file to the same directory as your lua files, and make sure ``req
 Basic Usage
 ===========
 
+luasteam tries to be very similar to the SteamWorks API, that way you don't need to learn two different APIs. Big differences (other than lua/C++ differences) are documented.
 
-To get started, check the `SteamWorks API Reference <https://partner.steamgames.com/doc/api>`_.
+Initialization and Shutdown
+---------------------------
+
+Using the usual SteamWorks API, your code will look like:
+
+.. code-block:: C++
+
+    #include <steam_api.h>
+
+    SteamAPI_Init();
+    // ...
+    // when game is closing
+    SteamAPI_Shudown()
+
+Doing this in luasteam should be as easy as::
+
+    local Steam = require 'luasteam'
+
+    Steam.init()
+    -- ...
+    -- when game is closing
+    Steam.shutdown()
+
+Check the `overview <https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown>`_ for more info on initialization and shutdown. When developing your game, remember to have Steam turned on and use a ``steam_appid.txt`` file.
 
 Normal functions
 ----------------
@@ -40,16 +64,12 @@ The lua bindings for normal functions are very similar to the C++ API, so for ex
 
 .. code-block:: C++
 
-    #include <steam_api.h>
-    // ...
     SteamFriends()->ActivateGameOverlay("achievements");
 
 becomes
 
 .. code-block:: Lua
 
-    local Steam = require("luasteam")
-    -- ...
     Steam.friends.activateGameOverlay("achievements")
 
 Callbacks

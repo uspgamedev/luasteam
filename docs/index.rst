@@ -10,6 +10,8 @@ luasteam enables you to use SteamWorks API from Lua, for example (but not limite
 
 To learn how to use luasteam, check our `Getting Started <getting_started.html>`_ section.
 
+While using this documentation, you may also like to check the `SteamWorks API Reference <https://partner.steamgames.com/doc/api>`_ and `SteamWorks API Overview <https://partner.steamgames.com/doc/sdk/api>`_.
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
