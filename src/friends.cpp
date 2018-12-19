@@ -6,18 +6,18 @@
 
 namespace {
 
-class SteamFriendsListener;
-SteamFriendsListener *friends_listener = nullptr;
+class CallbackListener;
+CallbackListener *friends_listener = nullptr;
 int friends_ref = LUA_NOREF;
 
 const char *dialog_types[] = {"friends", "community", "players", "settings", "officialgamegroup", "stats", "achievements", NULL};
 
-class SteamFriendsListener {
+class CallbackListener {
   private:
-    STEAM_CALLBACK(SteamFriendsListener, OnGameOverlayActivated, GameOverlayActivated_t);
+    STEAM_CALLBACK(CallbackListener, OnGameOverlayActivated, GameOverlayActivated_t);
 };
 
-void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
+void CallbackListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
     if (data == nullptr) {
         return;
     }
@@ -74,7 +74,7 @@ void add_friends(lua_State *L) {
     lua_setfield(L, -2, "friends");
 }
 
-void init_friends(lua_State *L) { friends_listener = new SteamFriendsListener(); }
+void init_friends(lua_State *L) { friends_listener = new CallbackListener(); }
 
 void shutdown_friends(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
