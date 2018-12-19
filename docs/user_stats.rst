@@ -305,7 +305,7 @@ Function Reference
     :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :param string dataRequest: The type of data request to make. Must be one of "Global", "GlobalAroundUser" or "Friends" (see `ELeaderboardDataRequest <https://partner.steamgames.com/doc/api/ISteamUserStats#ELeaderboardDataRequest>`_).
     :param number rangeStart: The index to start downloading entries relative to **dataRequest**. Must **not** be supplied if **dataRequest** is "Friends".
-    :param number rangeStart: The last index to retrieve entries relative to **dataRequest**. Must **not** be supplied if **dataRequest** is "Friends".
+    :param number rangeEnd: The last index to retrieve entries relative to **dataRequest**. Must **not** be supplied if **dataRequest** is "Friends".
     :param function callback: Called asynchronously when this function returns. See below.
     :returns: nothing
     :SteamWorks: `DownloadLeaderboardEntries <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntries>`_
