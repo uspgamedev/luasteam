@@ -26,6 +26,7 @@ uint64 checkuint64(lua_State *L, int nParam);
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 
 void init_common(lua_State *L);
+void shutdown_common(lua_State *L);
 
 } // namespace luasteam
 

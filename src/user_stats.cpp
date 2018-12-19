@@ -368,8 +368,16 @@ void add_user_stats(lua_State *L) {
     add_func(L, "downloadLeaderboardEntries", luasteam_downloadLeaderboardEntries);
     lua_pushvalue(L, -1);
     userStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    userStats_listener = new SteamUserStatsListener();
     lua_setfield(L, -2, "userStats");
+}
+
+void init_user_stats(lua_State *L) { userStats_listener = new SteamUserStatsListener(); }
+
+void shutdown_user_stats(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, userStats_ref);
+    userStats_ref = LUA_NOREF;
+    delete userStats_listener;
+    userStats_listener = nullptr;
 }
 
 } // namespace luasteam

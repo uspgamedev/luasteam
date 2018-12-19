@@ -1,4 +1,6 @@
 #include "core.hpp"
+#include "friends.hpp"
+#include "user_stats.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -7,7 +9,11 @@
 // bool SteamAPI_Init();
 EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
-    if (!success) {
+    if (success) {
+        luasteam::init_common(L);
+        luasteam::init_friends(L);
+        luasteam::init_user_stats(L);
+    } else {
         fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
     }
     lua_pushboolean(L, success);
@@ -18,13 +24,9 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
-    // global_lua_state = nullptr;
-    // luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
-    // friends_ref = LUA_NOREF;
-    // delete friends_listener;
-    // friends_listener = nullptr;
-    // luaL_unref(L, LUA_REGISTRYINDEX, uint64Metatable_ref);
-    // uint64Metatable_ref = LUA_NOREF;
+    luasteam::shutdown_user_stats(L);
+    luasteam::shutdown_friends(L);
+    luasteam::shutdown_common(L);
     return 0;
 }
 

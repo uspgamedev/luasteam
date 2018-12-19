@@ -71,8 +71,16 @@ void add_friends(lua_State *L) {
     add_func(L, "getFriendPersonaName", luasteam_getFriendPersonaName);
     lua_pushvalue(L, -1);
     friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    friends_listener = new SteamFriendsListener();
     lua_setfield(L, -2, "friends");
+}
+
+void init_friends(lua_State *L) { friends_listener = new SteamFriendsListener(); }
+
+void shutdown_friends(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
+    friends_ref = LUA_NOREF;
+    delete friends_listener;
+    friends_listener = nullptr;
 }
 
 } // namespace luasteam
