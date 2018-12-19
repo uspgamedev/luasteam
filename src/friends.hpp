@@ -5,6 +5,7 @@
 
 namespace luasteam {
 
+// Adds functions from ISteamFriends
 void add_friends(lua_State *L);
 
 void init_friends(lua_State *L);

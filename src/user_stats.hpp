@@ -5,6 +5,7 @@
 
 namespace luasteam {
 
+// Adds functions from ISteamUserStats
 void add_user_stats(lua_State *L);
 
 void init_user_stats(lua_State *L);
