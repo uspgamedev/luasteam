@@ -4,6 +4,8 @@ namespace {
 int uint64Metatable_ref = LUA_NOREF;
 } // namespace
 
+EXTERN int luasteam_equint64(lua_State *L) { return luasteam::checkuint64(L, 1) == luasteam::checkuint64(L, 2); }
+
 namespace luasteam {
 
 lua_State *global_lua_state = nullptr;
@@ -32,7 +34,8 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
 
 void init_common(lua_State *L) {
     global_lua_state = L;
-    lua_createtable(L, 0, 0);
+    lua_createtable(L, 0, 1);
+    add_func(L, "__eq", luasteam_equint64);
     uint64Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
