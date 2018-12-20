@@ -19,6 +19,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     Getting Started <getting_started>
     Core Functions <steam_api>
     ISteamFriends <friends>
+    ISteamUser <user>
     ISteamUserStats <user_stats>
 
 Indices and tables
