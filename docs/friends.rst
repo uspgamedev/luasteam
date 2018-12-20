@@ -45,7 +45,7 @@ Function Reference
 
 .. function:: friends.getFriendPersonaName(steam_id)
 
-    :param steam_id: The Steam ID of the other user.
+    :param steamID steam_id: The Steam ID of the other user.
     :returns: (`string`) The current users persona name. Returns an empty string (""), or "[unknown]" if the Steam ID is invalid or not known to the caller.
     :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
 
