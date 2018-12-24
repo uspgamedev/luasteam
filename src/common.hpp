@@ -25,6 +25,14 @@ uint64 checkuint64(lua_State *L, int nParam);
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 
+
+template <typename T> class CallResultListener {
+  public:
+    int callback_ref = LUA_NOREF;
+    void Result(T *data, bool io_fail);
+    CCallResult<CallResultListener, T> call_result;
+};
+
 void init_common(lua_State *L);
 void shutdown_common(lua_State *L);
 
