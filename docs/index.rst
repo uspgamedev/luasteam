@@ -21,6 +21,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     ISteamFriends <friends>
     ISteamUser <user>
     ISteamUserStats <user_stats>
+    ISteamUtils <utils>
 
 Indices and tables
 ==================
