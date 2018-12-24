@@ -4,6 +4,8 @@
 // ======= SteamUserStats =======
 // ==============================
 
+using luasteam::CallResultListener;
+
 namespace {
 
 class CallbackListener;
@@ -97,12 +99,9 @@ void CallbackListener::OnUserAchievementStored(UserAchievementStored_t *data) {
     }
 }
 
-template <typename T> class CallResultListener {
-  public:
-    int callback_ref = LUA_NOREF;
-    void Result(T *data, bool io_fail);
-    CCallResult<CallResultListener, T> call_result;
-};
+} // namespace
+
+namespace luasteam {
 
 template <> void CallResultListener<LeaderboardFindResult_t>::Result(LeaderboardFindResult_t *data, bool io_fail) {
     lua_State *L = luasteam::global_lua_state;
@@ -191,7 +190,7 @@ template <> void CallResultListener<LeaderboardScoresDownloaded_t>::Result(Leade
     delete this;
 }
 
-} // namespace
+} // namespace luasteam
 
 // bool GetAchievement(const char *pchName, bool *pbAchieved );
 EXTERN int luasteam_getAchievement(lua_State *L) {

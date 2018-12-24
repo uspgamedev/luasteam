@@ -2,6 +2,7 @@
 #include "friends.hpp"
 #include "user_stats.hpp"
 #include "utils.hpp"
+#include "UGC.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -15,6 +16,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_friends(L);
         luasteam::init_user_stats(L);
         luasteam::init_utils(L);
+        luasteam::init_UGC(L);
     } else {
         fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
     }
@@ -26,6 +28,7 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
+    luasteam::shutdown_UGC(L);
     luasteam::shutdown_utils(L);
     luasteam::shutdown_user_stats(L);
     luasteam::shutdown_friends(L);
