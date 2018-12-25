@@ -128,10 +128,30 @@ EXTERN int luasteam_submitItemUpdate(lua_State *L) {
     return 0;
 }
 
+// uint32 GetNumSubscribedItems();
+EXTERN int luasteam_getNumSubscribedItems(lua_State *L) {
+    lua_pushnumber(L, SteamUGC()->GetNumSubscribedItems());
+    return 1;
+}
+
+// uint32 GetSubscribedItems( PublishedFileId_t*pvecPublishedFileID, uint32 cMaxEntries );
+EXTERN int luasteam_getSubscribedItems(lua_State *L) {
+    int sz = SteamUGC()->GetNumSubscribedItems();
+    PublishedFileId_t *vec = new PublishedFileId_t[sz];
+    sz = SteamUGC()->GetSubscribedItems(vec, sz);
+    lua_createtable(L, sz, 0);
+    for(int i = 0; i < sz; i++) {
+        luasteam::pushuint64(L, vec[i]);
+        lua_rawseti(L, -2, i + 1);
+    }
+    delete vec;
+    return 1;
+}
+
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 7);
+    lua_createtable(L, 0, 9);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "startItemUpdate", luasteam_startItemUpdate);
     add_func(L, "setItemContent", luasteam_setItemContent);
@@ -139,6 +159,8 @@ void add_UGC(lua_State *L) {
     add_func(L, "setItemPreview", luasteam_setItemPreview);
     add_func(L, "setItemTitle", luasteam_setItemTitle);
     add_func(L, "submitItemUpdate", luasteam_submitItemUpdate);
+    add_func(L, "getNumSubscribedItems", luasteam_getNumSubscribedItems);
+    add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
     lua_setfield(L, -2, "UGC");
 }
 
