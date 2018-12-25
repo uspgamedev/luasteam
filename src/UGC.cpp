@@ -148,10 +148,55 @@ EXTERN int luasteam_getSubscribedItems(lua_State *L) {
     return 1;
 }
 
+// uint32 GetItemState( PublishedFileId_t nPublishedFileID );
+EXTERN int luasteam_getItemState(lua_State *L) {
+    PublishedFileId_t id = luasteam::checkuint64(L, 1);
+    uint32 flags = SteamUGC()->GetItemState(id);
+    if (flags == 0)
+        lua_pushnil(L);
+    else {
+        lua_createtable(L, 0, 6);
+        lua_pushboolean(L, !!(flags & k_EItemStateSubscribed));
+        lua_setfield(L, -2, "subscribed");
+        lua_pushboolean(L, !!(flags & k_EItemStateLegacyItem));
+        lua_setfield(L, -2, "legacyItem");
+        lua_pushboolean(L, !!(flags & k_EItemStateInstalled));
+        lua_setfield(L, -2, "installed");
+        lua_pushboolean(L, !!(flags & k_EItemStateNeedsUpdate));
+        lua_setfield(L, -2, "needsUpdate");
+        lua_pushboolean(L, !!(flags & k_EItemStateDownloading));
+        lua_setfield(L, -2, "downloading");
+        lua_pushboolean(L, !!(flags & k_EItemStateDownloadPending));
+        lua_setfield(L, -2, "downloadPending");
+    }
+    return 1;
+}
+
+// bool GetItemInstallInfo( PublishedFileId_t nPublishedFileID, uint64 *punSizeOnDisk, char *pchFolder, uint32 cchFolderSize, uint32 *punTimeStamp );
+EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
+    PublishedFileId_t id = luasteam::checkuint64(L, 1);
+    uint64 sizeOnDisk;
+    const int size = 256;
+    char *folder = new char[size];
+    uint32 timestamp;
+    bool success = SteamUGC()->GetItemInstallInfo(id, &sizeOnDisk, folder, size, &timestamp);
+    lua_pushboolean(L, success);
+    if (success) {
+        // This is an uint64 and can't exactly fit into a double
+        // But I think it's better to use a number than the uint64 functions in common.hpp
+        // Since the exact integer value isn't that important
+        lua_pushnumber(L, sizeOnDisk);
+        lua_pushstring(L, folder);
+        lua_pushnumber(L, timestamp);
+        return 4;
+    } else
+        return 1;
+}
+
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 9);
+    lua_createtable(L, 0, 11);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "startItemUpdate", luasteam_startItemUpdate);
     add_func(L, "setItemContent", luasteam_setItemContent);
@@ -161,6 +206,8 @@ void add_UGC(lua_State *L) {
     add_func(L, "submitItemUpdate", luasteam_submitItemUpdate);
     add_func(L, "getNumSubscribedItems", luasteam_getNumSubscribedItems);
     add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
+    add_func(L, "getItemState", luasteam_getItemState);
+    add_func(L, "getItemInstallInfo", luasteam_getItemInstallInfo);
     lua_setfield(L, -2, "UGC");
 }
 
