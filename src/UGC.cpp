@@ -1,4 +1,5 @@
 #include "UGC.hpp"
+#include <vector>
 
 // ========================
 // ======= SteamUGC =======
@@ -62,6 +63,33 @@ template <> void CallResultListener<SubmitItemUpdateResult_t>::Result(SubmitItem
     delete this;
 }
 
+static void SimpleResultListener(int callback_ref, int result, bool io_fail) {
+    lua_State *L = luasteam::global_lua_state;
+    // getting stored callback function
+    lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+    luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+    // calling function
+    if (io_fail) {
+        lua_pushnil(L);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushnumber(L, result);
+        lua_setfield(L, -2, "result");
+    }
+    lua_pushboolean(L, io_fail);
+    lua_call(L, 2, 0);
+}
+
+template <> void CallResultListener<StartPlaytimeTrackingResult_t>::Result(StartPlaytimeTrackingResult_t *data, bool io_fail) {
+    SimpleResultListener(callback_ref, io_fail ? -1 : data->m_eResult, io_fail);
+    delete this;
+}
+
+template <> void CallResultListener<StopPlaytimeTrackingResult_t>::Result(StopPlaytimeTrackingResult_t *data, bool io_fail) {
+    SimpleResultListener(callback_ref, io_fail ? -1 : data->m_eResult, io_fail);
+    delete this;
+}
+
 } // namespace luasteam
 
 // SteamAPICall_t CreateItem( AppId_t nConsumerAppId, EWorkshopFileType eFileType );
@@ -70,6 +98,7 @@ EXTERN int luasteam_createItem(lua_State *L) {
     EWorkshopFileType fileType = file_type_to_enum[luaL_checkoption(L, 2, nullptr, workshop_file_types)];
     luaL_checktype(L, 3, LUA_TFUNCTION);
     auto *listener = new CallResultListener<CreateItemResult_t>();
+    lua_settop(L, 3);
     listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     SteamAPICall_t call = SteamUGC()->CreateItem(consumerAppID, fileType);
     listener->call_result.Set(call, listener, &CallResultListener<CreateItemResult_t>::Result);
@@ -122,6 +151,7 @@ EXTERN int luasteam_submitItemUpdate(lua_State *L) {
     const char *changeNote = luaL_optstring(L, 2, nullptr);
     luaL_checktype(L, 3, LUA_TFUNCTION);
     auto *listener = new CallResultListener<SubmitItemUpdateResult_t>();
+    lua_settop(L, 3);
     listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     SteamAPICall_t call = SteamUGC()->SubmitItemUpdate(handle, changeNote);
     listener->call_result.Set(call, listener, &CallResultListener<SubmitItemUpdateResult_t>::Result);
@@ -140,7 +170,7 @@ EXTERN int luasteam_getSubscribedItems(lua_State *L) {
     PublishedFileId_t *vec = new PublishedFileId_t[sz];
     sz = SteamUGC()->GetSubscribedItems(vec, sz);
     lua_createtable(L, sz, 0);
-    for(int i = 0; i < sz; i++) {
+    for (int i = 0; i < sz; i++) {
         luasteam::pushuint64(L, vec[i]);
         lua_rawseti(L, -2, i + 1);
     }
@@ -193,10 +223,61 @@ EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
         return 1;
 }
 
+// the table should be on index
+std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
+    luaL_checktype(L, index, LUA_TTABLE);
+    const int size = lua_objlen(L, index);
+    if (size < 1 || size > 100) return {};
+    std::vector<PublishedFileId_t> vec(size);
+    for (int i = 0; i < size; i++) {
+        lua_rawgeti(L, index, i + 1);
+        vec[i] = luasteam::assertuint64(L, lua_gettop(L), "Index %d of argument #%d is invalid", i + 1, index);
+        lua_pop(L, 1);
+    }
+    return vec;
+}
+
+// SteamAPICall_t StartPlaytimeTracking( PublishedFileId_t *pvecPublishedFileID, uint32 unNumPublishedFileIDs );
+EXTERN int luasteam_startPlaytimeTracking(lua_State *L) {
+    luaL_checktype(L, 2, LUA_TFUNCTION);
+    std::vector<PublishedFileId_t> vec(getFileIdList(L, 1));
+    if (vec.empty()) return 0;
+    SteamAPICall_t call = SteamUGC()->StartPlaytimeTracking(&vec[0], vec.size());
+    auto *listener = new CallResultListener<StartPlaytimeTrackingResult_t>();
+    lua_settop(L, 2);
+    listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    listener->call_result.Set(call, listener, &CallResultListener<StartPlaytimeTrackingResult_t>::Result);
+    return 0;
+}
+
+// SteamAPICall_t StopPlaytimeTracking( PublishedFileId_t *pvecPublishedFileID, uint32 unNumPublishedFileIDs );
+EXTERN int luasteam_stopPlaytimeTracking(lua_State *L) {
+    luaL_checktype(L, 2, LUA_TFUNCTION);
+    auto vec = getFileIdList(L, 1);
+    if (vec.empty()) return 0;
+    SteamAPICall_t call = SteamUGC()->StopPlaytimeTracking(&vec[0], vec.size());
+    auto *listener = new CallResultListener<StopPlaytimeTrackingResult_t>();
+    lua_settop(L, 2);
+    listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    listener->call_result.Set(call, listener, &CallResultListener<StopPlaytimeTrackingResult_t>::Result);
+    return 0;
+}
+
+// SteamAPICall_t StopPlaytimeTrackingForAllItems();
+EXTERN int luasteam_stopPlaytimeTrackingForAllItems(lua_State *L) {
+    luaL_checktype(L, 1, LUA_TFUNCTION);
+    SteamAPICall_t call = SteamUGC()->StopPlaytimeTrackingForAllItems();
+    auto *listener = new CallResultListener<StopPlaytimeTrackingResult_t>();
+    lua_settop(L, 1);
+    listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    listener->call_result.Set(call, listener, &CallResultListener<StopPlaytimeTrackingResult_t>::Result);
+    return 0;
+}
+
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 11);
+    lua_createtable(L, 0, 14);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "startItemUpdate", luasteam_startItemUpdate);
     add_func(L, "setItemContent", luasteam_setItemContent);
@@ -208,6 +289,9 @@ void add_UGC(lua_State *L) {
     add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
     add_func(L, "getItemState", luasteam_getItemState);
     add_func(L, "getItemInstallInfo", luasteam_getItemInstallInfo);
+    add_func(L, "startPlaytimeTracking", luasteam_startPlaytimeTracking);
+    add_func(L, "stopPlaytimeTracking", luasteam_stopPlaytimeTracking);
+    add_func(L, "stopPlaytimeTrackingForAllItems", luasteam_stopPlaytimeTrackingForAllItems);
     lua_setfield(L, -2, "UGC");
 }
 
