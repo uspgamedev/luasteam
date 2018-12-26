@@ -155,7 +155,7 @@ Function Reference
 
     **callback(data, err)** receives two arguments:
 
-    * **data** (`table`) -- Similar to `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardFindResult_t>`_, or **nil** if there was **err** is **true**.
+    * **data** (`table`) -- Similar to `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardFindResult_t>`_, or **nil** if **err** is **true**.
 
         * **data.steamLeaderboard** (`leaderboard`) -- Handle to the leaderboard that was searched for. A special value is returned if no leaderboard was found.
 
