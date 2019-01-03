@@ -4,7 +4,6 @@
 // ======= SteamUtils =======
 // ==========================
 
-
 // uint32 GetAppID();
 EXTERN int luasteam_getAppID(lua_State *L) {
     lua_pushnumber(L, SteamUtils()->GetAppID());

@@ -227,7 +227,9 @@ EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
 std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
     luaL_checktype(L, index, LUA_TTABLE);
     const int size = lua_objlen(L, index);
-    if (size < 1 || size > 100) return {};
+    if (size < 1 || size > 100) {
+        return {};
+    }
     std::vector<PublishedFileId_t> vec(size);
     for (int i = 0; i < size; i++) {
         lua_rawgeti(L, index, i + 1);
@@ -241,7 +243,9 @@ std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
 EXTERN int luasteam_startPlaytimeTracking(lua_State *L) {
     luaL_checktype(L, 2, LUA_TFUNCTION);
     std::vector<PublishedFileId_t> vec(getFileIdList(L, 1));
-    if (vec.empty()) return 0;
+    if (vec.empty()) {
+        return 0;
+    }
     SteamAPICall_t call = SteamUGC()->StartPlaytimeTracking(&vec[0], vec.size());
     auto *listener = new CallResultListener<StartPlaytimeTrackingResult_t>();
     lua_settop(L, 2);
@@ -254,7 +258,9 @@ EXTERN int luasteam_startPlaytimeTracking(lua_State *L) {
 EXTERN int luasteam_stopPlaytimeTracking(lua_State *L) {
     luaL_checktype(L, 2, LUA_TFUNCTION);
     auto vec = getFileIdList(L, 1);
-    if (vec.empty()) return 0;
+    if (vec.empty()) {
+        return 0;
+    }
     SteamAPICall_t call = SteamUGC()->StopPlaytimeTracking(&vec[0], vec.size());
     auto *listener = new CallResultListener<StopPlaytimeTrackingResult_t>();
     lua_settop(L, 2);
