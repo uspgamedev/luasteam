@@ -165,9 +165,13 @@ void SteamUserStatsListener::OnLeaderboardScoresDownloaded(LeaderboardScoresDown
 }
 
 void SteamUserStatsListener::OnUserStatsReceived(UserStatsReceived_t *data) {
-    if (data == nullptr) return;
+    if (data == nullptr) {
+        return;
+    }
     lua_State *L = global_lua_state;
-    if (!lua_checkstack(L, 4)) return;
+    if (!lua_checkstack(L, 4)) {
+        return;
+    }
     lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
     lua_getfield(L, -1, "onUserStatsReceived");
     if (lua_isnil(L, -1)) {
@@ -186,9 +190,13 @@ void SteamUserStatsListener::OnUserStatsReceived(UserStatsReceived_t *data) {
 }
 
 void SteamUserStatsListener::OnUserStatsStored(UserStatsStored_t *data) {
-    if (data == nullptr) return;
+    if (data == nullptr) {
+        return;
+    }
     lua_State *L = global_lua_state;
-    if (!lua_checkstack(L, 4)) return;
+    if (!lua_checkstack(L, 4)) {
+        return;
+    }
     lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
     lua_getfield(L, -1, "onUserStatsStored");
     if (lua_isnil(L, -1)) {
@@ -205,9 +213,13 @@ void SteamUserStatsListener::OnUserStatsStored(UserStatsStored_t *data) {
 }
 
 void SteamUserStatsListener::OnUserAchievementStored(UserAchievementStored_t *data) {
-    if (data == nullptr) return;
+    if (data == nullptr) {
+        return;
+    }
     lua_State *L = global_lua_state;
-    if (!lua_checkstack(L, 4)) return;
+    if (!lua_checkstack(L, 4)) {
+        return;
+    }
     lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
     lua_getfield(L, -1, "onUserAchievementStored");
     if (lua_isnil(L, -1)) {
@@ -392,9 +404,13 @@ class SteamFriendsListener {
 };
 
 void SteamFriendsListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
-    if (data == nullptr) return;
+    if (data == nullptr) {
+        return;
+    }
     lua_State *L = global_lua_state;
-    if (!lua_checkstack(L, 4)) return;
+    if (!lua_checkstack(L, 4)) {
+        return;
+    }
     lua_rawgeti(L, LUA_REGISTRYINDEX, friends_ref);
     lua_getfield(L, -1, "onGameOverlayActivated");
     if (lua_isnil(L, -1)) {
