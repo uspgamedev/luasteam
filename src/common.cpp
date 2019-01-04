@@ -1,10 +1,13 @@
 #include "common.hpp"
+#include <string>
 
 namespace {
 int uint64Metatable_ref = LUA_NOREF;
 
 void my_assert(lua_State *L, int cond, const char *fmt, va_list list) {
-    if (cond) return;
+    if (cond) {
+        return;
+    }
     lua_pushvfstring(L, fmt, list);
     lua_error(L);
 }
@@ -12,6 +15,12 @@ void my_assert(lua_State *L, int cond, const char *fmt, va_list list) {
 } // namespace
 
 EXTERN int luasteam_equint64(lua_State *L) { return luasteam::checkuint64(L, 1) == luasteam::checkuint64(L, 2); }
+
+EXTERN int luasteam_uint64ToString(lua_State *L) {
+    uint64 x = luasteam::checkuint64(L, 1);
+    lua_pushstring(L, std::to_string(x).data());
+    return 1;
+}
 
 namespace luasteam {
 
@@ -53,8 +62,9 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
 
 void init_common(lua_State *L) {
     global_lua_state = L;
-    lua_createtable(L, 0, 1);
+    lua_createtable(L, 0, 2);
     add_func(L, "__eq", luasteam_equint64);
+    add_func(L, "__tostring", luasteam_uint64ToString);
     uint64Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
