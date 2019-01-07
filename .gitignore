@@ -9,6 +9,9 @@
 ### Sphinx/Docs ###
 /docs/_build
 
+### VSCode ###
+.vscode
+
 ### C++ ###
 # Prerequisites
 *.d

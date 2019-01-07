@@ -16,6 +16,7 @@ List of Functions
 * :func:`UGC.getSubscribedItems`
 * :func:`UGC.getItemState`
 * :func:`UGC.getItemInstallInfo`
+* :func:`UGC.getItemUpdateProgress`
 * :func:`UGC.startPlaytimeTracking`
 * :func:`UGC.stopPlaytimeTracking`
 * :func:`UGC.stopPlaytimeTrackingForAllItems`
@@ -166,7 +167,7 @@ Function Reference
 
     Uploads the changes made to an item to the Steam Workshop.
 
-    You can track the progress of an item update with :func:`UGC.getItemUpdateProgress` **(mising)**.
+    You can track the progress of an item update with :func:`UGC.getItemUpdateProgress`.
 
     **callback(data, err)** receives two arguments:
 
@@ -265,6 +266,36 @@ Function Reference
     If ``legacyItem`` is set then folder contains the path to the legacy file itself, not a folder.
 
 **Example**:: See :func:`UGC.getSubscribedItems`'s example.
+
+.. function:: UGC.getItemUpdateProgress (handle)
+
+    :param UGCUpdateHandle handle: The update handle to get the progress for.
+    :returns: (`string`) The current status. One of 'Invalid', 'PreparingConfig', 'PreparingContent', 'UploadingContent', 'UploadingPreviewFile', 'CommittingChanges'. See `EItemUpdateStatus <https://partner.steamgames.com/doc/api/ISteamUGC#EItemUpdateStatus>`_.
+    :returns: (`number`) The current number of bytes uploaded.
+    :returns: (`number`) The total number of bytes that will be uploaded.
+    :SteamWorks: `GetItemUpdateProgress <https://partner.steamgames.com/doc/api/ISteamUGC#GetItemUpdateProgress>`_
+
+    Gets the progress of an item update.
+
+**Example**::
+
+    local rev = {
+        PreparingConfig = 0,
+        PreparingContent = 1,
+        UploadingContent = 2,
+        UploadingPreviewFile = 3,
+        CommittingChanges = 4,
+        Invalid = 5, -- also Invalid when the job is finished
+    }
+    local function get_progress(handle)
+        local st, uploaded, total = Steam.UGC.getItemUpdateProgress(handle)
+        local p = rev[st] / 5
+        -- total may be 0 depending on the status
+        if total ~= 0 then
+            p = p + 0.2 * (uploaded / total)
+        end
+        return p
+    end
 
 .. function:: UGC.startPlaytimeTracking (vec, callback)
 

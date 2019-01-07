@@ -9,6 +9,10 @@ using luasteam::CallResultListener;
 
 namespace {
 
+const char *update_status[] = {
+    "Invalid", "PreparingConfig", "PreparingContent", "UploadingContent", "UploadingPreviewFile", "CommittingChanges",
+};
+
 const char *workshop_file_types[] = {
     "Community", "Microtransaction", "Collection", "Art", "Video", "Screenshot", "WebGuide", "IntegratedGuide", "Merch", "ControllerBinding", "SteamVideo", "GameManagedItem", nullptr,
 };
@@ -223,8 +227,19 @@ EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
         return 1;
 }
 
+// EItemUpdateStatus GetItemUpdateProgress( UGCUpdateHandle_t handle, uint64 *punBytesProcessed, uint64*punBytesTotal );
+EXTERN int luasteam_getItemUpdateProgress(lua_State *L) {
+    uint64 handle = luasteam::checkuint64(L, 1);
+    uint64 processed, total;
+    EItemUpdateStatus st = SteamUGC()->GetItemUpdateProgress(handle, &processed, &total);
+    lua_pushstring(L, update_status[st]);
+    lua_pushnumber(L, processed);
+    lua_pushnumber(L, total);
+    return 3;
+}
+
 // the table should be on index
-std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
+static std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
     luaL_checktype(L, index, LUA_TTABLE);
     const int size = lua_objlen(L, index);
     if (size < 1 || size > 100) {
@@ -283,7 +298,7 @@ EXTERN int luasteam_stopPlaytimeTrackingForAllItems(lua_State *L) {
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 14);
+    lua_createtable(L, 0, 15);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "startItemUpdate", luasteam_startItemUpdate);
     add_func(L, "setItemContent", luasteam_setItemContent);
@@ -295,6 +310,7 @@ void add_UGC(lua_State *L) {
     add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
     add_func(L, "getItemState", luasteam_getItemState);
     add_func(L, "getItemInstallInfo", luasteam_getItemInstallInfo);
+    add_func(L, "getItemUpdateProgress", luasteam_getItemUpdateProgress);
     add_func(L, "startPlaytimeTracking", luasteam_startPlaytimeTracking);
     add_func(L, "stopPlaytimeTracking", luasteam_stopPlaytimeTracking);
     add_func(L, "stopPlaytimeTrackingForAllItems", luasteam_stopPlaytimeTrackingForAllItems);
