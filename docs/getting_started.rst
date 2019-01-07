@@ -151,3 +151,24 @@ Code in luasteam
 .. warning::
 
     To use Callbacks and Call Results, you **must** constantly call ``Steam.runCallbacks()``, preferably in your game loop.
+
+.. _64-bit-integers:
+
+64-bit integers
+---------------
+
+Some identifiers in the SteamWorks API are 64-bit integers (for example, SteamID, Leaderboard Handle, etc.).
+In this documentation, these use `uint64` types instead of `number`.
+
+Since Lua 5.1 does not support integers, and doubles (the default number type) can't hold a 64-bit integer with no error, we use userdata to keep such integers (even in Lua versions that support integers).
+
+They can only be compared for equality or converted to strings (using the `tostring` function), since doing any math on them doesn't make any sense. You can use :func:`extra.parseUint64` to parse them from strings.
+
+::
+
+    local original = Steam.user.getSteamID()
+    local str = tostring(original)
+    print("Your id is " .. str)
+    local id = Steam.extra.parseUint64(str)
+    -- equality works, even though they are different userdata instances
+    assert(id == original)

@@ -40,7 +40,7 @@ Function Reference
 
         * **data.result** (`number`) -- The result of the operation. See `EResult <https://partner.steamgames.com/doc/api/steam_api#EResult>`_.
 
-        * **data.publishedFileId** (`PublishedFileId`) -- The new items unique ID.
+        * **data.publishedFileId** (`uint64`) -- The new items unique ID.
 
         * **data.userNeedsToAcceptWorkshopLegalAgreement** (`boolean`) -- Does the user need to accept the Steam Workshop legal agreement (**true**) or not (**false**)? See the `Workshop Legal Agreement <https://partner.steamgames.com/doc/features/workshop/implementation#Legal>`_ for more information.
 
@@ -59,8 +59,8 @@ Function Reference
 .. function:: UGC.startItemUpdate (consumerAppId, publishedFileId)
 
     :param number consumerAppId: The App ID that will be using this item.
-    :param PublishedFileId publishedFileId: The item to update.
-    :returns: (`UGCUpdateHandle`) A handle that you can use with future calls to modify the item before finally sending the update.
+    :param uint64 publishedFileId: The item to update.
+    :returns: (`uint64`) A handle that you can use with future calls to modify the item before finally sending the update.
     :SteamWorks: `StartItemUpdate <https://partner.steamgames.com/doc/api/ISteamUGC#StartItemUpdate>`_
 
     Starts the item update process.
@@ -84,9 +84,9 @@ Function Reference
         end)
     end
 
-.. function:: UGC.setItemContent (handle, contentFolder)
+.. function:: UGC.setItemContent (updateHandle, contentFolder)
 
-    :param UGCUpdateHandle handle: The workshop item update handle to customize.
+    :param uint64 updateHandle: The workshop item update handle to customize.
     :param string contentFolder: The absolute path to a local folder containing the content for the item.
     :returns: (`boolean`) **true** upon success. **false** if the UGC update handle is invalid.
     :SteamWorks: `SetItemContent <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemContent>`_
@@ -102,9 +102,9 @@ Function Reference
 
 **Example**:: See :func:`UGC.startItemUpdate`'s example.
 
-.. function:: UGC.setItemDescription (handle, description)
+.. function:: UGC.setItemDescription (updateHandle, description)
 
-    :param UGCUpdateHandle handle: The workshop item update handle to customize.
+    :param uint64 updateHandle: The workshop item update handle to customize.
     :param string description: The new description of the item.
     :returns: (`boolean`) **true** upon success. **false** if the UGC update handle is invalid.
     :SteamWorks: `SetItemDescription <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemDescription>`_
@@ -116,14 +116,14 @@ Function Reference
     You can set what language this is for by using :func:`UGC.setItemUpdateLanguage` **(missing)**, if no language is set then "english" is assumed.
 
     .. note::
-    
+
         This must be set before you submit the UGC update handle using :func:`UGC.submitItemUpdate`.
 
 **Example**:: See :func:`UGC.startItemUpdate`'s example.
 
-.. function:: UGC.setItemPreview (handle, previewFile)
+.. function:: UGC.setItemPreview (updateHandle, previewFile)
 
-    :param UGCUpdateHandle handle: The workshop item update handle to customize.
+    :param uint64 updateHandle: The workshop item update handle to customize.
     :param string previewFile: The absolute path to a local preview image file for the item.
     :returns: **true** upon success. **false** if the UGC update handle is invalid.
     :SteamWorks: `SetItemPreview <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemPreview>`_
@@ -133,14 +133,14 @@ Function Reference
     The format should be one that both the web and the application (if necessary) can render. Suggested formats include JPG, PNG and GIF.
 
     .. note::
-    
+
         This must be set before you submit the UGC update handle using :func:`UGC.submitItemUpdate`.
 
 **Example**:: See :func:`UGC.startItemUpdate`'s example.
 
-.. function:: UGC.setItemTitle (handle, title)
+.. function:: UGC.setItemTitle (updateHandle, title)
 
-    :param UGCUpdateHandle handle: The workshop item update handle to customize.
+    :param uint64 updateHandle: The workshop item update handle to customize.
     :param string title: The new title of the item.
     :returns: (`boolean`) **true** upon success. **false** if the UGC update handle is invalid.
     :SteamWorks: `SetItemTitle <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTitle>`_
@@ -152,14 +152,14 @@ Function Reference
     You can set what language this is for by using :func:`UGC.setItemUpdateLanguage`, if no language is set then "english" is assumed.
 
     .. note::
-    
+
         This must be set before you submit the UGC update handle using :func:`UGC.submitItemUpdate`.
 
 **Example**:: See :func:`UGC.startItemUpdate`'s example.
 
-.. function:: UGC.submitItemUpdate (handle, changeNote, callback)
+.. function:: UGC.submitItemUpdate (updateHandle, changeNote, callback)
 
-    :param UGCUpdateHandle handle: The update handle to submit.
+    :param uint64 updateHandle: The update handle to submit.
     :param string? changeNote: A brief description of the changes made (Optional, set to **nil** for no change note).
     :param function callback: Called asynchronously when this function returns. See below.
     :returns: nothing
@@ -194,13 +194,13 @@ Function Reference
 
 .. function:: UGC.getSubscribedItems ()
 
-    :returns: (`table`) An array of `PublishedFileId` for all your subscribed items. Empty if called from a game server.
+    :returns: (`table`) An array of `PublishedFileId` (more precisely, `uint64`) for all your subscribed items. Empty if called from a game server.
     :SteamWorks: `GetSubscribedItems <https://partner.steamgames.com/doc/api/ISteamUGC#GetSubscribedItems>`_
 
     Gets a list of all of the items the current user is subscribed to for the current game.
 
 .. warning::
-    
+
     This function is slightly different from the SteamWorks API. You don't need to send the array, it is returned by the function.
 
 **Example**::
@@ -219,9 +219,9 @@ Function Reference
         end
     end
 
-.. function:: UGC.getItemState (id)
+.. function:: UGC.getItemState (publishedFileId)
 
-    :param PublishedFileId id: The workshop item to get the state for.
+    :param uint64 publishedFileId: The workshop item to get the state for.
     :returns: (`table`) A table with flags for the item state, or nil if the item is not tracked on client. All flags are boolean values.
 
         * **subscribed** -- The current user is subscribed to this item. Not just cached.
@@ -246,13 +246,13 @@ Function Reference
 
     :returns: (`boolean`) **true** if the operation is successfull. **false** in the following cases:
 
-    * cchFolderSize is 0.
+        * cchFolderSize is 0.
 
-    * The workshop item has no content.
+        * The workshop item has no content.
 
-    * The workshop item is not installed.
+        * The workshop item is not installed.
 
-    If this value is **false**, nothing else is returned. Otherwise:
+        If this value is **false**, nothing else is returned. Otherwise:
 
     :returns: (`number`) Returns the size of the workshop item in bytes.
     :returns: (`string`) Returns the absolute path to the folder containing the content.
@@ -269,7 +269,7 @@ Function Reference
 
 .. function:: UGC.getItemUpdateProgress (handle)
 
-    :param UGCUpdateHandle handle: The update handle to get the progress for.
+    :param uint64 handle: The update handle to get the progress for.
     :returns: (`string`) The current status. One of 'Invalid', 'PreparingConfig', 'PreparingContent', 'UploadingContent', 'UploadingPreviewFile', 'CommittingChanges'. See `EItemUpdateStatus <https://partner.steamgames.com/doc/api/ISteamUGC#EItemUpdateStatus>`_.
     :returns: (`number`) The current number of bytes uploaded.
     :returns: (`number`) The total number of bytes that will be uploaded.
@@ -299,7 +299,7 @@ Function Reference
 
 .. function:: UGC.startPlaytimeTracking (vec, callback)
 
-    :param table vec: The array of workshop items (`PublishedFileId`) you want to start tracking. (Maximum of 100 items.)
+    :param table vec: The array of workshop items (`PublishedFileId`, more precisely `uint64`) you want to start tracking. (Maximum of 100 items.)
     :param function callback: Called asynchronously when this function returns. It is only called if you send between 1 and 100 items. See below.
     :returns: nothing
     :SteamWorks: `StartPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking>`_
@@ -326,7 +326,7 @@ Function Reference
 
 .. function:: UGC.stopPlaytimeTracking (vec, callback)
 
-    :param table vec: The array of workshop items (`PublishedFileId`) you want to stop tracking. (Maximum of 100 items.)
+    :param table vec: The array of workshop items (`PublishedFileId`, more precisely `uint64`) you want to stop tracking. (Maximum of 100 items.)
     :param function callback: Called asynchronously when this function returns. It is only called if you send between 1 and 100 items. See below.
     :returns: nothing
     :SteamWorks: `StopPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking>`_

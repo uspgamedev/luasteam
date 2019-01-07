@@ -27,7 +27,7 @@ Function Reference
 
 .. function:: user.getSteamID ()
 
-    :returns: (`steamID`) The SteamID of the current user.
+    :returns: (`uint64`) The SteamID of the current user.
     :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamUser#GetSteamID>`_
 
     Gets the Steam ID of the account currently logged into the Steam client. This is commonly called the 'current user', or 'local user'.
