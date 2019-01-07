@@ -157,7 +157,7 @@ Function Reference
 
     * **data** (`table`) -- Similar to `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardFindResult_t>`_, or **nil** if **err** is **true**.
 
-        * **data.steamLeaderboard** (`leaderboard`) -- Handle to the leaderboard that was searched for. A special value is returned if no leaderboard was found.
+        * **data.steamLeaderboard** (`uint64`) -- Handle to the leaderboard that was searched for. A special value is returned if no leaderboard was found.
 
         * **data.leaderboardFound** (`boolean`) -- Was the leaderboard found? **true** if it was, **false** if it wasn't.
 
@@ -201,7 +201,7 @@ Function Reference
 
 .. function:: userStats.getLeaderboardName(steamLeaderboard)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :returns: (`string`) The name of the leaderboard. Returns an empty string if the leaderboard handle is invalid.
     :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
 
@@ -218,7 +218,7 @@ Function Reference
 
 .. function:: userStats.getLeaderboardEntryCount(steamLeaderboard)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :returns: (`number`) The number of entries in the leaderboard. Returns 0 if the leaderboard handle is invalid.
     :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
 
@@ -230,7 +230,7 @@ Function Reference
 
 .. function:: userStats.getLeaderboardSortMethod(steamLeaderboard)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :returns: (`string?`) The sort method of the leaderboard, either "Ascending" or "Descending". Returns **nil** if the leaderboard handle is invalid.
     :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
 
@@ -240,7 +240,7 @@ Function Reference
 
 .. function:: userStats.getLeaderboardDisplayType(steamLeaderboard)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :returns: (`string?`) The display type of the leaderboard, one of "Numeric", "TimeSeconds" or "TimeMilliSeconds". Returns **nil** if the leaderboard handle is invalid.
     :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
@@ -250,7 +250,7 @@ Function Reference
 
 .. function:: userStats.uploadLeaderboardScore(steamLeaderboard, uploadScoreMethod, score, details, callback)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :param string uploadScoreMethod: Do you want to force the score to change, or keep the previous score if it was better? Either "KeepBest" or "ForceUpdate".
     :param number score: The score to upload. Must be a 32-bit integer.
     :param string? details: Optional string with details surrounding the unlocking of this score. Size must be a multiple of four, and at most 256 bytes. Will be converted to an array of 32-bit integers.
@@ -274,7 +274,7 @@ Function Reference
 
             * The leaderboard is set to "Trusted" in App Admin on Steamworks website, and will only accept scores sent from the Steam Web API.
         
-        * **data.steamLeaderboard** (`leaderboard`) -- Handle to the leaderboard that was searched for. A special value is returned if no leaderboard was found.
+        * **data.steamLeaderboard** (`uint64`) -- Handle to the leaderboard that was searched for. A special value is returned if no leaderboard was found.
 
         * **data.score** (`number`) -- The score that was attempted to set.
 
@@ -302,7 +302,7 @@ Function Reference
 .. function:: userStats.downloadLeaderboardEntries(steamLeaderboard, dataRequest, rangeStart, rangeEnd, callback)
               userStats.downloadLeaderboardEntries(steamLeaderboard, dataRequest, callback)
 
-    :param leaderboard steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
+    :param uint64 steamLeaderboard: A leaderboard handle obtained from :func:`userStats.findLeaderboard` or :func:`userStats.findOrCreateLeaderboard`.
     :param string dataRequest: The type of data request to make. Must be one of "Global", "GlobalAroundUser" or "Friends" (see `ELeaderboardDataRequest <https://partner.steamgames.com/doc/api/ISteamUserStats#ELeaderboardDataRequest>`_).
     :param number rangeStart: The index to start downloading entries relative to **dataRequest**. Must **not** be supplied if **dataRequest** is "Friends".
     :param number rangeEnd: The last index to retrieve entries relative to **dataRequest**. Must **not** be supplied if **dataRequest** is "Friends".
@@ -320,7 +320,7 @@ Function Reference
 
     * **data** (`table`) -- An array of tables similar to `LeaderboardEntry_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardEntry_t>`_, or **nil** if there was **err** is **true**.
 
-        * **data[i].steamIDUser** (`steamID`) -- User who this entry belongs to. You can use :func:`friends.getFriendPersonaName` and :func:`friends.getSmallFriendAvatar` **(missing)** to get more info.
+        * **data[i].steamIDUser** (`uint64`) -- User who this entry belongs to. You can use :func:`friends.getFriendPersonaName` and :func:`friends.getSmallFriendAvatar` **(missing)** to get more info.
 
         * **data[i].globalRank** (`number`) -- The global rank of this entry ranging from [1..N], where N is the number of users with an entry in the leaderboard.
 
@@ -328,7 +328,7 @@ Function Reference
 
         * **data[i].details** (`string`) -- Details of the entry. String is used as a byte array, so may contain a ``'\0'`` in the middle.
 
-        * **data[i].UGC** (`ugcHandle`) -- 	Handle for the UGC attached to the entry. A special value if there is none. **(useless for now, as there are no UGC functions implemented)**
+        * **data[i].UGC** (`uint64`) -- 	Handle for the UGC attached to the entry. A special value if there is none.
 
     * **err** (`boolean`): **true** if there was any IO error with the request.
 

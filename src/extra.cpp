@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 // Returns 0 if string is invalid
-EXTERN int luasteam_uint64FromString(lua_State *L) {
+EXTERN int luasteam_parseUint64(lua_State *L) {
     const char *str = luaL_checkstring(L, 1);
     // strto* are safer than ato*
     uint64 x = strtoull(str, nullptr, 10);
@@ -14,7 +14,7 @@ namespace luasteam {
 
 void add_extra(lua_State *L) {
     lua_createtable(L, 0, 1);
-    add_func(L, "uint64FromString", luasteam_uint64FromString);
+    add_func(L, "parseUint64", luasteam_parseUint64);
     lua_setfield(L, -2, "extra");
 }
 

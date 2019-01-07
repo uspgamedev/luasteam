@@ -23,6 +23,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     ISteamUserStats <user_stats>
     ISteamUtils <utils>
     ISteamUGC <UGC>
+    Extra <extra>
 
 Indices and tables
 ==================

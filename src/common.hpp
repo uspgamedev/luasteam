@@ -26,7 +26,6 @@ uint64 assertuint64(lua_State *L, int index, const char *fmt, ...);
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 
-
 template <typename T> class CallResultListener {
   public:
     int callback_ref = LUA_NOREF;
