@@ -5,3 +5,4 @@ IndentPPDirectives: AfterHash
 ColumnLimit: 1000000
 FixNamespaceComments: true
 SpacesBeforeTrailingComments: 1
+AllowShortIfStatementsOnASingleLine: false

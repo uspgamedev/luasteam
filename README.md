@@ -2,37 +2,9 @@
 
 Lua bindings for SteamWorks API
 
-## Usage
+## Documentation
 
-To use luasteam in your game, you just need to place the appropriate library files together with your lua files.
-
-Download the SteamWorks SDK, then copy the following files to the same directory as your lua files. The files needed from this repository can be found in the [Releases page](https://github.com/uspgamedev/luasteam/releases).
-
-- Linux 32: `luasteam.so` from this repository and `sdk/redistributable_bin/linux32/libsteam_api.so` from the SDK.
-- Linux 64: `luasteam.so` from this repository and `sdk/redistributable_bin/linux64/libsteam_api.so` from the SDK.
-- Windows 32: `luasteam.dll` from this repository and `sdk/redistributable_bin/steam_api.dll` from the SDK.
-- Windows 64: `luasteam.dll` from this repository and `sdk/redistributable_bin/win64/steam_api64.dll` from the SDK.
-- OSX: `luasteam.so` from this repository and `sdk/redistributable_bin/osx32/libsteam_api.dylib` from the SDK.
-
-Then, you can use luasteam as an usual lua library. For example:
-
-```lua
-local luasteam = require('luasteam') -- You must do this before OpenGL is loaded!
--- ...
-luasteam.userStats.resetAllStats(true) -- resetting everything for the user
-
-function luasteam.friends.onGameOverlayActivated(active)
-    print('Overlay is active: ' .. (active and 'true' or 'false'))
-end
-
-function yourGameLoop()
-    -- You need to call this very often to make sure your callbacks work
-    Steam.runCallbacks()
-end
-
--- ...
-luasteam.shutdown() -- Don't forget to shutdown the API when your game is closed
-```
+**Coming soon**
 
 ## Building from scratch
 
