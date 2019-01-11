@@ -6,6 +6,9 @@
 /sdk
 /luajit
 
+### Sphinx/Docs ###
+/docs/_build
+
 ### C++ ###
 # Prerequisites
 *.d
