@@ -1,5 +1,7 @@
 language: c++
-os: linux
+os:
+  - linux
+  - osx
 
 addons:
   apt:
@@ -7,6 +9,9 @@ addons:
       - libluajit-5.1-dev
       - libluajit-5.1-dev:i386
       - g++-multilib
+  homebrew:
+    packages:
+      - luajit
 
 install:
   - curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_142.zip -o sdk.zip
@@ -14,5 +19,6 @@ install:
 
 script:
   - mkdir build
-  - make linux64 && cp luasteam.so build/linux64_luasteam.so
-  - make linux32 && cp luasteam.so build/linux32_luasteam.so
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then   make osx     && mv luasteam.so build/osx_luasteam.so;     fi 
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make linux64 && cp luasteam.so build/linux64_luasteam.so; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make linux32 && cp luasteam.so build/linux32_luasteam.so; fi
