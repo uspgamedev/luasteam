@@ -1,0 +1,18 @@
+language: c++
+os: linux
+
+addons:
+  apt:
+    packages:
+      - libluajit-5.1-dev
+      - libluajit-5.1-dev:i386
+      - g++-multilib
+
+install:
+  - curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_142.zip -o sdk.zip
+  - unzip -q sdk.zip
+
+script:
+  - mkdir build
+  - make linux64 && cp luasteam.so build/linux64_luasteam.so
+  - make linux32 && cp luasteam.so build/linux32_luasteam.so
