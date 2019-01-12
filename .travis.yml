@@ -1,7 +1,8 @@
-language: c++
+language: cpp
 os:
   - linux
   - osx
+  - windows
 
 addons:
   apt:
@@ -13,12 +14,18 @@ addons:
     packages:
       - luajit
 
+# Workaround for travis bug (https://travis-ci.community/t/windows-instances-hanging-before-install/250/15)
+filter_secrets: false
+
 install:
   - curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_142.zip -o sdk.zip
   - unzip -q sdk.zip
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install -y visualstudio2017community visualstudio2017-workload-nativecrossplat; fi
 
 script:
   - mkdir build
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then   make osx     && mv luasteam.so build/osx_luasteam.so;     fi 
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make linux64 && cp luasteam.so build/linux64_luasteam.so; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make linux32 && cp luasteam.so build/linux32_luasteam.so; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then     make osx               && mv luasteam.so  build/osx_luasteam.so;     fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then   make linux64           && cp luasteam.so  build/linux64_luasteam.so; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then   make linux32           && cp luasteam.so  build/linux32_luasteam.so; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then mingw32-make windows64 && cp luasteam.dll build/win64_luasteam.dll;  fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then mingw32-make windows32 && cp luasteam.dll build/win32_luasteam.dll;  fi
