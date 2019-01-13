@@ -1,4 +1,4 @@
-SRC=luasteam.cxx
+SRC=src/*.cpp
 STDLIB_VER=-std=c++11
 
 # -Wno-invalid-offsetof prevents STEAM_CALLBACK from giving out warnings
