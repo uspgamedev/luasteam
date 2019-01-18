@@ -32,7 +32,7 @@ ifeq ($(OS),Windows_NT)
 # Windows stuff
 SHELL=cmd
 WINDOWS_IPATHS=-I./include
-WINDOWS_OPT=-LD -EHsc
+WINDOWS_OPT=-LD -EHsc -Feluasteam
 
 lua32.zip:
 	curl -sL -o lua32.zip https://sourceforge.net/projects/luabinaries/files/5.1.5/Windows%20Libraries/Static/lua-5.1.5_Win32_vc15_lib.zip/download
