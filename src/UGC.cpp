@@ -1,5 +1,6 @@
 #include "UGC.hpp"
 #include <vector>
+#include <array>
 
 // ========================
 // ======= SteamUGC =======
@@ -171,14 +172,13 @@ EXTERN int luasteam_getNumSubscribedItems(lua_State *L) {
 // uint32 GetSubscribedItems( PublishedFileId_t*pvecPublishedFileID, uint32 cMaxEntries );
 EXTERN int luasteam_getSubscribedItems(lua_State *L) {
     int sz = SteamUGC()->GetNumSubscribedItems();
-    PublishedFileId_t *vec = new PublishedFileId_t[sz];
-    sz = SteamUGC()->GetSubscribedItems(vec, sz);
+    std::vector<PublishedFileId_t> vec(sz);
+    sz = SteamUGC()->GetSubscribedItems(vec.data(), sz);
     lua_createtable(L, sz, 0);
     for (int i = 0; i < sz; i++) {
         luasteam::pushuint64(L, vec[i]);
         lua_rawseti(L, -2, i + 1);
     }
-    delete vec;
     return 1;
 }
 
@@ -211,16 +211,16 @@ EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
     PublishedFileId_t id = luasteam::checkuint64(L, 1);
     uint64 sizeOnDisk;
     const int size = 256;
-    char *folder = new char[size];
+    std::array<char, size> folder;
     uint32 timestamp;
-    bool success = SteamUGC()->GetItemInstallInfo(id, &sizeOnDisk, folder, size, &timestamp);
+    bool success = SteamUGC()->GetItemInstallInfo(id, &sizeOnDisk, folder.data(), size, &timestamp);
     lua_pushboolean(L, success);
     if (success) {
         // This is an uint64 and can't exactly fit into a double
         // But I think it's better to use a number than the uint64 functions in common.hpp
         // Since the exact integer value isn't that important
         lua_pushnumber(L, sizeOnDisk);
-        lua_pushstring(L, folder);
+        lua_pushstring(L, folder.data());
         lua_pushnumber(L, timestamp);
         return 4;
     } else
