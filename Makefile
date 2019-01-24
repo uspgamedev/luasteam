@@ -31,20 +31,30 @@ linux64:
 ifeq ($(OS),Windows_NT)
 # Windows stuff
 SHELL=cmd
-WINDOWS_IPATHS=-I./include
+WINDOWS_IPATHS=-I./cache/include
 WINDOWS_OPT=-LD -EHsc -Feluasteam
+VARS32="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+VARS64="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
-lua32.zip:
-	curl -sL -o lua32.zip https://sourceforge.net/projects/luabinaries/files/5.1.5/Windows%20Libraries/Static/lua-5.1.5_Win32_vc15_lib.zip/download
+luajit.zip:
+	curl -sL -o luajit.zip http://luajit.org/download/LuaJIT-2.0.5.zip
 
-lua64.zip:
-	curl -sL -o lua64.zip https://sourceforge.net/projects/luabinaries/files/5.1.5/Windows%20Libraries/Static/lua-5.1.5_Win64_vc15_lib.zip/download
+cache: luajit.zip
+	unzip -qo luajit.zip
+	mkdir -p cache\include
+	cp LuaJIT-2.0.5/src/*.h cache/include
 
-windows32: lua32.zip
-	unzip -qo lua32.zip
-	call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat" && cl $(SRC) lua5.1.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+cache/win32_lua51.lib: cache
+	cd LuaJIT-2.0.5/src && call $(VARS32) && call msvcbuild.bat
+	cp LuaJIT-2.0.5/src/lua51.lib cache/win32_lua51.lib
 
-windows64: lua64.zip
-	unzip -qo lua64.zip
-	call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" && cl $(SRC) lua5.1.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+cache/win64_lua51.lib: cache
+	cd LuaJIT-2.0.5/src && call $(VARS64) && msvcbuild.bat
+	cp LuaJIT-2.0.5/src/lua51.lib cache/win64_lua51.lib
+
+windows32: cache/win32_lua51.lib
+	call $(VARS32) && cl $(SRC) cache/win32_lua51.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+
+windows64: cache/win64_lua51.lib
+	call $(VARS64) && cl $(SRC) cache/win64_lua51.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
 endif

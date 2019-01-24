@@ -3,6 +3,9 @@ os:
 - linux
 - osx
 - windows
+cache:
+  directories:
+    - cache
 addons:
   apt:
     packages:
