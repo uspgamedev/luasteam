@@ -33,28 +33,34 @@ ifeq ($(OS),Windows_NT)
 SHELL=cmd
 WINDOWS_IPATHS=-I./cache/include
 WINDOWS_OPT=-LD -EHsc -Feluasteam
-VARS32="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-VARS64="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+VARSALL="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
 
 luajit.zip:
 	curl -sL -o luajit.zip http://luajit.org/download/LuaJIT-2.0.5.zip
 
 cache: luajit.zip
+	@echo "Downloading LuaJIT source"
 	unzip -qo luajit.zip
-	mkdir -p cache\include
+	mkdir cache\include
 	cp LuaJIT-2.0.5/src/*.h cache/include
 
-cache/win32_lua51.lib: cache
-	cd LuaJIT-2.0.5/src && call $(VARS32) && call msvcbuild.bat
+cache/win32_lua51.lib:
+	@echo "Compiling LuaJIT 32 bits"
+	if not exist cache $(MAKE) cache
+	cd LuaJIT-2.0.5/src && call $(VARSALL) x86 && call msvcbuild.bat
 	cp LuaJIT-2.0.5/src/lua51.lib cache/win32_lua51.lib
 
-cache/win64_lua51.lib: cache
-	cd LuaJIT-2.0.5/src && call $(VARS64) && msvcbuild.bat
+cache/win64_lua51.lib:
+	@echo "Compiling LuaJIT 64 bits"
+	if not exist cache $(MAKE) cache
+	cd LuaJIT-2.0.5/src && call $(VARSALL) x64 && call msvcbuild.bat
 	cp LuaJIT-2.0.5/src/lua51.lib cache/win64_lua51.lib
 
-windows32: cache/win32_lua51.lib
-	call $(VARS32) && cl $(SRC) cache/win32_lua51.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+windows32:
+	if not exist cache\win32_lua51.lib $(MAKE) cache/win32_lua51.lib
+	call $(VARSALL) x86 && cl $(SRC) cache/win32_lua51.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
 
-windows64: cache/win64_lua51.lib
-	call $(VARS64) && cl $(SRC) cache/win64_lua51.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+windows64:
+	if not exist cache\win64_lua51.lib $(MAKE) cache/win64_lua51.lib
+	call $(VARSALL) x64 && cl $(SRC) cache/win64_lua51.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
 endif
