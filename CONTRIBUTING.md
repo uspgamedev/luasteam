@@ -2,6 +2,18 @@
 
 We are open to contributions, either adding new functions, improving documentation or fixing some bugs.
 
+## Adding new functions
+
+We encourage you to add functions that are currently missing. Follow the style of functions already added in this project, that means, if you're adding `ISteamFriends::ActivateGameOverlayToStore`, follow these guidelines:
+- Implement it in file `src/friends.cpp`
+- Name it `SteamFriends.activateGameOverlayToStore`
+- Try to keep all arguments in the same order, with the same names (in a different naming convention) and of the same type. Enums should be changed to string, for example `k_EOverlayToStoreFlag_AddToCart` becomes `"AddToCart"`.
+- Callbacks and CallResults have a special way of being implemented: check [our documentation](https://luasteam.readthedocs.io/en/stable/getting_started.html#callbacks).
+- IDs that are actually 64-bit integers should be implemented using [our uint64 userdata](https://github.com/uspgamedev/luasteam/blob/v1.0.1/src/common.hpp#L21-L24).
+- It's fine if the functions are a bit different ([example](https://luasteam.readthedocs.io/en/stable/user_stats.html#userStats.downloadLeaderboardEntries)) because stuff in Lua is different than in C++.
+
+Send us PRs even if you're not sure you're following these guidelines correctly. We won't bite. Open an issue if you have any doubts.
+
 ## Documentation
 
 If you add new functions, please also document them.
@@ -32,3 +44,7 @@ Install luajit (`brew install luajit`). Run `make osx`.
 ### Windows 32 and 64
 
 We'll use [chocolatey](https://chocolatey.org). Install VS and mingw (`choco install visualstudio20127community visualstudio2017-workload-nativecrossplat mingw`). Then run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
+
+## Resources
+- [Steam API Reference](https://partner.steamgames.com/doc/api)
+- [Lua C API Overview](https://www.lua.org/manual/5.1/manual.html#3)
