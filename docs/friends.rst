@@ -72,7 +72,9 @@ Callbacks Reference
 
 .. function:: friends.onGameOverlayActivated(data)
 
-    :param table data: A table with a single
+    :param table data: A table similar to `GameOverlayActivated_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameOverlayActivated_t>`_
+
+		* **data.active** (`boolean`)  -- true if it's just been activated, otherwise false.
     :returns: nothing
     :SteamWorks: `GameOverlayActivated_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameOverlayActivated_t>`_
 

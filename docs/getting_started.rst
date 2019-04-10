@@ -75,7 +75,7 @@ becomes
 Callbacks
 ---------
 
-Callbacks work a little different, for example, the ``GameOverlayActivated_t`` callback in ``ISteamUserFriends`` can be used creating a function named ``onGameOverlayActivated`` inside ``userStats``.
+Callbacks work a little different, for example, the ``GameOverlayActivated_t`` callback in ``ISteamUserFriends`` can be used creating a function named ``onGameOverlayActivated`` inside ``friends``.
 
 Original code:
 
@@ -87,7 +87,7 @@ Original code:
 
     void Listener::OnGameOverlayActivated(GameOverlayActivated_t* data) {
         if (data->m_bActive)
-            printf("Steam overlay now active\n" );
+            printf("Steam overlay now active\n");
         else
             printf("Steam overlay now inactive\n");
     }
@@ -96,7 +96,7 @@ Code using luasteam:
 
 .. code-block:: Lua
 
-    function Steam.userStats.onGameOverlayActivated(data)
+    function Steam.friends.onGameOverlayActivated(data)
         if data.active then
             print("Steam overlay now active")
         else

@@ -19,6 +19,11 @@ List of Functions
 * :func:`userStats.uploadLeaderboardScore`
 * :func:`userStats.downloadLeaderboardEntries`
 
+List of Callbacks
+-----------------
+
+* :func:`userStats.onUserStatsReceived`
+
 Function Reference
 ------------------
 
@@ -130,14 +135,14 @@ Function Reference
 
     The equivalent function for other users is :func:`userStats.requestUserStats` **(missing)**.
 
-    Triggers a :func:`userStats.userStatsReceived` callback.
+    Triggers a :func:`userStats.onUserStatsReceived` callback.
 
 **Example**::
 
     -- before any achievement/stats stuff
     Steam.userStats.requestCurrentStats()
 
-    function Steam.userStats.userStatsReceived()
+    function Steam.userStats.onUserStatsReceived()
         can_do_stats_stuff = true
     end
 
@@ -328,7 +333,7 @@ Function Reference
 
         * **data[i].details** (`string`) -- Details of the entry. String is used as a byte array, so may contain a ``'\0'`` in the middle.
 
-        * **data[i].UGC** (`uint64`) -- 	Handle for the UGC attached to the entry. A special value if there is none.
+        * **data[i].UGC** (`uint64`) -- Handle for the UGC attached to the entry. A special value if there is none.
 
     * **err** (`boolean`): **true** if there was any IO error with the request.
 
@@ -367,4 +372,34 @@ Function Reference
                 end
             end
         end
+    end
+
+Callbacks Reference
+-------------------
+
+.. warning::
+
+    Remember callbacks are functions that you should override in order to receive the events, and not call directly.
+
+    Also, you **must** constantly call ``Steam.runCallbacks()`` (preferably in your game loop) in order for your callbacks to be called.
+
+
+.. function:: userStats.onUserStatsReceived(data)
+
+    :param table data: A table similar to `UserStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsReceived_t>`_
+
+        * **data.gameID** (`uint64`) -- Game ID that these stats are for.
+
+        * **data.result** (`int`) -- Returns whether the call was successful or not. If the user has no stats, this will be set to 2.
+
+        * **data.steamIDUser** (`uint64`) -- The user whose stats were retrieved.
+    :returns: nothing
+    :SteamWorks: `UserStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsReceived_t>`_
+
+    Called when the latest stats and achievements for a specific user (including the local user) have been received from the server.
+
+**Example**::
+
+    function Steam.userStats.onUserStatsReceived(data)
+        print('Result: ' .. data.result)
     end
