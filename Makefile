@@ -4,9 +4,11 @@ STDLIB_VER=-std=c++11
 # -Wno-invalid-offsetof prevents STEAM_CALLBACK from giving out warnings
 CPP_FLAGS=-Wno-invalid-offsetof -Wall
 
+THIRD_PARTY=./third-party
+
 OSX_OUT=luasteam.so
-OSX_IPATHS=-I/usr/local/include/luajit-2.0
-OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER) -lluajit-5.1
+OSX_IPATHS=-I$(THIRD_PARTY)/include/
+OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER)
 
 GNU_OUT=luasteam.so
 GNU_IPATHS=-I/usr/include/luajit-2.0
@@ -20,7 +22,7 @@ all:
 STEAM_LIB=sdk/redistributable_bin
 
 osx:
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/osx32/libsteam_api.dylib -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/osx32/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
 
 linux32:
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
