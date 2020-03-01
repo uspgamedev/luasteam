@@ -9,9 +9,6 @@ addons:
     - libluajit-5.1-dev
     - libluajit-5.1-dev:i386
     - g++-multilib
-  homebrew:
-    packages:
-    - luajit
 filter_secrets: false
 install:
 - curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_142.zip
