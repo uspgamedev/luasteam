@@ -8,6 +8,7 @@ List of Functions
 * :func:`friends.activateGameOverlay`
 * :func:`friends.activateGameOverlayToWebPage`
 * :func:`friends.getFriendPersonaName`
+* :func:`friends.setRichPresence`
 
 List of Callbacks
 -----------------
@@ -60,6 +61,47 @@ Function Reference
 
     steam_id = getSteamIdSomehow()
     print("Friend's name is:", Steam.friends.getFriendPersonaName(steam_id))
+
+.. function:: friends.setRichPresence(key, value)
+
+    :param string key: The rich presence key to set. Maximum length is 64 characters.
+
+    :param string value: The value to associate with the rich presence key. Maximum length is 256 characters. If this is set to ``''`` then the key is removed if it's set.
+
+    :returns: (`boolean`) This function returns **true** if the rich presence was was set successfully.
+
+        It returns **false** under the following conditions:
+
+        * The key or the value were too long.
+        * The user has reached maximum amount of rich presence keys: 20.
+
+    :SteamWorks: `SetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_
+
+    Sets a Rich Presence key/value for the current user that is shared with friends. You can use the `Rich Presence Tester <https://steamcommunity.com/dev/testrichpresence>`_ to test whether or not this is working.
+
+**Example**::
+
+    local success = Steam.friends.setRichPresence('steam_display', '#StatusFull')
+    local success = Steam.friends.setRichPresence('text', 'Fighting the Last Boss')
+
+**Localization**
+
+    To get the most out of this feature, you'll want to set up some `Localization <https://partner.steamgames.com/doc/api/ISteamFriends#richpresencelocalization>`_ options.
+
+    You may find that Valve's suggestion of how to use localization is more difficult to use than it needs to be. In this case, I suggest using a setup like this where you can manage all of the text yourself:
+
+**rich_presence_localization.vdf**::
+
+    "lang"
+    {
+        "english"
+        {
+            "tokens"
+            {
+                "#StatusFull" "%text%"
+            }
+        }
+    }
 
 Callbacks Reference
 -------------------
