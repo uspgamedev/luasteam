@@ -9,6 +9,11 @@
 ### Sphinx/Docs ###
 /docs/_build
 
+### Build Files ###
+
+/cache
+/LuaJIT-2.0.5
+
 ### VSCode ###
 .vscode
 
