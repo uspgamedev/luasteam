@@ -43,7 +43,7 @@ Install luajit (`brew install luajit`). Run `make osx`.
 
 ### Windows 32 and 64
 
-We'll use [chocolatey](https://chocolatey.org). Install VS and mingw (`choco install visualstudio20127community visualstudio2017-workload-nativecrossplat mingw`). Then run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
+We'll use [chocolatey](https://chocolatey.org). Install VS and mingw (`choco install visualstudio2017community visualstudio2017-workload-nativecrossplat mingw`). Then run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
 
 ## Resources
 - [Steam API Reference](https://partner.steamgames.com/doc/api)
