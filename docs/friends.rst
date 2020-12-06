@@ -66,6 +66,10 @@ Function Reference
 
     :param string key: The rich presence key to set. Maximum length is 64 characters.
 
+        Valve has a few special keys which you can read about in their `documentation <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_.
+
+        Besides those special keys, you can also use any arbitrary key for `substition <https://partner.steamgames.com/doc/api/ISteamFriends#richpresencelocalization>`_ in `steam_display`.
+
     :param string value: The value to associate with the rich presence key. Maximum length is 256 characters. If this is set to ``''`` then the key is removed if it's set.
 
     :returns: (`boolean`) This function returns **true** if the rich presence was was set successfully.
