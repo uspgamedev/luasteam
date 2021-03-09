@@ -1,11 +1,19 @@
 # luasteam
 
-Lua bindings for SteamWorks API
+luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you’re building games with [Love2D](https://love2d.org/).
 
 ## Getting Started/Documentation
 
-All our documentation is in [luasteam.readthedocs.io](https://luasteam.readthedocs.io).
+This README file is purposefully small, all our documentation is in [luasteam.readthedocs.io](https://luasteam.readthedocs.io).
+
+## Games using luasteam
+- [Marvellous Inc.](https://store.steampowered.com/app/827940/Marvellous_Inc/)
+- [Terraforming Earth](https://store.steampowered.com/app/1029220/Terraforming_Earth/)
+- [Brawl Quest](https://store.steampowered.com/app/871940/BrawlQuest/)
+
+
+Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it here too.
 
 ## Contributing
 
-Check our [guideline and tips](CONTRIBUTING.md).
+Can't find the binding you need? We accept contributions! Check our [guideline and tips](CONTRIBUTING.md).
