@@ -5,6 +5,10 @@ ISteamUserStats
 
 List of Functions
 -----------------
+* :func:`userStats.getStatInt`
+* :func:`userStats.getStatFloat`
+* :func:`userStats.setStatInt`
+* :func:`userStats.setStatFloat`
 * :func:`userStats.getAchievement`
 * :func:`userStats.setAchievement`
 * :func:`userStats.resetAllStats`
@@ -26,6 +30,74 @@ List of Callbacks
 
 Function Reference
 ------------------
+
+.. function:: userStats.getStatInt(name)
+
+    :param string name: The 'API Name' of the stat. Must not be longer than 128 bytes.
+    :returns: (`boolean`)
+        This function returns true upon success if all of the following conditions are met; otherwise, false.
+
+        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
+
+        * The 'API Name' of the specified stat exists in App Admin on the Steamworks website, and the changes are published.
+    :returns: (`boolean?`) If the call is successful, returns a second value, the current value of the stat.
+    :SteamWorks: `GetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStat>`_
+
+    Gets the current value of a users stat as a integer. For floats see :func:`userStats.getStatFloat`
+
+    The equivalent function for other users is :func:`userStats.getUserStatInt` **(missing)**.
+
+**Example**::
+
+    local success, data = Steam.userStats.getStatInt('stat_name')
+    if success then
+        print(data)
+    end
+
+.. function:: userStats.getStatFloat(name)
+
+  See :func:`userStats.getStatInt` which is the same but this function is used to read stats as a float.
+
+  The equivalent function for other users is :func:`userStats.getUserStatFloat` **(missing)**.
+
+**Example**::
+
+    local success, data = Steam.userStats.getStatFloat('stat_name')
+    if success then
+        print(data)
+    end
+
+.. function:: userStats.setStatInt(stat_name, stat_value)
+    
+    :param string name: The 'API Name' of the stat whose value to set. Must not be longer than 128 bytes.
+    :param int stat_value: The new value of the stat. This must be an absolute value, it will not increment or decrement for you.
+    :returns: (`boolean`)
+        This function returns true upon success if all of the following conditions are met; otherwise, false.
+
+        * The specified stat 'API Name' exists in App Admin on the Steamworks website, and the changes are published.
+
+        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
+    :SteamWorks: `SetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStat>`_
+
+    Sets the value of a stat for the current user.
+
+    You must have called :func:`userStats.requestCurrentStats` and it needs to return successfully via its callback prior to calling this!
+
+    This call only modifies Steam's in-memory state so it is quite cheap. To submit the stats to the server you must call :func:`userStats.storeStats`.
+
+**Example**::
+
+    Steam.userStats.setStatInt('stat_name', 43)
+    Steam.userStats.storeStats()
+
+.. function:: userStats.setStatFloat(stat_name, stat_value)
+
+  See :func:`userStats.setStatInt` which is the same but this function is used to set stats as a float.
+
+**Example**::
+
+    Steam.userStats.setStatFloat('stat_name', 43.34)
+    Steam.userStats.storeStats()
 
 .. function:: userStats.getAchievement(name)
 
