@@ -40,10 +40,10 @@ Function Reference
         * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
 
         * The 'API Name' of the specified stat exists in App Admin on the Steamworks website, and the changes are published.
-    :returns: (`boolean?`) If the call is successful, returns a second value, the current value of the stat.
+    :returns: (`number?`) If the call is successful, returns a second value, the current value of the stat.
     :SteamWorks: `GetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStat>`_
 
-    Gets the current value of a users stat as a integer. For floats see :func:`userStats.getStatFloat`
+    Gets the current value of a users stat, it must have been set as an int. For floats see :func:`userStats.getStatFloat`
 
     The equivalent function for other users is :func:`userStats.getUserStatInt` **(missing)**.
 
@@ -56,7 +56,7 @@ Function Reference
 
 .. function:: userStats.getStatFloat(name)
 
-  See :func:`userStats.getStatInt` which is the same but this function is used to read stats as a float.
+  Same as :func:`userStats.getStatInt`, but this function reads stats that are set as floats.
 
   The equivalent function for other users is :func:`userStats.getUserStatFloat` **(missing)**.
 
@@ -92,7 +92,7 @@ Function Reference
 
 .. function:: userStats.setStatFloat(stat_name, stat_value)
 
-  See :func:`userStats.setStatInt` which is the same but this function is used to set stats as a float.
+  Same as :func:`userStats.setStatInt`, but this function sets stats as floats.
 
 **Example**::
 
