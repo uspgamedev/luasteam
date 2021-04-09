@@ -5,6 +5,7 @@
 #include "friends.hpp"
 #include "user.hpp"
 #include "user_stats.hpp"
+#include "apps.hpp"
 #include "utils.hpp"
 
 // Creates and returns a table with all functions
@@ -17,5 +18,6 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_utils(L);
     luasteam::add_UGC(L);
     luasteam::add_extra(L);
+    luasteam::add_apps(L);
     return 1;
 }
