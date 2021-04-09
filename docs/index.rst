@@ -22,6 +22,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     ISteamUser <user>
     ISteamUserStats <user_stats>
     ISteamUtils <utils>
+    ISteamApps <apps>
     ISteamUGC <UGC>
     Extra <extra>
 
