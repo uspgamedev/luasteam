@@ -12,6 +12,7 @@ This README file is purposefully small, all our documentation is in [luasteam.re
 - [Brawl Quest](https://store.steampowered.com/app/871940/BrawlQuest/)
 - [Prologue for a Vacant Kingdom](https://store.steampowered.com/app/1040490/Prologue_for_a_Vacant_Kingdom/)
 - [Ocean's Heart](https://store.steampowered.com/app/1393750/Oceans_Heart/)
+- [Pingers](https://store.steampowered.com/app/1442410/Pingers/)
 
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
