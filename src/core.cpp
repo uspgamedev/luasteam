@@ -4,6 +4,7 @@
 #include "friends.hpp"
 #include "user_stats.hpp"
 #include "utils.hpp"
+#include "apps.hpp"
 
 // ========================
 // ======= SteamAPI =======
