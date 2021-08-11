@@ -7,6 +7,7 @@
 #include "user_stats.hpp"
 #include "apps.hpp"
 #include "utils.hpp"
+#include "input.hpp"
 
 // Creates and returns a table with all functions
 EXTERN int luaopen_luasteam(lua_State *L) {
@@ -19,5 +20,6 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_UGC(L);
     luasteam::add_extra(L);
     luasteam::add_apps(L);
+    luasteam::add_input(L);
     return 1;
 }
