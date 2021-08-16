@@ -351,7 +351,7 @@ EXTERN int luasteam_getRemotePlaySessionID(lua_State *L) {
 namespace luasteam {
 
 void add_input(lua_State *L) {
-    lua_createtable(L, 0, 30);
+    lua_createtable(L, 0, 31);
     add_func(L, "activateActionSet", luasteam_activateActionSet);
     add_func(L, "activateActionSetLayer", luasteam_activateActionSetLayer);
     add_func(L, "deactivateActionSetLayer", luasteam_deactivateActionSetLayer);
@@ -362,6 +362,7 @@ void add_input(lua_State *L) {
     add_func(L, "getAnalogActionHandle", luasteam_getAnalogActionHandle);
     add_func(L, "getAnalogActionOrigins", luasteam_getAnalogActionOrigins);
     add_func(L, "getConnectedControllers", luasteam_getConnectedControllers);
+    add_func(L, "getControllerForGamepadIndex", luasteam_getControllerForGamepadIndex);
     add_func(L, "getCurrentActionSet", luasteam_getCurrentActionSet);
     add_func(L, "getDigitalActionData", luasteam_getDigitalActionData);
     add_func(L, "getDigitalActionHandle", luasteam_getDigitalActionHandle);
