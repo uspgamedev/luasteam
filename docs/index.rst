@@ -24,6 +24,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     ISteamUtils <utils>
     ISteamApps <apps>
     ISteamUGC <UGC>
+    ISteamInput <input>
     Extra <extra>
 
 Indices and tables
