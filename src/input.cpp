@@ -35,13 +35,15 @@ EXTERN int luasteam_activateActionSet(lua_State *L) {
         const char *controller = luaL_checkstring(L, 1);
         if (controller == "all")
             inputHandle = STEAM_INPUT_HANDLE_ALL_CONTROLLERS;
+        else
+            return 0;
     } else {
         inputHandle = luasteam::checkuint64(L, 1);
     }
 
     uint64 actionSetHandle = luasteam::checkuint64(L, 2);
     SteamInput()->ActivateActionSet(inputHandle, actionSetHandle);
-    return 1;
+    return 0;
 }
 
 // void ActivateActionSetLayer( InputHandle_t inputHandle, InputActionSetHandle_t actionSetLayerHandle );
@@ -49,7 +51,7 @@ EXTERN int luasteam_activateActionSetLayer(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     uint64 actionSetLayerHandle = luasteam::checkuint64(L, 2);
     SteamInput()->ActivateActionSetLayer(inputHandle, actionSetLayerHandle);
-    return 1;
+    return 0;
 }
 
 // void DeactivateActionSetLayer( InputHandle_t inputHandle, InputActionSetHandle_t actionSetLayerHandle );
@@ -57,14 +59,14 @@ EXTERN int luasteam_deactivateActionSetLayer(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     uint64 actionSetLayerHandle = luasteam::checkuint64(L, 2);
     SteamInput()->DeactivateActionSetLayer(inputHandle, actionSetLayerHandle);
-    return 1;
+    return 0;
 }
 
 // void DeactivateAllActionSetLayers( InputHandle_t inputHandle );
 EXTERN int luasteam_deactivateAllActionSetLayers(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     SteamInput()->DeactivateAllActionSetLayers(inputHandle);
-    return 1;
+    return 0;
 }
 
 // int GetActiveActionSetLayers( InputHandle_t inputHandle, InputActionSetHandle_t *handlesOut );
@@ -96,13 +98,13 @@ EXTERN int luasteam_getAnalogActionData(lua_State *L) {
 
     lua_createtable(L, 0, 4);
     lua_pushstring(L, controller_source_modes[iaad.eMode]);
-    lua_setfield(L, -2, "eMode");
+    lua_setfield(L, -2, "mode");
     lua_pushnumber(L, iaad.x);
     lua_setfield(L, -2, "x");
     lua_pushnumber(L, iaad.y);
     lua_setfield(L, -2, "y");
     lua_pushboolean(L, iaad.bActive);
-    lua_setfield(L, -2, "bActive");
+    lua_setfield(L, -2, "active");
     return 1;
 }
 
@@ -143,7 +145,7 @@ EXTERN int luasteam_getConnectedControllers(lua_State *L) {
 
 // InputHandle_t GetControllerForGamepadIndex( int nIndex );
 EXTERN int luasteam_getControllerForGamepadIndex(lua_State *L) {
-    int nIndex = luaL_checkinteger(L, 1);
+    int nIndex = luaL_checkint(L, 1);
     luasteam::pushuint64(L, SteamInput()->GetControllerForGamepadIndex(nIndex));
     return 1;
 }
@@ -162,9 +164,9 @@ EXTERN int luasteam_getDigitalActionData(lua_State *L) {
     InputDigitalActionData_t idad = SteamInput()->GetDigitalActionData(inputHandle, digitalActionHandle);
     lua_createtable(L, 0, 2);
     lua_pushboolean(L, idad.bState);
-    lua_setfield(L, -2, "bState");
+    lua_setfield(L, -2, "state");
     lua_pushboolean(L, idad.bActive);
-    lua_setfield(L, -2, "bActive");
+    lua_setfield(L, -2, "active");
     return 1;
 }
 
@@ -250,18 +252,18 @@ EXTERN int luasteam_getStringForActionOrigin(lua_State *L) {
 // void RunFrame();
 EXTERN int luasteam_runFrame(lua_State *L) {
     SteamInput()->RunFrame();
-    return 1;
+    return 0;
 }
 
 // void SetLEDColor( InputHandle_t inputHandle, uint8 nColorR, uint8 nColorG, uint8 nColorB, unsigned int nFlags );
 EXTERN int luasteam_setLEDColor(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
-    uint8 nColorR = luaL_checkinteger(L, 2);
-    uint8 nColorG = luaL_checkinteger(L, 3);
-    uint8 nColorB = luaL_checkinteger(L, 4);
+    uint8 nColorR = luaL_checkint(L, 2);
+    uint8 nColorG = luaL_checkint(L, 3);
+    uint8 nColorB = luaL_checkint(L, 4);
     bool resetColor = lua_toboolean(L, 5);
     SteamInput()->SetLEDColor(inputHandle, nColorR, nColorG, nColorB, resetColor ? k_ESteamControllerLEDFlag_RestoreUserDefault : k_ESteamControllerLEDFlag_SetColor);
-    return 1;
+    return 0;
 }
 
 // bool ShowBindingPanel( InputHandle_t inputHandle );
@@ -276,36 +278,36 @@ EXTERN int luasteam_stopAnalogActionMomentum(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     uint64 eAction = luasteam::checkuint64(L, 2);
     SteamInput()->StopAnalogActionMomentum(inputHandle, eAction);
-    return 1;
+    return 0;
 }
 
 // void TriggerHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec );
 EXTERN int luasteam_triggerHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     bool eTargetPad = lua_toboolean(L, 2);
-    unsigned short usDurationMicroSec = luaL_checkinteger(L, 3);
+    unsigned short usDurationMicroSec = luaL_checkint(L, 3);
     SteamInput()->TriggerHapticPulse(inputHandle, static_cast<ESteamControllerPad>(eTargetPad), usDurationMicroSec);
-    return 1;
+    return 0;
 }
 
 // void TriggerRepeatedHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags );
 EXTERN int luasteam_triggerRepeatedHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     bool eTargetPad = lua_toboolean(L, 2);
-    unsigned short usDurationMicroSec = luaL_checkinteger(L, 3);
-    unsigned short usOffMicroSec = luaL_checkinteger(L, 4);
-    unsigned short unRepeat = luaL_checkinteger(L, 5);
+    unsigned short usDurationMicroSec = luaL_checkint(L, 3);
+    unsigned short usOffMicroSec = luaL_checkint(L, 4);
+    unsigned short unRepeat = luaL_checkint(L, 5);
     SteamInput()->TriggerRepeatedHapticPulse(inputHandle, static_cast<ESteamControllerPad>(eTargetPad), usDurationMicroSec, usOffMicroSec, unRepeat, 0);
-    return 1;
+    return 0;
 }
 
 // void TriggerVibration( InputHandle_t inputHandle, unsigned short usLeftSpeed, unsigned short usRightSpeed );
 EXTERN int luasteam_triggerVibration(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
-    unsigned short usLeftSpeed = luaL_checkinteger(L, 2);
-    unsigned short usRightSpeed = luaL_checkinteger(L, 3);
+    unsigned short usLeftSpeed = luaL_checkint(L, 2);
+    unsigned short usRightSpeed = luaL_checkint(L, 3);
     SteamInput()->TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed);
-    return 1;
+    return 0;
 }
 
 // EInputActionOrigin GetActionOriginFromXboxOrigin( InputHandle_t inputHandle, EXboxOrigin eOrigin );
@@ -329,29 +331,40 @@ EXTERN int luasteam_getDeviceBindingRevision(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     int nMajorRevision = -1;
     int nMinorRevision= -1;
-    bool succ = SteamInput()->GetDeviceBindingRevision(inputHandle, &nMajorRevision, &nMinorRevision);
+    bool success = SteamInput()->GetDeviceBindingRevision(inputHandle, &nMajorRevision, &nMinorRevision);
     
-    lua_createtable(L, 0, 3);
-    lua_pushboolean(L, succ);
-    lua_setfield(L, -2, "success");
-    lua_pushinteger(L, nMajorRevision);
-    lua_setfield(L, -2, "major");
-    lua_pushinteger(L, nMinorRevision);
-    lua_setfield(L, -2, "minor");
+    lua_pushboolean(L, success);
+    if (success) {
+        lua_pushnumber(L, nMajorRevision);
+        lua_pushnumber(L, nMinorRevision);
+        return 3;
+    }
     return 1;
 }
 
 // uint32 GetRemotePlaySessionID( InputHandle_t inputHandle );
 EXTERN int luasteam_getRemotePlaySessionID(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
-    lua_pushinteger(L, SteamInput()->GetRemotePlaySessionID(inputHandle));
+    lua_pushnumber(L, SteamInput()->GetRemotePlaySessionID(inputHandle));
+    return 1;
+}
+
+EXTERN int luasteam_init(lua_State *L) {
+    bool success = SteamInput()->Init();
+    lua_pushboolean(L, success);
+    return 1;
+}
+
+EXTERN int luasteam_shutdown(lua_State *L) {
+    bool success = SteamInput()->Shutdown();
+    lua_pushboolean(L, success);
     return 1;
 }
 
 namespace luasteam {
 
 void add_input(lua_State *L) {
-    lua_createtable(L, 0, 31);
+    lua_createtable(L, 0, 33);
     add_func(L, "activateActionSet", luasteam_activateActionSet);
     add_func(L, "activateActionSetLayer", luasteam_activateActionSetLayer);
     add_func(L, "deactivateActionSetLayer", luasteam_deactivateActionSetLayer);
@@ -383,15 +396,13 @@ void add_input(lua_State *L) {
     add_func(L, "translateActionOrigin", luasteam_translateActionOrigin);
     add_func(L, "getDeviceBindingRevision", luasteam_getDeviceBindingRevision);
     add_func(L, "getRemotePlaySessionID", luasteam_getRemotePlaySessionID);
+    add_func(L, "init", luasteam_init);
+    add_func(L, "shutdown", luasteam_shutdown);
     lua_setfield(L, -2, "input");
 }
 
-void init_input(lua_State *L) {
-    SteamInput()->Init();
-}
+void init_input(lua_State *L) {}
 
-void shutdown_input(lua_State *L) {
-    SteamInput()->Shutdown();
-}
+void shutdown_input(lua_State *L) {}
 
 } // namespace luasteam

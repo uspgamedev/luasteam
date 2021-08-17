@@ -5,6 +5,8 @@ ISteamInput
 
 List of Functions
 -----------------
+* :func:`input.init`
+* :func:`input.shutdown`
 * :func:`input.activateActionSet`
 * :func:`input.activateActionSetLayer`
 * :func:`input.deactivateActionSetLayer`
@@ -38,6 +40,20 @@ List of Functions
 
 Function Reference
 ------------------
+
+.. function:: input.init()
+    
+    Must be called when starting use of the `ISteamInput` interface.
+
+    :returns: (`boolean`) Always returns `true`.
+    :SteamWorks: `Init <https://partner.steamgames.com/doc/api/isteaminput#Init>`_
+    
+.. function:: input.shutdown()
+    
+    Must be called when ending use of the `ISteamInput` interface.
+
+    :returns: (`boolean`) Always returns `true`.
+    :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/isteaminput#Shutdown>`_
 
 .. function:: input.activateActionSet()
     
@@ -241,7 +257,9 @@ Function Reference
 .. function:: input.getDeviceBindingRevision()
     
     :param uint64 inputHandle: The handle of the controller to query. Obtained from :func:`input.getConnectedControllers`.
-    :returns: (`table`) A table with fields: `success` (`boolean`) - `true` if a device binding was successfully found and `false` if the binding is still loading; `major` (`number`) binding revision; `minor` (`number`) binding revision for Steam Input API configurations.
+    :returns: (`boolean`) Returns `true` if a device binding was successfully found and `false` if the binding is still loading
+    :returns: (`number?`) If call was successful, returns the `major` binding revision for Steam Input API configurations.
+    :returns: (`number?`) If call was successful, returns the `minor` binding revision for Steam Input API configurations.
     :SteamWorks: `GetDeviceBindingRevision <https://partner.steamgames.com/doc/api/isteaminput#GetDeviceBindingRevision>`_
 
 .. function:: input.getRemotePlaySessionID()
