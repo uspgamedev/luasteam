@@ -90,7 +90,7 @@ Function Reference
 
 .. function:: input.getActionSetHandle()
     
-    :param string pszActionSetName: The string identifier of an action set defined in the game's VDF file.
+    :param string actionSetName: The string identifier of an action set defined in the game's VDF file.
     :returns: (`number`) The handle (`InputActionSetHandle`, ie `uint64`) of the specified action set.
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/isteaminput#GetActionSetHandle>`_
 
@@ -103,7 +103,7 @@ Function Reference
 
 .. function:: input.getAnalogActionHandle()
     
-    :param string pszActionName: The string identifier of the analog action defined in the game's VDF file.
+    :param string actionName: The string identifier of the analog action defined in the game's VDF file.
     :returns: (`number`) The handle (`InputAnalogActionHandle`, ie `uint64`)  of the specified analog action.
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/isteaminput#GetAnalogActionHandle>`_
 
@@ -122,7 +122,7 @@ Function Reference
 
 .. function:: input.getControllerForGamepadIndex()
     
-    :param int nIndex: The index of the emulated gamepad you want to get a controller handle for.
+    :param int index: The index of the emulated gamepad you want to get a controller handle for.
     :returns: (`number`) The `inputHandle` (`uint64`) of the associated controller handle for the specified emulated gamepad. Can be used with GetInputTypeForHandle to determine the controller type of a controller using Steam Input Gamepad Emulation.
     :SteamWorks: `GetControllerForGamepadIndex <https://partner.steamgames.com/doc/api/isteaminput#GetControllerForGamepadIndex>`_
 
@@ -141,7 +141,7 @@ Function Reference
 
 .. function:: input.getDigitalActionHandle()
     
-    :param string pszActionName: The string identifier of the digital action defined in the game's VDF file.
+    :param string actionName: The string identifier of the digital action defined in the game's VDF file.
     :returns: (`number`) The handle (`InputDigitalActionHandle`, ie `uint64`)  of the specified digital action.
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/isteaminput#GetDigitalActionHandle>`_
 
@@ -150,7 +150,7 @@ Function Reference
     :param uint64 inputHandle: The handle of the controller you want to query. Obtained from :func:`input.getConnectedControllers`.
     :param uint64 actionSetHandle: The handle of the action set you want to query. This can be obtained from :func:`input.getActionSetHandle`.
     :param uint64 digitalActionHandle: The handle of the digital action you want to query. This can be obtained from :func:`input.getDigitalActionHandle`.
-    :returns: (`table`) An array filled with origins (`EInputActionOrigin`, ie `string`; see `EInputActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#EInputActionOrigin>`_) for an getDigitalActionHandle action within an action set. Use this to display the appropriate on-screen prompt for the action.
+    :returns: (`table`) An array filled with origins (`EInputActionOrigin`, ie `string`; see `EInputActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#EInputActionOrigin>`_) for an :func:`input.getDigitalActionHandle` action within an action set. Use this to display the appropriate on-screen prompt for the action.
     :SteamWorks: `GetDigitalActionOrigins <https://partner.steamgames.com/doc/api/isteaminput#GetDigitalActionOrigins>`_
 
 .. function:: input.getGamepadIndexForController()
@@ -161,7 +161,7 @@ Function Reference
 
 .. function:: input.getGlyphForActionOrigin()
     
-    :param string eOrigin: See `EInputActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#EInputActionOrigin>`_
+    :param string origin: For example, `LeftStick_Click`, `X`, `B`. See `EInputActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#EInputActionOrigin>`_ for reference.
     :returns: (`string`) A local path to art for on-screen glyph for a particular origin.
     :SteamWorks: `GetGlyphForActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#GetGlyphForActionOrigin>`_
 
@@ -179,7 +179,7 @@ Function Reference
 
 .. function:: input.getStringForActionOrigin()
     
-    :param string eOrigin: See `EInputActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#EInputActionOrigin>`_
+    :param string origin: For example, `LeftStick_Click`, `X`, `B`. See `EInputActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#EInputActionOrigin>`_ for reference.
     :returns: (`string`) Returns a localized string (from Steam's language setting) for the specified origin.
     :SteamWorks: `GetStringForActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#GetStringForActionOrigin>`_
 
@@ -193,9 +193,9 @@ Function Reference
 .. function:: input.setLEDColor()
     
     :param uint64 inputHandle: 	The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
-    :param uint8 nColorR: 	The red component of the color to set (0-255).
-    :param uint8 nColorG: 	The green component of the color to set (0-255).
-    :param uint8 nColorB: 	The blue component of the color to set (0-255).
+    :param uint8 colorR: 	The red component of the color to set (0-255).
+    :param uint8 colorG: 	The green component of the color to set (0-255).
+    :param uint8 colorB: 	The blue component of the color to set (0-255).
     :param boolean resetColor: If `true`, restores the color to default (out-of-game) settings. Otherwise, set to the presented RGB color.
     :returns: nothing
     :SteamWorks: `SetLEDColor <https://partner.steamgames.com/doc/api/isteaminput#SetLEDColor>`_
@@ -209,14 +209,14 @@ Function Reference
 .. function:: input.stopAnalogActionMomentum()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
-    :param uint64 eAction: The analog action to stop momentum for. This can be obtained from :func:`input.getAnalogActionHandle`.
+    :param uint64 action: The analog action to stop momentum for. This can be obtained from :func:`input.getAnalogActionHandle`.
     :returns: nothing
     :SteamWorks: `StopAnalogActionMomentum <https://partner.steamgames.com/doc/api/isteaminput#StopAnalogActionMomentum>`_
 
 .. function:: input.triggerHapticPulse()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
-    :param boolean rightController: If `false`, affects the left haptic touch pad; otherwise affects the right pad.
+    :param string targetPad: `Left` or `Right` depending on which haptic touch pad to affect. See `ESteamControllerPad <https://partner.steamgames.com/doc/api/isteaminput#ESteamControllerPad>`_.
     :param short usDurationMicroSec: Duration of the pulse, in microseconds (1/1,000,000th of a second)
     :returns: nothing
     :SteamWorks: `TriggerHapticPulse <https://partner.steamgames.com/doc/api/isteaminput#TriggerHapticPulse>`_
@@ -224,7 +224,7 @@ Function Reference
 .. function:: input.triggerRepeatedHapticPulse()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
-    :param boolean rightController: If `false`, affects the left haptic touch pad; otherwise affects the right pad.
+    :param string targetPad: `Left` or `Right` depending on which haptic touch pad to affect. See `ESteamControllerPad <https://partner.steamgames.com/doc/api/isteaminput#ESteamControllerPad>`_.
     :param short usDurationMicroSec: Duration of the pulse, in microseconds (1/1,000,000th of a second)
     :param short usOffMicroSec: Duration of the pause between pulses, in microseconds.
     :param short unRepeat: 	Number of times to repeat the `usDurationMicroSec / usOffMicroSec` duty cycle.
@@ -242,15 +242,15 @@ Function Reference
 .. function:: input.getActionOriginFromXboxOrigin()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`, or from :func:`input.getControllerForGamepadIndex`.
-    :param string eOrigin: This is the button you want to get the image for example: A, B, LeftTrigger_Click, LeftStick_DPadWest.
+    :param string origin: This is the button you want to get the image for example: `A`, `B`, `LeftTrigger_Click`, `LeftStick_DPadWest`. See `EInputActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#EInputActionOrigin>`_ for reference.
     :returns: nothing
     :SteamWorks: `GetActionOriginFromXboxOrigin <https://partner.steamgames.com/doc/api/isteaminput#GetActionOriginFromXboxOrigin>`_
 
 .. function:: input.translateActionOrigin()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`, or from :func:`input.getControllerForGamepadIndex`.
-    :param string eDestinationInputType: The controller type (see `ESteamInputType <https://partner.steamgames.com/doc/api/isteaminput#ESteamInputType>`_) you want to translate to.
-    :param string eSourceOrigin: This is the button (`EInputActionOrigin`, see `EInputActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#EInputActionOrigin>`_) you want to translate
+    :param string destinationInputType: The controller type (see `ESteamInputType <https://partner.steamgames.com/doc/api/isteaminput#ESteamInputType>`_) you want to translate to.
+    :param string sourceOrigin: This is the button you want to translate. For example, `LeftStick_Click`, `X`, `B`. See `EInputActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#EInputActionOrigin>`_ for all options.
     :returns: (`string`) The equivalent origin (`EInputActionOrigin`) for a given controller type or the closest controller type that existed in the SDK you built into your game if `eDestinationInputType` is `Unknown`. This action origin can be used in your glyph look up table or passed into :func:`input.getGlyphForActionOrigin` or :func:`input.getStringForActionOrigin`.
     :SteamWorks: `TranslateActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#TranslateActionOrigin>`_
 

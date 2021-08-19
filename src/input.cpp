@@ -26,6 +26,10 @@ const char *xbox_origins[] = {
     "A", "B", "X", "Y", "LeftBumper", "RightBumper", "Menu", "View", "LeftTrigger_Pull", "LeftTrigger_Click", "RightTrigger_Pull", "RightTrigger_Click", "LeftStick_Move", "LeftStick_Click", "LeftStick_DPadNorth", "LeftStick_DPadSouth", "LeftStick_DPadWest", "LeftStick_DPadEast", "RightStick_Move", "RightStick_Click", "RightStick_DPadNorth", "RightStick_DPadSouth", "RightStick_DPadWest", "RightStick_DPadEast", "DPad_North", "DPad_South", "DPad_West", "DPad_East", "Count", nullptr,
 };
 
+const char *steam_controller_pads[] = {
+    "Left", "Right", nullptr,
+};
+
 }
 
 // void ActivateActionSet( InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle );
@@ -284,20 +288,20 @@ EXTERN int luasteam_stopAnalogActionMomentum(lua_State *L) {
 // void TriggerHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec );
 EXTERN int luasteam_triggerHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
-    bool eTargetPad = lua_toboolean(L, 2);
+    ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
     unsigned short usDurationMicroSec = luaL_checkint(L, 3);
-    SteamInput()->TriggerHapticPulse(inputHandle, static_cast<ESteamControllerPad>(eTargetPad), usDurationMicroSec);
+    SteamInput()->TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
     return 0;
 }
 
 // void TriggerRepeatedHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags );
 EXTERN int luasteam_triggerRepeatedHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
-    bool eTargetPad = lua_toboolean(L, 2);
+    ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
     unsigned short usDurationMicroSec = luaL_checkint(L, 3);
     unsigned short usOffMicroSec = luaL_checkint(L, 4);
     unsigned short unRepeat = luaL_checkint(L, 5);
-    SteamInput()->TriggerRepeatedHapticPulse(inputHandle, static_cast<ESteamControllerPad>(eTargetPad), usDurationMicroSec, usOffMicroSec, unRepeat, 0);
+    SteamInput()->TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, 0);
     return 0;
 }
 
