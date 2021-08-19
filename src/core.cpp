@@ -34,14 +34,14 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
+    luasteam::shutdown_input(L);
+    luasteam::shutdown_apps(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_UGC(L);
     luasteam::shutdown_utils(L);
     luasteam::shutdown_user_stats(L);
     luasteam::shutdown_friends(L);
     luasteam::shutdown_common(L);
-    luasteam::shutdown_apps(L);
-    luasteam::shutdown_input(L);
     return 0;
 }
 
