@@ -37,7 +37,7 @@ EXTERN int luasteam_activateActionSet(lua_State *L) {
     uint64 inputHandle;
     if (lua_isstring(L, 1)) {
         const char *controller = luaL_checkstring(L, 1);
-        if (controller == "all")
+        if (strcmp(controller, "all") == 0)
             inputHandle = STEAM_INPUT_HANDLE_ALL_CONTROLLERS;
         else
             return 0;
@@ -353,13 +353,13 @@ EXTERN int luasteam_getRemotePlaySessionID(lua_State *L) {
     return 1;
 }
 
-EXTERN int luasteam_init(lua_State *L) {
+EXTERN int luasteam_input_init(lua_State *L) {
     bool success = SteamInput()->Init();
     lua_pushboolean(L, success);
     return 1;
 }
 
-EXTERN int luasteam_shutdown(lua_State *L) {
+EXTERN int luasteam_input_shutdown(lua_State *L) {
     bool success = SteamInput()->Shutdown();
     lua_pushboolean(L, success);
     return 1;
@@ -400,8 +400,8 @@ void add_input(lua_State *L) {
     add_func(L, "translateActionOrigin", luasteam_translateActionOrigin);
     add_func(L, "getDeviceBindingRevision", luasteam_getDeviceBindingRevision);
     add_func(L, "getRemotePlaySessionID", luasteam_getRemotePlaySessionID);
-    add_func(L, "init", luasteam_init);
-    add_func(L, "shutdown", luasteam_shutdown);
+    add_func(L, "init", luasteam_input_init);
+    add_func(L, "shutdown", luasteam_input_shutdown);
     lua_setfield(L, -2, "input");
 }
 

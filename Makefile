@@ -22,7 +22,7 @@ all:
 STEAM_LIB=sdk/redistributable_bin
 
 osx:
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/osx32/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT) -shared -fPIC $(OSX_FLAGS)
 
 linux32:
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
