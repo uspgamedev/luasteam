@@ -1,13 +1,13 @@
 # Contributing
 
-We are open to contributions, either adding new functions, improving documentation or fixing some bugs.
+We are open to contributions, either adding new functions, improving documentation or fixing some bugs. See [#23](https://github.com/uspgamedev/luasteam/pull/23) for and example of pull request from an external user that was interested in more functions.
 
 ## Adding new functions
 
 We encourage you to add functions that are currently missing. Follow the style of functions already added in this project, that means, if you're adding `ISteamFriends::ActivateGameOverlayToStore`, follow these guidelines:
 - Implement it in file `src/friends.cpp`
 - Name it `SteamFriends.activateGameOverlayToStore`
-- Try to keep all arguments in the same order, with the same names (in a different naming convention) and of the same type. Enums should be changed to string, for example `k_EOverlayToStoreFlag_AddToCart` becomes `"AddToCart"`.
+- Try to keep all arguments in the same order, with the same names (in a different naming convention, drop the type prefixes) and of the same type. Enums should be changed to string, for example `k_EOverlayToStoreFlag_AddToCart` becomes `"AddToCart"`.
 - Callbacks and CallResults have a special way of being implemented: check [our documentation](https://luasteam.readthedocs.io/en/stable/getting_started.html#callbacks).
 - IDs that are actually 64-bit integers should be implemented using [our uint64 userdata](https://github.com/uspgamedev/luasteam/blob/v1.0.1/src/common.hpp#L21-L24).
 - It's fine if the functions are a bit different ([example](https://luasteam.readthedocs.io/en/stable/user_stats.html#userStats.downloadLeaderboardEntries)) because stuff in Lua is different than in C++.
