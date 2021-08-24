@@ -1,6 +1,6 @@
 # Contributing
 
-We are open to contributions, either adding new functions, improving documentation or fixing some bugs. See [#23](https://github.com/uspgamedev/luasteam/pull/23) for and example of pull request from an external user that was interested in more functions.
+We are open to contributions, either adding new functions, improving documentation or fixing some bugs. See [#23](https://github.com/uspgamedev/luasteam/pull/23) for and example of a pull request from an external user that was interested in more functions.
 
 ## Adding new functions
 
