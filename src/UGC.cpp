@@ -361,7 +361,7 @@ EXTERN int luasteam_unsubscribeItem(lua_State *L) {
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 15);
+    lua_createtable(L, 0, 17);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "startItemUpdate", luasteam_startItemUpdate);
     add_func(L, "setItemContent", luasteam_setItemContent);
