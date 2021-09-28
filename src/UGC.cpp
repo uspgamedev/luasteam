@@ -95,6 +95,46 @@ template <> void CallResultListener<StopPlaytimeTrackingResult_t>::Result(StopPl
     delete this;
 }
 
+template <> void CallResultListener<RemoteStorageSubscribePublishedFileResult_t>::Result(RemoteStorageSubscribePublishedFileResult_t *data, bool io_fail) {
+    lua_State *L = luasteam::global_lua_state;
+    // getting stored callback function
+    lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+    luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+    // calling function
+    if (io_fail)
+        lua_pushnil(L);
+    else {
+        lua_createtable(L, 0, 2);
+        lua_pushnumber(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+    }
+    lua_pushboolean(L, io_fail);
+    lua_call(L, 2, 0);
+    delete this;
+}
+
+template <> void CallResultListener<RemoteStorageUnsubscribePublishedFileResult_t>::Result(RemoteStorageUnsubscribePublishedFileResult_t *data, bool io_fail) {
+    lua_State *L = luasteam::global_lua_state;
+    // getting stored callback function
+    lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+    luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+    // calling function
+    if (io_fail)
+        lua_pushnil(L);
+    else {
+        lua_createtable(L, 0, 2);
+        lua_pushnumber(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+    }
+    lua_pushboolean(L, io_fail);
+    lua_call(L, 2, 0);
+    delete this;
+}
+
 } // namespace luasteam
 
 // SteamAPICall_t CreateItem( AppId_t nConsumerAppId, EWorkshopFileType eFileType );
@@ -295,6 +335,29 @@ EXTERN int luasteam_stopPlaytimeTrackingForAllItems(lua_State *L) {
     return 0;
 }
 
+// SteamAPICall_t SubscribeItem( PublishedFileId_t nPublishedFileID );
+EXTERN int luasteam_subscribeItem(lua_State *L) {
+    uint64 itemId = luasteam::checkuint64(L, 1);
+    luaL_checktype(L, 2, LUA_TFUNCTION);
+    auto *listener = new CallResultListener<RemoteStorageSubscribePublishedFileResult_t>();
+    lua_settop(L, 2);
+    listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    SteamAPICall_t call = SteamUGC()->SubscribeItem(itemId);
+    listener->call_result.Set(call, listener, &CallResultListener<RemoteStorageSubscribePublishedFileResult_t>::Result);
+    return 0;
+}
+// SteamAPICall_t UnsubscribeItem( PublishedFileId_t nPublishedFileID );
+EXTERN int luasteam_unsubscribeItem(lua_State *L) {
+    uint64 itemId = luasteam::checkuint64(L, 1);
+    luaL_checktype(L, 2, LUA_TFUNCTION);
+    auto *listener = new CallResultListener<RemoteStorageUnsubscribePublishedFileResult_t>();
+    lua_settop(L, 2);
+    listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    SteamAPICall_t call = SteamUGC()->UnsubscribeItem(itemId);
+    listener->call_result.Set(call, listener, &CallResultListener<RemoteStorageUnsubscribePublishedFileResult_t>::Result);
+    return 0;
+}
+
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
@@ -314,6 +377,8 @@ void add_UGC(lua_State *L) {
     add_func(L, "startPlaytimeTracking", luasteam_startPlaytimeTracking);
     add_func(L, "stopPlaytimeTracking", luasteam_stopPlaytimeTracking);
     add_func(L, "stopPlaytimeTrackingForAllItems", luasteam_stopPlaytimeTrackingForAllItems);
+    add_func(L, "subscribeItem", luasteam_subscribeItem);
+    add_func(L, "unsubscribeItem", luasteam_unsubscribeItem);
     lua_setfield(L, -2, "UGC");
 }
 
