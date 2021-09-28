@@ -20,6 +20,8 @@ List of Functions
 * :func:`UGC.startPlaytimeTracking`
 * :func:`UGC.stopPlaytimeTracking`
 * :func:`UGC.stopPlaytimeTrackingForAllItems`
+* :func:`UGC.subscribeItem`
+* :func:`UGC.unsubscribeItem`
 
 Function Reference
 ------------------
@@ -371,3 +373,44 @@ Function Reference
             print('Tracking successfully stopped for all items')
         end
     end)
+
+
+.. function:: UGC.subscribeItem (itemId, callback)
+
+    :param uint64 itemId: The workshop item to subscribe to.
+    :param function callback: Called asynchronously when this function returns. See below.
+    :returns: nothing
+    :SteamWorks: `SubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#SubscribeItem>`_
+
+    Subscribe to a workshop item. It will be downloaded and installed as soon as possible.
+
+    **callback(data, err)** receives two arguments:
+
+    * **data** (`table`) -- Similar to `RemoteStorageSubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageSubscribePublishedFileResult_t>`_, or **nil** if **err** is **true**.
+
+        * **data.result** (`number`) -- The result of the operation. See `EResult <https://partner.steamgames.com/doc/api/steam_api#EResult>`_.
+
+        * **data.publishedFileId** (`uint64`) -- The workshop item that the user subscribed to.
+
+    * **err** (`boolean`): **true** if there was any IO error with the request.
+
+**Example**::
+
+    -- Note: itemID is uint64, not a standard Lua number!
+    Steam.UGC.subscribeItem(itemID, function(data, err)
+        if not err and data.result == 1 then
+            print('Successfully subscribed to ' .. itemID .. '!')
+        end
+    end)
+
+
+.. function:: UGC.unsubscribeItem (itemId, callback)
+
+    :param uint64 itemId: The workshop item to unsubscribe from.
+    :param function callback: Called asynchronously when this function returns. It must be of the same type as the callback in :func:`UGC.subscribeItem`.
+    :returns: nothing
+    :SteamWorks: `UnsubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#UnsubscribeItem>`_
+
+    Unsubscribe from a workshop item. This will result in the item being removed after the game quits.
+
+**Example**:: See :func:`UGC.subscribeItem`'s example.
