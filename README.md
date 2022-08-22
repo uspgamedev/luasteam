@@ -19,6 +19,8 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [Pingers](https://store.steampowered.com/app/1442410/Pingers/)
 - [SNKRX](https://store.steampowered.com/app/915310/SNKRX/)
 - [Choo-Choo! The Train Rides!](https://store.steampowered.com/app/743920/ChooChoo_The_Train_Rides/)
+- [PushOps](https://store.steampowered.com/app/1705610/PushOps/)
+- [Heliotropism](https://store.steampowered.com/app/1653100/Heliotropism/)
 
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
