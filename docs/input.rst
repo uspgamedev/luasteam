@@ -22,7 +22,7 @@ List of Functions
 * :func:`input.getDigitalActionData`
 * :func:`input.getDigitalActionHandle`
 * :func:`input.getDigitalActionOrigins`
-* :func:`input.getGlyphForActionOrigin`
+* :func:`input.getGlyphForActionOrigin_Legacy`
 * :func:`input.getInputTypeForHandle`
 * :func:`input.getMotionData`
 * :func:`input.getStringForActionOrigin`
@@ -30,8 +30,8 @@ List of Functions
 * :func:`input.setLEDColor`
 * :func:`input.showBindingPanel`
 * :func:`input.stopAnalogActionMomentum`
-* :func:`input.triggerHapticPulse`
-* :func:`input.triggerRepeatedHapticPulse`
+* :func:`input.legacy_triggerHapticPulse`
+* :func:`input.legacy_triggerRepeatedHapticPulse`
 * :func:`input.triggerVibration`
 * :func:`input.getActionOriginFromXboxOrigin`
 * :func:`input.translateActionOrigin`
@@ -45,6 +45,7 @@ Function Reference
     
     Must be called when starting use of the `ISteamInput` interface.
 
+    :param boolean explicitlyCallRunFrame: If `true`, you will need to manually call input.runFrame() each frame, otherwise Steam Input will call it automatically when Steam.runCallbacks() is called.
     :returns: (`boolean`) Always returns `true`.
     :SteamWorks: `Init <https://partner.steamgames.com/doc/api/isteaminput#Init>`_
     
@@ -159,7 +160,7 @@ Function Reference
     :returns: (`number`) The associated gamepad index for the specified controller, if emulating a gamepad.
     :SteamWorks: `GetGamepadIndexForController <https://partner.steamgames.com/doc/api/isteaminput#GetGamepadIndexForController>`_
 
-.. function:: input.getGlyphForActionOrigin()
+.. function:: input.getGlyphForActionOrigin_Legacy()
     
     :param string origin: For example, `LeftStick_Click`, `X`, `B`. See `EInputActionOrigin <https://partner.steamgames.com/doc/api/isteaminput#EInputActionOrigin>`_ for reference.
     :returns: (`string`) A local path to art for on-screen glyph for a particular origin.
@@ -213,7 +214,7 @@ Function Reference
     :returns: nothing
     :SteamWorks: `StopAnalogActionMomentum <https://partner.steamgames.com/doc/api/isteaminput#StopAnalogActionMomentum>`_
 
-.. function:: input.triggerHapticPulse()
+.. function:: input.legacy_triggerHapticPulse()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
     :param string targetPad: `Left` or `Right` depending on which haptic touch pad to affect. See `ESteamControllerPad <https://partner.steamgames.com/doc/api/isteaminput#ESteamControllerPad>`_.
@@ -221,7 +222,7 @@ Function Reference
     :returns: nothing
     :SteamWorks: `TriggerHapticPulse <https://partner.steamgames.com/doc/api/isteaminput#TriggerHapticPulse>`_
 
-.. function:: input.triggerRepeatedHapticPulse()
+.. function:: input.legacy_triggerRepeatedHapticPulse()
     
     :param uint64 inputHandle: The handle of the controller to affect. Obtained from :func:`input.getConnectedControllers`.
     :param string targetPad: `Left` or `Right` depending on which haptic touch pad to affect. See `ESteamControllerPad <https://partner.steamgames.com/doc/api/isteaminput#ESteamControllerPad>`_.

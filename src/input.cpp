@@ -19,7 +19,7 @@ const char *input_action_origins[] = {
 };
 
 const char *steam_input_types[] = {
-    "Unknown", "SteamController", "XBox360Controller", "XBoxOneController", "GenericXInput", "PS4Controller", "AppleMFiController", "AndroidController", "SwitchJoyConPair", "SwitchJoyConSingle", "SwitchProController", "MobileTouch", "PS3Controller", nullptr,
+    "Unknown", "SteamController", "XBox360Controller", "XBoxOneController", "GenericXInput", "PS4Controller", "AppleMFiController", "AndroidController", "SwitchJoyConPair", "SwitchJoyConSingle", "SwitchProController", "MobileTouch", "PS3Controller", "PS5Controller", "SteamDeckController", nullptr,
 };
 
 const char *xbox_origins[] = {
@@ -204,10 +204,10 @@ EXTERN int luasteam_getGamepadIndexForController(lua_State *L) {
     return 1;
 }
 
-// const char * GetGlyphForActionOrigin( EInputActionOrigin eOrigin );
-EXTERN int luasteam_getGlyphForActionOrigin(lua_State *L) {
+// const char * GetGlyphForActionOrigin_Legacy( EInputActionOrigin eOrigin );
+EXTERN int luasteam_getGlyphForActionOrigin_Legacy(lua_State *L) {
     EInputActionOrigin inputActionOrigin = static_cast<EInputActionOrigin>(luaL_checkoption(L, 1, nullptr, input_action_origins));
-    lua_pushstring(L, SteamInput()->GetGlyphForActionOrigin(inputActionOrigin));
+    lua_pushstring(L, SteamInput()->GetGlyphForActionOrigin_Legacy(inputActionOrigin));
     return 1;
 }
 
@@ -285,23 +285,23 @@ EXTERN int luasteam_stopAnalogActionMomentum(lua_State *L) {
     return 0;
 }
 
-// void TriggerHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec );
-EXTERN int luasteam_triggerHapticPulse(lua_State *L) {
+// void Legacy_TriggerHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec );
+EXTERN int luasteam_legacy_triggerHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
     unsigned short usDurationMicroSec = luaL_checkint(L, 3);
-    SteamInput()->TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
+    SteamInput()->Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
     return 0;
 }
 
-// void TriggerRepeatedHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags );
-EXTERN int luasteam_triggerRepeatedHapticPulse(lua_State *L) {
+// void Legacy_TriggerRepeatedHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags );
+EXTERN int luasteam_legacy_triggerRepeatedHapticPulse(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
     unsigned short usDurationMicroSec = luaL_checkint(L, 3);
     unsigned short usOffMicroSec = luaL_checkint(L, 4);
     unsigned short unRepeat = luaL_checkint(L, 5);
-    SteamInput()->TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, 0);
+    SteamInput()->Legacy_TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, 0);
     return 0;
 }
 
@@ -354,7 +354,8 @@ EXTERN int luasteam_getRemotePlaySessionID(lua_State *L) {
 }
 
 EXTERN int luasteam_input_init(lua_State *L) {
-    bool success = SteamInput()->Init();
+    bool explicitlyCallRunFrame = lua_toboolean(L, 1);
+    bool success = SteamInput()->Init(explicitlyCallRunFrame);
     lua_pushboolean(L, success);
     return 1;
 }
@@ -385,7 +386,7 @@ void add_input(lua_State *L) {
     add_func(L, "getDigitalActionHandle", luasteam_getDigitalActionHandle);
     add_func(L, "getDigitalActionOrigins", luasteam_getDigitalActionOrigins);
     add_func(L, "getGamepadIndexForController", luasteam_getGamepadIndexForController);
-    add_func(L, "getGlyphForActionOrigin", luasteam_getGlyphForActionOrigin);
+    add_func(L, "getGlyphForActionOrigin_Legacy", luasteam_getGlyphForActionOrigin_Legacy);
     add_func(L, "getInputTypeForHandle", luasteam_getInputTypeForHandle);
     add_func(L, "getMotionData", luasteam_getMotionData);
     add_func(L, "getStringForActionOrigin", luasteam_getStringForActionOrigin);
@@ -393,8 +394,8 @@ void add_input(lua_State *L) {
     add_func(L, "setLEDColor", luasteam_setLEDColor);
     add_func(L, "showBindingPanel", luasteam_showBindingPanel);
     add_func(L, "stopAnalogActionMomentum", luasteam_stopAnalogActionMomentum);
-    add_func(L, "triggerHapticPulse", luasteam_triggerHapticPulse);
-    add_func(L, "triggerRepeatedHapticPulse", luasteam_triggerRepeatedHapticPulse);
+    add_func(L, "legacy_triggerHapticPulse", luasteam_legacy_triggerHapticPulse);
+    add_func(L, "legacy_triggerRepeatedHapticPulse", luasteam_legacy_triggerRepeatedHapticPulse);
     add_func(L, "triggerVibration", luasteam_triggerVibration);
     add_func(L, "getActionOriginFromXboxOrigin", luasteam_getActionOriginFromXboxOrigin);
     add_func(L, "translateActionOrigin", luasteam_translateActionOrigin);
