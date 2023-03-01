@@ -56,6 +56,7 @@ void CallbackListener::OnConnectionChanged(SteamNetConnectionStatusChangedCallba
         //sprintf(steamIDString, "%lld", steamIDNumber);
         //lua_pushstring(L, steamIDString);
         //lua_setfield(L, -2, "steam_id");
+        //fprintf(stderr, "enable linger: %d\n", bEnableLinger);
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -69,7 +70,8 @@ EXTERN int luasteam_createListenSocketIP(lua_State *L) {
     localAdress.ParseString(luaL_checkstring(L, 1));
     // TODO read options from state
     HSteamListenSocket connectingSocket = SteamNetworkingSockets()->CreateListenSocketIP(localAdress, 0, nullptr);
-    return 0;
+    lua_pushlightuserdata(L, &connectingSocket);
+    return 1;
 }
 
 // HSteamNetConnection ConnectByIPAddress( const SteamNetworkingIPAddr &address, int nOptions, const SteamNetworkingConfigValue_t *pOptions )
@@ -78,7 +80,8 @@ EXTERN int luasteam_connectByIPAddress(lua_State *L) {
     address.ParseString(luaL_checkstring(L, 1));
     // TODO read options from state
     HSteamListenSocket connectingSocket = SteamNetworkingSockets()->ConnectByIPAddress(address, 0, nullptr);
-    return 0;
+    lua_pushlightuserdata(L, &connectingSocket);
+    return 1;
 }
 
 // EResult AcceptConnection( HSteamNetConnection hConn )
@@ -89,13 +92,33 @@ EXTERN int luasteam_acceptConnection(lua_State *L) {
     return 1;
 }
 
+// CloseConnection( HSteamNetConnection hPeer, int nReason, const char *pszDebug, bool bEnableLinger )
+EXTERN int luasteam_closeConnection(lua_State *L) {
+    HSteamNetConnection hConn = luaL_checkinteger(L, 1);
+    bool bEnableLinger = lua_toboolean(L, 2);
+    SteamNetworkingSockets()->CloseConnection(hConn, 0, nullptr, false);
+    return 0;
+}
+
+// CloseListenSocket( HSteamListenSocket hSocket )
+EXTERN int luasteam_closeListenSocket(lua_State *L) {
+    bool is_user_data = lua_islightuserdata(L, 1) == 1;
+    if (is_user_data) {
+        HSteamListenSocket *connectingSocket = (HSteamListenSocket*)lua_touserdata(L, 1);
+        SteamNetworkingSockets()->CloseListenSocket(*connectingSocket);
+    }
+    return 0;
+}
+
 namespace luasteam {
 
 void add_sockets(lua_State *L) {
-    lua_createtable(L, 0, 3);
+    lua_createtable(L, 0, 5);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
     add_func(L, "acceptConnection", luasteam_acceptConnection);
+    add_func(L, "closeConnection", luasteam_closeConnection);
+    add_func(L, "closeListenSocket", luasteam_closeListenSocket);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "sockets");
