@@ -96,7 +96,7 @@ EXTERN int luasteam_acceptConnection(lua_State *L) {
 EXTERN int luasteam_closeConnection(lua_State *L) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
     bool bEnableLinger = lua_toboolean(L, 2);
-    SteamNetworkingSockets()->CloseConnection(hConn, 0, nullptr, false);
+    SteamNetworkingSockets()->CloseConnection(hConn, 0, nullptr, bEnableLinger);
     return 0;
 }
 
