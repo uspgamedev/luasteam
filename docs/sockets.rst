@@ -10,7 +10,13 @@ List of Functions
 * :func:`sockets.acceptConnection`
 * :func:`sockets.closeConnection`
 * :func:`sockets.closeListenSocket`
+* :func:`sockets.sendMessageToConnection`
+* :func:`sockets.receiveMessagesOnConnection`
 
+List of Callbacks
+-----------------
+
+* :func:`sockets.onConnectionChanged`
 
 Function Reference
 ------------------
@@ -35,7 +41,7 @@ Function Reference
     :returns: (`userdata`) a socket object
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
-    Connect to a given adress as a "client". If you want to change any networking settings, you need pass these options on creation. Implement the callback **TODO** to be notified about connection events.
+    Connect to a given adress as a "client". If you want to change any networking settings, you need pass these options on creation. Implement the callback :func:`sockets.onConnectionChanged` to be notified about connection events.
 
 **Example**::
 
@@ -47,7 +53,13 @@ Function Reference
     :returns: (`string`) result with the possible values ``OK | InvalidParam | InvalidState``
     :SteamWorks: `AcceptConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#AcceptConnection>`_
 
-    Accept a connection that was received via the callback **TODO**. This will move the connection from the "connecting" state to the "connected" state.
+    Accept a connection that was received via the callback :func:`sockets.onConnectionChanged`. This will move the connection from the ``Connecting`` state to the ``Connected`` state.
+
+    Return values explanation
+    
+            * **OK** - The connection was accepted
+            * **InvalidParam** - The connection id was invalid
+            * **InvalidState** - The connection was not in the ``Connecting`` state
 
 **Example**::
 
@@ -77,6 +89,49 @@ Function Reference
 **Example**::
 
     Steam.sockets.closeListenSocket(socket)
+
+.. function:: sockets.sendMessageToConnection()
+
+    :param int connection: The id of the connection to send a message to
+    :param string message: The message to send. Can be any length (up to configured SendBufferSize), splitting will be handled by the library
+    :param int flag: A flag to specify how the message should be sent. See below for explanation
+    :returns: (`string`) result with the possible values ``OK | InvalidParam | InvalidState | NoConnection | Ignored | LimitExceeded``
+    :SteamWorks: `SendMessageToConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessageToConnection>`_
+
+    Send a string message to the specified connection. Delivery method depends on the flag you pass. See <https://partner.steamgames.com/doc/api/steamnetworkingtypes> in the section **Flags used for message sending** for a detailed explanation
+
+        * **Steam.sockets.flags.Send_Reliable** - Message will be sent reliably (resend if necessary until acknowledged) and in order with other reliable messages
+        * **Steam.sockets.flags.Send_ReliableNoNagle** - Reliable without Nagle algorithm (don't wait a short while for more messages before sending). As a rule of thumb, don't use this unless you're sure you know what you're doing. Use :func:`sockets.flushMessagesOnConnection` instead
+        * **Steam.sockets.flags.Send_Unreliable** - Message will be sent once only, might get lost on the way and arrive in any order
+        * **Steam.sockets.flags.Send_UnreliableNoNagle** - Unreliable without Nagle algorithm
+        * **Steam.sockets.flags.Send_UnreliableNoDelay** - Send unreliable and only if the message can be sent right now. If there is any delay in sending the message (bottleneck, network hiccup, ...) this message will be dropped
+
+    Return values explanation
+    
+            * **OK** - The message was sent
+            * **InvalidParam** - The connection id was invalid
+            * **InvalidState** - The connection was not in the ``Connected`` state
+            * **NoConnection** - The connection has ended
+            * **Ignored** - The message was ignored because you used ``Send_UnreliableNoDelay`` and it wasn't possible to send the message right now
+            * **LimitExceeded** - The message was too large to send and or there are too many outgoing messages crowding the send buffer
+
+**Example**::
+
+    local result = Steam.sockets.sendMessageToConnection(connection, "Ping", Steam.sockets.flags.Reliable)
+
+.. function:: sockets.receiveMessagesOnConnection()
+
+    :param int connection: The id of the connection to receive messages from
+    :returns: (`table`) a table with all n messages received, indexed 1..n. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table
+    :SteamWorks: `ReceiveMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection>`_
+
+    Receive all the messages that are waiting on the given connection up to 32. Call this repeatedly until ``#return < 32``
+
+    A result table might look like this: ``{ 1 = "Some message", 2 = "Another message", 3 = "Yet another message" }``
+
+**Example**::
+
+    local messages Steam.sockets.receiveMessagesOnConnection(socket)
 
 Callbacks Reference
 -------------------
