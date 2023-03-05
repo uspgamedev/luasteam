@@ -170,6 +170,27 @@ EXTERN int luasteam_connectByIPAddress(lua_State *L) {
     return 1;
 }
 
+// HSteamListenSocket CreateListenSocketP2P( int nVirtualPort, int nOptions, const SteamNetworkingConfigValue_t *pOptions )
+EXTERN int luasteam_createListenSocketP2P(lua_State *L) {
+    int nVirtualPort = luaL_checkinteger(L, 1);
+    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
+    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->CreateListenSocketP2P(nVirtualPort, 0, nullptr);
+    lua_pushlightuserdata(L, &connectingSocket);
+    return 1;
+}
+
+// HSteamNetConnection ConnectP2P( const SteamNetworkingIdentity &identityRemote, int nVirtualPort, int nOptions, const SteamNetworkingConfigValue_t *pOptions )
+EXTERN int luasteam_connectP2P(lua_State *L) {
+    SteamNetworkingIdentity identityRemote;
+    CSteamID id(luasteam::checkuint64(L, 1));
+    identityRemote.SetSteamID(id);
+    int nVirtualPort = luaL_checkinteger(L, 2);
+    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
+    HSteamNetConnection connectingSocket = steamNetworkingSocketsLib()->ConnectP2P(identityRemote, nVirtualPort, 0, nullptr);
+    lua_pushlightuserdata(L, &connectingSocket);
+    return 1;
+}
+
 // EResult AcceptConnection( HSteamNetConnection hConn )
 EXTERN int luasteam_acceptConnection(lua_State *L) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
@@ -276,7 +297,9 @@ void add_constants(lua_State *L) {
 void add_networkingSockets(lua_State *L) {
     lua_createtable(L, 0, 10);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
+    add_func(L, "createListenSocketP2P", luasteam_createListenSocketP2P);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
+    add_func(L, "connectP2P", luasteam_connectP2P);
     add_func(L, "acceptConnection", luasteam_acceptConnection);
     add_func(L, "closeConnection", luasteam_closeConnection);
     add_func(L, "closeListenSocket", luasteam_closeListenSocket);

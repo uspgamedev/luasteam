@@ -2,6 +2,7 @@
 #include "../sdk/public/steam/steam_gameserver.h"
 #include "extra.hpp"
 #include "networkingSockets.hpp"
+#include "networkingUtils.hpp"
 
 // ===============================
 // ======= SteamGameServer =======
@@ -96,14 +97,15 @@ EXTERN int luasteam_init_server(lua_State *L) {
     uint16 usGamePort = luaL_checkinteger(L, 2);
     uint16 usQueryPort = luaL_checkinteger(L, 3);
     EServerMode eServerMode = static_cast<EServerMode>(luaL_checkinteger(L, 4));
-    const char* version = (char*)luaL_checkstring(L, 5);
+    const char *version = (char *)luaL_checkstring(L, 5);
     bool success = SteamGameServer_Init(ip, usGamePort, usQueryPort, eServerMode, version);
     if (success) {
         luasteam::init_common(L);
         luasteam::init_extra(L);
         luasteam::init_networkingSockets_server(L);
+        luasteam::init_networkingUtils(L);
     } else {
-         fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
+        fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
     }
     lua_pushboolean(L, success);
     return 1;
@@ -119,6 +121,7 @@ EXTERN int luasteam_runCallbacks_server(lua_State *L) {
 EXTERN int luasteam_shutdown_server(lua_State *L) {
     SteamGameServer_Shutdown();
     // Cleaning up
+    luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_common(L);
@@ -127,7 +130,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
 
 // void LogOn( const char *pszToken )
 EXTERN int luasteam_server_logOn(lua_State *L) {
-    const char* token = (char*)luaL_checkstring(L, 1);
+    const char *token = (char *)luaL_checkstring(L, 1);
     SteamGameServer()->LogOn(token);
     return 0;
 }

@@ -9,6 +9,7 @@
 #include "utils.hpp"
 #include "input.hpp"
 #include "networkingSockets.hpp"
+#include "networkingUtils.hpp"
 #include "gameServer.hpp"
 
 // Creates and returns a table with all functions
@@ -24,6 +25,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_apps(L);
     luasteam::add_input(L);
     luasteam::add_networkingSockets(L);
+    luasteam::add_networkingUtils(L);
     luasteam::add_gameServer(L);
     return 1;
 }
