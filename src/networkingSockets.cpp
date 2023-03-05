@@ -1,4 +1,4 @@
-#include "sockets.hpp"
+#include "networkingSockets.hpp"
 
 // ======================================
 // ======= SteamNetworkingSockets =======
@@ -273,7 +273,7 @@ void add_constants(lua_State *L) {
     lua_setfield(L, -2, "flags");
 }
 
-void add_sockets(lua_State *L) {
+void add_networkingSockets(lua_State *L) {
     lua_createtable(L, 0, 10);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
@@ -288,22 +288,22 @@ void add_sockets(lua_State *L) {
     add_constants(L);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "sockets");
+    lua_setfield(L, -2, "networkingSockets");
 }
 
-void init_sockets(lua_State *L) {
+void init_networkingSockets(lua_State *L) {
     steamNetworkingSocketsLib = &SteamNetworkingSockets;
     connection_listener = new CallbackListener();
     auth_listener = new CallbackListener();
 }
 
-void init_sockets_server(lua_State *L) {
+void init_networkingSockets_server(lua_State *L) {
     steamNetworkingSocketsLib = &SteamGameServerNetworkingSockets;
     connection_listener = new CallbackListener();
     auth_listener = new CallbackListener();
 }
 
-void shutdown_sockets(lua_State *L) {
+void shutdown_networkingSockets(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, sockets_ref);
     sockets_ref = LUA_NOREF;
 

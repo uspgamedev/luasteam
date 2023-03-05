@@ -1,7 +1,7 @@
 
 #include "../sdk/public/steam/steam_gameserver.h"
 #include "extra.hpp"
-#include "sockets.hpp"
+#include "networkingSockets.hpp"
 
 // ===============================
 // ======= SteamGameServer =======
@@ -13,7 +13,7 @@ namespace {
 
 class CallbackListener;
 CallbackListener *callback_listener = nullptr;
-int server_ref = LUA_NOREF;
+int gameServer_ref = LUA_NOREF;
 
 class CallbackListener {
   private:
@@ -31,7 +31,7 @@ void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
     if (!lua_checkstack(L, 4)) {
         return;
     }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, server_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, gameServer_ref);
     lua_getfield(L, -1, "onSteamServersConnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -51,7 +51,7 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
     if (!lua_checkstack(L, 4)) {
         return;
     }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, server_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, gameServer_ref);
     lua_getfield(L, -1, "onSteamServersDisconnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -73,7 +73,7 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
     if (!lua_checkstack(L, 4)) {
         return;
     }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, server_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, gameServer_ref);
     lua_getfield(L, -1, "onSteamServerConnectFailure");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -101,7 +101,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
     if (success) {
         luasteam::init_common(L);
         luasteam::init_extra(L);
-        luasteam::init_sockets_server(L);
+        luasteam::init_networkingSockets_server(L);
     } else {
          fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
     }
@@ -119,7 +119,7 @@ EXTERN int luasteam_runCallbacks_server(lua_State *L) {
 EXTERN int luasteam_shutdown_server(lua_State *L) {
     SteamGameServer_Shutdown();
     // Cleaning up
-    luasteam::shutdown_sockets(L);
+    luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_common(L);
     return 0;
@@ -170,7 +170,7 @@ EXTERN int luasteam_server_setDedicatedServer(lua_State *L) {
     return 0;
 }
 
-void add_server_constants(lua_State *L) {
+void add_gameserver_constants(lua_State *L) {
     lua_createtable(L, 0, 3);
     lua_pushnumber(L, EServerMode::eServerModeNoAuthentication);
     lua_setfield(L, -2, "NoAuthentication");
@@ -183,7 +183,7 @@ void add_server_constants(lua_State *L) {
 
 namespace luasteam {
 
-void add_server(lua_State *L) {
+void add_gameServer(lua_State *L) {
     lua_createtable(L, 0, 10);
     add_func(L, "init", luasteam_init_server);
     add_func(L, "shutdown", luasteam_shutdown_server);
@@ -195,10 +195,10 @@ void add_server(lua_State *L) {
     add_func(L, "bSecure", luasteam_server_bSecure);
     add_func(L, "getSteamID", luasteam_server_getSteamID);
     add_func(L, "setDedicatedServer", luasteam_server_setDedicatedServer);
-    add_server_constants(L);
+    add_gameserver_constants(L);
     lua_pushvalue(L, -1);
-    server_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "server");
+    gameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "gameServer");
 }
 
 } // namespace luasteam

@@ -6,7 +6,7 @@
 #include "utils.hpp"
 #include "apps.hpp"
 #include "input.hpp"
-#include "sockets.hpp"
+#include "networkingSockets.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -24,7 +24,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_extra(L);
         luasteam::init_apps(L);
         luasteam::init_input(L);
-        luasteam::init_sockets(L);
+        luasteam::init_networkingSockets(L);
     } else {
         fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
     }
@@ -36,7 +36,7 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
-    luasteam::shutdown_sockets(L);
+    luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_input(L);
     luasteam::shutdown_apps(L);
     luasteam::shutdown_extra(L);
