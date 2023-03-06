@@ -137,7 +137,7 @@ EXTERN int luasteam_server_logOn(lua_State *L) {
 
 // void void LogOnAnonymous()
 EXTERN int luasteam_server_logOnAnonymous(lua_State *L) {
-    SteamGameServer()->LogOff();
+    SteamGameServer()->LogOnAnonymous();
     return 0;
 }
 

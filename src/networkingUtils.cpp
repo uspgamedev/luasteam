@@ -16,11 +16,21 @@ EXTERN int luasteam_initRelayNetworkAccess(lua_State *L) {
     return 0;
 }
 
+// ESteamNetworkingAvailability GetRelayNetworkStatus( SteamRelayNetworkStatus_t *pDetails )
+EXTERN int luasteam_getRelayNetworkStatus(lua_State *L) {
+    ESteamNetworkingAvailability status = SteamNetworkingUtils()->GetRelayNetworkStatus(NULL);
+    lua_createtable(L, 0, 4);
+    lua_pushinteger(L, status);
+    lua_setfield(L, -2, "status");
+    return 1;
+}
+
 namespace luasteam {
 
 void add_networkingUtils(lua_State *L) {
-    lua_createtable(L, 0, 1);
+    lua_createtable(L, 0, 2);
     add_func(L, "initRelayNetworkAccess", luasteam_initRelayNetworkAccess);
+    add_func(L, "getRelayNetworkStatus", luasteam_getRelayNetworkStatus);
     lua_pushvalue(L, -1);
     networkingutils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "networkingUtils");

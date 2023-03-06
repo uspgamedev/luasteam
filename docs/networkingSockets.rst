@@ -2,9 +2,17 @@
 ISteamNetworkingSockets
 #######################
 
+This allows using the Steam Networking Sockets API. It's a protocol on top of UDP without the caveats of TCP (very slow) and optimized for the demands of video game traffic. Supports both reliable and unreliable traffic.
+
+There are two ways to use it.
+
+    * Classic Bind/connect to sockets and send/receive data over UDP. You are going to use IPs and ports as expected.
+    * P2P using the the steam network. In this case, you are going to connect directly to other steam users. Valve will handle all verification/authentication/encryption/NAT-punching issues for you and carry the traffic through the steam network.
+
+Read more at https://partner.steamgames.com/doc/features/multiplayer/steamdatagramrelay.
+
 List of Functions
 -----------------
-
 * :func:`networkingSockets.createListenSocketP2P`
 * :func:`networkingSockets.connectP2P`
 * :func:`networkingSockets.createListenSocketIP`
@@ -20,13 +28,11 @@ List of Functions
 
 List of Callbacks
 -----------------
-
 * :func:`networkingSockets.onAuthenticationStatus`
 * :func:`networkingSockets.onConnectionChanged`
 
 Function Reference
 ------------------
-
 .. function:: networkingSockets.createListenSocketP2P()
 
     :param integer virtualPort: The virtual port to bind to. Use 0 if you don't care about any particular port. Use values below 1000.
@@ -164,7 +170,33 @@ Function Reference
 
 **Example**::
 
-    local messages Steam.networkingSockets.receiveMessagesOnConnection(socket)
+    local messages = Steam.networkingSockets.receiveMessagesOnConnection(socket)
+
+.. function:: networkingSockets.initAuthentication()
+
+    :returns: (`int`) The possible values are same as ``data.status`` in :func:`networkingSockets.onAuthenticationStatus`
+    :SteamWorks: `InitAuthentication <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#InitAuthentication>`_
+
+    Indicate our desire to be ready participate in authenticated communications.
+
+**Example**::
+
+    local result = Steam.networkingSockets.initAuthentication()
+
+.. function:: networkingSockets.getAuthenticationStatus()
+
+    :returns: (`int`, `string`)
+
+        * status: The possible values are same as ``data.status`` in :func:`networkingSockets.onAuthenticationStatus`
+        * msg: A human readable message for the current status
+        
+    :SteamWorks: `GetAuthenticationStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetAuthenticationStatus>`_
+
+    Get the curren status of authentication
+
+**Example**::
+
+    local result, msg = Steam.networkingSockets.getAuthenticationStatus()
 
 Callbacks Reference
 -------------------
@@ -185,16 +217,16 @@ Callbacks Reference
     :SteamWorks: `SteamNetAuthenticationStatus_t <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetAuthenticationStatus_t>`_
 
     Posted whenever the authentication status with the Steam back-end changes.
-    Possible values for **data.status** are:
+    Possible values for **data.status** are
 
-	    * -102 -- CannotTry. A dependent resource is missing, so this service is unavailable.  (E.g. we cannot talk to routers because Internet is down or we don't have the network config.)
-	    * -101 -- Availability_Failed. We have tried for enough time that we would expect to have been successful by now.  We have never been successful
-	    * -100 -- Availability_Previously. We tried and were successful at one time, but now it looks like we have a problem
-        * -10 -- Retrying. We previously failed and are currently retrying
-	    * 1 -- NeverTried. We don't know because we haven't ever checked/tried
-	    * 2 -- Waiting. We're waiting on a dependent resource to be acquired.  (E.g. we cannot obtain a cert until we are logged into Steam.  We cannot measure latency to relays until we have the network config.)
-	    * 3 -- Attempting. We're actively trying now, but are not yet successful.
-        * 100 -- Current. Resource is online/available
+        * **-102 (CannotTry):** A dependent resource is missing, so this service is unavailable (e.g. we cannot talk to routers because Internet is down or we don't have the network config).
+        * **-101 (Availability_Failed):** We have tried for enough time that we would expect to have been successful by now.  We have never been successful.
+        * **-100 (Availability_Previously):** We tried and were successful at one time, but now it looks like we have a problem.
+        * **-10 (Retrying):** We previously failed and are currently retrying.
+        * **1 (NeverTried):** We don't know because we haven't ever checked/tried.
+        * **2 (Waiting):** We're waiting on a dependent resource to be acquired (e.g. we cannot obtain a cert until we are logged into Steam.  We cannot measure latency to relays until we have the network config).
+        * **3 (Attempting):** We're actively trying now, but are not yet successful.
+        * **100 (Current):** Resource is online/available.
 
 **Example**::
 
@@ -209,6 +241,8 @@ Callbacks Reference
 		* **data.connection** (`string`)  a unique id representing this connection
 		* **data.state** (`string`)  the state this connection is now in
 		* **data.state_old** (`int`)  the previous state this connection was in
+		* **data.endReason** (`int`)  end reason error code
+		* **data.debug** (`string`)  humand readable debug information string
     :returns: nothing
     :SteamWorks: `SteamNetConnectionStatusChangedCallback_t <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetConnectionStatusChangedCallback_t>`_
 
@@ -229,5 +263,5 @@ Callbacks Reference
 **Example**::
 
     function Steam.networkingSockets.onConnectionChanged(data)
-        print ('A connection has changed', data.connection, data.state, data.state_old)
+        print ('Connection changed', data.connection, data.state, data.state_old, data.endReason, data.debug)
     end
