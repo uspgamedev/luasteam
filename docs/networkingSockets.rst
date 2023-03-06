@@ -36,7 +36,7 @@ Function Reference
 .. function:: networkingSockets.createListenSocketP2P()
 
     :param integer virtualPort: The virtual port to bind to. Use 0 if you don't care about any particular port. Use values below 1000.
-    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. **NOT IMPLEMENTED YET**
+    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
     :returns: (`userdata`) a socket object
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
@@ -50,7 +50,7 @@ Function Reference
 
     :param uint64 steamID: The steamID of the remote host to connect to. Use :func:`Steam.extra.parseUint64('12345abcded')` to parse a steamID string
     :param integer virtualPort: The virtual port to connect to on the server.
-    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. **NOT IMPLEMENTED YET**
+    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
     :returns: (`userdata`) a socket object
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
@@ -63,7 +63,7 @@ Function Reference
 .. function:: networkingSockets.createListenSocketIP()
 
     :param string localAdress: The adress to bind to in string format. E.g. to bind to localhost on port 55556, use **"[::]:55556"**.
-    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. **NOT IMPLEMENTED YET**
+    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
     :returns: (`userdata`) a socket object
     :SteamWorks: `CreateListenSocketIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketIP>`_
 
@@ -76,7 +76,7 @@ Function Reference
 .. function:: networkingSockets.connectByIPAddress()
 
     :param string localAdress: The adress to connect to in string format. E.g. to bind to localhost on port 55556, use **"127.0.0.1:55556"**.
-    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. **NOT IMPLEMENTED YET**
+    :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
     :returns: (`userdata`) a socket object
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
@@ -265,3 +265,46 @@ Callbacks Reference
     function Steam.networkingSockets.onConnectionChanged(data)
         print ('Connection changed', data.connection, data.state, data.state_old, data.endReason, data.debug)
     end
+
+
+List of Config Options
+----------------------
+
+.. _config:
+
+The following network options can be passed as a table when initiating connections. Example::
+
+    { Unencrypted = 2, IP_AllowWithoutAuth = 1, NagleTime = 0}
+
+Be careful with the values and only change things if you know what you are doing. All values are integers.
+
+    * **TimeoutInitial:** Timeout value (in ms) to use when first connecting
+    * **TimeoutConnected:** Timeout value (in ms) to use after connection is established
+    * **SendBufferSize:** Upper limit of buffered pending bytes to be sent, if this is reached SendMessage will return k_EResultLimitExceeded Default is 512k (524288 bytes)
+    * **SendRateMin:** Minimum/maximum send rate clamp. Default is 0 (no-limit). This value will control the min/max allowed sending rate that bandwidth estimation is allowed to reach.
+    * **SendRateMax:** See SendRateMin
+    * **NagleTime:** Nagle time, in microseconds (how long to wait with send small packets to facilitate grouping). Default is 5000us (5ms)
+    * **IP_AllowWithoutAuth:** Don't automatically fail IP connections that don't have strong auth. 
+        
+        On clients, this means we will attempt the connection even if we don't know our identity or can't get a cert. 
+        
+        On the server, it means that we won't automatically reject a connection due to a failure to authenticate. (You can examine the incoming connection and decide whether to accept it.) This is a dev configuration value, and you should not let users modify it in production.
+    * **MTU_PacketSize:** Do not send UDP packets with a payload of larger than N bytes. If you set this, k_ESteamNetworkingConfig_MTU_DataSize is automatically adjusted
+    * **Unencrypted:** Allow unencrypted (and unauthenticated) communication. 
+    
+        0: Not allowed (the default)
+
+        1: Allowed, but prefer encrypted
+
+        2: Allowed, and preferred
+
+        3: Required.  (Fail the connection if the peer requires encryption.)
+        
+        This is a dev configuration value, since its purpose is to disable encryption. You should not let users modify it in production.  (But note that it requires the peer to also modify their value in order for encryption to be disabled.)
+    * **SymmetricConnect:** Set this to 1 on outbound connections and listen sockets, to enable "symmetric connect mode", which is useful in the following common peer-to-peer use case: The two peers are "equal" to each other.  (Neither is clearly the "client" or "server".) 
+        
+        1. Either peer may initiate the connection, and indeed they may do this at the same time
+        
+        2. The peers only desire a single connection to each other, and if both peers initiate connections simultaneously, a protocol is needed for them to resolve the conflict, so that we end up with a single connection.
+
+    * **LocalVirtualPort:** For connection types that use "virtual ports", this can be used to assign a local virtual port The local port is only relevant for symmetric connections, when determining if two connections "match."  In this case, if you need the local and remote port to differ, you can set this value.

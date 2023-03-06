@@ -21,7 +21,7 @@ In this mode, not all modules and functions are usable.
 Useable modules:
 
     * ISteamNetworkingSockets
-    * ISteamNetworkingSockets
+    * ISteamNetworkingUtils
 
 
 List of Functions

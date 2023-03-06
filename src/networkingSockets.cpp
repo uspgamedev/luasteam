@@ -52,11 +52,11 @@ void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
         lua_createtable(L, 0, 1);
         lua_pushstring(L, steam_networking_connection_state[data->m_info.m_eState]);
         lua_setfield(L, -2, "state");
-        lua_pushstring(L, steam_networking_connection_state[data->m_eOldState]); 
+        lua_pushstring(L, steam_networking_connection_state[data->m_eOldState]);
         lua_setfield(L, -2, "state_old");
         lua_pushinteger(L, data->m_info.m_eEndReason);
         lua_setfield(L, -2, "endReason");
-        lua_pushstring(L, data->m_info.m_szEndDebug); 
+        lua_pushstring(L, data->m_info.m_szEndDebug);
         lua_setfield(L, -2, "debug");
         lua_pushinteger(L, data->m_hConn);
         lua_setfield(L, -2, "connection");
@@ -65,13 +65,9 @@ void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
     }
 }
 
-void CallbackListener::OnConnectionChangedServer(SteamNetConnectionStatusChangedCallback_t *data) {
-    connectionChanged(data);
-}
+void CallbackListener::OnConnectionChangedServer(SteamNetConnectionStatusChangedCallback_t *data) { connectionChanged(data); }
 
-void CallbackListener::OnConnectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
-    connectionChanged(data);
-}
+void CallbackListener::OnConnectionChanged(SteamNetConnectionStatusChangedCallback_t *data) { connectionChanged(data); }
 
 void authStatus(SteamNetAuthenticationStatus_t *data) {
     if (data == nullptr) {
@@ -89,38 +85,79 @@ void authStatus(SteamNetAuthenticationStatus_t *data) {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eAvail);
         lua_setfield(L, -2, "status");
-        lua_pushstring(L, data->m_debugMsg); 
+        lua_pushstring(L, data->m_debugMsg);
         lua_setfield(L, -2, "debugMsg");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
 }
 
-void CallbackListener::OnAuthenticationStatus(SteamNetAuthenticationStatus_t *data) {
-    authStatus(data);
-}
+void CallbackListener::OnAuthenticationStatus(SteamNetAuthenticationStatus_t *data) { authStatus(data); }
 
-void CallbackListener::OnAuthenticationStatusServer(SteamNetAuthenticationStatus_t *data) {
-    authStatus(data);
-}
+void CallbackListener::OnAuthenticationStatusServer(SteamNetAuthenticationStatus_t *data) { authStatus(data); }
 
 } // namespace
 
-SteamNetworkingConfigValue_t* parseConfig(lua_State *L) {
-    // TODO read options from state
-    SteamNetworkingConfigValue_t *pOptions = new SteamNetworkingConfigValue_t[2];
-    pOptions[0].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_IP_AllowWithoutAuth, 1);
-    pOptions[1].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Unencrypted, 2);
-    return pOptions;
+int parseConfig(lua_State *L, SteamNetworkingConfigValue_t *pOptions) {
+
+    if (!lua_istable(L, -1)) {
+        return 0;
+    }
+
+    int count = 0;
+    lua_pushnil(L);
+    while (lua_next(L, -2)) {
+        count++;
+        lua_pop(L, 1);
+    }
+
+    pOptions = new SteamNetworkingConfigValue_t;
+    lua_pushnil(L);
+    int current = 0;
+    while (lua_next(L, -2)) {
+
+        const char *key = luaL_checkstring(L, -2);
+        int value = luaL_checkinteger(L, -1);
+
+        if (strcmp(key, "TimeoutInitial") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_TimeoutInitial, value);
+        } else if (strcmp(key, "TimeoutConnected") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_TimeoutConnected, value);
+        } else if (strcmp(key, "SendBufferSize") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_SendBufferSize, value);
+        } else if (strcmp(key, "SendRateMin") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_SendRateMin, value);
+        } else if (strcmp(key, "SendRateMax") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_SendRateMax, value);
+        } else if (strcmp(key, "NagleTime") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_NagleTime, value);
+        } else if (strcmp(key, "IP_AllowWithoutAuth") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_IP_AllowWithoutAuth, value);
+        } else if (strcmp(key, "MTU_PacketSize") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_MTU_PacketSize, value);
+        } else if (strcmp(key, "Unencrypted") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Unencrypted, value);
+        } else if (strcmp(key, "SymmetricConnect") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_SymmetricConnect, value);
+        } else if (strcmp(key, "LocalVirtualPort") == 0) {
+            pOptions[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_LocalVirtualPort, value);
+        } else {
+            fprintf(stderr, "Unsupported/Unknown config option [ %s = %d ]\n", key, value);
+        }
+
+        lua_pop(L, 1);
+        current++;
+    }
+    return current;
 }
 
 void printConfig() { // todo clean up and hook up to lua
-    ESteamNetworkingConfigValue value = SteamNetworkingUtils()->IterateGenericEditableConfigValues( ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid, true);
-        fprintf(stderr, "### Printing config ###\n");
-    while( value != ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid ) {
+    ESteamNetworkingConfigValue value = SteamNetworkingUtils()->IterateGenericEditableConfigValues(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid, true);
+    fprintf(stderr, "### Printing config ###\n");
+    while (value != ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid) {
         ESteamNetworkingConfigDataType *pOutDataType = new ESteamNetworkingConfigDataType();
-		ESteamNetworkingConfigScope *pOutScope = new ESteamNetworkingConfigScope();
-        const char * result = SteamNetworkingUtils()->GetConfigValueInfo(value, pOutDataType, pOutScope);
+        ESteamNetworkingConfigScope *pOutScope = new ESteamNetworkingConfigScope();
+        const char *result = SteamNetworkingUtils()->GetConfigValueInfo(value, pOutDataType, pOutScope);
         if (result != NULL) {
             fprintf(stderr, "%s %s %s\n", steam_networking_config_scopes[*pOutScope], result, steam_networking_config_datatype[*pOutDataType]);
         }
@@ -132,19 +169,9 @@ void printConfig() { // todo clean up and hook up to lua
 EXTERN int luasteam_createListenSocketIP(lua_State *L) {
     SteamNetworkingIPAddr localAdress;
     localAdress.ParseString(luaL_checkstring(L, 1));
-    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
-    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->CreateListenSocketIP(localAdress, 0, pOptions);
-
-    // DEBUG START disable certificates and encryption
-    SteamNetworkingConfigValue_t noauth = SteamNetworkingConfigValue_t();
-    noauth.SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_IP_AllowWithoutAuth, 1);    
-    SteamNetworkingUtils()->SetConfigValueStruct(noauth, ESteamNetworkingConfigScope::k_ESteamNetworkingConfig_ListenSocket, connectingSocket);
-
-    SteamNetworkingConfigValue_t unencrypted = SteamNetworkingConfigValue_t();
-    unencrypted.SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Unencrypted, 2);    
-    SteamNetworkingUtils()->SetConfigValueStruct(unencrypted, ESteamNetworkingConfigScope::k_ESteamNetworkingConfig_ListenSocket, connectingSocket);
-    // DEBUG END
-
+    SteamNetworkingConfigValue_t *pOptions = nullptr;
+    int nOptions = parseConfig(L, pOptions);
+    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->CreateListenSocketIP(localAdress, nOptions, pOptions);
     lua_pushlightuserdata(L, &connectingSocket);
     return 1;
 }
@@ -153,19 +180,9 @@ EXTERN int luasteam_createListenSocketIP(lua_State *L) {
 EXTERN int luasteam_connectByIPAddress(lua_State *L) {
     SteamNetworkingIPAddr address;
     address.ParseString(luaL_checkstring(L, 1));
-    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
-    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->ConnectByIPAddress(address, 0, pOptions);
-
-    // DEBUG START disable certificates and encryption
-    SteamNetworkingConfigValue_t noauth = SteamNetworkingConfigValue_t();
-    noauth.SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_IP_AllowWithoutAuth, 1);    
-    SteamNetworkingUtils()->SetConfigValueStruct(noauth, ESteamNetworkingConfigScope::k_ESteamNetworkingConfig_ListenSocket, connectingSocket);
-
-    SteamNetworkingConfigValue_t unencrypted = SteamNetworkingConfigValue_t();
-    unencrypted.SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Unencrypted, 2);    
-    SteamNetworkingUtils()->SetConfigValueStruct(unencrypted, ESteamNetworkingConfigScope::k_ESteamNetworkingConfig_ListenSocket, connectingSocket);
-    // DEBUG END
-
+    SteamNetworkingConfigValue_t *pOptions = nullptr;
+    int nOptions = parseConfig(L, pOptions);
+    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->ConnectByIPAddress(address, nOptions, pOptions);
     lua_pushlightuserdata(L, &connectingSocket);
     return 1;
 }
@@ -173,8 +190,9 @@ EXTERN int luasteam_connectByIPAddress(lua_State *L) {
 // HSteamListenSocket CreateListenSocketP2P( int nVirtualPort, int nOptions, const SteamNetworkingConfigValue_t *pOptions )
 EXTERN int luasteam_createListenSocketP2P(lua_State *L) {
     int nVirtualPort = luaL_checkinteger(L, 1);
-    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
-    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->CreateListenSocketP2P(nVirtualPort, 0, nullptr);
+    SteamNetworkingConfigValue_t *pOptions = nullptr;
+    int nOptions = parseConfig(L, pOptions);
+    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->CreateListenSocketP2P(nVirtualPort, nOptions, pOptions);
     lua_pushlightuserdata(L, &connectingSocket);
     return 1;
 }
@@ -185,8 +203,9 @@ EXTERN int luasteam_connectP2P(lua_State *L) {
     CSteamID id(luasteam::checkuint64(L, 1));
     identityRemote.SetSteamID(id);
     int nVirtualPort = luaL_checkinteger(L, 2);
-    SteamNetworkingConfigValue_t* pOptions = parseConfig(L);
-    HSteamNetConnection connectingSocket = steamNetworkingSocketsLib()->ConnectP2P(identityRemote, nVirtualPort, 0, nullptr);
+    SteamNetworkingConfigValue_t *pOptions = nullptr;
+    int nOptions = parseConfig(L, pOptions);
+    HSteamNetConnection connectingSocket = steamNetworkingSocketsLib()->ConnectP2P(identityRemote, nVirtualPort, nOptions, pOptions);
     lua_pushlightuserdata(L, &connectingSocket);
     return 1;
 }
