@@ -44,7 +44,7 @@ Function Reference
 
 **Example**::
 
-    Steam.networkingSockets.createListenSocketP2P(0)
+    local socket = Steam.networkingSockets.createListenSocketP2P(0)
 
 .. function:: networkingSockets.connectP2P()
 
@@ -58,7 +58,7 @@ Function Reference
 
 **Example**::
 
-    Steam.networkingSockets.connectP2P(0)
+    local socket = Steam.networkingSockets.connectP2P(0)
 
 .. function:: networkingSockets.createListenSocketIP()
 
@@ -71,7 +71,7 @@ Function Reference
 
 **Example**::
 
-    Steam.networkingSockets.createListenSocketIP("[::]:55556")
+    local socket = Steam.networkingSockets.createListenSocketIP("[::]:55556")
 
 .. function:: networkingSockets.connectByIPAddress()
 
@@ -84,7 +84,7 @@ Function Reference
 
 **Example**::
 
-    Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556")
+    local socket = Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556")
     
 .. function:: networkingSockets.acceptConnection()
 
