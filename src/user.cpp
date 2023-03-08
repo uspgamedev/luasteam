@@ -1,4 +1,5 @@
 #include "user.hpp"
+#include "const.hpp"
 
 // ============================
 // ======== SteamUser =========

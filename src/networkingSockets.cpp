@@ -1,4 +1,5 @@
 #include "networkingSockets.hpp"
+#include "const.hpp"
 
 // ======================================
 // ======= SteamNetworkingSockets =======
@@ -9,7 +10,6 @@ SteamNetworkingSocketsLib steamNetworkingSocketsLib;
 
 namespace {
 
-// ESteamNetworkingConnectionState
 const char *steam_networking_connection_state[] = {
     "None", "Connecting", "FindingRoute", "Connected", "ClosedByPeer", "ProblemDetectedLocally", nullptr,
 };

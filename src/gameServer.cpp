@@ -3,6 +3,7 @@
 #include "extra.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
+#include "const.hpp"
 
 // ===============================
 // ======= SteamGameServer =======
@@ -13,7 +14,7 @@ using luasteam::CallResultListener;
 namespace {
 
 class CallbackListener;
-CallbackListener *callback_listener = nullptr;
+CallbackListener *server_listener = nullptr;
 int gameServer_ref = LUA_NOREF;
 
 class CallbackListener {
@@ -104,6 +105,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
         luasteam::init_extra(L);
         luasteam::init_networkingSockets_server(L);
         luasteam::init_networkingUtils(L);
+        server_listener = new CallbackListener();
     } else {
         fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
     }
@@ -125,6 +127,10 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_common(L);
+    luaL_unref(L, LUA_REGISTRYINDEX, gameServer_ref);
+    gameServer_ref = LUA_NOREF;
+    delete server_listener;
+    server_listener = nullptr;
     return 0;
 }
 
