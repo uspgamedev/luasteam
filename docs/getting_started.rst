@@ -57,6 +57,11 @@ Doing this in luasteam should be as easy as::
 
 Check the `overview <https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown>`_ for more info on initialization and shutdown. When developing your game, remember to have Steam turned on and use a ``steam_appid.txt`` file.
 
+Server mode
+-----------
+
+If you want to use this library in a server context with no steam running in the background, see the ``ISteamGameServer`` section for more info.
+
 Normal functions
 ----------------
 
