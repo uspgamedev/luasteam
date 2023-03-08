@@ -40,7 +40,7 @@ Function Reference
     :returns: (`userdata`) a socket object
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
-    Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the callback **TODO** to be notified about connection events.
+    Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the :func:`networkingSockets.onAuthenticationStatus` callback to be notified about connection events.
 
 **Example**::
 
@@ -54,7 +54,7 @@ Function Reference
     :returns: (`int`) a connection id
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
-    Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the callback **TODO** to be notified about connection events.
+    Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the :func:`networkingSockets.onAuthenticationStatus` callback to be notified about connection events.
 
 **Example**::
 
@@ -201,7 +201,11 @@ Function Reference
 .. function:: networkingSockets.getConnectionInfo()
 
     :param int connection: The connection to get info about
-    :returns: (`code`, `info`) See the return values of :func:`networkingSockets.connectByIPAddress` for code meanings. The info string contains more detail.
+    :returns: (`code`, `info`) 
+
+        * **code** See the return values of :func:`networkingSockets.connectByIPAddress` for code meanings. 
+
+        * **info** Connection detail string
     :SteamWorks: `GetConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionInfo>`_
 
     Get basic information about the status of a connection.
@@ -321,3 +325,101 @@ Be careful with the values and only change things if you know what you are doing
         2. The peers only desire a single connection to each other, and if both peers initiate connections simultaneously, a protocol is needed for them to resolve the conflict, so that we end up with a single connection.
 
     * **LocalVirtualPort:** For connection types that use "virtual ports", this can be used to assign a local virtual port The local port is only relevant for symmetric connections, when determining if two connections "match."  In this case, if you need the local and remote port to differ, you can set this value.
+
+
+Examples
+--------
+
+These examples should run with any version of lua >= 5.1 or Löve
+
+**Sockets Client**::
+
+    local Steam = require 'luasteam'
+
+    local connection = nil
+
+    Steam.init()
+
+    Steam.networkingSockets.initAuthentication()
+
+    function Steam.networkingSockets.onConnectionChanged(data)
+        print ('Connection changed', data.connection, data.state, data.state_old, data.endReason, data.debug)
+    end
+
+    function Steam.networkingSockets.onAuthenticationStatus(data)
+        if data.status == 100 and not connection then
+            connection = Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556")
+        end
+    end
+
+    local run = true
+
+    while run do
+        Steam.runCallbacks()
+
+        if connection then
+            local messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
+      
+            for j,m in ipairs(messages) do
+                print("received message", j, m, "from connection", connection, type(j))
+                Steam.networkingSockets.sendMessageToConnection(connection, "Hello server! This is the client! Thank you!", Steam.networkingSockets.flags.Send_Reliable)
+            end
+        end
+    end
+
+    if connection then
+        Steam.networkingSockets.closeConnection(connection)
+    end
+    Steam.shutdown()
+
+**Sockets Server**::
+
+    local Steam = require 'luasteam'
+
+    local connections = {}
+    local server = nil
+
+    Steam.init()
+
+    Steam.networkingSockets.initAuthentication()
+
+    function Steam.networkingSockets.onConnectionChanged(data)
+        print ('Connection changed', data.connection, data.state, data.state_old, data.endReason, data.debug)
+        if data.state == "Connecting" then
+            Steam.networkingSockets.acceptConnection(data.connection)
+        end
+        if  data.state == "Connected" then
+            connections[data.connection] = true
+            Steam.networkingSockets.sendMessageToConnection(data.connection, "Hello client! This is the server! Welcome!", Steam.networkingSockets.flags.Send_Reliable)
+        else
+            connections[data.connection] = nil
+        end
+        if data.state == "ClosedByPeer" or data.state == "ProblemDetectedLocally" then
+            print(data.connection, data.state, data.endReason, data.debug)
+            Steam.networkingSockets.closeConnection(data.connection)
+        end
+    end
+
+    function Steam.networkingSockets.onAuthenticationStatus(data)
+        if data.status == 100 and not connection then
+            server = Steam.networkingSockets.createListenSocketIP("[::]:55556")
+        end
+    end
+
+    local run = true
+
+    while run do
+        Steam.runCallbacks()
+
+        for conn,_ in pairs(connections) do
+            local messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
+            for j,m in pairs(messages) do
+                print("received message", j, m, "from connection", conn, type(j))
+            end
+        end
+    end
+
+    for conn,_ in pairs(connections) do
+        Steam.networkingSockets.closeConnection(conn)
+    end
+    Steam.shutdown()
