@@ -51,7 +51,7 @@ Function Reference
     :param uint64 steamID: The steamID of the remote host to connect to. Use :func:`Steam.extra.parseUint64('12345abcded')` to parse a steamID string
     :param integer virtualPort: The virtual port to connect to on the server.
     :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
-    :returns: (`userdata`) a socket object
+    :returns: (`int`) a connection id
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
     Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the callback **TODO** to be notified about connection events.
@@ -77,14 +77,14 @@ Function Reference
 
     :param string localAdress: The adress to connect to in string format. E.g. to bind to localhost on port 55556, use **"127.0.0.1:55556"**.
     :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
-    :returns: (`userdata`) a socket object
+    :returns: (`int`) a connection id
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
     Connect to a given adress as a "client". If you want to change any networking settings, you need pass these options on creation. Implement the callback :func:`networkingSockets.onConnectionChanged` to be notified about connection events.
 
 **Example**::
 
-    local socket = Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556")
+    local connection = Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556")
     
 .. function:: networkingSockets.acceptConnection()
 
@@ -197,6 +197,19 @@ Function Reference
 **Example**::
 
     local result, msg = Steam.networkingSockets.getAuthenticationStatus()
+
+.. function:: networkingSockets.getConnectionInfo()
+
+    :param int connection: The connection to get info about
+    :returns: (`code`, `info`) See the return values of :func:`networkingSockets.connectByIPAddress` for code meanings. The info string contains more detail.
+    :SteamWorks: `GetConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionInfo>`_
+
+    Get basic information about the status of a connection.
+
+**Example**::
+
+    local code, info = Steam.networkingSockets.getConnectionInfo(connection)
+
 
 Callbacks Reference
 -------------------

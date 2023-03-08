@@ -25,8 +25,7 @@ const char *steam_networking_config_datatype[] = {
 int sockets_ref = LUA_NOREF;
 
 class CallbackListener;
-CallbackListener *connection_listener = nullptr;
-CallbackListener *auth_listener = nullptr;
+CallbackListener *sockets_listener = nullptr;
 
 class CallbackListener {
   private:
@@ -37,7 +36,7 @@ class CallbackListener {
 };
 
 void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
-    if (data == nullptr) {
+        if (data == nullptr) {
         return;
     }
     lua_State *L = luasteam::global_lua_state;
@@ -63,7 +62,7 @@ void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
-}
+ }
 
 void CallbackListener::OnConnectionChangedServer(SteamNetConnectionStatusChangedCallback_t *data) { connectionChanged(data); }
 
@@ -192,8 +191,8 @@ EXTERN int luasteam_connectByIPAddress(lua_State *L) {
     address.ParseString(luaL_checkstring(L, 1));
     SteamNetworkingConfigValue_t *pOptions = nullptr;
     int nOptions = parseConfig(L, &pOptions);
-    HSteamListenSocket connectingSocket = steamNetworkingSocketsLib()->ConnectByIPAddress(address, nOptions, pOptions);
-    lua_pushlightuserdata(L, &connectingSocket);
+    HSteamNetConnection connection = steamNetworkingSocketsLib()->ConnectByIPAddress(address, nOptions, pOptions);
+    lua_pushinteger(L, connection);
     return 1;
 }
 
@@ -215,8 +214,8 @@ EXTERN int luasteam_connectP2P(lua_State *L) {
     int nVirtualPort = luaL_checkinteger(L, 2);
     SteamNetworkingConfigValue_t *pOptions = nullptr;
     int nOptions = parseConfig(L, &pOptions);
-    HSteamNetConnection connectingSocket = steamNetworkingSocketsLib()->ConnectP2P(identityRemote, nVirtualPort, nOptions, pOptions);
-    lua_pushlightuserdata(L, &connectingSocket);
+    HSteamNetConnection connection = steamNetworkingSocketsLib()->ConnectP2P(identityRemote, nVirtualPort, nOptions, pOptions);
+    lua_pushinteger(L, connection);
     return 1;
 }
 
@@ -345,25 +344,20 @@ void add_networkingSockets(lua_State *L) {
 
 void init_networkingSockets(lua_State *L) {
     steamNetworkingSocketsLib = &SteamNetworkingSockets;
-    connection_listener = new CallbackListener();
-    auth_listener = new CallbackListener();
+    sockets_listener = new CallbackListener();
 }
 
 void init_networkingSockets_server(lua_State *L) {
     steamNetworkingSocketsLib = &SteamGameServerNetworkingSockets;
-    connection_listener = new CallbackListener();
-    auth_listener = new CallbackListener();
+    sockets_listener = new CallbackListener();
 }
 
 void shutdown_networkingSockets(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, sockets_ref);
     sockets_ref = LUA_NOREF;
 
-    delete connection_listener;
-    connection_listener = nullptr;
-
-    delete auth_listener;
-    auth_listener = nullptr;
+    delete sockets_listener;
+    sockets_listener = nullptr;
 }
 
 } // namespace luasteam
