@@ -265,13 +265,15 @@ EXTERN int luasteam_receiveMessagesOnConnection(lua_State *L) {
 
     lua_createtable(L, 0, numMessages);
     if (numMessages > 0) {
+        int current = 1;
         for (int i = 0; i < numMessages; i++) {
             SteamNetworkingMessage_t *message = msgs[i];
             uint32 messageSize = message->GetSize();
 
             if (messageSize > 0) {
                 lua_pushlstring(L, (char *)message->GetData(), messageSize);
-                lua_rawseti(L, -2, i + 1);
+                lua_rawseti(L, -2, current);
+                current++;
             }
             message->Release();
         }
@@ -316,6 +318,59 @@ EXTERN int luasteam_getIdentity(lua_State *L) {
     return 1;
 }
 
+// HSteamNetPollGroup CreatePollGroup()
+EXTERN int luasteam_createPollGroup(lua_State *L) {
+    HSteamNetPollGroup pollGroup = steamNetworkingSocketsLib()->CreatePollGroup();
+    lua_pushinteger(L, pollGroup);
+    return 1;
+}
+
+// DestroyPollGroup( HSteamNetPollGroup hPollGroup )
+EXTERN int luasteam_destroyPollGroup(lua_State *L) {
+    HSteamNetPollGroup hPollGroup = luaL_checkinteger(L, 1);
+    bool result = steamNetworkingSocketsLib()->DestroyPollGroup(hPollGroup);
+    lua_pushboolean(L, result);
+    return 1;
+}
+
+// SetConnectionPollGroup( HSteamNetConnection hConn, HSteamNetPollGroup hPollGroup )
+EXTERN int luasteam_setConnectionPollGroup(lua_State *L) {
+    HSteamNetConnection hConn = luaL_checkinteger(L, 1);
+    HSteamNetPollGroup hPollGroup = luaL_checkinteger(L, 2);
+    bool result = steamNetworkingSocketsLib()->SetConnectionPollGroup(hConn, hPollGroup);
+    lua_pushboolean(L, result);
+    return 1;
+}
+
+// int ReceiveMessagesOnPollGroup( HSteamNetPollGroup hPollGroup, SteamNetworkingMessage_t **ppOutMessages, int nMaxMessages )
+EXTERN int luasteam_receiveMessagesOnPollGroup(lua_State *L) {
+    HSteamNetPollGroup hPollGroup = luaL_checkinteger(L, 1);
+
+    SteamNetworkingMessage_t *msgs[32];
+    int numMessages = steamNetworkingSocketsLib()->ReceiveMessagesOnPollGroup(hPollGroup, msgs, 32);
+
+    lua_createtable(L, 0, numMessages);
+    if (numMessages > 0) {
+        int current = 1;
+        for (int i = 0; i < numMessages; i++) {
+            SteamNetworkingMessage_t *message = msgs[i];
+            uint32 messageSize = message->GetSize();
+
+            if (messageSize > 0) {
+                lua_createtable(L, 0, 2);
+                lua_pushlstring(L, (char *)message->GetData(), messageSize);
+                lua_setfield(L, -2, "msg");
+                lua_pushinteger(L, message->m_conn);
+                lua_setfield(L, -2, "conn");
+                lua_rawseti(L, -2, current);
+                current++;
+            }
+            message->Release();
+        }
+    }
+    return 1;
+}
+
 namespace luasteam {
 
 void add_constants(lua_State *L) {
@@ -348,6 +403,10 @@ void add_networkingSockets(lua_State *L) {
     add_func(L, "getAuthenticationStatus", luasteam_getAuthenticationStatus);
     add_func(L, "getConnectionInfo", luasteam_getConnectionInfo);
     add_func(L, "getIdentity", luasteam_getIdentity);
+    add_func(L, "createPollGroup", luasteam_createPollGroup);
+    add_func(L, "destroyPollGroup", luasteam_destroyPollGroup);
+    add_func(L, "setConnectionPollGroup", luasteam_setConnectionPollGroup);
+    add_func(L, "receiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
     add_constants(L);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);

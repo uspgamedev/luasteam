@@ -26,6 +26,10 @@ List of Functions
 * :func:`networkingSockets.getAuthenticationStatus`
 * :func:`networkingSockets.getConnectionInfo`
 * :func:`networkingSockets.getIdentity`
+* :func:`networkingSockets.createPollGroup`
+* :func:`networkingSockets.destroyPollGroup`
+* :func:`networkingSockets.setConnectionPollGroup`
+* :func:`networkingSockets.receiveMessagesOnPollGroup`
 
 List of Callbacks
 -----------------
@@ -169,9 +173,11 @@ Function Reference
 
     A result table might look like this: ``{ 1 = "Some message", 2 = "Another message", 3 = "Yet another message" }``
 
+    Iterate with ipairs to retain the order any reliable messages were received in.
+
 **Example**::
 
-    local messages = Steam.networkingSockets.receiveMessagesOnConnection(socket)
+    local messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
 
 .. function:: networkingSockets.initAuthentication()
 
@@ -215,6 +221,59 @@ Function Reference
 
     local code, info = Steam.networkingSockets.getConnectionInfo(connection)
 
+.. function:: networkingSockets.createPollGroup()
+
+    :returns: (`int`) id of the poll group
+    :SteamWorks: `CreatePollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreatePollGroup>`_
+
+    Create a new poll group. You can use this to receive messages from multiple connections at once. You need to delete this if you don't need it anymore with :func:`networkingSockets.destroyPollGroup`.
+
+**Example**::
+
+    local pollGroup = Steam.networkingSockets.createPollGroup()
+
+.. function:: networkingSockets.destroyPollGroup()
+
+    :param int pollGroup: The poll group to destroy
+    :returns: (`boolean`) ``true`` if it was successful
+    :SteamWorks: `DestroyPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#DestroyPollGroup>`_
+
+    Destroy a poll group. Do this before you shut down.
+
+**Example**::
+
+    local success = Steam.networkingSockets.destroyPollGroup(pollGroup)
+
+.. function:: networkingSockets.setConnectionPollGroup()
+
+    :param int connection: The connection to add to the poll group
+    :param int pollGroup: The poll group
+    :returns: (`boolean`) ``true`` if it was successful
+    :SteamWorks: `SetConnectionPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionPollGroup>`_
+
+    Assign a connection to a poll group. After that you can poll this connections messages through the poll group with :func:`networkingSockets.receiveMessagesOnPollGroup`.
+
+**Example**::
+
+    local success = Steam.networkingSockets.setConnectionPollGroup(connection, pollGroup)
+
+.. function:: networkingSockets.receiveMessagesOnPollGroup()
+
+    :param int pollGroup: The poll group to receive messages from
+    :returns: (`table`) a table with all n messages received, indexed 1..n. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table. Each message is a table with a ``conn`` and a ``msg`` field.
+    :SteamWorks: `ReceiveMessagesOnPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup>`_
+
+    This is the poll group equivalent to :func:`networkingSockets.receiveMessagesOnConnection`. The advantage of this version is that you can just get all messages to any connection assigned. If you expect larger number of connections, it's much more efficient to create one or more poll groups and just poll the group instead of having to check messages for every connection individually.
+
+    Receive all the messages that are waiting on the given poll group up to 32. Call this repeatedly until ``#return < 32``
+
+    A result table might look like this: ``{ 1 = { conn = 5235, msg = "A message" }, 2 = { conn = 5235, msg = "Another message" }, 3 = { conn = 5678, msg = "Yet another message" } }``
+    
+    Iterate with ipairs to retain the order any reliable messages were received in.
+
+**Example**::
+
+    local messages = Steam.networkingSockets.receiveMessagesOnPollGroup(pollGroup)
 
 Callbacks Reference
 -------------------
@@ -432,7 +491,7 @@ These examples should run with any version of lua >= 5.1 or Löve
 
         for conn,_ in pairs(connections) do
             local messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
-            for j,m in pairs(messages) do
+            for j,m in ipairs(messages) do
                 print("received message", j, m, "from connection", conn, type(j))
                 run = false
             end
