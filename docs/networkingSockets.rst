@@ -350,7 +350,6 @@ These examples should run with any version of lua >= 5.1 or Löve
     local connection = nil
 
     Steam.init()
-
     Steam.networkingSockets.initAuthentication()
 
     function Steam.networkingSockets.onConnectionChanged(data)
@@ -364,16 +363,25 @@ These examples should run with any version of lua >= 5.1 or Löve
     end
 
     local run = true
-
+    local counter = 0
+    local msg_rec = false
     while run do
         Steam.runCallbacks()
 
         if connection then
             local messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
-      
+
             for j,m in ipairs(messages) do
                 print("received message", j, m, "from connection", connection, type(j))
                 Steam.networkingSockets.sendMessageToConnection(connection, "Hello server! This is the client! Thank you!", Steam.networkingSockets.flags.Send_Reliable)
+                msg_rec = true
+            end
+        end
+
+        if msg_rec then
+            counter = counter + 1
+            if counter > 10000 then -- you might have to increase this if the client shuts down faster than the message can be sent
+                run = false
             end
         end
     end
@@ -402,18 +410,18 @@ These examples should run with any version of lua >= 5.1 or Löve
         if  data.state == "Connected" then
             connections[data.connection] = true
             Steam.networkingSockets.sendMessageToConnection(data.connection, "Hello client! This is the server! Welcome!", Steam.networkingSockets.flags.Send_Reliable)
-        else
-            connections[data.connection] = nil
         end
         if data.state == "ClosedByPeer" or data.state == "ProblemDetectedLocally" then
             print(data.connection, data.state, data.endReason, data.debug)
             Steam.networkingSockets.closeConnection(data.connection)
+            connections[data.connection] = nil
         end
     end
 
     function Steam.networkingSockets.onAuthenticationStatus(data)
         if data.status == 100 and not connection then
             server = Steam.networkingSockets.createListenSocketIP("[::]:55556")
+            print("Listening on port 55556")
         end
     end
 
@@ -426,6 +434,7 @@ These examples should run with any version of lua >= 5.1 or Löve
             local messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
             for j,m in pairs(messages) do
                 print("received message", j, m, "from connection", conn, type(j))
+                run = false
             end
         end
     end
