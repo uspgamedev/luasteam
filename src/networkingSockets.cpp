@@ -305,6 +305,17 @@ EXTERN int luasteam_getConnectionInfo(lua_State *L) {
     return 2;
 }
 
+// bool GetIdentity( SteamNetworkingIdentity *pIdentity )
+EXTERN int luasteam_getIdentity(lua_State *L) {
+    SteamNetworkingIdentity *pIdentity = new SteamNetworkingIdentity();
+    bool result = steamNetworkingSocketsLib()->GetIdentity(pIdentity);
+    if (!result || pIdentity->m_eType != ESteamNetworkingIdentityType::k_ESteamNetworkingIdentityType_SteamID) {
+        return 0;
+    }
+    luasteam::pushuint64(L, pIdentity->GetSteamID().ConvertToUint64());
+    return 1;
+}
+
 namespace luasteam {
 
 void add_constants(lua_State *L) {
@@ -323,7 +334,7 @@ void add_constants(lua_State *L) {
 }
 
 void add_networkingSockets(lua_State *L) {
-    lua_createtable(L, 0, 10);
+    lua_createtable(L, 0, 11);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
     add_func(L, "createListenSocketP2P", luasteam_createListenSocketP2P);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
@@ -336,6 +347,7 @@ void add_networkingSockets(lua_State *L) {
     add_func(L, "initAuthentication", luasteam_initAuthentication);
     add_func(L, "getAuthenticationStatus", luasteam_getAuthenticationStatus);
     add_func(L, "getConnectionInfo", luasteam_getConnectionInfo);
+    add_func(L, "getIdentity", luasteam_getIdentity);
     add_constants(L);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);

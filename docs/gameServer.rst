@@ -60,7 +60,7 @@ Function Reference
     :returns: (`boolean`) success
     :SteamWorks: `SteamGameServer_Init <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_Init>`_
 
-    Accept P2P connections through the Steam Network. If you want to change any networking settings, you need pass these options on creation. Implement the callback **TODO** to be notified about connection events.
+    Initiate the game server API and allow usage of **ISteamNetworkingSockets** and **ISteamNetworkingUtils**. Add some metadata about the type of server you're running here. Most of this is only relevant if you're planning to make use of Steam's server browser feature.
 
 **Example**::
 

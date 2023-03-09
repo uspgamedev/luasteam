@@ -25,6 +25,7 @@ List of Functions
 * :func:`networkingSockets.initAuthentication`
 * :func:`networkingSockets.getAuthenticationStatus`
 * :func:`networkingSockets.getConnectionInfo`
+* :func:`networkingSockets.getIdentity`
 
 List of Callbacks
 -----------------
@@ -283,6 +284,16 @@ Callbacks Reference
         print ('Connection changed', data.connection, data.state, data.state_old, data.endReason, data.debug)
     end
 
+.. function:: networkingSockets.getIdentity()
+
+    :returns: (`uint64`) The SteamID of the current user/server or ``nil`` if not available (should only happen with a server that is not logged in yet).
+    :SteamWorks: `GetIdentity <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetIdentity>`_
+
+    Get the current identity. Will either return the SteamID or null. Useful mostly if you want to write code that works identically on server and client side.
+
+**Example**::
+
+    local steamID = Steam.networkingSockets.getConnectionInfo(connection)
 
 List of Config Options
 ----------------------
