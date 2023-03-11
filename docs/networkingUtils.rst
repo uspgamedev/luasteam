@@ -4,8 +4,8 @@ ISteamNetworkingUtils
 
 List of Functions
 -----------------
-* :func:`networkingSockets.initRelayNetworkAccess`
-* :func:`networkingSockets.getRelayNetworkStatus`
+* :func:`networkingUtils.initRelayNetworkAccess`
+* :func:`networkingUtils.getRelayNetworkStatus`
 
 Function Reference
 ------------------
