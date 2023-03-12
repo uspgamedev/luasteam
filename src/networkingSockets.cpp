@@ -14,14 +14,6 @@ const char *steam_networking_connection_state[] = {
     "None", "Connecting", "FindingRoute", "Connected", "ClosedByPeer", "ProblemDetectedLocally", nullptr,
 };
 
-const char *steam_networking_config_scopes[] = {
-    "Invalid", "Global", "SocketsInterface", "ListenSocket", "Connection", nullptr,
-};
-
-const char *steam_networking_config_datatype[] = {
-    "Invalid", "Int32", "Int64", "Float", "String", "Ptr", nullptr,
-};
-
 int sockets_ref = LUA_NOREF;
 
 class CallbackListener;
