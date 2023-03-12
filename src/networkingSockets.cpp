@@ -160,20 +160,6 @@ int parseConfig(lua_State *L, SteamNetworkingConfigValue_t **pOptions) {
     return current;
 }
 
-void printConfig() { // todo clean up and hook up to lua
-    ESteamNetworkingConfigValue value = SteamNetworkingUtils()->IterateGenericEditableConfigValues(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid, true);
-    fprintf(stderr, "### Printing config ###\n");
-    while (value != ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_Invalid) {
-        ESteamNetworkingConfigDataType *pOutDataType = new ESteamNetworkingConfigDataType();
-        ESteamNetworkingConfigScope *pOutScope = new ESteamNetworkingConfigScope();
-        const char *result = SteamNetworkingUtils()->GetConfigValueInfo(value, pOutDataType, pOutScope);
-        if (result != NULL) {
-            fprintf(stderr, "%s %s %s\n", steam_networking_config_scopes[*pOutScope], result, steam_networking_config_datatype[*pOutDataType]);
-        }
-        value = SteamNetworkingUtils()->IterateGenericEditableConfigValues(value, true);
-    }
-}
-
 // HSteamListenSocket CreateListenSocketIP( const SteamNetworkingIPAddr &localAddress, int nOptions, const SteamNetworkingConfigValue_t *pOptions )
 EXTERN int luasteam_createListenSocketIP(lua_State *L) {
     SteamNetworkingIPAddr localAdress;

@@ -25,7 +25,6 @@ class CallbackListener {
 };
 
 void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
-    fprintf(stderr, "Running callbacks SteamServersConnected_t:\n");
     if (data == nullptr) {
         return;
     }
@@ -45,7 +44,6 @@ void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
 }
 
 void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *data) {
-    fprintf(stderr, "Running callbacks SteamServersDisconnected_t:\n");
     if (data == nullptr) {
         return;
     }
@@ -67,7 +65,6 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
 }
 
 void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *data) {
-    fprintf(stderr, "Running callbacks SteamServerConnectFailure_t:\n");
     if (data == nullptr) {
         return;
     }
