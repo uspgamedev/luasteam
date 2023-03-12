@@ -19,9 +19,7 @@ EXTERN int luasteam_initRelayNetworkAccess(lua_State *L) {
 // ESteamNetworkingAvailability GetRelayNetworkStatus( SteamRelayNetworkStatus_t *pDetails )
 EXTERN int luasteam_getRelayNetworkStatus(lua_State *L) {
     ESteamNetworkingAvailability status = SteamNetworkingUtils()->GetRelayNetworkStatus(NULL);
-    lua_createtable(L, 0, 4);
     lua_pushinteger(L, status);
-    lua_setfield(L, -2, "status");
     return 1;
 }
 
