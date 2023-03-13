@@ -53,7 +53,7 @@ Function Reference
 
 .. function:: networkingSockets.connectP2P()
 
-    :param uint64 steamID: The steamID of the remote host to connect to. Use :func:`Steam.extra.parseUint64('12345abcded')` to parse a steamID string
+    :param uint64 steamID: The steamID of the remote host to connect to. Get it from :func:`Steam.user.getSteamID()` or convert a string with :func:`Steam.extra.parseUint64`.
     :param integer virtualPort: The virtual port to connect to on the server.
     :param table options: Table with key value pairs to override default SteamNetworkingSockets options. See the config section at the bottom for possible values
     :returns: (`int`) a connection id
@@ -63,7 +63,7 @@ Function Reference
 
 **Example**::
 
-    local socket = Steam.networkingSockets.connectP2P(0)
+    local socket = Steam.networkingSockets.connectP2P(Steam.extra.parseUint64("someID"), 0)
 
 .. function:: networkingSockets.createListenSocketIP()
 
