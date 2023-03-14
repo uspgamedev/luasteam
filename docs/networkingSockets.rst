@@ -21,6 +21,8 @@ List of Functions
 * :func:`networkingSockets.closeConnection`
 * :func:`networkingSockets.closeListenSocket`
 * :func:`networkingSockets.sendMessageToConnection`
+* :func:`networkingSockets.sendMessages`
+* :func:`networkingSockets.flushMessagesOnConnection`
 * :func:`networkingSockets.receiveMessagesOnConnection`
 * :func:`networkingSockets.initAuthentication`
 * :func:`networkingSockets.getAuthenticationStatus`
@@ -162,6 +164,40 @@ Function Reference
 **Example**::
 
     local result = Steam.networkingSockets.sendMessageToConnection(connection, "Ping", Steam.networkingSockets.flags.Reliable)
+
+.. function:: networkingSockets.sendMessages()
+
+    :param int n: The number of messages you are going to send
+    :param table messages: A number indexed table with all messages you want to send. Indices from 1..n need to exist. Each message is a table with the following keys:
+        
+            * **conn** - The id of the connection to send a message to
+            * **msg** - The message to send. Can be any length (up to configured SendBufferSize), splitting will be handled by the library
+            * **flag** - A flag to specify how the message should be sent. See :func:`networkingSockets.sendMessageToConnection` for details
+
+    :returns: (`table`) Result table with ``true`` or ``false`` for each message, indexed 1..n, e.g. ``{ 1 = true, 2 = false }``
+    :SteamWorks: `SendMessages <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages>`_
+
+    This is a more efficient way to send out messages. E.g. you could gather all messages generated in an update cycle and then send them out all in one go using this method instead of dispatching them individually with :func:`networkingSockets.sendMessageToConnection`.
+
+**Example**::
+
+    local messages = {}
+    messages[1] = { conn = connection1, msg = "Hello!", flag = Steam.networkingSockets.flags.Send_Reliable }
+    messages[2] = { conn = connection2, msg = "World", flag = Steam.networkingSockets.flags.Send_Reliable }
+    local result = Steam.networkingSockets.sendMessages(#messages, messages)
+
+.. function:: networkingSockets.flushMessagesOnConnection()
+
+    :param int connection: The id of the connection to flush messages for
+    :returns: (`string`) The result. See the return value of :func:`networkingSockets.sendMessageToConnection` for a detailed description.
+    :SteamWorks: `FlushMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#FlushMessagesOnConnection>`_
+
+    Flush out all messages left in the send buffer of the given connection and don't wait for the nagle timer. You only ever want to do this at the end of your update cycle if you know that you are not going to send any more messages for a while. Calling this may improve **or degrade** your networking performance depending on your use case.
+
+**Example**::
+
+    local result = Steam.networkingSockets.flushMessagesOnConnection()
+
 
 .. function:: networkingSockets.receiveMessagesOnConnection()
 

@@ -28,7 +28,7 @@ class CallbackListener {
 };
 
 void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
-        if (data == nullptr) {
+    if (data == nullptr) {
         return;
     }
     lua_State *L = luasteam::global_lua_state;
@@ -54,7 +54,7 @@ void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
- }
+}
 
 void CallbackListener::OnConnectionChangedServer(SteamNetConnectionStatusChangedCallback_t *data) { connectionChanged(data); }
 
@@ -111,7 +111,7 @@ int parseConfig(lua_State *L, SteamNetworkingConfigValue_t **pOptions) {
         int value = luaL_checkinteger(L, -1);
 
         if (strcmp(key, "TimeoutInitial") == 0) {
-           (*pOptions)[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_TimeoutInitial, value);
+            (*pOptions)[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_TimeoutInitial, value);
             current++;
         } else if (strcmp(key, "TimeoutConnected") == 0) {
             (*pOptions)[current].SetInt32(ESteamNetworkingConfigValue::k_ESteamNetworkingConfig_TimeoutConnected, value);
@@ -349,6 +349,49 @@ EXTERN int luasteam_receiveMessagesOnPollGroup(lua_State *L) {
     return 1;
 }
 
+// FlushMessagesOnConnection( HSteamNetConnection hConn )
+EXTERN int luasteam_flushMessagesOnConnection(lua_State *L) {
+    HSteamNetConnection hConn = luaL_checkinteger(L, 1);
+    EResult result = steamNetworkingSocketsLib()->FlushMessagesOnConnection(hConn);
+    lua_pushstring(L, steam_result_code[result]);
+    return 1;
+}
+
+// void SendMessages( int nMessages, SteamNetworkingMessage_t *const *pMessages, int64 *pOutMessageNumberOrResult )
+EXTERN int luasteam_sendMessages(lua_State *L) {
+    int nMessages = luaL_checkinteger(L, 1);
+    int64 *pOutMessageNumberOrResult = new int64[nMessages];
+    SteamNetworkingMessage_t **pMessages = new SteamNetworkingMessage_t *[nMessages];
+    for (int i = 0; i < nMessages; i++) {
+        lua_rawgeti(L, 2, i + 1);
+
+        lua_getfield(L, -1, "conn");
+        HSteamNetConnection hConn = luaL_checkinteger(L, -1);
+        lua_pop(L, 1);
+
+        lua_getfield(L, -1, "flag");
+        int sendType = luaL_checkinteger(L, -1);
+        lua_pop(L, 1);
+
+        lua_getfield(L, -1, "msg");
+        size_t len = 0;
+        const char *msg = lua_tolstring(L, -1, &len);
+
+        pMessages[i] = SteamNetworkingUtils()->AllocateMessage(len);
+        memcpy(pMessages[i]->m_pData, msg, len);
+        pMessages[i]->m_conn = hConn;
+        pMessages[i]->m_nFlags = sendType;
+        lua_pop(L, 1);
+    }
+    steamNetworkingSocketsLib()->SendMessages(nMessages, pMessages, pOutMessageNumberOrResult);
+    lua_createtable(L, 0, nMessages);
+    for (int i = 0; i < nMessages; i++) {
+        lua_pushboolean(L, pOutMessageNumberOrResult[i] > 0);
+        lua_rawseti(L, -2, i + 1);
+    }
+    return 1;
+}
+
 namespace luasteam {
 
 void add_constants(lua_State *L) {
@@ -367,7 +410,7 @@ void add_constants(lua_State *L) {
 }
 
 void add_networkingSockets(lua_State *L) {
-    lua_createtable(L, 0, 18);
+    lua_createtable(L, 0, 20);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
     add_func(L, "createListenSocketP2P", luasteam_createListenSocketP2P);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
@@ -385,6 +428,8 @@ void add_networkingSockets(lua_State *L) {
     add_func(L, "destroyPollGroup", luasteam_destroyPollGroup);
     add_func(L, "setConnectionPollGroup", luasteam_setConnectionPollGroup);
     add_func(L, "receiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
+    add_func(L, "flushMessagesOnConnection", luasteam_flushMessagesOnConnection);
+    add_func(L, "sendMessages", luasteam_sendMessages);
     add_constants(L);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
