@@ -241,20 +241,21 @@ EXTERN int luasteam_receiveMessagesOnConnection(lua_State *L) {
     SteamNetworkingMessage_t *msgs[32];
     int numMessages = steamNetworkingSocketsLib()->ReceiveMessagesOnConnection(hConn, msgs, 32);
 
-    lua_createtable(L, 0, numMessages);
-    if (numMessages > 0) {
-        int current = 1;
+    lua_pushinteger(L, numMessages);
+    if (numMessages >= 0) {
+        lua_createtable(L, 0, numMessages);
         for (int i = 0; i < numMessages; i++) {
             SteamNetworkingMessage_t *message = msgs[i];
             uint32 messageSize = message->GetSize();
-
             if (messageSize > 0) {
                 lua_pushlstring(L, (char *)message->GetData(), messageSize);
-                lua_rawseti(L, -2, current);
-                current++;
+            } else {
+                lua_pushstring(L, "");
             }
+            lua_rawseti(L, -2, i + 1);
             message->Release();
         }
+        return 2;
     }
     return 1;
 }
@@ -327,24 +328,26 @@ EXTERN int luasteam_receiveMessagesOnPollGroup(lua_State *L) {
     SteamNetworkingMessage_t *msgs[32];
     int numMessages = steamNetworkingSocketsLib()->ReceiveMessagesOnPollGroup(hPollGroup, msgs, 32);
 
-    lua_createtable(L, 0, numMessages);
-    if (numMessages > 0) {
-        int current = 1;
+    lua_pushinteger(L, numMessages);
+    if (numMessages >= 0) {
+        lua_createtable(L, 0, numMessages);
         for (int i = 0; i < numMessages; i++) {
             SteamNetworkingMessage_t *message = msgs[i];
             uint32 messageSize = message->GetSize();
 
+            lua_createtable(L, 0, 2);
             if (messageSize > 0) {
-                lua_createtable(L, 0, 2);
                 lua_pushlstring(L, (char *)message->GetData(), messageSize);
-                lua_setfield(L, -2, "msg");
-                lua_pushinteger(L, message->m_conn);
-                lua_setfield(L, -2, "conn");
-                lua_rawseti(L, -2, current);
-                current++;
+            } else {
+                lua_pushstring(L, "");
             }
+            lua_setfield(L, -2, "msg");
+            lua_pushinteger(L, message->m_conn);
+            lua_setfield(L, -2, "conn");
+            lua_rawseti(L, -2, i + 1);
             message->Release();
         }
+        return 2;
     }
     return 1;
 }

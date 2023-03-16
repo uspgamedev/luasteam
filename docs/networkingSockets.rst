@@ -202,10 +202,14 @@ Function Reference
 .. function:: networkingSockets.receiveMessagesOnConnection()
 
     :param int connection: The id of the connection to receive messages from
-    :returns: (`table`) a table with all n messages received, indexed 1..n. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table
+    :returns: (`int`, `table`) Returns two parameters
+
+        * **n** - The number of messages received. ``-1`` if the passed poll group id is invalid (the table is nil in this case).
+        * **messages** - A 1..n index table of messages. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table
+
     :SteamWorks: `ReceiveMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection>`_
 
-    Receive all the messages that are waiting on the given connection up to 32. Call this repeatedly until ``#return < 32``
+    Receive all the messages that are waiting on the given connection **up to 32**. Call this repeatedly until ``n < 32``
 
     A result table might look like this: ``{ 1 = "Some message", 2 = "Another message", 3 = "Yet another message" }``
 
@@ -213,7 +217,7 @@ Function Reference
 
 **Example**::
 
-    local messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
+    local n, messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
 
 .. function:: networkingSockets.initAuthentication()
 
@@ -296,12 +300,16 @@ Function Reference
 .. function:: networkingSockets.receiveMessagesOnPollGroup()
 
     :param int pollGroup: The poll group to receive messages from
-    :returns: (`table`) a table with all n messages received, indexed 1..n. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table. Each message is a table with a ``conn`` and a ``msg`` field.
+    :returns: (`int`, `table`) Returns two parameters
+
+        * **n** - The number of messages received. ``-1`` if the passed poll group id is invalid (the table is nil in this case).
+        * **messages** - A 1..n index table of messages. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table. Each message is a table with a ``conn`` and a ``msg`` field.
+
     :SteamWorks: `ReceiveMessagesOnPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup>`_
 
     This is the poll group equivalent to :func:`networkingSockets.receiveMessagesOnConnection`. The advantage of this version is that you can just get all messages to any connection assigned. If you expect larger number of connections, it's much more efficient to create one or more poll groups and just poll the group instead of having to check messages for every connection individually.
 
-    Receive all the messages that are waiting on the given poll group up to 32. Call this repeatedly until ``#return < 32``
+    Receive all the messages that are waiting on the given poll group **up to 32**. Call this repeatedly until ``n < 32``
 
     A result table might look like this: ``{ 1 = { conn = 5235, msg = "A message" }, 2 = { conn = 5235, msg = "Another message" }, 3 = { conn = 5678, msg = "Yet another message" } }``
     
@@ -309,7 +317,7 @@ Function Reference
 
 **Example**::
 
-    local messages = Steam.networkingSockets.receiveMessagesOnPollGroup(pollGroup)
+    local n, messages = Steam.networkingSockets.receiveMessagesOnPollGroup(pollGroup)
 
 Callbacks Reference
 -------------------
@@ -464,12 +472,14 @@ These examples should run with any version of lua >= 5.1 or Löve
         Steam.runCallbacks()
 
         if connection then
-            local messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
+            local n, messages = Steam.networkingSockets.receiveMessagesOnConnection(connection)
 
-            for j,m in ipairs(messages) do
-                print("received message", j, m, "from connection", connection, type(j))
-                Steam.networkingSockets.sendMessageToConnection(connection, "Hello server! This is the client! Thank you!", Steam.networkingSockets.flags.Send_Reliable)
-                msg_rec = true
+            if n > 0 then
+                for j,m in ipairs(messages) do
+                    print("received message", j, m, "from connection", connection, type(j))
+                    Steam.networkingSockets.sendMessageToConnection(connection, "Hello server! This is the client! Thank you!", Steam.networkingSockets.flags.Send_Reliable)
+                    msg_rec = true
+                end
             end
         end
 
@@ -526,10 +536,12 @@ These examples should run with any version of lua >= 5.1 or Löve
         Steam.runCallbacks()
 
         for conn,_ in pairs(connections) do
-            local messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
-            for j,m in ipairs(messages) do
-                print("received message", j, m, "from connection", conn, type(j))
-                run = false
+            local n, messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
+            if n > 0 then
+                for j,m in ipairs(messages) do
+                    print("received message", j, m, "from connection", conn, type(j))
+                    run = false
+                end
             end
         end
     end
