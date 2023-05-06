@@ -4,10 +4,28 @@
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
 #include "const.hpp"
+#include <vector>
+#include <sstream>
 
 // ===============================
 // ======= SteamGameServer =======
 // ===============================
+
+static const char *steam_auth_session_response[] = {
+   "OK", "UserNotConnectedToSteam", "NoLicenseOrExpired", "VACBanned", "LoggedInElseWhere", "VACCheckTimedOut", "AuthTicketCanceled", "AuthTicketInvalidAlreadyUsed", "AuthTicketInvalid", "PublisherIssuedBan", nullptr,
+};
+
+std::vector<unsigned char> hexToBuffer(const std::string &hexString) {
+    std::vector<unsigned char> buffer;
+    buffer.reserve(hexString.size() / 2);
+    for (size_t i = 0; i < hexString.size(); i += 2) {
+        unsigned int byte;
+        std::istringstream iss(hexString.substr(i, 2));
+        iss >> std::hex >> byte;
+        buffer.push_back(static_cast<unsigned char>(byte));
+    }
+    return buffer;
+}
 
 using luasteam::CallResultListener;
 
@@ -19,10 +37,37 @@ int gameServer_ref = LUA_NOREF;
 
 class CallbackListener {
   private:
+    STEAM_GAMESERVER_CALLBACK(CallbackListener, OnValidateAuthTicketResponse, ValidateAuthTicketResponse_t);
     STEAM_GAMESERVER_CALLBACK(CallbackListener, OnSteamServersConnected, SteamServersConnected_t);
     STEAM_GAMESERVER_CALLBACK(CallbackListener, OnSteamServersDisconnected, SteamServersDisconnected_t);
     STEAM_GAMESERVER_CALLBACK(CallbackListener, OnSteamServerConnectFailure, SteamServerConnectFailure_t);
 };
+
+// void SetValidateAuthTicketResponseCallback( function callback )
+void CallbackListener::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t *data) {
+    if (data == nullptr) {
+        return;
+    }
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) {
+        return;
+    }
+    lua_rawgeti(L, LUA_REGISTRYINDEX, gameServer_ref);
+    lua_getfield(L, -1, "onValidateAuthTicketResponse");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
+        lua_setfield(L, -2, "steam_id");
+        luasteam::pushuint64(L, data->m_OwnerSteamID.ConvertToUint64());
+        lua_setfield(L, -2, "owner_steam_id");
+        lua_pushstring(L, steam_auth_session_response[data->m_eAuthSessionResponse]);
+        lua_setfield(L, -2, "response");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
 
 void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
     if (data == nullptr) {
@@ -176,6 +221,26 @@ EXTERN int luasteam_server_setDedicatedServer(lua_State *L) {
     return 0;
 }
 
+// EBeginAuthSessionResult BeginAuthSession( const void *pAuthTicket, int cbAuthTicket, CSteamID steamID )
+EXTERN int luasteam_server_beginAuthSession(lua_State *L) {
+    const char *hexTicket = luaL_checkstring(L, 1);
+    std::vector<unsigned char> authTicketBuffer = hexToBuffer(hexTicket);
+    const void *authTicket = authTicketBuffer.data();
+    int cbAuthTicket = authTicketBuffer.size();
+
+    CSteamID steamID(luasteam::checkuint64(L, 2));
+    EBeginAuthSessionResult result = SteamGameServer()->BeginAuthSession(authTicket, cbAuthTicket, steamID);
+    lua_pushinteger(L, result);
+    return 1;
+}
+
+// void EndAuthSession( CSteamID steamID );
+EXTERN int luasteam_server_endAuthSession(lua_State *L) {
+    CSteamID steamID(luasteam::checkuint64(L, 1));
+    SteamGameServer()->EndAuthSession(steamID);
+    return 0;
+}
+
 void add_gameserver_constants(lua_State *L) {
     lua_createtable(L, 0, 3);
     lua_pushnumber(L, EServerMode::eServerModeNoAuthentication);
@@ -190,7 +255,7 @@ void add_gameserver_constants(lua_State *L) {
 namespace luasteam {
 
 void add_gameServer(lua_State *L) {
-    lua_createtable(L, 0, 10);
+    lua_createtable(L, 0, 12);
     add_func(L, "init", luasteam_init_server);
     add_func(L, "shutdown", luasteam_shutdown_server);
     add_func(L, "runCallbacks", luasteam_runCallbacks_server);
@@ -201,6 +266,8 @@ void add_gameServer(lua_State *L) {
     add_func(L, "bSecure", luasteam_server_bSecure);
     add_func(L, "getSteamID", luasteam_server_getSteamID);
     add_func(L, "setDedicatedServer", luasteam_server_setDedicatedServer);
+    add_func(L, "beginAuthSession", luasteam_server_beginAuthSession);
+    add_func(L, "endAuthSession", luasteam_server_endAuthSession);
     add_gameserver_constants(L);
     lua_pushvalue(L, -1);
     gameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);

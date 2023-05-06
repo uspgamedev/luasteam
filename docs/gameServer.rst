@@ -36,9 +36,12 @@ List of Functions
 * :func:`gameServer.bSecure`
 * :func:`gameServer.getSteamID`
 * :func:`gameServer.setDedicatedServer`
+* :func:`gameServer.beginAuthSession`
+* :func:`gameServer.endAuthSession`
 
 List of Callbacks
 -----------------
+* :func:`gameServer.onValidateAuthTicketResponse`
 * :func:`gameServer.onSteamServersConnected`
 * :func:`gameServer.onSteamServersDisconnected`
 * :func:`gameServer.onSteamServerConnectFailure`
@@ -188,6 +191,34 @@ Function Reference
 
     Steam.gameServer.setDedicatedServer(true)
 
+.. function:: gameServer.beginAuthSession()
+
+    :param string authTicket: The auth ticket in hexadeximal string representation
+    :param uint64 steamID: The steam id of the user to verify an auth ticket for. Needs to be the same user that originally created the authTicket.
+    :returns: nothing
+    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
+
+    Use this to validate an auth ticket created with :func:`user.getAuthSessionTicket`. Read `User Authentication and Ownership <https://partner.steamgames.com/doc/features/auth>`_ for more information.
+    
+    Triggers the callback :func:`gameServer.onValidateAuthTicketResponse`
+
+
+**Example**::
+
+    Steam.gameServer.beginAuthSession(authTicket, steamID)
+
+.. function:: gameServer.endAuthSession()
+
+    :param uint64 steamID: The steam id of the user for which a verification is in progress.
+    :returns: nothing
+    :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#EndAuthSession>`_
+
+    Cancel the auth session. Must be called for any calls to :func:`gameServer.beginAuthSession` when the connection is ended or before the server shutdown. Read `User Authentication and Ownership <https://partner.steamgames.com/doc/features/auth>`_ for more information.
+
+**Example**::
+
+    Steam.gameServer.endAuthSession()
+
 Callbacks Reference
 -------------------
 
@@ -197,13 +228,32 @@ Callbacks Reference
 
     Also, you **must** constantly call ``Steam.gameServer.runCallbacks()`` (preferably in your game loop) in order for your callbacks to be called.
 
+.. function:: gameServer.onValidateAuthTicketResponse()
+
+    :param table data: A result table
+
+		* **data.steam_id** (`uint64`) The steam id of the account requesting validation for the given game context
+		* **data.owner_steam_id** (`uint64`) The steam id of the owner of the game for the given game context. E.g. for example when the game is played through family sharing, the owner_steam_id will differ.
+		* **data.response** (`string`) A result string. **OK** if the validation was successful, otherwise an error string. See `EAuthSessionResponse <https://partner.steamgames.com/doc/api/steam_api#EAuthSessionResponse>_` for details.
+
+    :returns: nothing
+    :SteamWorks: `ValidateAuthTicketResponse_t  <https://partner.steamgames.com/doc/api/ISteamUser#ValidateAuthTicketResponse_t>`_
+
+    Called when steam has validated an auth ticket on the steam server side. If **OK**, you know that's a registered, verified steam account that owns a valid license for the app in question.
+
+**Example**::
+
+    function Steam.gameServer.onValidateAuthTicketResponse(data)
+        print("Auth ticket validated", data.steam_id, data.response)
+    end
+
 .. function:: gameServer.onSteamServersConnected()
 
     :returns: nothing
     :SteamWorks: `SteamServersConnected_t  <https://partner.steamgames.com/doc/api/ISteamUser#SteamServersConnected_t>`_
 
     Called when a connections to the Steam back-end has been established. This is in response to a call to :func:`networkingSockets.LogOn` or :func:`networkingSockets.LogOnAnonymous` or after loosing a connection.
-    
+
     This means the Steam client now has a working connection to the Steam servers.
 
 **Example**::

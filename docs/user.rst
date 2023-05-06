@@ -50,26 +50,35 @@ Function Reference
 
 .. function:: user.getAuthSessionTicket ()
 
-    :returns: (`number`) The handle for the auth session ticket or 0 if the call failed
+    :returns: (`data`) A result table if successful, otherwise nil
+
+		* **data.ticket** (`number`) The handle for the auth session ticket (only has meaning on the client on where you called this, is NOT an auth ticket)
+		* **data.hexTicket** (`string`) The ticket data as a hexadeximal formatted string. This is the ticket that you need to send to the server/authenticating instance.
+      
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
 
-    Retrieve an authentication ticket from steam. You can use this to authenticate yourself with a third party server. This call just creates a request for a ticket. Once it has been issued by the Steam servers, the callback :func:`user.onAuthSessionTicketResponse` will be called. When you're done with the ticket **you must call** :func:`user.cancelAuthTicket` on the handle.
+    Retrieve an authentication ticket from steam. You can use this to authenticate yourself with a third party server. You should wait for a successful callback to :func:`user.onAuthSessionTicketResponse` (indicating that Steam has accepted your request for a ticket) before using this ticket.
+    
+    When you're done with the ticket **you must call** :func:`user.cancelAuthTicket` on the handle.
 
 **Example**::
 
-    local ticketHandle = Steam.user.getAuthSessionTicket() -- keep the ticket handle around
+    local data = Steam.user.getAuthSessionTicket() -- keep the ticket handle around
+    if data then
+       local ticketHandle = data.ticket
+       local ticketData = data.hexTicket
+       -- Now do something with it
+    end
 
 .. function:: user.cancelAuthTicket ()
 
-    :param number ticketHandle: The ticket handle to cancel the auth ticket for. You need to call this once you are done using a requested or scheduled ticket. Make sure to also call this when quitting your application for any open ticket handles.
+    :param number ticketHandle: The ticket handle to cancel the auth ticket for. You need to call this once you are done using a requested or scheduled ticket. Make sure to call this for any open ticket handles when quitting your application.
     :returns: nothing
     :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamUser#CancelAuthTicket>`_
 
-    Retrieve an authentication ticket from steam. You can use this to authenticate yourself with a third party server. This call just creates a request for a ticket. Once it has been issued by the Steam servers, the callback :func:`user.onAuthSessionTicketResponse` will be called. When you're done with the ticket **you must call** :func:`user.cancelAuthTicket` on the handle.
-
 **Example**::
 
-    local ticketHandle = Steam.user.getAuthSessionTicket() -- keep the ticket handle around
+    Steam.user.cancelAuthTicket(ticketHandle)
 
 Callbacks Reference
 -------------------

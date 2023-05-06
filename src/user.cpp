@@ -1,9 +1,21 @@
 #include "user.hpp"
 #include "const.hpp"
+#include <sstream>
+#include <iomanip>
 
 // ============================
 // ======== SteamUser =========
 // ============================
+
+std::string bufferToHex(const void *buffer, size_t bufferLength) {
+    const unsigned char *pBuffer = static_cast<const unsigned char *>(buffer);
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0');
+    for (size_t i = 0; i < bufferLength; ++i) {
+        oss << std::setw(2) << static_cast<int>(pBuffer[i]);
+    }
+    return oss.str();
+}
 
 namespace {
 
@@ -55,11 +67,24 @@ EXTERN int luasteam_getSteamID(lua_State *L) {
 
 //HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket )
 EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
-    uint32 *pcbTicket = nullptr;
-    void *pTicket = nullptr;
-    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, pcbTicket);
+    uint32 pcbTicket = 0;
+    void *pTicket = malloc(1024);
 
-    lua_pushinteger(L, ticket);
+    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, &pcbTicket);
+
+    if (ticket != k_HAuthTicketInvalid) {
+        std::string hexTicket = bufferToHex(pTicket, pcbTicket);
+        lua_newtable(L);
+        lua_pushinteger(L, ticket);
+        lua_setfield(L, -2, "ticket");
+        lua_pushstring(L, hexTicket.c_str());
+        lua_setfield(L, -2, "hexTicket");
+        free(pTicket);
+        return 1;
+    }
+
+    free(pTicket);
+    lua_pushnil(L);
     return 1;
 }
 
