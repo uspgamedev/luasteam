@@ -58,6 +58,8 @@ Function Reference
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
 
     Retrieve an authentication ticket from steam. You can use this to authenticate yourself with a third party server. You should wait for a successful callback to :func:`user.onAuthSessionTicketResponse` (indicating that Steam has accepted your request for a ticket) before using this ticket.
+
+    The ticket size is fixed at 1024 characters. If your game has too much DLC, it might need more, which would need a change in luasteam as it's not customisable right now.
     
     When you're done with the ticket **you must call** :func:`user.cancelAuthTicket` on the handle.
 

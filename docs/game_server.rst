@@ -51,7 +51,7 @@ Function Reference
 .. function:: gameServer.init()
 
     :param int unIP: The IP address you are going to bind to. (This should be in host order, i.e 127.0.0.1 == 0x7f000001 == 2130706433). You can just use ``0`` to bind to all local IPv4 addresses.
-    :param int steamPort: The port clients are going to bind to. Important if you want to connec this server to a game master and show it in a server list.
+    :param int steamPort: The port clients are going to bind to. Important if you want to connect this server to a game master and show it in a server list.
     :param int queryPort: The port for communicating with a game master server and exchange status information.
     :param int serverMode: The server mode to use. Use constants from ``Steam.gameServer.mode.*``
 
@@ -74,7 +74,7 @@ Function Reference
     :returns: nothing
     :SteamWorks: `SteamGameServer_Shutdown <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_Shutdown>`_
 
-    Don't forget this to call it when your game is closing or when you're done using the interface
+    Don't forget to call this when your game is closing or when you're done using the interface.
 
 **Example**::
 

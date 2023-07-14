@@ -25,9 +25,9 @@ While using this documentation, you may also like to check the `SteamWorks API R
     ISteamApps <apps>
     ISteamUGC <UGC>
     ISteamInput <input>
-    ISteamNetworkingSockets <networkingSockets>
-    ISteamNetworkingUtils <networkingUtils>
-    ISteamGameServer <gameServer>
+    ISteamNetworkingSockets <networking_sockets>
+    ISteamNetworkingUtils <networking_utils>
+    ISteamGameServer <game_server>
     Extra <extra>
 
 Indices and tables

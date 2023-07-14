@@ -114,7 +114,7 @@ Function Reference
 .. function:: networkingSockets.closeConnection()
 
     :param int connection: The id of the connection to close
-    :param boolean bEnableLinger: If true, attempts to finish delivering any outbound messages. If you set it to true, you need to make sure that you keep calling the Steam callback long enough for this to actually happen.  
+    :param boolean enableLinger: If true, attempts to finish delivering any outbound messages. If you set it to true, you need to make sure that you keep calling the Steam callback long enough for this to actually happen.  
     :returns: nothing
     :SteamWorks: `CloseConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CloseConnection>`_
 
