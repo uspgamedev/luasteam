@@ -11,7 +11,7 @@ addons:
     - g++-multilib
 filter_secrets: false
 install:
-- curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_151.zip
+- curl -u yancouto:$SDK_TOKEN -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_155.zip
   -o sdk.zip
 - unzip -q sdk.zip
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install -y visualstudio2017-workload-vctools; fi
