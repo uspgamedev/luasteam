@@ -21,6 +21,8 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [Choo-Choo! The Train Rides!](https://store.steampowered.com/app/743920/ChooChoo_The_Train_Rides/)
 - [PushOps](https://store.steampowered.com/app/1705610/PushOps/)
 - [Heliotropism](https://store.steampowered.com/app/1653100/Heliotropism/)
+- [Skoory Rush](https://store.steampowered.com/app/2399810/Skoory_Rush/)
+- [Roots Need Control 3.0](https://store.steampowered.com/app/2425570/Roots_Need_Control_30/)
 
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
