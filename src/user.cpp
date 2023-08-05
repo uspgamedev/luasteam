@@ -65,12 +65,16 @@ EXTERN int luasteam_getSteamID(lua_State *L) {
     return 1;
 }
 
-//HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket )
+//HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket, const SteamNetworkingIdentity *pIdentityRemote )
 EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
     uint32 pcbTicket = 0;
     void *pTicket = malloc(1024);
+    SteamNetworkingIdentity *identityRemote = new SteamNetworkingIdentity();
+    identityRemote->ParseString(luaL_checkstring(L, 1));
+    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, &pcbTicket, identityRemote);
 
-    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, &pcbTicket);
+    identityRemote->Clear();
+    free(identityRemote);
 
     if (ticket != k_HAuthTicketInvalid) {
         std::string hexTicket = bufferToHex(pTicket, pcbTicket);
@@ -82,7 +86,6 @@ EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
         free(pTicket);
         return 1;
     }
-
     free(pTicket);
     lua_pushnil(L);
     return 1;
