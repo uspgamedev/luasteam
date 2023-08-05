@@ -50,6 +50,7 @@ Function Reference
 
 .. function:: user.getAuthSessionTicket ()
 
+    :param string identityRemote: String representing the remote system that will authenticate the ticket.
     :returns: (`data`) A result table if successful, otherwise nil
 
 		* **data.ticket** (`number`) The handle for the auth session ticket (only has meaning on the client on where you called this, is NOT an auth ticket)
@@ -71,10 +72,6 @@ Function Reference
        local ticketData = data.hexTicket
        -- Now do something with it
     end
-
-.. warning::
-
-    This function does not return a `SteamNetworkingIdentity` object. If this is needed, it needs to be implemented on the luasteam side.
 
 .. function:: user.cancelAuthTicket ()
 
