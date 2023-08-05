@@ -41,3 +41,18 @@ Function Reference
     if Steam.apps.isDlcInstalled(12345) then
         -- Unlock game content
     end
+
+.. function:: apps.getLaunchCommandLineParam()
+
+    :returns: (`string`) The launch command line parameters
+    :SteamWorks: `GetLaunchCommandLine <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchCommandLine>`_
+
+    Gets the launch command line parameters. Use it to for example parse it for a connect string when implementing game invite functionality using :func:`friends.inviteUserToGame`.
+
+**Example**::
+
+    local params = Steam.apps.getLaunchCommandLineParam()
+    local connect_string = tryParseConnectString(params)
+    if (connect_string) then
+        initiateJoinGame(connect_string)
+    end

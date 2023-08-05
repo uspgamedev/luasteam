@@ -107,6 +107,30 @@ Function Reference
         }
     }
 
+.. function:: friends.inviteUserToGame(steam_id, connect_string)
+
+    :param uint64 steam_id: The Steam ID of the other user.
+    :param string connect_string: Custom string that tells the joining player how to join the game
+    :returns: True if invite was sent successfully, false if not
+    :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
+
+    Invites the given user steam_id to the game identified by `connect_string`
+
+    The connect_string can be received by the application on the joining player in two ways depending on whether the game is already running or it is being launched.
+
+    You should implement the callback :func:`friends.onGameRichPresenceJoinRequested` to receive the `connect_string` on the invitee and ultimately establish the connection on an already running application.
+
+    You should also call :func:`apps.getLaunchCommandLineParams` on game launch and check if the game was launched with the `connect_string`, and immediately take steps to establish the connection.
+
+    To add UI elements to invite or join the game over the Steam overlay or friends menu, also set the rich presence key `connect` with the `connect_string` value and clear it when the game is no longer available to join. 
+
+**Example**::
+
+    
+    local friend_id = getSteamIdSomehow()
+    local success = Steam.friends.inviteUserToGame(friend_id, 'serverID=birthday_party')
+    
+
 Callbacks Reference
 -------------------
 
@@ -130,4 +154,24 @@ Callbacks Reference
 
     function Steam.friends.onGameOverlayActivated(data)
         print('Overlay active is', data.active)
+    end
+
+.. function:: friends.onGameRichPresenceJoinRequested(data)
+
+    :param table data: A table similar to `GameRichPresenceJoinRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameRichPresenceJoinRequested_t>`_
+
+        * **data.steamIDFriend** (`uint64`) -- Steam ID of friend from through the invite was received 
+        * **data.connectString** (`string`) -- custom connect string to parse for connection details
+
+    :returns: nothing
+
+
+**Example**::
+
+    function Steam.friends.onGameRichPresenceJoinRequested(data)
+        if (game_state=='main_menu') then
+            initiateJoinGame(data.connectString)
+        else
+            showDialog("you can only join a game from the main menu")
+        end
     end
