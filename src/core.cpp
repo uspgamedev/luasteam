@@ -8,6 +8,7 @@
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
+#include "matchmaking.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -27,6 +28,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_input(L);
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
+        luasteam::init_matchmaking(L);
     } else {
         fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
     }
@@ -38,6 +40,7 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
+    luasteam::shutdown_matchmaking(L);
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_input(L);
