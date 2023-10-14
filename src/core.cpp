@@ -36,6 +36,14 @@ EXTERN int luasteam_init(lua_State *L) {
     return 1;
 }
 
+// bool SteamAPI_RestartAppIfNecessary( uint32 unOwnAppID );
+EXTERN int luasteam_restartAppIfNecessary(lua_State *L) {
+    int ownAppID = luaL_checkinteger(L, 1);
+    bool success = SteamAPI_RestartAppIfNecessary(ownAppID);
+    lua_pushboolean(L, success);
+    return 1;
+}
+
 // void SteamAPI_Shutdown();
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
@@ -66,6 +74,7 @@ void add_core(lua_State *L) {
     add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
+    add_func(L, "restartAppIfNecessary", luasteam_restartAppIfNecessary);
 }
 
 } // namespace luasteam
