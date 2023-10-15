@@ -100,6 +100,45 @@ EXTERN int luasteam_getPersonaName(lua_State *L) {
     return 1;
 }
 
+static int luasteam_getImage(lua_State *L, int handle)
+{
+    uint32 width, height;
+    SteamUtils()->GetImageSize(handle, &width, &height);
+    lua_getglobal(L, "love");
+    lua_getfield(L, -1, "image");
+    lua_getfield(L, -1, "newImageData");
+    lua_pushinteger(L, width);
+    lua_pushinteger(L, height);
+    lua_call(L, 2, 1);
+    lua_getfield(L, -1, "getPointer");
+    lua_pushvalue(L, -2);
+    lua_call(L, 1, 1);
+    uint8 *buffer = (uint8*)lua_topointer(L, -1);
+    SteamUtils()->GetImageRGBA(handle, buffer, width * height * 4);
+    lua_pop(L, 1);
+    lua_getfield(L, -3, "graphics");
+    lua_getfield(L, -1, "newImage");
+    lua_replace(L, -4);
+    lua_pop(L, 1);
+    lua_call(L, 1, 1);
+    lua_replace(L, -2);
+    return 1;
+}
+
+// int GetLargeFriendAvatar( CSteamID steamIDFriend );
+EXTERN int luasteam_getLargeFriendAvatar(lua_State *L) {
+    CSteamID id(luasteam::checkuint64(L, 1));
+    int handle = SteamFriends()->GetLargeFriendAvatar(id);
+    return luasteam_getImage(L, handle);
+}
+
+// int GetMediumFriendAvatar( CSteamID steamIDFriend );
+EXTERN int luasteam_getMediumFriendAvatar(lua_State *L) {
+    CSteamID id(luasteam::checkuint64(L, 1));
+    int handle = SteamFriends()->GetMediumFriendAvatar(id);
+    return luasteam_getImage(L, handle);
+}
+
 // bool SetRichPresence( const char *pchKey, const char *pchValue );
 EXTERN int luasteam_setRichPresence(lua_State *L) {
     const char *key = luaL_checkstring(L, 1);
@@ -117,6 +156,8 @@ void add_friends(lua_State *L) {
     add_func(L, "activateGameOverlayInviteDialog", luasteam_activateGameOverlayInviteDialog);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
     add_func(L, "getFriendPersonaName", luasteam_getFriendPersonaName);
+    add_func(L, "getLargeFriendAvatar", luasteam_getLargeFriendAvatar);
+    add_func(L, "getMediumFriendAvatar", luasteam_getMediumFriendAvatar);
     add_func(L, "getPersonaName", luasteam_getPersonaName);
     add_func(L, "setRichPresence", luasteam_setRichPresence);
     lua_pushvalue(L, -1);
