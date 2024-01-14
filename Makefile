@@ -11,6 +11,7 @@ OSX_IPATHS=-I$(THIRD_PARTY)/include/
 OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER)
 
 GNU_OUT=luasteam.so
+# You might need to change this to luajit-2.1 depending on your install. Don't commit it.
 GNU_IPATHS=-I/usr/include/luajit-2.0
 GNU_FLAGS=$(GNU_IPATHS) $(STDLIB_VER) -lluajit-5.1
 

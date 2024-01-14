@@ -12,7 +12,7 @@ Then copy this file to the same directory as your lua files, and make sure ``req
 
 .. warning::
 
-    You also need to copy the correct SteamWorks library to the same directory. This library is not on the luasteam repository, and must be downloaded through the `SteamWorks website <https://partner.steamgames.com/downloads/list>`_. This version of luasteam is guaranteed to work with SteamWorks SDK v1.55, but probably works with future versions.
+    You also need to copy the correct SteamWorks library to the same directory. This library is not on the luasteam repository, and must be downloaded through the `SteamWorks website <https://partner.steamgames.com/downloads/list>`_. This version of luasteam is guaranteed to work with SteamWorks SDK v1.58a, but probably works with future versions.
 
     After you download the SDK, you should copy the corresponding library for your platform. Here is a cheat-sheet:
 

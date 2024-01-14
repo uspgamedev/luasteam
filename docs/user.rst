@@ -72,6 +72,10 @@ Function Reference
        -- Now do something with it
     end
 
+.. warning::
+
+    This function does not return a `SteamNetworkingIdentity` object. If this is needed, it needs to be implemented on the luasteam side.
+
 .. function:: user.cancelAuthTicket ()
 
     :param number ticketHandle: The ticket handle to cancel the auth ticket for. You need to call this once you are done using a requested or scheduled ticket. Make sure to call this for any open ticket handles when quitting your application.

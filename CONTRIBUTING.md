@@ -31,7 +31,7 @@ While developing, we recommend you just worry about compiling to the platform yo
 
 ### Linux 64
 
-Install package `libluajit-5.1-dev`. Run `make linux64`.
+Install package `libluajit-5.1-dev`. Run `make linux64`. You might need to change the `Makefile` var `GNU_IPATHS` to use `-I/usr/include/luajit-2.1` instead, depending on your install. Don't commit that, as it will break continuous integration.
 
 ### Linux 32
 

@@ -1,7 +1,7 @@
 #include "user.hpp"
 #include "const.hpp"
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 // ============================
 // ======== SteamUser =========
@@ -65,12 +65,14 @@ EXTERN int luasteam_getSteamID(lua_State *L) {
     return 1;
 }
 
-//HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket )
+// HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket );
 EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
     uint32 pcbTicket = 0;
     void *pTicket = malloc(1024);
+    // For now we're not returning this.
+    SteamNetworkingIdentity id;
 
-    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, &pcbTicket);
+    HAuthTicket ticket = SteamUser()->GetAuthSessionTicket(pTicket, 1024, &pcbTicket, &id);
 
     if (ticket != k_HAuthTicketInvalid) {
         std::string hexTicket = bufferToHex(pTicket, pcbTicket);
@@ -88,7 +90,7 @@ EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
     return 1;
 }
 
-//void CancelAuthTicket( HAuthTicket hAuthTicket )
+// void CancelAuthTicket( HAuthTicket hAuthTicket )
 EXTERN int luasteam_cancelAuthTicket(lua_State *L) {
     HAuthTicket ticket = luaL_checkinteger(L, 1);
     SteamUser()->CancelAuthTicket(ticket);
