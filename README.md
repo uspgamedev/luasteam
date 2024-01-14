@@ -23,6 +23,11 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [Heliotropism](https://store.steampowered.com/app/1653100/Heliotropism/)
 - [Skoory Rush](https://store.steampowered.com/app/2399810/Skoory_Rush/)
 - [Roots Need Control 3.0](https://store.steampowered.com/app/2425570/Roots_Need_Control_30/)
+- [Gravity Circuit](https://store.steampowered.com/app/858710/Gravity_Circuit/)
+- [PUTRID SHOT ULTRA](https://store.steampowered.com/app/2053360/PUTRID_SHOT_ULTRA/)
+- [ALL IN THE GAME](https://store.steampowered.com/app/2346780/ALL_IN_THE_GAME/)
+- [Possession](https://store.steampowered.com/app/629340/Possession/)
+- [Kanji Drive](https://store.steampowered.com/app/2219640/Kanji_Drive/)
 
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
