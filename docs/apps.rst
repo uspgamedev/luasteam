@@ -19,7 +19,7 @@ Function Reference
 
 	Gets the current language that the user has set. This falls back to the Steam UI language if the user hasn't explicitly picked a language for the title.
 
-  For the full list of languages see `Supported Languages <https://partner.steamgames.com/doc/store/localization#supported_languages>`_
+    For the full list of languages see `Supported Languages <https://partner.steamgames.com/doc/store/localization#supported_languages>`_
 
 
 **Example**::
