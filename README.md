@@ -1,4 +1,6 @@
 # luasteam
+[![Documentation Status](https://readthedocs.org/projects/luasteam/badge/?version=stable)](https://luasteam.readthedocs.io/en/stable/?badge=stable)
+[![Build Status](https://app.travis-ci.com/uspgamedev/luasteam.svg?branch=master)](https://app.travis-ci.com/uspgamedev/luasteam)
 
 luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you’re building games with [Love2D](https://love2d.org/).
 
