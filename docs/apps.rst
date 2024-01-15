@@ -7,6 +7,7 @@ List of Functions
 
 * :func:`apps.getCurrentGameLanguage`
 * :func:`apps.isDlcInstalled`
+* :func:`apps.getLaunchCommandLineParam`
 
 
 Function Reference

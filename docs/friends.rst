@@ -9,11 +9,13 @@ List of Functions
 * :func:`friends.activateGameOverlayToWebPage`
 * :func:`friends.getFriendPersonaName`
 * :func:`friends.setRichPresence`
+* :func:`friends.inviteUserToGame`
 
 List of Callbacks
 -----------------
 
 * :func:`friends.onGameOverlayActivated`
+* :func:`friends.onGameRichPresenceJoinRequested`
 
 
 Function Reference
