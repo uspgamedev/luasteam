@@ -1,6 +1,4 @@
 #include "apps.hpp"
-#include <iomanip>
-
 
 // ============================
 // ======== SteamApps =========
@@ -21,10 +19,9 @@ EXTERN int luasteam_isDlcInstalled(lua_State *L) {
 
 // int GetLaunchCommandLine( char *pszCommandLine, int cubCommandLine );
 EXTERN int luasteam_getLaunchCommandLine(lua_State *L) {
-    char *pCommandLine = (char*) malloc(1024);
+    char pCommandLine[1024];
     SteamApps()->GetLaunchCommandLine(pCommandLine, 1024);
     lua_pushstring(L, pCommandLine);
-    free(pCommandLine);
     return 1;
 }
 

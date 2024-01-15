@@ -57,7 +57,7 @@ void CallbackListener::OnGameRichPresenceJoinRequested(GameRichPresenceJoinReque
         luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
         lua_setfield(L, -2, "steamIDFriend");
         lua_pushstring(L, data->m_rgchConnect);
-        lua_setfield(L, -2, "connectString");
+        lua_setfield(L, -2, "connect");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -120,9 +120,7 @@ void add_friends(lua_State *L) {
     lua_setfield(L, -2, "friends");
 }
 
-void init_friends(lua_State *L) { 
-    friends_listener = new CallbackListener(); 
-}
+void init_friends(lua_State *L) { friends_listener = new CallbackListener(); }
 
 void shutdown_friends(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);

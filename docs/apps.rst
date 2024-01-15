@@ -53,6 +53,10 @@ Function Reference
 
     local params = Steam.apps.getLaunchCommandLineParam()
     local connect_string = tryParseConnectString(params)
-    if (connect_string) then
+    if connect_string then
         initiateJoinGame(connect_string)
     end
+
+.. warning::
+
+    This is currently hardcoded in luasteam to a 1024 characters maximum.
