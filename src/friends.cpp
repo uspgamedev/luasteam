@@ -106,15 +106,36 @@ EXTERN int luasteam_inviteUserToGame(lua_State *L) {
     return 1;
 }
 
+// int GetFriendCount( int iFriendFlags );
+EXTERN int luasteam_getFriendCount(lua_State *L) {
+    int flags = luaL_checkint(L, 1);
+    int count = SteamFriends()->GetFriendCount(flags);
+
+    lua_pushnumber(L, count);
+    return 1;
+}
+
+// CSteamID GetFriendByIndex( int iFriend, int iFriendFlags );
+EXTERN int luasteam_getFriendByIndex(lua_State *L) {
+    int index = luaL_checkint(L, 1);
+    int flags = luaL_checkint(L, 2);
+    CSteamID id = SteamFriends()->GetFriendByIndex(index, flags);
+
+    luasteam::pushuint64(L, id.ConvertToUint64());
+    return 1;
+}
+
 namespace luasteam {
 
 void add_friends(lua_State *L) {
-    lua_createtable(L, 0, 5);
+    lua_createtable(L, 0, 7);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
     add_func(L, "getFriendPersonaName", luasteam_getFriendPersonaName);
     add_func(L, "setRichPresence", luasteam_setRichPresence);
     add_func(L, "inviteUserToGame", luasteam_inviteUserToGame);
+    add_func(L, "getFriendCount", luasteam_getFriendCount);
+    add_func(L, "getFriendByIndex", luasteam_getFriendByIndex);
     lua_pushvalue(L, -1);
     friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "friends");
