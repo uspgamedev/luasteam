@@ -10,6 +10,11 @@ List of Functions
 * :func:`apps.getLaunchCommandLineParam`
 
 
+List of Callbacks
+-----------------
+
+* :func:`apps.onNewUrlLaunchParameters`
+
 Function Reference
 ------------------
 
@@ -43,16 +48,19 @@ Function Reference
         -- Unlock game content
     end
 
-.. function:: apps.getLaunchCommandLineParam()
+.. function:: apps.getLaunchCommandLine()
 
     :returns: (`string`) The launch command line parameters
     :SteamWorks: `GetLaunchCommandLine <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchCommandLine>`_
 
     Gets the launch command line parameters. Use it to for example parse it for a connect string when implementing game invite functionality using :func:`friends.inviteUserToGame`.
 
+    If Steam is installed, you can request launching a Steam game by navigating to a `steam://run/<appid>//<params>` URL.
+
+
 **Example**::
 
-    local params = Steam.apps.getLaunchCommandLineParam()
+    local params = Steam.apps.getLaunchCommandLine()
     local connect_string = tryParseConnectString(params)
     if connect_string then
         initiateJoinGame(connect_string)
@@ -61,3 +69,17 @@ Function Reference
 .. warning::
 
     This is currently hardcoded in luasteam to a 1024 characters maximum.
+
+
+
+Callbacks Reference
+-------------------
+
+.. function:: apps.onNewUrlLaunchParameters()
+
+    :returns: nothing
+    :SteamWorks: `NewUrlLaunchParameters_t <https://partner.steamgames.com/doc/api/ISteamApps#NewUrlLaunchParameters_t>`_
+
+    Called by Steam when a `steam://run/<appid>//<params>` URL is navigated to when the game is already running. This callback has no data, use :func:`apps.getLaunchCommandLine` to get the launch parameters from the most recently used URL.
+
+    The callback that gets called when you join another player's game inside Steam while the game is running is :func:`friends.onGameRichPresenceJoinRequested`.
