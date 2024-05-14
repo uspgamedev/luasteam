@@ -14,12 +14,13 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 
 ## Games using luasteam
 - [Marvellous Inc.](https://store.steampowered.com/app/827940/Marvellous_Inc/)
+- [Balatro](https://store.steampowered.com/app/2379780/Balatro/)
+- [SNKRX](https://store.steampowered.com/app/915310/SNKRX/)
 - [Terraforming Earth](https://store.steampowered.com/app/1029220/Terraforming_Earth/)
 - [Brawl Quest](https://store.steampowered.com/app/871940/BrawlQuest/)
 - [Prologue for a Vacant Kingdom](https://store.steampowered.com/app/1040490/Prologue_for_a_Vacant_Kingdom/)
 - [Ocean's Heart](https://store.steampowered.com/app/1393750/Oceans_Heart/)
 - [Pingers](https://store.steampowered.com/app/1442410/Pingers/)
-- [SNKRX](https://store.steampowered.com/app/915310/SNKRX/)
 - [Choo-Choo! The Train Rides!](https://store.steampowered.com/app/743920/ChooChoo_The_Train_Rides/)
 - [PushOps](https://store.steampowered.com/app/1705610/PushOps/)
 - [Heliotropism](https://store.steampowered.com/app/1653100/Heliotropism/)
@@ -30,6 +31,7 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [ALL IN THE GAME](https://store.steampowered.com/app/2346780/ALL_IN_THE_GAME/)
 - [Possession](https://store.steampowered.com/app/629340/Possession/)
 - [Kanji Drive](https://store.steampowered.com/app/2219640/Kanji_Drive/)
+- [Descent from Arkov's tower Prologue](https://store.steampowered.com/app/2688600/Descent_from_Arkovs_tower_Prologue/)
 
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
