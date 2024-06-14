@@ -16,7 +16,7 @@ Send us PRs even if you're not sure you're following these guidelines correctly.
 
 ## Documentation
 
-If you add new functions, please also document them.
+If you add new functions, please also document them. Keep the documentation as close as possible to the original Steam API documentation, to minimise developer confusion.
 We do our documentation in [ReadTheDocs](https://readthedocs.org/). Everything is in the [docs](docs/) directory, it uses reStructuredText, [this cheatsheet](https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst) should help if you don't know it.
 
 Basically all you need is sphinx (`pip install sphinx sphinx-rtd-theme`), and then you can run `make html` from inside the [docs](docs/) directory.
@@ -31,7 +31,7 @@ While developing, we recommend you just worry about compiling to the platform yo
 
 ### Linux 64
 
-Install package `libluajit-5.1-dev`. Run `make linux64`.
+Install package `libluajit-5.1-dev`. Run `make linux64`. You might need to change the `Makefile` var `GNU_IPATHS` to use `-I/usr/include/luajit-2.1` instead, depending on your install. Don't commit that, as it will break continuous integration.
 
 ### Linux 32
 

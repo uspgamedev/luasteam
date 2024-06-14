@@ -48,8 +48,9 @@ Function Reference
         return steam_id == my_id
     end
 
-.. function:: user.getAuthSessionTicket ()
+.. function:: user.getAuthSessionTicket (identityRemote)
 
+    :param string identityRemote: String representing the remote system that will authenticate the ticket.
     :returns: (`data`) A result table if successful, otherwise nil
 
 		* **data.ticket** (`number`) The handle for the auth session ticket (only has meaning on the client on where you called this, is NOT an auth ticket)
