@@ -28,7 +28,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
     } else {
-        fprintf(stderr, "Couldn't connect to steam...\nDo you have Steam turned on?\nIf not running from steam, do you have a correct steam_appid.txt file?\n");
+        fprintf(stderr, "Couldn't connect to steam...\nPlease ensure that the following conditions are met:\n* Do you have Steam turned on?\n* If not running from steam, do you have a correct steam_appid.txt file?\n* Is the application running under the same user context as steam?\n* Is a license for the App ID present in your active steam account?\n* Is your App ID correctly set up, i.e. not in ``Release State: Unavailable`` and not missing default packages?\n");
     }
     lua_pushboolean(L, success);
     return 1;
