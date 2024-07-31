@@ -14,6 +14,10 @@ On linux, you may need to use `LD_LIBRARY_PATH=. love ...` when running your cod
 
 .. warning::
 
+    Currently, luasteam is not built automatically for Apple Silicon devices, and you'll need to build it yourself. See `this issue <https://github.com/uspgamedev/luasteam/issues/39>`_ for more information on how to do that.
+
+.. warning::
+
     You also need to copy the correct SteamWorks library to the same directory. This library is not on the luasteam repository, and must be downloaded through the `SteamWorks website <https://partner.steamgames.com/downloads/list>`_. This version of luasteam is guaranteed to work with SteamWorks SDK v1.58a, but probably works with future versions.
 
     After you download the SDK, you should copy the corresponding library for your platform. Here is a cheat-sheet:
