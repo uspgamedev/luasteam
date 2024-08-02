@@ -3,6 +3,7 @@ os:
 - linux
 - osx
 - windows
+osx_image: xcode12.2
 addons:
   apt:
     packages:
