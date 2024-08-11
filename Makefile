@@ -8,7 +8,11 @@ THIRD_PARTY=./third-party
 
 OSX_OUT=luasteam.so
 OSX_IPATHS=-I$(THIRD_PARTY)/include/
-OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER)
+# Compile for 10.11 (El Capitan, 2015) and up. At the time of writing, 10.11 is the
+# minimum version libluajit-5.1.a is compiled for; targeting earlier versions will
+# raise compiler warnings.
+OSX_MIN_VERSION=-mmacosx-version-min=10.11
+OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER) $(OSX_MIN_VERSION)
 
 GNU_OUT=luasteam.so
 # You might need to change this to luajit-2.1 depending on your install. Don't commit it.
