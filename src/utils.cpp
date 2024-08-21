@@ -10,6 +10,19 @@ EXTERN int luasteam_getAppID(lua_State *L) {
     return 1;
 }
 
+
+
+// bool GetEnteredGamepadTextInput( char *pchText, uint32 cchText );
+EXTERN bool luasteam_getEnteredGamepadTextInput(lua_State *L) {
+    char pchText[1024];
+    SteamApps()->GetEnteredGamepadTextInput(pchText, 1024);
+    lua_pushstring(L, pchText);
+    return 1;
+}
+
+
+
+
 namespace luasteam {
 
 void add_utils(lua_State *L) {
