@@ -86,9 +86,9 @@ namespace luasteam {
 void add_utils(lua_State *L) {
     lua_createtable(L, 0, 4);
     add_func(L, "getAppID", luasteam_getAppID);
-    add_func(L, "GetEnteredGamepadTextInput", luasteam_getEnteredGamepadTextInput);
-    add_func(L, "GetEnteredGamepadTextLength", luasteam_getEnteredGamepadTextLength);
-    add_func(L, "ShowGamepadTextInput", luasteam_showGamepadTextInput);
+    add_func(L, "getEnteredGamepadTextInput", luasteam_getEnteredGamepadTextInput);
+    add_func(L, "getEnteredGamepadTextLength", luasteam_getEnteredGamepadTextLength);
+    add_func(L, "showGamepadTextInput", luasteam_showGamepadTextInput);
     lua_pushvalue(L, -1);
 
     utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
