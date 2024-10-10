@@ -120,6 +120,8 @@ friends.getRichPresence(steamIDFriend, key)
     :SteamWorks: `GetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetRichPresence>`_
 
 **Example**::
+    steam_id = getSteamIdSomehow()
+    print("Friend's text status is:", Steam.friends.getRichPresence(steam_id, "text"))
 
 .. function:: friends.inviteUserToGame(steamIDFriend, connect_string)
 
