@@ -71,7 +71,7 @@ Function Reference
     :SteamWorks: `ShowGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowGamepadTextInput>`_
 
     Activates the Big Picture text input dialog which only supports gamepad input.
-    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can alt-tab out of BPMode and test with steam_api64.dll.
+    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can minimize Steam BPMode and test with steam_api64.dll.
 
 .. function:: utils.showFloatingGamepadTextInput(floating_input_mode,TextFieldXPosition,TextFieldYPosition,TextFieldWidth,TextFieldHeight)
 
@@ -85,7 +85,7 @@ Function Reference
 
     Opens a floating keyboard over the game content and sends OS keyboard keys directly to the game.
     The text field position is specified in pixels relative the origin of the game window and is used to position the floating keyboard in a way that doesn't cover the text field.
-    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can alt-tab out of BPMode and test with steam_api64.dll.
+    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can minimize Steam BPMode and test with steam_api64.dll.
 
 Callbacks Reference
 -------------------
