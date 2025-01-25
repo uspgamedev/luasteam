@@ -70,6 +70,9 @@ Function Reference
     :returns: (`boolean`) true if the big picture overlay is running; otherwise, false
     :SteamWorks: `ShowGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowGamepadTextInput>`_
 
+    Activates the Big Picture text input dialog which only supports gamepad input.
+    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can alt-tab out of BPMode and test with steam_api64.dll.
+
 .. function:: utils.showFloatingGamepadTextInput(floating_input_mode,TextFieldXPosition,TextFieldYPosition,TextFieldWidth,TextFieldHeight)
 
     :param string floating_input_mode: Valid options are: "SingleLine", "MultipleLines", "Email", "Numeric".
@@ -79,6 +82,10 @@ Function Reference
     :param string TextFieldHeight: Height of text field which shouldn't be obscured by the floating keyboard.
     :returns: (`boolean`) true if the floating keyboard was shown, otherwise, false
     :SteamWorks: `ShowFloatingGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowFloatingGamepadTextInput>`_
+
+    Opens a floating keyboard over the game content and sends OS keyboard keys directly to the game.
+    The text field position is specified in pixels relative the origin of the game window and is used to position the floating keyboard in a way that doesn't cover the text field.
+    Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can alt-tab out of BPMode and test with steam_api64.dll.
 
 Callbacks Reference
 -------------------
@@ -102,12 +109,12 @@ Callbacks Reference
 
 **Example**::
 
-function Steam.utils.onGamepadTextInputDismissed(data)
-    if not data.submitted then return end-- The user canceled
-    local length = Steam.utils.getEnteredGamepadTextLength();
-    local newstring = Steam.utils.getEnteredGamepadTextInput(1024, length);
-    -- Use the newstring made by the user.
-end
+    function Steam.utils.onGamepadTextInputDismissed(data)
+       if not data.submitted then return end-- The user canceled
+       local length = Steam.utils.getEnteredGamepadTextLength();
+       local newstring = Steam.utils.getEnteredGamepadTextInput(1024, length);
+       -- Use the newstring made by the user.
+    end
 
 .. function:: utils.OnFloatingGamepadTextInputDismissed()
 
@@ -118,10 +125,8 @@ end
 
 **Example with notes**::
 
-function Steam.utils.onGamepadTextInputDismissed(data)
     -- x,y,w,h are the ''field which shouldn't be obscured by the floating keyboard''
     -- However, it is finicky around window edges.  Really, you want the keyboard at the top or bottom of the window.
     -- For bottom of window use 0,0,0,0
     -- For top of window use 50, window width-250, window height-100, 200
     Steam.utils.showFloatingGamepadTextInput("SingleLine",x,y,w,h)
-end
