@@ -107,7 +107,7 @@ Callbacks Reference
 
     Called when the big picture gamepad text input has been closed.
 
-**Example**::
+    **Example**::
 
     function Steam.utils.onGamepadTextInputDismissed(data)
        if not data.submitted then return end-- The user canceled
@@ -123,7 +123,7 @@ Callbacks Reference
 
     Called when the floating keyboard invoked from utils.showFloatingGamepadTextInput has been closed.
 
-**Example with notes**::
+    **Example with notes**::
 
     -- x,y,w,h are the ''field which shouldn't be obscured by the floating keyboard''
     -- However, it is finicky around window edges.  Really, you want the keyboard at the top or bottom of the window.
