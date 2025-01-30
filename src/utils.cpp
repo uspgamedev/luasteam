@@ -10,7 +10,7 @@ EXTERN int luasteam_getAppID(lua_State *L) {
     return 1;
 }
 
-// uint32 GetAppID();
+// bool IsStreamRunningOnSteamDeck();
 EXTERN int luasteam_isSteamRunningOnSteamDeck(lua_State *L) {
     lua_pushboolean(L, SteamUtils()->IsSteamRunningOnSteamDeck());
     return 1;
