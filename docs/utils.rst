@@ -94,10 +94,8 @@ Function Reference
 
 **Example with notes**::
 
-    -- x,y,w,h are the ''field which shouldn't be obscured by the floating keyboard''
-    -- However, it is finicky around window edges.  Really, you want the keyboard at the top or bottom of the window.
     -- For bottom of window use 0,0,0,0
-    -- For top of window use 50, window width-250, window height-100, 200
+    -- For top of window use 0,window height/2,window width,window height/2
     Steam.utils.showFloatingGamepadTextInput("SingleLine",x,y,w,h)
 
 Callbacks Reference
