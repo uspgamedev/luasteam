@@ -92,7 +92,7 @@ Function Reference
 
     Notes: Steam must be in Big Picture Mode. Non-Steam games ran through Steam will not overlay properly; however, you can minimize Steam BPMode and test with steam_api64.dll.
 
-**Example with notes**::
+**Example**::
 
     -- For bottom of window use 0,0,0,0
     -- For top of window use 0,window height/2,window width,window height/2
