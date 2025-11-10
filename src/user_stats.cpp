@@ -275,13 +275,6 @@ EXTERN int luasteam_storeStats(lua_State *L) {
     return 1;
 }
 
-// bool RequestCurrentStats();
-EXTERN int luasteam_requestCurrentStats(lua_State *L) {
-    bool success = SteamUserStats()->RequestCurrentStats();
-    lua_pushboolean(L, success);
-    return 1;
-}
-
 EXTERN int luasteam_findLeaderboard(lua_State *L) {
     const char *name = luaL_checkstring(L, 1);
     luaL_checktype(L, 2, LUA_TFUNCTION);
@@ -399,7 +392,6 @@ void add_user_stats(lua_State *L) {
     add_func(L, "setAchievement", luasteam_setAchievement);
     add_func(L, "resetAllStats", luasteam_resetAllStats);
     add_func(L, "storeStats", luasteam_storeStats);
-    add_func(L, "requestCurrentStats", luasteam_requestCurrentStats);
     add_func(L, "findLeaderboard", luasteam_findLeaderboard);
     add_func(L, "findOrCreateLeaderboard", luasteam_findOrCreateLeaderboard);
     add_func(L, "getLeaderboardEntryCount", luasteam_getLeaderboardEntryCount);
