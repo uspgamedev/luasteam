@@ -42,7 +42,7 @@ ifeq ($(OS),Windows_NT)
 SHELL=cmd
 WINDOWS_IPATHS=-I./cache/include
 WINDOWS_OPT=-LD -EHsc -Feluasteam
-VARSALL="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+VARSALL="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
 
 luajit.zip:
 	curl -sL -o luajit.zip http://luajit.org/download/LuaJIT-2.0.5.zip
