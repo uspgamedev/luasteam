@@ -23,11 +23,14 @@ Basically all you need is sphinx (`pip install sphinx sphinx-rtd-theme`), and th
 
 **Pro Tip**: [This Dockerfile](https://hub.docker.com/r/dldl/sphinx-server/) makes it easy to test documentation locally. You won't need to install anything (if you already have docker) and it enables live reload of the documentation when you change anything.
 
-## Building on all platforms
-
-**First, download the SteamWorks SDK, and unzip it on this directory.**
+## Building
 
 While developing, we recommend you just worry about compiling to the platform you're using, and let Travis deal with the other platforms (since if it compiles in one, it most likely compiles in all, the difficult part is getting the dependencies right).
+
+### For all platforms
+
+1. Download the [SteamWorks SDK](https://partner.steamgames.com/doc/sdk).
+2. Unzip it so that the `sdk` folder is in this directory, not `steamworks_sdk_158a/sdk`.
 
 ### Linux 64
 
@@ -43,7 +46,13 @@ Install luajit (`brew install luajit`). Run `make osx`.
 
 ### Windows 32 and 64
 
-We'll use [chocolatey](https://chocolatey.org). Install VS and mingw (`choco install visualstudio2017community visualstudio2017-workload-nativecrossplat mingw`). Then run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
+1. Download [chocolatey](https://chocolatey.org/install).
+2. Install Visual Studio Community and mingw with `choco install visualstudio2017community visualstudio2017-workload-nativecrossplat mingw`.
+   1. Chocolately is the only way to obtain VS 2017 as Microsoft delisted the installers from [the official site](https://visualstudio.microsoft.com/vs/older-downloads/).
+3. Install [Git BASH](https://gitforwindows.org/). You likely already have it installed if you've installed git.
+   1. Windows Command Prompt and Windows PowerShell do not work.
+4. Open a Git BASH terminal.
+5. Run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
 
 ## Resources
 - [Steam API Reference](https://partner.steamgames.com/doc/api)
