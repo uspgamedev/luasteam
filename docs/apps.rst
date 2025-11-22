@@ -7,7 +7,7 @@ List of Functions
 
 * :func:`apps.getCurrentGameLanguage`
 * :func:`apps.isDlcInstalled`
-* :func:`apps.getLaunchCommandLineParam`
+* :func:`apps.getLaunchCommandLine`
 
 
 List of Callbacks
@@ -37,7 +37,7 @@ Function Reference
 
     :param number appID: The App ID of the DLC to check.
     :returns: (`boolean`) true if the user owns the DLC and it's currently installed, otherwise false.
-    :SteamWorks: `GetCurrentGameLanguage <https://partner.steamgames.com/doc/api/ISteamApps#BIsDlcInstalled>`_
+    :SteamWorks: `BIsDlcInstalled <https://partner.steamgames.com/doc/api/ISteamApps#BIsDlcInstalled>`_
 
 	Checks if the user owns a specific DLC and if the DLC is installed.
 
