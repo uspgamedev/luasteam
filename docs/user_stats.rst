@@ -13,7 +13,6 @@ List of Functions
 * :func:`userStats.setAchievement`
 * :func:`userStats.resetAllStats`
 * :func:`userStats.storeStats`
-* :func:`userStats.requestCurrentStats`
 * :func:`userStats.findLeaderboard`
 * :func:`userStats.findOrCreateLeaderboard`
 * :func:`userStats.getLeaderboardEntryCount`
@@ -36,8 +35,6 @@ Function Reference
     :param string name: The 'API Name' of the stat. Must not be longer than 128 bytes.
     :returns: (`boolean`)
         This function returns true upon success if all of the following conditions are met; otherwise, false.
-
-        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
 
         * The 'API Name' of the specified stat exists in App Admin on the Steamworks website, and the changes are published.
     :returns: (`number?`) If the call is successful, returns a second value, the current value of the stat.
@@ -75,13 +72,9 @@ Function Reference
         This function returns true upon success if all of the following conditions are met; otherwise, false.
 
         * The specified stat 'API Name' exists in App Admin on the Steamworks website, and the changes are published.
-
-        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
     :SteamWorks: `SetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStat>`_
 
     Sets the value of a stat for the current user.
-
-    You must have called :func:`userStats.requestCurrentStats` and it needs to return successfully via its callback prior to calling this!
 
     This call only modifies Steam's in-memory state so it is quite cheap. To submit the stats to the server you must call :func:`userStats.storeStats`.
 
@@ -106,8 +99,6 @@ Function Reference
     :returns: (`boolean`)
         This function returns true upon success if all of the following conditions are met; otherwise, false.
 
-        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
-
         * The 'API Name' of the specified achievement exists in App Admin on the Steamworks website, and the changes are published.
     :returns: (`boolean?`) If the call is successful, returns a second value, the unlock status of the achievement.
     :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
@@ -130,13 +121,9 @@ Function Reference
         This function returns true upon success if all of the following conditions are met; otherwise, false.
 
         * The specified achievement 'API Name' exists in App Admin on the Steamworks website, and the changes are published.
-
-        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
     :SteamWorks: `SetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#SetAchievement>`_
 
     Unlocks an achievement.
-
-    You must have called :func:`userStats.requestCurrentStats` and it needs to return successfully via its callback prior to calling this!
 
     You can unlock an achievement multiple times so you don't need to worry about only setting achievements that aren't already set. This call only modifies Steam's in-memory state so it is quite cheap. To send the unlock status to the server and to trigger the Steam overlay notification you must call :func:`userStats.storeStats`.
 
@@ -150,12 +137,12 @@ Function Reference
 .. function:: userStats.resetAllStats(achievementsToo)
 
     :param boolean achievementsToo: Also reset the user's achievements?
-    :returns: (`boolean`) true indicating success if :func:`userStats.requestCurrentStats` has already been called and successfully returned its callback; otherwise false.
+    :returns: (`boolean`) true indicating success; otherwise false.
     :SteamWorks: `ResetAllStats <https://partner.steamgames.com/doc/api/ISteamUserStats#ResetAllStats>`_
 
     Resets the current users stats and, optionally achievements.
 
-    This automatically calls :func:`userStats.storeStats` to persist the changes to the server. This should typically only be used for testing purposes during development. Ensure that you sync up your stats with the new default values provided by Steam after calling this by calling :func:`userStats.requestCurrentStats`.
+    This automatically calls :func:`userStats.storeStats` to persist the changes to the server. This should typically only be used for testing purposes during development.
 
 **Example**::
 
@@ -167,8 +154,6 @@ Function Reference
 
     :returns: (`boolen`)
         This function returns true upon success if all of the following conditions are met; otherwise, false.
-
-        * :func:`userStats.requestCurrentStats` has completed and successfully returned its callback.
 
         * The current game has stats associated with it in the Steamworks Partner backend, and those stats are published.
     :SteamWorks: `StoreStats <https://partner.steamgames.com/doc/api/ISteamUserStats#StoreStats>`_
@@ -192,30 +177,6 @@ Function Reference
 
     function onMatchEnd()
         Steam.userStats.storeStats()
-    end
-
-.. function:: userStats.requestCurrentStats()
-
-    :returns: (`boolean`)
-        Only returns false if there is no user logged in; otherwise, true.
-    :SteamWorks: `RequestCurrentStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestCurrentStats>`_
-
-    Asynchronously request the user's current stats and achievements from the server.
-
-    You must **always call this first** to get the initial status of stats and achievements.
-    Only after the resulting callback comes back can you start calling the rest of the stats and achievement functions for the current user.
-
-    The equivalent function for other users is :func:`userStats.requestUserStats` **(missing)**.
-
-    Triggers a :func:`userStats.onUserStatsReceived` callback.
-
-**Example**::
-
-    -- before any achievement/stats stuff
-    Steam.userStats.requestCurrentStats()
-
-    function Steam.userStats.onUserStatsReceived()
-        can_do_stats_stuff = true
     end
 
 
