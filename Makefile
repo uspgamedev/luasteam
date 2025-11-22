@@ -42,15 +42,12 @@ ifeq ($(OS),Windows_NT)
 SHELL=cmd
 WINDOWS_IPATHS=-I./cache/include
 WINDOWS_OPT=-LD -EHsc -Feluasteam
-VARSALL="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+VARSALL="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
 
-luajit.zip:
-	curl -sL -o luajit.zip http://luajit.org/download/LuaJIT-2.0.5.zip
-
-cache: luajit.zip
+cache:
 	@echo "Downloading LuaJIT source"
-	unzip -qo luajit.zip
 	mkdir cache\include
+	git clone --branch v2.0.5 https://github.com/LuaJIT/LuaJIT.git LuaJIT-2.0.5
 	cp LuaJIT-2.0.5/src/*.h cache/include
 
 cache/win32_lua51.lib:
