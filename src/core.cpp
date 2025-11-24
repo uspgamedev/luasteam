@@ -8,6 +8,7 @@
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
+#include "matchmaking.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -27,9 +28,18 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_input(L);
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
+        luasteam::init_matchmaking(L);
     } else {
         fprintf(stderr, "Couldn't connect to steam...\nPlease ensure that the following conditions are met:\n* Do you have Steam turned on?\n* If not running from steam, do you have a correct steam_appid.txt file?\n* Is the application running under the same user context as steam?\n* Is a license for the App ID present in your active steam account?\n* Is your App ID correctly set up, i.e. not in ``Release State: Unavailable`` and not missing default packages?\n");
     }
+    lua_pushboolean(L, success);
+    return 1;
+}
+
+// bool SteamAPI_RestartAppIfNecessary( uint32 unOwnAppID );
+EXTERN int luasteam_restartAppIfNecessary(lua_State *L) {
+    int ownAppID = luaL_checkinteger(L, 1);
+    bool success = SteamAPI_RestartAppIfNecessary(ownAppID);
     lua_pushboolean(L, success);
     return 1;
 }
@@ -38,6 +48,7 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
+    luasteam::shutdown_matchmaking(L);
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_input(L);
@@ -63,6 +74,7 @@ void add_core(lua_State *L) {
     add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
+    add_func(L, "restartAppIfNecessary", luasteam_restartAppIfNecessary);
 }
 
 } // namespace luasteam

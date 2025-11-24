@@ -52,6 +52,15 @@ EXTERN int luasteam_getLaunchCommandLine(lua_State *L) {
     return 1;
 }
 
+// int GetLaunchCommandLine( char *pszCommandLine, int cubCommandLine );
+EXTERN int luasteam_getLaunchCommandLine(lua_State *L) {
+    char buffer[256];
+    int bytes = SteamApps()->GetLaunchCommandLine(buffer, sizeof(buffer) - 1);
+    buffer[bytes] = '\0';
+    lua_pushstring(L, buffer);
+    return 1;
+}
+
 namespace luasteam {
 
 void add_apps(lua_State *L) {
@@ -64,9 +73,7 @@ void add_apps(lua_State *L) {
     lua_setfield(L, -2, "apps");
 }
 
-void init_apps(lua_State *L) {
-    apps_listener = new CallbackListener(); 
-}
+void init_apps(lua_State *L) { apps_listener = new CallbackListener(); }
 
 void shutdown_apps(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, apps_ref);
