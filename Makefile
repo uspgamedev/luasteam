@@ -22,7 +22,7 @@ IPATHS=-I$(LUAJIT_PATH)/src
 GNU_FLAGS=$(IPATHS) $(STDLIB_VER)
 
 
-.PHONY: all osx linux32 linux64 win32 win64 clean
+.PHONY: all osx linux32 linux64 win32 win64 clean linux32-build linux64-build win32-build win64-build osx-build
 
 clean:
 	cd $(LUAJIT_PATH) && $(MAKE) clean
@@ -64,3 +64,22 @@ win64: luajit-64
 win32: luajit-32
 	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(PATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp ${STEAM_LIB}/steam_api.lib mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
+
+
+# Build-only targets (without running tests) for CI
+linux64-build: luajit-64
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+
+linux32-build: luajit-32
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+
+win64-build: luajit-64
+	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) -shared -o $(WINDOWS_OUT)
+
+win32-build: luajit-32
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(PATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
+
+osx-build:
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
+	lipo -create -output $(OSX_OUT) $(OSX_OUT).arm64 $(OSX_OUT).x86_64
