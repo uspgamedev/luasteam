@@ -1,3 +1,6 @@
 [submodule "third-party"]
 	path = third-party
 	url = https://github.com/uspgamedev/luasteam-third-party
+[submodule "luajit"]
+	path = luajit
+	url = https://luajit.org/git/luajit.git
