@@ -25,9 +25,9 @@ jobs:
           curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
           unzip -q sdk.zip
       - name: Build linux64
-        run: make linux64 && mkdir -p build && cp luasteam.so build/linux64_luasteam.so
+        run: make linux64-build && mkdir -p build && cp luasteam.so build/linux64_luasteam.so
       - name: Build linux32
-        run: make clean && make linux32 && cp luasteam.so build/linux32_luasteam.so
+        run: make clean && make linux32-build && cp luasteam.so build/linux32_luasteam.so
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -47,7 +47,7 @@ jobs:
           curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
           unzip -q sdk.zip
       - name: Build
-        run: make osx && mkdir -p build && cp luasteam.so build/osx_luasteam.so
+        run: make osx-build && mkdir -p build && cp luasteam.so build/osx_luasteam.so
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -79,9 +79,9 @@ jobs:
           curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
           unzip -q sdk.zip
       - name: Build win64
-        run: make win64 && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
+        run: make win64-build && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
       - name: Build win32
-        run: make clean && make win32 && cp luasteam.dll build/win32_luasteam.dll
+        run: make clean && make win32-build && cp luasteam.dll build/win32_luasteam.dll
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
