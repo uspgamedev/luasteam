@@ -77,7 +77,7 @@ win64-build: luajit-64
 	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) -shared -o $(WINDOWS_OUT)
 
 win32-build: luajit-32
-	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(PATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
 
 osx-build:
 	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
