@@ -1,0 +1,111 @@
+# GitHub Actions CI for luasteam
+# Builds on Linux, macOS, and Windows
+
+name: CI
+
+on:
+  push:
+    branches: [master, ci-test]
+  pull_request:
+    branches: [master]
+  release:
+    types: [created]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Update submodules
+        run: git submodule update --init
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential g++-multilib
+      - name: Download Steamworks SDK
+        run: |
+          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
+          unzip -q sdk.zip
+      - name: Build linux64
+        run: make linux64 && mkdir -p build && cp luasteam.so build/linux64_luasteam.so
+      - name: Build linux32
+        run: make clean && make linux32 && cp luasteam.so build/linux32_luasteam.so
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-binaries
+          path: build/*.so
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Update submodules
+        run: git submodule update --init
+      - name: Install dependencies
+        run: brew install luajit
+      - name: Download Steamworks SDK
+        run: |
+          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
+          unzip -q sdk.zip
+      - name: Build
+        run: make osx && mkdir -p build && cp luasteam.so build/osx_luasteam.so
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-binaries
+          path: build/*.so
+
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Install MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            gcc
+            make
+            mingw-w64-i686-gcc
+            mingw-w64-i686-make
+      - uses: actions/checkout@v6
+      - name: Update submodules
+        shell: bash
+        run: git submodule update --init
+      - name: Download Steamworks SDK
+        shell: bash
+        run: |
+          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
+          unzip -q sdk.zip
+      - name: Build win64
+        run: make win64 && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
+      - name: Build win32
+        run: |
+            ls /c/msys64
+            ls /c/msys64/mingw32/bin
+            ls /mingw32/bin
+            export PATH=/mingw32/bin:$PATH
+            make clean && make win32 && cp luasteam.dll build/win32_luasteam.dll
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binaries
+          path: build/*.dll
+
+  release:
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: build
+      - name: List build outputs
+        run: ls -R build
+      - name: Upload to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/**/*.dll
+            build/**/*.so

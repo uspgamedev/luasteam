@@ -5,6 +5,8 @@ STDLIB_VER=-std=c++11
 CPP_FLAGS=-Wno-invalid-offsetof -Wall
 
 THIRD_PARTY=./third-party
+LUAJIT_PATH=./luajit
+STEAM_LIB=sdk/redistributable_bin
 
 OSX_OUT=luasteam.so
 OSX_IPATHS=-I$(THIRD_PARTY)/include/
@@ -16,60 +18,55 @@ OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER) $(OSX_MIN_VERSION)
 
 GNU_OUT=luasteam.so
 # You might need to change this to luajit-2.1 depending on your install. Don't commit it.
-GNU_IPATHS=-I/usr/include/luajit-2.0
-GNU_FLAGS=$(GNU_IPATHS) $(STDLIB_VER) -lluajit-5.1
+IPATHS=-I$(LUAJIT_PATH)/src
+GNU_FLAGS=$(IPATHS) $(STDLIB_VER)
 
-.PHONY: all osx linux32 linux64 windows32 windows64
+
+.PHONY: all osx linux32 linux64 win32 win64 clean
+
+clean:
+	cd $(LUAJIT_PATH) && $(MAKE) clean
+	rm -f luasteam.so luasteam.dll
 
 all:
-	@echo "choose platform: linux64 | linux32 | windows32 | windows64 | osx"
+	@echo "choose platform: linux64 | linux32 | win32 | win64 | osx"
 
-STEAM_LIB=sdk/redistributable_bin
 
 osx:
 	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
 	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
 	lipo -create -output $(OSX_OUT) $(OSX_OUT).arm64 $(OSX_OUT).x86_64
 
-linux32:
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 
-linux64:
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
+luajit-64:
+	cd $(LUAJIT_PATH) && $(MAKE) -j
 
-ifeq ($(OS),Windows_NT)
-# Windows stuff
-SHELL=cmd
-WINDOWS_IPATHS=-I./cache/include
-WINDOWS_OPT=-LD -EHsc -Feluasteam
-VARSALL="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+luajit-32:
+	cd $(LUAJIT_PATH) && $(MAKE) -j CC="gcc -m32"
+	
+WINPREF32=i686-w64-mingw32-
 
-luajit.zip:
-	curl -sL -o luajit.zip http://luajit.org/download/LuaJIT-2.0.5.zip
+# The TARGET=strip is needed because otherwise it tries to use WINPREF32-strip
+# which doesn't exist. It's not actually the 32-bit one but I thin things work.
+luajit-32-win:
+	cd $(LUAJIT_PATH) && $(MAKE) -j HOST_CC=$(WINPREF32)gcc CROSS=$(WINPREF32) TARGET_STRIP=strip
 
-cache: luajit.zip
-	@echo "Downloading LuaJIT source"
-	unzip -qo luajit.zip
-	mkdir cache\include
-	cp LuaJIT-2.0.5/src/*.h cache/include
+linux64: luajit-64
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+	cp luasteam.so mwe && cp $(LUAJIT_PATH)/src/libluajit.so mwe/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux64/libsteam_api.so mwe && cd mwe && ls && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
-cache/win32_lua51.lib:
-	@echo "Compiling LuaJIT 32 bits"
-	if not exist cache $(MAKE) cache
-	cd LuaJIT-2.0.5/src && call $(VARSALL) x86 && call msvcbuild.bat
-	cp LuaJIT-2.0.5/src/lua51.lib cache/win32_lua51.lib
+linux32: luajit-32
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+	cp luasteam.so mwe && cp $(LUAJIT_PATH)/src/libluajit.so mwe/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux32/libsteam_api.so mwe && cd mwe && ls && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
-cache/win64_lua51.lib:
-	@echo "Compiling LuaJIT 64 bits"
-	if not exist cache $(MAKE) cache
-	cd LuaJIT-2.0.5/src && call $(VARSALL) x64 && call msvcbuild.bat
-	cp LuaJIT-2.0.5/src/lua51.lib cache/win64_lua51.lib
+WINDOWS_LUAJIT_LIB=$(LUAJIT_PATH)/src/lua51.dll
+WINDOWS_STEAM_LIB=$(STEAM_LIB)/win64/steam_api64.lib
+WINDOWS_OUT=luasteam.dll
 
-windows32:
-	if not exist cache\win32_lua51.lib $(MAKE) cache/win32_lua51.lib
-	call $(VARSALL) x86 && cl $(SRC) cache/win32_lua51.lib ${STEAM_LIB}/steam_api.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
+win64: luajit-64
+	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) -shared -o $(WINDOWS_OUT)
+	cp luasteam.dll mwe && cp $(STEAM_LIB)/win64/steam_api64.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
 
-windows64:
-	if not exist cache\win64_lua51.lib $(MAKE) cache/win64_lua51.lib
-	call $(VARSALL) x64 && cl $(SRC) cache/win64_lua51.lib ${STEAM_LIB}/win64/steam_api64.lib $(WINDOWS_OPT) $(WINDOWS_IPATHS)
-endif
+win32: luajit-32-win
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
+	cp luasteam.dll mwe && cp $(STEAM_LIB)/steam_api.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
