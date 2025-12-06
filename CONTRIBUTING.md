@@ -5,12 +5,15 @@ We are open to contributions, either adding new functions, improving documentati
 ## Adding new functions
 
 We encourage you to add functions that are currently missing. Follow the style of functions already added in this project, that means, if you're adding `ISteamFriends::ActivateGameOverlayToStore`, follow these guidelines:
+
 - Implement it in file `src/friends.cpp`
 - Name it `SteamFriends.activateGameOverlayToStore`
+- Add it to the table at `add_friends` function, and remember to increase the value of the argument of `lua_createtable(L, 0, X)` to `lua_createtable(L, 0, X+1)` (that is the number of functions that will be in the table).
 - Try to keep all arguments in the same order, with the same names (in a different naming convention, drop the type prefixes) and of the same type. Enums should be changed to string, for example `k_EOverlayToStoreFlag_AddToCart` becomes `"AddToCart"`.
 - Callbacks and CallResults have a special way of being implemented: check [our documentation](https://luasteam.readthedocs.io/en/stable/getting_started.html#callbacks).
 - IDs that are actually 64-bit integers should be implemented using [our uint64 userdata](https://github.com/uspgamedev/luasteam/blob/v1.0.1/src/common.hpp#L21-L24).
 - It's fine if the functions are a bit different ([example](https://luasteam.readthedocs.io/en/stable/user_stats.html#userStats.downloadLeaderboardEntries)) because stuff in Lua is different than in C++.
+- Add documentation for that function in `docs/friends.rst`, see below on how to compile it to test.
 
 Send us PRs even if you're not sure you're following these guidelines correctly. We won't bite. Open an issue if you have any doubts.
 
@@ -55,5 +58,6 @@ Install luajit (`brew install luajit`). Run `make osx`.
 4. Run `mingw32-make win32` for Windows 32 and `mingw32-make win64` for Windows 64.
 
 ## Resources
+
 - [Steam API Reference](https://partner.steamgames.com/doc/api)
 - [Lua C API Overview](https://www.lua.org/manual/5.1/manual.html#3)
