@@ -1,4 +1,6 @@
 #include "utils.hpp"
+#include <algorithm>
+#include <vector>
 //#include <cstdio>
 
 // ==========================
@@ -12,6 +14,8 @@ namespace {
 class CallbackListener;
 CallbackListener *callback_listener = nullptr;
 int utils_ref = LUA_NOREF;
+
+constexpr int kMaxGamepadTextLength = 1000000; // clamp to avoid unbounded allocations
 
 const char *input_modes[] = {"Normal", "Password", nullptr};
 const char *input_line_modes[] = {"SingleLine", "MultipleLines", nullptr};
@@ -41,7 +45,7 @@ void CallbackListener::OnGamepadTextInputDismissed(GamepadTextInputDismissed_t *
         lua_pushboolean(L, data->m_bSubmitted);
         lua_setfield(L, -2, "submitted");
         lua_pushnumber(L, data->m_unSubmittedText);
-        lua_setfield(L, -2, "submittedText"); // len in bytes
+        lua_setfield(L, -2, "submittedText");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -60,7 +64,7 @@ void CallbackListener::OnFloatingGamepadTextInputDismissed(FloatingGamepadTextIn
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
-        lua_call(L, 1, 0);
+        lua_call(L, 0, 0);
         lua_pop(L, 1);
     }
 }
@@ -75,9 +79,11 @@ EXTERN int luasteam_getAppID(lua_State *L) {
 
 // bool GetEnteredGamepadTextInput( char *pchText, uint32 cchText );
 EXTERN int luasteam_getEnteredGamepadTextInput(lua_State *L) {
-    char pchText[1024];
-    SteamUtils()->GetEnteredGamepadTextInput(pchText, 1024);
-    lua_pushstring(L, pchText);
+    int len = luaL_checkint(L, 1);
+    len = std::max(0, std::min(len, kMaxGamepadTextLength));
+    std::vector<char> pchText(len + 1);
+    SteamUtils()->GetEnteredGamepadTextInput(pchText.data(), len);
+    lua_pushstring(L, pchText.data());
     return 1;
 }
 
@@ -104,10 +110,11 @@ EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
 
     int input_mode = luaL_checkoption(L, 1, nullptr, input_modes);
     int input_line_mode = luaL_checkoption(L, 2, nullptr, input_line_modes);
-    // char pchDescription[1024];
     const char *pchDescription = luaL_checkstring(L, 3);
+    int char_max = luaL_checkint(L, 4);
+    char_max = std::max(0, std::min(char_max, kMaxGamepadTextLength));
     const char *pchExistingText = luaL_checkstring(L, 5);
-    lua_pushboolean(L, SteamUtils()->ShowGamepadTextInput(static_cast<EGamepadTextInputMode>(input_mode), static_cast<EGamepadTextInputLineMode>(input_line_mode), pchDescription, 1024, pchExistingText));
+    lua_pushboolean(L, SteamUtils()->ShowGamepadTextInput(static_cast<EGamepadTextInputMode>(input_mode), static_cast<EGamepadTextInputLineMode>(input_line_mode), pchDescription, char_max, pchExistingText));
     return 1;
 }
 
