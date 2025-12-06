@@ -25,20 +25,22 @@ Basically all you need is sphinx (`pip install sphinx sphinx-rtd-theme`), and th
 
 ## Building
 
-While developing, we recommend you just worry about compiling to the platform you're using, and let Travis deal with the other platforms (since if it compiles in one, it most likely compiles in all, the difficult part is getting the dependencies right).
+While developing, we recommend you just worry about compiling to the platform you're using, and let Github Actions deal with the other platforms (since if it compiles in one, it most likely compiles in all, the difficult part is getting the dependencies right).
 
 ### For all platforms
 
 1. Download the [SteamWorks SDK](https://partner.steamgames.com/doc/sdk).
-2. Unzip it so that the `sdk` folder is in this directory, not `steamworks_sdk_158a/sdk`.
+2. Unzip it so that the `sdk` folder is in this directory, not `steamworks_sdk_163/sdk`.
+3. Make sure the luajit submodule is cloned with `git submodule update --init`.
+4. Remember to `make clean` when changing between building for 32 and 64 bits.
 
 ### Linux 64
 
-Install package `libluajit-5.1-dev`. Run `make linux64`. You might need to change the `Makefile` var `GNU_IPATHS` to use `-I/usr/include/luajit-2.1` instead, depending on your install. Don't commit that, as it will break continuous integration.
+You need `g++`, in Ubuntu-like `sudo apt-get install buildessentials` should be enough. Run `make linux64`.
 
-### Linux 32
+### Linux 32 (from Linux 64)
 
-Install package `libluajit-5.1-dev:i386` (you may also need `g++-multilib`). Run `make linux32`. This assumes you're using a 64 bit OS.
+You may also need `g++-multilib`. Run `make linux32`.
 
 ### OS X
 
@@ -46,13 +48,11 @@ Install luajit (`brew install luajit`). Run `make osx`.
 
 ### Windows 32 and 64
 
-1. Download [chocolatey](https://chocolatey.org/install).
-2. Install Visual Studio Community and mingw with `choco install visualstudio2017community visualstudio2017-workload-nativecrossplat mingw`.
-   1. Chocolately is the only way to obtain VS 2017 as Microsoft delisted the installers from [the official site](https://visualstudio.microsoft.com/vs/older-downloads/).
-3. Install [Git BASH](https://gitforwindows.org/). You likely already have it installed if you've installed git.
+1. Install [Git BASH](https://gitforwindows.org/). You likely already have it installed if you've installed git.
    1. Windows Command Prompt and Windows PowerShell do not work.
-4. Open a Git BASH terminal.
-5. Run `mingw32-make windows32` for Windows 32 and `mingw32-make windows64` for Windows 64.
+2. Install `g++` and `make`, the best supported way is using MSYS2.
+3. Open a Git Bash terminal.
+4. Run `mingw32-make win32` for Windows 32 and `mingw32-make win64` for Windows 64.
 
 ## Resources
 - [Steam API Reference](https://partner.steamgames.com/doc/api)

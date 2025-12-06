@@ -82,9 +82,6 @@ jobs:
         run: make win64 && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
       - name: Build win32
         run: |
-            ls /c/msys64
-            ls /c/msys64/mingw32/bin
-            ls /mingw32/bin
             export PATH=/mingw32/bin:$PATH
             make clean && make win32 && cp luasteam.dll build/win32_luasteam.dll
       - name: Upload artifacts

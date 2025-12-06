@@ -1,8 +1,7 @@
 SRC=src/*.cpp
-STDLIB_VER=-std=c++11
 
 # -Wno-invalid-offsetof prevents STEAM_CALLBACK from giving out warnings
-CPP_FLAGS=-Wno-invalid-offsetof -Wall
+CPP_FLAGS=-Wno-invalid-offsetof -Wall $(STDLIB_VER)
 
 THIRD_PARTY=./third-party
 LUAJIT_PATH=./luajit
@@ -14,12 +13,11 @@ OSX_IPATHS=-I$(THIRD_PARTY)/include/
 # minimum version libluajit-5.1.a is compiled for; targeting earlier versions will
 # raise compiler warnings.
 OSX_MIN_VERSION=-mmacosx-version-min=10.11
-OSX_FLAGS=$(OSX_IPATHS) $(STDLIB_VER) $(OSX_MIN_VERSION)
+OSX_FLAGS=$(OSX_IPATHS) $(OSX_MIN_VERSION)
 
 GNU_OUT=luasteam.so
-# You might need to change this to luajit-2.1 depending on your install. Don't commit it.
 IPATHS=-I$(LUAJIT_PATH)/src
-GNU_FLAGS=$(IPATHS) $(STDLIB_VER)
+GNU_FLAGS=$(IPATHS)
 
 
 .PHONY: all osx linux32 linux64 win32 win64 clean
