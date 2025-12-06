@@ -1,8 +1,8 @@
 #include "input.hpp"
-#include <vector>
 #include <array>
 #include <map>
 #include <string>
+#include <vector>
 
 // ==========================
 // ======= SteamInput =======
@@ -27,10 +27,12 @@ const char *xbox_origins[] = {
 };
 
 const char *steam_controller_pads[] = {
-    "Left", "Right", nullptr,
+    "Left",
+    "Right",
+    nullptr,
 };
 
-}
+} // namespace
 
 // void ActivateActionSet( InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle );
 EXTERN int luasteam_activateActionSet(lua_State *L) {
@@ -83,7 +85,7 @@ EXTERN int luasteam_getActiveActionSetLayers(lua_State *L) {
     for (int i = 0; i < sz; i++) {
         luasteam::pushuint64(L, handlesOut[i]);
         lua_rawseti(L, -2, i + 1);
-    }   
+    }
     return 1;
 }
 
@@ -131,7 +133,7 @@ EXTERN int luasteam_getAnalogActionOrigins(lua_State *L) {
     for (int i = 0; i < sz; i++) {
         lua_pushstring(L, input_action_origins[origins[i]]);
         lua_rawseti(L, -2, i + 1);
-    }   
+    }
     return 1;
 }
 
@@ -143,7 +145,7 @@ EXTERN int luasteam_getConnectedControllers(lua_State *L) {
     for (int i = 0; i < sz; i++) {
         luasteam::pushuint64(L, inputHandles[i]);
         lua_rawseti(L, -2, i + 1);
-    }   
+    }
     return 1;
 }
 
@@ -193,7 +195,7 @@ EXTERN int luasteam_getDigitalActionOrigins(lua_State *L) {
     for (int i = 0; i < sz; i++) {
         lua_pushstring(L, input_action_origins[origins[i]]);
         lua_rawseti(L, -2, i + 1);
-    }  
+    }
     return 1;
 }
 
@@ -334,9 +336,9 @@ EXTERN int luasteam_translateActionOrigin(lua_State *L) {
 EXTERN int luasteam_getDeviceBindingRevision(lua_State *L) {
     uint64 inputHandle = luasteam::checkuint64(L, 1);
     int nMajorRevision = -1;
-    int nMinorRevision= -1;
+    int nMinorRevision = -1;
     bool success = SteamInput()->GetDeviceBindingRevision(inputHandle, &nMajorRevision, &nMinorRevision);
-    
+
     lua_pushboolean(L, success);
     if (success) {
         lua_pushnumber(L, nMajorRevision);

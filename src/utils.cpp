@@ -1,7 +1,7 @@
 #include "utils.hpp"
 #include <algorithm>
 #include <vector>
-//#include <cstdio>
+// #include <cstdio>
 
 // ==========================
 // ======= SteamUtils =======
@@ -93,13 +93,13 @@ EXTERN int luasteam_getEnteredGamepadTextLength(lua_State *L) {
     return 1;
 }
 
-//bool IsSteamInBigPictureMode();
+// bool IsSteamInBigPictureMode();
 EXTERN int luasteam_isSteamInBigPictureMode(lua_State *L) {
     lua_pushboolean(L, SteamUtils()->IsSteamInBigPictureMode());
     return 1;
 }
 
-//bool IsSteamRunningOnSteamDeck();
+// bool IsSteamRunningOnSteamDeck();
 EXTERN int luasteam_isSteamRunningOnSteamDeck(lua_State *L) {
     lua_pushboolean(L, SteamUtils()->IsSteamRunningOnSteamDeck());
     return 1;
@@ -118,7 +118,7 @@ EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
     return 1;
 }
 
-//bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+// bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
 EXTERN int luasteam_showFloatingGamepadTextInput(lua_State *L) {
     int floating_input_mode = luaL_checkoption(L, 1, nullptr, floating_input_modes);
     int nTextFieldXPosition = luaL_checkint(L, 2);

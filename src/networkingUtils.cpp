@@ -34,8 +34,7 @@ void add_networkingUtils(lua_State *L) {
     lua_setfield(L, -2, "networkingUtils");
 }
 
-void init_networkingUtils(lua_State *L) {
-}
+void init_networkingUtils(lua_State *L) {}
 
 void shutdown_networkingUtils(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, networkingutils_ref);

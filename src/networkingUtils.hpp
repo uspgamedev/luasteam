@@ -12,4 +12,3 @@ void shutdown_networkingUtils(lua_State *L);
 } // namespace luasteam
 
 #endif // LUASTEAM_NETWORKINGUTILS
-

@@ -1,18 +1,18 @@
 
 #include "../sdk/public/steam/steam_gameserver.h"
+#include "const.hpp"
 #include "extra.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
-#include "const.hpp"
-#include <vector>
 #include <sstream>
+#include <vector>
 
 // ===============================
 // ======= SteamGameServer =======
 // ===============================
 
 static const char *steam_auth_session_response[] = {
-   "OK", "UserNotConnectedToSteam", "NoLicenseOrExpired", "VACBanned", "LoggedInElseWhere", "VACCheckTimedOut", "AuthTicketCanceled", "AuthTicketInvalidAlreadyUsed", "AuthTicketInvalid", "PublisherIssuedBan", nullptr,
+    "OK", "UserNotConnectedToSteam", "NoLicenseOrExpired", "VACBanned", "LoggedInElseWhere", "VACCheckTimedOut", "AuthTicketCanceled", "AuthTicketInvalidAlreadyUsed", "AuthTicketInvalid", "PublisherIssuedBan", nullptr,
 };
 
 std::vector<unsigned char> hexToBuffer(const std::string &hexString) {
