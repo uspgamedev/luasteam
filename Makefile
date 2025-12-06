@@ -7,17 +7,17 @@ THIRD_PARTY=./third-party
 LUAJIT_PATH=./luajit
 STEAM_LIB=sdk/redistributable_bin
 
-OSX_OUT=luasteam.so
-OSX_IPATHS=-I$(THIRD_PARTY)/include/
-# Compile for 10.11 (El Capitan, 2015) and up. At the time of writing, 10.11 is the
-# minimum version libluajit-5.1.a is compiled for; targeting earlier versions will
-# raise compiler warnings.
-OSX_MIN_VERSION=-mmacosx-version-min=10.11
-OSX_FLAGS=$(OSX_IPATHS) $(OSX_MIN_VERSION)
-
 GNU_OUT=luasteam.so
 IPATHS=-I$(LUAJIT_PATH)/src
 GNU_FLAGS=$(IPATHS)
+
+OSX_OUT=luasteam.so
+# Compile for 10.11 (El Capitan, 2015) and up. At the time of writing, 10.11 is the
+# minimum version libluajit-5.1.a is compiled for; targeting earlier versions will
+# raise compiler warnings.
+OSX_MIN_VERSION=10.11
+OSX_FLAGS=$(IPATHS) -mmacosx-version-min=$(OSX_MIN_VERSION)
+
 
 
 .PHONY: all osx linux32 linux64 win32 win64 clean
@@ -29,11 +29,28 @@ clean:
 all:
 	@echo "choose platform: linux64 | linux32 | win32 | win64 | osx"
 
+luajit-osx:
+	# Build x86_64
+	cd $(LUAJIT_PATH) && MACOSX_DEPLOYMENT_TARGET=$(OSX_MIN_VERSION) $(MAKE) clean
+	cd $(LUAJIT_PATH) && MACOSX_DEPLOYMENT_TARGET=$(OSX_MIN_VERSION) $(MAKE) -j CC="clang" TARGET_FLAGS="-arch x86_64"
+	mv $(LUAJIT_PATH)/src/libluajit.a $(LUAJIT_PATH)/src/libluajit_x86_64.a
+	mv $(LUAJIT_PATH)/src/luajit $(LUAJIT_PATH)/src/luajit_x86_64
+	# Build arm64
+	cd $(LUAJIT_PATH) && MACOSX_DEPLOYMENT_TARGET=$(OSX_MIN_VERSION) $(MAKE) clean
+	cd $(LUAJIT_PATH) && MACOSX_DEPLOYMENT_TARGET=$(OSX_MIN_VERSION) $(MAKE) -j CC="clang" TARGET_FLAGS="-arch arm64"
+	mv $(LUAJIT_PATH)/src/libluajit.a $(LUAJIT_PATH)/src/libluajit_arm64.a
+	mv $(LUAJIT_PATH)/src/luajit $(LUAJIT_PATH)/src/luajit_arm64
+	# Create Universal Binaries
+	lipo -create -output $(LUAJIT_PATH)/src/libluajit.a $(LUAJIT_PATH)/src/libluajit_x86_64.a $(LUAJIT_PATH)/src/libluajit_arm64.a
+	lipo -create -output $(LUAJIT_PATH)/src/luajit $(LUAJIT_PATH)/src/luajit_x86_64 $(LUAJIT_PATH)/src/luajit_arm64
 
-osx:
-	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
-	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib ${THIRD_PARTY}/lib/libluajit-5.1.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
+osx: luajit-osx
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
 	lipo -create -output $(OSX_OUT) $(OSX_OUT).arm64 $(OSX_OUT).x86_64
+	# Test
+	lipo -archs $(OSX_OUT) | grep -F "x86_64 arm64"
+	cp $(OSX_OUT) mwe && cp ${STEAM_LIB}/osx/libsteam_api.dylib mwe && cd mwe && DYLD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
 
 luajit-64:

@@ -40,8 +40,6 @@ jobs:
       - uses: actions/checkout@v6
       - name: Update submodules
         run: git submodule update --init
-      - name: Install dependencies
-        run: brew install luajit
       - name: Download Steamworks SDK
         run: |
           curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
