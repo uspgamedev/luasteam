@@ -1,6 +1,7 @@
 # luasteam
+
 [![Documentation Status](https://readthedocs.org/projects/luasteam/badge/?version=stable)](https://luasteam.readthedocs.io/en/stable/?badge=stable)
-[![Build Status](https://app.travis-ci.com/uspgamedev/luasteam.svg?branch=master)](https://app.travis-ci.com/uspgamedev/luasteam)
+[![Build Status](https://github.com/uspgamedev/luasteam/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/uspgamedev/luasteam/actions/workflows/ci.yml)
 
 luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you’re building games with [Love2D](https://love2d.org/).
 
@@ -13,6 +14,7 @@ This README file is purposefully small, all our documentation is in [luasteam.re
 Can't find the binding you need? We accept contributions! Check our [guideline and tips](CONTRIBUTING.md).
 
 ## Games using luasteam
+
 - [Marvellous Inc.](https://store.steampowered.com/app/827940/Marvellous_Inc/)
 - [Balatro](https://store.steampowered.com/app/2379780/Balatro/)
 - [SNKRX](https://store.steampowered.com/app/915310/SNKRX/)
@@ -32,6 +34,5 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [Possession](https://store.steampowered.com/app/629340/Possession/)
 - [Kanji Drive](https://store.steampowered.com/app/2219640/Kanji_Drive/)
 - [Descent from Arkov's tower Prologue](https://store.steampowered.com/app/2688600/Descent_from_Arkovs_tower_Prologue/)
-
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
