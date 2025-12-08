@@ -34,5 +34,13 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - [Possession](https://store.steampowered.com/app/629340/Possession/)
 - [Kanji Drive](https://store.steampowered.com/app/2219640/Kanji_Drive/)
 - [Descent from Arkov's tower Prologue](https://store.steampowered.com/app/2688600/Descent_from_Arkovs_tower_Prologue/)
+- [Endless Dark](https://store.steampowered.com/app/2290890/Endless_Dark/)
+- [Bang Average Football](https://store.steampowered.com/app/2393770/Bang_Average_Football__Play_Manage_Create/)
+- [Paratroopers Raid](https://store.steampowered.com/app/3127690/Paratroopers_Raid/)
+- [Chaperon Inc.](https://store.steampowered.com/app/3093090/Chaperon_Inc/)
+- [Trivia War](https://store.steampowered.com/app/3472880/Trivia_War/)
+- [ClickShot](https://store.steampowered.com/app/3655710/ClickShot/)
+- [A Solitaire Mystery](https://store.steampowered.com/app/3743220/A_Solitaire_Mystery/)
+- And more!
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
