@@ -1,16 +1,16 @@
 #include "UGC.hpp"
+#include "apps.hpp"
 #include "common.hpp"
 #include "core.hpp"
 #include "extra.hpp"
 #include "friends.hpp"
-#include "user.hpp"
-#include "user_stats.hpp"
-#include "apps.hpp"
-#include "utils.hpp"
+#include "gameServer.hpp"
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
-#include "gameServer.hpp"
+#include "user.hpp"
+#include "user_stats.hpp"
+#include "utils.hpp"
 
 // Creates and returns a table with all functions
 EXTERN int luaopen_luasteam(lua_State *L) {

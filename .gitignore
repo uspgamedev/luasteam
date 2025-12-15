@@ -4,7 +4,6 @@
 ### Steam Stuff ###
 
 /sdk
-/luajit
 
 ### Sphinx/Docs ###
 /docs/_build

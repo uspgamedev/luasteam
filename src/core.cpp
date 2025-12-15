@@ -1,14 +1,14 @@
 #include "core.hpp"
 #include "UGC.hpp"
+#include "apps.hpp"
 #include "extra.hpp"
 #include "friends.hpp"
-#include "user.hpp"
-#include "user_stats.hpp"
-#include "utils.hpp"
-#include "apps.hpp"
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
+#include "user.hpp"
+#include "user_stats.hpp"
+#include "utils.hpp"
 
 // ========================
 // ======= SteamAPI =======

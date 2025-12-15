@@ -1,3 +1,4 @@
-[submodule "third-party"]
-	path = third-party
-	url = https://github.com/uspgamedev/luasteam-third-party
+[submodule "luajit"]
+	branch = v2.1
+	path = luajit
+	url = https://luajit.org/git/luajit.git

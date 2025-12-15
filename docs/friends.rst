@@ -11,6 +11,7 @@ List of Functions
 * :func:`friends.setRichPresence`
 * :func:`friends.inviteUserToGame`
 * :func:`friends.getFriendCount`
+* :func:`friends.getFriendRichPresence`
 * :func:`friends.getFriendByIndex`
 
 List of Callbacks
@@ -110,6 +111,18 @@ Function Reference
             }
         }
     }
+
+.. function:: friends.getFriendRichPresence(steamIDFriend, key)
+    :param uint64 steamIDFriend: The friend to get the Rich Presence value for.
+    :param string key: The Rich Presence key to request. Maximum length is 64 characters.
+    :returns: (`string`) Returns an empty string if the specified key is not set.
+    :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
+
+    Get a Rich Presence value from a specified friend.
+
+**Example**::
+    steam_id = getSteamIdSomehow()
+    print("Friend's text status is:", Steam.friends.getRichPresence(steam_id, "text"))
 
 .. function:: friends.inviteUserToGame(steamIDFriend, connect_string)
 

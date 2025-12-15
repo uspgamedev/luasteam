@@ -194,48 +194,48 @@ template <> void CallResultListener<LeaderboardScoresDownloaded_t>::Result(Leade
 
 // bool GetStat(const char *pchName, int32 *pData);
 EXTERN int luasteam_getStatInt(lua_State *L) {
-  const char *stat_name = luaL_checkstring(L, 1);
-  int stat_value;
-  bool success = SteamUserStats()->GetStat(stat_name, &stat_value);
-  lua_pushboolean(L, success);
-  if (success) {
-    lua_pushnumber(L, stat_value);
-    return 2;
-  } else {
-    return 1;
-  }
+    const char *stat_name = luaL_checkstring(L, 1);
+    int stat_value;
+    bool success = SteamUserStats()->GetStat(stat_name, &stat_value);
+    lua_pushboolean(L, success);
+    if (success) {
+        lua_pushnumber(L, stat_value);
+        return 2;
+    } else {
+        return 1;
+    }
 }
 
 // bool GetStat(const char *pchName, float *pData);
 EXTERN int luasteam_getStatFloat(lua_State *L) {
-  const char *stat_name = luaL_checkstring(L, 1);
-  float stat_value;
-  bool success = SteamUserStats()->GetStat(stat_name, &stat_value);
-  lua_pushboolean(L, success);
-  if (success) {
-    lua_pushnumber(L, stat_value);
-    return 2;
-  } else {
-    return 1;
-  }
+    const char *stat_name = luaL_checkstring(L, 1);
+    float stat_value;
+    bool success = SteamUserStats()->GetStat(stat_name, &stat_value);
+    lua_pushboolean(L, success);
+    if (success) {
+        lua_pushnumber(L, stat_value);
+        return 2;
+    } else {
+        return 1;
+    }
 }
 
 // bool SetStat(const char *pchName, int32 *pData);
 EXTERN int luasteam_setStatInt(lua_State *L) {
-  const char *stat_name = luaL_checkstring(L, 1);
-  const int stat_value = luaL_checkint(L, 2);
-  bool success = SteamUserStats()->SetStat(stat_name, stat_value);
-  lua_pushboolean(L, success);
-  return 1;
+    const char *stat_name = luaL_checkstring(L, 1);
+    const int stat_value = luaL_checkint(L, 2);
+    bool success = SteamUserStats()->SetStat(stat_name, stat_value);
+    lua_pushboolean(L, success);
+    return 1;
 }
 
 // bool SetStat(const char *pchName, float *pData);
 EXTERN int luasteam_setStatFloat(lua_State *L) {
-  const char *stat_name = luaL_checkstring(L, 1);
-  const float stat_value = luaL_checknumber(L, 2);
-  bool success = SteamUserStats()->SetStat(stat_name, stat_value);
-  lua_pushboolean(L, success);
-  return 1;
+    const char *stat_name = luaL_checkstring(L, 1);
+    const float stat_value = luaL_checknumber(L, 2);
+    bool success = SteamUserStats()->SetStat(stat_name, stat_value);
+    lua_pushboolean(L, success);
+    return 1;
 }
 
 // bool GetAchievement(const char *pchName, bool *pbAchieved );
@@ -271,13 +271,6 @@ EXTERN int luasteam_resetAllStats(lua_State *L) {
 // bool StoreStats();
 EXTERN int luasteam_storeStats(lua_State *L) {
     bool success = SteamUserStats()->StoreStats();
-    lua_pushboolean(L, success);
-    return 1;
-}
-
-// bool RequestCurrentStats();
-EXTERN int luasteam_requestCurrentStats(lua_State *L) {
-    bool success = SteamUserStats()->RequestCurrentStats();
     lua_pushboolean(L, success);
     return 1;
 }
@@ -399,7 +392,6 @@ void add_user_stats(lua_State *L) {
     add_func(L, "setAchievement", luasteam_setAchievement);
     add_func(L, "resetAllStats", luasteam_resetAllStats);
     add_func(L, "storeStats", luasteam_storeStats);
-    add_func(L, "requestCurrentStats", luasteam_requestCurrentStats);
     add_func(L, "findLeaderboard", luasteam_findLeaderboard);
     add_func(L, "findOrCreateLeaderboard", luasteam_findOrCreateLeaderboard);
     add_func(L, "getLeaderboardEntryCount", luasteam_getLeaderboardEntryCount);

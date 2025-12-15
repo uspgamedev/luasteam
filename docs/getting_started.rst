@@ -8,13 +8,13 @@ Installation
 To install luasteam, you can use one of our pre-compiled binaries in our `releases page <https://github.com/uspgamedev/luasteam/releases>`_. Make sure you're using the same version of this documentation as of the release you downloaded.
 
 Download the correct binary for your platform and rename it to simply ``luasteam.ext``. For example, if you're using Windows 32-bits, download ``win32_luasteam.dll`` and rename it to ``luasteam.dll``.
-Then copy this file to the same directory as your lua files, and make sure ``require 'luasteam'`` works.
+Then copy this file to the same directory as your lua files, and make sure ``require 'luasteam'`` works. See the ``mwe`` directory for a very simple example of this.
 
 On linux, you may need to use `LD_LIBRARY_PATH=. love ...` when running your code. To make allow placing the binaries next to the love file on all OSs, you may need to use `this hack <https://github.com/MarvellousSoft/MarvInc/blob/e914dcd15d7b538793c7dcac27d3350d716d47db/marv/main.lua#L10-L13>`_.
 
 .. warning::
 
-    You also need to copy the correct SteamWorks library to the same directory. This library is not on the luasteam repository, and must be downloaded through the `SteamWorks website <https://partner.steamgames.com/downloads/list>`_. This version of luasteam is guaranteed to work with SteamWorks SDK v1.58a, but probably works with future versions.
+    You also need to copy the correct SteamWorks library to the same directory. This library is not on the luasteam repository, and must be downloaded through the `SteamWorks website <https://partner.steamgames.com/downloads/list>`_. This version of luasteam is guaranteed to work with SteamWorks SDK v1.63, but probably works with future versions.
 
     After you download the SDK, you should copy the corresponding library for your platform. Here is a cheat-sheet:
 

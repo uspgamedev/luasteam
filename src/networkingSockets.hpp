@@ -13,4 +13,3 @@ void shutdown_networkingSockets(lua_State *L);
 } // namespace luasteam
 
 #endif // LUASTEAM_NETWORKINGSOCKETS
-

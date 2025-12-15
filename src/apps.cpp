@@ -64,9 +64,7 @@ void add_apps(lua_State *L) {
     lua_setfield(L, -2, "apps");
 }
 
-void init_apps(lua_State *L) {
-    apps_listener = new CallbackListener(); 
-}
+void init_apps(lua_State *L) { apps_listener = new CallbackListener(); }
 
 void shutdown_apps(lua_State *L) {
     luaL_unref(L, LUA_REGISTRYINDEX, apps_ref);
