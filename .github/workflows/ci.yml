@@ -63,8 +63,8 @@ jobs:
         with:
           update: true
           install: >-
-            gcc
             make
+            mingw-w64-x86_64-gcc
             mingw-w64-i686-gcc
             mingw-w64-i686-make
       - uses: actions/checkout@v6
@@ -77,7 +77,9 @@ jobs:
           curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
           unzip -q sdk.zip
       - name: Build win64
-        run: make win64 && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
+        run: |
+          export PATH=/mingw64/bin:$PATH
+          make win64 && mkdir -p build && cp luasteam.dll build/win64_luasteam.dll
       - name: Build win32
         run: |
             export PATH=/mingw32/bin:$PATH
