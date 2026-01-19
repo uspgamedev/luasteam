@@ -48,6 +48,7 @@ osx: luajit-osx
 	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
 	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
 	lipo -create -output $(OSX_OUT) $(OSX_OUT).arm64 $(OSX_OUT).x86_64
+	codesign -s - $(OSX_OUT)
 	# Test
 	lipo -archs $(OSX_OUT) | grep -F "x86_64 arm64"
 	cp $(OSX_OUT) mwe && cp ${STEAM_LIB}/osx/libsteam_api.dylib mwe && cd mwe && DYLD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
