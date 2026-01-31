@@ -44,3 +44,5 @@ Can't find the binding you need? We accept contributions! Check our [guideline a
 - And more!
 
 Does your game also use luasteam? Let us know [here](https://github.com/uspgamedev/luasteam/issues/16) and we can add it to the list too.
+
+# init first ci run with this line
