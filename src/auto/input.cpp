@@ -19,13 +19,13 @@ void CallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Input_ref);
-    lua_getfield(L, -1, "onSteamInputDeviceConnected");
+    lua_getfield(L, -1, "OnSteamInputDeviceConnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         luasteam::pushuint64(L, data->m_ulConnectedDeviceHandle);
-        lua_setfield(L, -2, "connectedDeviceHandle");
+        lua_setfield(L, -2, "m_ulConnectedDeviceHandle");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -36,13 +36,13 @@ void CallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnect
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Input_ref);
-    lua_getfield(L, -1, "onSteamInputDeviceDisconnected");
+    lua_getfield(L, -1, "OnSteamInputDeviceDisconnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         luasteam::pushuint64(L, data->m_ulDisconnectedDeviceHandle);
-        lua_setfield(L, -2, "disconnectedDeviceHandle");
+        lua_setfield(L, -2, "m_ulDisconnectedDeviceHandle");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -53,25 +53,25 @@ void CallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLo
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Input_ref);
-    lua_getfield(L, -1, "onSteamInputConfigurationLoaded");
+    lua_getfield(L, -1, "OnSteamInputConfigurationLoaded");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 7);
         lua_pushinteger(L, data->m_unAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_unAppID");
         luasteam::pushuint64(L, data->m_ulDeviceHandle);
-        lua_setfield(L, -2, "deviceHandle");
+        lua_setfield(L, -2, "m_ulDeviceHandle");
         luasteam::pushuint64(L, data->m_ulMappingCreator.ConvertToUint64());
-        lua_setfield(L, -2, "mappingCreator");
+        lua_setfield(L, -2, "m_ulMappingCreator");
         lua_pushinteger(L, data->m_unMajorRevision);
-        lua_setfield(L, -2, "majorRevision");
+        lua_setfield(L, -2, "m_unMajorRevision");
         lua_pushinteger(L, data->m_unMinorRevision);
-        lua_setfield(L, -2, "minorRevision");
+        lua_setfield(L, -2, "m_unMinorRevision");
         lua_pushboolean(L, data->m_bUsesSteamInputAPI);
-        lua_setfield(L, -2, "usesSteamInputAPI");
+        lua_setfield(L, -2, "m_bUsesSteamInputAPI");
         lua_pushboolean(L, data->m_bUsesGamepadAPI);
-        lua_setfield(L, -2, "usesGamepadAPI");
+        lua_setfield(L, -2, "m_bUsesGamepadAPI");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -82,21 +82,21 @@ void CallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Input_ref);
-    lua_getfield(L, -1, "onSteamInputGamepadSlotChange");
+    lua_getfield(L, -1, "OnSteamInputGamepadSlotChange");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 5);
         lua_pushinteger(L, data->m_unAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_unAppID");
         luasteam::pushuint64(L, data->m_ulDeviceHandle);
-        lua_setfield(L, -2, "deviceHandle");
+        lua_setfield(L, -2, "m_ulDeviceHandle");
         lua_pushinteger(L, data->m_eDeviceType);
-        lua_setfield(L, -2, "deviceType");
+        lua_setfield(L, -2, "m_eDeviceType");
         lua_pushinteger(L, data->m_nOldGamepadSlot);
-        lua_setfield(L, -2, "oldGamepadSlot");
+        lua_setfield(L, -2, "m_nOldGamepadSlot");
         lua_pushinteger(L, data->m_nNewGamepadSlot);
-        lua_setfield(L, -2, "newGamepadSlot");
+        lua_setfield(L, -2, "m_nNewGamepadSlot");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -294,6 +294,18 @@ EXTERN int luasteam_Input_TriggerVibrationExtended(lua_State *L) {
     return 0;
 }
 
+// void TriggerSimpleHapticEvent(InputHandle_t inputHandle, EControllerHapticLocation eHapticLocation, uint8 nIntensity, char nGainDB, uint8 nOtherIntensity, char nOtherGainDB);
+EXTERN int luasteam_Input_TriggerSimpleHapticEvent(lua_State *L) {
+    InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
+    EControllerHapticLocation eHapticLocation = static_cast<EControllerHapticLocation>(luaL_checkint(L, 2));
+    uint8 nIntensity = static_cast<uint8>(luaL_checkint(L, 3));
+    char nGainDB = luaL_checkstring(L, 4)[0];
+    uint8 nOtherIntensity = static_cast<uint8>(luaL_checkint(L, 5));
+    char nOtherGainDB = luaL_checkstring(L, 6)[0];
+    SteamInput()->TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB);
+    return 0;
+}
+
 // void SetLEDColor(InputHandle_t inputHandle, uint8 nColorR, uint8 nColorG, uint8 nColorB, unsigned int nFlags);
 EXTERN int luasteam_Input_SetLEDColor(lua_State *L) {
     InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
@@ -422,6 +434,7 @@ void register_Input_auto(lua_State *L) {
     add_func(L, "StopAnalogActionMomentum", luasteam_Input_StopAnalogActionMomentum);
     add_func(L, "TriggerVibration", luasteam_Input_TriggerVibration);
     add_func(L, "TriggerVibrationExtended", luasteam_Input_TriggerVibrationExtended);
+    add_func(L, "TriggerSimpleHapticEvent", luasteam_Input_TriggerSimpleHapticEvent);
     add_func(L, "SetLEDColor", luasteam_Input_SetLEDColor);
     add_func(L, "Legacy_TriggerHapticPulse", luasteam_Input_Legacy_TriggerHapticPulse);
     add_func(L, "Legacy_TriggerRepeatedHapticPulse", luasteam_Input_Legacy_TriggerRepeatedHapticPulse);
@@ -438,7 +451,7 @@ void register_Input_auto(lua_State *L) {
 }
 
 void add_Input_auto(lua_State *L) {
-    lua_createtable(L, 0, 37);
+    lua_createtable(L, 0, 38);
     register_Input_auto(L);
     lua_pushvalue(L, -1);
     Input_ref = luaL_ref(L, LUA_REGISTRYINDEX);

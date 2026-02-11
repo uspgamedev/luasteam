@@ -31,7 +31,7 @@ void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onSteamServersConnected");
+    lua_getfield(L, -1, "OnSteamServersConnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -46,15 +46,15 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onSteamServerConnectFailure");
+    lua_getfield(L, -1, "OnSteamServerConnectFailure");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushboolean(L, data->m_bStillRetrying);
-        lua_setfield(L, -2, "stillRetrying");
+        lua_setfield(L, -2, "m_bStillRetrying");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -65,13 +65,13 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onSteamServersDisconnected");
+    lua_getfield(L, -1, "OnSteamServersDisconnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -82,21 +82,21 @@ void CallbackListener::OnClientGameServerDeny(ClientGameServerDeny_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onClientGameServerDeny");
+    lua_getfield(L, -1, "OnClientGameServerDeny");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 5);
         lua_pushinteger(L, data->m_uAppID);
-        lua_setfield(L, -2, "uAppID");
+        lua_setfield(L, -2, "m_uAppID");
         lua_pushinteger(L, data->m_unGameServerIP);
-        lua_setfield(L, -2, "gameServerIP");
+        lua_setfield(L, -2, "m_unGameServerIP");
         lua_pushinteger(L, data->m_usGameServerPort);
-        lua_setfield(L, -2, "usGameServerPort");
-        lua_pushboolean(L, data->m_bSecure);
-        lua_setfield(L, -2, "secure");
+        lua_setfield(L, -2, "m_usGameServerPort");
+        lua_pushinteger(L, data->m_bSecure);
+        lua_setfield(L, -2, "m_bSecure");
         lua_pushinteger(L, data->m_uReason);
-        lua_setfield(L, -2, "uReason");
+        lua_setfield(L, -2, "m_uReason");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -107,13 +107,13 @@ void CallbackListener::OnIPCFailure(IPCFailure_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onIPCFailure");
+    lua_getfield(L, -1, "OnIPCFailure");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eFailureType);
-        lua_setfield(L, -2, "failureType");
+        lua_setfield(L, -2, "m_eFailureType");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -124,7 +124,7 @@ void CallbackListener::OnLicensesUpdated(LicensesUpdated_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onLicensesUpdated");
+    lua_getfield(L, -1, "OnLicensesUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -139,17 +139,17 @@ void CallbackListener::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onValidateAuthTicketResponse");
+    lua_getfield(L, -1, "OnValidateAuthTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_SteamID");
         lua_pushinteger(L, data->m_eAuthSessionResponse);
-        lua_setfield(L, -2, "authSessionResponse");
+        lua_setfield(L, -2, "m_eAuthSessionResponse");
         luasteam::pushuint64(L, data->m_OwnerSteamID.ConvertToUint64());
-        lua_setfield(L, -2, "ownerSteamID");
+        lua_setfield(L, -2, "m_OwnerSteamID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -160,17 +160,17 @@ void CallbackListener::OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResp
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onMicroTxnAuthorizationResponse");
+    lua_getfield(L, -1, "OnMicroTxnAuthorizationResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->m_unAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_unAppID");
         luasteam::pushuint64(L, data->m_ulOrderID);
-        lua_setfield(L, -2, "orderID");
-        lua_pushboolean(L, data->m_bAuthorized);
-        lua_setfield(L, -2, "authorized");
+        lua_setfield(L, -2, "m_ulOrderID");
+        lua_pushinteger(L, data->m_bAuthorized);
+        lua_setfield(L, -2, "m_bAuthorized");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -181,13 +181,13 @@ void CallbackListener::OnEncryptedAppTicketResponse(EncryptedAppTicketResponse_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onEncryptedAppTicketResponse");
+    lua_getfield(L, -1, "OnEncryptedAppTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -198,15 +198,15 @@ void CallbackListener::OnGetAuthSessionTicketResponse(GetAuthSessionTicketRespon
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onGetAuthSessionTicketResponse");
+    lua_getfield(L, -1, "OnGetAuthSessionTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_hAuthTicket);
-        lua_setfield(L, -2, "authTicket");
+        lua_setfield(L, -2, "m_hAuthTicket");
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -217,13 +217,12 @@ void CallbackListener::OnGameWebCallback(GameWebCallback_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onGameWebCallback");
+    lua_getfield(L, -1, "OnGameWebCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, data->m_szURL);
-        lua_setfield(L, -2, "uRL");
+        // Skip unsupported type: char [256]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -234,13 +233,12 @@ void CallbackListener::OnStoreAuthURLResponse(StoreAuthURLResponse_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onStoreAuthURLResponse");
+    lua_getfield(L, -1, "OnStoreAuthURLResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, data->m_szURL);
-        lua_setfield(L, -2, "uRL");
+        // Skip unsupported type: char [512]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -251,21 +249,21 @@ void CallbackListener::OnMarketEligibilityResponse(MarketEligibilityResponse_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onMarketEligibilityResponse");
+    lua_getfield(L, -1, "OnMarketEligibilityResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 5);
         lua_pushboolean(L, data->m_bAllowed);
-        lua_setfield(L, -2, "allowed");
+        lua_setfield(L, -2, "m_bAllowed");
         lua_pushinteger(L, data->m_eNotAllowedReason);
-        lua_setfield(L, -2, "notAllowedReason");
+        lua_setfield(L, -2, "m_eNotAllowedReason");
         lua_pushinteger(L, data->m_rtAllowedAtTime);
-        lua_setfield(L, -2, "rtAllowedAtTime");
+        lua_setfield(L, -2, "m_rtAllowedAtTime");
         lua_pushinteger(L, data->m_cdaySteamGuardRequiredDays);
-        lua_setfield(L, -2, "cdaySteamGuardRequiredDays");
+        lua_setfield(L, -2, "m_cdaySteamGuardRequiredDays");
         lua_pushinteger(L, data->m_cdayNewDeviceCooldown);
-        lua_setfield(L, -2, "cdayNewDeviceCooldown");
+        lua_setfield(L, -2, "m_cdayNewDeviceCooldown");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -276,27 +274,27 @@ void CallbackListener::OnDurationControl(DurationControl_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onDurationControl");
+    lua_getfield(L, -1, "OnDurationControl");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 8);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_appid);
-        lua_setfield(L, -2, "appid");
+        lua_setfield(L, -2, "m_appid");
         lua_pushboolean(L, data->m_bApplicable);
-        lua_setfield(L, -2, "applicable");
+        lua_setfield(L, -2, "m_bApplicable");
         lua_pushinteger(L, data->m_csecsLast5h);
-        lua_setfield(L, -2, "csecsLast5h");
+        lua_setfield(L, -2, "m_csecsLast5h");
         lua_pushinteger(L, data->m_progress);
-        lua_setfield(L, -2, "progress");
+        lua_setfield(L, -2, "m_progress");
         lua_pushinteger(L, data->m_notification);
-        lua_setfield(L, -2, "notification");
+        lua_setfield(L, -2, "m_notification");
         lua_pushinteger(L, data->m_csecsToday);
-        lua_setfield(L, -2, "csecsToday");
+        lua_setfield(L, -2, "m_csecsToday");
         lua_pushinteger(L, data->m_csecsRemaining);
-        lua_setfield(L, -2, "csecsRemaining");
+        lua_setfield(L, -2, "m_csecsRemaining");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -307,17 +305,18 @@ void CallbackListener::OnGetTicketForWebApiResponse(GetTicketForWebApiResponse_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onGetTicketForWebApiResponse");
+    lua_getfield(L, -1, "OnGetTicketForWebApiResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_hAuthTicket);
-        lua_setfield(L, -2, "authTicket");
+        lua_setfield(L, -2, "m_hAuthTicket");
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_cubTicket);
-        lua_setfield(L, -2, "cubTicket");
+        lua_setfield(L, -2, "m_cubTicket");
+        // Skip unsupported type: uint8 [2560]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -328,13 +327,13 @@ void CallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
-    lua_getfield(L, -1, "onGSPolicyResponse");
+    lua_getfield(L, -1, "OnGSPolicyResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushboolean(L, data->m_bSecure);
-        lua_setfield(L, -2, "secure");
+        lua_pushinteger(L, data->m_bSecure);
+        lua_setfield(L, -2, "m_bSecure");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -367,7 +366,7 @@ EXTERN int luasteam_User_BLoggedOn(lua_State *L) {
 
 // CSteamID GetSteamID();
 EXTERN int luasteam_User_GetSteamID(lua_State *L) {
-    luasteam::pushuint64(L, (SteamUser()->GetSteamID()).ConvertToUint64());
+    luasteam::pushuint64(L, SteamUser()->GetSteamID().ConvertToUint64());
     return 1;
 }
 

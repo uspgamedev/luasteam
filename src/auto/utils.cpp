@@ -24,7 +24,7 @@ void CallbackListener::OnIPCountry(IPCountry_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onIPCountry");
+    lua_getfield(L, -1, "OnIPCountry");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -39,13 +39,13 @@ void CallbackListener::OnLowBatteryPower(LowBatteryPower_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onLowBatteryPower");
+    lua_getfield(L, -1, "OnLowBatteryPower");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_nMinutesBatteryLeft);
-        lua_setfield(L, -2, "minutesBatteryLeft");
+        lua_setfield(L, -2, "m_nMinutesBatteryLeft");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -56,17 +56,17 @@ void CallbackListener::OnSteamAPICallCompleted(SteamAPICallCompleted_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onSteamAPICallCompleted");
+    lua_getfield(L, -1, "OnSteamAPICallCompleted");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         luasteam::pushuint64(L, data->m_hAsyncCall);
-        lua_setfield(L, -2, "asyncCall");
+        lua_setfield(L, -2, "m_hAsyncCall");
         lua_pushinteger(L, data->m_iCallback);
-        lua_setfield(L, -2, "iCallback");
+        lua_setfield(L, -2, "m_iCallback");
         lua_pushinteger(L, data->m_cubParam);
-        lua_setfield(L, -2, "cubParam");
+        lua_setfield(L, -2, "m_cubParam");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -77,7 +77,7 @@ void CallbackListener::OnSteamShutdown(SteamShutdown_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onSteamShutdown");
+    lua_getfield(L, -1, "OnSteamShutdown");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -92,13 +92,13 @@ void CallbackListener::OnCheckFileSignature(CheckFileSignature_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onCheckFileSignature");
+    lua_getfield(L, -1, "OnCheckFileSignature");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eCheckFileSignature);
-        lua_setfield(L, -2, "checkFileSignature");
+        lua_setfield(L, -2, "m_eCheckFileSignature");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -109,17 +109,17 @@ void CallbackListener::OnGamepadTextInputDismissed(GamepadTextInputDismissed_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onGamepadTextInputDismissed");
+    lua_getfield(L, -1, "OnGamepadTextInputDismissed");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushboolean(L, data->m_bSubmitted);
-        lua_setfield(L, -2, "submitted");
+        lua_setfield(L, -2, "m_bSubmitted");
         lua_pushinteger(L, data->m_unSubmittedText);
-        lua_setfield(L, -2, "submittedText");
+        lua_setfield(L, -2, "m_unSubmittedText");
         lua_pushinteger(L, data->m_unAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_unAppID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -130,7 +130,7 @@ void CallbackListener::OnAppResumingFromSuspend(AppResumingFromSuspend_t *data) 
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onAppResumingFromSuspend");
+    lua_getfield(L, -1, "OnAppResumingFromSuspend");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -145,7 +145,7 @@ void CallbackListener::OnFloatingGamepadTextInputDismissed(FloatingGamepadTextIn
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onFloatingGamepadTextInputDismissed");
+    lua_getfield(L, -1, "OnFloatingGamepadTextInputDismissed");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -160,13 +160,13 @@ void CallbackListener::OnFilterTextDictionaryChanged(FilterTextDictionaryChanged
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Utils_ref);
-    lua_getfield(L, -1, "onFilterTextDictionaryChanged");
+    lua_getfield(L, -1, "OnFilterTextDictionaryChanged");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eLanguage);
-        lua_setfield(L, -2, "language");
+        lua_setfield(L, -2, "m_eLanguage");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

@@ -17,11 +17,12 @@ void CallbackListener::OnSteamNetworkingMessagesSessionRequest(SteamNetworkingMe
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::NetworkingMessages_ref);
-    lua_getfield(L, -1, "onSteamNetworkingMessagesSessionRequest");
+    lua_getfield(L, -1, "OnSteamNetworkingMessagesSessionRequest");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
+        // Skip unsupported type: SteamNetworkingIdentity
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -32,11 +33,12 @@ void CallbackListener::OnSteamNetworkingMessagesSessionFailed(SteamNetworkingMes
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::NetworkingMessages_ref);
-    lua_getfield(L, -1, "onSteamNetworkingMessagesSessionFailed");
+    lua_getfield(L, -1, "OnSteamNetworkingMessagesSessionFailed");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
+        // Skip unsupported type: SteamNetConnectionInfo_t
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

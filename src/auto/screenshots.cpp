@@ -17,15 +17,15 @@ void CallbackListener::OnScreenshotReady(ScreenshotReady_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Screenshots_ref);
-    lua_getfield(L, -1, "onScreenshotReady");
+    lua_getfield(L, -1, "OnScreenshotReady");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_hLocal);
-        lua_setfield(L, -2, "local");
+        lua_setfield(L, -2, "m_hLocal");
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -36,7 +36,7 @@ void CallbackListener::OnScreenshotRequested(ScreenshotRequested_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Screenshots_ref);
-    lua_getfield(L, -1, "onScreenshotRequested");
+    lua_getfield(L, -1, "OnScreenshotRequested");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {

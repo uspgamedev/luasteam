@@ -19,17 +19,16 @@ void CallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Video_ref);
-    lua_getfield(L, -1, "onGetVideoURLResult");
+    lua_getfield(L, -1, "OnGetVideoURLResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_unVideoAppID);
-        lua_setfield(L, -2, "videoAppID");
-        lua_pushstring(L, data->m_rgchURL);
-        lua_setfield(L, -2, "uRL");
+        lua_setfield(L, -2, "m_unVideoAppID");
+        // Skip unsupported type: char [256]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -40,15 +39,15 @@ void CallbackListener::OnGetOPFSettingsResult(GetOPFSettingsResult_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Video_ref);
-    lua_getfield(L, -1, "onGetOPFSettingsResult");
+    lua_getfield(L, -1, "OnGetOPFSettingsResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_unVideoAppID);
-        lua_setfield(L, -2, "videoAppID");
+        lua_setfield(L, -2, "m_unVideoAppID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -59,13 +58,13 @@ void CallbackListener::OnBroadcastUploadStart(BroadcastUploadStart_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Video_ref);
-    lua_getfield(L, -1, "onBroadcastUploadStart");
+    lua_getfield(L, -1, "OnBroadcastUploadStart");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushboolean(L, data->m_bIsRTMP);
-        lua_setfield(L, -2, "isRTMP");
+        lua_setfield(L, -2, "m_bIsRTMP");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -76,13 +75,13 @@ void CallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Video_ref);
-    lua_getfield(L, -1, "onBroadcastUploadStop");
+    lua_getfield(L, -1, "OnBroadcastUploadStop");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

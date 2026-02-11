@@ -20,13 +20,13 @@ void CallbackListener::OnDlcInstalled(DlcInstalled_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Apps_ref);
-    lua_getfield(L, -1, "onDlcInstalled");
+    lua_getfield(L, -1, "OnDlcInstalled");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_nAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_nAppID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -37,7 +37,7 @@ void CallbackListener::OnNewUrlLaunchParameters(NewUrlLaunchParameters_t *data) 
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Apps_ref);
-    lua_getfield(L, -1, "onNewUrlLaunchParameters");
+    lua_getfield(L, -1, "OnNewUrlLaunchParameters");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -52,19 +52,18 @@ void CallbackListener::OnAppProofOfPurchaseKeyResponse(AppProofOfPurchaseKeyResp
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Apps_ref);
-    lua_getfield(L, -1, "onAppProofOfPurchaseKeyResponse");
+    lua_getfield(L, -1, "OnAppProofOfPurchaseKeyResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_nAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_nAppID");
         lua_pushinteger(L, data->m_cchKeyLength);
-        lua_setfield(L, -2, "cchKeyLength");
-        lua_pushstring(L, data->m_rgchKey);
-        lua_setfield(L, -2, "key");
+        lua_setfield(L, -2, "m_cchKeyLength");
+        // Skip unsupported type: char [240]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -75,17 +74,18 @@ void CallbackListener::OnFileDetailsResult(FileDetailsResult_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Apps_ref);
-    lua_getfield(L, -1, "onFileDetailsResult");
+    lua_getfield(L, -1, "OnFileDetailsResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_ulFileSize);
-        lua_setfield(L, -2, "fileSize");
+        lua_setfield(L, -2, "m_ulFileSize");
+        // Skip unsupported type: uint8 [20]
         lua_pushinteger(L, data->m_unFlags);
-        lua_setfield(L, -2, "flags");
+        lua_setfield(L, -2, "m_unFlags");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -96,19 +96,19 @@ void CallbackListener::OnTimedTrialStatus(TimedTrialStatus_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Apps_ref);
-    lua_getfield(L, -1, "onTimedTrialStatus");
+    lua_getfield(L, -1, "OnTimedTrialStatus");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_unAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_unAppID");
         lua_pushboolean(L, data->m_bIsOffline);
-        lua_setfield(L, -2, "isOffline");
+        lua_setfield(L, -2, "m_bIsOffline");
         lua_pushinteger(L, data->m_unSecondsAllowed);
-        lua_setfield(L, -2, "secondsAllowed");
+        lua_setfield(L, -2, "m_unSecondsAllowed");
         lua_pushinteger(L, data->m_unSecondsPlayed);
-        lua_setfield(L, -2, "secondsPlayed");
+        lua_setfield(L, -2, "m_unSecondsPlayed");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -233,7 +233,7 @@ EXTERN int luasteam_Apps_BIsAppInstalled(lua_State *L) {
 
 // CSteamID GetAppOwner();
 EXTERN int luasteam_Apps_GetAppOwner(lua_State *L) {
-    luasteam::pushuint64(L, (SteamApps()->GetAppOwner()).ConvertToUint64());
+    luasteam::pushuint64(L, SteamApps()->GetAppOwner().ConvertToUint64());
     return 1;
 }
 

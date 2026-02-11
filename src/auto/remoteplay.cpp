@@ -18,13 +18,13 @@ void CallbackListener::OnSteamRemotePlaySessionConnected(SteamRemotePlaySessionC
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::RemotePlay_ref);
-    lua_getfield(L, -1, "onSteamRemotePlaySessionConnected");
+    lua_getfield(L, -1, "OnSteamRemotePlaySessionConnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_unSessionID);
-        lua_setfield(L, -2, "sessionID");
+        lua_setfield(L, -2, "m_unSessionID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -35,13 +35,13 @@ void CallbackListener::OnSteamRemotePlaySessionDisconnected(SteamRemotePlaySessi
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::RemotePlay_ref);
-    lua_getfield(L, -1, "onSteamRemotePlaySessionDisconnected");
+    lua_getfield(L, -1, "OnSteamRemotePlaySessionDisconnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_unSessionID);
-        lua_setfield(L, -2, "sessionID");
+        lua_setfield(L, -2, "m_unSessionID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -52,13 +52,12 @@ void CallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemotePlayToget
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::RemotePlay_ref);
-    lua_getfield(L, -1, "onSteamRemotePlayTogetherGuestInvite");
+    lua_getfield(L, -1, "OnSteamRemotePlayTogetherGuestInvite");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, data->m_szConnectURL);
-        lua_setfield(L, -2, "connectURL");
+        // Skip unsupported type: char [1024]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -93,7 +92,7 @@ EXTERN int luasteam_RemotePlay_GetSessionID(lua_State *L) {
 // CSteamID GetSessionSteamID(RemotePlaySessionID_t unSessionID);
 EXTERN int luasteam_RemotePlay_GetSessionSteamID(lua_State *L) {
     RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, (SteamRemotePlay()->GetSessionSteamID(unSessionID)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamRemotePlay()->GetSessionSteamID(unSessionID).ConvertToUint64());
     return 1;
 }
 
@@ -144,6 +143,15 @@ EXTERN int luasteam_RemotePlay_SetMouseVisibility(lua_State *L) {
     return 0;
 }
 
+// void SetMousePosition(RemotePlaySessionID_t unSessionID, float flNormalizedX, float flNormalizedY);
+EXTERN int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
+    RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+    float flNormalizedX = luaL_checknumber(L, 2);
+    float flNormalizedY = luaL_checknumber(L, 3);
+    SteamRemotePlay()->SetMousePosition(unSessionID, flNormalizedX, flNormalizedY);
+    return 0;
+}
+
 // void SetMouseCursor(RemotePlaySessionID_t unSessionID, RemotePlayCursorID_t unCursorID);
 EXTERN int luasteam_RemotePlay_SetMouseCursor(lua_State *L) {
     RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
@@ -163,11 +171,12 @@ void register_RemotePlay_auto(lua_State *L) {
     add_func(L, "BEnableRemotePlayTogetherDirectInput", luasteam_RemotePlay_BEnableRemotePlayTogetherDirectInput);
     add_func(L, "DisableRemotePlayTogetherDirectInput", luasteam_RemotePlay_DisableRemotePlayTogetherDirectInput);
     add_func(L, "SetMouseVisibility", luasteam_RemotePlay_SetMouseVisibility);
+    add_func(L, "SetMousePosition", luasteam_RemotePlay_SetMousePosition);
     add_func(L, "SetMouseCursor", luasteam_RemotePlay_SetMouseCursor);
 }
 
 void add_RemotePlay_auto(lua_State *L) {
-    lua_createtable(L, 0, 11);
+    lua_createtable(L, 0, 12);
     register_RemotePlay_auto(L);
     lua_pushvalue(L, -1);
     RemotePlay_ref = luaL_ref(L, LUA_REGISTRYINDEX);

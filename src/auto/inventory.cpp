@@ -21,15 +21,15 @@ void CallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryResultReady");
+    lua_getfield(L, -1, "OnSteamInventoryResultReady");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_handle);
-        lua_setfield(L, -2, "handle");
+        lua_setfield(L, -2, "m_handle");
         lua_pushinteger(L, data->m_result);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_result");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -40,13 +40,13 @@ void CallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *da
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryFullUpdate");
+    lua_getfield(L, -1, "OnSteamInventoryFullUpdate");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_handle);
-        lua_setfield(L, -2, "handle");
+        lua_setfield(L, -2, "m_handle");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -57,7 +57,7 @@ void CallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinition
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryDefinitionUpdate");
+    lua_getfield(L, -1, "OnSteamInventoryDefinitionUpdate");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -72,19 +72,19 @@ void CallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEli
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryEligiblePromoItemDefIDs");
+    lua_getfield(L, -1, "OnSteamInventoryEligiblePromoItemDefIDs");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_result);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_result");
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_pushinteger(L, data->m_numEligiblePromoItemDefs);
-        lua_setfield(L, -2, "numEligiblePromoItemDefs");
+        lua_setfield(L, -2, "m_numEligiblePromoItemDefs");
         lua_pushboolean(L, data->m_bCachedData);
-        lua_setfield(L, -2, "cachedData");
+        lua_setfield(L, -2, "m_bCachedData");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -95,17 +95,17 @@ void CallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPu
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryStartPurchaseResult");
+    lua_getfield(L, -1, "OnSteamInventoryStartPurchaseResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->m_result);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_result");
         luasteam::pushuint64(L, data->m_ulOrderID);
-        lua_setfield(L, -2, "orderID");
+        lua_setfield(L, -2, "m_ulOrderID");
         luasteam::pushuint64(L, data->m_ulTransID);
-        lua_setfield(L, -2, "transID");
+        lua_setfield(L, -2, "m_ulTransID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -116,15 +116,14 @@ void CallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequest
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Inventory_ref);
-    lua_getfield(L, -1, "onSteamInventoryRequestPricesResult");
+    lua_getfield(L, -1, "OnSteamInventoryRequestPricesResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_result);
-        lua_setfield(L, -2, "result");
-        lua_pushstring(L, data->m_rgchCurrency);
-        lua_setfield(L, -2, "currency");
+        lua_setfield(L, -2, "m_result");
+        // Skip unsupported type: char [4]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

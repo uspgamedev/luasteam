@@ -16,7 +16,7 @@ void CallbackListener::OnSteamParentalSettingsChanged(SteamParentalSettingsChang
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ParentalSettings_ref);
-    lua_getfield(L, -1, "onSteamParentalSettingsChanged");
+    lua_getfield(L, -1, "OnSteamParentalSettingsChanged");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {

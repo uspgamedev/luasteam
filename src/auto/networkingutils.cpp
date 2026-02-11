@@ -16,21 +16,20 @@ void CallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::NetworkingUtils_ref);
-    lua_getfield(L, -1, "onSteamRelayNetworkStatus");
+    lua_getfield(L, -1, "OnSteamRelayNetworkStatus");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 5);
         lua_pushinteger(L, data->m_eAvail);
-        lua_setfield(L, -2, "avail");
-        lua_pushboolean(L, data->m_bPingMeasurementInProgress);
-        lua_setfield(L, -2, "pingMeasurementInProgress");
+        lua_setfield(L, -2, "m_eAvail");
+        lua_pushinteger(L, data->m_bPingMeasurementInProgress);
+        lua_setfield(L, -2, "m_bPingMeasurementInProgress");
         lua_pushinteger(L, data->m_eAvailNetworkConfig);
-        lua_setfield(L, -2, "availNetworkConfig");
+        lua_setfield(L, -2, "m_eAvailNetworkConfig");
         lua_pushinteger(L, data->m_eAvailAnyRelay);
-        lua_setfield(L, -2, "availAnyRelay");
-        lua_pushstring(L, data->m_debugMsg);
-        lua_setfield(L, -2, "debugMsg");
+        lua_setfield(L, -2, "m_eAvailAnyRelay");
+        // Skip unsupported type: char [256]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -53,6 +52,13 @@ void shutdown_NetworkingUtils_auto(lua_State *L) {
 EXTERN int luasteam_NetworkingUtils_InitRelayNetworkAccess(lua_State *L) {
     SteamNetworkingUtils_SteamAPI()->InitRelayNetworkAccess();
     return 0;
+}
+
+// bool CheckPingDataUpToDate(float flMaxAgeSeconds);
+EXTERN int luasteam_NetworkingUtils_CheckPingDataUpToDate(lua_State *L) {
+    float flMaxAgeSeconds = luaL_checknumber(L, 1);
+    lua_pushboolean(L, SteamNetworkingUtils_SteamAPI()->CheckPingDataUpToDate(flMaxAgeSeconds));
+    return 1;
 }
 
 // int GetDirectPingToPOP(SteamNetworkingPOPID popID);
@@ -90,6 +96,14 @@ EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueInt32(lua_State *L) {
     return 1;
 }
 
+// bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue eValue, float val);
+EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueFloat(lua_State *L) {
+    ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
+    float val = luaL_checknumber(L, 2);
+    lua_pushboolean(L, SteamNetworkingUtils_SteamAPI()->SetGlobalConfigValueFloat(eValue, val));
+    return 1;
+}
+
 // bool SetGlobalConfigValueString(ESteamNetworkingConfigValue eValue, const char * val);
 EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueString(lua_State *L) {
     ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
@@ -104,6 +118,15 @@ EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueInt32(lua_State *L) 
     ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
     int32 val = static_cast<int32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamNetworkingUtils_SteamAPI()->SetConnectionConfigValueInt32(hConn, eValue, val));
+    return 1;
+}
+
+// bool SetConnectionConfigValueFloat(HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, float val);
+EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueFloat(lua_State *L) {
+    HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+    ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
+    float val = luaL_checknumber(L, 3);
+    lua_pushboolean(L, SteamNetworkingUtils_SteamAPI()->SetConnectionConfigValueFloat(hConn, eValue, val));
     return 1;
 }
 
@@ -126,19 +149,22 @@ EXTERN int luasteam_NetworkingUtils_IterateGenericEditableConfigValues(lua_State
 
 void register_NetworkingUtils_auto(lua_State *L) {
     add_func(L, "InitRelayNetworkAccess", luasteam_NetworkingUtils_InitRelayNetworkAccess);
+    add_func(L, "CheckPingDataUpToDate", luasteam_NetworkingUtils_CheckPingDataUpToDate);
     add_func(L, "GetDirectPingToPOP", luasteam_NetworkingUtils_GetDirectPingToPOP);
     add_func(L, "GetPOPCount", luasteam_NetworkingUtils_GetPOPCount);
     add_func(L, "IsFakeIPv4", luasteam_NetworkingUtils_IsFakeIPv4);
     add_func(L, "GetIPv4FakeIPType", luasteam_NetworkingUtils_GetIPv4FakeIPType);
     add_func(L, "SetGlobalConfigValueInt32", luasteam_NetworkingUtils_SetGlobalConfigValueInt32);
+    add_func(L, "SetGlobalConfigValueFloat", luasteam_NetworkingUtils_SetGlobalConfigValueFloat);
     add_func(L, "SetGlobalConfigValueString", luasteam_NetworkingUtils_SetGlobalConfigValueString);
     add_func(L, "SetConnectionConfigValueInt32", luasteam_NetworkingUtils_SetConnectionConfigValueInt32);
+    add_func(L, "SetConnectionConfigValueFloat", luasteam_NetworkingUtils_SetConnectionConfigValueFloat);
     add_func(L, "SetConnectionConfigValueString", luasteam_NetworkingUtils_SetConnectionConfigValueString);
     add_func(L, "IterateGenericEditableConfigValues", luasteam_NetworkingUtils_IterateGenericEditableConfigValues);
 }
 
 void add_NetworkingUtils_auto(lua_State *L) {
-    lua_createtable(L, 0, 10);
+    lua_createtable(L, 0, 13);
     register_NetworkingUtils_auto(L);
     lua_pushvalue(L, -1);
     NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

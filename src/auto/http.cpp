@@ -18,21 +18,21 @@ void CallbackListener::OnHTTPRequestCompleted(HTTPRequestCompleted_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::HTTP_ref);
-    lua_getfield(L, -1, "onHTTPRequestCompleted");
+    lua_getfield(L, -1, "OnHTTPRequestCompleted");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 5);
         lua_pushinteger(L, data->m_hRequest);
-        lua_setfield(L, -2, "request");
+        lua_setfield(L, -2, "m_hRequest");
         luasteam::pushuint64(L, data->m_ulContextValue);
-        lua_setfield(L, -2, "contextValue");
+        lua_setfield(L, -2, "m_ulContextValue");
         lua_pushboolean(L, data->m_bRequestSuccessful);
-        lua_setfield(L, -2, "requestSuccessful");
+        lua_setfield(L, -2, "m_bRequestSuccessful");
         lua_pushinteger(L, data->m_eStatusCode);
-        lua_setfield(L, -2, "statusCode");
+        lua_setfield(L, -2, "m_eStatusCode");
         lua_pushinteger(L, data->m_unBodySize);
-        lua_setfield(L, -2, "bodySize");
+        lua_setfield(L, -2, "m_unBodySize");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -43,15 +43,15 @@ void CallbackListener::OnHTTPRequestHeadersReceived(HTTPRequestHeadersReceived_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::HTTP_ref);
-    lua_getfield(L, -1, "onHTTPRequestHeadersReceived");
+    lua_getfield(L, -1, "OnHTTPRequestHeadersReceived");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_hRequest);
-        lua_setfield(L, -2, "request");
+        lua_setfield(L, -2, "m_hRequest");
         luasteam::pushuint64(L, data->m_ulContextValue);
-        lua_setfield(L, -2, "contextValue");
+        lua_setfield(L, -2, "m_ulContextValue");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -62,19 +62,19 @@ void CallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataReceived_t *data
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::HTTP_ref);
-    lua_getfield(L, -1, "onHTTPRequestDataReceived");
+    lua_getfield(L, -1, "OnHTTPRequestDataReceived");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_hRequest);
-        lua_setfield(L, -2, "request");
+        lua_setfield(L, -2, "m_hRequest");
         luasteam::pushuint64(L, data->m_ulContextValue);
-        lua_setfield(L, -2, "contextValue");
+        lua_setfield(L, -2, "m_ulContextValue");
         lua_pushinteger(L, data->m_cOffset);
-        lua_setfield(L, -2, "cOffset");
+        lua_setfield(L, -2, "m_cOffset");
         lua_pushinteger(L, data->m_cBytesReceived);
-        lua_setfield(L, -2, "cBytesReceived");
+        lua_setfield(L, -2, "m_cBytesReceived");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

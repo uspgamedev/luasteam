@@ -21,19 +21,18 @@ void CallbackListener::OnJoinPartyCallback(JoinPartyCallback_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onJoinPartyCallback");
+    lua_getfield(L, -1, "OnJoinPartyCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_ulBeaconID);
-        lua_setfield(L, -2, "beaconID");
+        lua_setfield(L, -2, "m_ulBeaconID");
         luasteam::pushuint64(L, data->m_SteamIDBeaconOwner.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDBeaconOwner");
-        lua_pushstring(L, data->m_rgchConnectString);
-        lua_setfield(L, -2, "connectString");
+        lua_setfield(L, -2, "m_SteamIDBeaconOwner");
+        // Skip unsupported type: char [256]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -44,15 +43,15 @@ void CallbackListener::OnCreateBeaconCallback(CreateBeaconCallback_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onCreateBeaconCallback");
+    lua_getfield(L, -1, "OnCreateBeaconCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_ulBeaconID);
-        lua_setfield(L, -2, "beaconID");
+        lua_setfield(L, -2, "m_ulBeaconID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -63,15 +62,15 @@ void CallbackListener::OnReservationNotificationCallback(ReservationNotification
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onReservationNotificationCallback");
+    lua_getfield(L, -1, "OnReservationNotificationCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_ulBeaconID);
-        lua_setfield(L, -2, "beaconID");
+        lua_setfield(L, -2, "m_ulBeaconID");
         luasteam::pushuint64(L, data->m_steamIDJoiner.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDJoiner");
+        lua_setfield(L, -2, "m_steamIDJoiner");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -82,13 +81,13 @@ void CallbackListener::OnChangeNumOpenSlotsCallback(ChangeNumOpenSlotsCallback_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onChangeNumOpenSlotsCallback");
+    lua_getfield(L, -1, "OnChangeNumOpenSlotsCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -99,7 +98,7 @@ void CallbackListener::OnAvailableBeaconLocationsUpdated(AvailableBeaconLocation
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onAvailableBeaconLocationsUpdated");
+    lua_getfield(L, -1, "OnAvailableBeaconLocationsUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -114,7 +113,7 @@ void CallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
-    lua_getfield(L, -1, "onActiveBeaconsUpdated");
+    lua_getfield(L, -1, "OnActiveBeaconsUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {

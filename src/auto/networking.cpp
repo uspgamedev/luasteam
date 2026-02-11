@@ -18,13 +18,13 @@ void CallbackListener::OnP2PSessionRequest(P2PSessionRequest_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Networking_ref);
-    lua_getfield(L, -1, "onP2PSessionRequest");
+    lua_getfield(L, -1, "OnP2PSessionRequest");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDRemote");
+        lua_setfield(L, -2, "m_steamIDRemote");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -35,15 +35,15 @@ void CallbackListener::OnP2PSessionConnectFail(P2PSessionConnectFail_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Networking_ref);
-    lua_getfield(L, -1, "onP2PSessionConnectFail");
+    lua_getfield(L, -1, "OnP2PSessionConnectFail");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDRemote");
+        lua_setfield(L, -2, "m_steamIDRemote");
         lua_pushinteger(L, data->m_eP2PSessionError);
-        lua_setfield(L, -2, "p2PSessionError");
+        lua_setfield(L, -2, "m_eP2PSessionError");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -54,19 +54,19 @@ void CallbackListener::OnSocketStatusCallback(SocketStatusCallback_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Networking_ref);
-    lua_getfield(L, -1, "onSocketStatusCallback");
+    lua_getfield(L, -1, "OnSocketStatusCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_hSocket);
-        lua_setfield(L, -2, "socket");
+        lua_setfield(L, -2, "m_hSocket");
         lua_pushinteger(L, data->m_hListenSocket);
-        lua_setfield(L, -2, "listenSocket");
+        lua_setfield(L, -2, "m_hListenSocket");
         luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDRemote");
+        lua_setfield(L, -2, "m_steamIDRemote");
         lua_pushinteger(L, data->m_eSNetSocketState);
-        lua_setfield(L, -2, "sNetSocketState");
+        lua_setfield(L, -2, "m_eSNetSocketState");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }

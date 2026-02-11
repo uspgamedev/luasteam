@@ -36,15 +36,15 @@ void CallbackListener::OnPersonaStateChange(PersonaStateChange_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onPersonaStateChange");
+    lua_getfield(L, -1, "OnPersonaStateChange");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_ulSteamID);
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_ulSteamID");
         lua_pushinteger(L, data->m_nChangeFlags);
-        lua_setfield(L, -2, "changeFlags");
+        lua_setfield(L, -2, "m_nChangeFlags");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -55,19 +55,19 @@ void CallbackListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameOverlayActivated");
+    lua_getfield(L, -1, "OnGameOverlayActivated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
-        lua_pushboolean(L, data->m_bActive);
-        lua_setfield(L, -2, "active");
+        lua_pushinteger(L, data->m_bActive);
+        lua_setfield(L, -2, "m_bActive");
         lua_pushboolean(L, data->m_bUserInitiated);
-        lua_setfield(L, -2, "userInitiated");
+        lua_setfield(L, -2, "m_bUserInitiated");
         lua_pushinteger(L, data->m_nAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_nAppID");
         lua_pushinteger(L, data->m_dwOverlayPID);
-        lua_setfield(L, -2, "dwOverlayPID");
+        lua_setfield(L, -2, "m_dwOverlayPID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -78,15 +78,13 @@ void CallbackListener::OnGameServerChangeRequested(GameServerChangeRequested_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameServerChangeRequested");
+    lua_getfield(L, -1, "OnGameServerChangeRequested");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
-        lua_pushstring(L, data->m_rgchServer);
-        lua_setfield(L, -2, "server");
-        lua_pushstring(L, data->m_rgchPassword);
-        lua_setfield(L, -2, "password");
+        // Skip unsupported type: char [64]
+        // Skip unsupported type: char [64]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -97,15 +95,15 @@ void CallbackListener::OnGameLobbyJoinRequested(GameLobbyJoinRequested_t *data) 
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameLobbyJoinRequested");
+    lua_getfield(L, -1, "OnGameLobbyJoinRequested");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDLobby.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDLobby");
+        lua_setfield(L, -2, "m_steamIDLobby");
         luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDFriend");
+        lua_setfield(L, -2, "m_steamIDFriend");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -116,19 +114,19 @@ void CallbackListener::OnAvatarImageLoaded(AvatarImageLoaded_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onAvatarImageLoaded");
+    lua_getfield(L, -1, "OnAvatarImageLoaded");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_pushinteger(L, data->m_iImage);
-        lua_setfield(L, -2, "iImage");
+        lua_setfield(L, -2, "m_iImage");
         lua_pushinteger(L, data->m_iWide);
-        lua_setfield(L, -2, "iWide");
+        lua_setfield(L, -2, "m_iWide");
         lua_pushinteger(L, data->m_iTall);
-        lua_setfield(L, -2, "iTall");
+        lua_setfield(L, -2, "m_iTall");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -139,17 +137,17 @@ void CallbackListener::OnClanOfficerListResponse(ClanOfficerListResponse_t *data
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onClanOfficerListResponse");
+    lua_getfield(L, -1, "OnClanOfficerListResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         luasteam::pushuint64(L, data->m_steamIDClan.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDClan");
+        lua_setfield(L, -2, "m_steamIDClan");
         lua_pushinteger(L, data->m_cOfficers);
-        lua_setfield(L, -2, "cOfficers");
-        lua_pushboolean(L, data->m_bSuccess);
-        lua_setfield(L, -2, "success");
+        lua_setfield(L, -2, "m_cOfficers");
+        lua_pushinteger(L, data->m_bSuccess);
+        lua_setfield(L, -2, "m_bSuccess");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -160,15 +158,15 @@ void CallbackListener::OnFriendRichPresenceUpdate(FriendRichPresenceUpdate_t *da
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onFriendRichPresenceUpdate");
+    lua_getfield(L, -1, "OnFriendRichPresenceUpdate");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDFriend");
+        lua_setfield(L, -2, "m_steamIDFriend");
         lua_pushinteger(L, data->m_nAppID);
-        lua_setfield(L, -2, "appID");
+        lua_setfield(L, -2, "m_nAppID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -179,15 +177,14 @@ void CallbackListener::OnGameRichPresenceJoinRequested(GameRichPresenceJoinReque
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameRichPresenceJoinRequested");
+    lua_getfield(L, -1, "OnGameRichPresenceJoinRequested");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDFriend");
-        lua_pushstring(L, data->m_rgchConnect);
-        lua_setfield(L, -2, "connect");
+        lua_setfield(L, -2, "m_steamIDFriend");
+        // Skip unsupported type: char [256]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -198,17 +195,17 @@ void CallbackListener::OnGameConnectedClanChatMsg(GameConnectedClanChatMsg_t *da
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameConnectedClanChatMsg");
+    lua_getfield(L, -1, "OnGameConnectedClanChatMsg");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDClanChat");
+        lua_setfield(L, -2, "m_steamIDClanChat");
         luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDUser");
+        lua_setfield(L, -2, "m_steamIDUser");
         lua_pushinteger(L, data->m_iMessageID);
-        lua_setfield(L, -2, "iMessageID");
+        lua_setfield(L, -2, "m_iMessageID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -219,15 +216,15 @@ void CallbackListener::OnGameConnectedChatJoin(GameConnectedChatJoin_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameConnectedChatJoin");
+    lua_getfield(L, -1, "OnGameConnectedChatJoin");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDClanChat");
+        lua_setfield(L, -2, "m_steamIDClanChat");
         luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDUser");
+        lua_setfield(L, -2, "m_steamIDUser");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -238,19 +235,19 @@ void CallbackListener::OnGameConnectedChatLeave(GameConnectedChatLeave_t *data) 
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameConnectedChatLeave");
+    lua_getfield(L, -1, "OnGameConnectedChatLeave");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDClanChat");
+        lua_setfield(L, -2, "m_steamIDClanChat");
         luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDUser");
+        lua_setfield(L, -2, "m_steamIDUser");
         lua_pushboolean(L, data->m_bKicked);
-        lua_setfield(L, -2, "kicked");
+        lua_setfield(L, -2, "m_bKicked");
         lua_pushboolean(L, data->m_bDropped);
-        lua_setfield(L, -2, "dropped");
+        lua_setfield(L, -2, "m_bDropped");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -261,13 +258,13 @@ void CallbackListener::OnDownloadClanActivityCountsResult(DownloadClanActivityCo
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onDownloadClanActivityCountsResult");
+    lua_getfield(L, -1, "OnDownloadClanActivityCountsResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         lua_pushboolean(L, data->m_bSuccess);
-        lua_setfield(L, -2, "success");
+        lua_setfield(L, -2, "m_bSuccess");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -278,15 +275,15 @@ void CallbackListener::OnJoinClanChatRoomCompletionResult(JoinClanChatRoomComple
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onJoinClanChatRoomCompletionResult");
+    lua_getfield(L, -1, "OnJoinClanChatRoomCompletionResult");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDClanChat");
+        lua_setfield(L, -2, "m_steamIDClanChat");
         lua_pushinteger(L, data->m_eChatRoomEnterResponse);
-        lua_setfield(L, -2, "chatRoomEnterResponse");
+        lua_setfield(L, -2, "m_eChatRoomEnterResponse");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -297,15 +294,15 @@ void CallbackListener::OnGameConnectedFriendChatMsg(GameConnectedFriendChatMsg_t
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onGameConnectedFriendChatMsg");
+    lua_getfield(L, -1, "OnGameConnectedFriendChatMsg");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
         luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDUser");
+        lua_setfield(L, -2, "m_steamIDUser");
         lua_pushinteger(L, data->m_iMessageID);
-        lua_setfield(L, -2, "iMessageID");
+        lua_setfield(L, -2, "m_iMessageID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -316,17 +313,17 @@ void CallbackListener::OnFriendsGetFollowerCount(FriendsGetFollowerCount_t *data
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onFriendsGetFollowerCount");
+    lua_getfield(L, -1, "OnFriendsGetFollowerCount");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_pushinteger(L, data->m_nCount);
-        lua_setfield(L, -2, "count");
+        lua_setfield(L, -2, "m_nCount");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -337,17 +334,17 @@ void CallbackListener::OnFriendsIsFollowing(FriendsIsFollowing_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onFriendsIsFollowing");
+    lua_getfield(L, -1, "OnFriendsIsFollowing");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_pushboolean(L, data->m_bIsFollowing);
-        lua_setfield(L, -2, "isFollowing");
+        lua_setfield(L, -2, "m_bIsFollowing");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -358,17 +355,18 @@ void CallbackListener::OnFriendsEnumerateFollowingList(FriendsEnumerateFollowing
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onFriendsEnumerateFollowingList");
+    lua_getfield(L, -1, "OnFriendsEnumerateFollowingList");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
+        // Skip unsupported type: CSteamID [50]
         lua_pushinteger(L, data->m_nResultsReturned);
-        lua_setfield(L, -2, "resultsReturned");
+        lua_setfield(L, -2, "m_nResultsReturned");
         lua_pushinteger(L, data->m_nTotalResultCount);
-        lua_setfield(L, -2, "totalResultCount");
+        lua_setfield(L, -2, "m_nTotalResultCount");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -379,7 +377,7 @@ void CallbackListener::OnUnreadChatMessagesChanged(UnreadChatMessagesChanged_t *
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onUnreadChatMessagesChanged");
+    lua_getfield(L, -1, "OnUnreadChatMessagesChanged");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
@@ -394,13 +392,12 @@ void CallbackListener::OnOverlayBrowserProtocolNavigation(OverlayBrowserProtocol
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onOverlayBrowserProtocolNavigation");
+    lua_getfield(L, -1, "OnOverlayBrowserProtocolNavigation");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, data->rgchURI);
-        lua_setfield(L, -2, "uRI");
+        // Skip unsupported type: char [1024]
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -411,13 +408,13 @@ void CallbackListener::OnEquippedProfileItemsChanged(EquippedProfileItemsChanged
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onEquippedProfileItemsChanged");
+    lua_getfield(L, -1, "OnEquippedProfileItemsChanged");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -428,27 +425,27 @@ void CallbackListener::OnEquippedProfileItems(EquippedProfileItems_t *data) {
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
     lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Friends_ref);
-    lua_getfield(L, -1, "onEquippedProfileItems");
+    lua_getfield(L, -1, "OnEquippedProfileItems");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 8);
         lua_pushinteger(L, data->m_eResult);
-        lua_setfield(L, -2, "result");
+        lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-        lua_setfield(L, -2, "steamID");
+        lua_setfield(L, -2, "m_steamID");
         lua_pushboolean(L, data->m_bHasAnimatedAvatar);
-        lua_setfield(L, -2, "hasAnimatedAvatar");
+        lua_setfield(L, -2, "m_bHasAnimatedAvatar");
         lua_pushboolean(L, data->m_bHasAvatarFrame);
-        lua_setfield(L, -2, "hasAvatarFrame");
+        lua_setfield(L, -2, "m_bHasAvatarFrame");
         lua_pushboolean(L, data->m_bHasProfileModifier);
-        lua_setfield(L, -2, "hasProfileModifier");
+        lua_setfield(L, -2, "m_bHasProfileModifier");
         lua_pushboolean(L, data->m_bHasProfileBackground);
-        lua_setfield(L, -2, "hasProfileBackground");
+        lua_setfield(L, -2, "m_bHasProfileBackground");
         lua_pushboolean(L, data->m_bHasMiniProfileBackground);
-        lua_setfield(L, -2, "hasMiniProfileBackground");
+        lua_setfield(L, -2, "m_bHasMiniProfileBackground");
         lua_pushboolean(L, data->m_bFromCache);
-        lua_setfield(L, -2, "fromCache");
+        lua_setfield(L, -2, "m_bFromCache");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -490,7 +487,7 @@ EXTERN int luasteam_Friends_GetFriendCount(lua_State *L) {
 EXTERN int luasteam_Friends_GetFriendByIndex(lua_State *L) {
     int iFriend = static_cast<int>(luaL_checkint(L, 1));
     int iFriendFlags = static_cast<int>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, (SteamFriends()->GetFriendByIndex(iFriend, iFriendFlags)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetFriendByIndex(iFriend, iFriendFlags).ConvertToUint64());
     return 1;
 }
 
@@ -543,6 +540,27 @@ EXTERN int luasteam_Friends_GetFriendsGroupCount(lua_State *L) {
     return 1;
 }
 
+// FriendsGroupID_t GetFriendsGroupIDByIndex(int iFG);
+EXTERN int luasteam_Friends_GetFriendsGroupIDByIndex(lua_State *L) {
+    int iFG = static_cast<int>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamFriends()->GetFriendsGroupIDByIndex(iFG));
+    return 1;
+}
+
+// const char * GetFriendsGroupName(FriendsGroupID_t friendsGroupID);
+EXTERN int luasteam_Friends_GetFriendsGroupName(lua_State *L) {
+    FriendsGroupID_t friendsGroupID = static_cast<FriendsGroupID_t>(luaL_checkint(L, 1));
+    lua_pushstring(L, SteamFriends()->GetFriendsGroupName(friendsGroupID));
+    return 1;
+}
+
+// int GetFriendsGroupMembersCount(FriendsGroupID_t friendsGroupID);
+EXTERN int luasteam_Friends_GetFriendsGroupMembersCount(lua_State *L) {
+    FriendsGroupID_t friendsGroupID = static_cast<FriendsGroupID_t>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamFriends()->GetFriendsGroupMembersCount(friendsGroupID));
+    return 1;
+}
+
 // bool HasFriend(CSteamID steamIDFriend, int iFriendFlags);
 EXTERN int luasteam_Friends_HasFriend(lua_State *L) {
     CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
@@ -560,7 +578,7 @@ EXTERN int luasteam_Friends_GetClanCount(lua_State *L) {
 // CSteamID GetClanByIndex(int iClan);
 EXTERN int luasteam_Friends_GetClanByIndex(lua_State *L) {
     int iClan = static_cast<int>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, (SteamFriends()->GetClanByIndex(iClan)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetClanByIndex(iClan).ConvertToUint64());
     return 1;
 }
 
@@ -589,7 +607,7 @@ EXTERN int luasteam_Friends_GetFriendCountFromSource(lua_State *L) {
 EXTERN int luasteam_Friends_GetFriendFromSourceByIndex(lua_State *L) {
     CSteamID steamIDSource(luasteam::checkuint64(L, 1));
     int iFriend = static_cast<int>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, (SteamFriends()->GetFriendFromSourceByIndex(steamIDSource, iFriend)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetFriendFromSourceByIndex(steamIDSource, iFriend).ConvertToUint64());
     return 1;
 }
 
@@ -693,7 +711,7 @@ EXTERN int luasteam_Friends_RequestClanOfficerList(lua_State *L) {
 // CSteamID GetClanOwner(CSteamID steamIDClan);
 EXTERN int luasteam_Friends_GetClanOwner(lua_State *L) {
     CSteamID steamIDClan(luasteam::checkuint64(L, 1));
-    luasteam::pushuint64(L, (SteamFriends()->GetClanOwner(steamIDClan)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetClanOwner(steamIDClan).ConvertToUint64());
     return 1;
 }
 
@@ -708,7 +726,7 @@ EXTERN int luasteam_Friends_GetClanOfficerCount(lua_State *L) {
 EXTERN int luasteam_Friends_GetClanOfficerByIndex(lua_State *L) {
     CSteamID steamIDClan(luasteam::checkuint64(L, 1));
     int iOfficer = static_cast<int>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, (SteamFriends()->GetClanOfficerByIndex(steamIDClan, iOfficer)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetClanOfficerByIndex(steamIDClan, iOfficer).ConvertToUint64());
     return 1;
 }
 
@@ -773,7 +791,7 @@ EXTERN int luasteam_Friends_GetCoplayFriendCount(lua_State *L) {
 // CSteamID GetCoplayFriend(int iCoplayFriend);
 EXTERN int luasteam_Friends_GetCoplayFriend(lua_State *L) {
     int iCoplayFriend = static_cast<int>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, (SteamFriends()->GetCoplayFriend(iCoplayFriend)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetCoplayFriend(iCoplayFriend).ConvertToUint64());
     return 1;
 }
 
@@ -816,7 +834,7 @@ EXTERN int luasteam_Friends_GetClanChatMemberCount(lua_State *L) {
 EXTERN int luasteam_Friends_GetChatMemberByIndex(lua_State *L) {
     CSteamID steamIDClan(luasteam::checkuint64(L, 1));
     int iUser = static_cast<int>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, (SteamFriends()->GetChatMemberByIndex(steamIDClan, iUser)).ConvertToUint64());
+    luasteam::pushuint64(L, SteamFriends()->GetChatMemberByIndex(steamIDClan, iUser).ConvertToUint64());
     return 1;
 }
 
@@ -979,6 +997,9 @@ void register_Friends_auto(lua_State *L) {
     add_func(L, "GetFriendSteamLevel", luasteam_Friends_GetFriendSteamLevel);
     add_func(L, "GetPlayerNickname", luasteam_Friends_GetPlayerNickname);
     add_func(L, "GetFriendsGroupCount", luasteam_Friends_GetFriendsGroupCount);
+    add_func(L, "GetFriendsGroupIDByIndex", luasteam_Friends_GetFriendsGroupIDByIndex);
+    add_func(L, "GetFriendsGroupName", luasteam_Friends_GetFriendsGroupName);
+    add_func(L, "GetFriendsGroupMembersCount", luasteam_Friends_GetFriendsGroupMembersCount);
     add_func(L, "HasFriend", luasteam_Friends_HasFriend);
     add_func(L, "GetClanCount", luasteam_Friends_GetClanCount);
     add_func(L, "GetClanByIndex", luasteam_Friends_GetClanByIndex);
@@ -1040,7 +1061,7 @@ void register_Friends_auto(lua_State *L) {
 }
 
 void add_Friends_auto(lua_State *L) {
-    lua_createtable(L, 0, 69);
+    lua_createtable(L, 0, 72);
     register_Friends_auto(L);
     lua_pushvalue(L, -1);
     Friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
