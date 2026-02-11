@@ -57,20 +57,20 @@ namespace luasteam {
 
 void add_utils(lua_State *L) {
     lua_createtable(L, 0, 3);
-    register_utils_auto(L);
+    register_Utils_auto(L);
     add_func(L, "getEnteredGamepadTextInput", luasteam_getEnteredGamepadTextInput);
     add_func(L, "showGamepadTextInput", luasteam_showGamepadTextInput);
     add_func(L, "showFloatingGamepadTextInput", luasteam_showFloatingGamepadTextInput);
     lua_pushvalue(L, -1);
 
-    utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "utils");
 }
 
-void init_utils(lua_State *L) { init_utils_auto(L); }
+void init_utils(lua_State *L) { init_Utils_auto(L); }
 
 void shutdown_utils(lua_State *L) {
-    shutdown_utils_auto(L);
+    shutdown_Utils_auto(L);
 }
 
 } // namespace luasteam

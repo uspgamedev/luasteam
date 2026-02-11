@@ -2,7 +2,7 @@
 
 namespace luasteam {
 
-int networkingmessages_ref = LUA_NOREF;
+int NetworkingMessages_ref = LUA_NOREF;
 
 namespace {
 
@@ -16,7 +16,7 @@ void CallbackListener::OnSteamNetworkingMessagesSessionRequest(SteamNetworkingMe
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::networkingmessages_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::NetworkingMessages_ref);
     lua_getfield(L, -1, "onSteamNetworkingMessagesSessionRequest");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -31,7 +31,7 @@ void CallbackListener::OnSteamNetworkingMessagesSessionFailed(SteamNetworkingMes
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::networkingmessages_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::NetworkingMessages_ref);
     lua_getfield(L, -1, "onSteamNetworkingMessagesSessionFailed");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -42,28 +42,28 @@ void CallbackListener::OnSteamNetworkingMessagesSessionFailed(SteamNetworkingMes
     }
 }
 
-CallbackListener *networkingmessages_listener = nullptr;
+CallbackListener *NetworkingMessages_listener = nullptr;
 
 } // namespace
 
-void init_networkingmessages_auto(lua_State *L) { networkingmessages_listener = new CallbackListener(); }
+void init_NetworkingMessages_auto(lua_State *L) { NetworkingMessages_listener = new CallbackListener(); }
 
-void shutdown_networkingmessages_auto(lua_State *L) {
-    luaL_unref(L, LUA_REGISTRYINDEX, networkingmessages_ref);
-    networkingmessages_ref = LUA_NOREF;
-    delete networkingmessages_listener; networkingmessages_listener = nullptr;
+void shutdown_NetworkingMessages_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, NetworkingMessages_ref);
+    NetworkingMessages_ref = LUA_NOREF;
+    delete NetworkingMessages_listener; NetworkingMessages_listener = nullptr;
 }
 
 
-void register_networkingmessages_auto(lua_State *L) {
+void register_NetworkingMessages_auto(lua_State *L) {
 }
 
-void add_networkingmessages_auto(lua_State *L) {
+void add_NetworkingMessages_auto(lua_State *L) {
     lua_createtable(L, 0, 0);
-    register_networkingmessages_auto(L);
+    register_NetworkingMessages_auto(L);
     lua_pushvalue(L, -1);
-    networkingmessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "networkingMessages");
+    NetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "NetworkingMessages");
 }
 
 } // namespace luasteam

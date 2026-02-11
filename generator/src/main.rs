@@ -9,7 +9,8 @@ struct Stats {
     interfaces_generated: usize,
     methods_total: usize,
     methods_generated: usize,
-    methods_skipped: usize,
+    enum_values_total: usize,
+    enum_values_generated: usize,
     unsupported_types: HashSet<String>,
 }
 
@@ -17,14 +18,18 @@ impl Stats {
     fn print_summary(&self) {
         println!("--- Generation Summary ---");
         println!(
-            "Interfaces: {} total, {} generated, {} skipped",
+            "Interfaces:  {} total, {} generated, {} skipped",
             self.interfaces_total,
             self.interfaces_generated,
             self.interfaces_total - self.interfaces_generated
         );
         println!(
-            "Methods:    {} total, {} generated, {} skipped",
-            self.methods_total, self.methods_generated, self.methods_skipped
+            "Methods:     {} total, {} generated, {} skipped",
+            self.methods_total, self.methods_generated, self.methods_total - self.methods_generated
+        );
+        println!(
+            "Enum Values: {} total, {} generated, {} skipped",
+            self.enum_values_total, self.enum_values_generated, self.enum_values_total - self.enum_values_generated
         );
 
         if !self.unsupported_types.is_empty() {
@@ -180,7 +185,7 @@ impl Generator {
             5300..5400 => "ISteamParties",
             5700..5800 => "ISteamRemotePlay",
             6000..6100 => "ISteamTimeline",
-            _ => "",
+            _ => unreachable!("Unknown callback ID: {}", id),
         }
     }
 
@@ -214,6 +219,14 @@ impl Generator {
         blocklist.insert("ISteamMatchmakingRulesResponse", "Callback response interface.");
         blocklist.insert("ISteamMatchmakingServerListResponse", "Callback response interface.");
         blocklist.insert("ISteamNetworkingFakeUDPPort", "Internal/specialized.");
+        
+        let mut method_blocklist = HashMap::new();
+        // TODO: Add a custom one for these
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyString", "Overloading");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool", "Overloading");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64", "Overloading");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat", "Overloading");
+        method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor", "Cursor method is not used");
 
         for interface in &self.api.interfaces {
             if blocklist.contains_key(interface.classname.as_str()) {
@@ -222,46 +235,30 @@ impl Generator {
             if interface.accessors.is_empty() {
                 continue;
             }
-            if let Some(name) = self.generate_interface(interface, &mut stats) {
+            if let Some(name) = self.generate_interface(interface, &method_blocklist, &mut stats) {
                 interface_names.push(name);
                 stats.interfaces_generated += 1;
             }
         }
 
-        self.generate_enums();
+        self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
         stats.print_summary();
     }
 
-    fn generate_enums(&self) {
+    fn generate_enums(&self, stats: &mut Stats) {
         let mut cpp = String::new();
         cpp.push_str("#include \"auto.hpp\"\n\n");
         cpp.push_str("namespace luasteam {\n\n");
         cpp.push_str("void add_enums_auto(lua_State *L) {\n");
 
         for enm in &self.api.enums {
-            let lua_enum_name = if enm.enumname.starts_with('E') && enm.enumname.len() > 1 && enm.enumname.chars().nth(1).unwrap().is_uppercase() {
-                &enm.enumname[1..]
-            } else {
-                &enm.enumname
-            };
-
-            cpp.push_str(&format!("    lua_createtable(L, 0, {});\n", enm.values.len()));
-            
-            let prefix = format!("k_{}", enm.enumname);
             for val in &enm.values {
-                let mut lua_val_name = val.name.as_str();
-                if lua_val_name.starts_with(&prefix) {
-                    lua_val_name = &lua_val_name[prefix.len()..];
-                    if lua_val_name.starts_with('_') {
-                        lua_val_name = &lua_val_name[1..];
-                    }
-                }
-                
                 cpp.push_str(&format!("    lua_pushinteger(L, {});\n", val.value));
-                cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", lua_val_name));
+                cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", val.name));
+                stats.enum_values_generated += 1;
             }
-            cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", lua_enum_name));
+            stats.enum_values_total += enm.values.len();
         }
 
         cpp.push_str("}\n\n} // namespace luasteam\n");
@@ -285,14 +282,6 @@ impl Generator {
         h.push_str("\n} // namespace luasteam\n\n");
         h.push_str("#endif // LUASTEAM_AUTO_HPP\n");
         fs::write("../src/auto/auto.hpp", h).expect("Unable to write auto.hpp");
-    }
-
-    fn to_lua_name(method_name: &str) -> String {
-        let mut name = method_name;
-        if name.len() > 1 && name.starts_with('B') && name.chars().nth(1).unwrap().is_uppercase() {
-            name = &name[1..];
-        }
-        format!("{}{}", name[..1].to_lowercase(), &name[1..])
     }
 
     fn to_lua_callback_name(struct_name: &str) -> String {
@@ -424,100 +413,60 @@ impl Generator {
         s
     }
 
-    fn generate_interface(&self, interface: &Interface, stats: &mut Stats) -> Option<String> {
+    fn generate_interface(&self, interface: &Interface, method_blocklist: &HashMap<&str, &str>, stats: &mut Stats) -> Option<String> {
         let mut cpp = String::new();
-        let name_lower = if interface.classname.starts_with("ISteam") {
-            &interface.classname[6..]
-        } else {
-            &interface.classname
-        }.to_lowercase();
-
+        let name = &interface.classname["ISteam".len()..];
         let accessor_name = &interface.accessors[0].name;
-
-        let lua_field_name = match interface.classname.as_str() {
-            "ISteamUser" => "user",
-            "ISteamFriends" => "friends",
-            "ISteamUtils" => "utils",
-            "ISteamMatchmaking" => "matchmaking",
-            "ISteamMatchmakingServers" => "matchmakingServers",
-            "ISteamUserStats" => "userStats",
-            "ISteamApps" => "apps",
-            "ISteamNetworking" => "networking",
-            "ISteamScreenshots" => "screenshots",
-            "ISteamMusic" => "music",
-            "ISteamHTTP" => "http",
-            "ISteamInput" => "input",
-            "ISteamController" => "controller",
-            "ISteamUGC" => "UGC",
-            "ISteamHTMLSurface" => "htmlSurface",
-            "ISteamInventory" => "inventory",
-            "ISteamVideo" => "video",
-            "ISteamParentalSettings" => "parentalSettings",
-            "ISteamRemotePlay" => "remotePlay",
-            "ISteamNetworkingMessages" => "networkingMessages",
-            "ISteamNetworkingSockets" => "networkingSockets",
-            "ISteamNetworkingUtils" => "networkingUtils",
-            "ISteamGameServer" => "gameServer",
-            "ISteamGameServerStats" => "gameServerStats",
-            "ISteamTimeline" => "timeline",
-            "ISteamParties" => "parties",
-            "ISteamRemoteStorage" => "remoteStorage",
-            _ => &name_lower,
-        };
 
         cpp.push_str(&format!("#include \"auto.hpp\"\n\n"));
 
         cpp.push_str("namespace luasteam {\n\n");
 
-        cpp.push_str(&format!("int {}_ref = LUA_NOREF;\n\n", name_lower));
+        cpp.push_str(&format!("int {}_ref = LUA_NOREF;\n\n", name));
 
         let callbacks = self.interface_callbacks.get(&interface.classname).map(|v| v.as_slice()).unwrap_or(&[]);
-        cpp.push_str(&self.generate_callback_listener(&name_lower, &interface.classname, callbacks));
+        cpp.push_str(&self.generate_callback_listener(&name, &interface.classname, callbacks));
         cpp.push_str("\n");
 
         let mut generated_methods = Vec::new();
 
         for method in &interface.methods {
             stats.methods_total += 1;
-            if let Some(generated) = self.generate_method(interface, method, stats, accessor_name) {
+            
+            if let Some((lua_method_name, generated)) = self.generate_method(&name, method, stats, accessor_name) {
+                if method_blocklist.contains_key(method.methodname_flat.as_str()) {
+                    continue;
+                }
                 cpp.push_str(&generated);
                 cpp.push_str("\n");
-                generated_methods.push(method);
+                generated_methods.push((method, lua_method_name));
                 stats.methods_generated += 1;
-            } else {
-                stats.methods_skipped += 1;
             }
         }
 
         // Generate register_..._auto function
-        cpp.push_str(&format!("void register_{}_auto(lua_State *L) {{\n", name_lower));
-        for method in &generated_methods {
-             let lua_name = Self::to_lua_name(&method.methodname);
-             cpp.push_str(&format!("    add_func(L, \"{}\", luasteam_{}_{});\n", lua_name, name_lower, method.methodname_flat));
+        cpp.push_str(&format!("void register_{}_auto(lua_State *L) {{\n", name));
+        for (m, c_name) in &generated_methods {
+             cpp.push_str(&format!("    add_func(L, \"{}\", {});\n", m.methodname, c_name));
         }
         cpp.push_str("}\n\n");
 
         // Generate add_..._auto function
-        cpp.push_str(&format!("void add_{}_auto(lua_State *L) {{\n", name_lower));
+        cpp.push_str(&format!("void add_{}_auto(lua_State *L) {{\n", name));
         cpp.push_str(&format!("    lua_createtable(L, 0, {});\n", generated_methods.len()));
-        cpp.push_str(&format!("    register_{}_auto(L);\n", name_lower));
-        cpp.push_str("    lua_pushvalue(L, -1);\n");
-        cpp.push_str(&format!("    {}_ref = luaL_ref(L, LUA_REGISTRYINDEX);\n", name_lower));
-        cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", lua_field_name));
+        cpp.push_str(&format!("    register_{}_auto(L);\n", name));
+        cpp.push_str(&format!("    lua_pushvalue(L, -1);\n"));
+        cpp.push_str(&format!("    {}_ref = luaL_ref(L, LUA_REGISTRYINDEX);\n", name));
+        cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", name));
         cpp.push_str("}\n\n} // namespace luasteam\n");
 
-        let path = format!("../src/auto/{}.cpp", name_lower);
+        let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp).expect("Unable to write generated file");
-        Some(name_lower)
+        Some(name.to_owned())
     }
 
-    fn generate_method(&self, interface: &Interface, method: &Method, stats: &mut Stats, accessor_name: &str) -> Option<String> {
+    fn generate_method(&self, interface: &str, method: &Method, stats: &mut Stats, accessor_name: &str) -> Option<(String, String)> {
         let mut s = String::new();
-        let name_lower = if interface.classname.starts_with("ISteam") {
-            &interface.classname[6..]
-        } else {
-            &interface.classname
-        }.to_lowercase();
         
         let interface_getter = format!("{}()", accessor_name);
 
@@ -532,38 +481,39 @@ impl Generator {
             method.methodname,
             params_str.join(", ")
         ));
-        s.push_str(&format!("EXTERN int luasteam_{}_{}(lua_State *L) {{\n", name_lower, method.methodname_flat));
+        let lua_method_name = format!("luasteam_{}_{}", interface, method.methodname);
+        s.push_str(&format!("EXTERN int {}(lua_State *L) {{\n", lua_method_name));
 
         let mut arg_names = Vec::new();
-        for (i, param) in method.params.iter().enumerate() {
+        for (i, Param { paramtype, paramname }) in method.params.iter().enumerate() {
             let lua_idx = i + 1;
-            let resolved = self.resolve_type(&param.paramtype);
+            let resolved = self.resolve_type(paramtype);
             
             match resolved {
-                "int" | "int32" | "uint32" | "unsigned int" | "uint16" | "unsigned short" | "uint8" | "unsigned char" => {
-                    s.push_str(&format!("    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n", param.paramtype, param.paramname, param.paramtype, lua_idx));
+                "int" => {
+                    s.push_str(&format!("    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n", paramtype, paramname, paramtype, lua_idx));
                 }
                 "bool" => {
-                    s.push_str(&format!("    bool {} = lua_toboolean(L, {});\n", param.paramname, lua_idx));
+                    s.push_str(&format!("    bool {} = lua_toboolean(L, {});\n", paramname, lua_idx));
                 }
                 "const char *" => {
-                    s.push_str(&format!("    const char *{} = luaL_checkstring(L, {});\n", param.paramname, lua_idx));
+                    s.push_str(&format!("    const char *{} = luaL_checkstring(L, {});\n", paramname, lua_idx));
                 }
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
-                    let param_type = param.paramtype.replace("const ", "").replace(" &", "").replace("class ", "");
+                    let param_type = paramtype.replace("const ", "").replace(" &", "").replace("class ", "");
                     if param_type == "CSteamID" || param_type == "CGameID" {
-                         s.push_str(&format!("    {} {}(luasteam::checkuint64(L, {}));\n", param_type, param.paramname, lua_idx));
+                         s.push_str(&format!("    {} {}(luasteam::checkuint64(L, {}));\n", param_type, paramname, lua_idx));
                     } else {
-                         s.push_str(&format!("    {} {} = luasteam::checkuint64(L, {});\n", param.paramtype, param.paramname, lua_idx));
+                         s.push_str(&format!("    {} {} = luasteam::checkuint64(L, {});\n", paramtype, paramname, lua_idx));
                     }
                 }
                 _ => {
                     // Skip methods with unknown types for now
-                    stats.unsupported_types.insert(param.paramtype.clone());
+                    stats.unsupported_types.insert(paramtype.clone());
                     return None;
                 }
             }
-            arg_names.push(param.paramname.clone());
+            arg_names.push(paramname.clone());
         }
 
         let call = format!("{}->{}({})", interface_getter, method.methodname, arg_names.join(", "));
@@ -574,7 +524,7 @@ impl Generator {
                 s.push_str(&format!("    {};\n", call));
                 s.push_str("    return 0;\n");
             }
-            "int" | "int32" | "uint32" | "unsigned int" | "uint16" | "unsigned short" | "uint8" | "unsigned char" => {
+            "int" => {
                 s.push_str(&format!("    lua_pushinteger(L, {});\n", call));
                 s.push_str("    return 1;\n");
             }
@@ -605,7 +555,7 @@ impl Generator {
         }
 
         s.push_str("}\n");
-        Some(s)
+        Some((lua_method_name, s))
     }
 }
 

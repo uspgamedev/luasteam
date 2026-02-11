@@ -268,7 +268,7 @@ namespace luasteam {
 
 void add_user_stats(lua_State *L) {
     lua_createtable(L, 0, 11);
-    register_userstats_auto(L);
+    register_UserStats_auto(L);
     add_func(L, "getStatInt", luasteam_getStatInt);
     add_func(L, "getStatFloat", luasteam_getStatFloat);
     add_func(L, "setStatInt", luasteam_setStatInt);
@@ -282,14 +282,14 @@ void add_user_stats(lua_State *L) {
     add_func(L, "uploadLeaderboardScore", luasteam_uploadLeaderboardScore);
     add_func(L, "downloadLeaderboardEntries", luasteam_downloadLeaderboardEntries);
     lua_pushvalue(L, -1);
-    userstats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "userStats");
 }
 
-void init_user_stats(lua_State *L) { init_userstats_auto(L); }
+void init_user_stats(lua_State *L) { init_UserStats_auto(L); }
 
 void shutdown_user_stats(lua_State *L) {
-    shutdown_userstats_auto(L);
+    shutdown_UserStats_auto(L);
 }
 
 } // namespace luasteam

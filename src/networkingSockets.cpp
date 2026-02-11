@@ -412,7 +412,7 @@ void add_constants(lua_State *L) {
 
 void add_networkingSockets(lua_State *L) {
     lua_createtable(L, 0, 20);
-    add_networkingsockets_auto(L);
+    add_NetworkingSockets_auto(L);
     add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
     add_func(L, "createListenSocketP2P", luasteam_createListenSocketP2P);
     add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);

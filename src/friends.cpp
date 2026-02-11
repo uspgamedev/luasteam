@@ -41,19 +41,19 @@ namespace luasteam {
 
 void add_friends(lua_State *L) {
     lua_createtable(L, 0, 3);
-    register_friends_auto(L);
+    register_Friends_auto(L);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
     add_func(L, "getFriendRichPresence", luasteam_getFriendRichPresence);
     lua_pushvalue(L, -1);
-    friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    Friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "friends");
 }
 
-void init_friends(lua_State *L) { init_friends_auto(L); }
+void init_friends(lua_State *L) { init_Friends_auto(L); }
 
 void shutdown_friends(lua_State *L) {
-    shutdown_friends_auto(L);
+    shutdown_Friends_auto(L);
 }
 
 } // namespace luasteam

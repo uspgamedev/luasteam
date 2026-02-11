@@ -2,7 +2,7 @@
 
 namespace luasteam {
 
-int parties_ref = LUA_NOREF;
+int Parties_ref = LUA_NOREF;
 
 namespace {
 
@@ -20,7 +20,7 @@ void CallbackListener::OnJoinPartyCallback(JoinPartyCallback_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onJoinPartyCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -43,7 +43,7 @@ void CallbackListener::OnCreateBeaconCallback(CreateBeaconCallback_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onCreateBeaconCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -62,7 +62,7 @@ void CallbackListener::OnReservationNotificationCallback(ReservationNotification
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onReservationNotificationCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -81,7 +81,7 @@ void CallbackListener::OnChangeNumOpenSlotsCallback(ChangeNumOpenSlotsCallback_t
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onChangeNumOpenSlotsCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -98,7 +98,7 @@ void CallbackListener::OnAvailableBeaconLocationsUpdated(AvailableBeaconLocation
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onAvailableBeaconLocationsUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -113,7 +113,7 @@ void CallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::Parties_ref);
     lua_getfield(L, -1, "onActiveBeaconsUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -124,41 +124,41 @@ void CallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *data) {
     }
 }
 
-CallbackListener *parties_listener = nullptr;
+CallbackListener *Parties_listener = nullptr;
 
 } // namespace
 
-void init_parties_auto(lua_State *L) { parties_listener = new CallbackListener(); }
+void init_Parties_auto(lua_State *L) { Parties_listener = new CallbackListener(); }
 
-void shutdown_parties_auto(lua_State *L) {
-    luaL_unref(L, LUA_REGISTRYINDEX, parties_ref);
-    parties_ref = LUA_NOREF;
-    delete parties_listener; parties_listener = nullptr;
+void shutdown_Parties_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, Parties_ref);
+    Parties_ref = LUA_NOREF;
+    delete Parties_listener; Parties_listener = nullptr;
 }
 
 
 // uint32 GetNumActiveBeacons();
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_GetNumActiveBeacons(lua_State *L) {
+EXTERN int luasteam_Parties_GetNumActiveBeacons(lua_State *L) {
     lua_pushinteger(L, SteamParties()->GetNumActiveBeacons());
     return 1;
 }
 
 // PartyBeaconID_t GetBeaconByIndex(uint32 unIndex);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_GetBeaconByIndex(lua_State *L) {
+EXTERN int luasteam_Parties_GetBeaconByIndex(lua_State *L) {
     uint32 unIndex = static_cast<uint32>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamParties()->GetBeaconByIndex(unIndex));
     return 1;
 }
 
 // SteamAPICall_t JoinParty(PartyBeaconID_t ulBeaconID);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_JoinParty(lua_State *L) {
+EXTERN int luasteam_Parties_JoinParty(lua_State *L) {
     PartyBeaconID_t ulBeaconID = luasteam::checkuint64(L, 1);
     luasteam::pushuint64(L, SteamParties()->JoinParty(ulBeaconID));
     return 1;
 }
 
 // void OnReservationCompleted(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_OnReservationCompleted(lua_State *L) {
+EXTERN int luasteam_Parties_OnReservationCompleted(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
     CSteamID steamIDUser(luasteam::checkuint64(L, 2));
     SteamParties()->OnReservationCompleted(ulBeacon, steamIDUser);
@@ -166,7 +166,7 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_OnReservationCompleted(lua_St
 }
 
 // void CancelReservation(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_CancelReservation(lua_State *L) {
+EXTERN int luasteam_Parties_CancelReservation(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
     CSteamID steamIDUser(luasteam::checkuint64(L, 2));
     SteamParties()->CancelReservation(ulBeacon, steamIDUser);
@@ -174,7 +174,7 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_CancelReservation(lua_State *
 }
 
 // SteamAPICall_t ChangeNumOpenSlots(PartyBeaconID_t ulBeacon, uint32 unOpenSlots);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_ChangeNumOpenSlots(lua_State *L) {
+EXTERN int luasteam_Parties_ChangeNumOpenSlots(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
     uint32 unOpenSlots = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamParties()->ChangeNumOpenSlots(ulBeacon, unOpenSlots));
@@ -182,28 +182,28 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_ChangeNumOpenSlots(lua_State 
 }
 
 // bool DestroyBeacon(PartyBeaconID_t ulBeacon);
-EXTERN int luasteam_parties_SteamAPI_ISteamParties_DestroyBeacon(lua_State *L) {
+EXTERN int luasteam_Parties_DestroyBeacon(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
     lua_pushboolean(L, SteamParties()->DestroyBeacon(ulBeacon));
     return 1;
 }
 
-void register_parties_auto(lua_State *L) {
-    add_func(L, "getNumActiveBeacons", luasteam_parties_SteamAPI_ISteamParties_GetNumActiveBeacons);
-    add_func(L, "getBeaconByIndex", luasteam_parties_SteamAPI_ISteamParties_GetBeaconByIndex);
-    add_func(L, "joinParty", luasteam_parties_SteamAPI_ISteamParties_JoinParty);
-    add_func(L, "onReservationCompleted", luasteam_parties_SteamAPI_ISteamParties_OnReservationCompleted);
-    add_func(L, "cancelReservation", luasteam_parties_SteamAPI_ISteamParties_CancelReservation);
-    add_func(L, "changeNumOpenSlots", luasteam_parties_SteamAPI_ISteamParties_ChangeNumOpenSlots);
-    add_func(L, "destroyBeacon", luasteam_parties_SteamAPI_ISteamParties_DestroyBeacon);
+void register_Parties_auto(lua_State *L) {
+    add_func(L, "GetNumActiveBeacons", luasteam_Parties_GetNumActiveBeacons);
+    add_func(L, "GetBeaconByIndex", luasteam_Parties_GetBeaconByIndex);
+    add_func(L, "JoinParty", luasteam_Parties_JoinParty);
+    add_func(L, "OnReservationCompleted", luasteam_Parties_OnReservationCompleted);
+    add_func(L, "CancelReservation", luasteam_Parties_CancelReservation);
+    add_func(L, "ChangeNumOpenSlots", luasteam_Parties_ChangeNumOpenSlots);
+    add_func(L, "DestroyBeacon", luasteam_Parties_DestroyBeacon);
 }
 
-void add_parties_auto(lua_State *L) {
+void add_Parties_auto(lua_State *L) {
     lua_createtable(L, 0, 7);
-    register_parties_auto(L);
+    register_Parties_auto(L);
     lua_pushvalue(L, -1);
-    parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "parties");
+    Parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "Parties");
 }
 
 } // namespace luasteam

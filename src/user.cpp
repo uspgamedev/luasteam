@@ -49,17 +49,17 @@ namespace luasteam {
 
 void add_user(lua_State *L) {
     lua_createtable(L, 0, 1);
-    register_user_auto(L);
+    register_User_auto(L);
     add_func(L, "getAuthSessionTicket", luasteam_getAuthSessionTicket);
     lua_pushvalue(L, -1);
-    user_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    User_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "user");
 }
 
-void init_user(lua_State *L) { init_user_auto(L); }
+void init_user(lua_State *L) { init_User_auto(L); }
 
 void shutdown_user(lua_State *L) {
-    shutdown_user_auto(L);
+    shutdown_User_auto(L);
 }
 
 } // namespace luasteam

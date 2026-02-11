@@ -21,17 +21,17 @@ namespace luasteam {
 
 void add_networkingUtils(lua_State *L) {
     lua_createtable(L, 0, 1);
-    register_networkingutils_auto(L);
+    register_NetworkingUtils_auto(L);
     add_func(L, "getRelayNetworkStatus", luasteam_getRelayNetworkStatus);
     lua_pushvalue(L, -1);
-    networkingutils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "networkingUtils");
 }
 
-void init_networkingUtils(lua_State *L) { init_networkingutils_auto(L); }
+void init_networkingUtils(lua_State *L) { init_NetworkingUtils_auto(L); }
 
 void shutdown_networkingUtils(lua_State *L) {
-    shutdown_networkingutils_auto(L);
+    shutdown_NetworkingUtils_auto(L);
 }
 
 } // namespace luasteam

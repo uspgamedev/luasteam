@@ -48,7 +48,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
         luasteam::init_extra(L);
         luasteam::init_networkingSockets_server(L);
         luasteam::init_networkingUtils(L);
-        luasteam::init_gameserver_auto(L);
+        luasteam::init_GameServer_auto(L);
     } else {
         fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
     }
@@ -72,7 +72,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_common(L);
-    luasteam::shutdown_gameserver_auto(L);
+    luasteam::shutdown_GameServer_auto(L);
     return 0;
 }
 
@@ -113,7 +113,7 @@ void add_gameserver_constants(lua_State *L) {
 
 void add_gameServer(lua_State *L) {
     lua_createtable(L, 0, 6);
-    register_gameserver_auto(L);
+    register_GameServer_auto(L);
     add_func(L, "init", luasteam_init_server);
     add_func(L, "shutdown", luasteam_shutdown_server);
     add_func(L, "runCallbacks", luasteam_runCallbacks_server);
@@ -121,7 +121,7 @@ void add_gameServer(lua_State *L) {
     add_func(L, "endAuthSession", luasteam_server_endAuthSession);
     add_gameserver_constants(L);
     lua_pushvalue(L, -1);
-    gameserver_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "gameServer");
 }
 

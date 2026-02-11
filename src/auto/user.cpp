@@ -2,7 +2,7 @@
 
 namespace luasteam {
 
-int user_ref = LUA_NOREF;
+int User_ref = LUA_NOREF;
 
 namespace {
 
@@ -30,7 +30,7 @@ void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onSteamServersConnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -45,7 +45,7 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onSteamServerConnectFailure");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -64,7 +64,7 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onSteamServersDisconnected");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -81,7 +81,7 @@ void CallbackListener::OnClientGameServerDeny(ClientGameServerDeny_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onClientGameServerDeny");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -106,7 +106,7 @@ void CallbackListener::OnIPCFailure(IPCFailure_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onIPCFailure");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -123,7 +123,7 @@ void CallbackListener::OnLicensesUpdated(LicensesUpdated_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onLicensesUpdated");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -138,7 +138,7 @@ void CallbackListener::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onValidateAuthTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -159,7 +159,7 @@ void CallbackListener::OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResp
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onMicroTxnAuthorizationResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -180,7 +180,7 @@ void CallbackListener::OnEncryptedAppTicketResponse(EncryptedAppTicketResponse_t
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onEncryptedAppTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -197,7 +197,7 @@ void CallbackListener::OnGetAuthSessionTicketResponse(GetAuthSessionTicketRespon
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onGetAuthSessionTicketResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -216,7 +216,7 @@ void CallbackListener::OnGameWebCallback(GameWebCallback_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onGameWebCallback");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -233,7 +233,7 @@ void CallbackListener::OnStoreAuthURLResponse(StoreAuthURLResponse_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onStoreAuthURLResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -250,7 +250,7 @@ void CallbackListener::OnMarketEligibilityResponse(MarketEligibilityResponse_t *
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onMarketEligibilityResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -275,7 +275,7 @@ void CallbackListener::OnDurationControl(DurationControl_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onDurationControl");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -306,7 +306,7 @@ void CallbackListener::OnGetTicketForWebApiResponse(GetTicketForWebApiResponse_t
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onGetTicketForWebApiResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -327,7 +327,7 @@ void CallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
     if (data == nullptr) return;
     lua_State *L = luasteam::global_lua_state;
     if (!lua_checkstack(L, 4)) return;
-    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::user_ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::User_ref);
     lua_getfield(L, -1, "onGSPolicyResponse");
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
@@ -340,39 +340,39 @@ void CallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
     }
 }
 
-CallbackListener *user_listener = nullptr;
+CallbackListener *User_listener = nullptr;
 
 } // namespace
 
-void init_user_auto(lua_State *L) { user_listener = new CallbackListener(); }
+void init_User_auto(lua_State *L) { User_listener = new CallbackListener(); }
 
-void shutdown_user_auto(lua_State *L) {
-    luaL_unref(L, LUA_REGISTRYINDEX, user_ref);
-    user_ref = LUA_NOREF;
-    delete user_listener; user_listener = nullptr;
+void shutdown_User_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, User_ref);
+    User_ref = LUA_NOREF;
+    delete User_listener; User_listener = nullptr;
 }
 
 
 // HSteamUser GetHSteamUser();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetHSteamUser(lua_State *L) {
+EXTERN int luasteam_User_GetHSteamUser(lua_State *L) {
     lua_pushinteger(L, SteamUser()->GetHSteamUser());
     return 1;
 }
 
 // bool BLoggedOn();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BLoggedOn(lua_State *L) {
+EXTERN int luasteam_User_BLoggedOn(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BLoggedOn());
     return 1;
 }
 
 // CSteamID GetSteamID();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetSteamID(lua_State *L) {
+EXTERN int luasteam_User_GetSteamID(lua_State *L) {
     luasteam::pushuint64(L, (SteamUser()->GetSteamID()).ConvertToUint64());
     return 1;
 }
 
 // void TerminateGameConnection_DEPRECATED(uint32 unIPServer, uint16 usPortServer);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_TerminateGameConnection_DEPRECATED(lua_State *L) {
+EXTERN int luasteam_User_TerminateGameConnection_DEPRECATED(lua_State *L) {
     uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 1));
     uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 2));
     SteamUser()->TerminateGameConnection_DEPRECATED(unIPServer, usPortServer);
@@ -380,7 +380,7 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_TerminateGameConnection_DEPRECATED(
 }
 
 // void TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent, const char * pchExtraInfo);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_TrackAppUsageEvent(lua_State *L) {
+EXTERN int luasteam_User_TrackAppUsageEvent(lua_State *L) {
     CGameID gameID(luasteam::checkuint64(L, 1));
     int eAppUsageEvent = static_cast<int>(luaL_checkint(L, 2));
     const char *pchExtraInfo = luaL_checkstring(L, 3);
@@ -389,46 +389,46 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_TrackAppUsageEvent(lua_State *L) {
 }
 
 // void StartVoiceRecording();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_StartVoiceRecording(lua_State *L) {
+EXTERN int luasteam_User_StartVoiceRecording(lua_State *L) {
     SteamUser()->StartVoiceRecording();
     return 0;
 }
 
 // void StopVoiceRecording();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_StopVoiceRecording(lua_State *L) {
+EXTERN int luasteam_User_StopVoiceRecording(lua_State *L) {
     SteamUser()->StopVoiceRecording();
     return 0;
 }
 
 // uint32 GetVoiceOptimalSampleRate();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetVoiceOptimalSampleRate(lua_State *L) {
+EXTERN int luasteam_User_GetVoiceOptimalSampleRate(lua_State *L) {
     lua_pushinteger(L, SteamUser()->GetVoiceOptimalSampleRate());
     return 1;
 }
 
 // HAuthTicket GetAuthTicketForWebApi(const char * pchIdentity);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetAuthTicketForWebApi(lua_State *L) {
+EXTERN int luasteam_User_GetAuthTicketForWebApi(lua_State *L) {
     const char *pchIdentity = luaL_checkstring(L, 1);
     lua_pushinteger(L, SteamUser()->GetAuthTicketForWebApi(pchIdentity));
     return 1;
 }
 
 // void EndAuthSession(CSteamID steamID);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_EndAuthSession(lua_State *L) {
+EXTERN int luasteam_User_EndAuthSession(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
     SteamUser()->EndAuthSession(steamID);
     return 0;
 }
 
 // void CancelAuthTicket(HAuthTicket hAuthTicket);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_CancelAuthTicket(lua_State *L) {
+EXTERN int luasteam_User_CancelAuthTicket(lua_State *L) {
     HAuthTicket hAuthTicket = static_cast<HAuthTicket>(luaL_checkint(L, 1));
     SteamUser()->CancelAuthTicket(hAuthTicket);
     return 0;
 }
 
 // EUserHasLicenseForAppResult UserHasLicenseForApp(CSteamID steamID, AppId_t appID);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_UserHasLicenseForApp(lua_State *L) {
+EXTERN int luasteam_User_UserHasLicenseForApp(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
     lua_pushinteger(L, SteamUser()->UserHasLicenseForApp(steamID, appID));
@@ -436,13 +436,13 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_UserHasLicenseForApp(lua_State *L) 
 }
 
 // bool BIsBehindNAT();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsBehindNAT(lua_State *L) {
+EXTERN int luasteam_User_BIsBehindNAT(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BIsBehindNAT());
     return 1;
 }
 
 // void AdvertiseGame(CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_AdvertiseGame(lua_State *L) {
+EXTERN int luasteam_User_AdvertiseGame(lua_State *L) {
     CSteamID steamIDGameServer(luasteam::checkuint64(L, 1));
     uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 2));
     uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 3));
@@ -451,7 +451,7 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_AdvertiseGame(lua_State *L) {
 }
 
 // int GetGameBadgeLevel(int nSeries, bool bFoil);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetGameBadgeLevel(lua_State *L) {
+EXTERN int luasteam_User_GetGameBadgeLevel(lua_State *L) {
     int nSeries = static_cast<int>(luaL_checkint(L, 1));
     bool bFoil = lua_toboolean(L, 2);
     lua_pushinteger(L, SteamUser()->GetGameBadgeLevel(nSeries, bFoil));
@@ -459,94 +459,94 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_GetGameBadgeLevel(lua_State *L) {
 }
 
 // int GetPlayerSteamLevel();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetPlayerSteamLevel(lua_State *L) {
+EXTERN int luasteam_User_GetPlayerSteamLevel(lua_State *L) {
     lua_pushinteger(L, SteamUser()->GetPlayerSteamLevel());
     return 1;
 }
 
 // SteamAPICall_t RequestStoreAuthURL(const char * pchRedirectURL);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_RequestStoreAuthURL(lua_State *L) {
+EXTERN int luasteam_User_RequestStoreAuthURL(lua_State *L) {
     const char *pchRedirectURL = luaL_checkstring(L, 1);
     luasteam::pushuint64(L, SteamUser()->RequestStoreAuthURL(pchRedirectURL));
     return 1;
 }
 
 // bool BIsPhoneVerified();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsPhoneVerified(lua_State *L) {
+EXTERN int luasteam_User_BIsPhoneVerified(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BIsPhoneVerified());
     return 1;
 }
 
 // bool BIsTwoFactorEnabled();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsTwoFactorEnabled(lua_State *L) {
+EXTERN int luasteam_User_BIsTwoFactorEnabled(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BIsTwoFactorEnabled());
     return 1;
 }
 
 // bool BIsPhoneIdentifying();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsPhoneIdentifying(lua_State *L) {
+EXTERN int luasteam_User_BIsPhoneIdentifying(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BIsPhoneIdentifying());
     return 1;
 }
 
 // bool BIsPhoneRequiringVerification();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsPhoneRequiringVerification(lua_State *L) {
+EXTERN int luasteam_User_BIsPhoneRequiringVerification(lua_State *L) {
     lua_pushboolean(L, SteamUser()->BIsPhoneRequiringVerification());
     return 1;
 }
 
 // SteamAPICall_t GetMarketEligibility();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetMarketEligibility(lua_State *L) {
+EXTERN int luasteam_User_GetMarketEligibility(lua_State *L) {
     luasteam::pushuint64(L, SteamUser()->GetMarketEligibility());
     return 1;
 }
 
 // SteamAPICall_t GetDurationControl();
-EXTERN int luasteam_user_SteamAPI_ISteamUser_GetDurationControl(lua_State *L) {
+EXTERN int luasteam_User_GetDurationControl(lua_State *L) {
     luasteam::pushuint64(L, SteamUser()->GetDurationControl());
     return 1;
 }
 
 // bool BSetDurationControlOnlineState(EDurationControlOnlineState eNewState);
-EXTERN int luasteam_user_SteamAPI_ISteamUser_BSetDurationControlOnlineState(lua_State *L) {
+EXTERN int luasteam_User_BSetDurationControlOnlineState(lua_State *L) {
     EDurationControlOnlineState eNewState = static_cast<EDurationControlOnlineState>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamUser()->BSetDurationControlOnlineState(eNewState));
     return 1;
 }
 
-void register_user_auto(lua_State *L) {
-    add_func(L, "getHSteamUser", luasteam_user_SteamAPI_ISteamUser_GetHSteamUser);
-    add_func(L, "loggedOn", luasteam_user_SteamAPI_ISteamUser_BLoggedOn);
-    add_func(L, "getSteamID", luasteam_user_SteamAPI_ISteamUser_GetSteamID);
-    add_func(L, "terminateGameConnection_DEPRECATED", luasteam_user_SteamAPI_ISteamUser_TerminateGameConnection_DEPRECATED);
-    add_func(L, "trackAppUsageEvent", luasteam_user_SteamAPI_ISteamUser_TrackAppUsageEvent);
-    add_func(L, "startVoiceRecording", luasteam_user_SteamAPI_ISteamUser_StartVoiceRecording);
-    add_func(L, "stopVoiceRecording", luasteam_user_SteamAPI_ISteamUser_StopVoiceRecording);
-    add_func(L, "getVoiceOptimalSampleRate", luasteam_user_SteamAPI_ISteamUser_GetVoiceOptimalSampleRate);
-    add_func(L, "getAuthTicketForWebApi", luasteam_user_SteamAPI_ISteamUser_GetAuthTicketForWebApi);
-    add_func(L, "endAuthSession", luasteam_user_SteamAPI_ISteamUser_EndAuthSession);
-    add_func(L, "cancelAuthTicket", luasteam_user_SteamAPI_ISteamUser_CancelAuthTicket);
-    add_func(L, "userHasLicenseForApp", luasteam_user_SteamAPI_ISteamUser_UserHasLicenseForApp);
-    add_func(L, "isBehindNAT", luasteam_user_SteamAPI_ISteamUser_BIsBehindNAT);
-    add_func(L, "advertiseGame", luasteam_user_SteamAPI_ISteamUser_AdvertiseGame);
-    add_func(L, "getGameBadgeLevel", luasteam_user_SteamAPI_ISteamUser_GetGameBadgeLevel);
-    add_func(L, "getPlayerSteamLevel", luasteam_user_SteamAPI_ISteamUser_GetPlayerSteamLevel);
-    add_func(L, "requestStoreAuthURL", luasteam_user_SteamAPI_ISteamUser_RequestStoreAuthURL);
-    add_func(L, "isPhoneVerified", luasteam_user_SteamAPI_ISteamUser_BIsPhoneVerified);
-    add_func(L, "isTwoFactorEnabled", luasteam_user_SteamAPI_ISteamUser_BIsTwoFactorEnabled);
-    add_func(L, "isPhoneIdentifying", luasteam_user_SteamAPI_ISteamUser_BIsPhoneIdentifying);
-    add_func(L, "isPhoneRequiringVerification", luasteam_user_SteamAPI_ISteamUser_BIsPhoneRequiringVerification);
-    add_func(L, "getMarketEligibility", luasteam_user_SteamAPI_ISteamUser_GetMarketEligibility);
-    add_func(L, "getDurationControl", luasteam_user_SteamAPI_ISteamUser_GetDurationControl);
-    add_func(L, "setDurationControlOnlineState", luasteam_user_SteamAPI_ISteamUser_BSetDurationControlOnlineState);
+void register_User_auto(lua_State *L) {
+    add_func(L, "GetHSteamUser", luasteam_User_GetHSteamUser);
+    add_func(L, "BLoggedOn", luasteam_User_BLoggedOn);
+    add_func(L, "GetSteamID", luasteam_User_GetSteamID);
+    add_func(L, "TerminateGameConnection_DEPRECATED", luasteam_User_TerminateGameConnection_DEPRECATED);
+    add_func(L, "TrackAppUsageEvent", luasteam_User_TrackAppUsageEvent);
+    add_func(L, "StartVoiceRecording", luasteam_User_StartVoiceRecording);
+    add_func(L, "StopVoiceRecording", luasteam_User_StopVoiceRecording);
+    add_func(L, "GetVoiceOptimalSampleRate", luasteam_User_GetVoiceOptimalSampleRate);
+    add_func(L, "GetAuthTicketForWebApi", luasteam_User_GetAuthTicketForWebApi);
+    add_func(L, "EndAuthSession", luasteam_User_EndAuthSession);
+    add_func(L, "CancelAuthTicket", luasteam_User_CancelAuthTicket);
+    add_func(L, "UserHasLicenseForApp", luasteam_User_UserHasLicenseForApp);
+    add_func(L, "BIsBehindNAT", luasteam_User_BIsBehindNAT);
+    add_func(L, "AdvertiseGame", luasteam_User_AdvertiseGame);
+    add_func(L, "GetGameBadgeLevel", luasteam_User_GetGameBadgeLevel);
+    add_func(L, "GetPlayerSteamLevel", luasteam_User_GetPlayerSteamLevel);
+    add_func(L, "RequestStoreAuthURL", luasteam_User_RequestStoreAuthURL);
+    add_func(L, "BIsPhoneVerified", luasteam_User_BIsPhoneVerified);
+    add_func(L, "BIsTwoFactorEnabled", luasteam_User_BIsTwoFactorEnabled);
+    add_func(L, "BIsPhoneIdentifying", luasteam_User_BIsPhoneIdentifying);
+    add_func(L, "BIsPhoneRequiringVerification", luasteam_User_BIsPhoneRequiringVerification);
+    add_func(L, "GetMarketEligibility", luasteam_User_GetMarketEligibility);
+    add_func(L, "GetDurationControl", luasteam_User_GetDurationControl);
+    add_func(L, "BSetDurationControlOnlineState", luasteam_User_BSetDurationControlOnlineState);
 }
 
-void add_user_auto(lua_State *L) {
+void add_User_auto(lua_State *L) {
     lua_createtable(L, 0, 24);
-    register_user_auto(L);
+    register_User_auto(L);
     lua_pushvalue(L, -1);
-    user_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "user");
+    User_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "User");
 }
 
 } // namespace luasteam
