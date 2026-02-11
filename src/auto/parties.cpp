@@ -156,6 +156,13 @@ EXTERN int luasteam_Parties_JoinParty(lua_State *L) {
     return 1;
 }
 
+// bool GetNumAvailableBeaconLocations(uint32 * puNumLocations);
+EXTERN int luasteam_Parties_GetNumAvailableBeaconLocations(lua_State *L) {
+    uint32 puNumLocations;    lua_pushboolean(L, SteamParties()->GetNumAvailableBeaconLocations(&puNumLocations));
+    lua_pushinteger(L, puNumLocations);
+    return 2;
+}
+
 // void OnReservationCompleted(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
 EXTERN int luasteam_Parties_OnReservationCompleted(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
@@ -191,6 +198,7 @@ void register_Parties_auto(lua_State *L) {
     add_func(L, "GetNumActiveBeacons", luasteam_Parties_GetNumActiveBeacons);
     add_func(L, "GetBeaconByIndex", luasteam_Parties_GetBeaconByIndex);
     add_func(L, "JoinParty", luasteam_Parties_JoinParty);
+    add_func(L, "GetNumAvailableBeaconLocations", luasteam_Parties_GetNumAvailableBeaconLocations);
     add_func(L, "OnReservationCompleted", luasteam_Parties_OnReservationCompleted);
     add_func(L, "CancelReservation", luasteam_Parties_CancelReservation);
     add_func(L, "ChangeNumOpenSlots", luasteam_Parties_ChangeNumOpenSlots);
@@ -198,7 +206,7 @@ void register_Parties_auto(lua_State *L) {
 }
 
 void add_Parties_auto(lua_State *L) {
-    lua_createtable(L, 0, 7);
+    lua_createtable(L, 0, 8);
     register_Parties_auto(L);
     lua_pushvalue(L, -1);
     Parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);

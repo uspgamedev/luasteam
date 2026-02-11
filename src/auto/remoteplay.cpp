@@ -110,6 +110,15 @@ EXTERN int luasteam_RemotePlay_GetSessionClientFormFactor(lua_State *L) {
     return 1;
 }
 
+// bool BGetSessionClientResolution(RemotePlaySessionID_t unSessionID, int * pnResolutionX, int * pnResolutionY);
+EXTERN int luasteam_RemotePlay_BGetSessionClientResolution(lua_State *L) {
+    RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+    int pnResolutionX;    int pnResolutionY;    lua_pushboolean(L, SteamRemotePlay()->BGetSessionClientResolution(unSessionID, &pnResolutionX, &pnResolutionY));
+    lua_pushinteger(L, pnResolutionX);
+    lua_pushinteger(L, pnResolutionY);
+    return 3;
+}
+
 // bool ShowRemotePlayTogetherUI();
 EXTERN int luasteam_RemotePlay_ShowRemotePlayTogetherUI(lua_State *L) {
     lua_pushboolean(L, SteamRemotePlay()->ShowRemotePlayTogetherUI());
@@ -166,6 +175,7 @@ void register_RemotePlay_auto(lua_State *L) {
     add_func(L, "GetSessionSteamID", luasteam_RemotePlay_GetSessionSteamID);
     add_func(L, "GetSessionClientName", luasteam_RemotePlay_GetSessionClientName);
     add_func(L, "GetSessionClientFormFactor", luasteam_RemotePlay_GetSessionClientFormFactor);
+    add_func(L, "BGetSessionClientResolution", luasteam_RemotePlay_BGetSessionClientResolution);
     add_func(L, "ShowRemotePlayTogetherUI", luasteam_RemotePlay_ShowRemotePlayTogetherUI);
     add_func(L, "BSendRemotePlayTogetherInvite", luasteam_RemotePlay_BSendRemotePlayTogetherInvite);
     add_func(L, "BEnableRemotePlayTogetherDirectInput", luasteam_RemotePlay_BEnableRemotePlayTogetherDirectInput);
@@ -176,7 +186,7 @@ void register_RemotePlay_auto(lua_State *L) {
 }
 
 void add_RemotePlay_auto(lua_State *L) {
-    lua_createtable(L, 0, 12);
+    lua_createtable(L, 0, 13);
     register_RemotePlay_auto(L);
     lua_pushvalue(L, -1);
     RemotePlay_ref = luaL_ref(L, LUA_REGISTRYINDEX);

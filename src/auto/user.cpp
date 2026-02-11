@@ -399,6 +399,13 @@ EXTERN int luasteam_User_StopVoiceRecording(lua_State *L) {
     return 0;
 }
 
+// EVoiceResult GetAvailableVoice(uint32 * pcbCompressed, uint32 * pcbUncompressed_Deprecated, uint32 nUncompressedVoiceDesiredSampleRate_Deprecated);
+EXTERN int luasteam_User_GetAvailableVoice(lua_State *L) {
+    uint32 pcbCompressed;    lua_pushinteger(L, SteamUser()->GetAvailableVoice(&pcbCompressed));
+    lua_pushinteger(L, pcbCompressed);
+    return 2;
+}
+
 // uint32 GetVoiceOptimalSampleRate();
 EXTERN int luasteam_User_GetVoiceOptimalSampleRate(lua_State *L) {
     lua_pushinteger(L, SteamUser()->GetVoiceOptimalSampleRate());
@@ -521,6 +528,7 @@ void register_User_auto(lua_State *L) {
     add_func(L, "TrackAppUsageEvent", luasteam_User_TrackAppUsageEvent);
     add_func(L, "StartVoiceRecording", luasteam_User_StartVoiceRecording);
     add_func(L, "StopVoiceRecording", luasteam_User_StopVoiceRecording);
+    add_func(L, "GetAvailableVoice", luasteam_User_GetAvailableVoice);
     add_func(L, "GetVoiceOptimalSampleRate", luasteam_User_GetVoiceOptimalSampleRate);
     add_func(L, "GetAuthTicketForWebApi", luasteam_User_GetAuthTicketForWebApi);
     add_func(L, "EndAuthSession", luasteam_User_EndAuthSession);
@@ -541,7 +549,7 @@ void register_User_auto(lua_State *L) {
 }
 
 void add_User_auto(lua_State *L) {
-    lua_createtable(L, 0, 24);
+    lua_createtable(L, 0, 25);
     register_User_auto(L);
     lua_pushvalue(L, -1);
     User_ref = luaL_ref(L, LUA_REGISTRYINDEX);

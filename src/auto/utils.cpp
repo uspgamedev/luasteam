@@ -215,6 +215,15 @@ EXTERN int luasteam_Utils_GetIPCountry(lua_State *L) {
     return 1;
 }
 
+// bool GetImageSize(int iImage, uint32 * pnWidth, uint32 * pnHeight);
+EXTERN int luasteam_Utils_GetImageSize(lua_State *L) {
+    int iImage = static_cast<int>(luaL_checkint(L, 1));
+    uint32 pnWidth;    uint32 pnHeight;    lua_pushboolean(L, SteamUtils()->GetImageSize(iImage, &pnWidth, &pnHeight));
+    lua_pushinteger(L, pnWidth);
+    lua_pushinteger(L, pnHeight);
+    return 3;
+}
+
 // uint8 GetCurrentBatteryPower();
 EXTERN int luasteam_Utils_GetCurrentBatteryPower(lua_State *L) {
     lua_pushinteger(L, SteamUtils()->GetCurrentBatteryPower());
@@ -232,6 +241,14 @@ EXTERN int luasteam_Utils_SetOverlayNotificationPosition(lua_State *L) {
     ENotificationPosition eNotificationPosition = static_cast<ENotificationPosition>(luaL_checkint(L, 1));
     SteamUtils()->SetOverlayNotificationPosition(eNotificationPosition);
     return 0;
+}
+
+// bool IsAPICallCompleted(SteamAPICall_t hSteamAPICall, bool * pbFailed);
+EXTERN int luasteam_Utils_IsAPICallCompleted(lua_State *L) {
+    SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
+    bool pbFailed;    lua_pushboolean(L, SteamUtils()->IsAPICallCompleted(hSteamAPICall, &pbFailed));
+    lua_pushboolean(L, pbFailed);
+    return 2;
 }
 
 // ESteamAPICallFailure GetAPICallFailureReason(SteamAPICall_t hSteamAPICall);
@@ -390,9 +407,11 @@ void register_Utils_auto(lua_State *L) {
     add_func(L, "GetConnectedUniverse", luasteam_Utils_GetConnectedUniverse);
     add_func(L, "GetServerRealTime", luasteam_Utils_GetServerRealTime);
     add_func(L, "GetIPCountry", luasteam_Utils_GetIPCountry);
+    add_func(L, "GetImageSize", luasteam_Utils_GetImageSize);
     add_func(L, "GetCurrentBatteryPower", luasteam_Utils_GetCurrentBatteryPower);
     add_func(L, "GetAppID", luasteam_Utils_GetAppID);
     add_func(L, "SetOverlayNotificationPosition", luasteam_Utils_SetOverlayNotificationPosition);
+    add_func(L, "IsAPICallCompleted", luasteam_Utils_IsAPICallCompleted);
     add_func(L, "GetAPICallFailureReason", luasteam_Utils_GetAPICallFailureReason);
     add_func(L, "GetIPCCallCount", luasteam_Utils_GetIPCCallCount);
     add_func(L, "IsOverlayEnabled", luasteam_Utils_IsOverlayEnabled);
@@ -418,7 +437,7 @@ void register_Utils_auto(lua_State *L) {
 }
 
 void add_Utils_auto(lua_State *L) {
-    lua_createtable(L, 0, 30);
+    lua_createtable(L, 0, 32);
     register_Utils_auto(L);
     lua_pushvalue(L, -1);
     Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

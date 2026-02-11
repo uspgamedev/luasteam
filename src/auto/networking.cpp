@@ -140,6 +140,23 @@ EXTERN int luasteam_Networking_DestroyListenSocket(lua_State *L) {
     return 1;
 }
 
+// bool IsDataAvailableOnSocket(SNetSocket_t hSocket, uint32 * pcubMsgSize);
+EXTERN int luasteam_Networking_IsDataAvailableOnSocket(lua_State *L) {
+    SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
+    uint32 pcubMsgSize;    lua_pushboolean(L, SteamNetworking()->IsDataAvailableOnSocket(hSocket, &pcubMsgSize));
+    lua_pushinteger(L, pcubMsgSize);
+    return 2;
+}
+
+// bool IsDataAvailable(SNetListenSocket_t hListenSocket, uint32 * pcubMsgSize, SNetSocket_t * phSocket);
+EXTERN int luasteam_Networking_IsDataAvailable(lua_State *L) {
+    SNetListenSocket_t hListenSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
+    uint32 pcubMsgSize;    SNetSocket_t phSocket;    lua_pushboolean(L, SteamNetworking()->IsDataAvailable(hListenSocket, &pcubMsgSize, &phSocket));
+    lua_pushinteger(L, pcubMsgSize);
+    lua_pushinteger(L, phSocket);
+    return 3;
+}
+
 // ESNetSocketConnectionType GetSocketConnectionType(SNetSocket_t hSocket);
 EXTERN int luasteam_Networking_GetSocketConnectionType(lua_State *L) {
     SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
@@ -162,12 +179,14 @@ void register_Networking_auto(lua_State *L) {
     add_func(L, "CreateP2PConnectionSocket", luasteam_Networking_CreateP2PConnectionSocket);
     add_func(L, "DestroySocket", luasteam_Networking_DestroySocket);
     add_func(L, "DestroyListenSocket", luasteam_Networking_DestroyListenSocket);
+    add_func(L, "IsDataAvailableOnSocket", luasteam_Networking_IsDataAvailableOnSocket);
+    add_func(L, "IsDataAvailable", luasteam_Networking_IsDataAvailable);
     add_func(L, "GetSocketConnectionType", luasteam_Networking_GetSocketConnectionType);
     add_func(L, "GetMaxPacketSize", luasteam_Networking_GetMaxPacketSize);
 }
 
 void add_Networking_auto(lua_State *L) {
-    lua_createtable(L, 0, 9);
+    lua_createtable(L, 0, 11);
     register_Networking_auto(L);
     lua_pushvalue(L, -1);
     Networking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

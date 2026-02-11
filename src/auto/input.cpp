@@ -156,6 +156,13 @@ EXTERN int luasteam_Input_BNewDataAvailable(lua_State *L) {
     return 1;
 }
 
+// int GetConnectedControllers(InputHandle_t * handlesOut);
+EXTERN int luasteam_Input_GetConnectedControllers(lua_State *L) {
+    InputHandle_t handlesOut;    lua_pushinteger(L, SteamInput()->GetConnectedControllers(&handlesOut));
+    luasteam::pushuint64(L, handlesOut);
+    return 2;
+}
+
 // void EnableDeviceCallbacks();
 EXTERN int luasteam_Input_EnableDeviceCallbacks(lua_State *L) {
     SteamInput()->EnableDeviceCallbacks();
@@ -207,11 +214,29 @@ EXTERN int luasteam_Input_DeactivateAllActionSetLayers(lua_State *L) {
     return 0;
 }
 
+// int GetActiveActionSetLayers(InputHandle_t inputHandle, InputActionSetHandle_t * handlesOut);
+EXTERN int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
+    InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
+    InputActionSetHandle_t handlesOut;    lua_pushinteger(L, SteamInput()->GetActiveActionSetLayers(inputHandle, &handlesOut));
+    luasteam::pushuint64(L, handlesOut);
+    return 2;
+}
+
 // InputDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
 EXTERN int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
     const char *pszActionName = luaL_checkstring(L, 1);
     luasteam::pushuint64(L, SteamInput()->GetDigitalActionHandle(pszActionName));
     return 1;
+}
+
+// int GetDigitalActionOrigins(InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle, InputDigitalActionHandle_t digitalActionHandle, EInputActionOrigin * originsOut);
+EXTERN int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
+    InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
+    InputActionSetHandle_t actionSetHandle = luasteam::checkuint64(L, 2);
+    InputDigitalActionHandle_t digitalActionHandle = luasteam::checkuint64(L, 3);
+    EInputActionOrigin originsOut;    lua_pushinteger(L, SteamInput()->GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle, &originsOut));
+    lua_pushinteger(L, originsOut);
+    return 2;
 }
 
 // const char * GetStringForDigitalActionName(InputDigitalActionHandle_t eActionHandle);
@@ -226,6 +251,16 @@ EXTERN int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
     const char *pszActionName = luaL_checkstring(L, 1);
     luasteam::pushuint64(L, SteamInput()->GetAnalogActionHandle(pszActionName));
     return 1;
+}
+
+// int GetAnalogActionOrigins(InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle, InputAnalogActionHandle_t analogActionHandle, EInputActionOrigin * originsOut);
+EXTERN int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
+    InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
+    InputActionSetHandle_t actionSetHandle = luasteam::checkuint64(L, 2);
+    InputAnalogActionHandle_t analogActionHandle = luasteam::checkuint64(L, 3);
+    EInputActionOrigin originsOut;    lua_pushinteger(L, SteamInput()->GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle, &originsOut));
+    lua_pushinteger(L, originsOut);
+    return 2;
 }
 
 // const char * GetGlyphPNGForActionOrigin(EInputActionOrigin eOrigin, ESteamInputGlyphSize eSize, uint32 unFlags);
@@ -396,6 +431,15 @@ EXTERN int luasteam_Input_TranslateActionOrigin(lua_State *L) {
     return 1;
 }
 
+// bool GetDeviceBindingRevision(InputHandle_t inputHandle, int * pMajor, int * pMinor);
+EXTERN int luasteam_Input_GetDeviceBindingRevision(lua_State *L) {
+    InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
+    int pMajor;    int pMinor;    lua_pushboolean(L, SteamInput()->GetDeviceBindingRevision(inputHandle, &pMajor, &pMinor));
+    lua_pushinteger(L, pMajor);
+    lua_pushinteger(L, pMinor);
+    return 3;
+}
+
 // uint32 GetRemotePlaySessionID(InputHandle_t inputHandle);
 EXTERN int luasteam_Input_GetRemotePlaySessionID(lua_State *L) {
     InputHandle_t inputHandle = luasteam::checkuint64(L, 1);
@@ -416,6 +460,7 @@ void register_Input_auto(lua_State *L) {
     add_func(L, "RunFrame", luasteam_Input_RunFrame);
     add_func(L, "BWaitForData", luasteam_Input_BWaitForData);
     add_func(L, "BNewDataAvailable", luasteam_Input_BNewDataAvailable);
+    add_func(L, "GetConnectedControllers", luasteam_Input_GetConnectedControllers);
     add_func(L, "EnableDeviceCallbacks", luasteam_Input_EnableDeviceCallbacks);
     add_func(L, "GetActionSetHandle", luasteam_Input_GetActionSetHandle);
     add_func(L, "ActivateActionSet", luasteam_Input_ActivateActionSet);
@@ -423,9 +468,12 @@ void register_Input_auto(lua_State *L) {
     add_func(L, "ActivateActionSetLayer", luasteam_Input_ActivateActionSetLayer);
     add_func(L, "DeactivateActionSetLayer", luasteam_Input_DeactivateActionSetLayer);
     add_func(L, "DeactivateAllActionSetLayers", luasteam_Input_DeactivateAllActionSetLayers);
+    add_func(L, "GetActiveActionSetLayers", luasteam_Input_GetActiveActionSetLayers);
     add_func(L, "GetDigitalActionHandle", luasteam_Input_GetDigitalActionHandle);
+    add_func(L, "GetDigitalActionOrigins", luasteam_Input_GetDigitalActionOrigins);
     add_func(L, "GetStringForDigitalActionName", luasteam_Input_GetStringForDigitalActionName);
     add_func(L, "GetAnalogActionHandle", luasteam_Input_GetAnalogActionHandle);
+    add_func(L, "GetAnalogActionOrigins", luasteam_Input_GetAnalogActionOrigins);
     add_func(L, "GetGlyphPNGForActionOrigin", luasteam_Input_GetGlyphPNGForActionOrigin);
     add_func(L, "GetGlyphSVGForActionOrigin", luasteam_Input_GetGlyphSVGForActionOrigin);
     add_func(L, "GetGlyphForActionOrigin_Legacy", luasteam_Input_GetGlyphForActionOrigin_Legacy);
@@ -446,12 +494,13 @@ void register_Input_auto(lua_State *L) {
     add_func(L, "GetGlyphForXboxOrigin", luasteam_Input_GetGlyphForXboxOrigin);
     add_func(L, "GetActionOriginFromXboxOrigin", luasteam_Input_GetActionOriginFromXboxOrigin);
     add_func(L, "TranslateActionOrigin", luasteam_Input_TranslateActionOrigin);
+    add_func(L, "GetDeviceBindingRevision", luasteam_Input_GetDeviceBindingRevision);
     add_func(L, "GetRemotePlaySessionID", luasteam_Input_GetRemotePlaySessionID);
     add_func(L, "GetSessionInputConfigurationSettings", luasteam_Input_GetSessionInputConfigurationSettings);
 }
 
 void add_Input_auto(lua_State *L) {
-    lua_createtable(L, 0, 38);
+    lua_createtable(L, 0, 43);
     register_Input_auto(L);
     lua_pushvalue(L, -1);
     Input_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -308,6 +308,14 @@ EXTERN int luasteam_UserStats_UpdateAvgRateStat(lua_State *L) {
     return 1;
 }
 
+// bool GetAchievement(const char * pchName, bool * pbAchieved);
+EXTERN int luasteam_UserStats_GetAchievement(lua_State *L) {
+    const char *pchName = luaL_checkstring(L, 1);
+    bool pbAchieved;    lua_pushboolean(L, SteamUserStats()->GetAchievement(pchName, &pbAchieved));
+    lua_pushboolean(L, pbAchieved);
+    return 2;
+}
+
 // bool SetAchievement(const char * pchName);
 EXTERN int luasteam_UserStats_SetAchievement(lua_State *L) {
     const char *pchName = luaL_checkstring(L, 1);
@@ -320,6 +328,15 @@ EXTERN int luasteam_UserStats_ClearAchievement(lua_State *L) {
     const char *pchName = luaL_checkstring(L, 1);
     lua_pushboolean(L, SteamUserStats()->ClearAchievement(pchName));
     return 1;
+}
+
+// bool GetAchievementAndUnlockTime(const char * pchName, bool * pbAchieved, uint32 * punUnlockTime);
+EXTERN int luasteam_UserStats_GetAchievementAndUnlockTime(lua_State *L) {
+    const char *pchName = luaL_checkstring(L, 1);
+    bool pbAchieved;    uint32 punUnlockTime;    lua_pushboolean(L, SteamUserStats()->GetAchievementAndUnlockTime(pchName, &pbAchieved, &punUnlockTime));
+    lua_pushboolean(L, pbAchieved);
+    lua_pushinteger(L, punUnlockTime);
+    return 3;
 }
 
 // bool StoreStats();
@@ -370,6 +387,25 @@ EXTERN int luasteam_UserStats_RequestUserStats(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
     luasteam::pushuint64(L, SteamUserStats()->RequestUserStats(steamIDUser));
     return 1;
+}
+
+// bool GetUserAchievement(CSteamID steamIDUser, const char * pchName, bool * pbAchieved);
+EXTERN int luasteam_UserStats_GetUserAchievement(lua_State *L) {
+    CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+    const char *pchName = luaL_checkstring(L, 2);
+    bool pbAchieved;    lua_pushboolean(L, SteamUserStats()->GetUserAchievement(steamIDUser, pchName, &pbAchieved));
+    lua_pushboolean(L, pbAchieved);
+    return 2;
+}
+
+// bool GetUserAchievementAndUnlockTime(CSteamID steamIDUser, const char * pchName, bool * pbAchieved, uint32 * punUnlockTime);
+EXTERN int luasteam_UserStats_GetUserAchievementAndUnlockTime(lua_State *L) {
+    CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+    const char *pchName = luaL_checkstring(L, 2);
+    bool pbAchieved;    uint32 punUnlockTime;    lua_pushboolean(L, SteamUserStats()->GetUserAchievementAndUnlockTime(steamIDUser, pchName, &pbAchieved, &punUnlockTime));
+    lua_pushboolean(L, pbAchieved);
+    lua_pushinteger(L, punUnlockTime);
+    return 3;
 }
 
 // bool ResetAllStats(bool bAchievementsToo);
@@ -453,6 +489,14 @@ EXTERN int luasteam_UserStats_RequestGlobalAchievementPercentages(lua_State *L) 
     return 1;
 }
 
+// bool GetAchievementAchievedPercent(const char * pchName, float * pflPercent);
+EXTERN int luasteam_UserStats_GetAchievementAchievedPercent(lua_State *L) {
+    const char *pchName = luaL_checkstring(L, 1);
+    float pflPercent;    lua_pushboolean(L, SteamUserStats()->GetAchievementAchievedPercent(pchName, &pflPercent));
+    lua_pushnumber(L, pflPercent);
+    return 2;
+}
+
 // SteamAPICall_t RequestGlobalStats(int nHistoryDays);
 EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
     int nHistoryDays = static_cast<int>(luaL_checkint(L, 1));
@@ -462,8 +506,10 @@ EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
 
 void register_UserStats_auto(lua_State *L) {
     add_func(L, "UpdateAvgRateStat", luasteam_UserStats_UpdateAvgRateStat);
+    add_func(L, "GetAchievement", luasteam_UserStats_GetAchievement);
     add_func(L, "SetAchievement", luasteam_UserStats_SetAchievement);
     add_func(L, "ClearAchievement", luasteam_UserStats_ClearAchievement);
+    add_func(L, "GetAchievementAndUnlockTime", luasteam_UserStats_GetAchievementAndUnlockTime);
     add_func(L, "StoreStats", luasteam_UserStats_StoreStats);
     add_func(L, "GetAchievementIcon", luasteam_UserStats_GetAchievementIcon);
     add_func(L, "GetAchievementDisplayAttribute", luasteam_UserStats_GetAchievementDisplayAttribute);
@@ -471,6 +517,8 @@ void register_UserStats_auto(lua_State *L) {
     add_func(L, "GetNumAchievements", luasteam_UserStats_GetNumAchievements);
     add_func(L, "GetAchievementName", luasteam_UserStats_GetAchievementName);
     add_func(L, "RequestUserStats", luasteam_UserStats_RequestUserStats);
+    add_func(L, "GetUserAchievement", luasteam_UserStats_GetUserAchievement);
+    add_func(L, "GetUserAchievementAndUnlockTime", luasteam_UserStats_GetUserAchievementAndUnlockTime);
     add_func(L, "ResetAllStats", luasteam_UserStats_ResetAllStats);
     add_func(L, "FindOrCreateLeaderboard", luasteam_UserStats_FindOrCreateLeaderboard);
     add_func(L, "FindLeaderboard", luasteam_UserStats_FindLeaderboard);
@@ -482,11 +530,12 @@ void register_UserStats_auto(lua_State *L) {
     add_func(L, "AttachLeaderboardUGC", luasteam_UserStats_AttachLeaderboardUGC);
     add_func(L, "GetNumberOfCurrentPlayers", luasteam_UserStats_GetNumberOfCurrentPlayers);
     add_func(L, "RequestGlobalAchievementPercentages", luasteam_UserStats_RequestGlobalAchievementPercentages);
+    add_func(L, "GetAchievementAchievedPercent", luasteam_UserStats_GetAchievementAchievedPercent);
     add_func(L, "RequestGlobalStats", luasteam_UserStats_RequestGlobalStats);
 }
 
 void add_UserStats_auto(lua_State *L) {
-    lua_createtable(L, 0, 22);
+    lua_createtable(L, 0, 27);
     register_UserStats_auto(L);
     lua_pushvalue(L, -1);
     UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);

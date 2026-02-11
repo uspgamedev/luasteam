@@ -107,6 +107,13 @@ EXTERN int luasteam_Video_GetVideoURL(lua_State *L) {
     return 0;
 }
 
+// bool IsBroadcasting(int * pnNumViewers);
+EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
+    int pnNumViewers;    lua_pushboolean(L, SteamVideo()->IsBroadcasting(&pnNumViewers));
+    lua_pushinteger(L, pnNumViewers);
+    return 2;
+}
+
 // void GetOPFSettings(AppId_t unVideoAppID);
 EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
     AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -116,11 +123,12 @@ EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
 
 void register_Video_auto(lua_State *L) {
     add_func(L, "GetVideoURL", luasteam_Video_GetVideoURL);
+    add_func(L, "IsBroadcasting", luasteam_Video_IsBroadcasting);
     add_func(L, "GetOPFSettings", luasteam_Video_GetOPFSettings);
 }
 
 void add_Video_auto(lua_State *L) {
-    lua_createtable(L, 0, 2);
+    lua_createtable(L, 0, 3);
     register_Video_auto(L);
     lua_pushvalue(L, -1);
     Video_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -70,6 +70,15 @@ EXTERN int luasteam_GameServerStats_RequestUserStats(lua_State *L) {
     return 1;
 }
 
+// bool GetUserAchievement(CSteamID steamIDUser, const char * pchName, bool * pbAchieved);
+EXTERN int luasteam_GameServerStats_GetUserAchievement(lua_State *L) {
+    CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+    const char *pchName = luaL_checkstring(L, 2);
+    bool pbAchieved;    lua_pushboolean(L, SteamGameServerStats()->GetUserAchievement(steamIDUser, pchName, &pbAchieved));
+    lua_pushboolean(L, pbAchieved);
+    return 2;
+}
+
 // bool UpdateUserAvgRateStat(CSteamID steamIDUser, const char * pchName, float flCountThisSession, double dSessionLength);
 EXTERN int luasteam_GameServerStats_UpdateUserAvgRateStat(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
@@ -105,6 +114,7 @@ EXTERN int luasteam_GameServerStats_StoreUserStats(lua_State *L) {
 
 void register_GameServerStats_auto(lua_State *L) {
     add_func(L, "RequestUserStats", luasteam_GameServerStats_RequestUserStats);
+    add_func(L, "GetUserAchievement", luasteam_GameServerStats_GetUserAchievement);
     add_func(L, "UpdateUserAvgRateStat", luasteam_GameServerStats_UpdateUserAvgRateStat);
     add_func(L, "SetUserAchievement", luasteam_GameServerStats_SetUserAchievement);
     add_func(L, "ClearUserAchievement", luasteam_GameServerStats_ClearUserAchievement);
@@ -112,7 +122,7 @@ void register_GameServerStats_auto(lua_State *L) {
 }
 
 void add_GameServerStats_auto(lua_State *L) {
-    lua_createtable(L, 0, 5);
+    lua_createtable(L, 0, 6);
     register_GameServerStats_auto(L);
     lua_pushvalue(L, -1);
     GameServerStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -596,6 +596,16 @@ EXTERN int luasteam_Friends_GetClanTag(lua_State *L) {
     return 1;
 }
 
+// bool GetClanActivityCounts(CSteamID steamIDClan, int * pnOnline, int * pnInGame, int * pnChatting);
+EXTERN int luasteam_Friends_GetClanActivityCounts(lua_State *L) {
+    CSteamID steamIDClan(luasteam::checkuint64(L, 1));
+    int pnOnline;    int pnInGame;    int pnChatting;    lua_pushboolean(L, SteamFriends()->GetClanActivityCounts(steamIDClan, &pnOnline, &pnInGame, &pnChatting));
+    lua_pushinteger(L, pnOnline);
+    lua_pushinteger(L, pnInGame);
+    lua_pushinteger(L, pnChatting);
+    return 4;
+}
+
 // int GetFriendCountFromSource(CSteamID steamIDSource);
 EXTERN int luasteam_Friends_GetFriendCountFromSource(lua_State *L) {
     CSteamID steamIDSource(luasteam::checkuint64(L, 1));
@@ -1005,6 +1015,7 @@ void register_Friends_auto(lua_State *L) {
     add_func(L, "GetClanByIndex", luasteam_Friends_GetClanByIndex);
     add_func(L, "GetClanName", luasteam_Friends_GetClanName);
     add_func(L, "GetClanTag", luasteam_Friends_GetClanTag);
+    add_func(L, "GetClanActivityCounts", luasteam_Friends_GetClanActivityCounts);
     add_func(L, "GetFriendCountFromSource", luasteam_Friends_GetFriendCountFromSource);
     add_func(L, "GetFriendFromSourceByIndex", luasteam_Friends_GetFriendFromSourceByIndex);
     add_func(L, "IsUserInSource", luasteam_Friends_IsUserInSource);
@@ -1061,7 +1072,7 @@ void register_Friends_auto(lua_State *L) {
 }
 
 void add_Friends_auto(lua_State *L) {
-    lua_createtable(L, 0, 72);
+    lua_createtable(L, 0, 73);
     register_Friends_auto(L);
     lua_pushvalue(L, -1);
     Friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);

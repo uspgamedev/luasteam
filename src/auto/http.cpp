@@ -135,6 +135,22 @@ EXTERN int luasteam_HTTP_SetHTTPRequestGetOrPostParameter(lua_State *L) {
     return 1;
 }
 
+// bool SendHTTPRequest(HTTPRequestHandle hRequest, SteamAPICall_t * pCallHandle);
+EXTERN int luasteam_HTTP_SendHTTPRequest(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    SteamAPICall_t pCallHandle;    lua_pushboolean(L, SteamHTTP()->SendHTTPRequest(hRequest, &pCallHandle));
+    luasteam::pushuint64(L, pCallHandle);
+    return 2;
+}
+
+// bool SendHTTPRequestAndStreamResponse(HTTPRequestHandle hRequest, SteamAPICall_t * pCallHandle);
+EXTERN int luasteam_HTTP_SendHTTPRequestAndStreamResponse(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    SteamAPICall_t pCallHandle;    lua_pushboolean(L, SteamHTTP()->SendHTTPRequestAndStreamResponse(hRequest, &pCallHandle));
+    luasteam::pushuint64(L, pCallHandle);
+    return 2;
+}
+
 // bool DeferHTTPRequest(HTTPRequestHandle hRequest);
 EXTERN int luasteam_HTTP_DeferHTTPRequest(lua_State *L) {
     HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
@@ -149,11 +165,36 @@ EXTERN int luasteam_HTTP_PrioritizeHTTPRequest(lua_State *L) {
     return 1;
 }
 
+// bool GetHTTPResponseHeaderSize(HTTPRequestHandle hRequest, const char * pchHeaderName, uint32 * unResponseHeaderSize);
+EXTERN int luasteam_HTTP_GetHTTPResponseHeaderSize(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    const char *pchHeaderName = luaL_checkstring(L, 2);
+    uint32 unResponseHeaderSize;    lua_pushboolean(L, SteamHTTP()->GetHTTPResponseHeaderSize(hRequest, pchHeaderName, &unResponseHeaderSize));
+    lua_pushinteger(L, unResponseHeaderSize);
+    return 2;
+}
+
+// bool GetHTTPResponseBodySize(HTTPRequestHandle hRequest, uint32 * unBodySize);
+EXTERN int luasteam_HTTP_GetHTTPResponseBodySize(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    uint32 unBodySize;    lua_pushboolean(L, SteamHTTP()->GetHTTPResponseBodySize(hRequest, &unBodySize));
+    lua_pushinteger(L, unBodySize);
+    return 2;
+}
+
 // bool ReleaseHTTPRequest(HTTPRequestHandle hRequest);
 EXTERN int luasteam_HTTP_ReleaseHTTPRequest(lua_State *L) {
     HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamHTTP()->ReleaseHTTPRequest(hRequest));
     return 1;
+}
+
+// bool GetHTTPDownloadProgressPct(HTTPRequestHandle hRequest, float * pflPercentOut);
+EXTERN int luasteam_HTTP_GetHTTPDownloadProgressPct(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    float pflPercentOut;    lua_pushboolean(L, SteamHTTP()->GetHTTPDownloadProgressPct(hRequest, &pflPercentOut));
+    lua_pushnumber(L, pflPercentOut);
+    return 2;
 }
 
 // HTTPCookieContainerHandle CreateCookieContainer(bool bAllowResponsesToModify);
@@ -212,15 +253,28 @@ EXTERN int luasteam_HTTP_SetHTTPRequestAbsoluteTimeoutMS(lua_State *L) {
     return 1;
 }
 
+// bool GetHTTPRequestWasTimedOut(HTTPRequestHandle hRequest, bool * pbWasTimedOut);
+EXTERN int luasteam_HTTP_GetHTTPRequestWasTimedOut(lua_State *L) {
+    HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
+    bool pbWasTimedOut;    lua_pushboolean(L, SteamHTTP()->GetHTTPRequestWasTimedOut(hRequest, &pbWasTimedOut));
+    lua_pushboolean(L, pbWasTimedOut);
+    return 2;
+}
+
 void register_HTTP_auto(lua_State *L) {
     add_func(L, "CreateHTTPRequest", luasteam_HTTP_CreateHTTPRequest);
     add_func(L, "SetHTTPRequestContextValue", luasteam_HTTP_SetHTTPRequestContextValue);
     add_func(L, "SetHTTPRequestNetworkActivityTimeout", luasteam_HTTP_SetHTTPRequestNetworkActivityTimeout);
     add_func(L, "SetHTTPRequestHeaderValue", luasteam_HTTP_SetHTTPRequestHeaderValue);
     add_func(L, "SetHTTPRequestGetOrPostParameter", luasteam_HTTP_SetHTTPRequestGetOrPostParameter);
+    add_func(L, "SendHTTPRequest", luasteam_HTTP_SendHTTPRequest);
+    add_func(L, "SendHTTPRequestAndStreamResponse", luasteam_HTTP_SendHTTPRequestAndStreamResponse);
     add_func(L, "DeferHTTPRequest", luasteam_HTTP_DeferHTTPRequest);
     add_func(L, "PrioritizeHTTPRequest", luasteam_HTTP_PrioritizeHTTPRequest);
+    add_func(L, "GetHTTPResponseHeaderSize", luasteam_HTTP_GetHTTPResponseHeaderSize);
+    add_func(L, "GetHTTPResponseBodySize", luasteam_HTTP_GetHTTPResponseBodySize);
     add_func(L, "ReleaseHTTPRequest", luasteam_HTTP_ReleaseHTTPRequest);
+    add_func(L, "GetHTTPDownloadProgressPct", luasteam_HTTP_GetHTTPDownloadProgressPct);
     add_func(L, "CreateCookieContainer", luasteam_HTTP_CreateCookieContainer);
     add_func(L, "ReleaseCookieContainer", luasteam_HTTP_ReleaseCookieContainer);
     add_func(L, "SetCookie", luasteam_HTTP_SetCookie);
@@ -228,10 +282,11 @@ void register_HTTP_auto(lua_State *L) {
     add_func(L, "SetHTTPRequestUserAgentInfo", luasteam_HTTP_SetHTTPRequestUserAgentInfo);
     add_func(L, "SetHTTPRequestRequiresVerifiedCertificate", luasteam_HTTP_SetHTTPRequestRequiresVerifiedCertificate);
     add_func(L, "SetHTTPRequestAbsoluteTimeoutMS", luasteam_HTTP_SetHTTPRequestAbsoluteTimeoutMS);
+    add_func(L, "GetHTTPRequestWasTimedOut", luasteam_HTTP_GetHTTPRequestWasTimedOut);
 }
 
 void add_HTTP_auto(lua_State *L) {
-    lua_createtable(L, 0, 15);
+    lua_createtable(L, 0, 21);
     register_HTTP_auto(L);
     lua_pushvalue(L, -1);
     HTTP_ref = luaL_ref(L, LUA_REGISTRYINDEX);

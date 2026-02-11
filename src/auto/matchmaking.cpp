@@ -277,6 +277,19 @@ EXTERN int luasteam_Matchmaking_GetFavoriteGameCount(lua_State *L) {
     return 1;
 }
 
+// bool GetFavoriteGame(int iGame, AppId_t * pnAppID, uint32 * pnIP, uint16 * pnConnPort, uint16 * pnQueryPort, uint32 * punFlags, uint32 * pRTime32LastPlayedOnServer);
+EXTERN int luasteam_Matchmaking_GetFavoriteGame(lua_State *L) {
+    int iGame = static_cast<int>(luaL_checkint(L, 1));
+    AppId_t pnAppID;    uint32 pnIP;    uint16 pnConnPort;    uint16 pnQueryPort;    uint32 punFlags;    uint32 pRTime32LastPlayedOnServer;    lua_pushboolean(L, SteamMatchmaking()->GetFavoriteGame(iGame, &pnAppID, &pnIP, &pnConnPort, &pnQueryPort, &punFlags, &pRTime32LastPlayedOnServer));
+    lua_pushinteger(L, pnAppID);
+    lua_pushinteger(L, pnIP);
+    lua_pushinteger(L, pnConnPort);
+    lua_pushinteger(L, pnQueryPort);
+    lua_pushinteger(L, punFlags);
+    lua_pushinteger(L, pRTime32LastPlayedOnServer);
+    return 7;
+}
+
 // int AddFavoriteGame(AppId_t nAppID, uint32 nIP, uint16 nConnPort, uint16 nQueryPort, uint32 unFlags, uint32 rTime32LastPlayedOnServer);
 EXTERN int luasteam_Matchmaking_AddFavoriteGame(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -479,6 +492,16 @@ EXTERN int luasteam_Matchmaking_SetLobbyGameServer(lua_State *L) {
     return 0;
 }
 
+// bool GetLobbyGameServer(CSteamID steamIDLobby, uint32 * punGameServerIP, uint16 * punGameServerPort, CSteamID * psteamIDGameServer);
+EXTERN int luasteam_Matchmaking_GetLobbyGameServer(lua_State *L) {
+    CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
+    uint32 punGameServerIP;    uint16 punGameServerPort;    CSteamID psteamIDGameServer;    lua_pushboolean(L, SteamMatchmaking()->GetLobbyGameServer(steamIDLobby, &punGameServerIP, &punGameServerPort, &psteamIDGameServer));
+    lua_pushinteger(L, punGameServerIP);
+    lua_pushinteger(L, punGameServerPort);
+    luasteam::pushuint64(L, psteamIDGameServer.ConvertToUint64());
+    return 4;
+}
+
 // bool SetLobbyMemberLimit(CSteamID steamIDLobby, int cMaxMembers);
 EXTERN int luasteam_Matchmaking_SetLobbyMemberLimit(lua_State *L) {
     CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
@@ -535,6 +558,7 @@ EXTERN int luasteam_Matchmaking_SetLinkedLobby(lua_State *L) {
 
 void register_Matchmaking_auto(lua_State *L) {
     add_func(L, "GetFavoriteGameCount", luasteam_Matchmaking_GetFavoriteGameCount);
+    add_func(L, "GetFavoriteGame", luasteam_Matchmaking_GetFavoriteGame);
     add_func(L, "AddFavoriteGame", luasteam_Matchmaking_AddFavoriteGame);
     add_func(L, "RemoveFavoriteGame", luasteam_Matchmaking_RemoveFavoriteGame);
     add_func(L, "RequestLobbyList", luasteam_Matchmaking_RequestLobbyList);
@@ -560,6 +584,7 @@ void register_Matchmaking_auto(lua_State *L) {
     add_func(L, "SetLobbyMemberData", luasteam_Matchmaking_SetLobbyMemberData);
     add_func(L, "RequestLobbyData", luasteam_Matchmaking_RequestLobbyData);
     add_func(L, "SetLobbyGameServer", luasteam_Matchmaking_SetLobbyGameServer);
+    add_func(L, "GetLobbyGameServer", luasteam_Matchmaking_GetLobbyGameServer);
     add_func(L, "SetLobbyMemberLimit", luasteam_Matchmaking_SetLobbyMemberLimit);
     add_func(L, "GetLobbyMemberLimit", luasteam_Matchmaking_GetLobbyMemberLimit);
     add_func(L, "SetLobbyType", luasteam_Matchmaking_SetLobbyType);
@@ -570,7 +595,7 @@ void register_Matchmaking_auto(lua_State *L) {
 }
 
 void add_Matchmaking_auto(lua_State *L) {
-    lua_createtable(L, 0, 33);
+    lua_createtable(L, 0, 35);
     register_Matchmaking_auto(L);
     lua_pushvalue(L, -1);
     Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

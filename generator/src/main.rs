@@ -251,27 +251,35 @@ impl Generator {
         );
         blocklist.insert("ISteamNetworkingFakeUDPPort", "Internal/specialized.");
 
-        let mut method_blocklist = HashMap::new();
+        let mut method_blocklist = HashSet::new();
+        // These are added because they have many overloads
         // TODO: Add a custom one for these
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyString", "Overloading");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool", "Overloading");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64", "Overloading");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat", "Overloading");
-        // TODO: Add a custom one for these too
-        method_blocklist.insert(
-            "SteamAPI_ISteamGameServerStats_SetUserStatInt32",
-            "Overloading",
-        );
-        method_blocklist.insert(
-            "SteamAPI_ISteamGameServerStats_SetUserStatFloat",
-            "Overloading",
-        );
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatInt32", "Overloading");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatFloat", "Overloading");
-        method_blocklist.insert(
-            "SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor",
-            "Cursor method is not used",
-        );
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyString");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatInt64");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatDouble");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatInt32");
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatFloat");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32");
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat");
+        // Cursor method is not used
+        method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor");
 
         for interface in &self.api.interfaces {
             if blocklist.contains_key(interface.classname.as_str()) {
@@ -494,7 +502,7 @@ impl Generator {
     fn generate_interface(
         &self,
         interface: &Interface,
-        method_blocklist: &HashMap<&str, &str>,
+        method_blocklist: &HashSet<&str>,
         stats: &mut Stats,
     ) -> Option<String> {
         let mut cpp = String::new();
@@ -523,7 +531,7 @@ impl Generator {
             if let Some((lua_method_name, generated)) =
                 self.generate_method(&name, method, stats, accessor_name)
             {
-                if method_blocklist.contains_key(method.methodname_flat.as_str()) {
+                if method_blocklist.contains(method.methodname_flat.as_str()) {
                     continue;
                 }
                 cpp.push_str(&generated);
@@ -568,6 +576,16 @@ impl Generator {
         Some(name.to_owned())
     }
 
+    /// Check if a paramtype is a non-const pointer (e.g., "int *", "uint32 *")
+    fn is_non_const_pointer(paramtype: &str) -> bool {
+        paramtype.ends_with(" *") && !paramtype.contains("const")
+    }
+
+    /// Extract the base type from a pointer type, e.g. "int *" -> "int"
+    fn extract_pointer_base_type(paramtype: &str) -> String {
+        paramtype.trim_end_matches(" *").to_string()
+    }
+
     fn generate_method(
         &self,
         interface: &str,
@@ -596,90 +614,110 @@ impl Generator {
             lua_method_name
         ));
 
-        let mut arg_names = Vec::new();
-        for (
-            i,
-            Param {
-                paramtype,
-                paramname,
-            },
-        ) in method
+        // Process all params in original order, maintaining parameter positions
+        let non_deprecated_params = method
             .params
             .iter()
-            .filter(|p| !p.paramname.ends_with("_Deprecated"))
-            .enumerate()
-        {
-            let lua_idx = i + 1;
-            let resolved = self.resolve_type(paramtype);
+            .filter(|p| !p.paramname.ends_with("_Deprecated"));
 
-            match resolved {
-                "char" => {
-                    s.push_str(&format!(
-                        "    char {} = luaL_checkstring(L, {})[0];\n",
-                        paramname, lua_idx
-                    ));
-                }
-                "double" => {
-                    s.push_str(&format!(
-                        "    {} {} = luaL_checknumber(L, {});\n",
-                        paramtype, paramname, lua_idx
-                    ));
-                }
-                "int" => {
-                    s.push_str(&format!(
-                        "    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n",
-                        paramtype, paramname, paramtype, lua_idx
-                    ));
-                }
-                "bool" => {
-                    s.push_str(&format!(
-                        "    bool {} = lua_toboolean(L, {});\n",
-                        paramname, lua_idx
-                    ));
-                }
-                "const char *" => {
-                    s.push_str(&format!(
-                        "    const char *{} = luaL_checkstring(L, {});\n",
-                        paramname, lua_idx
-                    ));
-                }
-                "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
-                    let param_type = paramtype
-                        .replace("const ", "")
-                        .replace(" &", "")
-                        .replace("class ", "");
-                    if param_type == "CSteamID" || param_type == "CGameID" {
+        let mut on_pointers = false;
+        let mut param_names = Vec::new();
+        let mut pointer_params = Vec::new();
+
+        for (i, param) in non_deprecated_params.enumerate() {
+            let lua_idx = i + 1;
+            let is_pointer = Self::is_non_const_pointer(&param.paramtype);
+            if !is_pointer && on_pointers {
+                // Pointers must be always at the end.
+                // Arrays with size are still unsupported.
+                println!(
+                    "Unsupported parameter order: non-pointer param '{}' comes after pointer params",
+                    param.paramname
+                );
+                return None;
+            }
+            on_pointers |= is_pointer;
+            if !on_pointers {
+                let resolved = self.resolve_type(&param.paramtype);
+                param_names.push(param.paramname.clone());
+
+                match resolved {
+                    "char" => {
                         s.push_str(&format!(
-                            "    {} {}(luasteam::checkuint64(L, {}));\n",
-                            param_type, paramname, lua_idx
-                        ));
-                    } else {
-                        s.push_str(&format!(
-                            "    {} {} = luasteam::checkuint64(L, {});\n",
-                            paramtype, paramname, lua_idx
+                            "    char {} = luaL_checkstring(L, {})[0];\n",
+                            param.paramname, lua_idx
                         ));
                     }
+                    "double" => {
+                        s.push_str(&format!(
+                            "    {} {} = luaL_checknumber(L, {});\n",
+                            param.paramtype, param.paramname, lua_idx
+                        ));
+                    }
+                    "int" => {
+                        s.push_str(&format!(
+                            "    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n",
+                            param.paramtype, param.paramname, param.paramtype, lua_idx
+                        ));
+                    }
+                    "bool" => {
+                        s.push_str(&format!(
+                            "    bool {} = lua_toboolean(L, {});\n",
+                            param.paramname, lua_idx
+                        ));
+                    }
+                    "const char *" => {
+                        s.push_str(&format!(
+                            "    const char *{} = luaL_checkstring(L, {});\n",
+                            param.paramname, lua_idx
+                        ));
+                    }
+                    "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
+                        let param_type = param
+                            .paramtype
+                            .replace("const ", "")
+                            .replace(" &", "")
+                            .replace("class ", "");
+                        if param_type == "CSteamID" || param_type == "CGameID" {
+                            s.push_str(&format!(
+                                "    {} {}(luasteam::checkuint64(L, {}));\n",
+                                param_type, param.paramname, lua_idx
+                            ));
+                        } else {
+                            s.push_str(&format!(
+                                "    {} {} = luasteam::checkuint64(L, {});\n",
+                                param.paramtype, param.paramname, lua_idx
+                            ));
+                        }
+                    }
+                    _ => {
+                        // Skip methods with unknown types for now
+                        println!("Unsupported param type: {}", param.paramtype);
+                        stats.unsupported_types.insert(param.paramtype.clone());
+                        return None;
+                    }
                 }
-                _ => {
-                    // Skip methods with unknown types for now
-                    println!("Unsupported param type: {}", paramtype);
-                    stats.unsupported_types.insert(paramtype.clone());
-                    return None;
-                }
+            } else {
+                let base_type = Self::extract_pointer_base_type(&param.paramtype);
+                // Create a default variable with that name and type
+                s.push_str(&format!("    {} {};", base_type, param.paramname));
+                param_names.push(format!("&{}", param.paramname));
+                pointer_params.push(param);
             }
-            arg_names.push(paramname.clone());
         }
 
         let call = format!(
             "{}->{}({})",
             interface_getter,
             method.methodname,
-            arg_names.join(", ")
+            param_names.join(", ")
         );
+
+        // Calculate return count
+        let mut return_count = 0;
 
         if method.returntype == "void" {
             s.push_str(&format!("    {};\n", call));
-            s.push_str("    return 0;\n");
         } else {
             let (ok, push) = self.generate_push(&method.returntype, &call);
             if !ok {
@@ -688,9 +726,23 @@ impl Generator {
                 return None;
             }
             s.push_str(&format!("    {}\n", push));
-            s.push_str("    return 1;\n");
+            return_count = 1;
         }
 
+        // Push pointer output values onto stack
+        for param in pointer_params {
+            let base_type = Self::extract_pointer_base_type(&param.paramtype);
+            let (ok, push) = self.generate_push(base_type.as_str(), &param.paramname);
+            if !ok {
+                println!("Unsupported pointer base type in push: {}", base_type);
+                stats.unsupported_types.insert(base_type.clone());
+                return None;
+            }
+            s.push_str(&format!("    {}\n", push));
+            return_count += 1;
+        }
+
+        s.push_str(&format!("    return {};\n", return_count));
         s.push_str("}\n");
         Some((lua_method_name, s))
     }

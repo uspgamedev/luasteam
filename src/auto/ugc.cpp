@@ -483,6 +483,16 @@ EXTERN int luasteam_UGC_GetQueryUGCNumTags(lua_State *L) {
     return 1;
 }
 
+// bool GetQueryUGCStatistic(UGCQueryHandle_t handle, uint32 index, EItemStatistic eStatType, uint64 * pStatValue);
+EXTERN int luasteam_UGC_GetQueryUGCStatistic(lua_State *L) {
+    UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
+    EItemStatistic eStatType = static_cast<EItemStatistic>(luaL_checkint(L, 3));
+    uint64 pStatValue;    lua_pushboolean(L, SteamUGC()->GetQueryUGCStatistic(handle, index, eStatType, &pStatValue));
+    luasteam::pushuint64(L, pStatValue);
+    return 2;
+}
+
 // uint32 GetQueryUGCNumAdditionalPreviews(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_UGC_GetQueryUGCNumAdditionalPreviews(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
@@ -865,6 +875,15 @@ EXTERN int luasteam_UGC_SubmitItemUpdate(lua_State *L) {
     return 1;
 }
 
+// EItemUpdateStatus GetItemUpdateProgress(UGCUpdateHandle_t handle, uint64 * punBytesProcessed, uint64 * punBytesTotal);
+EXTERN int luasteam_UGC_GetItemUpdateProgress(lua_State *L) {
+    UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+    uint64 punBytesProcessed;    uint64 punBytesTotal;    lua_pushinteger(L, SteamUGC()->GetItemUpdateProgress(handle, &punBytesProcessed, &punBytesTotal));
+    luasteam::pushuint64(L, punBytesProcessed);
+    luasteam::pushuint64(L, punBytesTotal);
+    return 3;
+}
+
 // SteamAPICall_t SetUserItemVote(PublishedFileId_t nPublishedFileID, bool bVoteUp);
 EXTERN int luasteam_UGC_SetUserItemVote(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
@@ -922,6 +941,15 @@ EXTERN int luasteam_UGC_GetItemState(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
     lua_pushinteger(L, SteamUGC()->GetItemState(nPublishedFileID));
     return 1;
+}
+
+// bool GetItemDownloadInfo(PublishedFileId_t nPublishedFileID, uint64 * punBytesDownloaded, uint64 * punBytesTotal);
+EXTERN int luasteam_UGC_GetItemDownloadInfo(lua_State *L) {
+    PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
+    uint64 punBytesDownloaded;    uint64 punBytesTotal;    lua_pushboolean(L, SteamUGC()->GetItemDownloadInfo(nPublishedFileID, &punBytesDownloaded, &punBytesTotal));
+    luasteam::pushuint64(L, punBytesDownloaded);
+    luasteam::pushuint64(L, punBytesTotal);
+    return 3;
 }
 
 // bool DownloadItem(PublishedFileId_t nPublishedFileID, bool bHighPriority);
@@ -1016,6 +1044,7 @@ void register_UGC_auto(lua_State *L) {
     add_func(L, "CreateQueryAllUGCRequest", luasteam_UGC_CreateQueryAllUGCRequest);
     add_func(L, "SendQueryUGCRequest", luasteam_UGC_SendQueryUGCRequest);
     add_func(L, "GetQueryUGCNumTags", luasteam_UGC_GetQueryUGCNumTags);
+    add_func(L, "GetQueryUGCStatistic", luasteam_UGC_GetQueryUGCStatistic);
     add_func(L, "GetQueryUGCNumAdditionalPreviews", luasteam_UGC_GetQueryUGCNumAdditionalPreviews);
     add_func(L, "GetQueryUGCNumKeyValueTags", luasteam_UGC_GetQueryUGCNumKeyValueTags);
     add_func(L, "GetNumSupportedGameVersions", luasteam_UGC_GetNumSupportedGameVersions);
@@ -1063,6 +1092,7 @@ void register_UGC_auto(lua_State *L) {
     add_func(L, "RemoveContentDescriptor", luasteam_UGC_RemoveContentDescriptor);
     add_func(L, "SetRequiredGameVersions", luasteam_UGC_SetRequiredGameVersions);
     add_func(L, "SubmitItemUpdate", luasteam_UGC_SubmitItemUpdate);
+    add_func(L, "GetItemUpdateProgress", luasteam_UGC_GetItemUpdateProgress);
     add_func(L, "SetUserItemVote", luasteam_UGC_SetUserItemVote);
     add_func(L, "GetUserItemVote", luasteam_UGC_GetUserItemVote);
     add_func(L, "AddItemToFavorites", luasteam_UGC_AddItemToFavorites);
@@ -1071,6 +1101,7 @@ void register_UGC_auto(lua_State *L) {
     add_func(L, "UnsubscribeItem", luasteam_UGC_UnsubscribeItem);
     add_func(L, "GetNumSubscribedItems", luasteam_UGC_GetNumSubscribedItems);
     add_func(L, "GetItemState", luasteam_UGC_GetItemState);
+    add_func(L, "GetItemDownloadInfo", luasteam_UGC_GetItemDownloadInfo);
     add_func(L, "DownloadItem", luasteam_UGC_DownloadItem);
     add_func(L, "BInitWorkshopForGameServer", luasteam_UGC_BInitWorkshopForGameServer);
     add_func(L, "SuspendDownloads", luasteam_UGC_SuspendDownloads);
@@ -1086,7 +1117,7 @@ void register_UGC_auto(lua_State *L) {
 }
 
 void add_UGC_auto(lua_State *L) {
-    lua_createtable(L, 0, 71);
+    lua_createtable(L, 0, 74);
     register_UGC_auto(L);
     lua_pushvalue(L, -1);
     UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -704,6 +704,22 @@ EXTERN int luasteam_RemoteStorage_GetFileCount(lua_State *L) {
     return 1;
 }
 
+// const char * GetFileNameAndSize(int iFile, int32 * pnFileSizeInBytes);
+EXTERN int luasteam_RemoteStorage_GetFileNameAndSize(lua_State *L) {
+    int iFile = static_cast<int>(luaL_checkint(L, 1));
+    int32 pnFileSizeInBytes;    lua_pushstring(L, SteamRemoteStorage()->GetFileNameAndSize(iFile, &pnFileSizeInBytes));
+    lua_pushinteger(L, pnFileSizeInBytes);
+    return 2;
+}
+
+// bool GetQuota(uint64 * pnTotalBytes, uint64 * puAvailableBytes);
+EXTERN int luasteam_RemoteStorage_GetQuota(lua_State *L) {
+    uint64 pnTotalBytes;    uint64 puAvailableBytes;    lua_pushboolean(L, SteamRemoteStorage()->GetQuota(&pnTotalBytes, &puAvailableBytes));
+    luasteam::pushuint64(L, pnTotalBytes);
+    luasteam::pushuint64(L, puAvailableBytes);
+    return 3;
+}
+
 // bool IsCloudEnabledForAccount();
 EXTERN int luasteam_RemoteStorage_IsCloudEnabledForAccount(lua_State *L) {
     lua_pushboolean(L, SteamRemoteStorage()->IsCloudEnabledForAccount());
@@ -729,6 +745,15 @@ EXTERN int luasteam_RemoteStorage_UGCDownload(lua_State *L) {
     uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamRemoteStorage()->UGCDownload(hContent, unPriority));
     return 1;
+}
+
+// bool GetUGCDownloadProgress(UGCHandle_t hContent, int32 * pnBytesDownloaded, int32 * pnBytesExpected);
+EXTERN int luasteam_RemoteStorage_GetUGCDownloadProgress(lua_State *L) {
+    UGCHandle_t hContent = luasteam::checkuint64(L, 1);
+    int32 pnBytesDownloaded;    int32 pnBytesExpected;    lua_pushboolean(L, SteamRemoteStorage()->GetUGCDownloadProgress(hContent, &pnBytesDownloaded, &pnBytesExpected));
+    lua_pushinteger(L, pnBytesDownloaded);
+    lua_pushinteger(L, pnBytesExpected);
+    return 3;
 }
 
 // int32 GetCachedUGCCount();
@@ -902,6 +927,15 @@ EXTERN int luasteam_RemoteStorage_GetLocalFileChangeCount(lua_State *L) {
     return 1;
 }
 
+// const char * GetLocalFileChange(int iFile, ERemoteStorageLocalFileChange * pEChangeType, ERemoteStorageFilePathType * pEFilePathType);
+EXTERN int luasteam_RemoteStorage_GetLocalFileChange(lua_State *L) {
+    int iFile = static_cast<int>(luaL_checkint(L, 1));
+    ERemoteStorageLocalFileChange pEChangeType;    ERemoteStorageFilePathType pEFilePathType;    lua_pushstring(L, SteamRemoteStorage()->GetLocalFileChange(iFile, &pEChangeType, &pEFilePathType));
+    lua_pushinteger(L, pEChangeType);
+    lua_pushinteger(L, pEFilePathType);
+    return 3;
+}
+
 // bool BeginFileWriteBatch();
 EXTERN int luasteam_RemoteStorage_BeginFileWriteBatch(lua_State *L) {
     lua_pushboolean(L, SteamRemoteStorage()->BeginFileWriteBatch());
@@ -929,10 +963,13 @@ void register_RemoteStorage_auto(lua_State *L) {
     add_func(L, "GetFileTimestamp", luasteam_RemoteStorage_GetFileTimestamp);
     add_func(L, "GetSyncPlatforms", luasteam_RemoteStorage_GetSyncPlatforms);
     add_func(L, "GetFileCount", luasteam_RemoteStorage_GetFileCount);
+    add_func(L, "GetFileNameAndSize", luasteam_RemoteStorage_GetFileNameAndSize);
+    add_func(L, "GetQuota", luasteam_RemoteStorage_GetQuota);
     add_func(L, "IsCloudEnabledForAccount", luasteam_RemoteStorage_IsCloudEnabledForAccount);
     add_func(L, "IsCloudEnabledForApp", luasteam_RemoteStorage_IsCloudEnabledForApp);
     add_func(L, "SetCloudEnabledForApp", luasteam_RemoteStorage_SetCloudEnabledForApp);
     add_func(L, "UGCDownload", luasteam_RemoteStorage_UGCDownload);
+    add_func(L, "GetUGCDownloadProgress", luasteam_RemoteStorage_GetUGCDownloadProgress);
     add_func(L, "GetCachedUGCCount", luasteam_RemoteStorage_GetCachedUGCCount);
     add_func(L, "GetCachedUGCHandle", luasteam_RemoteStorage_GetCachedUGCHandle);
     add_func(L, "CreatePublishedFileUpdateRequest", luasteam_RemoteStorage_CreatePublishedFileUpdateRequest);
@@ -956,12 +993,13 @@ void register_RemoteStorage_auto(lua_State *L) {
     add_func(L, "EnumeratePublishedFilesByUserAction", luasteam_RemoteStorage_EnumeratePublishedFilesByUserAction);
     add_func(L, "UGCDownloadToLocation", luasteam_RemoteStorage_UGCDownloadToLocation);
     add_func(L, "GetLocalFileChangeCount", luasteam_RemoteStorage_GetLocalFileChangeCount);
+    add_func(L, "GetLocalFileChange", luasteam_RemoteStorage_GetLocalFileChange);
     add_func(L, "BeginFileWriteBatch", luasteam_RemoteStorage_BeginFileWriteBatch);
     add_func(L, "EndFileWriteBatch", luasteam_RemoteStorage_EndFileWriteBatch);
 }
 
 void add_RemoteStorage_auto(lua_State *L) {
-    lua_createtable(L, 0, 43);
+    lua_createtable(L, 0, 47);
     register_RemoteStorage_auto(L);
     lua_pushvalue(L, -1);
     RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);
