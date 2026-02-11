@@ -1,4 +1,5 @@
 #include "user_stats.hpp"
+#include "auto/auto.hpp"
 
 // ==============================
 // ======= SteamUserStats =======
@@ -192,6 +193,7 @@ template <> void CallResultListener<LeaderboardScoresDownloaded_t>::Result(Leade
 
 } // namespace luasteam
 
+// Manually implemented because GetStat is overloaded in the Steam API
 // bool GetStat(const char *pchName, int32 *pData);
 EXTERN int luasteam_getStatInt(lua_State *L) {
     const char *stat_name = luaL_checkstring(L, 1);
@@ -206,6 +208,7 @@ EXTERN int luasteam_getStatInt(lua_State *L) {
     }
 }
 
+// Manually implemented because GetStat is overloaded in the Steam API
 // bool GetStat(const char *pchName, float *pData);
 EXTERN int luasteam_getStatFloat(lua_State *L) {
     const char *stat_name = luaL_checkstring(L, 1);
@@ -220,6 +223,7 @@ EXTERN int luasteam_getStatFloat(lua_State *L) {
     }
 }
 
+// Manually implemented because SetStat is overloaded in the Steam API
 // bool SetStat(const char *pchName, int32 *pData);
 EXTERN int luasteam_setStatInt(lua_State *L) {
     const char *stat_name = luaL_checkstring(L, 1);
@@ -229,6 +233,7 @@ EXTERN int luasteam_setStatInt(lua_State *L) {
     return 1;
 }
 
+// Manually implemented because SetStat is overloaded in the Steam API
 // bool SetStat(const char *pchName, float *pData);
 EXTERN int luasteam_setStatFloat(lua_State *L) {
     const char *stat_name = luaL_checkstring(L, 1);
@@ -238,6 +243,7 @@ EXTERN int luasteam_setStatFloat(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to handle the output parameter
 // bool GetAchievement(const char *pchName, bool *pbAchieved );
 EXTERN int luasteam_getAchievement(lua_State *L) {
     const char *ach_name = luaL_checkstring(L, 1);
@@ -252,29 +258,8 @@ EXTERN int luasteam_getAchievement(lua_State *L) {
     }
 }
 
-// bool SetAchievement( const char *pchName );
-EXTERN int luasteam_setAchievement(lua_State *L) {
-    const char *ach_name = luaL_checkstring(L, 1);
-    bool success = SteamUserStats()->SetAchievement(ach_name);
-    lua_pushboolean(L, success);
-    return 1;
-}
-
-// bool ResetAllStats( bool bAchievementsToo );
-EXTERN int luasteam_resetAllStats(lua_State *L) {
-    bool achievements_too = lua_toboolean(L, 1);
-    bool success = SteamUserStats()->ResetAllStats(achievements_too);
-    lua_pushboolean(L, success);
-    return 1;
-}
-
-// bool StoreStats();
-EXTERN int luasteam_storeStats(lua_State *L) {
-    bool success = SteamUserStats()->StoreStats();
-    lua_pushboolean(L, success);
-    return 1;
-}
-
+// Manually implemented to handle CallResult
+// SteamAPICall_t FindLeaderboard( const char *pchLeaderboardName );
 EXTERN int luasteam_findLeaderboard(lua_State *L) {
     const char *name = luaL_checkstring(L, 1);
     luaL_checktype(L, 2, LUA_TFUNCTION);
@@ -285,6 +270,7 @@ EXTERN int luasteam_findLeaderboard(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to handle CallResult and use luaL_checkoption for string constants
 // SteamAPICall_t FindOrCreateLeaderboard( const char *pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType eLeaderboardDisplayType );
 EXTERN int luasteam_findOrCreateLeaderboard(lua_State *L) {
     const char *name = luaL_checkstring(L, 1);
@@ -298,6 +284,7 @@ EXTERN int luasteam_findOrCreateLeaderboard(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to map enum to string
 // ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardDisplayType(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
@@ -310,6 +297,7 @@ EXTERN int luasteam_getLeaderboardDisplayType(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to map enum to string
 // ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardSortMethod(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
@@ -322,14 +310,7 @@ EXTERN int luasteam_getLeaderboardSortMethod(lua_State *L) {
     return 1;
 }
 
-// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
-EXTERN int luasteam_getLeaderboardEntryCount(lua_State *L) {
-    SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
-    int count = SteamUserStats()->GetLeaderboardEntryCount(leaderboard);
-    lua_pushnumber(L, count);
-    return 1;
-}
-
+// Manually implemented to handle null return value
 // ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardName(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
@@ -342,6 +323,7 @@ EXTERN int luasteam_getLeaderboardName(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to handle CallResult and buffer handling
 EXTERN int luasteam_uploadLeaderboardScore(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
     ELeaderboardUploadScoreMethod upload_method = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkoption(L, 2, nullptr, upload_methods) + 1);
@@ -361,6 +343,7 @@ EXTERN int luasteam_uploadLeaderboardScore(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to handle CallResult and use luaL_checkoption for string constants
 EXTERN int luasteam_downloadLeaderboardEntries(lua_State *L) {
     SteamLeaderboard_t handle = luasteam::checkuint64(L, 1);
     ELeaderboardDataRequest data_request = static_cast<ELeaderboardDataRequest>(luaL_checkoption(L, 2, nullptr, data_requests));
@@ -383,18 +366,15 @@ EXTERN int luasteam_downloadLeaderboardEntries(lua_State *L) {
 namespace luasteam {
 
 void add_user_stats(lua_State *L) {
-    lua_createtable(L, 0, 13);
+    lua_createtable(L, 0, 11);
+    add_userstats_auto(L);
     add_func(L, "getStatInt", luasteam_getStatInt);
     add_func(L, "getStatFloat", luasteam_getStatFloat);
     add_func(L, "setStatInt", luasteam_setStatInt);
     add_func(L, "setStatFloat", luasteam_setStatFloat);
     add_func(L, "getAchievement", luasteam_getAchievement);
-    add_func(L, "setAchievement", luasteam_setAchievement);
-    add_func(L, "resetAllStats", luasteam_resetAllStats);
-    add_func(L, "storeStats", luasteam_storeStats);
     add_func(L, "findLeaderboard", luasteam_findLeaderboard);
     add_func(L, "findOrCreateLeaderboard", luasteam_findOrCreateLeaderboard);
-    add_func(L, "getLeaderboardEntryCount", luasteam_getLeaderboardEntryCount);
     add_func(L, "getLeaderboardName", luasteam_getLeaderboardName);
     add_func(L, "getLeaderboardSortMethod", luasteam_getLeaderboardSortMethod);
     add_func(L, "getLeaderboardDisplayType", luasteam_getLeaderboardDisplayType);

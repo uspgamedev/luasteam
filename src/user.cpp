@@ -1,4 +1,5 @@
 #include "user.hpp"
+#include "auto/auto.hpp"
 #include "const.hpp"
 #include <iomanip>
 #include <sstream>
@@ -53,18 +54,7 @@ void CallbackListener::OnAuthSessionTicketResponse(GetAuthSessionTicketResponse_
 
 } // namespace
 
-// int GetPlayerSteamLevel();
-EXTERN int luasteam_getPlayerSteamLevel(lua_State *L) {
-    lua_pushnumber(L, SteamUser()->GetPlayerSteamLevel());
-    return 1;
-}
-
-// CSteamID GetSteamID();
-EXTERN int luasteam_getSteamID(lua_State *L) {
-    luasteam::pushuint64(L, SteamUser()->GetSteamID().ConvertToUint64());
-    return 1;
-}
-
+// Manually implemented because it uses a buffer for the ticket and handles hex conversion
 // HAuthTicket GetAuthSessionTicket( void *pTicket, int cbMaxTicket, uint32 *pcbTicket, const SteamNetworkingIdentity *pIdentityRemote );
 EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
     uint32 pcbTicket = 0;
@@ -88,21 +78,12 @@ EXTERN int luasteam_getAuthSessionTicket(lua_State *L) {
     return 1;
 }
 
-// void CancelAuthTicket( HAuthTicket hAuthTicket )
-EXTERN int luasteam_cancelAuthTicket(lua_State *L) {
-    HAuthTicket ticket = luaL_checkinteger(L, 1);
-    SteamUser()->CancelAuthTicket(ticket);
-    return 0;
-}
-
 namespace luasteam {
 
 void add_user(lua_State *L) {
-    lua_createtable(L, 0, 4);
-    add_func(L, "getPlayerSteamLevel", luasteam_getPlayerSteamLevel);
-    add_func(L, "getSteamID", luasteam_getSteamID);
+    lua_createtable(L, 0, 1);
+    add_user_auto(L);
     add_func(L, "getAuthSessionTicket", luasteam_getAuthSessionTicket);
-    add_func(L, "cancelAuthTicket", luasteam_cancelAuthTicket);
     lua_pushvalue(L, -1);
     user_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "user");

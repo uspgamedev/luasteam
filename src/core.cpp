@@ -14,6 +14,7 @@
 // ======= SteamAPI =======
 // ========================
 
+// Manually implemented because it's a core initialization function
 // bool SteamAPI_Init();
 EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
@@ -36,6 +37,7 @@ EXTERN int luasteam_init(lua_State *L) {
     return 1;
 }
 
+// Manually implemented because it's a core shutdown function
 // void SteamAPI_Shutdown();
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
@@ -54,6 +56,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     return 0;
 }
 
+// Manually implemented because it's a core function
 // void SteamAPI_RunCallbacks();
 EXTERN int luasteam_runCallbacks(lua_State *L) {
     SteamAPI_RunCallbacks();

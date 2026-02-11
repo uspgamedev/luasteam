@@ -1,4 +1,6 @@
 
+#include "gameServer.hpp"
+#include "auto/auto.hpp"
 #include "../sdk/public/steam/steam_gameserver.h"
 #include "const.hpp"
 #include "extra.hpp"
@@ -134,6 +136,7 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
 
 } // namespace
 
+// Manually implemented because it's a core initialization function
 // bool SteamGameServer_Init()
 EXTERN int luasteam_init_server(lua_State *L) {
     uint32 ip = luaL_checkinteger(L, 1);
@@ -155,12 +158,14 @@ EXTERN int luasteam_init_server(lua_State *L) {
     return 1;
 }
 
+// Manually implemented because it's a core function
 // void SteamGameServer_RunCallbacks()
 EXTERN int luasteam_runCallbacks_server(lua_State *L) {
     SteamGameServer_RunCallbacks();
     return 0;
 }
 
+// Manually implemented because it's a core shutdown function
 // void SteamGameServer_Shutdown()
 EXTERN int luasteam_shutdown_server(lua_State *L) {
     SteamGameServer_Shutdown();
@@ -176,51 +181,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     return 0;
 }
 
-// void LogOn( const char *pszToken )
-EXTERN int luasteam_server_logOn(lua_State *L) {
-    const char *token = (char *)luaL_checkstring(L, 1);
-    SteamGameServer()->LogOn(token);
-    return 0;
-}
-
-// void void LogOnAnonymous()
-EXTERN int luasteam_server_logOnAnonymous(lua_State *L) {
-    SteamGameServer()->LogOnAnonymous();
-    return 0;
-}
-
-// void void LogOff()
-EXTERN int luasteam_server_logOff(lua_State *L) {
-    SteamGameServer()->LogOff();
-    return 0;
-}
-
-// bool BLoggedOn()
-EXTERN int luasteam_server_bLoggedOn(lua_State *L) {
-    lua_pushboolean(L, SteamGameServer()->BLoggedOn());
-    return 1;
-}
-
-// bool BSecure()
-EXTERN int luasteam_server_bSecure(lua_State *L) {
-    lua_pushboolean(L, SteamGameServer()->BSecure());
-    return 1;
-}
-
-// CSteamID GetSteamID()
-EXTERN int luasteam_server_getSteamID(lua_State *L) {
-    CSteamID steamID = SteamGameServer()->GetSteamID();
-    luasteam::pushuint64(L, steamID.ConvertToUint64());
-    return 1;
-}
-
-// SetDedicatedServer( bool bDedicated )
-EXTERN int luasteam_server_setDedicatedServer(lua_State *L) {
-    bool bDedicated = lua_toboolean(L, 1);
-    SteamGameServer()->SetDedicatedServer(bDedicated);
-    return 0;
-}
-
+// Manually implemented because it handles hex conversion for the ticket buffer
 // EBeginAuthSessionResult BeginAuthSession( const void *pAuthTicket, int cbAuthTicket, CSteamID steamID )
 EXTERN int luasteam_server_beginAuthSession(lua_State *L) {
     const char *hexTicket = luaL_checkstring(L, 1);
@@ -234,6 +195,7 @@ EXTERN int luasteam_server_beginAuthSession(lua_State *L) {
     return 1;
 }
 
+// Manually implemented because it uses CSteamID
 // void EndAuthSession( CSteamID steamID );
 EXTERN int luasteam_server_endAuthSession(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
@@ -255,17 +217,11 @@ void add_gameserver_constants(lua_State *L) {
 namespace luasteam {
 
 void add_gameServer(lua_State *L) {
-    lua_createtable(L, 0, 12);
+    lua_createtable(L, 0, 6);
+    add_gameserver_auto(L);
     add_func(L, "init", luasteam_init_server);
     add_func(L, "shutdown", luasteam_shutdown_server);
     add_func(L, "runCallbacks", luasteam_runCallbacks_server);
-    add_func(L, "logOn", luasteam_server_logOn);
-    add_func(L, "logOnAnonymous", luasteam_server_logOnAnonymous);
-    add_func(L, "logOff", luasteam_server_logOff);
-    add_func(L, "bLoggedOn", luasteam_server_bLoggedOn);
-    add_func(L, "bSecure", luasteam_server_bSecure);
-    add_func(L, "getSteamID", luasteam_server_getSteamID);
-    add_func(L, "setDedicatedServer", luasteam_server_setDedicatedServer);
     add_func(L, "beginAuthSession", luasteam_server_beginAuthSession);
     add_func(L, "endAuthSession", luasteam_server_endAuthSession);
     add_gameserver_constants(L);

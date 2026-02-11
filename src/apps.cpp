@@ -1,4 +1,5 @@
 #include "apps.hpp"
+#include "auto/auto.hpp"
 
 // ============================
 // ======== SteamApps =========
@@ -31,19 +32,7 @@ void CallbackListener::OnNewUrlLaunchParameters(NewUrlLaunchParameters_t *data) 
     }
 }
 
-// const char * GetCurrentGameLanguage();
-EXTERN int luasteam_getCurrentGameLanguage(lua_State *L) {
-    lua_pushstring(L, SteamApps()->GetCurrentGameLanguage());
-    return 1;
-}
-
-// bool BIsDlcInstalled( AppId_t appID );
-EXTERN int luasteam_isDlcInstalled(lua_State *L) {
-    int appID = luaL_checkint(L, 1);
-    lua_pushboolean(L, SteamApps()->BIsDlcInstalled(appID));
-    return 1;
-}
-
+// Manually implemented because it uses a fixed-size buffer for output
 // int GetLaunchCommandLine( char *pszCommandLine, int cubCommandLine );
 EXTERN int luasteam_getLaunchCommandLine(lua_State *L) {
     char pCommandLine[1024];
@@ -55,9 +44,8 @@ EXTERN int luasteam_getLaunchCommandLine(lua_State *L) {
 namespace luasteam {
 
 void add_apps(lua_State *L) {
-    lua_createtable(L, 0, 3);
-    add_func(L, "getCurrentGameLanguage", luasteam_getCurrentGameLanguage);
-    add_func(L, "isDlcInstalled", luasteam_isDlcInstalled);
+    lua_createtable(L, 0, 1);
+    add_apps_auto(L);
     add_func(L, "getLaunchCommandLine", luasteam_getLaunchCommandLine);
     lua_pushvalue(L, -1);
     apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);

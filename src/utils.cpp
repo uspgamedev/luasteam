@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include "auto/auto.hpp"
 #include <algorithm>
 #include <vector>
 // #include <cstdio>
@@ -71,12 +72,7 @@ void CallbackListener::OnFloatingGamepadTextInputDismissed(FloatingGamepadTextIn
 
 } // namespace
 
-// uint32 GetAppID();
-EXTERN int luasteam_getAppID(lua_State *L) {
-    lua_pushnumber(L, SteamUtils()->GetAppID());
-    return 1;
-}
-
+// Manually implemented because it uses a buffer and handles clamping
 // bool GetEnteredGamepadTextInput( char *pchText, uint32 cchText );
 EXTERN int luasteam_getEnteredGamepadTextInput(lua_State *L) {
     int len = luaL_checkint(L, 1);
@@ -87,24 +83,7 @@ EXTERN int luasteam_getEnteredGamepadTextInput(lua_State *L) {
     return 1;
 }
 
-// uint32 GetEnteredGamepadTextLength();
-EXTERN int luasteam_getEnteredGamepadTextLength(lua_State *L) {
-    lua_pushnumber(L, SteamUtils()->GetEnteredGamepadTextLength());
-    return 1;
-}
-
-// bool IsSteamInBigPictureMode();
-EXTERN int luasteam_isSteamInBigPictureMode(lua_State *L) {
-    lua_pushboolean(L, SteamUtils()->IsSteamInBigPictureMode());
-    return 1;
-}
-
-// bool IsSteamRunningOnSteamDeck();
-EXTERN int luasteam_isSteamRunningOnSteamDeck(lua_State *L) {
-    lua_pushboolean(L, SteamUtils()->IsSteamRunningOnSteamDeck());
-    return 1;
-}
-
+// Manually implemented to use luaL_checkoption for string constants and handles clamping
 // bool ShowGamepadTextInput( EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char *pchDescription, uint32 unCharMax, const char *pchExistingText );
 EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
 
@@ -118,6 +97,7 @@ EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to use luaL_checkoption for string constants
 // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
 EXTERN int luasteam_showFloatingGamepadTextInput(lua_State *L) {
     int floating_input_mode = luaL_checkoption(L, 1, nullptr, floating_input_modes);
@@ -132,12 +112,9 @@ EXTERN int luasteam_showFloatingGamepadTextInput(lua_State *L) {
 namespace luasteam {
 
 void add_utils(lua_State *L) {
-    lua_createtable(L, 0, 7);
-    add_func(L, "getAppID", luasteam_getAppID);
+    lua_createtable(L, 0, 3);
+    add_utils_auto(L);
     add_func(L, "getEnteredGamepadTextInput", luasteam_getEnteredGamepadTextInput);
-    add_func(L, "getEnteredGamepadTextLength", luasteam_getEnteredGamepadTextLength);
-    add_func(L, "isSteamInBigPictureMode", luasteam_isSteamInBigPictureMode);
-    add_func(L, "isSteamRunningOnSteamDeck", luasteam_isSteamRunningOnSteamDeck);
     add_func(L, "showGamepadTextInput", luasteam_showGamepadTextInput);
     add_func(L, "showFloatingGamepadTextInput", luasteam_showFloatingGamepadTextInput);
     lua_pushvalue(L, -1);

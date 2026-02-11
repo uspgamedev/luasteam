@@ -1,4 +1,4 @@
-SRC=src/*.cpp
+SRC=src/*.cpp src/auto/*.cpp
 
 # -Wno-invalid-offsetof prevents STEAM_CALLBACK from giving out warnings
 CPP_FLAGS=-Wno-invalid-offsetof -Wall $(STDLIB_VER)
@@ -87,3 +87,6 @@ win64: luajit-64
 win32: luajit-32-win
 	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp $(STEAM_LIB)/steam_api.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
+
+generate:
+	cd generator && cargo run

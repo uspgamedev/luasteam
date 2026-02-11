@@ -1,4 +1,5 @@
 #include "UGC.hpp"
+#include "auto/auto.hpp"
 #include <array>
 #include <vector>
 
@@ -137,6 +138,7 @@ template <> void CallResultListener<RemoteStorageUnsubscribePublishedFileResult_
 
 } // namespace luasteam
 
+// Manually implemented to handle CallResult
 // SteamAPICall_t CreateItem( AppId_t nConsumerAppId, EWorkshopFileType eFileType );
 EXTERN int luasteam_createItem(lua_State *L) {
     int consumerAppID = luaL_checkint(L, 1);
@@ -150,46 +152,7 @@ EXTERN int luasteam_createItem(lua_State *L) {
     return 0;
 }
 
-// UGCUpdateHandle_t StartItemUpdate( AppId_t nConsumerAppId, PublishedFileId_t nPublishedFileID );
-EXTERN int luasteam_startItemUpdate(lua_State *L) {
-    int consumerAppID = luaL_checkint(L, 1);
-    uint64 publishedFileId = luasteam::checkuint64(L, 2);
-    luasteam::pushuint64(L, SteamUGC()->StartItemUpdate(consumerAppID, publishedFileId));
-    return 1;
-}
-
-// bool SetItemContent( UGCUpdateHandle_t handle, const char *pszContentFolder );
-EXTERN int luasteam_setItemContent(lua_State *L) {
-    uint64 handle = luasteam::checkuint64(L, 1);
-    const char *contentFolder = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamUGC()->SetItemContent(handle, contentFolder));
-    return 1;
-}
-
-// bool SetItemDescription( UGCUpdateHandle_t handle, const char *pchDescription );
-EXTERN int luasteam_setItemDescription(lua_State *L) {
-    uint64 handle = luasteam::checkuint64(L, 1);
-    const char *description = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamUGC()->SetItemDescription(handle, description));
-    return 1;
-}
-
-// bool SetItemPreview( UGCUpdateHandle_t handle, const char *pszPreviewFile );
-EXTERN int luasteam_setItemPreview(lua_State *L) {
-    uint64 handle = luasteam::checkuint64(L, 1);
-    const char *previewFile = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamUGC()->SetItemPreview(handle, previewFile));
-    return 1;
-}
-
-// bool SetItemTitle( UGCUpdateHandle_t handle, const char *pchTitle );
-EXTERN int luasteam_setItemTitle(lua_State *L) {
-    uint64 handle = luasteam::checkuint64(L, 1);
-    const char *title = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamUGC()->SetItemTitle(handle, title));
-    return 1;
-}
-
+// Manually implemented to handle CallResult
 // SteamAPICall_t SubmitItemUpdate( UGCUpdateHandle_t handle, const char *pchChangeNote );
 EXTERN int luasteam_submitItemUpdate(lua_State *L) {
     uint64 handle = luasteam::checkuint64(L, 1);
@@ -203,12 +166,7 @@ EXTERN int luasteam_submitItemUpdate(lua_State *L) {
     return 0;
 }
 
-// uint32 GetNumSubscribedItems();
-EXTERN int luasteam_getNumSubscribedItems(lua_State *L) {
-    lua_pushnumber(L, SteamUGC()->GetNumSubscribedItems());
-    return 1;
-}
-
+// Manually implemented to return a table of IDs
 // uint32 GetSubscribedItems( PublishedFileId_t*pvecPublishedFileID, uint32 cMaxEntries );
 EXTERN int luasteam_getSubscribedItems(lua_State *L) {
     int sz = SteamUGC()->GetNumSubscribedItems();
@@ -222,6 +180,7 @@ EXTERN int luasteam_getSubscribedItems(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to return a table of flags
 // uint32 GetItemState( PublishedFileId_t nPublishedFileID );
 EXTERN int luasteam_getItemState(lua_State *L) {
     PublishedFileId_t id = luasteam::checkuint64(L, 1);
@@ -246,6 +205,7 @@ EXTERN int luasteam_getItemState(lua_State *L) {
     return 1;
 }
 
+// Manually implemented to handle multiple output parameters
 // bool GetItemInstallInfo( PublishedFileId_t nPublishedFileID, uint64 *punSizeOnDisk, char *pchFolder, uint32 cchFolderSize, uint32 *punTimeStamp );
 EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
     PublishedFileId_t id = luasteam::checkuint64(L, 1);
@@ -267,6 +227,7 @@ EXTERN int luasteam_getItemInstallInfo(lua_State *L) {
         return 1;
 }
 
+// Manually implemented to handle multiple output parameters
 // EItemUpdateStatus GetItemUpdateProgress( UGCUpdateHandle_t handle, uint64 *punBytesProcessed, uint64*punBytesTotal );
 EXTERN int luasteam_getItemUpdateProgress(lua_State *L) {
     uint64 handle = luasteam::checkuint64(L, 1);
@@ -294,6 +255,7 @@ static std::vector<PublishedFileId_t> getFileIdList(lua_State *L, int index) {
     return vec;
 }
 
+// Manually implemented to handle array input and CallResult
 // SteamAPICall_t StartPlaytimeTracking( PublishedFileId_t *pvecPublishedFileID, uint32 unNumPublishedFileIDs );
 EXTERN int luasteam_startPlaytimeTracking(lua_State *L) {
     luaL_checktype(L, 2, LUA_TFUNCTION);
@@ -309,6 +271,7 @@ EXTERN int luasteam_startPlaytimeTracking(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to handle array input and CallResult
 // SteamAPICall_t StopPlaytimeTracking( PublishedFileId_t *pvecPublishedFileID, uint32 unNumPublishedFileIDs );
 EXTERN int luasteam_stopPlaytimeTracking(lua_State *L) {
     luaL_checktype(L, 2, LUA_TFUNCTION);
@@ -324,6 +287,7 @@ EXTERN int luasteam_stopPlaytimeTracking(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to handle CallResult
 // SteamAPICall_t StopPlaytimeTrackingForAllItems();
 EXTERN int luasteam_stopPlaytimeTrackingForAllItems(lua_State *L) {
     luaL_checktype(L, 1, LUA_TFUNCTION);
@@ -335,6 +299,7 @@ EXTERN int luasteam_stopPlaytimeTrackingForAllItems(lua_State *L) {
     return 0;
 }
 
+// Manually implemented to handle CallResult
 // SteamAPICall_t SubscribeItem( PublishedFileId_t nPublishedFileID );
 EXTERN int luasteam_subscribeItem(lua_State *L) {
     uint64 itemId = luasteam::checkuint64(L, 1);
@@ -346,6 +311,8 @@ EXTERN int luasteam_subscribeItem(lua_State *L) {
     listener->call_result.Set(call, listener, &CallResultListener<RemoteStorageSubscribePublishedFileResult_t>::Result);
     return 0;
 }
+
+// Manually implemented to handle CallResult
 // SteamAPICall_t UnsubscribeItem( PublishedFileId_t nPublishedFileID );
 EXTERN int luasteam_unsubscribeItem(lua_State *L) {
     uint64 itemId = luasteam::checkuint64(L, 1);
@@ -361,15 +328,10 @@ EXTERN int luasteam_unsubscribeItem(lua_State *L) {
 namespace luasteam {
 
 void add_UGC(lua_State *L) {
-    lua_createtable(L, 0, 17);
+    lua_createtable(L, 0, 11);
+    add_ugc_auto(L);
     add_func(L, "createItem", luasteam_createItem);
-    add_func(L, "startItemUpdate", luasteam_startItemUpdate);
-    add_func(L, "setItemContent", luasteam_setItemContent);
-    add_func(L, "setItemDescription", luasteam_setItemDescription);
-    add_func(L, "setItemPreview", luasteam_setItemPreview);
-    add_func(L, "setItemTitle", luasteam_setItemTitle);
     add_func(L, "submitItemUpdate", luasteam_submitItemUpdate);
-    add_func(L, "getNumSubscribedItems", luasteam_getNumSubscribedItems);
     add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
     add_func(L, "getItemState", luasteam_getItemState);
     add_func(L, "getItemInstallInfo", luasteam_getItemInstallInfo);

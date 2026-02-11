@@ -1,6 +1,7 @@
 #include "extra.hpp"
 #include <cstdlib>
 
+// Manually implemented as a utility function to parse uint64 from a string
 // Returns 0 if string is invalid
 EXTERN int luasteam_parseUint64(lua_State *L) {
     const char *str = luaL_checkstring(L, 1);

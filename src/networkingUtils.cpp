@@ -1,4 +1,5 @@
 #include "networkingUtils.hpp"
+#include "auto/auto.hpp"
 
 // ======================================
 // ======= SteamNetworkingUtils =========
@@ -10,12 +11,7 @@ int networkingutils_ref = LUA_NOREF;
 
 } // namespace
 
-// void InitRelayNetworkAccess();
-EXTERN int luasteam_initRelayNetworkAccess(lua_State *L) {
-    SteamNetworkingUtils()->InitRelayNetworkAccess();
-    return 0;
-}
-
+// Manually implemented because it passes NULL to the details parameter
 // ESteamNetworkingAvailability GetRelayNetworkStatus( SteamRelayNetworkStatus_t *pDetails )
 EXTERN int luasteam_getRelayNetworkStatus(lua_State *L) {
     ESteamNetworkingAvailability status = SteamNetworkingUtils()->GetRelayNetworkStatus(NULL);
@@ -26,8 +22,8 @@ EXTERN int luasteam_getRelayNetworkStatus(lua_State *L) {
 namespace luasteam {
 
 void add_networkingUtils(lua_State *L) {
-    lua_createtable(L, 0, 2);
-    add_func(L, "initRelayNetworkAccess", luasteam_initRelayNetworkAccess);
+    lua_createtable(L, 0, 1);
+    add_networkingutils_auto(L);
     add_func(L, "getRelayNetworkStatus", luasteam_getRelayNetworkStatus);
     lua_pushvalue(L, -1);
     networkingutils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

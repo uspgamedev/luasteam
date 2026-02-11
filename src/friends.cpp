@@ -1,4 +1,5 @@
 #include "friends.hpp"
+#include "auto/auto.hpp"
 
 // ============================
 // ======= SteamFriends =======
@@ -65,6 +66,7 @@ void CallbackListener::OnGameRichPresenceJoinRequested(GameRichPresenceJoinReque
 
 } // namespace
 
+// Manually implemented to use luaL_checkoption for string constants
 // void ActivateGameOverlay( const char *pchDialog );
 EXTERN int luasteam_activateGameOverlay(lua_State *L) {
     const char *dialog = dialog_types[luaL_checkoption(L, 1, NULL, dialog_types)];
@@ -72,6 +74,7 @@ EXTERN int luasteam_activateGameOverlay(lua_State *L) {
     return 0;
 }
 
+// Manually implemented because EActivateGameOverlayToWebPageMode is not yet supported by the generator
 // void ActivateGameOverlayToWebPage( const char *pchURL );
 EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
     const char *url = luaL_checkstring(L, 1);
@@ -79,23 +82,7 @@ EXTERN int luasteam_activateGameOverlayToWebPage(lua_State *L) {
     return 0;
 }
 
-// const char * GetFriendPersonaName( CSteamID steamIDFriend );
-EXTERN int luasteam_getFriendPersonaName(lua_State *L) {
-    CSteamID id(luasteam::checkuint64(L, 1));
-    const char *name = SteamFriends()->GetFriendPersonaName(id);
-    lua_pushstring(L, name);
-    return 1;
-}
-
-// bool SetRichPresence( const char *pchKey, const char *pchValue );
-EXTERN int luasteam_setRichPresence(lua_State *L) {
-    const char *key = luaL_checkstring(L, 1);
-    const char *value = luaL_checkstring(L, 2);
-    bool success = SteamFriends()->SetRichPresence(key, value);
-    lua_pushboolean(L, success);
-    return 1;
-}
-
+// Manually implemented to handle null return value and return an empty string instead
 // const char * GetFriendRichPresence( CSteamID steamIDFriend, const char *pchKey );
 EXTERN int luasteam_getFriendRichPresence(lua_State *L) {
     CSteamID id(luasteam::checkuint64(L, 1));
@@ -105,46 +92,13 @@ EXTERN int luasteam_getFriendRichPresence(lua_State *L) {
     return 1;
 }
 
-// bool InviteUserToGame( CSteamID steamIDFriend, const char *pchConnectString );
-EXTERN int luasteam_inviteUserToGame(lua_State *L) {
-    CSteamID id(luasteam::checkuint64(L, 1));
-    const char *connectString = luaL_checkstring(L, 2);
-
-    bool success = SteamFriends()->InviteUserToGame(id, connectString);
-    lua_pushboolean(L, success);
-    return 1;
-}
-
-// int GetFriendCount( int iFriendFlags );
-EXTERN int luasteam_getFriendCount(lua_State *L) {
-    int flags = luaL_checkint(L, 1);
-    int count = SteamFriends()->GetFriendCount(flags);
-
-    lua_pushnumber(L, count);
-    return 1;
-}
-
-// CSteamID GetFriendByIndex( int iFriend, int iFriendFlags );
-EXTERN int luasteam_getFriendByIndex(lua_State *L) {
-    int index = luaL_checkint(L, 1);
-    int flags = luaL_checkint(L, 2);
-    CSteamID id = SteamFriends()->GetFriendByIndex(index, flags);
-
-    luasteam::pushuint64(L, id.ConvertToUint64());
-    return 1;
-}
-
 namespace luasteam {
 
 void add_friends(lua_State *L) {
-    lua_createtable(L, 0, 8);
+    lua_createtable(L, 0, 3);
+    add_friends_auto(L);
     add_func(L, "activateGameOverlay", luasteam_activateGameOverlay);
     add_func(L, "activateGameOverlayToWebPage", luasteam_activateGameOverlayToWebPage);
-    add_func(L, "getFriendPersonaName", luasteam_getFriendPersonaName);
-    add_func(L, "setRichPresence", luasteam_setRichPresence);
-    add_func(L, "inviteUserToGame", luasteam_inviteUserToGame);
-    add_func(L, "getFriendCount", luasteam_getFriendCount);
-    add_func(L, "getFriendByIndex", luasteam_getFriendByIndex);
     add_func(L, "getFriendRichPresence", luasteam_getFriendRichPresence);
     lua_pushvalue(L, -1);
     friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
