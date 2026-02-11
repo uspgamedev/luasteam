@@ -38,21 +38,21 @@ EXTERN int luasteam_apps_SteamAPI_ISteamApps_GetAvailableGameLanguages(lua_State
 
 // bool BIsSubscribedApp(AppId_t appID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_BIsSubscribedApp(lua_State *L) {
-    AppId_t appID = luaL_checkint(L, 1);
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamApps()->BIsSubscribedApp(appID));
     return 1;
 }
 
 // bool BIsDlcInstalled(AppId_t appID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_BIsDlcInstalled(lua_State *L) {
-    AppId_t appID = luaL_checkint(L, 1);
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamApps()->BIsDlcInstalled(appID));
     return 1;
 }
 
 // uint32 GetEarliestPurchaseUnixTime(AppId_t nAppID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_GetEarliestPurchaseUnixTime(lua_State *L) {
-    AppId_t nAppID = luaL_checkint(L, 1);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     lua_pushinteger(L, SteamApps()->GetEarliestPurchaseUnixTime(nAppID));
     return 1;
 }
@@ -71,21 +71,21 @@ EXTERN int luasteam_apps_SteamAPI_ISteamApps_GetDLCCount(lua_State *L) {
 
 // void InstallDLC(AppId_t nAppID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_InstallDLC(lua_State *L) {
-    AppId_t nAppID = luaL_checkint(L, 1);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     SteamApps()->InstallDLC(nAppID);
     return 0;
 }
 
 // void UninstallDLC(AppId_t nAppID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_UninstallDLC(lua_State *L) {
-    AppId_t nAppID = luaL_checkint(L, 1);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     SteamApps()->UninstallDLC(nAppID);
     return 0;
 }
 
 // void RequestAppProofOfPurchaseKey(AppId_t nAppID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_RequestAppProofOfPurchaseKey(lua_State *L) {
-    AppId_t nAppID = luaL_checkint(L, 1);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     SteamApps()->RequestAppProofOfPurchaseKey(nAppID);
     return 0;
 }
@@ -99,7 +99,7 @@ EXTERN int luasteam_apps_SteamAPI_ISteamApps_MarkContentCorrupt(lua_State *L) {
 
 // bool BIsAppInstalled(AppId_t appID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_BIsAppInstalled(lua_State *L) {
-    AppId_t appID = luaL_checkint(L, 1);
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamApps()->BIsAppInstalled(appID));
     return 1;
 }
@@ -144,7 +144,7 @@ EXTERN int luasteam_apps_SteamAPI_ISteamApps_BIsSubscribedFromFamilySharing(lua_
 
 // bool SetDlcContext(AppId_t nAppID);
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_SetDlcContext(lua_State *L) {
-    AppId_t nAppID = luaL_checkint(L, 1);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamApps()->SetDlcContext(nAppID));
     return 1;
 }

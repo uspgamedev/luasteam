@@ -3,7 +3,7 @@
 // bool SetStat(const char * pchName, int32 nData);
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_SetStatInt32(lua_State *L) {
     const char *pchName = luaL_checkstring(L, 1);
-    int32 nData = luaL_checkint(L, 2);
+    int32 nData = static_cast<int32>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamUserStats()->SetStat(pchName, nData));
     return 1;
 }
@@ -46,8 +46,8 @@ EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetAchievementDisplayAttr
 // bool IndicateAchievementProgress(const char * pchName, uint32 nCurProgress, uint32 nMaxProgress);
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_IndicateAchievementProgress(lua_State *L) {
     const char *pchName = luaL_checkstring(L, 1);
-    uint32 nCurProgress = luaL_checkint(L, 2);
-    uint32 nMaxProgress = luaL_checkint(L, 3);
+    uint32 nCurProgress = static_cast<uint32>(luaL_checkint(L, 2));
+    uint32 nMaxProgress = static_cast<uint32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamUserStats()->IndicateAchievementProgress(pchName, nCurProgress, nMaxProgress));
     return 1;
 }
@@ -60,7 +60,7 @@ EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetNumAchievements(lua_St
 
 // const char * GetAchievementName(uint32 iAchievement);
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetAchievementName(lua_State *L) {
-    uint32 iAchievement = luaL_checkint(L, 1);
+    uint32 iAchievement = static_cast<uint32>(luaL_checkint(L, 1));
     lua_pushstring(L, SteamUserStats()->GetAchievementName(iAchievement));
     return 1;
 }
@@ -76,6 +76,15 @@ EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_RequestUserStats(lua_Stat
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_ResetAllStats(lua_State *L) {
     bool bAchievementsToo = lua_toboolean(L, 1);
     lua_pushboolean(L, SteamUserStats()->ResetAllStats(bAchievementsToo));
+    return 1;
+}
+
+// SteamAPICall_t FindOrCreateLeaderboard(const char * pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType eLeaderboardDisplayType);
+EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_FindOrCreateLeaderboard(lua_State *L) {
+    const char *pchLeaderboardName = luaL_checkstring(L, 1);
+    ELeaderboardSortMethod eLeaderboardSortMethod = static_cast<ELeaderboardSortMethod>(luaL_checkint(L, 2));
+    ELeaderboardDisplayType eLeaderboardDisplayType = static_cast<ELeaderboardDisplayType>(luaL_checkint(L, 3));
+    luasteam::pushuint64(L, SteamUserStats()->FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType));
     return 1;
 }
 
@@ -97,6 +106,30 @@ EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardName(lua_St
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardEntryCount(lua_State *L) {
     SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
     lua_pushinteger(L, SteamUserStats()->GetLeaderboardEntryCount(hSteamLeaderboard));
+    return 1;
+}
+
+// ELeaderboardSortMethod GetLeaderboardSortMethod(SteamLeaderboard_t hSteamLeaderboard);
+EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardSortMethod(lua_State *L) {
+    SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
+    lua_pushinteger(L, SteamUserStats()->GetLeaderboardSortMethod(hSteamLeaderboard));
+    return 1;
+}
+
+// ELeaderboardDisplayType GetLeaderboardDisplayType(SteamLeaderboard_t hSteamLeaderboard);
+EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardDisplayType(lua_State *L) {
+    SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
+    lua_pushinteger(L, SteamUserStats()->GetLeaderboardDisplayType(hSteamLeaderboard));
+    return 1;
+}
+
+// SteamAPICall_t DownloadLeaderboardEntries(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardDataRequest eLeaderboardDataRequest, int nRangeStart, int nRangeEnd);
+EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_DownloadLeaderboardEntries(lua_State *L) {
+    SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
+    ELeaderboardDataRequest eLeaderboardDataRequest = static_cast<ELeaderboardDataRequest>(luaL_checkint(L, 2));
+    int nRangeStart = static_cast<int>(luaL_checkint(L, 3));
+    int nRangeEnd = static_cast<int>(luaL_checkint(L, 4));
+    luasteam::pushuint64(L, SteamUserStats()->DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd));
     return 1;
 }
 
@@ -122,7 +155,7 @@ EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_RequestGlobalAchievementP
 
 // SteamAPICall_t RequestGlobalStats(int nHistoryDays);
 EXTERN int luasteam_userstats_SteamAPI_ISteamUserStats_RequestGlobalStats(lua_State *L) {
-    int nHistoryDays = luaL_checkint(L, 1);
+    int nHistoryDays = static_cast<int>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamUserStats()->RequestGlobalStats(nHistoryDays));
     return 1;
 }
@@ -141,9 +174,13 @@ void add_userstats_auto(lua_State *L) {
     add_func(L, "getAchievementName", luasteam_userstats_SteamAPI_ISteamUserStats_GetAchievementName);
     add_func(L, "requestUserStats", luasteam_userstats_SteamAPI_ISteamUserStats_RequestUserStats);
     add_func(L, "resetAllStats", luasteam_userstats_SteamAPI_ISteamUserStats_ResetAllStats);
+    add_func(L, "findOrCreateLeaderboard", luasteam_userstats_SteamAPI_ISteamUserStats_FindOrCreateLeaderboard);
     add_func(L, "findLeaderboard", luasteam_userstats_SteamAPI_ISteamUserStats_FindLeaderboard);
     add_func(L, "getLeaderboardName", luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardName);
     add_func(L, "getLeaderboardEntryCount", luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardEntryCount);
+    add_func(L, "getLeaderboardSortMethod", luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardSortMethod);
+    add_func(L, "getLeaderboardDisplayType", luasteam_userstats_SteamAPI_ISteamUserStats_GetLeaderboardDisplayType);
+    add_func(L, "downloadLeaderboardEntries", luasteam_userstats_SteamAPI_ISteamUserStats_DownloadLeaderboardEntries);
     add_func(L, "attachLeaderboardUGC", luasteam_userstats_SteamAPI_ISteamUserStats_AttachLeaderboardUGC);
     add_func(L, "getNumberOfCurrentPlayers", luasteam_userstats_SteamAPI_ISteamUserStats_GetNumberOfCurrentPlayers);
     add_func(L, "requestGlobalAchievementPercentages", luasteam_userstats_SteamAPI_ISteamUserStats_RequestGlobalAchievementPercentages);

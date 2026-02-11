@@ -111,9 +111,18 @@ impl Generator {
         for td in &api.typedefs {
             type_map.insert(td.typedef.clone(), td.type_name.clone());
         }
+        for enm in &api.enums {
+            type_map.insert(enm.enumname.clone(), "int".to_string());
+        }
         // Basic types
         type_map.insert("int".to_string(), "int".to_string());
-        type_map.insert("uint32".to_string(), "uint32".to_string());
+        type_map.insert("int32".to_string(), "int".to_string());
+        type_map.insert("uint32".to_string(), "int".to_string());
+        type_map.insert("unsigned int".to_string(), "int".to_string());
+        type_map.insert("uint16".to_string(), "int".to_string());
+        type_map.insert("unsigned short".to_string(), "int".to_string());
+        type_map.insert("uint8".to_string(), "int".to_string());
+        type_map.insert("unsigned char".to_string(), "int".to_string());
         type_map.insert("uint64".to_string(), "uint64".to_string());
         type_map.insert("bool".to_string(), "bool".to_string());
         type_map.insert("const char *".to_string(), "const char *".to_string());
@@ -162,8 +171,44 @@ impl Generator {
             }
         }
 
+        self.generate_enums();
         self.generate_auto_header(&interface_names);
         stats.print_summary();
+    }
+
+    fn generate_enums(&self) {
+        let mut cpp = String::new();
+        cpp.push_str("#include \"auto.hpp\"\n\n");
+        cpp.push_str("namespace luasteam {\n\n");
+        cpp.push_str("void add_enums_auto(lua_State *L) {\n");
+
+        for enm in &self.api.enums {
+            let lua_enum_name = if enm.enumname.starts_with('E') && enm.enumname.len() > 1 && enm.enumname.chars().nth(1).unwrap().is_uppercase() {
+                &enm.enumname[1..]
+            } else {
+                &enm.enumname
+            };
+
+            cpp.push_str(&format!("    lua_createtable(L, 0, {});\n", enm.values.len()));
+            
+            let prefix = format!("k_{}", enm.enumname);
+            for val in &enm.values {
+                let mut lua_val_name = val.name.as_str();
+                if lua_val_name.starts_with(&prefix) {
+                    lua_val_name = &lua_val_name[prefix.len()..];
+                    if lua_val_name.starts_with('_') {
+                        lua_val_name = &lua_val_name[1..];
+                    }
+                }
+                
+                cpp.push_str(&format!("    lua_pushinteger(L, {});\n", val.value));
+                cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", lua_val_name));
+            }
+            cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", lua_enum_name));
+        }
+
+        cpp.push_str("}\n\n} // namespace luasteam\n");
+        fs::write("../src/auto/enums.cpp", cpp).expect("Unable to write enums.cpp");
     }
 
     fn generate_auto_header(&self, interfaces: &[String]) {
@@ -172,6 +217,7 @@ impl Generator {
         h.push_str("#define LUASTEAM_AUTO_HPP\n\n");
         h.push_str("#include \"../common.hpp\"\n\n");
         h.push_str("namespace luasteam {\n\n");
+        h.push_str("void add_enums_auto(lua_State *L);\n");
         for name in interfaces {
             h.push_str(&format!("void add_{}_auto(lua_State *L);\n", name));
         }
@@ -261,7 +307,7 @@ impl Generator {
             
             match resolved {
                 "int" | "int32" | "uint32" | "unsigned int" | "uint16" | "unsigned short" | "uint8" | "unsigned char" => {
-                    s.push_str(&format!("    {} {} = luaL_checkint(L, {});\n", param.paramtype, param.paramname, lua_idx));
+                    s.push_str(&format!("    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n", param.paramtype, param.paramname, param.paramtype, lua_idx));
                 }
                 "bool" => {
                     s.push_str(&format!("    bool {} = lua_toboolean(L, {});\n", param.paramname, lua_idx));

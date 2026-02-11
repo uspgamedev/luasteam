@@ -2,7 +2,6 @@
 #include "gameServer.hpp"
 #include "auto/auto.hpp"
 #include "../sdk/public/steam/steam_gameserver.h"
-#include "const.hpp"
 #include "extra.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
@@ -12,10 +11,6 @@
 // ===============================
 // ======= SteamGameServer =======
 // ===============================
-
-static const char *steam_auth_session_response[] = {
-    "OK", "UserNotConnectedToSteam", "NoLicenseOrExpired", "VACBanned", "LoggedInElseWhere", "VACCheckTimedOut", "AuthTicketCanceled", "AuthTicketInvalidAlreadyUsed", "AuthTicketInvalid", "PublisherIssuedBan", nullptr,
-};
 
 std::vector<unsigned char> hexToBuffer(const std::string &hexString) {
     std::vector<unsigned char> buffer;
@@ -64,7 +59,7 @@ void CallbackListener::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
         lua_setfield(L, -2, "steam_id");
         luasteam::pushuint64(L, data->m_OwnerSteamID.ConvertToUint64());
         lua_setfield(L, -2, "owner_steam_id");
-        lua_pushstring(L, steam_auth_session_response[data->m_eAuthSessionResponse]);
+        lua_pushinteger(L, data->m_eAuthSessionResponse);
         lua_setfield(L, -2, "response");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -104,7 +99,7 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, steam_result_code[data->m_eResult]);
+        lua_pushinteger(L, data->m_eResult);
         lua_setfield(L, -2, "result");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -125,7 +120,7 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 2);
-        lua_pushstring(L, steam_result_code[data->m_eResult]);
+        lua_pushinteger(L, data->m_eResult);
         lua_setfield(L, -2, "result");
         lua_pushboolean(L, data->m_bStillRetrying);
         lua_setfield(L, -2, "stillRetrying");

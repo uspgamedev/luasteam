@@ -18,10 +18,6 @@ int utils_ref = LUA_NOREF;
 
 constexpr int kMaxGamepadTextLength = 1000000; // clamp to avoid unbounded allocations
 
-const char *input_modes[] = {"Normal", "Password", nullptr};
-const char *input_line_modes[] = {"SingleLine", "MultipleLines", nullptr};
-const char *floating_input_modes[] = {"SingleLine", "MultipleLines", "Email", "Numeric", nullptr};
-
 class CallbackListener {
   private:
     STEAM_CALLBACK(CallbackListener, OnGamepadTextInputDismissed, GamepadTextInputDismissed_t);
@@ -83,12 +79,12 @@ EXTERN int luasteam_getEnteredGamepadTextInput(lua_State *L) {
     return 1;
 }
 
-// Manually implemented to use luaL_checkoption for string constants and handles clamping
+// Manually implemented to handle clamping
 // bool ShowGamepadTextInput( EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char *pchDescription, uint32 unCharMax, const char *pchExistingText );
 EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
 
-    int input_mode = luaL_checkoption(L, 1, nullptr, input_modes);
-    int input_line_mode = luaL_checkoption(L, 2, nullptr, input_line_modes);
+    int input_mode = luaL_checkint(L, 1);
+    int input_line_mode = luaL_checkint(L, 2);
     const char *pchDescription = luaL_checkstring(L, 3);
     int char_max = luaL_checkint(L, 4);
     char_max = std::max(0, std::min(char_max, kMaxGamepadTextLength));
@@ -97,10 +93,10 @@ EXTERN int luasteam_showGamepadTextInput(lua_State *L) {
     return 1;
 }
 
-// Manually implemented to use luaL_checkoption for string constants
+// Manually implemented to handle clamping
 // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
 EXTERN int luasteam_showFloatingGamepadTextInput(lua_State *L) {
-    int floating_input_mode = luaL_checkoption(L, 1, nullptr, floating_input_modes);
+    int floating_input_mode = luaL_checkint(L, 1);
     int nTextFieldXPosition = luaL_checkint(L, 2);
     int nTextFieldYPosition = luaL_checkint(L, 3);
     int nTextFieldWidth = luaL_checkint(L, 4);

@@ -20,8 +20,8 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_GetSteamID(lua_State *L) {
 
 // void TerminateGameConnection_DEPRECATED(uint32 unIPServer, uint16 usPortServer);
 EXTERN int luasteam_user_SteamAPI_ISteamUser_TerminateGameConnection_DEPRECATED(lua_State *L) {
-    uint32 unIPServer = luaL_checkint(L, 1);
-    uint16 usPortServer = luaL_checkint(L, 2);
+    uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 1));
+    uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 2));
     SteamUser()->TerminateGameConnection_DEPRECATED(unIPServer, usPortServer);
     return 0;
 }
@@ -29,7 +29,7 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_TerminateGameConnection_DEPRECATED(
 // void TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent, const char * pchExtraInfo);
 EXTERN int luasteam_user_SteamAPI_ISteamUser_TrackAppUsageEvent(lua_State *L) {
     CGameID gameID(luasteam::checkuint64(L, 1));
-    int eAppUsageEvent = luaL_checkint(L, 2);
+    int eAppUsageEvent = static_cast<int>(luaL_checkint(L, 2));
     const char *pchExtraInfo = luaL_checkstring(L, 3);
     SteamUser()->TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo);
     return 0;
@@ -69,9 +69,17 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_EndAuthSession(lua_State *L) {
 
 // void CancelAuthTicket(HAuthTicket hAuthTicket);
 EXTERN int luasteam_user_SteamAPI_ISteamUser_CancelAuthTicket(lua_State *L) {
-    HAuthTicket hAuthTicket = luaL_checkint(L, 1);
+    HAuthTicket hAuthTicket = static_cast<HAuthTicket>(luaL_checkint(L, 1));
     SteamUser()->CancelAuthTicket(hAuthTicket);
     return 0;
+}
+
+// EUserHasLicenseForAppResult UserHasLicenseForApp(CSteamID steamID, AppId_t appID);
+EXTERN int luasteam_user_SteamAPI_ISteamUser_UserHasLicenseForApp(lua_State *L) {
+    CSteamID steamID(luasteam::checkuint64(L, 1));
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
+    lua_pushinteger(L, SteamUser()->UserHasLicenseForApp(steamID, appID));
+    return 1;
 }
 
 // bool BIsBehindNAT();
@@ -83,15 +91,15 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_BIsBehindNAT(lua_State *L) {
 // void AdvertiseGame(CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer);
 EXTERN int luasteam_user_SteamAPI_ISteamUser_AdvertiseGame(lua_State *L) {
     CSteamID steamIDGameServer(luasteam::checkuint64(L, 1));
-    uint32 unIPServer = luaL_checkint(L, 2);
-    uint16 usPortServer = luaL_checkint(L, 3);
+    uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 2));
+    uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 3));
     SteamUser()->AdvertiseGame(steamIDGameServer, unIPServer, usPortServer);
     return 0;
 }
 
 // int GetGameBadgeLevel(int nSeries, bool bFoil);
 EXTERN int luasteam_user_SteamAPI_ISteamUser_GetGameBadgeLevel(lua_State *L) {
-    int nSeries = luaL_checkint(L, 1);
+    int nSeries = static_cast<int>(luaL_checkint(L, 1));
     bool bFoil = lua_toboolean(L, 2);
     lua_pushinteger(L, SteamUser()->GetGameBadgeLevel(nSeries, bFoil));
     return 1;
@@ -146,6 +154,13 @@ EXTERN int luasteam_user_SteamAPI_ISteamUser_GetDurationControl(lua_State *L) {
     return 1;
 }
 
+// bool BSetDurationControlOnlineState(EDurationControlOnlineState eNewState);
+EXTERN int luasteam_user_SteamAPI_ISteamUser_BSetDurationControlOnlineState(lua_State *L) {
+    EDurationControlOnlineState eNewState = static_cast<EDurationControlOnlineState>(luaL_checkint(L, 1));
+    lua_pushboolean(L, SteamUser()->BSetDurationControlOnlineState(eNewState));
+    return 1;
+}
+
 namespace luasteam {
 
 void add_user_auto(lua_State *L) {
@@ -160,6 +175,7 @@ void add_user_auto(lua_State *L) {
     add_func(L, "getAuthTicketForWebApi", luasteam_user_SteamAPI_ISteamUser_GetAuthTicketForWebApi);
     add_func(L, "endAuthSession", luasteam_user_SteamAPI_ISteamUser_EndAuthSession);
     add_func(L, "cancelAuthTicket", luasteam_user_SteamAPI_ISteamUser_CancelAuthTicket);
+    add_func(L, "userHasLicenseForApp", luasteam_user_SteamAPI_ISteamUser_UserHasLicenseForApp);
     add_func(L, "isBehindNAT", luasteam_user_SteamAPI_ISteamUser_BIsBehindNAT);
     add_func(L, "advertiseGame", luasteam_user_SteamAPI_ISteamUser_AdvertiseGame);
     add_func(L, "getGameBadgeLevel", luasteam_user_SteamAPI_ISteamUser_GetGameBadgeLevel);
@@ -171,6 +187,7 @@ void add_user_auto(lua_State *L) {
     add_func(L, "isPhoneRequiringVerification", luasteam_user_SteamAPI_ISteamUser_BIsPhoneRequiringVerification);
     add_func(L, "getMarketEligibility", luasteam_user_SteamAPI_ISteamUser_GetMarketEligibility);
     add_func(L, "getDurationControl", luasteam_user_SteamAPI_ISteamUser_GetDurationControl);
+    add_func(L, "setDurationControlOnlineState", luasteam_user_SteamAPI_ISteamUser_BSetDurationControlOnlineState);
 }
 
 } // namespace luasteam

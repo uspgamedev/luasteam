@@ -11,28 +11,6 @@
 
 namespace {
 
-const char *controller_source_modes[] = {
-    "None", "Dpad", "Buttons", "FourButtons", "AbsoluteMouse", "RelativeMouse", "JoystickMove", "JoystickMouse", "JoystickCamera", "ScrollWheel", "Trigger", "TouchMenu", "MouseJoystick", "MouseRegion", "RadialMenu", "SingleButton", "Switches", nullptr,
-};
-
-const char *input_action_origins[] = {
-    "None", "A", "B", "X", "Y", "LeftBumper", "RightBumper", "LeftGrip", "RightGrip", "Start", "Back", "LeftPad_Touch", "LeftPad_Swipe", "LeftPad_Click", "LeftPad_DPadNorth", "LeftPad_DPadSouth", "LeftPad_DPadWest", "LeftPad_DPadEast", "RightPad_Touch", "RightPad_Swipe", "RightPad_Click", "RightPad_DPadNorth", "RightPad_DPadSouth", "RightPad_DPadWest", "RightPad_DPadEast", "LeftTrigger_Pull", "LeftTrigger_Click", "RightTrigger_Pull", "RightTrigger_Click", "LeftStick_Move", "LeftStick_Click", "LeftStick_DPadNorth", "LeftStick_DPadSouth", "LeftStick_DPadWest", "LeftStick_DPadEast", "Gyro_Move", "Gyro_Pitch", "Gyro_Yaw", "Gyro_Roll", "SteamController_Reserved0", "SteamController_Reserved1", "SteamController_Reserved2", "SteamController_Reserved3", "SteamController_Reserved4", "SteamController_Reserved5", "SteamController_Reserved6", "SteamController_Reserved7", "SteamController_Reserved8", "SteamController_Reserved9", "SteamController_Reserved10", "PS4_X", "PS4_Circle", "PS4_Triangle", "PS4_Square", "PS4_LeftBumper", "PS4_RightBumper", "PS4_Options", "PS4_Share", "PS4_LeftPad_Touch", "PS4_LeftPad_Swipe", "PS4_LeftPad_Click", "PS4_LeftPad_DPadNorth", "PS4_LeftPad_DPadSouth", "PS4_LeftPad_DPadWest", "PS4_LeftPad_DPadEast", "PS4_RightPad_Touch", "PS4_RightPad_Swipe", "PS4_RightPad_Click", "PS4_RightPad_DPadNorth", "PS4_RightPad_DPadSouth", "PS4_RightPad_DPadWest", "PS4_RightPad_DPadEast", "PS4_CenterPad_Touch", "PS4_CenterPad_Swipe", "PS4_CenterPad_Click", "PS4_CenterPad_DPadNorth", "PS4_CenterPad_DPadSouth", "PS4_CenterPad_DPadWest", "PS4_CenterPad_DPadEast", "PS4_LeftTrigger_Pull", "PS4_LeftTrigger_Click", "PS4_RightTrigger_Pull", "PS4_RightTrigger_Click", "PS4_LeftStick_Move", "PS4_LeftStick_Click", "PS4_LeftStick_DPadNorth", "PS4_LeftStick_DPadSouth", "PS4_LeftStick_DPadWest", "PS4_LeftStick_DPadEast", "PS4_RightStick_Move", "PS4_RightStick_Click", "PS4_RightStick_DPadNorth", "PS4_RightStick_DPadSouth", "PS4_RightStick_DPadWest", "PS4_RightStick_DPadEast", "PS4_DPad_North", "PS4_DPad_South", "PS4_DPad_West", "PS4_DPad_East", "PS4_Gyro_Move", "PS4_Gyro_Pitch", "PS4_Gyro_Yaw", "PS4_Gyro_Roll", "PS4_Reserved0", "PS4_Reserved1", "PS4_Reserved2", "PS4_Reserved3", "PS4_Reserved4", "PS4_Reserved5", "PS4_Reserved6", "PS4_Reserved7", "PS4_Reserved8", "PS4_Reserved9", "PS4_Reserved10", "XBoxOne_A", "XBoxOne_B", "XBoxOne_X", "XBoxOne_Y", "XBoxOne_LeftBumper", "XBoxOne_RightBumper", "XBoxOne_Menu", "XBoxOne_View", "XBoxOne_LeftTrigger_Pull", "XBoxOne_LeftTrigger_Click", "XBoxOne_RightTrigger_Pull", "XBoxOne_RightTrigger_Click", "XBoxOne_LeftStick_Move", "XBoxOne_LeftStick_Click", "XBoxOne_LeftStick_DPadNorth", "XBoxOne_LeftStick_DPadSouth", "XBoxOne_LeftStick_DPadWest", "XBoxOne_LeftStick_DPadEast", "XBoxOne_RightStick_Move", "XBoxOne_RightStick_Click", "XBoxOne_RightStick_DPadNorth", "XBoxOne_RightStick_DPadSouth", "XBoxOne_RightStick_DPadWest", "XBoxOne_RightStick_DPadEast", "XBoxOne_DPad_North", "XBoxOne_DPad_South", "XBoxOne_DPad_West", "XBoxOne_DPad_East", "XBoxOne_Reserved0", "XBoxOne_Reserved1", "XBoxOne_Reserved2", "XBoxOne_Reserved3", "XBoxOne_Reserved4", "XBoxOne_Reserved5", "XBoxOne_Reserved6", "XBoxOne_Reserved7", "XBoxOne_Reserved8", "XBoxOne_Reserved9", "XBoxOne_Reserved10", "XBox360_A", "XBox360_B", "XBox360_X", "XBox360_Y", "XBox360_LeftBumper", "XBox360_RightBumper", "XBox360_Start", "XBox360_Back", "XBox360_LeftTrigger_Pull", "XBox360_LeftTrigger_Click", "XBox360_RightTrigger_Pull", "XBox360_RightTrigger_Click", "XBox360_LeftStick_Move", "XBox360_LeftStick_Click", "XBox360_LeftStick_DPadNorth", "XBox360_LeftStick_DPadSouth", "XBox360_LeftStick_DPadWest", "XBox360_LeftStick_DPadEast", "XBox360_RightStick_Move", "XBox360_RightStick_Click", "XBox360_RightStick_DPadNorth", "XBox360_RightStick_DPadSouth", "XBox360_RightStick_DPadWest", "XBox360_RightStick_DPadEast", "XBox360_DPad_North", "XBox360_DPad_South", "XBox360_DPad_West", "XBox360_DPad_East", "XBox360_Reserved0", "XBox360_Reserved1", "XBox360_Reserved2", "XBox360_Reserved3", "XBox360_Reserved4", "XBox360_Reserved5", "XBox360_Reserved6", "XBox360_Reserved7", "XBox360_Reserved8", "XBox360_Reserved9", "XBox360_Reserved10", "Switch_A", "Switch_B", "Switch_X", "Switch_Y", "Switch_LeftBumper", "Switch_RightBumper", "Switch_Plus", "Switch_Minus", "Switch_Capture", "Switch_LeftTrigger_Pull", "Switch_LeftTrigger_Click", "Switch_RightTrigger_Pull", "Switch_RightTrigger_Click", "Switch_LeftStick_Move", "Switch_LeftStick_Click", "Switch_LeftStick_DPadNorth", "Switch_LeftStick_DPadSouth", "Switch_LeftStick_DPadWest", "Switch_LeftStick_DPadEast", "Switch_RightStick_Move", "Switch_RightStick_Click", "Switch_RightStick_DPadNorth", "Switch_RightStick_DPadSouth", "Switch_RightStick_DPadWest", "Switch_RightStick_DPadEast", "Switch_DPad_North", "Switch_DPad_South", "Switch_DPad_West", "Switch_DPad_East", "SwitchProGyro_Move", "SwitchProGyro_Pitch", "SwitchProGyro_Yaw", "SwitchProGyro_Roll", "Switch_Reserved0", "Switch_Reserved1", "Switch_Reserved2", "Switch_Reserved3", "Switch_Reserved4", "Switch_Reserved5", "Switch_Reserved6", "Switch_Reserved7", "Switch_Reserved8", "Switch_Reserved9", "Switch_Reserved10", nullptr,
-};
-
-const char *steam_input_types[] = {
-    "Unknown", "SteamController", "XBox360Controller", "XBoxOneController", "GenericXInput", "PS4Controller", "AppleMFiController", "AndroidController", "SwitchJoyConPair", "SwitchJoyConSingle", "SwitchProController", "MobileTouch", "PS3Controller", "PS5Controller", "SteamDeckController", nullptr,
-};
-
-const char *xbox_origins[] = {
-    "A", "B", "X", "Y", "LeftBumper", "RightBumper", "Menu", "View", "LeftTrigger_Pull", "LeftTrigger_Click", "RightTrigger_Pull", "RightTrigger_Click", "LeftStick_Move", "LeftStick_Click", "LeftStick_DPadNorth", "LeftStick_DPadSouth", "LeftStick_DPadWest", "LeftStick_DPadEast", "RightStick_Move", "RightStick_Click", "RightStick_DPadNorth", "RightStick_DPadSouth", "RightStick_DPadWest", "RightStick_DPadEast", "DPad_North", "DPad_South", "DPad_West", "DPad_East", "Count", nullptr,
-};
-
-const char *steam_controller_pads[] = {
-    "Left",
-    "Right",
-    nullptr,
-};
-
 } // namespace
 
 // Manually implemented to handle the "all" string constant
@@ -77,7 +55,7 @@ EXTERN int luasteam_getAnalogActionData(lua_State *L) {
     InputAnalogActionData_t iaad = SteamInput()->GetAnalogActionData(inputHandle, analogActionHandle);
 
     lua_createtable(L, 0, 4);
-    lua_pushstring(L, controller_source_modes[iaad.eMode]);
+    lua_pushinteger(L, iaad.eMode);
     lua_setfield(L, -2, "mode");
     lua_pushnumber(L, iaad.x);
     lua_setfield(L, -2, "x");
@@ -95,11 +73,11 @@ EXTERN int luasteam_getAnalogActionOrigins(lua_State *L) {
     uint64 actionSetHandle = luasteam::checkuint64(L, 2);
     uint64 analogActionHandle = luasteam::checkuint64(L, 3);
 
-    EInputActionOrigin *origins = new EInputActionOrigin[STEAM_INPUT_MAX_ORIGINS];
+    EInputActionOrigin origins[STEAM_INPUT_MAX_ORIGINS];
     int sz = SteamInput()->GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle, origins);
     lua_createtable(L, sz, 0);
     for (int i = 0; i < sz; i++) {
-        lua_pushstring(L, input_action_origins[origins[i]]);
+        lua_pushinteger(L, origins[i]);
         lua_rawseti(L, -2, i + 1);
     }
     return 1;
@@ -108,7 +86,7 @@ EXTERN int luasteam_getAnalogActionOrigins(lua_State *L) {
 // Manually implemented to return a table of handles
 // int GetConnectedControllers( InputHandle_t *handlesOut );
 EXTERN int luasteam_getConnectedControllers(lua_State *L) {
-    InputHandle_t *inputHandles = new InputHandle_t[STEAM_INPUT_MAX_COUNT];
+    InputHandle_t inputHandles[STEAM_INPUT_MAX_COUNT];
     int sz = SteamInput()->GetConnectedControllers(inputHandles);
     lua_createtable(L, sz, 0);
     for (int i = 0; i < sz; i++) {
@@ -139,136 +117,13 @@ EXTERN int luasteam_getDigitalActionOrigins(lua_State *L) {
     uint64 actionSetHandle = luasteam::checkuint64(L, 2);
     uint64 digitalActionHandle = luasteam::checkuint64(L, 3);
 
-    EInputActionOrigin *origins = new EInputActionOrigin[STEAM_INPUT_MAX_ORIGINS];
+    EInputActionOrigin origins[STEAM_INPUT_MAX_ORIGINS];
     int sz = SteamInput()->GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle, origins);
     lua_createtable(L, sz, 0);
     for (int i = 0; i < sz; i++) {
-        lua_pushstring(L, input_action_origins[origins[i]]);
+        lua_pushinteger(L, origins[i]);
         lua_rawseti(L, -2, i + 1);
     }
-    return 1;
-}
-
-// Manually implemented to use luaL_checkoption for string constants
-// const char * GetGlyphForActionOrigin_Legacy( EInputActionOrigin eOrigin );
-EXTERN int luasteam_getGlyphForActionOrigin_Legacy(lua_State *L) {
-    EInputActionOrigin inputActionOrigin = static_cast<EInputActionOrigin>(luaL_checkoption(L, 1, nullptr, input_action_origins));
-    lua_pushstring(L, SteamInput()->GetGlyphForActionOrigin_Legacy(inputActionOrigin));
-    return 1;
-}
-
-// Manually implemented to map enum to string
-// ESteamInputType GetInputTypeForHandle( InputHandle_t inputHandle );
-EXTERN int luasteam_getInputTypeForHandle(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    lua_pushstring(L, steam_input_types[SteamInput()->GetInputTypeForHandle(inputHandle)]);
-    return 1;
-}
-
-// Manually implemented to return a table/struct
-// InputMotionData_t GetMotionData( InputHandle_t inputHandle );
-EXTERN int luasteam_getMotionData(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    InputMotionData_t mot = SteamInput()->GetMotionData(inputHandle);
-    lua_createtable(L, 0, 10);
-    lua_pushnumber(L, mot.rotQuatX);
-    lua_setfield(L, -2, "rotQuatX");
-    lua_pushnumber(L, mot.rotQuatY);
-    lua_setfield(L, -2, "rotQuatY");
-    lua_pushnumber(L, mot.rotQuatZ);
-    lua_setfield(L, -2, "rotQuatZ");
-    lua_pushnumber(L, mot.rotQuatW);
-    lua_setfield(L, -2, "rotQuatW");
-    lua_pushnumber(L, mot.posAccelX);
-    lua_setfield(L, -2, "posAccelX");
-    lua_pushnumber(L, mot.posAccelY);
-    lua_setfield(L, -2, "posAccelY");
-    lua_pushnumber(L, mot.posAccelZ);
-    lua_setfield(L, -2, "posAccelZ");
-    lua_pushnumber(L, mot.rotVelX);
-    lua_setfield(L, -2, "rotVelX");
-    lua_pushnumber(L, mot.rotVelY);
-    lua_setfield(L, -2, "rotVelY");
-    lua_pushnumber(L, mot.rotVelZ);
-    lua_setfield(L, -2, "rotVelZ");
-    return 1;
-}
-
-// Manually implemented to use luaL_checkoption for string constants
-// const char * GetStringForActionOrigin( EInputActionOrigin eOrigin );
-EXTERN int luasteam_getStringForActionOrigin(lua_State *L) {
-    EInputActionOrigin eOrigin = static_cast<EInputActionOrigin>(luaL_checkoption(L, 1, nullptr, input_action_origins));
-    lua_pushstring(L, SteamInput()->GetStringForActionOrigin(eOrigin));
-    return 1;
-}
-
-// Manually implemented to handle bitflags
-// void SetLEDColor( InputHandle_t inputHandle, uint8 nColorR, uint8 nColorG, uint8 nColorB, unsigned int nFlags );
-EXTERN int luasteam_setLEDColor(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    uint8 nColorR = luaL_checkint(L, 2);
-    uint8 nColorG = luaL_checkint(L, 3);
-    uint8 nColorB = luaL_checkint(L, 4);
-    bool resetColor = lua_toboolean(L, 5);
-    SteamInput()->SetLEDColor(inputHandle, nColorR, nColorG, nColorB, resetColor ? k_ESteamControllerLEDFlag_RestoreUserDefault : k_ESteamControllerLEDFlag_SetColor);
-    return 0;
-}
-
-// Manually implemented to handle return value
-// bool ShowBindingPanel( InputHandle_t inputHandle );
-EXTERN int luasteam_showBindingPanel(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    lua_pushboolean(L, SteamInput()->ShowBindingPanel(inputHandle));
-    return 1;
-}
-
-// Manually implemented to use luaL_checkoption for string constants
-// void Legacy_TriggerHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec );
-EXTERN int luasteam_legacy_triggerHapticPulse(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
-    unsigned short usDurationMicroSec = luaL_checkint(L, 3);
-    SteamInput()->Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
-    return 0;
-}
-
-// Manually implemented to use luaL_checkoption for string constants
-// void Legacy_TriggerRepeatedHapticPulse( InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags );
-EXTERN int luasteam_legacy_triggerRepeatedHapticPulse(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkoption(L, 2, nullptr, steam_controller_pads));
-    unsigned short usDurationMicroSec = luaL_checkint(L, 3);
-    unsigned short usOffMicroSec = luaL_checkint(L, 4);
-    unsigned short unRepeat = luaL_checkint(L, 5);
-    SteamInput()->Legacy_TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, 0);
-    return 0;
-}
-
-// Manually implemented to handle return value
-// void TriggerVibration( InputHandle_t inputHandle, unsigned short usLeftSpeed, unsigned short usRightSpeed );
-EXTERN int luasteam_triggerVibration(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    unsigned short usLeftSpeed = luaL_checkint(L, 2);
-    unsigned short usRightSpeed = luaL_checkint(L, 3);
-    SteamInput()->TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed);
-    return 0;
-}
-
-// Manually implemented to use luaL_checkoption for string constants and map enum to string
-// EInputActionOrigin GetActionOriginFromXboxOrigin( InputHandle_t inputHandle, EXboxOrigin eOrigin );
-EXTERN int luasteam_getActionOriginFromXboxOrigin(lua_State *L) {
-    uint64 inputHandle = luasteam::checkuint64(L, 1);
-    EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkoption(L, 2, nullptr, xbox_origins));
-    lua_pushstring(L, input_action_origins[SteamInput()->GetActionOriginFromXboxOrigin(inputHandle, eOrigin)]);
-    return 1;
-}
-
-// Manually implemented to use luaL_checkoption for string constants and map enum to string
-// EInputActionOrigin TranslateActionOrigin( ESteamInputType eDestinationInputType, EInputActionOrigin eSourceOrigin );
-EXTERN int luasteam_translateActionOrigin(lua_State *L) {
-    ESteamInputType eDestinationInputType = static_cast<ESteamInputType>(luaL_checkoption(L, 1, nullptr, steam_input_types));
-    EInputActionOrigin eSourceOrigin = static_cast<EInputActionOrigin>(luaL_checkoption(L, 2, nullptr, input_action_origins));
-    lua_pushstring(L, input_action_origins[SteamInput()->TranslateActionOrigin(eDestinationInputType, eSourceOrigin)]);
     return 1;
 }
 
@@ -292,7 +147,7 @@ EXTERN int luasteam_getDeviceBindingRevision(lua_State *L) {
 namespace luasteam {
 
 void add_input(lua_State *L) {
-    lua_createtable(L, 0, 17);
+    lua_createtable(L, 0, 8);
     add_input_auto(L);
     add_func(L, "activateActionSet", luasteam_activateActionSet);
     add_func(L, "getActiveActionSetLayers", luasteam_getActiveActionSetLayers);
@@ -301,15 +156,6 @@ void add_input(lua_State *L) {
     add_func(L, "getConnectedControllers", luasteam_getConnectedControllers);
     add_func(L, "getDigitalActionData", luasteam_getDigitalActionData);
     add_func(L, "getDigitalActionOrigins", luasteam_getDigitalActionOrigins);
-    add_func(L, "getGlyphForActionOrigin_Legacy", luasteam_getGlyphForActionOrigin_Legacy);
-    add_func(L, "getInputTypeForHandle", luasteam_getInputTypeForHandle);
-    add_func(L, "getMotionData", luasteam_getMotionData);
-    add_func(L, "getStringForActionOrigin", luasteam_getStringForActionOrigin);
-    add_func(L, "setLEDColor", luasteam_setLEDColor);
-    add_func(L, "legacy_triggerHapticPulse", luasteam_legacy_triggerHapticPulse);
-    add_func(L, "legacy_triggerRepeatedHapticPulse", luasteam_legacy_triggerRepeatedHapticPulse);
-    add_func(L, "getActionOriginFromXboxOrigin", luasteam_getActionOriginFromXboxOrigin);
-    add_func(L, "translateActionOrigin", luasteam_translateActionOrigin);
     add_func(L, "getDeviceBindingRevision", luasteam_getDeviceBindingRevision);
     lua_setfield(L, -2, "input");
 }

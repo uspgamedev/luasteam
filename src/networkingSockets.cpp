@@ -1,6 +1,5 @@
 #include "networkingSockets.hpp"
 #include "auto/auto.hpp"
-#include "const.hpp"
 
 // ======================================
 // ======= SteamNetworkingSockets =======
@@ -12,10 +11,6 @@ typedef ISteamNetworkingSockets *(*SteamNetworkingSocketsLib)();
 SteamNetworkingSocketsLib steamNetworkingSocketsLib;
 
 namespace {
-
-const char *steam_networking_connection_state[] = {
-    "None", "Connecting", "FindingRoute", "Connected", "ClosedByPeer", "ProblemDetectedLocally", nullptr,
-};
 
 int sockets_ref = LUA_NOREF;
 
@@ -44,9 +39,9 @@ void connectionChanged(SteamNetConnectionStatusChangedCallback_t *data) {
         lua_pop(L, 2);
     } else {
         lua_createtable(L, 0, 1);
-        lua_pushstring(L, steam_networking_connection_state[data->m_info.m_eState]);
+        lua_pushinteger(L, data->m_info.m_eState);
         lua_setfield(L, -2, "state");
-        lua_pushstring(L, steam_networking_connection_state[data->m_eOldState]);
+        lua_pushinteger(L, data->m_eOldState);
         lua_setfield(L, -2, "state_old");
         lua_pushinteger(L, data->m_info.m_eEndReason);
         lua_setfield(L, -2, "endReason");
@@ -204,7 +199,7 @@ EXTERN int luasteam_connectP2P(lua_State *L) {
 EXTERN int luasteam_acceptConnection(lua_State *L) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
     EResult result = steamNetworkingSocketsLib()->AcceptConnection(hConn);
-    lua_pushstring(L, steam_result_code[result]);
+    lua_pushinteger(L, result);
     return 1;
 }
 
@@ -233,7 +228,7 @@ EXTERN int luasteam_sendMessageToConnection(lua_State *L) {
     const char *data = luaL_checklstring(L, 2, &len);
     int nSendFlags = luaL_checkinteger(L, 3);
     EResult result = steamNetworkingSocketsLib()->SendMessageToConnection(hConn, data, len, nSendFlags, nullptr);
-    lua_pushstring(L, steam_result_code[result]);
+    lua_pushinteger(L, result);
     return 1;
 }
 
@@ -284,7 +279,7 @@ EXTERN int luasteam_getConnectionInfo(lua_State *L) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
     SteamNetConnectionInfo_t *pInfo = new SteamNetConnectionInfo_t();
     bool result = steamNetworkingSocketsLib()->GetConnectionInfo(hConn, pInfo);
-    lua_pushstring(L, steam_result_code[result]);
+    lua_pushboolean(L, result);
     lua_pushstring(L, pInfo->m_szConnectionDescription);
     return 2;
 }
@@ -359,7 +354,7 @@ EXTERN int luasteam_receiveMessagesOnPollGroup(lua_State *L) {
 EXTERN int luasteam_flushMessagesOnConnection(lua_State *L) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
     EResult result = steamNetworkingSocketsLib()->FlushMessagesOnConnection(hConn);
-    lua_pushstring(L, steam_result_code[result]);
+    lua_pushinteger(L, result);
     return 1;
 }
 

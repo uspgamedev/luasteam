@@ -1,5 +1,24 @@
 #include "auto.hpp"
 
+// void SetTimelineGameMode(ETimelineGameMode eMode);
+EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_SetTimelineGameMode(lua_State *L) {
+    ETimelineGameMode eMode = static_cast<ETimelineGameMode>(luaL_checkint(L, 1));
+    SteamTimeline()->SetTimelineGameMode(eMode);
+    return 0;
+}
+
+// void UpdateRangeTimelineEvent(TimelineEventHandle_t ulEvent, const char * pchTitle, const char * pchDescription, const char * pchIcon, uint32 unPriority, ETimelineEventClipPriority ePossibleClip);
+EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_UpdateRangeTimelineEvent(lua_State *L) {
+    TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
+    const char *pchTitle = luaL_checkstring(L, 2);
+    const char *pchDescription = luaL_checkstring(L, 3);
+    const char *pchIcon = luaL_checkstring(L, 4);
+    uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 5));
+    ETimelineEventClipPriority ePossibleClip = static_cast<ETimelineEventClipPriority>(luaL_checkint(L, 6));
+    SteamTimeline()->UpdateRangeTimelineEvent(ulEvent, pchTitle, pchDescription, pchIcon, unPriority, ePossibleClip);
+    return 0;
+}
+
 // void RemoveTimelineEvent(TimelineEventHandle_t ulEvent);
 EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_RemoveTimelineEvent(lua_State *L) {
     TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
@@ -45,7 +64,7 @@ EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_AddGamePhaseTag(lua_State *
     const char *pchTagName = luaL_checkstring(L, 1);
     const char *pchTagIcon = luaL_checkstring(L, 2);
     const char *pchTagGroup = luaL_checkstring(L, 3);
-    uint32 unPriority = luaL_checkint(L, 4);
+    uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 4));
     SteamTimeline()->AddGamePhaseTag(pchTagName, pchTagIcon, pchTagGroup, unPriority);
     return 0;
 }
@@ -54,7 +73,7 @@ EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_AddGamePhaseTag(lua_State *
 EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_SetGamePhaseAttribute(lua_State *L) {
     const char *pchAttributeGroup = luaL_checkstring(L, 1);
     const char *pchAttributeValue = luaL_checkstring(L, 2);
-    uint32 unPriority = luaL_checkint(L, 3);
+    uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 3));
     SteamTimeline()->SetGamePhaseAttribute(pchAttributeGroup, pchAttributeValue, unPriority);
     return 0;
 }
@@ -69,6 +88,8 @@ EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_OpenOverlayToGamePhase(lua_
 namespace luasteam {
 
 void add_timeline_auto(lua_State *L) {
+    add_func(L, "setTimelineGameMode", luasteam_timeline_SteamAPI_ISteamTimeline_SetTimelineGameMode);
+    add_func(L, "updateRangeTimelineEvent", luasteam_timeline_SteamAPI_ISteamTimeline_UpdateRangeTimelineEvent);
     add_func(L, "removeTimelineEvent", luasteam_timeline_SteamAPI_ISteamTimeline_RemoveTimelineEvent);
     add_func(L, "doesEventRecordingExist", luasteam_timeline_SteamAPI_ISteamTimeline_DoesEventRecordingExist);
     add_func(L, "startGamePhase", luasteam_timeline_SteamAPI_ISteamTimeline_StartGamePhase);

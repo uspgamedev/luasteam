@@ -17,7 +17,7 @@ EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_CloseP2PSessionWithUser
 // bool CloseP2PChannelWithUser(CSteamID steamIDRemote, int nChannel);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_CloseP2PChannelWithUser(lua_State *L) {
     CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
-    int nChannel = luaL_checkint(L, 2);
+    int nChannel = static_cast<int>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamNetworking()->CloseP2PChannelWithUser(steamIDRemote, nChannel));
     return 1;
 }
@@ -32,8 +32,8 @@ EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_AllowP2PPacketRelay(lua
 // SNetSocket_t CreateP2PConnectionSocket(CSteamID steamIDTarget, int nVirtualPort, int nTimeoutSec, bool bAllowUseOfPacketRelay);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_CreateP2PConnectionSocket(lua_State *L) {
     CSteamID steamIDTarget(luasteam::checkuint64(L, 1));
-    int nVirtualPort = luaL_checkint(L, 2);
-    int nTimeoutSec = luaL_checkint(L, 3);
+    int nVirtualPort = static_cast<int>(luaL_checkint(L, 2));
+    int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
     bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);
     lua_pushinteger(L, SteamNetworking()->CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay));
     return 1;
@@ -41,7 +41,7 @@ EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_CreateP2PConnectionSock
 
 // bool DestroySocket(SNetSocket_t hSocket, bool bNotifyRemoteEnd);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_DestroySocket(lua_State *L) {
-    SNetSocket_t hSocket = luaL_checkint(L, 1);
+    SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
     bool bNotifyRemoteEnd = lua_toboolean(L, 2);
     lua_pushboolean(L, SteamNetworking()->DestroySocket(hSocket, bNotifyRemoteEnd));
     return 1;
@@ -49,15 +49,22 @@ EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_DestroySocket(lua_State
 
 // bool DestroyListenSocket(SNetListenSocket_t hSocket, bool bNotifyRemoteEnd);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_DestroyListenSocket(lua_State *L) {
-    SNetListenSocket_t hSocket = luaL_checkint(L, 1);
+    SNetListenSocket_t hSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
     bool bNotifyRemoteEnd = lua_toboolean(L, 2);
     lua_pushboolean(L, SteamNetworking()->DestroyListenSocket(hSocket, bNotifyRemoteEnd));
     return 1;
 }
 
+// ESNetSocketConnectionType GetSocketConnectionType(SNetSocket_t hSocket);
+EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_GetSocketConnectionType(lua_State *L) {
+    SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamNetworking()->GetSocketConnectionType(hSocket));
+    return 1;
+}
+
 // int GetMaxPacketSize(SNetSocket_t hSocket);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_GetMaxPacketSize(lua_State *L) {
-    SNetSocket_t hSocket = luaL_checkint(L, 1);
+    SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
     lua_pushinteger(L, SteamNetworking()->GetMaxPacketSize(hSocket));
     return 1;
 }
@@ -72,6 +79,7 @@ void add_networking_auto(lua_State *L) {
     add_func(L, "createP2PConnectionSocket", luasteam_networking_SteamAPI_ISteamNetworking_CreateP2PConnectionSocket);
     add_func(L, "destroySocket", luasteam_networking_SteamAPI_ISteamNetworking_DestroySocket);
     add_func(L, "destroyListenSocket", luasteam_networking_SteamAPI_ISteamNetworking_DestroyListenSocket);
+    add_func(L, "getSocketConnectionType", luasteam_networking_SteamAPI_ISteamNetworking_GetSocketConnectionType);
     add_func(L, "getMaxPacketSize", luasteam_networking_SteamAPI_ISteamNetworking_GetMaxPacketSize);
 }
 

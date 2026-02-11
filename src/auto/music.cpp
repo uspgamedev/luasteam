@@ -12,6 +12,12 @@ EXTERN int luasteam_music_SteamAPI_ISteamMusic_BIsPlaying(lua_State *L) {
     return 1;
 }
 
+// AudioPlayback_Status GetPlaybackStatus();
+EXTERN int luasteam_music_SteamAPI_ISteamMusic_GetPlaybackStatus(lua_State *L) {
+    lua_pushinteger(L, SteamMusic()->GetPlaybackStatus());
+    return 1;
+}
+
 // void Play();
 EXTERN int luasteam_music_SteamAPI_ISteamMusic_Play(lua_State *L) {
     SteamMusic()->Play();
@@ -41,6 +47,7 @@ namespace luasteam {
 void add_music_auto(lua_State *L) {
     add_func(L, "isEnabled", luasteam_music_SteamAPI_ISteamMusic_BIsEnabled);
     add_func(L, "isPlaying", luasteam_music_SteamAPI_ISteamMusic_BIsPlaying);
+    add_func(L, "getPlaybackStatus", luasteam_music_SteamAPI_ISteamMusic_GetPlaybackStatus);
     add_func(L, "play", luasteam_music_SteamAPI_ISteamMusic_Play);
     add_func(L, "pause", luasteam_music_SteamAPI_ISteamMusic_Pause);
     add_func(L, "playPrevious", luasteam_music_SteamAPI_ISteamMusic_PlayPrevious);

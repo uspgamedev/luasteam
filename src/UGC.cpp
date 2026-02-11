@@ -15,14 +15,6 @@ const char *update_status[] = {
     "Invalid", "PreparingConfig", "PreparingContent", "UploadingContent", "UploadingPreviewFile", "CommittingChanges",
 };
 
-const char *workshop_file_types[] = {
-    "Community", "Microtransaction", "Collection", "Art", "Video", "Screenshot", "WebGuide", "IntegratedGuide", "Merch", "ControllerBinding", "SteamVideo", "GameManagedItem", nullptr,
-};
-
-const EWorkshopFileType file_type_to_enum[] = {
-    k_EWorkshopFileTypeCommunity, k_EWorkshopFileTypeMicrotransaction, k_EWorkshopFileTypeCollection, k_EWorkshopFileTypeArt, k_EWorkshopFileTypeVideo, k_EWorkshopFileTypeScreenshot, k_EWorkshopFileTypeWebGuide, k_EWorkshopFileTypeIntegratedGuide, k_EWorkshopFileTypeMerch, k_EWorkshopFileTypeControllerBinding, k_EWorkshopFileTypeSteamVideo, k_EWorkshopFileTypeGameManagedItem,
-};
-
 } // namespace
 
 namespace luasteam {
@@ -142,7 +134,7 @@ template <> void CallResultListener<RemoteStorageUnsubscribePublishedFileResult_
 // SteamAPICall_t CreateItem( AppId_t nConsumerAppId, EWorkshopFileType eFileType );
 EXTERN int luasteam_createItem(lua_State *L) {
     int consumerAppID = luaL_checkint(L, 1);
-    EWorkshopFileType fileType = file_type_to_enum[luaL_checkoption(L, 2, nullptr, workshop_file_types)];
+    EWorkshopFileType fileType = static_cast<EWorkshopFileType>(luaL_checkint(L, 2));
     luaL_checktype(L, 3, LUA_TFUNCTION);
     auto *listener = new CallResultListener<CreateItemResult_t>();
     lua_settop(L, 3);

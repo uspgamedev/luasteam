@@ -13,11 +13,6 @@ class CallbackListener;
 CallbackListener *callback_listener = nullptr;
 int userStats_ref = LUA_NOREF;
 
-const char *sort_methods[] = {"Ascending", "Descending", nullptr};
-const char *display_types[] = {"Numeric", "TimeSeconds", "TimeMilliSeconds", nullptr};
-const char *upload_methods[] = {"KeepBest", "ForceUpdate", nullptr};
-const char *data_requests[] = {"Global", "GlobalAroundUser", "Friends", nullptr};
-
 class CallbackListener {
   private:
     STEAM_CALLBACK(CallbackListener, OnUserStatsReceived, UserStatsReceived_t);
@@ -270,48 +265,40 @@ EXTERN int luasteam_findLeaderboard(lua_State *L) {
     return 0;
 }
 
-// Manually implemented to handle CallResult and use luaL_checkoption for string constants
+// Manually implemented to handle CallResult
 // SteamAPICall_t FindOrCreateLeaderboard( const char *pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType eLeaderboardDisplayType );
 EXTERN int luasteam_findOrCreateLeaderboard(lua_State *L) {
     const char *name = luaL_checkstring(L, 1);
-    int sort_method = luaL_checkoption(L, 2, nullptr, sort_methods) + 1;
-    int display_type = luaL_checkoption(L, 3, nullptr, display_types) + 1;
+    ELeaderboardSortMethod sort_method = static_cast<ELeaderboardSortMethod>(luaL_checkint(L, 2));
+    ELeaderboardDisplayType display_type = static_cast<ELeaderboardDisplayType>(luaL_checkint(L, 3));
     luaL_checktype(L, 4, LUA_TFUNCTION);
     auto *listener = new CallResultListener<LeaderboardFindResult_t>();
     listener->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    SteamAPICall_t call = SteamUserStats()->FindOrCreateLeaderboard(name, static_cast<ELeaderboardSortMethod>(sort_method), static_cast<ELeaderboardDisplayType>(display_type));
+    SteamAPICall_t call = SteamUserStats()->FindOrCreateLeaderboard(name, sort_method, display_type);
     listener->call_result.Set(call, listener, &CallResultListener<LeaderboardFindResult_t>::Result);
     return 0;
 }
 
-// Manually implemented to map enum to string
-// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+// Manually implemented to map enum to integer
+// ELeaderboardDisplayType GetLeaderboardDisplayType( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardDisplayType(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
     ELeaderboardDisplayType m = SteamUserStats()->GetLeaderboardDisplayType(leaderboard);
-    if (m == k_ELeaderboardDisplayTypeNone) {
-        lua_pushnil(L);
-    } else {
-        lua_pushstring(L, display_types[static_cast<int>(m) - 1]);
-    }
+    lua_pushinteger(L, m);
     return 1;
 }
 
-// Manually implemented to map enum to string
+// Manually implemented to map enum to integer
 // ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardSortMethod(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
     ELeaderboardSortMethod m = SteamUserStats()->GetLeaderboardSortMethod(leaderboard);
-    if (m == k_ELeaderboardSortMethodNone) {
-        lua_pushnil(L);
-    } else {
-        lua_pushstring(L, sort_methods[static_cast<int>(m) - 1]);
-    }
+    lua_pushinteger(L, m);
     return 1;
 }
 
 // Manually implemented to handle null return value
-// ELeaderboardSortMethod GetLeaderboardSortMethod( SteamLeaderboard_t hSteamLeaderboard );
+// const char * GetLeaderboardName( SteamLeaderboard_t hSteamLeaderboard );
 EXTERN int luasteam_getLeaderboardName(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
     const char *name = SteamUserStats()->GetLeaderboardName(leaderboard);
@@ -326,7 +313,7 @@ EXTERN int luasteam_getLeaderboardName(lua_State *L) {
 // Manually implemented to handle CallResult and buffer handling
 EXTERN int luasteam_uploadLeaderboardScore(lua_State *L) {
     SteamLeaderboard_t leaderboard = luasteam::checkuint64(L, 1);
-    ELeaderboardUploadScoreMethod upload_method = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkoption(L, 2, nullptr, upload_methods) + 1);
+    ELeaderboardUploadScoreMethod upload_method = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkint(L, 2));
     int32 score = luaL_checkint(L, 3);
     size_t size;
     const char *data = luaL_optlstring(L, 4, nullptr, &size);
@@ -343,10 +330,10 @@ EXTERN int luasteam_uploadLeaderboardScore(lua_State *L) {
     return 0;
 }
 
-// Manually implemented to handle CallResult and use luaL_checkoption for string constants
+// Manually implemented to handle CallResult
 EXTERN int luasteam_downloadLeaderboardEntries(lua_State *L) {
     SteamLeaderboard_t handle = luasteam::checkuint64(L, 1);
-    ELeaderboardDataRequest data_request = static_cast<ELeaderboardDataRequest>(luaL_checkoption(L, 2, nullptr, data_requests));
+    ELeaderboardDataRequest data_request = static_cast<ELeaderboardDataRequest>(luaL_checkint(L, 2));
     int start = 0, end = 0;
     if (data_request != k_ELeaderboardDataRequestFriends) {
         start = luaL_checkint(L, 3);

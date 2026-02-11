@@ -2,14 +2,14 @@
 
 // void GetVideoURL(AppId_t unVideoAppID);
 EXTERN int luasteam_video_SteamAPI_ISteamVideo_GetVideoURL(lua_State *L) {
-    AppId_t unVideoAppID = luaL_checkint(L, 1);
+    AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     SteamVideo()->GetVideoURL(unVideoAppID);
     return 0;
 }
 
 // void GetOPFSettings(AppId_t unVideoAppID);
 EXTERN int luasteam_video_SteamAPI_ISteamVideo_GetOPFSettings(lua_State *L) {
-    AppId_t unVideoAppID = luaL_checkint(L, 1);
+    AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
     SteamVideo()->GetOPFSettings(unVideoAppID);
     return 0;
 }

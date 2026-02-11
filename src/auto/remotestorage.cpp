@@ -3,8 +3,8 @@
 // SteamAPICall_t FileReadAsync(const char * pchFile, uint32 nOffset, uint32 cubToRead);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileReadAsync(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    uint32 nOffset = luaL_checkint(L, 2);
-    uint32 cubToRead = luaL_checkint(L, 3);
+    uint32 nOffset = static_cast<uint32>(luaL_checkint(L, 2));
+    uint32 cubToRead = static_cast<uint32>(luaL_checkint(L, 3));
     luasteam::pushuint64(L, SteamRemoteStorage()->FileReadAsync(pchFile, nOffset, cubToRead));
     return 1;
 }
@@ -27,6 +27,14 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileDelete(lua_St
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileShare(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
     luasteam::pushuint64(L, SteamRemoteStorage()->FileShare(pchFile));
+    return 1;
+}
+
+// bool SetSyncPlatforms(const char * pchFile, ERemoteStoragePlatform eRemoteStoragePlatform);
+EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SetSyncPlatforms(lua_State *L) {
+    const char *pchFile = luaL_checkstring(L, 1);
+    ERemoteStoragePlatform eRemoteStoragePlatform = static_cast<ERemoteStoragePlatform>(luaL_checkint(L, 2));
+    lua_pushboolean(L, SteamRemoteStorage()->SetSyncPlatforms(pchFile, eRemoteStoragePlatform));
     return 1;
 }
 
@@ -72,6 +80,13 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetFileSize(lua_S
     return 1;
 }
 
+// ERemoteStoragePlatform GetSyncPlatforms(const char * pchFile);
+EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetSyncPlatforms(lua_State *L) {
+    const char *pchFile = luaL_checkstring(L, 1);
+    lua_pushinteger(L, SteamRemoteStorage()->GetSyncPlatforms(pchFile));
+    return 1;
+}
+
 // int32 GetFileCount();
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetFileCount(lua_State *L) {
     lua_pushinteger(L, SteamRemoteStorage()->GetFileCount());
@@ -100,7 +115,7 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SetCloudEnabledFo
 // SteamAPICall_t UGCDownload(UGCHandle_t hContent, uint32 unPriority);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UGCDownload(lua_State *L) {
     UGCHandle_t hContent = luasteam::checkuint64(L, 1);
-    uint32 unPriority = luaL_checkint(L, 2);
+    uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamRemoteStorage()->UGCDownload(hContent, unPriority));
     return 1;
 }
@@ -113,7 +128,7 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetCachedUGCCount
 
 // UGCHandle_t GetCachedUGCHandle(int32 iCachedContent);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetCachedUGCHandle(lua_State *L) {
-    int32 iCachedContent = luaL_checkint(L, 1);
+    int32 iCachedContent = static_cast<int32>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamRemoteStorage()->GetCachedUGCHandle(iCachedContent));
     return 1;
 }
@@ -157,6 +172,14 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFi
     return 1;
 }
 
+// bool UpdatePublishedFileVisibility(PublishedFileUpdateHandle_t updateHandle, ERemoteStoragePublishedFileVisibility eVisibility);
+EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFileVisibility(lua_State *L) {
+    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 2));
+    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileVisibility(updateHandle, eVisibility));
+    return 1;
+}
+
 // SteamAPICall_t CommitPublishedFileUpdate(PublishedFileUpdateHandle_t updateHandle);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_CommitPublishedFileUpdate(lua_State *L) {
     PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
@@ -167,7 +190,7 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_CommitPublishedFi
 // SteamAPICall_t GetPublishedFileDetails(PublishedFileId_t unPublishedFileId, uint32 unMaxSecondsOld);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetPublishedFileDetails(lua_State *L) {
     PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    uint32 unMaxSecondsOld = luaL_checkint(L, 2);
+    uint32 unMaxSecondsOld = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamRemoteStorage()->GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld));
     return 1;
 }
@@ -181,7 +204,7 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_DeletePublishedFi
 
 // SteamAPICall_t EnumerateUserPublishedFiles(uint32 unStartIndex);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_EnumerateUserPublishedFiles(lua_State *L) {
-    uint32 unStartIndex = luaL_checkint(L, 1);
+    uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamRemoteStorage()->EnumerateUserPublishedFiles(unStartIndex));
     return 1;
 }
@@ -195,7 +218,7 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SubscribePublishe
 
 // SteamAPICall_t EnumerateUserSubscribedFiles(uint32 unStartIndex);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_EnumerateUserSubscribedFiles(lua_State *L) {
-    uint32 unStartIndex = luaL_checkint(L, 1);
+    uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamRemoteStorage()->EnumerateUserSubscribedFiles(unStartIndex));
     return 1;
 }
@@ -237,11 +260,27 @@ EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetUserPublishedI
     return 1;
 }
 
+// SteamAPICall_t SetUserPublishedFileAction(PublishedFileId_t unPublishedFileId, EWorkshopFileAction eAction);
+EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SetUserPublishedFileAction(lua_State *L) {
+    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
+    EWorkshopFileAction eAction = static_cast<EWorkshopFileAction>(luaL_checkint(L, 2));
+    luasteam::pushuint64(L, SteamRemoteStorage()->SetUserPublishedFileAction(unPublishedFileId, eAction));
+    return 1;
+}
+
+// SteamAPICall_t EnumeratePublishedFilesByUserAction(EWorkshopFileAction eAction, uint32 unStartIndex);
+EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_EnumeratePublishedFilesByUserAction(lua_State *L) {
+    EWorkshopFileAction eAction = static_cast<EWorkshopFileAction>(luaL_checkint(L, 1));
+    uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
+    luasteam::pushuint64(L, SteamRemoteStorage()->EnumeratePublishedFilesByUserAction(eAction, unStartIndex));
+    return 1;
+}
+
 // SteamAPICall_t UGCDownloadToLocation(UGCHandle_t hContent, const char * pchLocation, uint32 unPriority);
 EXTERN int luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UGCDownloadToLocation(lua_State *L) {
     UGCHandle_t hContent = luasteam::checkuint64(L, 1);
     const char *pchLocation = luaL_checkstring(L, 2);
-    uint32 unPriority = luaL_checkint(L, 3);
+    uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 3));
     luasteam::pushuint64(L, SteamRemoteStorage()->UGCDownloadToLocation(hContent, pchLocation, unPriority));
     return 1;
 }
@@ -271,12 +310,14 @@ void add_remotestorage_auto(lua_State *L) {
     add_func(L, "fileForget", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileForget);
     add_func(L, "fileDelete", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileDelete);
     add_func(L, "fileShare", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileShare);
+    add_func(L, "setSyncPlatforms", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SetSyncPlatforms);
     add_func(L, "fileWriteStreamOpen", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileWriteStreamOpen);
     add_func(L, "fileWriteStreamClose", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileWriteStreamClose);
     add_func(L, "fileWriteStreamCancel", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileWriteStreamCancel);
     add_func(L, "fileExists", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FileExists);
     add_func(L, "filePersisted", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_FilePersisted);
     add_func(L, "getFileSize", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetFileSize);
+    add_func(L, "getSyncPlatforms", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetSyncPlatforms);
     add_func(L, "getFileCount", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetFileCount);
     add_func(L, "isCloudEnabledForAccount", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_IsCloudEnabledForAccount);
     add_func(L, "isCloudEnabledForApp", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_IsCloudEnabledForApp);
@@ -289,6 +330,7 @@ void add_remotestorage_auto(lua_State *L) {
     add_func(L, "updatePublishedFilePreviewFile", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFilePreviewFile);
     add_func(L, "updatePublishedFileTitle", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFileTitle);
     add_func(L, "updatePublishedFileDescription", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFileDescription);
+    add_func(L, "updatePublishedFileVisibility", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdatePublishedFileVisibility);
     add_func(L, "commitPublishedFileUpdate", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_CommitPublishedFileUpdate);
     add_func(L, "getPublishedFileDetails", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetPublishedFileDetails);
     add_func(L, "deletePublishedFile", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_DeletePublishedFile);
@@ -300,6 +342,8 @@ void add_remotestorage_auto(lua_State *L) {
     add_func(L, "getPublishedItemVoteDetails", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetPublishedItemVoteDetails);
     add_func(L, "updateUserPublishedItemVote", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UpdateUserPublishedItemVote);
     add_func(L, "getUserPublishedItemVoteDetails", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetUserPublishedItemVoteDetails);
+    add_func(L, "setUserPublishedFileAction", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_SetUserPublishedFileAction);
+    add_func(L, "enumeratePublishedFilesByUserAction", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_EnumeratePublishedFilesByUserAction);
     add_func(L, "uGCDownloadToLocation", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_UGCDownloadToLocation);
     add_func(L, "getLocalFileChangeCount", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_GetLocalFileChangeCount);
     add_func(L, "beginFileWriteBatch", luasteam_remotestorage_SteamAPI_ISteamRemoteStorage_BeginFileWriteBatch);

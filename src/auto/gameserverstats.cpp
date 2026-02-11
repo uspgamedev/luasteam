@@ -12,7 +12,7 @@ EXTERN int luasteam_gameserverstats_SteamAPI_ISteamGameServerStats_RequestUserSt
 EXTERN int luasteam_gameserverstats_SteamAPI_ISteamGameServerStats_SetUserStatInt32(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
     const char *pchName = luaL_checkstring(L, 2);
-    int32 nData = luaL_checkint(L, 3);
+    int32 nData = static_cast<int32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamGameServerStats()->SetUserStat(steamIDUser, pchName, nData));
     return 1;
 }

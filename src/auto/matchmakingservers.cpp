@@ -2,7 +2,7 @@
 
 // void CancelServerQuery(HServerQuery hServerQuery);
 EXTERN int luasteam_matchmakingservers_SteamAPI_ISteamMatchmakingServers_CancelServerQuery(lua_State *L) {
-    HServerQuery hServerQuery = luaL_checkint(L, 1);
+    HServerQuery hServerQuery = static_cast<HServerQuery>(luaL_checkint(L, 1));
     SteamMatchmakingServers()->CancelServerQuery(hServerQuery);
     return 0;
 }

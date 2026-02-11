@@ -74,14 +74,14 @@ EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_WasRestartRequested(lua
 
 // void SetMaxPlayerCount(int cPlayersMax);
 EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_SetMaxPlayerCount(lua_State *L) {
-    int cPlayersMax = luaL_checkint(L, 1);
+    int cPlayersMax = static_cast<int>(luaL_checkint(L, 1));
     SteamGameServer()->SetMaxPlayerCount(cPlayersMax);
     return 0;
 }
 
 // void SetBotPlayerCount(int cBotplayers);
 EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_SetBotPlayerCount(lua_State *L) {
-    int cBotplayers = luaL_checkint(L, 1);
+    int cBotplayers = static_cast<int>(luaL_checkint(L, 1));
     SteamGameServer()->SetBotPlayerCount(cBotplayers);
     return 0;
 }
@@ -109,7 +109,7 @@ EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_SetPasswordProtected(lu
 
 // void SetSpectatorPort(uint16 unSpectatorPort);
 EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_SetSpectatorPort(lua_State *L) {
-    uint16 unSpectatorPort = luaL_checkint(L, 1);
+    uint16 unSpectatorPort = static_cast<uint16>(luaL_checkint(L, 1));
     SteamGameServer()->SetSpectatorPort(unSpectatorPort);
     return 0;
 }
@@ -172,9 +172,17 @@ EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_EndAuthSession(lua_Stat
 
 // void CancelAuthTicket(HAuthTicket hAuthTicket);
 EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_CancelAuthTicket(lua_State *L) {
-    HAuthTicket hAuthTicket = luaL_checkint(L, 1);
+    HAuthTicket hAuthTicket = static_cast<HAuthTicket>(luaL_checkint(L, 1));
     SteamGameServer()->CancelAuthTicket(hAuthTicket);
     return 0;
+}
+
+// EUserHasLicenseForAppResult UserHasLicenseForApp(CSteamID steamID, AppId_t appID);
+EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_UserHasLicenseForApp(lua_State *L) {
+    CSteamID steamID(luasteam::checkuint64(L, 1));
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
+    lua_pushinteger(L, SteamGameServer()->UserHasLicenseForApp(steamID, appID));
+    return 1;
 }
 
 // bool RequestUserGroupStatus(CSteamID steamIDUser, CSteamID steamIDGroup);
@@ -228,7 +236,7 @@ EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_SendUserDisconnect_DEPR
 EXTERN int luasteam_gameserver_SteamAPI_ISteamGameServer_BUpdateUserData(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
     const char *pchPlayerName = luaL_checkstring(L, 2);
-    uint32 uScore = luaL_checkint(L, 3);
+    uint32 uScore = static_cast<uint32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamGameServer()->BUpdateUserData(steamIDUser, pchPlayerName, uScore));
     return 1;
 }
@@ -262,6 +270,7 @@ void add_gameserver_auto(lua_State *L) {
     add_func(L, "setAdvertiseServerActive", luasteam_gameserver_SteamAPI_ISteamGameServer_SetAdvertiseServerActive);
     add_func(L, "endAuthSession", luasteam_gameserver_SteamAPI_ISteamGameServer_EndAuthSession);
     add_func(L, "cancelAuthTicket", luasteam_gameserver_SteamAPI_ISteamGameServer_CancelAuthTicket);
+    add_func(L, "userHasLicenseForApp", luasteam_gameserver_SteamAPI_ISteamGameServer_UserHasLicenseForApp);
     add_func(L, "requestUserGroupStatus", luasteam_gameserver_SteamAPI_ISteamGameServer_RequestUserGroupStatus);
     add_func(L, "getGameplayStats", luasteam_gameserver_SteamAPI_ISteamGameServer_GetGameplayStats);
     add_func(L, "getServerReputation", luasteam_gameserver_SteamAPI_ISteamGameServer_GetServerReputation);

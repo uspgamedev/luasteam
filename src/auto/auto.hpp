@@ -5,6 +5,7 @@
 
 namespace luasteam {
 
+void add_enums_auto(lua_State *L);
 void add_user_auto(lua_State *L);
 void add_friends_auto(lua_State *L);
 void add_utils_auto(lua_State *L);

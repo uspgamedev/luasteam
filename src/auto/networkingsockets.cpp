@@ -1,9 +1,16 @@
 #include "auto.hpp"
 
+// EResult AcceptConnection(HSteamNetConnection hConn);
+EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_AcceptConnection(lua_State *L) {
+    HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamNetworkingSockets()->AcceptConnection(hConn));
+    return 1;
+}
+
 // bool CloseConnection(HSteamNetConnection hPeer, int nReason, const char * pszDebug, bool bEnableLinger);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CloseConnection(lua_State *L) {
-    HSteamNetConnection hPeer = luaL_checkint(L, 1);
-    int nReason = luaL_checkint(L, 2);
+    HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+    int nReason = static_cast<int>(luaL_checkint(L, 2));
     const char *pszDebug = luaL_checkstring(L, 3);
     bool bEnableLinger = lua_toboolean(L, 4);
     lua_pushboolean(L, SteamNetworkingSockets()->CloseConnection(hPeer, nReason, pszDebug, bEnableLinger));
@@ -12,17 +19,30 @@ EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CloseConn
 
 // bool CloseListenSocket(HSteamListenSocket hSocket);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CloseListenSocket(lua_State *L) {
-    HSteamListenSocket hSocket = luaL_checkint(L, 1);
+    HSteamListenSocket hSocket = static_cast<HSteamListenSocket>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamNetworkingSockets()->CloseListenSocket(hSocket));
     return 1;
 }
 
 // void SetConnectionName(HSteamNetConnection hPeer, const char * pszName);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_SetConnectionName(lua_State *L) {
-    HSteamNetConnection hPeer = luaL_checkint(L, 1);
+    HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
     const char *pszName = luaL_checkstring(L, 2);
     SteamNetworkingSockets()->SetConnectionName(hPeer, pszName);
     return 0;
+}
+
+// EResult FlushMessagesOnConnection(HSteamNetConnection hConn);
+EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_FlushMessagesOnConnection(lua_State *L) {
+    HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamNetworkingSockets()->FlushMessagesOnConnection(hConn));
+    return 1;
+}
+
+// ESteamNetworkingAvailability InitAuthentication();
+EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_InitAuthentication(lua_State *L) {
+    lua_pushinteger(L, SteamNetworkingSockets()->InitAuthentication());
+    return 1;
 }
 
 // HSteamNetPollGroup CreatePollGroup();
@@ -33,15 +53,15 @@ EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CreatePol
 
 // bool DestroyPollGroup(HSteamNetPollGroup hPollGroup);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_DestroyPollGroup(lua_State *L) {
-    HSteamNetPollGroup hPollGroup = luaL_checkint(L, 1);
+    HSteamNetPollGroup hPollGroup = static_cast<HSteamNetPollGroup>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamNetworkingSockets()->DestroyPollGroup(hPollGroup));
     return 1;
 }
 
 // bool SetConnectionPollGroup(HSteamNetConnection hConn, HSteamNetPollGroup hPollGroup);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_SetConnectionPollGroup(lua_State *L) {
-    HSteamNetConnection hConn = luaL_checkint(L, 1);
-    HSteamNetPollGroup hPollGroup = luaL_checkint(L, 2);
+    HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+    HSteamNetPollGroup hPollGroup = static_cast<HSteamNetPollGroup>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamNetworkingSockets()->SetConnectionPollGroup(hConn, hPollGroup));
     return 1;
 }
@@ -66,7 +86,7 @@ EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_RunCallba
 
 // bool BeginAsyncRequestFakeIP(int nNumPorts);
 EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_BeginAsyncRequestFakeIP(lua_State *L) {
-    int nNumPorts = luaL_checkint(L, 1);
+    int nNumPorts = static_cast<int>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamNetworkingSockets()->BeginAsyncRequestFakeIP(nNumPorts));
     return 1;
 }
@@ -74,9 +94,12 @@ EXTERN int luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_BeginAsyn
 namespace luasteam {
 
 void add_networkingsockets_auto(lua_State *L) {
+    add_func(L, "acceptConnection", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_AcceptConnection);
     add_func(L, "closeConnection", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CloseConnection);
     add_func(L, "closeListenSocket", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CloseListenSocket);
     add_func(L, "setConnectionName", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_SetConnectionName);
+    add_func(L, "flushMessagesOnConnection", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_FlushMessagesOnConnection);
+    add_func(L, "initAuthentication", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_InitAuthentication);
     add_func(L, "createPollGroup", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_CreatePollGroup);
     add_func(L, "destroyPollGroup", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_DestroyPollGroup);
     add_func(L, "setConnectionPollGroup", luasteam_networkingsockets_SteamAPI_ISteamNetworkingSockets_SetConnectionPollGroup);

@@ -8,7 +8,7 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_GetNumActiveBeacons(lua_State
 
 // PartyBeaconID_t GetBeaconByIndex(uint32 unIndex);
 EXTERN int luasteam_parties_SteamAPI_ISteamParties_GetBeaconByIndex(lua_State *L) {
-    uint32 unIndex = luaL_checkint(L, 1);
+    uint32 unIndex = static_cast<uint32>(luaL_checkint(L, 1));
     luasteam::pushuint64(L, SteamParties()->GetBeaconByIndex(unIndex));
     return 1;
 }
@@ -39,7 +39,7 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_CancelReservation(lua_State *
 // SteamAPICall_t ChangeNumOpenSlots(PartyBeaconID_t ulBeacon, uint32 unOpenSlots);
 EXTERN int luasteam_parties_SteamAPI_ISteamParties_ChangeNumOpenSlots(lua_State *L) {
     PartyBeaconID_t ulBeacon = luasteam::checkuint64(L, 1);
-    uint32 unOpenSlots = luaL_checkint(L, 2);
+    uint32 unOpenSlots = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamParties()->ChangeNumOpenSlots(ulBeacon, unOpenSlots));
     return 1;
 }

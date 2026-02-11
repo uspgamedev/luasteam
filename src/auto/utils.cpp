@@ -12,6 +12,12 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceComputerActive(lua
     return 1;
 }
 
+// EUniverse GetConnectedUniverse();
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetConnectedUniverse(lua_State *L) {
+    lua_pushinteger(L, SteamUtils()->GetConnectedUniverse());
+    return 1;
+}
+
 // uint32 GetServerRealTime();
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetServerRealTime(lua_State *L) {
     lua_pushinteger(L, SteamUtils()->GetServerRealTime());
@@ -33,6 +39,20 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetCurrentBatteryPower(lua_State 
 // uint32 GetAppID();
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetAppID(lua_State *L) {
     lua_pushinteger(L, SteamUtils()->GetAppID());
+    return 1;
+}
+
+// void SetOverlayNotificationPosition(ENotificationPosition eNotificationPosition);
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_SetOverlayNotificationPosition(lua_State *L) {
+    ENotificationPosition eNotificationPosition = static_cast<ENotificationPosition>(luaL_checkint(L, 1));
+    SteamUtils()->SetOverlayNotificationPosition(eNotificationPosition);
+    return 0;
+}
+
+// ESteamAPICallFailure GetAPICallFailureReason(SteamAPICall_t hSteamAPICall);
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetAPICallFailureReason(lua_State *L) {
+    SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
+    lua_pushinteger(L, SteamUtils()->GetAPICallFailureReason(hSteamAPICall));
     return 1;
 }
 
@@ -61,6 +81,17 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_CheckFileSignature(lua_State *L) 
     return 1;
 }
 
+// bool ShowGamepadTextInput(EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char * pchDescription, uint32 unCharMax, const char * pchExistingText);
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_ShowGamepadTextInput(lua_State *L) {
+    EGamepadTextInputMode eInputMode = static_cast<EGamepadTextInputMode>(luaL_checkint(L, 1));
+    EGamepadTextInputLineMode eLineInputMode = static_cast<EGamepadTextInputLineMode>(luaL_checkint(L, 2));
+    const char *pchDescription = luaL_checkstring(L, 3);
+    uint32 unCharMax = static_cast<uint32>(luaL_checkint(L, 4));
+    const char *pchExistingText = luaL_checkstring(L, 5);
+    lua_pushboolean(L, SteamUtils()->ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText));
+    return 1;
+}
+
 // uint32 GetEnteredGamepadTextLength();
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetEnteredGamepadTextLength(lua_State *L) {
     lua_pushinteger(L, SteamUtils()->GetEnteredGamepadTextLength());
@@ -81,8 +112,8 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_IsSteamRunningInVR(lua_State *L) 
 
 // void SetOverlayNotificationInset(int nHorizontalInset, int nVerticalInset);
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_SetOverlayNotificationInset(lua_State *L) {
-    int nHorizontalInset = luaL_checkint(L, 1);
-    int nVerticalInset = luaL_checkint(L, 2);
+    int nHorizontalInset = static_cast<int>(luaL_checkint(L, 1));
+    int nVerticalInset = static_cast<int>(luaL_checkint(L, 2));
     SteamUtils()->SetOverlayNotificationInset(nHorizontalInset, nVerticalInset);
     return 0;
 }
@@ -120,14 +151,32 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_IsSteamChinaLauncher(lua_State *L
 
 // bool InitFilterText(uint32 unFilterOptions);
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_InitFilterText(lua_State *L) {
-    uint32 unFilterOptions = luaL_checkint(L, 1);
+    uint32 unFilterOptions = static_cast<uint32>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamUtils()->InitFilterText(unFilterOptions));
+    return 1;
+}
+
+// ESteamIPv6ConnectivityState GetIPv6ConnectivityState(ESteamIPv6ConnectivityProtocol eProtocol);
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetIPv6ConnectivityState(lua_State *L) {
+    ESteamIPv6ConnectivityProtocol eProtocol = static_cast<ESteamIPv6ConnectivityProtocol>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamUtils()->GetIPv6ConnectivityState(eProtocol));
     return 1;
 }
 
 // bool IsSteamRunningOnSteamDeck();
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_IsSteamRunningOnSteamDeck(lua_State *L) {
     lua_pushboolean(L, SteamUtils()->IsSteamRunningOnSteamDeck());
+    return 1;
+}
+
+// bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+EXTERN int luasteam_utils_SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput(lua_State *L) {
+    EFloatingGamepadTextInputMode eKeyboardMode = static_cast<EFloatingGamepadTextInputMode>(luaL_checkint(L, 1));
+    int nTextFieldXPosition = static_cast<int>(luaL_checkint(L, 2));
+    int nTextFieldYPosition = static_cast<int>(luaL_checkint(L, 3));
+    int nTextFieldWidth = static_cast<int>(luaL_checkint(L, 4));
+    int nTextFieldHeight = static_cast<int>(luaL_checkint(L, 5));
+    lua_pushboolean(L, SteamUtils()->ShowFloatingGamepadTextInput(eKeyboardMode, nTextFieldXPosition, nTextFieldYPosition, nTextFieldWidth, nTextFieldHeight));
     return 1;
 }
 
@@ -155,14 +204,18 @@ namespace luasteam {
 void add_utils_auto(lua_State *L) {
     add_func(L, "getSecondsSinceAppActive", luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceAppActive);
     add_func(L, "getSecondsSinceComputerActive", luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceComputerActive);
+    add_func(L, "getConnectedUniverse", luasteam_utils_SteamAPI_ISteamUtils_GetConnectedUniverse);
     add_func(L, "getServerRealTime", luasteam_utils_SteamAPI_ISteamUtils_GetServerRealTime);
     add_func(L, "getIPCountry", luasteam_utils_SteamAPI_ISteamUtils_GetIPCountry);
     add_func(L, "getCurrentBatteryPower", luasteam_utils_SteamAPI_ISteamUtils_GetCurrentBatteryPower);
     add_func(L, "getAppID", luasteam_utils_SteamAPI_ISteamUtils_GetAppID);
+    add_func(L, "setOverlayNotificationPosition", luasteam_utils_SteamAPI_ISteamUtils_SetOverlayNotificationPosition);
+    add_func(L, "getAPICallFailureReason", luasteam_utils_SteamAPI_ISteamUtils_GetAPICallFailureReason);
     add_func(L, "getIPCCallCount", luasteam_utils_SteamAPI_ISteamUtils_GetIPCCallCount);
     add_func(L, "isOverlayEnabled", luasteam_utils_SteamAPI_ISteamUtils_IsOverlayEnabled);
     add_func(L, "overlayNeedsPresent", luasteam_utils_SteamAPI_ISteamUtils_BOverlayNeedsPresent);
     add_func(L, "checkFileSignature", luasteam_utils_SteamAPI_ISteamUtils_CheckFileSignature);
+    add_func(L, "showGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_ShowGamepadTextInput);
     add_func(L, "getEnteredGamepadTextLength", luasteam_utils_SteamAPI_ISteamUtils_GetEnteredGamepadTextLength);
     add_func(L, "getSteamUILanguage", luasteam_utils_SteamAPI_ISteamUtils_GetSteamUILanguage);
     add_func(L, "isSteamRunningInVR", luasteam_utils_SteamAPI_ISteamUtils_IsSteamRunningInVR);
@@ -173,7 +226,9 @@ void add_utils_auto(lua_State *L) {
     add_func(L, "setVRHeadsetStreamingEnabled", luasteam_utils_SteamAPI_ISteamUtils_SetVRHeadsetStreamingEnabled);
     add_func(L, "isSteamChinaLauncher", luasteam_utils_SteamAPI_ISteamUtils_IsSteamChinaLauncher);
     add_func(L, "initFilterText", luasteam_utils_SteamAPI_ISteamUtils_InitFilterText);
+    add_func(L, "getIPv6ConnectivityState", luasteam_utils_SteamAPI_ISteamUtils_GetIPv6ConnectivityState);
     add_func(L, "isSteamRunningOnSteamDeck", luasteam_utils_SteamAPI_ISteamUtils_IsSteamRunningOnSteamDeck);
+    add_func(L, "showFloatingGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput);
     add_func(L, "setGameLauncherMode", luasteam_utils_SteamAPI_ISteamUtils_SetGameLauncherMode);
     add_func(L, "dismissFloatingGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_DismissFloatingGamepadTextInput);
     add_func(L, "dismissGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_DismissGamepadTextInput);

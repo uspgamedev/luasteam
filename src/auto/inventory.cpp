@@ -1,15 +1,22 @@
 #include "auto.hpp"
 
+// EResult GetResultStatus(SteamInventoryResult_t resultHandle);
+EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_GetResultStatus(lua_State *L) {
+    SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
+    lua_pushinteger(L, SteamInventory()->GetResultStatus(resultHandle));
+    return 1;
+}
+
 // uint32 GetResultTimestamp(SteamInventoryResult_t resultHandle);
 EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_GetResultTimestamp(lua_State *L) {
-    SteamInventoryResult_t resultHandle = luaL_checkint(L, 1);
+    SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
     lua_pushinteger(L, SteamInventory()->GetResultTimestamp(resultHandle));
     return 1;
 }
 
 // bool CheckResultSteamID(SteamInventoryResult_t resultHandle, CSteamID steamIDExpected);
 EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_CheckResultSteamID(lua_State *L) {
-    SteamInventoryResult_t resultHandle = luaL_checkint(L, 1);
+    SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
     CSteamID steamIDExpected(luasteam::checkuint64(L, 2));
     lua_pushboolean(L, SteamInventory()->CheckResultSteamID(resultHandle, steamIDExpected));
     return 1;
@@ -17,7 +24,7 @@ EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_CheckResultSteamID(lua_St
 
 // void DestroyResult(SteamInventoryResult_t resultHandle);
 EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_DestroyResult(lua_State *L) {
-    SteamInventoryResult_t resultHandle = luaL_checkint(L, 1);
+    SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
     SteamInventory()->DestroyResult(resultHandle);
     return 0;
 }
@@ -91,6 +98,7 @@ EXTERN int luasteam_inventory_SteamAPI_ISteamInventory_SetPropertyBool(lua_State
 namespace luasteam {
 
 void add_inventory_auto(lua_State *L) {
+    add_func(L, "getResultStatus", luasteam_inventory_SteamAPI_ISteamInventory_GetResultStatus);
     add_func(L, "getResultTimestamp", luasteam_inventory_SteamAPI_ISteamInventory_GetResultTimestamp);
     add_func(L, "checkResultSteamID", luasteam_inventory_SteamAPI_ISteamInventory_CheckResultSteamID);
     add_func(L, "destroyResult", luasteam_inventory_SteamAPI_ISteamInventory_DestroyResult);

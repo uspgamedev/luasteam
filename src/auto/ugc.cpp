@@ -1,5 +1,40 @@
 #include "auto.hpp"
 
+// UGCQueryHandle_t CreateQueryUserUGCRequest(AccountID_t unAccountID, EUserUGCList eListType, EUGCMatchingUGCType eMatchingUGCType, EUserUGCListSortOrder eSortOrder, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryUserUGCRequest(lua_State *L) {
+    AccountID_t unAccountID = static_cast<AccountID_t>(luaL_checkint(L, 1));
+    EUserUGCList eListType = static_cast<EUserUGCList>(luaL_checkint(L, 2));
+    EUGCMatchingUGCType eMatchingUGCType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 3));
+    EUserUGCListSortOrder eSortOrder = static_cast<EUserUGCListSortOrder>(luaL_checkint(L, 4));
+    AppId_t nCreatorAppID = static_cast<AppId_t>(luaL_checkint(L, 5));
+    AppId_t nConsumerAppID = static_cast<AppId_t>(luaL_checkint(L, 6));
+    uint32 unPage = static_cast<uint32>(luaL_checkint(L, 7));
+    luasteam::pushuint64(L, SteamUGC()->CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType, eSortOrder, nCreatorAppID, nConsumerAppID, unPage));
+    return 1;
+}
+
+// UGCQueryHandle_t CreateQueryAllUGCRequest(EUGCQuery eQueryType, EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestPage(lua_State *L) {
+    EUGCQuery eQueryType = static_cast<EUGCQuery>(luaL_checkint(L, 1));
+    EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 2));
+    AppId_t nCreatorAppID = static_cast<AppId_t>(luaL_checkint(L, 3));
+    AppId_t nConsumerAppID = static_cast<AppId_t>(luaL_checkint(L, 4));
+    uint32 unPage = static_cast<uint32>(luaL_checkint(L, 5));
+    luasteam::pushuint64(L, SteamUGC()->CreateQueryAllUGCRequest(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage));
+    return 1;
+}
+
+// UGCQueryHandle_t CreateQueryAllUGCRequest(EUGCQuery eQueryType, EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType, AppId_t nCreatorAppID, AppId_t nConsumerAppID, const char * pchCursor);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor(lua_State *L) {
+    EUGCQuery eQueryType = static_cast<EUGCQuery>(luaL_checkint(L, 1));
+    EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 2));
+    AppId_t nCreatorAppID = static_cast<AppId_t>(luaL_checkint(L, 3));
+    AppId_t nConsumerAppID = static_cast<AppId_t>(luaL_checkint(L, 4));
+    const char *pchCursor = luaL_checkstring(L, 5);
+    luasteam::pushuint64(L, SteamUGC()->CreateQueryAllUGCRequest(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, pchCursor));
+    return 1;
+}
+
 // SteamAPICall_t SendQueryUGCRequest(UGCQueryHandle_t handle);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SendQueryUGCRequest(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
@@ -10,7 +45,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SendQueryUGCRequest(lua_State *L) {
 // uint32 GetQueryUGCNumTags(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumTags(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushinteger(L, SteamUGC()->GetQueryUGCNumTags(handle, index));
     return 1;
 }
@@ -18,7 +53,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumTags(lua_State *L) {
 // uint32 GetQueryUGCNumAdditionalPreviews(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumAdditionalPreviews(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushinteger(L, SteamUGC()->GetQueryUGCNumAdditionalPreviews(handle, index));
     return 1;
 }
@@ -26,7 +61,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumAdditionalPreviews(lua_
 // uint32 GetQueryUGCNumKeyValueTags(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumKeyValueTags(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushinteger(L, SteamUGC()->GetQueryUGCNumKeyValueTags(handle, index));
     return 1;
 }
@@ -34,7 +69,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumKeyValueTags(lua_State 
 // uint32 GetNumSupportedGameVersions(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetNumSupportedGameVersions(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushinteger(L, SteamUGC()->GetNumSupportedGameVersions(handle, index));
     return 1;
 }
@@ -121,7 +156,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetReturnTotalOnly(lua_State *L) {
 // bool SetReturnPlaytimeStats(UGCQueryHandle_t handle, uint32 unDays);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetReturnPlaytimeStats(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 unDays = luaL_checkint(L, 2);
+    uint32 unDays = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamUGC()->SetReturnPlaytimeStats(handle, unDays));
     return 1;
 }
@@ -137,7 +172,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetLanguage(lua_State *L) {
 // bool SetAllowCachedResponse(UGCQueryHandle_t handle, uint32 unMaxAgeSeconds);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetAllowCachedResponse(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 unMaxAgeSeconds = luaL_checkint(L, 2);
+    uint32 unMaxAgeSeconds = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamUGC()->SetAllowCachedResponse(handle, unMaxAgeSeconds));
     return 1;
 }
@@ -177,7 +212,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetSearchText(lua_State *L) {
 // bool SetRankedByTrendDays(UGCQueryHandle_t handle, uint32 unDays);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetRankedByTrendDays(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 unDays = luaL_checkint(L, 2);
+    uint32 unDays = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamUGC()->SetRankedByTrendDays(handle, unDays));
     return 1;
 }
@@ -185,8 +220,8 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetRankedByTrendDays(lua_State *L) {
 // bool SetTimeCreatedDateRange(UGCQueryHandle_t handle, RTime32 rtStart, RTime32 rtEnd);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetTimeCreatedDateRange(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    RTime32 rtStart = luaL_checkint(L, 2);
-    RTime32 rtEnd = luaL_checkint(L, 3);
+    RTime32 rtStart = static_cast<RTime32>(luaL_checkint(L, 2));
+    RTime32 rtEnd = static_cast<RTime32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamUGC()->SetTimeCreatedDateRange(handle, rtStart, rtEnd));
     return 1;
 }
@@ -194,8 +229,8 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetTimeCreatedDateRange(lua_State *L)
 // bool SetTimeUpdatedDateRange(UGCQueryHandle_t handle, RTime32 rtStart, RTime32 rtEnd);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetTimeUpdatedDateRange(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-    RTime32 rtStart = luaL_checkint(L, 2);
-    RTime32 rtEnd = luaL_checkint(L, 3);
+    RTime32 rtStart = static_cast<RTime32>(luaL_checkint(L, 2));
+    RTime32 rtEnd = static_cast<RTime32>(luaL_checkint(L, 3));
     lua_pushboolean(L, SteamUGC()->SetTimeUpdatedDateRange(handle, rtStart, rtEnd));
     return 1;
 }
@@ -212,14 +247,22 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddRequiredKeyValueTag(lua_State *L) 
 // SteamAPICall_t RequestUGCDetails(PublishedFileId_t nPublishedFileID, uint32 unMaxAgeSeconds);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RequestUGCDetails(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
-    uint32 unMaxAgeSeconds = luaL_checkint(L, 2);
+    uint32 unMaxAgeSeconds = static_cast<uint32>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamUGC()->RequestUGCDetails(nPublishedFileID, unMaxAgeSeconds));
+    return 1;
+}
+
+// SteamAPICall_t CreateItem(AppId_t nConsumerAppId, EWorkshopFileType eFileType);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_CreateItem(lua_State *L) {
+    AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
+    EWorkshopFileType eFileType = static_cast<EWorkshopFileType>(luaL_checkint(L, 2));
+    luasteam::pushuint64(L, SteamUGC()->CreateItem(nConsumerAppId, eFileType));
     return 1;
 }
 
 // UGCUpdateHandle_t StartItemUpdate(AppId_t nConsumerAppId, PublishedFileId_t nPublishedFileID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_StartItemUpdate(lua_State *L) {
-    AppId_t nConsumerAppId = luaL_checkint(L, 1);
+    AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 2);
     luasteam::pushuint64(L, SteamUGC()->StartItemUpdate(nConsumerAppId, nPublishedFileID));
     return 1;
@@ -254,6 +297,14 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetItemMetadata(lua_State *L) {
     UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
     const char *pchMetaData = luaL_checkstring(L, 2);
     lua_pushboolean(L, SteamUGC()->SetItemMetadata(handle, pchMetaData));
+    return 1;
+}
+
+// bool SetItemVisibility(UGCUpdateHandle_t handle, ERemoteStoragePublishedFileVisibility eVisibility);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_SetItemVisibility(lua_State *L) {
+    UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+    ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 2));
+    lua_pushboolean(L, SteamUGC()->SetItemVisibility(handle, eVisibility));
     return 1;
 }
 
@@ -305,6 +356,15 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemKeyValueTag(lua_State *L) {
     return 1;
 }
 
+// bool AddItemPreviewFile(UGCUpdateHandle_t handle, const char * pszPreviewFile, EItemPreviewType type);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemPreviewFile(lua_State *L) {
+    UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+    const char *pszPreviewFile = luaL_checkstring(L, 2);
+    EItemPreviewType type = static_cast<EItemPreviewType>(luaL_checkint(L, 3));
+    lua_pushboolean(L, SteamUGC()->AddItemPreviewFile(handle, pszPreviewFile, type));
+    return 1;
+}
+
 // bool AddItemPreviewVideo(UGCUpdateHandle_t handle, const char * pszVideoID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemPreviewVideo(lua_State *L) {
     UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
@@ -316,7 +376,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemPreviewVideo(lua_State *L) {
 // bool UpdateItemPreviewFile(UGCUpdateHandle_t handle, uint32 index, const char * pszPreviewFile);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewFile(lua_State *L) {
     UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     const char *pszPreviewFile = luaL_checkstring(L, 3);
     lua_pushboolean(L, SteamUGC()->UpdateItemPreviewFile(handle, index, pszPreviewFile));
     return 1;
@@ -325,7 +385,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewFile(lua_State *L) {
 // bool UpdateItemPreviewVideo(UGCUpdateHandle_t handle, uint32 index, const char * pszVideoID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewVideo(lua_State *L) {
     UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     const char *pszVideoID = luaL_checkstring(L, 3);
     lua_pushboolean(L, SteamUGC()->UpdateItemPreviewVideo(handle, index, pszVideoID));
     return 1;
@@ -334,8 +394,24 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewVideo(lua_State *L) 
 // bool RemoveItemPreview(UGCUpdateHandle_t handle, uint32 index);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RemoveItemPreview(lua_State *L) {
     UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-    uint32 index = luaL_checkint(L, 2);
+    uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     lua_pushboolean(L, SteamUGC()->RemoveItemPreview(handle, index));
+    return 1;
+}
+
+// bool AddContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddContentDescriptor(lua_State *L) {
+    UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+    EUGCContentDescriptorID descid = static_cast<EUGCContentDescriptorID>(luaL_checkint(L, 2));
+    lua_pushboolean(L, SteamUGC()->AddContentDescriptor(handle, descid));
+    return 1;
+}
+
+// bool RemoveContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid);
+EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RemoveContentDescriptor(lua_State *L) {
+    UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+    EUGCContentDescriptorID descid = static_cast<EUGCContentDescriptorID>(luaL_checkint(L, 2));
+    lua_pushboolean(L, SteamUGC()->RemoveContentDescriptor(handle, descid));
     return 1;
 }
 
@@ -373,7 +449,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetUserItemVote(lua_State *L) {
 
 // SteamAPICall_t AddItemToFavorites(AppId_t nAppId, PublishedFileId_t nPublishedFileID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemToFavorites(lua_State *L) {
-    AppId_t nAppId = luaL_checkint(L, 1);
+    AppId_t nAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 2);
     luasteam::pushuint64(L, SteamUGC()->AddItemToFavorites(nAppId, nPublishedFileID));
     return 1;
@@ -381,7 +457,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddItemToFavorites(lua_State *L) {
 
 // SteamAPICall_t RemoveItemFromFavorites(AppId_t nAppId, PublishedFileId_t nPublishedFileID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RemoveItemFromFavorites(lua_State *L) {
-    AppId_t nAppId = luaL_checkint(L, 1);
+    AppId_t nAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 2);
     luasteam::pushuint64(L, SteamUGC()->RemoveItemFromFavorites(nAppId, nPublishedFileID));
     return 1;
@@ -425,7 +501,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_DownloadItem(lua_State *L) {
 
 // bool BInitWorkshopForGameServer(DepotId_t unWorkshopDepotID, const char * pszFolder);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_BInitWorkshopForGameServer(lua_State *L) {
-    DepotId_t unWorkshopDepotID = luaL_checkint(L, 1);
+    DepotId_t unWorkshopDepotID = static_cast<DepotId_t>(luaL_checkint(L, 1));
     const char *pszFolder = luaL_checkstring(L, 2);
     lua_pushboolean(L, SteamUGC()->BInitWorkshopForGameServer(unWorkshopDepotID, pszFolder));
     return 1;
@@ -463,7 +539,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RemoveDependency(lua_State *L) {
 // SteamAPICall_t AddAppDependency(PublishedFileId_t nPublishedFileID, AppId_t nAppID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddAppDependency(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
-    AppId_t nAppID = luaL_checkint(L, 2);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamUGC()->AddAppDependency(nPublishedFileID, nAppID));
     return 1;
 }
@@ -471,7 +547,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_AddAppDependency(lua_State *L) {
 // SteamAPICall_t RemoveAppDependency(PublishedFileId_t nPublishedFileID, AppId_t nAppID);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_RemoveAppDependency(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
-    AppId_t nAppID = luaL_checkint(L, 2);
+    AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 2));
     luasteam::pushuint64(L, SteamUGC()->RemoveAppDependency(nPublishedFileID, nAppID));
     return 1;
 }
@@ -505,6 +581,9 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetWorkshopEULAStatus(lua_State *L) {
 namespace luasteam {
 
 void add_ugc_auto(lua_State *L) {
+    add_func(L, "createQueryUserUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryUserUGCRequest);
+    add_func(L, "createQueryAllUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestPage);
+    add_func(L, "createQueryAllUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor);
     add_func(L, "sendQueryUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_SendQueryUGCRequest);
     add_func(L, "getQueryUGCNumTags", luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumTags);
     add_func(L, "getQueryUGCNumAdditionalPreviews", luasteam_ugc_SteamAPI_ISteamUGC_GetQueryUGCNumAdditionalPreviews);
@@ -532,21 +611,26 @@ void add_ugc_auto(lua_State *L) {
     add_func(L, "setTimeUpdatedDateRange", luasteam_ugc_SteamAPI_ISteamUGC_SetTimeUpdatedDateRange);
     add_func(L, "addRequiredKeyValueTag", luasteam_ugc_SteamAPI_ISteamUGC_AddRequiredKeyValueTag);
     add_func(L, "requestUGCDetails", luasteam_ugc_SteamAPI_ISteamUGC_RequestUGCDetails);
+    add_func(L, "createItem", luasteam_ugc_SteamAPI_ISteamUGC_CreateItem);
     add_func(L, "startItemUpdate", luasteam_ugc_SteamAPI_ISteamUGC_StartItemUpdate);
     add_func(L, "setItemTitle", luasteam_ugc_SteamAPI_ISteamUGC_SetItemTitle);
     add_func(L, "setItemDescription", luasteam_ugc_SteamAPI_ISteamUGC_SetItemDescription);
     add_func(L, "setItemUpdateLanguage", luasteam_ugc_SteamAPI_ISteamUGC_SetItemUpdateLanguage);
     add_func(L, "setItemMetadata", luasteam_ugc_SteamAPI_ISteamUGC_SetItemMetadata);
+    add_func(L, "setItemVisibility", luasteam_ugc_SteamAPI_ISteamUGC_SetItemVisibility);
     add_func(L, "setItemContent", luasteam_ugc_SteamAPI_ISteamUGC_SetItemContent);
     add_func(L, "setItemPreview", luasteam_ugc_SteamAPI_ISteamUGC_SetItemPreview);
     add_func(L, "setAllowLegacyUpload", luasteam_ugc_SteamAPI_ISteamUGC_SetAllowLegacyUpload);
     add_func(L, "removeAllItemKeyValueTags", luasteam_ugc_SteamAPI_ISteamUGC_RemoveAllItemKeyValueTags);
     add_func(L, "removeItemKeyValueTags", luasteam_ugc_SteamAPI_ISteamUGC_RemoveItemKeyValueTags);
     add_func(L, "addItemKeyValueTag", luasteam_ugc_SteamAPI_ISteamUGC_AddItemKeyValueTag);
+    add_func(L, "addItemPreviewFile", luasteam_ugc_SteamAPI_ISteamUGC_AddItemPreviewFile);
     add_func(L, "addItemPreviewVideo", luasteam_ugc_SteamAPI_ISteamUGC_AddItemPreviewVideo);
     add_func(L, "updateItemPreviewFile", luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewFile);
     add_func(L, "updateItemPreviewVideo", luasteam_ugc_SteamAPI_ISteamUGC_UpdateItemPreviewVideo);
     add_func(L, "removeItemPreview", luasteam_ugc_SteamAPI_ISteamUGC_RemoveItemPreview);
+    add_func(L, "addContentDescriptor", luasteam_ugc_SteamAPI_ISteamUGC_AddContentDescriptor);
+    add_func(L, "removeContentDescriptor", luasteam_ugc_SteamAPI_ISteamUGC_RemoveContentDescriptor);
     add_func(L, "setRequiredGameVersions", luasteam_ugc_SteamAPI_ISteamUGC_SetRequiredGameVersions);
     add_func(L, "submitItemUpdate", luasteam_ugc_SteamAPI_ISteamUGC_SubmitItemUpdate);
     add_func(L, "setUserItemVote", luasteam_ugc_SteamAPI_ISteamUGC_SetUserItemVote);

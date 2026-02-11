@@ -20,7 +20,10 @@ OSX_FLAGS=$(IPATHS) -mmacosx-version-min=$(OSX_MIN_VERSION)
 
 
 
-.PHONY: all osx linux32 linux64 win32 win64 clean
+.PHONY: all osx linux32 linux64 win32 win64 clean test test-osx test-linux32 test-linux64 test-win32 test-win64
+
+test:
+	@echo "choose platform: test-linux64 | test-linux32 | test-win32 | test-win64 | test-osx"
 
 clean:
 	cd $(LUAJIT_PATH) && $(MAKE) clean
@@ -53,6 +56,9 @@ osx: luajit-osx
 	lipo -archs $(OSX_OUT) | grep -F "x86_64 arm64"
 	cp $(OSX_OUT) mwe && cp ${STEAM_LIB}/osx/libsteam_api.dylib mwe && cd mwe && DYLD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
+test-osx:
+	cd mwe && DYLD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
+
 
 luajit-64:
 	cd $(LUAJIT_PATH) && $(MAKE) -j
@@ -71,9 +77,15 @@ linux64: luajit-64
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
 	cp luasteam.so mwe && cp $(LUAJIT_PATH)/src/libluajit.so mwe/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux64/libsteam_api.so mwe && cd mwe && ls && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
+test-linux64:
+	cd mwe && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
+
 linux32: luajit-32
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
 	cp luasteam.so mwe && cp $(LUAJIT_PATH)/src/libluajit.so mwe/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux32/libsteam_api.so mwe && cd mwe && ls && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
+
+test-linux32:
+	cd mwe && LD_LIBRARY_PATH=. ../luajit/src/luajit main-nolove.lua
 
 WINDOWS_LUAJIT_LIB=$(LUAJIT_PATH)/src/lua51.dll
 WINDOWS_STEAM_LIB=$(STEAM_LIB)/win64/steam_api64.lib
@@ -84,9 +96,15 @@ win64: luajit-64
 	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp $(STEAM_LIB)/win64/steam_api64.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
 
+test-win64:
+	cd mwe && ../luajit/src/luajit.exe main-nolove.lua
+
 win32: luajit-32-win
 	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp $(STEAM_LIB)/steam_api.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
+
+test-win32:
+	cd mwe && ../luajit/src/luajit.exe main-nolove.lua
 
 generate:
 	cd generator && cargo run

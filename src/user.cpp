@@ -1,6 +1,5 @@
 #include "user.hpp"
 #include "auto/auto.hpp"
-#include "const.hpp"
 #include <iomanip>
 #include <sstream>
 
@@ -45,7 +44,7 @@ void CallbackListener::OnAuthSessionTicketResponse(GetAuthSessionTicketResponse_
         lua_createtable(L, 0, 1);
         lua_pushinteger(L, data->m_hAuthTicket);
         lua_setfield(L, -2, "handle");
-        lua_pushstring(L, steam_result_code[data->m_eResult]);
+        lua_pushinteger(L, data->m_eResult);
         lua_setfield(L, -2, "result");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
