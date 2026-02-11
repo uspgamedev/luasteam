@@ -78,11 +78,12 @@ linux32: luajit-32
 WINDOWS_LUAJIT_LIB=$(LUAJIT_PATH)/src/lua51.dll
 WINDOWS_STEAM_LIB=$(STEAM_LIB)/win64/steam_api64.lib
 WINDOWS_OUT=luasteam.dll
+WINDOWS_FLAGS=-static
 
 win64: luajit-64
-	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) -shared -o $(WINDOWS_OUT)
+	g++ $(SRC) $(CPP_FLAGS) $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(WINDOWS_STEAM_LIB) $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp $(STEAM_LIB)/win64/steam_api64.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
 
 win32: luajit-32-win
-	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib -shared -o $(WINDOWS_OUT)
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
 	cp luasteam.dll mwe && cp $(STEAM_LIB)/steam_api.dll mwe && cd mwe && ../luajit/src/luajit.exe main-nolove.lua
