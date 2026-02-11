@@ -1,5 +1,64 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int screenshots_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnScreenshotReady, ScreenshotReady_t);
+    STEAM_CALLBACK(CallbackListener, OnScreenshotRequested, ScreenshotRequested_t);
+};
+
+void CallbackListener::OnScreenshotReady(ScreenshotReady_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::screenshots_ref);
+    lua_getfield(L, -1, "onScreenshotReady");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushinteger(L, data->m_hLocal);
+        lua_setfield(L, -2, "local");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnScreenshotRequested(ScreenshotRequested_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::screenshots_ref);
+    lua_getfield(L, -1, "onScreenshotRequested");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *screenshots_listener = nullptr;
+
+} // namespace
+
+void init_screenshots_auto(lua_State *L) { screenshots_listener = new CallbackListener(); }
+
+void shutdown_screenshots_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, screenshots_ref);
+    screenshots_ref = LUA_NOREF;
+    delete screenshots_listener; screenshots_listener = nullptr;
+}
+
+
 // ScreenshotHandle AddScreenshotToLibrary(const char * pchFilename, const char * pchThumbnailFilename, int nWidth, int nHeight);
 EXTERN int luasteam_screenshots_SteamAPI_ISteamScreenshots_AddScreenshotToLibrary(lua_State *L) {
     const char *pchFilename = luaL_checkstring(L, 1);
@@ -62,9 +121,7 @@ EXTERN int luasteam_screenshots_SteamAPI_ISteamScreenshots_AddVRScreenshotToLibr
     return 1;
 }
 
-namespace luasteam {
-
-void add_screenshots_auto(lua_State *L) {
+void register_screenshots_auto(lua_State *L) {
     add_func(L, "addScreenshotToLibrary", luasteam_screenshots_SteamAPI_ISteamScreenshots_AddScreenshotToLibrary);
     add_func(L, "triggerScreenshot", luasteam_screenshots_SteamAPI_ISteamScreenshots_TriggerScreenshot);
     add_func(L, "hookScreenshots", luasteam_screenshots_SteamAPI_ISteamScreenshots_HookScreenshots);
@@ -73,6 +130,14 @@ void add_screenshots_auto(lua_State *L) {
     add_func(L, "tagPublishedFile", luasteam_screenshots_SteamAPI_ISteamScreenshots_TagPublishedFile);
     add_func(L, "isScreenshotsHooked", luasteam_screenshots_SteamAPI_ISteamScreenshots_IsScreenshotsHooked);
     add_func(L, "addVRScreenshotToLibrary", luasteam_screenshots_SteamAPI_ISteamScreenshots_AddVRScreenshotToLibrary);
+}
+
+void add_screenshots_auto(lua_State *L) {
+    lua_createtable(L, 0, 8);
+    register_screenshots_auto(L);
+    lua_pushvalue(L, -1);
+    screenshots_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "screenshots");
 }
 
 } // namespace luasteam

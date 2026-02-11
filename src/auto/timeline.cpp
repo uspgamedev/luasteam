@@ -1,5 +1,74 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int timeline_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnSteamTimelineGamePhaseRecordingExists, SteamTimelineGamePhaseRecordingExists_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamTimelineEventRecordingExists, SteamTimelineEventRecordingExists_t);
+};
+
+void CallbackListener::OnSteamTimelineGamePhaseRecordingExists(SteamTimelineGamePhaseRecordingExists_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::timeline_ref);
+    lua_getfield(L, -1, "onSteamTimelineGamePhaseRecordingExists");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 5);
+        lua_pushstring(L, data->m_rgchPhaseID);
+        lua_setfield(L, -2, "phaseID");
+        luasteam::pushuint64(L, data->m_ulRecordingMS);
+        lua_setfield(L, -2, "recordingMS");
+        luasteam::pushuint64(L, data->m_ulLongestClipMS);
+        lua_setfield(L, -2, "longestClipMS");
+        lua_pushinteger(L, data->m_unClipCount);
+        lua_setfield(L, -2, "clipCount");
+        lua_pushinteger(L, data->m_unScreenshotCount);
+        lua_setfield(L, -2, "screenshotCount");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamTimelineEventRecordingExists(SteamTimelineEventRecordingExists_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::timeline_ref);
+    lua_getfield(L, -1, "onSteamTimelineEventRecordingExists");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_ulEventID);
+        lua_setfield(L, -2, "eventID");
+        lua_pushboolean(L, data->m_bRecordingExists);
+        lua_setfield(L, -2, "recordingExists");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *timeline_listener = nullptr;
+
+} // namespace
+
+void init_timeline_auto(lua_State *L) { timeline_listener = new CallbackListener(); }
+
+void shutdown_timeline_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, timeline_ref);
+    timeline_ref = LUA_NOREF;
+    delete timeline_listener; timeline_listener = nullptr;
+}
+
+
 // void SetTimelineGameMode(ETimelineGameMode eMode);
 EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_SetTimelineGameMode(lua_State *L) {
     ETimelineGameMode eMode = static_cast<ETimelineGameMode>(luaL_checkint(L, 1));
@@ -85,9 +154,7 @@ EXTERN int luasteam_timeline_SteamAPI_ISteamTimeline_OpenOverlayToGamePhase(lua_
     return 0;
 }
 
-namespace luasteam {
-
-void add_timeline_auto(lua_State *L) {
+void register_timeline_auto(lua_State *L) {
     add_func(L, "setTimelineGameMode", luasteam_timeline_SteamAPI_ISteamTimeline_SetTimelineGameMode);
     add_func(L, "updateRangeTimelineEvent", luasteam_timeline_SteamAPI_ISteamTimeline_UpdateRangeTimelineEvent);
     add_func(L, "removeTimelineEvent", luasteam_timeline_SteamAPI_ISteamTimeline_RemoveTimelineEvent);
@@ -99,6 +166,14 @@ void add_timeline_auto(lua_State *L) {
     add_func(L, "addGamePhaseTag", luasteam_timeline_SteamAPI_ISteamTimeline_AddGamePhaseTag);
     add_func(L, "setGamePhaseAttribute", luasteam_timeline_SteamAPI_ISteamTimeline_SetGamePhaseAttribute);
     add_func(L, "openOverlayToGamePhase", luasteam_timeline_SteamAPI_ISteamTimeline_OpenOverlayToGamePhase);
+}
+
+void add_timeline_auto(lua_State *L) {
+    lua_createtable(L, 0, 11);
+    register_timeline_auto(L);
+    lua_pushvalue(L, -1);
+    timeline_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "timeline");
 }
 
 } // namespace luasteam

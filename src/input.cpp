@@ -148,7 +148,7 @@ namespace luasteam {
 
 void add_input(lua_State *L) {
     lua_createtable(L, 0, 8);
-    add_input_auto(L);
+    register_input_auto(L);
     add_func(L, "activateActionSet", luasteam_activateActionSet);
     add_func(L, "getActiveActionSetLayers", luasteam_getActiveActionSetLayers);
     add_func(L, "getAnalogActionData", luasteam_getAnalogActionData);
@@ -157,11 +157,15 @@ void add_input(lua_State *L) {
     add_func(L, "getDigitalActionData", luasteam_getDigitalActionData);
     add_func(L, "getDigitalActionOrigins", luasteam_getDigitalActionOrigins);
     add_func(L, "getDeviceBindingRevision", luasteam_getDeviceBindingRevision);
+    lua_pushvalue(L, -1);
+    input_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "input");
 }
 
-void init_input(lua_State *L) {}
+void init_input(lua_State *L) { init_input_auto(L); }
 
-void shutdown_input(lua_State *L) {}
+void shutdown_input(lua_State *L) {
+    shutdown_input_auto(L);
+}
 
 } // namespace luasteam

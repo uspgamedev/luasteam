@@ -321,7 +321,7 @@ namespace luasteam {
 
 void add_UGC(lua_State *L) {
     lua_createtable(L, 0, 11);
-    add_ugc_auto(L);
+    register_ugc_auto(L);
     add_func(L, "createItem", luasteam_createItem);
     add_func(L, "submitItemUpdate", luasteam_submitItemUpdate);
     add_func(L, "getSubscribedItems", luasteam_getSubscribedItems);
@@ -333,11 +333,15 @@ void add_UGC(lua_State *L) {
     add_func(L, "stopPlaytimeTrackingForAllItems", luasteam_stopPlaytimeTrackingForAllItems);
     add_func(L, "subscribeItem", luasteam_subscribeItem);
     add_func(L, "unsubscribeItem", luasteam_unsubscribeItem);
+    lua_pushvalue(L, -1);
+    ugc_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "UGC");
 }
 
-void init_UGC(lua_State *L) {}
+void init_UGC(lua_State *L) { init_ugc_auto(L); }
 
-void shutdown_UGC(lua_State *L) {}
+void shutdown_UGC(lua_State *L) {
+    shutdown_ugc_auto(L);
+}
 
 } // namespace luasteam

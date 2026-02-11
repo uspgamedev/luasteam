@@ -1,5 +1,120 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int input_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnSteamInputDeviceConnected, SteamInputDeviceConnected_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamInputDeviceDisconnected, SteamInputDeviceDisconnected_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamInputConfigurationLoaded, SteamInputConfigurationLoaded_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamInputGamepadSlotChange, SteamInputGamepadSlotChange_t);
+};
+
+void CallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::input_ref);
+    lua_getfield(L, -1, "onSteamInputDeviceConnected");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        luasteam::pushuint64(L, data->m_ulConnectedDeviceHandle);
+        lua_setfield(L, -2, "connectedDeviceHandle");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnected_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::input_ref);
+    lua_getfield(L, -1, "onSteamInputDeviceDisconnected");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        luasteam::pushuint64(L, data->m_ulDisconnectedDeviceHandle);
+        lua_setfield(L, -2, "disconnectedDeviceHandle");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLoaded_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::input_ref);
+    lua_getfield(L, -1, "onSteamInputConfigurationLoaded");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 7);
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        luasteam::pushuint64(L, data->m_ulDeviceHandle);
+        lua_setfield(L, -2, "deviceHandle");
+        luasteam::pushuint64(L, data->m_ulMappingCreator.ConvertToUint64());
+        lua_setfield(L, -2, "mappingCreator");
+        lua_pushinteger(L, data->m_unMajorRevision);
+        lua_setfield(L, -2, "majorRevision");
+        lua_pushinteger(L, data->m_unMinorRevision);
+        lua_setfield(L, -2, "minorRevision");
+        lua_pushboolean(L, data->m_bUsesSteamInputAPI);
+        lua_setfield(L, -2, "usesSteamInputAPI");
+        lua_pushboolean(L, data->m_bUsesGamepadAPI);
+        lua_setfield(L, -2, "usesGamepadAPI");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::input_ref);
+    lua_getfield(L, -1, "onSteamInputGamepadSlotChange");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 5);
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        luasteam::pushuint64(L, data->m_ulDeviceHandle);
+        lua_setfield(L, -2, "deviceHandle");
+        lua_pushinteger(L, data->m_eDeviceType);
+        lua_setfield(L, -2, "deviceType");
+        lua_pushinteger(L, data->m_nOldGamepadSlot);
+        lua_setfield(L, -2, "oldGamepadSlot");
+        lua_pushinteger(L, data->m_nNewGamepadSlot);
+        lua_setfield(L, -2, "newGamepadSlot");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *input_listener = nullptr;
+
+} // namespace
+
+void init_input_auto(lua_State *L) { input_listener = new CallbackListener(); }
+
+void shutdown_input_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, input_ref);
+    input_ref = LUA_NOREF;
+    delete input_listener; input_listener = nullptr;
+}
+
+
 // bool Init(bool bExplicitlyCallRunFrame);
 EXTERN int luasteam_input_SteamAPI_ISteamInput_Init(lua_State *L) {
     bool bExplicitlyCallRunFrame = lua_toboolean(L, 1);
@@ -282,9 +397,7 @@ EXTERN int luasteam_input_SteamAPI_ISteamInput_GetSessionInputConfigurationSetti
     return 1;
 }
 
-namespace luasteam {
-
-void add_input_auto(lua_State *L) {
+void register_input_auto(lua_State *L) {
     add_func(L, "init", luasteam_input_SteamAPI_ISteamInput_Init);
     add_func(L, "shutdown", luasteam_input_SteamAPI_ISteamInput_Shutdown);
     add_func(L, "setInputActionManifestFilePath", luasteam_input_SteamAPI_ISteamInput_SetInputActionManifestFilePath);
@@ -322,6 +435,14 @@ void add_input_auto(lua_State *L) {
     add_func(L, "translateActionOrigin", luasteam_input_SteamAPI_ISteamInput_TranslateActionOrigin);
     add_func(L, "getRemotePlaySessionID", luasteam_input_SteamAPI_ISteamInput_GetRemotePlaySessionID);
     add_func(L, "getSessionInputConfigurationSettings", luasteam_input_SteamAPI_ISteamInput_GetSessionInputConfigurationSettings);
+}
+
+void add_input_auto(lua_State *L) {
+    lua_createtable(L, 0, 37);
+    register_input_auto(L);
+    lua_pushvalue(L, -1);
+    input_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "input");
 }
 
 } // namespace luasteam

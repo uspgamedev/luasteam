@@ -1,5 +1,142 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int parties_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnJoinPartyCallback, JoinPartyCallback_t);
+    STEAM_CALLBACK(CallbackListener, OnCreateBeaconCallback, CreateBeaconCallback_t);
+    STEAM_CALLBACK(CallbackListener, OnReservationNotificationCallback, ReservationNotificationCallback_t);
+    STEAM_CALLBACK(CallbackListener, OnChangeNumOpenSlotsCallback, ChangeNumOpenSlotsCallback_t);
+    STEAM_CALLBACK(CallbackListener, OnAvailableBeaconLocationsUpdated, AvailableBeaconLocationsUpdated_t);
+    STEAM_CALLBACK(CallbackListener, OnActiveBeaconsUpdated, ActiveBeaconsUpdated_t);
+};
+
+void CallbackListener::OnJoinPartyCallback(JoinPartyCallback_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onJoinPartyCallback");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_ulBeaconID);
+        lua_setfield(L, -2, "beaconID");
+        luasteam::pushuint64(L, data->m_SteamIDBeaconOwner.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDBeaconOwner");
+        lua_pushstring(L, data->m_rgchConnectString);
+        lua_setfield(L, -2, "connectString");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnCreateBeaconCallback(CreateBeaconCallback_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onCreateBeaconCallback");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_ulBeaconID);
+        lua_setfield(L, -2, "beaconID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnReservationNotificationCallback(ReservationNotificationCallback_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onReservationNotificationCallback");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_ulBeaconID);
+        lua_setfield(L, -2, "beaconID");
+        luasteam::pushuint64(L, data->m_steamIDJoiner.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDJoiner");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnChangeNumOpenSlotsCallback(ChangeNumOpenSlotsCallback_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onChangeNumOpenSlotsCallback");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAvailableBeaconLocationsUpdated(AvailableBeaconLocationsUpdated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onAvailableBeaconLocationsUpdated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::parties_ref);
+    lua_getfield(L, -1, "onActiveBeaconsUpdated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *parties_listener = nullptr;
+
+} // namespace
+
+void init_parties_auto(lua_State *L) { parties_listener = new CallbackListener(); }
+
+void shutdown_parties_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, parties_ref);
+    parties_ref = LUA_NOREF;
+    delete parties_listener; parties_listener = nullptr;
+}
+
+
 // uint32 GetNumActiveBeacons();
 EXTERN int luasteam_parties_SteamAPI_ISteamParties_GetNumActiveBeacons(lua_State *L) {
     lua_pushinteger(L, SteamParties()->GetNumActiveBeacons());
@@ -51,9 +188,7 @@ EXTERN int luasteam_parties_SteamAPI_ISteamParties_DestroyBeacon(lua_State *L) {
     return 1;
 }
 
-namespace luasteam {
-
-void add_parties_auto(lua_State *L) {
+void register_parties_auto(lua_State *L) {
     add_func(L, "getNumActiveBeacons", luasteam_parties_SteamAPI_ISteamParties_GetNumActiveBeacons);
     add_func(L, "getBeaconByIndex", luasteam_parties_SteamAPI_ISteamParties_GetBeaconByIndex);
     add_func(L, "joinParty", luasteam_parties_SteamAPI_ISteamParties_JoinParty);
@@ -61,6 +196,14 @@ void add_parties_auto(lua_State *L) {
     add_func(L, "cancelReservation", luasteam_parties_SteamAPI_ISteamParties_CancelReservation);
     add_func(L, "changeNumOpenSlots", luasteam_parties_SteamAPI_ISteamParties_ChangeNumOpenSlots);
     add_func(L, "destroyBeacon", luasteam_parties_SteamAPI_ISteamParties_DestroyBeacon);
+}
+
+void add_parties_auto(lua_State *L) {
+    lua_createtable(L, 0, 7);
+    register_parties_auto(L);
+    lua_pushvalue(L, -1);
+    parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "parties");
 }
 
 } // namespace luasteam

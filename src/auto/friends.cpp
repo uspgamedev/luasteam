@@ -1,5 +1,472 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int friends_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnPersonaStateChange, PersonaStateChange_t);
+    STEAM_CALLBACK(CallbackListener, OnGameOverlayActivated, GameOverlayActivated_t);
+    STEAM_CALLBACK(CallbackListener, OnGameServerChangeRequested, GameServerChangeRequested_t);
+    STEAM_CALLBACK(CallbackListener, OnGameLobbyJoinRequested, GameLobbyJoinRequested_t);
+    STEAM_CALLBACK(CallbackListener, OnAvatarImageLoaded, AvatarImageLoaded_t);
+    STEAM_CALLBACK(CallbackListener, OnClanOfficerListResponse, ClanOfficerListResponse_t);
+    STEAM_CALLBACK(CallbackListener, OnFriendRichPresenceUpdate, FriendRichPresenceUpdate_t);
+    STEAM_CALLBACK(CallbackListener, OnGameRichPresenceJoinRequested, GameRichPresenceJoinRequested_t);
+    STEAM_CALLBACK(CallbackListener, OnGameConnectedClanChatMsg, GameConnectedClanChatMsg_t);
+    STEAM_CALLBACK(CallbackListener, OnGameConnectedChatJoin, GameConnectedChatJoin_t);
+    STEAM_CALLBACK(CallbackListener, OnGameConnectedChatLeave, GameConnectedChatLeave_t);
+    STEAM_CALLBACK(CallbackListener, OnDownloadClanActivityCountsResult, DownloadClanActivityCountsResult_t);
+    STEAM_CALLBACK(CallbackListener, OnJoinClanChatRoomCompletionResult, JoinClanChatRoomCompletionResult_t);
+    STEAM_CALLBACK(CallbackListener, OnGameConnectedFriendChatMsg, GameConnectedFriendChatMsg_t);
+    STEAM_CALLBACK(CallbackListener, OnFriendsGetFollowerCount, FriendsGetFollowerCount_t);
+    STEAM_CALLBACK(CallbackListener, OnFriendsIsFollowing, FriendsIsFollowing_t);
+    STEAM_CALLBACK(CallbackListener, OnFriendsEnumerateFollowingList, FriendsEnumerateFollowingList_t);
+    STEAM_CALLBACK(CallbackListener, OnUnreadChatMessagesChanged, UnreadChatMessagesChanged_t);
+    STEAM_CALLBACK(CallbackListener, OnOverlayBrowserProtocolNavigation, OverlayBrowserProtocolNavigation_t);
+    STEAM_CALLBACK(CallbackListener, OnEquippedProfileItemsChanged, EquippedProfileItemsChanged_t);
+    STEAM_CALLBACK(CallbackListener, OnEquippedProfileItems, EquippedProfileItems_t);
+};
+
+void CallbackListener::OnPersonaStateChange(PersonaStateChange_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onPersonaStateChange");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_ulSteamID);
+        lua_setfield(L, -2, "steamID");
+        lua_pushinteger(L, data->m_nChangeFlags);
+        lua_setfield(L, -2, "changeFlags");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameOverlayActivated(GameOverlayActivated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameOverlayActivated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushboolean(L, data->m_bActive);
+        lua_setfield(L, -2, "active");
+        lua_pushboolean(L, data->m_bUserInitiated);
+        lua_setfield(L, -2, "userInitiated");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_pushinteger(L, data->m_dwOverlayPID);
+        lua_setfield(L, -2, "dwOverlayPID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameServerChangeRequested(GameServerChangeRequested_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameServerChangeRequested");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushstring(L, data->m_rgchServer);
+        lua_setfield(L, -2, "server");
+        lua_pushstring(L, data->m_rgchPassword);
+        lua_setfield(L, -2, "password");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameLobbyJoinRequested(GameLobbyJoinRequested_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameLobbyJoinRequested");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDLobby.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDFriend");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAvatarImageLoaded(AvatarImageLoaded_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onAvatarImageLoaded");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+        lua_setfield(L, -2, "steamID");
+        lua_pushinteger(L, data->m_iImage);
+        lua_setfield(L, -2, "iImage");
+        lua_pushinteger(L, data->m_iWide);
+        lua_setfield(L, -2, "iWide");
+        lua_pushinteger(L, data->m_iTall);
+        lua_setfield(L, -2, "iTall");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnClanOfficerListResponse(ClanOfficerListResponse_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onClanOfficerListResponse");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_steamIDClan.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDClan");
+        lua_pushinteger(L, data->m_cOfficers);
+        lua_setfield(L, -2, "cOfficers");
+        lua_pushboolean(L, data->m_bSuccess);
+        lua_setfield(L, -2, "success");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFriendRichPresenceUpdate(FriendRichPresenceUpdate_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onFriendRichPresenceUpdate");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDFriend");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameRichPresenceJoinRequested(GameRichPresenceJoinRequested_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameRichPresenceJoinRequested");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDFriend");
+        lua_pushstring(L, data->m_rgchConnect);
+        lua_setfield(L, -2, "connect");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameConnectedClanChatMsg(GameConnectedClanChatMsg_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameConnectedClanChatMsg");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDClanChat");
+        luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDUser");
+        lua_pushinteger(L, data->m_iMessageID);
+        lua_setfield(L, -2, "iMessageID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameConnectedChatJoin(GameConnectedChatJoin_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameConnectedChatJoin");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDClanChat");
+        luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDUser");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameConnectedChatLeave(GameConnectedChatLeave_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameConnectedChatLeave");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDClanChat");
+        luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDUser");
+        lua_pushboolean(L, data->m_bKicked);
+        lua_setfield(L, -2, "kicked");
+        lua_pushboolean(L, data->m_bDropped);
+        lua_setfield(L, -2, "dropped");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnDownloadClanActivityCountsResult(DownloadClanActivityCountsResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onDownloadClanActivityCountsResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushboolean(L, data->m_bSuccess);
+        lua_setfield(L, -2, "success");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnJoinClanChatRoomCompletionResult(JoinClanChatRoomCompletionResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onJoinClanChatRoomCompletionResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDClanChat.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDClanChat");
+        lua_pushinteger(L, data->m_eChatRoomEnterResponse);
+        lua_setfield(L, -2, "chatRoomEnterResponse");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGameConnectedFriendChatMsg(GameConnectedFriendChatMsg_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onGameConnectedFriendChatMsg");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDUser");
+        lua_pushinteger(L, data->m_iMessageID);
+        lua_setfield(L, -2, "iMessageID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFriendsGetFollowerCount(FriendsGetFollowerCount_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onFriendsGetFollowerCount");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+        lua_setfield(L, -2, "steamID");
+        lua_pushinteger(L, data->m_nCount);
+        lua_setfield(L, -2, "count");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFriendsIsFollowing(FriendsIsFollowing_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onFriendsIsFollowing");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+        lua_setfield(L, -2, "steamID");
+        lua_pushboolean(L, data->m_bIsFollowing);
+        lua_setfield(L, -2, "isFollowing");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFriendsEnumerateFollowingList(FriendsEnumerateFollowingList_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onFriendsEnumerateFollowingList");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushinteger(L, data->m_nResultsReturned);
+        lua_setfield(L, -2, "resultsReturned");
+        lua_pushinteger(L, data->m_nTotalResultCount);
+        lua_setfield(L, -2, "totalResultCount");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnUnreadChatMessagesChanged(UnreadChatMessagesChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onUnreadChatMessagesChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnOverlayBrowserProtocolNavigation(OverlayBrowserProtocolNavigation_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onOverlayBrowserProtocolNavigation");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushstring(L, data->rgchURI);
+        lua_setfield(L, -2, "uRI");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnEquippedProfileItemsChanged(EquippedProfileItemsChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onEquippedProfileItemsChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+        lua_setfield(L, -2, "steamID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnEquippedProfileItems(EquippedProfileItems_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::friends_ref);
+    lua_getfield(L, -1, "onEquippedProfileItems");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 8);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+        lua_setfield(L, -2, "steamID");
+        lua_pushboolean(L, data->m_bHasAnimatedAvatar);
+        lua_setfield(L, -2, "hasAnimatedAvatar");
+        lua_pushboolean(L, data->m_bHasAvatarFrame);
+        lua_setfield(L, -2, "hasAvatarFrame");
+        lua_pushboolean(L, data->m_bHasProfileModifier);
+        lua_setfield(L, -2, "hasProfileModifier");
+        lua_pushboolean(L, data->m_bHasProfileBackground);
+        lua_setfield(L, -2, "hasProfileBackground");
+        lua_pushboolean(L, data->m_bHasMiniProfileBackground);
+        lua_setfield(L, -2, "hasMiniProfileBackground");
+        lua_pushboolean(L, data->m_bFromCache);
+        lua_setfield(L, -2, "fromCache");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *friends_listener = nullptr;
+
+} // namespace
+
+void init_friends_auto(lua_State *L) { friends_listener = new CallbackListener(); }
+
+void shutdown_friends_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, friends_ref);
+    friends_ref = LUA_NOREF;
+    delete friends_listener; friends_listener = nullptr;
+}
+
+
 // const char * GetPersonaName();
 EXTERN int luasteam_friends_SteamAPI_ISteamFriends_GetPersonaName(lua_State *L) {
     lua_pushstring(L, SteamFriends()->GetPersonaName());
@@ -500,9 +967,7 @@ EXTERN int luasteam_friends_SteamAPI_ISteamFriends_GetProfileItemPropertyUint(lu
     return 1;
 }
 
-namespace luasteam {
-
-void add_friends_auto(lua_State *L) {
+void register_friends_auto(lua_State *L) {
     add_func(L, "getPersonaName", luasteam_friends_SteamAPI_ISteamFriends_GetPersonaName);
     add_func(L, "getPersonaState", luasteam_friends_SteamAPI_ISteamFriends_GetPersonaState);
     add_func(L, "getFriendCount", luasteam_friends_SteamAPI_ISteamFriends_GetFriendCount);
@@ -572,6 +1037,14 @@ void add_friends_auto(lua_State *L) {
     add_func(L, "hasEquippedProfileItem", luasteam_friends_SteamAPI_ISteamFriends_BHasEquippedProfileItem);
     add_func(L, "getProfileItemPropertyString", luasteam_friends_SteamAPI_ISteamFriends_GetProfileItemPropertyString);
     add_func(L, "getProfileItemPropertyUint", luasteam_friends_SteamAPI_ISteamFriends_GetProfileItemPropertyUint);
+}
+
+void add_friends_auto(lua_State *L) {
+    lua_createtable(L, 0, 69);
+    register_friends_auto(L);
+    lua_pushvalue(L, -1);
+    friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "friends");
 }
 
 } // namespace luasteam

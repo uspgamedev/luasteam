@@ -1,6 +1,7 @@
 package.cpath = package.cpath .. ";./?.dll"
+local before = os.clock()
 local luasteam = require('luasteam')
-print("luasteam loaded!", luasteam)
+print("luasteam loaded in " .. (os.clock() - before) .. " seconds!")
 
 assert(luasteam ~= nil, "luasteam module not found")
 assert(type(luasteam) == "table", "luasteam is not a table")
@@ -15,4 +16,12 @@ assert(luasteam.Result.OK == 1, "Result.OK mismatch (expected 1, got " .. tostri
 assert(luasteam.InputSourceMode ~= nil, "InputSourceMode enum table not found")
 assert(luasteam.InputSourceMode.Trigger == 10, "InputSourceMode.Trigger mismatch (expected 10, got " .. tostring(luasteam.InputSourceMode.Trigger) .. ")")
 
-print("API import test passed successfully!")
+-- Test some of the new interfaces
+assert(luasteam.matchmaking ~= nil, "matchmaking interface not found")
+assert(luasteam.http ~= nil, "http interface not found")
+assert(luasteam.inventory ~= nil, "inventory interface not found")
+assert(luasteam.gameServerStats ~= nil, "gameServerStats interface not found")
+assert(luasteam.networking ~= nil, "networking interface not found")
+assert(luasteam.screenshots ~= nil, "screenshots interface not found")
+
+print("API import test passed successfully in " .. (os.clock() - before) .. " seconds!")

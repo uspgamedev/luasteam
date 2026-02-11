@@ -12,59 +12,7 @@ using luasteam::CallResultListener;
 
 namespace {
 
-class CallbackListener;
-CallbackListener *callback_listener = nullptr;
-int utils_ref = LUA_NOREF;
-
 constexpr int kMaxGamepadTextLength = 1000000; // clamp to avoid unbounded allocations
-
-class CallbackListener {
-  private:
-    STEAM_CALLBACK(CallbackListener, OnGamepadTextInputDismissed, GamepadTextInputDismissed_t);
-    STEAM_CALLBACK(CallbackListener, OnFloatingGamepadTextInputDismissed, FloatingGamepadTextInputDismissed_t);
-};
-
-void CallbackListener::OnGamepadTextInputDismissed(GamepadTextInputDismissed_t *data) {
-    if (data == nullptr) {
-        return;
-    }
-    lua_State *L = luasteam::global_lua_state;
-    if (!lua_checkstack(L, 4)) {
-        return;
-    }
-
-    lua_rawgeti(L, LUA_REGISTRYINDEX, utils_ref);
-    lua_getfield(L, -1, "onGamepadTextInputDismissed");
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-    } else {
-        lua_createtable(L, 0, 2);
-        lua_pushboolean(L, data->m_bSubmitted);
-        lua_setfield(L, -2, "submitted");
-        lua_pushnumber(L, data->m_unSubmittedText);
-        lua_setfield(L, -2, "submittedText");
-        lua_call(L, 1, 0);
-        lua_pop(L, 1);
-    }
-}
-
-void CallbackListener::OnFloatingGamepadTextInputDismissed(FloatingGamepadTextInputDismissed_t *data) {
-    if (data == nullptr) {
-        return;
-    }
-    lua_State *L = luasteam::global_lua_state;
-    if (!lua_checkstack(L, 4)) {
-        return;
-    }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, utils_ref);
-    lua_getfield(L, -1, "onFloatingGamepadTextInputDismissed");
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-    } else {
-        lua_call(L, 0, 0);
-        lua_pop(L, 1);
-    }
-}
 
 } // namespace
 
@@ -109,7 +57,7 @@ namespace luasteam {
 
 void add_utils(lua_State *L) {
     lua_createtable(L, 0, 3);
-    add_utils_auto(L);
+    register_utils_auto(L);
     add_func(L, "getEnteredGamepadTextInput", luasteam_getEnteredGamepadTextInput);
     add_func(L, "showGamepadTextInput", luasteam_showGamepadTextInput);
     add_func(L, "showFloatingGamepadTextInput", luasteam_showFloatingGamepadTextInput);
@@ -119,13 +67,10 @@ void add_utils(lua_State *L) {
     lua_setfield(L, -2, "utils");
 }
 
-void init_utils(lua_State *L) { callback_listener = new CallbackListener(); }
+void init_utils(lua_State *L) { init_utils_auto(L); }
 
 void shutdown_utils(lua_State *L) {
-    luaL_unref(L, LUA_REGISTRYINDEX, utils_ref);
-    utils_ref = LUA_NOREF;
-    delete callback_listener;
-    callback_listener = nullptr;
+    shutdown_utils_auto(L);
 }
 
 } // namespace luasteam

@@ -1,5 +1,276 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int matchmaking_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnFavoritesListChanged, FavoritesListChanged_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyInvite, LobbyInvite_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyEnter, LobbyEnter_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyDataUpdate, LobbyDataUpdate_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyChatUpdate, LobbyChatUpdate_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyChatMsg, LobbyChatMsg_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyGameCreated, LobbyGameCreated_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyMatchList, LobbyMatchList_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyKicked, LobbyKicked_t);
+    STEAM_CALLBACK(CallbackListener, OnLobbyCreated, LobbyCreated_t);
+    STEAM_CALLBACK(CallbackListener, OnFavoritesListAccountsUpdated, FavoritesListAccountsUpdated_t);
+};
+
+void CallbackListener::OnFavoritesListChanged(FavoritesListChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onFavoritesListChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 7);
+        lua_pushinteger(L, data->m_nIP);
+        lua_setfield(L, -2, "iP");
+        lua_pushinteger(L, data->m_nQueryPort);
+        lua_setfield(L, -2, "queryPort");
+        lua_pushinteger(L, data->m_nConnPort);
+        lua_setfield(L, -2, "connPort");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_pushinteger(L, data->m_nFlags);
+        lua_setfield(L, -2, "flags");
+        lua_pushboolean(L, data->m_bAdd);
+        lua_setfield(L, -2, "add");
+        lua_pushinteger(L, data->m_unAccountId);
+        lua_setfield(L, -2, "accountId");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyInvite(LobbyInvite_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyInvite");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_ulSteamIDUser);
+        lua_setfield(L, -2, "steamIDUser");
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulGameID);
+        lua_setfield(L, -2, "gameID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyEnter(LobbyEnter_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyEnter");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        lua_pushinteger(L, data->m_rgfChatPermissions);
+        lua_setfield(L, -2, "rgfChatPermissions");
+        lua_pushboolean(L, data->m_bLocked);
+        lua_setfield(L, -2, "locked");
+        lua_pushinteger(L, data->m_EChatRoomEnterResponse);
+        lua_setfield(L, -2, "eChatRoomEnterResponse");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyDataUpdate(LobbyDataUpdate_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyDataUpdate");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulSteamIDMember);
+        lua_setfield(L, -2, "steamIDMember");
+        lua_pushboolean(L, data->m_bSuccess);
+        lua_setfield(L, -2, "success");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyChatUpdate(LobbyChatUpdate_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyChatUpdate");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulSteamIDUserChanged);
+        lua_setfield(L, -2, "steamIDUserChanged");
+        luasteam::pushuint64(L, data->m_ulSteamIDMakingChange);
+        lua_setfield(L, -2, "steamIDMakingChange");
+        lua_pushinteger(L, data->m_rgfChatMemberStateChange);
+        lua_setfield(L, -2, "rgfChatMemberStateChange");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyChatMsg(LobbyChatMsg_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyChatMsg");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulSteamIDUser);
+        lua_setfield(L, -2, "steamIDUser");
+        lua_pushinteger(L, data->m_eChatEntryType);
+        lua_setfield(L, -2, "chatEntryType");
+        lua_pushinteger(L, data->m_iChatID);
+        lua_setfield(L, -2, "iChatID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyGameCreated(LobbyGameCreated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyGameCreated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulSteamIDGameServer);
+        lua_setfield(L, -2, "steamIDGameServer");
+        lua_pushinteger(L, data->m_unIP);
+        lua_setfield(L, -2, "iP");
+        lua_pushinteger(L, data->m_usPort);
+        lua_setfield(L, -2, "usPort");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyMatchList(LobbyMatchList_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyMatchList");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_nLobbiesMatching);
+        lua_setfield(L, -2, "lobbiesMatching");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyKicked(LobbyKicked_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyKicked");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        luasteam::pushuint64(L, data->m_ulSteamIDAdmin);
+        lua_setfield(L, -2, "steamIDAdmin");
+        lua_pushboolean(L, data->m_bKickedDueToDisconnect);
+        lua_setfield(L, -2, "kickedDueToDisconnect");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLobbyCreated(LobbyCreated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onLobbyCreated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_ulSteamIDLobby);
+        lua_setfield(L, -2, "steamIDLobby");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFavoritesListAccountsUpdated(FavoritesListAccountsUpdated_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::matchmaking_ref);
+    lua_getfield(L, -1, "onFavoritesListAccountsUpdated");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *matchmaking_listener = nullptr;
+
+} // namespace
+
+void init_matchmaking_auto(lua_State *L) { matchmaking_listener = new CallbackListener(); }
+
+void shutdown_matchmaking_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, matchmaking_ref);
+    matchmaking_ref = LUA_NOREF;
+    delete matchmaking_listener; matchmaking_listener = nullptr;
+}
+
+
 // int GetFavoriteGameCount();
 EXTERN int luasteam_matchmaking_SteamAPI_ISteamMatchmaking_GetFavoriteGameCount(lua_State *L) {
     lua_pushinteger(L, SteamMatchmaking()->GetFavoriteGameCount());
@@ -262,9 +533,7 @@ EXTERN int luasteam_matchmaking_SteamAPI_ISteamMatchmaking_SetLinkedLobby(lua_St
     return 1;
 }
 
-namespace luasteam {
-
-void add_matchmaking_auto(lua_State *L) {
+void register_matchmaking_auto(lua_State *L) {
     add_func(L, "getFavoriteGameCount", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_GetFavoriteGameCount);
     add_func(L, "addFavoriteGame", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_AddFavoriteGame);
     add_func(L, "removeFavoriteGame", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_RemoveFavoriteGame);
@@ -298,6 +567,14 @@ void add_matchmaking_auto(lua_State *L) {
     add_func(L, "getLobbyOwner", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_GetLobbyOwner);
     add_func(L, "setLobbyOwner", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_SetLobbyOwner);
     add_func(L, "setLinkedLobby", luasteam_matchmaking_SteamAPI_ISteamMatchmaking_SetLinkedLobby);
+}
+
+void add_matchmaking_auto(lua_State *L) {
+    lua_createtable(L, 0, 33);
+    register_matchmaking_auto(L);
+    lua_pushvalue(L, -1);
+    matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "matchmaking");
 }
 
 } // namespace luasteam

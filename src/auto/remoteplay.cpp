@@ -1,5 +1,82 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int remoteplay_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnSteamRemotePlaySessionConnected, SteamRemotePlaySessionConnected_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamRemotePlaySessionDisconnected, SteamRemotePlaySessionDisconnected_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamRemotePlayTogetherGuestInvite, SteamRemotePlayTogetherGuestInvite_t);
+};
+
+void CallbackListener::OnSteamRemotePlaySessionConnected(SteamRemotePlaySessionConnected_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::remoteplay_ref);
+    lua_getfield(L, -1, "onSteamRemotePlaySessionConnected");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_unSessionID);
+        lua_setfield(L, -2, "sessionID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamRemotePlaySessionDisconnected(SteamRemotePlaySessionDisconnected_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::remoteplay_ref);
+    lua_getfield(L, -1, "onSteamRemotePlaySessionDisconnected");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_unSessionID);
+        lua_setfield(L, -2, "sessionID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemotePlayTogetherGuestInvite_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::remoteplay_ref);
+    lua_getfield(L, -1, "onSteamRemotePlayTogetherGuestInvite");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushstring(L, data->m_szConnectURL);
+        lua_setfield(L, -2, "connectURL");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *remoteplay_listener = nullptr;
+
+} // namespace
+
+void init_remoteplay_auto(lua_State *L) { remoteplay_listener = new CallbackListener(); }
+
+void shutdown_remoteplay_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, remoteplay_ref);
+    remoteplay_ref = LUA_NOREF;
+    delete remoteplay_listener; remoteplay_listener = nullptr;
+}
+
+
 // uint32 GetSessionCount();
 EXTERN int luasteam_remoteplay_SteamAPI_ISteamRemotePlay_GetSessionCount(lua_State *L) {
     lua_pushinteger(L, SteamRemotePlay()->GetSessionCount());
@@ -75,9 +152,7 @@ EXTERN int luasteam_remoteplay_SteamAPI_ISteamRemotePlay_SetMouseCursor(lua_Stat
     return 0;
 }
 
-namespace luasteam {
-
-void add_remoteplay_auto(lua_State *L) {
+void register_remoteplay_auto(lua_State *L) {
     add_func(L, "getSessionCount", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_GetSessionCount);
     add_func(L, "getSessionID", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_GetSessionID);
     add_func(L, "getSessionSteamID", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_GetSessionSteamID);
@@ -89,6 +164,14 @@ void add_remoteplay_auto(lua_State *L) {
     add_func(L, "disableRemotePlayTogetherDirectInput", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_DisableRemotePlayTogetherDirectInput);
     add_func(L, "setMouseVisibility", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_SetMouseVisibility);
     add_func(L, "setMouseCursor", luasteam_remoteplay_SteamAPI_ISteamRemotePlay_SetMouseCursor);
+}
+
+void add_remoteplay_auto(lua_State *L) {
+    lua_createtable(L, 0, 11);
+    register_remoteplay_auto(L);
+    lua_pushvalue(L, -1);
+    remoteplay_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "remotePlay");
 }
 
 } // namespace luasteam

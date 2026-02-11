@@ -1,5 +1,90 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int networking_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnP2PSessionRequest, P2PSessionRequest_t);
+    STEAM_CALLBACK(CallbackListener, OnP2PSessionConnectFail, P2PSessionConnectFail_t);
+    STEAM_CALLBACK(CallbackListener, OnSocketStatusCallback, SocketStatusCallback_t);
+};
+
+void CallbackListener::OnP2PSessionRequest(P2PSessionRequest_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::networking_ref);
+    lua_getfield(L, -1, "onP2PSessionRequest");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDRemote");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnP2PSessionConnectFail(P2PSessionConnectFail_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::networking_ref);
+    lua_getfield(L, -1, "onP2PSessionConnectFail");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDRemote");
+        lua_pushinteger(L, data->m_eP2PSessionError);
+        lua_setfield(L, -2, "p2PSessionError");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSocketStatusCallback(SocketStatusCallback_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::networking_ref);
+    lua_getfield(L, -1, "onSocketStatusCallback");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_hSocket);
+        lua_setfield(L, -2, "socket");
+        lua_pushinteger(L, data->m_hListenSocket);
+        lua_setfield(L, -2, "listenSocket");
+        luasteam::pushuint64(L, data->m_steamIDRemote.ConvertToUint64());
+        lua_setfield(L, -2, "steamIDRemote");
+        lua_pushinteger(L, data->m_eSNetSocketState);
+        lua_setfield(L, -2, "sNetSocketState");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *networking_listener = nullptr;
+
+} // namespace
+
+void init_networking_auto(lua_State *L) { networking_listener = new CallbackListener(); }
+
+void shutdown_networking_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, networking_ref);
+    networking_ref = LUA_NOREF;
+    delete networking_listener; networking_listener = nullptr;
+}
+
+
 // bool AcceptP2PSessionWithUser(CSteamID steamIDRemote);
 EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_AcceptP2PSessionWithUser(lua_State *L) {
     CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
@@ -69,9 +154,7 @@ EXTERN int luasteam_networking_SteamAPI_ISteamNetworking_GetMaxPacketSize(lua_St
     return 1;
 }
 
-namespace luasteam {
-
-void add_networking_auto(lua_State *L) {
+void register_networking_auto(lua_State *L) {
     add_func(L, "acceptP2PSessionWithUser", luasteam_networking_SteamAPI_ISteamNetworking_AcceptP2PSessionWithUser);
     add_func(L, "closeP2PSessionWithUser", luasteam_networking_SteamAPI_ISteamNetworking_CloseP2PSessionWithUser);
     add_func(L, "closeP2PChannelWithUser", luasteam_networking_SteamAPI_ISteamNetworking_CloseP2PChannelWithUser);
@@ -81,6 +164,14 @@ void add_networking_auto(lua_State *L) {
     add_func(L, "destroyListenSocket", luasteam_networking_SteamAPI_ISteamNetworking_DestroyListenSocket);
     add_func(L, "getSocketConnectionType", luasteam_networking_SteamAPI_ISteamNetworking_GetSocketConnectionType);
     add_func(L, "getMaxPacketSize", luasteam_networking_SteamAPI_ISteamNetworking_GetMaxPacketSize);
+}
+
+void add_networking_auto(lua_State *L) {
+    lua_createtable(L, 0, 9);
+    register_networking_auto(L);
+    lua_pushvalue(L, -1);
+    networking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "networking");
 }
 
 } // namespace luasteam

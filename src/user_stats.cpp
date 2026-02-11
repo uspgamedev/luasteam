@@ -9,92 +9,6 @@ using luasteam::CallResultListener;
 
 namespace {
 
-class CallbackListener;
-CallbackListener *callback_listener = nullptr;
-int userStats_ref = LUA_NOREF;
-
-class CallbackListener {
-  private:
-    STEAM_CALLBACK(CallbackListener, OnUserStatsReceived, UserStatsReceived_t);
-    STEAM_CALLBACK(CallbackListener, OnUserStatsStored, UserStatsStored_t);
-    STEAM_CALLBACK(CallbackListener, OnUserAchievementStored, UserAchievementStored_t);
-};
-
-void CallbackListener::OnUserStatsReceived(UserStatsReceived_t *data) {
-    if (data == nullptr) {
-        return;
-    }
-    lua_State *L = luasteam::global_lua_state;
-    if (!lua_checkstack(L, 4)) {
-        return;
-    }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
-    lua_getfield(L, -1, "onUserStatsReceived");
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-    } else {
-        lua_createtable(L, 0, 3);
-        luasteam::pushuint64(L, data->m_nGameID);
-        lua_setfield(L, -2, "gameID");
-        lua_pushnumber(L, static_cast<int>(data->m_eResult));
-        lua_setfield(L, -2, "result");
-        luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-        lua_setfield(L, -2, "steamIDUser");
-        lua_call(L, 1, 0);
-        lua_pop(L, 1);
-    }
-}
-
-void CallbackListener::OnUserStatsStored(UserStatsStored_t *data) {
-    if (data == nullptr) {
-        return;
-    }
-    lua_State *L = luasteam::global_lua_state;
-    if (!lua_checkstack(L, 4)) {
-        return;
-    }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
-    lua_getfield(L, -1, "onUserStatsStored");
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-    } else {
-        lua_createtable(L, 0, 3);
-        luasteam::pushuint64(L, data->m_nGameID);
-        lua_setfield(L, -2, "gameID");
-        lua_pushnumber(L, static_cast<int>(data->m_eResult));
-        lua_setfield(L, -2, "result");
-        lua_call(L, 1, 0);
-        lua_pop(L, 1);
-    }
-}
-
-void CallbackListener::OnUserAchievementStored(UserAchievementStored_t *data) {
-    if (data == nullptr) {
-        return;
-    }
-    lua_State *L = luasteam::global_lua_state;
-    if (!lua_checkstack(L, 4)) {
-        return;
-    }
-    lua_rawgeti(L, LUA_REGISTRYINDEX, userStats_ref);
-    lua_getfield(L, -1, "onUserAchievementStored");
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-    } else {
-        lua_createtable(L, 0, 3);
-        luasteam::pushuint64(L, data->m_nGameID);
-        lua_setfield(L, -2, "gameID");
-        lua_pushstring(L, data->m_rgchAchievementName);
-        lua_setfield(L, -2, "achievementName");
-        lua_pushnumber(L, data->m_nCurProgress);
-        lua_setfield(L, -2, "curProgress");
-        lua_pushnumber(L, data->m_nMaxProgress);
-        lua_setfield(L, -2, "maxProgress");
-        lua_call(L, 1, 0);
-        lua_pop(L, 1);
-    }
-}
-
 } // namespace
 
 namespace luasteam {
@@ -354,7 +268,7 @@ namespace luasteam {
 
 void add_user_stats(lua_State *L) {
     lua_createtable(L, 0, 11);
-    add_userstats_auto(L);
+    register_userstats_auto(L);
     add_func(L, "getStatInt", luasteam_getStatInt);
     add_func(L, "getStatFloat", luasteam_getStatFloat);
     add_func(L, "setStatInt", luasteam_setStatInt);
@@ -368,17 +282,14 @@ void add_user_stats(lua_State *L) {
     add_func(L, "uploadLeaderboardScore", luasteam_uploadLeaderboardScore);
     add_func(L, "downloadLeaderboardEntries", luasteam_downloadLeaderboardEntries);
     lua_pushvalue(L, -1);
-    userStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    userstats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "userStats");
 }
 
-void init_user_stats(lua_State *L) { callback_listener = new CallbackListener(); }
+void init_user_stats(lua_State *L) { init_userstats_auto(L); }
 
 void shutdown_user_stats(lua_State *L) {
-    luaL_unref(L, LUA_REGISTRYINDEX, userStats_ref);
-    userStats_ref = LUA_NOREF;
-    delete callback_listener;
-    callback_listener = nullptr;
+    shutdown_userstats_auto(L);
 }
 
 } // namespace luasteam

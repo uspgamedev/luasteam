@@ -1,5 +1,132 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int apps_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnDlcInstalled, DlcInstalled_t);
+    STEAM_CALLBACK(CallbackListener, OnNewUrlLaunchParameters, NewUrlLaunchParameters_t);
+    STEAM_CALLBACK(CallbackListener, OnAppProofOfPurchaseKeyResponse, AppProofOfPurchaseKeyResponse_t);
+    STEAM_CALLBACK(CallbackListener, OnFileDetailsResult, FileDetailsResult_t);
+    STEAM_CALLBACK(CallbackListener, OnTimedTrialStatus, TimedTrialStatus_t);
+};
+
+void CallbackListener::OnDlcInstalled(DlcInstalled_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::apps_ref);
+    lua_getfield(L, -1, "onDlcInstalled");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnNewUrlLaunchParameters(NewUrlLaunchParameters_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::apps_ref);
+    lua_getfield(L, -1, "onNewUrlLaunchParameters");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAppProofOfPurchaseKeyResponse(AppProofOfPurchaseKeyResponse_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::apps_ref);
+    lua_getfield(L, -1, "onAppProofOfPurchaseKeyResponse");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_pushinteger(L, data->m_cchKeyLength);
+        lua_setfield(L, -2, "cchKeyLength");
+        lua_pushstring(L, data->m_rgchKey);
+        lua_setfield(L, -2, "key");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFileDetailsResult(FileDetailsResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::apps_ref);
+    lua_getfield(L, -1, "onFileDetailsResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_ulFileSize);
+        lua_setfield(L, -2, "fileSize");
+        lua_pushinteger(L, data->m_unFlags);
+        lua_setfield(L, -2, "flags");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnTimedTrialStatus(TimedTrialStatus_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::apps_ref);
+    lua_getfield(L, -1, "onTimedTrialStatus");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        lua_pushboolean(L, data->m_bIsOffline);
+        lua_setfield(L, -2, "isOffline");
+        lua_pushinteger(L, data->m_unSecondsAllowed);
+        lua_setfield(L, -2, "secondsAllowed");
+        lua_pushinteger(L, data->m_unSecondsPlayed);
+        lua_setfield(L, -2, "secondsPlayed");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *apps_listener = nullptr;
+
+} // namespace
+
+void init_apps_auto(lua_State *L) { apps_listener = new CallbackListener(); }
+
+void shutdown_apps_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, apps_ref);
+    apps_ref = LUA_NOREF;
+    delete apps_listener; apps_listener = nullptr;
+}
+
+
 // bool BIsSubscribed();
 EXTERN int luasteam_apps_SteamAPI_ISteamApps_BIsSubscribed(lua_State *L) {
     lua_pushboolean(L, SteamApps()->BIsSubscribed());
@@ -156,9 +283,7 @@ EXTERN int luasteam_apps_SteamAPI_ISteamApps_SetActiveBeta(lua_State *L) {
     return 1;
 }
 
-namespace luasteam {
-
-void add_apps_auto(lua_State *L) {
+void register_apps_auto(lua_State *L) {
     add_func(L, "isSubscribed", luasteam_apps_SteamAPI_ISteamApps_BIsSubscribed);
     add_func(L, "isLowViolence", luasteam_apps_SteamAPI_ISteamApps_BIsLowViolence);
     add_func(L, "isCybercafe", luasteam_apps_SteamAPI_ISteamApps_BIsCybercafe);
@@ -183,6 +308,14 @@ void add_apps_auto(lua_State *L) {
     add_func(L, "isSubscribedFromFamilySharing", luasteam_apps_SteamAPI_ISteamApps_BIsSubscribedFromFamilySharing);
     add_func(L, "setDlcContext", luasteam_apps_SteamAPI_ISteamApps_SetDlcContext);
     add_func(L, "setActiveBeta", luasteam_apps_SteamAPI_ISteamApps_SetActiveBeta);
+}
+
+void add_apps_auto(lua_State *L) {
+    lua_createtable(L, 0, 24);
+    register_apps_auto(L);
+    lua_pushvalue(L, -1);
+    apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "apps");
 }
 
 } // namespace luasteam

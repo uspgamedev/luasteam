@@ -1,5 +1,190 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int utils_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnIPCountry, IPCountry_t);
+    STEAM_CALLBACK(CallbackListener, OnLowBatteryPower, LowBatteryPower_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamAPICallCompleted, SteamAPICallCompleted_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamShutdown, SteamShutdown_t);
+    STEAM_CALLBACK(CallbackListener, OnCheckFileSignature, CheckFileSignature_t);
+    STEAM_CALLBACK(CallbackListener, OnGamepadTextInputDismissed, GamepadTextInputDismissed_t);
+    STEAM_CALLBACK(CallbackListener, OnAppResumingFromSuspend, AppResumingFromSuspend_t);
+    STEAM_CALLBACK(CallbackListener, OnFloatingGamepadTextInputDismissed, FloatingGamepadTextInputDismissed_t);
+    STEAM_CALLBACK(CallbackListener, OnFilterTextDictionaryChanged, FilterTextDictionaryChanged_t);
+};
+
+void CallbackListener::OnIPCountry(IPCountry_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onIPCountry");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnLowBatteryPower(LowBatteryPower_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onLowBatteryPower");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_nMinutesBatteryLeft);
+        lua_setfield(L, -2, "minutesBatteryLeft");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamAPICallCompleted(SteamAPICallCompleted_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onSteamAPICallCompleted");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_hAsyncCall);
+        lua_setfield(L, -2, "asyncCall");
+        lua_pushinteger(L, data->m_iCallback);
+        lua_setfield(L, -2, "iCallback");
+        lua_pushinteger(L, data->m_cubParam);
+        lua_setfield(L, -2, "cubParam");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamShutdown(SteamShutdown_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onSteamShutdown");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnCheckFileSignature(CheckFileSignature_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onCheckFileSignature");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eCheckFileSignature);
+        lua_setfield(L, -2, "checkFileSignature");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGamepadTextInputDismissed(GamepadTextInputDismissed_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onGamepadTextInputDismissed");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushboolean(L, data->m_bSubmitted);
+        lua_setfield(L, -2, "submitted");
+        lua_pushinteger(L, data->m_unSubmittedText);
+        lua_setfield(L, -2, "submittedText");
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAppResumingFromSuspend(AppResumingFromSuspend_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onAppResumingFromSuspend");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFloatingGamepadTextInputDismissed(FloatingGamepadTextInputDismissed_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onFloatingGamepadTextInputDismissed");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 0);
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnFilterTextDictionaryChanged(FilterTextDictionaryChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::utils_ref);
+    lua_getfield(L, -1, "onFilterTextDictionaryChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eLanguage);
+        lua_setfield(L, -2, "language");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *utils_listener = nullptr;
+
+} // namespace
+
+void init_utils_auto(lua_State *L) { utils_listener = new CallbackListener(); }
+
+void shutdown_utils_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, utils_ref);
+    utils_ref = LUA_NOREF;
+    delete utils_listener; utils_listener = nullptr;
+}
+
+
 // uint32 GetSecondsSinceAppActive();
 EXTERN int luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceAppActive(lua_State *L) {
     lua_pushinteger(L, SteamUtils()->GetSecondsSinceAppActive());
@@ -199,9 +384,7 @@ EXTERN int luasteam_utils_SteamAPI_ISteamUtils_DismissGamepadTextInput(lua_State
     return 1;
 }
 
-namespace luasteam {
-
-void add_utils_auto(lua_State *L) {
+void register_utils_auto(lua_State *L) {
     add_func(L, "getSecondsSinceAppActive", luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceAppActive);
     add_func(L, "getSecondsSinceComputerActive", luasteam_utils_SteamAPI_ISteamUtils_GetSecondsSinceComputerActive);
     add_func(L, "getConnectedUniverse", luasteam_utils_SteamAPI_ISteamUtils_GetConnectedUniverse);
@@ -232,6 +415,14 @@ void add_utils_auto(lua_State *L) {
     add_func(L, "setGameLauncherMode", luasteam_utils_SteamAPI_ISteamUtils_SetGameLauncherMode);
     add_func(L, "dismissFloatingGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_DismissFloatingGamepadTextInput);
     add_func(L, "dismissGamepadTextInput", luasteam_utils_SteamAPI_ISteamUtils_DismissGamepadTextInput);
+}
+
+void add_utils_auto(lua_State *L) {
+    lua_createtable(L, 0, 30);
+    register_utils_auto(L);
+    lua_pushvalue(L, -1);
+    utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "utils");
 }
 
 } // namespace luasteam

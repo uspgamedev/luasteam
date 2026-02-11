@@ -2,6 +2,8 @@
 #define LUASTEAM_COMMON
 
 #include "../sdk/public/steam/steam_api.h"
+#include "../sdk/public/steam/steam_gameserver.h"
+#include "../sdk/public/steam/steamnetworkingfakeip.h"
 extern "C" {
 #include <lauxlib.h>
 #include <lua.h>

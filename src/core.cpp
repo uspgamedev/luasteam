@@ -9,6 +9,7 @@
 #include "user.hpp"
 #include "user_stats.hpp"
 #include "utils.hpp"
+#include "auto/auto.hpp"
 
 // ========================
 // ======= SteamAPI =======
@@ -30,6 +31,23 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_input(L);
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
+        luasteam::init_matchmaking_auto(L);
+        luasteam::init_matchmakingservers_auto(L);
+        luasteam::init_networking_auto(L);
+        luasteam::init_screenshots_auto(L);
+        luasteam::init_music_auto(L);
+        luasteam::init_http_auto(L);
+        luasteam::init_controller_auto(L);
+        luasteam::init_htmlsurface_auto(L);
+        luasteam::init_inventory_auto(L);
+        luasteam::init_video_auto(L);
+        luasteam::init_parentalsettings_auto(L);
+        luasteam::init_remoteplay_auto(L);
+        luasteam::init_networkingmessages_auto(L);
+        luasteam::init_gameserverstats_auto(L);
+        luasteam::init_timeline_auto(L);
+        luasteam::init_parties_auto(L);
+        luasteam::init_remotestorage_auto(L);
     } else {
         fprintf(stderr, "Couldn't connect to steam...\nPlease ensure that the following conditions are met:\n* Do you have Steam turned on?\n* If not running from steam, do you have a correct steam_appid.txt file?\n* Is the application running under the same user context as steam?\n* Is a license for the App ID present in your active steam account?\n* Is your App ID correctly set up, i.e. not in ``Release State: Unavailable`` and not missing default packages?\n");
     }
@@ -42,6 +60,23 @@ EXTERN int luasteam_init(lua_State *L) {
 EXTERN int luasteam_shutdown(lua_State *L) {
     SteamAPI_Shutdown();
     // Cleaning up
+    luasteam::shutdown_remotestorage_auto(L);
+    luasteam::shutdown_parties_auto(L);
+    luasteam::shutdown_timeline_auto(L);
+    luasteam::shutdown_gameserverstats_auto(L);
+    luasteam::shutdown_networkingmessages_auto(L);
+    luasteam::shutdown_remoteplay_auto(L);
+    luasteam::shutdown_parentalsettings_auto(L);
+    luasteam::shutdown_video_auto(L);
+    luasteam::shutdown_inventory_auto(L);
+    luasteam::shutdown_htmlsurface_auto(L);
+    luasteam::shutdown_controller_auto(L);
+    luasteam::shutdown_http_auto(L);
+    luasteam::shutdown_music_auto(L);
+    luasteam::shutdown_screenshots_auto(L);
+    luasteam::shutdown_networking_auto(L);
+    luasteam::shutdown_matchmakingservers_auto(L);
+    luasteam::shutdown_matchmaking_auto(L);
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_input(L);

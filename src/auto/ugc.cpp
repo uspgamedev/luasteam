@@ -1,5 +1,448 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int ugc_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnSteamUGCQueryCompleted, SteamUGCQueryCompleted_t);
+    STEAM_CALLBACK(CallbackListener, OnSteamUGCRequestUGCDetailsResult, SteamUGCRequestUGCDetailsResult_t);
+    STEAM_CALLBACK(CallbackListener, OnCreateItemResult, CreateItemResult_t);
+    STEAM_CALLBACK(CallbackListener, OnSubmitItemUpdateResult, SubmitItemUpdateResult_t);
+    STEAM_CALLBACK(CallbackListener, OnItemInstalled, ItemInstalled_t);
+    STEAM_CALLBACK(CallbackListener, OnDownloadItemResult, DownloadItemResult_t);
+    STEAM_CALLBACK(CallbackListener, OnUserFavoriteItemsListChanged, UserFavoriteItemsListChanged_t);
+    STEAM_CALLBACK(CallbackListener, OnSetUserItemVoteResult, SetUserItemVoteResult_t);
+    STEAM_CALLBACK(CallbackListener, OnGetUserItemVoteResult, GetUserItemVoteResult_t);
+    STEAM_CALLBACK(CallbackListener, OnStartPlaytimeTrackingResult, StartPlaytimeTrackingResult_t);
+    STEAM_CALLBACK(CallbackListener, OnStopPlaytimeTrackingResult, StopPlaytimeTrackingResult_t);
+    STEAM_CALLBACK(CallbackListener, OnAddUGCDependencyResult, AddUGCDependencyResult_t);
+    STEAM_CALLBACK(CallbackListener, OnRemoveUGCDependencyResult, RemoveUGCDependencyResult_t);
+    STEAM_CALLBACK(CallbackListener, OnAddAppDependencyResult, AddAppDependencyResult_t);
+    STEAM_CALLBACK(CallbackListener, OnRemoveAppDependencyResult, RemoveAppDependencyResult_t);
+    STEAM_CALLBACK(CallbackListener, OnGetAppDependenciesResult, GetAppDependenciesResult_t);
+    STEAM_CALLBACK(CallbackListener, OnDeleteItemResult, DeleteItemResult_t);
+    STEAM_CALLBACK(CallbackListener, OnUserSubscribedItemsListChanged, UserSubscribedItemsListChanged_t);
+    STEAM_CALLBACK(CallbackListener, OnWorkshopEULAStatus, WorkshopEULAStatus_t);
+};
+
+void CallbackListener::OnSteamUGCQueryCompleted(SteamUGCQueryCompleted_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onSteamUGCQueryCompleted");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 6);
+        luasteam::pushuint64(L, data->m_handle);
+        lua_setfield(L, -2, "handle");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushinteger(L, data->m_unNumResultsReturned);
+        lua_setfield(L, -2, "numResultsReturned");
+        lua_pushinteger(L, data->m_unTotalMatchingResults);
+        lua_setfield(L, -2, "totalMatchingResults");
+        lua_pushboolean(L, data->m_bCachedData);
+        lua_setfield(L, -2, "cachedData");
+        lua_pushstring(L, data->m_rgchNextCursor);
+        lua_setfield(L, -2, "nextCursor");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSteamUGCRequestUGCDetailsResult(SteamUGCRequestUGCDetailsResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onSteamUGCRequestUGCDetailsResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushboolean(L, data->m_bCachedData);
+        lua_setfield(L, -2, "cachedData");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnCreateItemResult(CreateItemResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onCreateItemResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushboolean(L, data->m_bUserNeedsToAcceptWorkshopLegalAgreement);
+        lua_setfield(L, -2, "userNeedsToAcceptWorkshopLegalAgreement");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSubmitItemUpdateResult(SubmitItemUpdateResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onSubmitItemUpdateResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushboolean(L, data->m_bUserNeedsToAcceptWorkshopLegalAgreement);
+        lua_setfield(L, -2, "userNeedsToAcceptWorkshopLegalAgreement");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnItemInstalled(ItemInstalled_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onItemInstalled");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        luasteam::pushuint64(L, data->m_hLegacyContent);
+        lua_setfield(L, -2, "legacyContent");
+        luasteam::pushuint64(L, data->m_unManifestID);
+        lua_setfield(L, -2, "manifestID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnDownloadItemResult(DownloadItemResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onDownloadItemResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_unAppID);
+        lua_setfield(L, -2, "appID");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnUserFavoriteItemsListChanged(UserFavoriteItemsListChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onUserFavoriteItemsListChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushboolean(L, data->m_bWasAddRequest);
+        lua_setfield(L, -2, "wasAddRequest");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnSetUserItemVoteResult(SetUserItemVoteResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onSetUserItemVoteResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushboolean(L, data->m_bVoteUp);
+        lua_setfield(L, -2, "voteUp");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGetUserItemVoteResult(GetUserItemVoteResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onGetUserItemVoteResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 5);
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushboolean(L, data->m_bVotedUp);
+        lua_setfield(L, -2, "votedUp");
+        lua_pushboolean(L, data->m_bVotedDown);
+        lua_setfield(L, -2, "votedDown");
+        lua_pushboolean(L, data->m_bVoteSkipped);
+        lua_setfield(L, -2, "voteSkipped");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnStartPlaytimeTrackingResult(StartPlaytimeTrackingResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onStartPlaytimeTrackingResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnStopPlaytimeTrackingResult(StopPlaytimeTrackingResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onStopPlaytimeTrackingResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAddUGCDependencyResult(AddUGCDependencyResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onAddUGCDependencyResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        luasteam::pushuint64(L, data->m_nChildPublishedFileId);
+        lua_setfield(L, -2, "childPublishedFileId");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnRemoveUGCDependencyResult(RemoveUGCDependencyResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onRemoveUGCDependencyResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        luasteam::pushuint64(L, data->m_nChildPublishedFileId);
+        lua_setfield(L, -2, "childPublishedFileId");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnAddAppDependencyResult(AddAppDependencyResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onAddAppDependencyResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnRemoveAppDependencyResult(RemoveAppDependencyResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onRemoveAppDependencyResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 3);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnGetAppDependenciesResult(GetAppDependenciesResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onGetAppDependenciesResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 5);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_pushinteger(L, data->m_nNumAppDependencies);
+        lua_setfield(L, -2, "numAppDependencies");
+        lua_pushinteger(L, data->m_nTotalNumAppDependencies);
+        lua_setfield(L, -2, "totalNumAppDependencies");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnDeleteItemResult(DeleteItemResult_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onDeleteItemResult");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        luasteam::pushuint64(L, data->m_nPublishedFileId);
+        lua_setfield(L, -2, "publishedFileId");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnUserSubscribedItemsListChanged(UserSubscribedItemsListChanged_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onUserSubscribedItemsListChanged");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 1);
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::ugc_ref);
+    lua_getfield(L, -1, "onWorkshopEULAStatus");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 6);
+        lua_pushinteger(L, data->m_eResult);
+        lua_setfield(L, -2, "result");
+        lua_pushinteger(L, data->m_nAppID);
+        lua_setfield(L, -2, "appID");
+        lua_pushinteger(L, data->m_unVersion);
+        lua_setfield(L, -2, "version");
+        lua_pushinteger(L, data->m_rtAction);
+        lua_setfield(L, -2, "rtAction");
+        lua_pushboolean(L, data->m_bAccepted);
+        lua_setfield(L, -2, "accepted");
+        lua_pushboolean(L, data->m_bNeedsAction);
+        lua_setfield(L, -2, "needsAction");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *ugc_listener = nullptr;
+
+} // namespace
+
+void init_ugc_auto(lua_State *L) { ugc_listener = new CallbackListener(); }
+
+void shutdown_ugc_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, ugc_ref);
+    ugc_ref = LUA_NOREF;
+    delete ugc_listener; ugc_listener = nullptr;
+}
+
+
 // UGCQueryHandle_t CreateQueryUserUGCRequest(AccountID_t unAccountID, EUserUGCList eListType, EUGCMatchingUGCType eMatchingUGCType, EUserUGCListSortOrder eSortOrder, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
 EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryUserUGCRequest(lua_State *L) {
     AccountID_t unAccountID = static_cast<AccountID_t>(luaL_checkint(L, 1));
@@ -578,9 +1021,7 @@ EXTERN int luasteam_ugc_SteamAPI_ISteamUGC_GetWorkshopEULAStatus(lua_State *L) {
     return 1;
 }
 
-namespace luasteam {
-
-void add_ugc_auto(lua_State *L) {
+void register_ugc_auto(lua_State *L) {
     add_func(L, "createQueryUserUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryUserUGCRequest);
     add_func(L, "createQueryAllUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestPage);
     add_func(L, "createQueryAllUGCRequest", luasteam_ugc_SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor);
@@ -653,6 +1094,14 @@ void add_ugc_auto(lua_State *L) {
     add_func(L, "deleteItem", luasteam_ugc_SteamAPI_ISteamUGC_DeleteItem);
     add_func(L, "showWorkshopEULA", luasteam_ugc_SteamAPI_ISteamUGC_ShowWorkshopEULA);
     add_func(L, "getWorkshopEULAStatus", luasteam_ugc_SteamAPI_ISteamUGC_GetWorkshopEULAStatus);
+}
+
+void add_ugc_auto(lua_State *L) {
+    lua_createtable(L, 0, 72);
+    register_ugc_auto(L);
+    lua_pushvalue(L, -1);
+    ugc_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "UGC");
 }
 
 } // namespace luasteam

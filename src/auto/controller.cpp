@@ -1,5 +1,17 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int controller_ref = LUA_NOREF;
+
+void init_controller_auto(lua_State *L) {}
+
+void shutdown_controller_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, controller_ref);
+    controller_ref = LUA_NOREF;
+}
+
+
 // bool Init();
 EXTERN int luasteam_controller_SteamAPI_ISteamController_Init(lua_State *L) {
     lua_pushboolean(L, SteamController()->Init());
@@ -198,9 +210,7 @@ EXTERN int luasteam_controller_SteamAPI_ISteamController_TranslateActionOrigin(l
     return 1;
 }
 
-namespace luasteam {
-
-void add_controller_auto(lua_State *L) {
+void register_controller_auto(lua_State *L) {
     add_func(L, "init", luasteam_controller_SteamAPI_ISteamController_Init);
     add_func(L, "shutdown", luasteam_controller_SteamAPI_ISteamController_Shutdown);
     add_func(L, "runFrame", luasteam_controller_SteamAPI_ISteamController_RunFrame);
@@ -227,6 +237,14 @@ void add_controller_auto(lua_State *L) {
     add_func(L, "getGlyphForXboxOrigin", luasteam_controller_SteamAPI_ISteamController_GetGlyphForXboxOrigin);
     add_func(L, "getActionOriginFromXboxOrigin", luasteam_controller_SteamAPI_ISteamController_GetActionOriginFromXboxOrigin);
     add_func(L, "translateActionOrigin", luasteam_controller_SteamAPI_ISteamController_TranslateActionOrigin);
+}
+
+void add_controller_auto(lua_State *L) {
+    lua_createtable(L, 0, 26);
+    register_controller_auto(L);
+    lua_pushvalue(L, -1);
+    controller_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "controller");
 }
 
 } // namespace luasteam

@@ -1,5 +1,98 @@
 #include "auto.hpp"
 
+namespace luasteam {
+
+int http_ref = LUA_NOREF;
+
+namespace {
+
+class CallbackListener {
+  private:
+    STEAM_CALLBACK(CallbackListener, OnHTTPRequestCompleted, HTTPRequestCompleted_t);
+    STEAM_CALLBACK(CallbackListener, OnHTTPRequestHeadersReceived, HTTPRequestHeadersReceived_t);
+    STEAM_CALLBACK(CallbackListener, OnHTTPRequestDataReceived, HTTPRequestDataReceived_t);
+};
+
+void CallbackListener::OnHTTPRequestCompleted(HTTPRequestCompleted_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::http_ref);
+    lua_getfield(L, -1, "onHTTPRequestCompleted");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 5);
+        lua_pushinteger(L, data->m_hRequest);
+        lua_setfield(L, -2, "request");
+        luasteam::pushuint64(L, data->m_ulContextValue);
+        lua_setfield(L, -2, "contextValue");
+        lua_pushboolean(L, data->m_bRequestSuccessful);
+        lua_setfield(L, -2, "requestSuccessful");
+        lua_pushinteger(L, data->m_eStatusCode);
+        lua_setfield(L, -2, "statusCode");
+        lua_pushinteger(L, data->m_unBodySize);
+        lua_setfield(L, -2, "bodySize");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnHTTPRequestHeadersReceived(HTTPRequestHeadersReceived_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::http_ref);
+    lua_getfield(L, -1, "onHTTPRequestHeadersReceived");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 2);
+        lua_pushinteger(L, data->m_hRequest);
+        lua_setfield(L, -2, "request");
+        luasteam::pushuint64(L, data->m_ulContextValue);
+        lua_setfield(L, -2, "contextValue");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+void CallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataReceived_t *data) {
+    if (data == nullptr) return;
+    lua_State *L = luasteam::global_lua_state;
+    if (!lua_checkstack(L, 4)) return;
+    lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::http_ref);
+    lua_getfield(L, -1, "onHTTPRequestDataReceived");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+    } else {
+        lua_createtable(L, 0, 4);
+        lua_pushinteger(L, data->m_hRequest);
+        lua_setfield(L, -2, "request");
+        luasteam::pushuint64(L, data->m_ulContextValue);
+        lua_setfield(L, -2, "contextValue");
+        lua_pushinteger(L, data->m_cOffset);
+        lua_setfield(L, -2, "cOffset");
+        lua_pushinteger(L, data->m_cBytesReceived);
+        lua_setfield(L, -2, "cBytesReceived");
+        lua_call(L, 1, 0);
+        lua_pop(L, 1);
+    }
+}
+
+CallbackListener *http_listener = nullptr;
+
+} // namespace
+
+void init_http_auto(lua_State *L) { http_listener = new CallbackListener(); }
+
+void shutdown_http_auto(lua_State *L) {
+    luaL_unref(L, LUA_REGISTRYINDEX, http_ref);
+    http_ref = LUA_NOREF;
+    delete http_listener; http_listener = nullptr;
+}
+
+
 // HTTPRequestHandle CreateHTTPRequest(EHTTPMethod eHTTPRequestMethod, const char * pchAbsoluteURL);
 EXTERN int luasteam_http_SteamAPI_ISteamHTTP_CreateHTTPRequest(lua_State *L) {
     EHTTPMethod eHTTPRequestMethod = static_cast<EHTTPMethod>(luaL_checkint(L, 1));
@@ -119,9 +212,7 @@ EXTERN int luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestAbsoluteTimeoutMS(lua
     return 1;
 }
 
-namespace luasteam {
-
-void add_http_auto(lua_State *L) {
+void register_http_auto(lua_State *L) {
     add_func(L, "createHTTPRequest", luasteam_http_SteamAPI_ISteamHTTP_CreateHTTPRequest);
     add_func(L, "setHTTPRequestContextValue", luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestContextValue);
     add_func(L, "setHTTPRequestNetworkActivityTimeout", luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestNetworkActivityTimeout);
@@ -137,6 +228,14 @@ void add_http_auto(lua_State *L) {
     add_func(L, "setHTTPRequestUserAgentInfo", luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestUserAgentInfo);
     add_func(L, "setHTTPRequestRequiresVerifiedCertificate", luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestRequiresVerifiedCertificate);
     add_func(L, "setHTTPRequestAbsoluteTimeoutMS", luasteam_http_SteamAPI_ISteamHTTP_SetHTTPRequestAbsoluteTimeoutMS);
+}
+
+void add_http_auto(lua_State *L) {
+    lua_createtable(L, 0, 15);
+    register_http_auto(L);
+    lua_pushvalue(L, -1);
+    http_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "http");
 }
 
 } // namespace luasteam
