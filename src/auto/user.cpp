@@ -370,14 +370,6 @@ EXTERN int luasteam_User_GetSteamID(lua_State *L) {
     return 1;
 }
 
-// void TerminateGameConnection_DEPRECATED(uint32 unIPServer, uint16 usPortServer);
-EXTERN int luasteam_User_TerminateGameConnection_DEPRECATED(lua_State *L) {
-    uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 1));
-    uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 2));
-    SteamUser()->TerminateGameConnection_DEPRECATED(unIPServer, usPortServer);
-    return 0;
-}
-
 // void TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent, const char * pchExtraInfo);
 EXTERN int luasteam_User_TrackAppUsageEvent(lua_State *L) {
     CGameID gameID(luasteam::checkuint64(L, 1));
@@ -385,6 +377,15 @@ EXTERN int luasteam_User_TrackAppUsageEvent(lua_State *L) {
     const char *pchExtraInfo = luaL_checkstring(L, 3);
     SteamUser()->TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo);
     return 0;
+}
+
+// bool GetUserDataFolder(char * pchBuffer, int cubBuffer);
+EXTERN int luasteam_User_GetUserDataFolder(lua_State *L) {
+    int cubBuffer = luaL_checkint(L, 1);
+    std::vector<char> pchBuffer(cubBuffer);
+    lua_pushboolean(L, SteamUser()->GetUserDataFolder(pchBuffer.data(), cubBuffer));
+    lua_pushstring(L, pchBuffer.data());
+    return 1;
 }
 
 // void StartVoiceRecording();
@@ -399,7 +400,7 @@ EXTERN int luasteam_User_StopVoiceRecording(lua_State *L) {
     return 0;
 }
 
-// EVoiceResult GetAvailableVoice(uint32 * pcbCompressed, uint32 * pcbUncompressed_Deprecated, uint32 nUncompressedVoiceDesiredSampleRate_Deprecated);
+// EVoiceResult GetAvailableVoice(uint32 * pcbCompressed);
 EXTERN int luasteam_User_GetAvailableVoice(lua_State *L) {
     uint32 pcbCompressed;    lua_pushinteger(L, SteamUser()->GetAvailableVoice(&pcbCompressed));
     lua_pushinteger(L, pcbCompressed);
@@ -524,8 +525,8 @@ void register_User_auto(lua_State *L) {
     add_func(L, "GetHSteamUser", luasteam_User_GetHSteamUser);
     add_func(L, "BLoggedOn", luasteam_User_BLoggedOn);
     add_func(L, "GetSteamID", luasteam_User_GetSteamID);
-    add_func(L, "TerminateGameConnection_DEPRECATED", luasteam_User_TerminateGameConnection_DEPRECATED);
     add_func(L, "TrackAppUsageEvent", luasteam_User_TrackAppUsageEvent);
+    add_func(L, "GetUserDataFolder", luasteam_User_GetUserDataFolder);
     add_func(L, "StartVoiceRecording", luasteam_User_StartVoiceRecording);
     add_func(L, "StopVoiceRecording", luasteam_User_StopVoiceRecording);
     add_func(L, "GetAvailableVoice", luasteam_User_GetAvailableVoice);

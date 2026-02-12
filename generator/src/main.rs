@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeSet, HashMap, HashSet};
+use std::fs;
 use std::path::Path;
-use std::{fs, string};
 
 #[derive(Debug, Default)]
 struct Stats {
@@ -36,12 +36,6 @@ impl Stats {
             self.enum_values_total - self.enum_values_generated
         );
 
-        if !self.unsupported_types.is_empty() {
-            println!("\nUnsupported types ({}):", self.unsupported_types.len());
-            for t in &self.unsupported_types {
-                println!("  - {}", t);
-            }
-        }
         println!("--------------------------");
     }
 }
@@ -57,6 +51,14 @@ struct SteamApi {
 impl SteamApi {
     /// Fix some known issues in the JSON data
     fn apply_fixes(&mut self) {
+        self.interfaces.iter_mut().for_each(|i| {
+            i.methods.retain_mut(|m| {
+                // remove deprecated parameters
+                m.params.retain(|p| !p.paramname.ends_with("_Deprecated"));
+                // remove deprecated methods
+                !m.methodname.ends_with("_DEPRECATED")
+            })
+        });
         let users = self
             .interfaces
             .iter_mut()
@@ -71,6 +73,30 @@ impl SteamApi {
         assert!(p.paramtype == "void *");
         // It should be const void * because it is input, not output.
         p.paramtype = "const void *".to_string();
+        // Methods that do not use out_string_count when they should
+        let to_mark_counters = [(
+            "ISteamUser",
+            vec![("GetUserDataFolder", "pchBuffer", "cubBuffer")],
+        )];
+        for (i_name, data) in to_mark_counters {
+            let i = self
+                .interfaces
+                .iter_mut()
+                .find(|i| i.classname == i_name)
+                .unwrap();
+            for (m_name, p_name, count_name) in data {
+                let m = i
+                    .methods
+                    .iter_mut()
+                    .find(|m| m.methodname == m_name)
+                    .unwrap();
+                let p = m.params.iter_mut().find(|p| p.paramname == p_name).unwrap();
+                assert!(p.paramtype == "char *");
+                assert!(p.out_string_count.is_none());
+                p.out_string_count = Some(count_name.to_string());
+                assert!(m.params.iter().any(|p| p.paramname == count_name));
+            }
+        }
     }
 }
 
@@ -131,6 +157,9 @@ struct Param {
     out_string_count: Option<String>,
     /// If present, indicates that this pointer param is an output array and the name of the parameter that contains the size of the array (might be the next parameter, or a constant)
     out_array_count: Option<String>,
+    array_count: Option<String>,
+    // Like out_array_count, but has the name of the function to call to get the count
+    out_array_call: Option<String>,
     desc: Option<String>,
 }
 
@@ -253,29 +282,6 @@ impl Generator {
 
         let mut interface_names = Vec::new();
 
-        let mut blocklist = HashMap::new();
-        blocklist.insert(
-            "ISteamClient",
-            "Specialized interface for context initialization.",
-        );
-        blocklist.insert(
-            "ISteamMatchmakingPingResponse",
-            "Callback response interface.",
-        );
-        blocklist.insert(
-            "ISteamMatchmakingPlayersResponse",
-            "Callback response interface.",
-        );
-        blocklist.insert(
-            "ISteamMatchmakingRulesResponse",
-            "Callback response interface.",
-        );
-        blocklist.insert(
-            "ISteamMatchmakingServerListResponse",
-            "Callback response interface.",
-        );
-        blocklist.insert("ISteamNetworkingFakeUDPPort", "Internal/specialized.");
-
         let mut method_blocklist = HashSet::new();
         // These are added because they have many overloads
         // TODO: Add a custom one for these
@@ -283,8 +289,6 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool");
         method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64");
         method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat");
         method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatInt64");
         method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatDouble");
         method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64");
@@ -307,12 +311,15 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor");
         // Unused method, not even in API Reference
         method_blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag");
+        // Very weird, out_array_count seems to be all wrong
+        method_blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices");
 
         for interface in &self.api.interfaces {
-            if blocklist.contains_key(interface.classname.as_str()) {
-                continue;
-            }
             if interface.accessors.is_empty() {
+                println!(
+                    "Skipping interface {} because it has no accessors",
+                    interface.classname
+                );
                 continue;
             }
             if let Some(name) = self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -645,40 +652,35 @@ impl Generator {
             lua_method_name
         ));
 
-        // Process all params in original order, maintaining parameter positions
-        let non_deprecated_params = method
-            .params
-            .iter()
-            .filter(|p| !p.paramname.ends_with("_Deprecated"))
-            .collect::<Vec<_>>();
-
         let mut on_pointers = false;
+        // params used to call the function in C
         let mut param_names = Vec::new();
+        // Pointer params that are returned as output
         let mut pointer_params = Vec::new();
         let mut string_count_to_ignore = None;
 
         let mut i = 0;
         let mut lua_idx = 1;
-        while i < non_deprecated_params.len() {
-            let param = non_deprecated_params[i];
+        while i < method.params.len() {
+            let param = &method.params[i];
             let is_pointer = Self::is_non_const_pointer(&param.paramtype);
             if Some(&param.paramname) == string_count_to_ignore.as_ref() {
                 // This parameter is just the size for a previous string array, skip it
                 string_count_to_ignore = None;
-                if self.resolve_type(&param.paramtype) != "int" {
-                    println!(
-                            "Unsupported array parameter type: {} (only int is supported for array sizes)",
-                            param.paramtype
-                        );
-                    return None;
+                if is_pointer {
+                    // It is a value returned as well as the size passed in.
+                    pointer_params.push((false, param));
+                    param_names.push(format!("&{}", param.paramname.clone()));
+                } else {
+                    param_names.push(param.paramname.clone());
                 }
                 i += 1;
-                param_names.push(param.paramname.clone());
                 continue;
             }
             if !is_pointer && on_pointers {
                 // Pointers must be always at the end.
                 // Arrays with size must use out_string_count or out_array_count.
+                dbg!(string_count_to_ignore, &method.params);
                 println!(
                     "Unsupported parameter order: non-pointer param '{}' comes after pointer params",
                     param.paramname
@@ -687,6 +689,14 @@ impl Generator {
             }
             on_pointers |= is_pointer;
             if !on_pointers {
+                if string_count_to_ignore.is_some() {
+                    dbg!(&method.params);
+                    println!(
+                        "Unsupported parameter order: param '{}' comes after a param with out_string_count but is not the count param",
+                        param.paramname
+                    );
+                    return None;
+                }
                 let resolved = self.resolve_type(&param.paramtype);
                 param_names.push(param.paramname.clone());
 
@@ -749,6 +759,14 @@ impl Generator {
                 lua_idx += 1;
             } else {
                 let base_type = Self::extract_pointer_base_type(&param.paramtype);
+                if base_type == "void" {
+                    println!(
+                        "Unsupported pointer parameter with void base type: {} {}",
+                        param.paramtype, param.paramname
+                    );
+                    stats.unsupported_types.insert(param.paramtype.clone());
+                    return None;
+                }
                 if let Some(count_name) = &param.out_string_count {
                     // Assuming it is the next non array parameter (because of lua_idx)
                     // but sometimes it works for two arrays like in GetSupportedGameVersionData (so we store it in string_count_to_ignore)
@@ -756,9 +774,13 @@ impl Generator {
                         assert!(string_count_to_ignore.as_ref().unwrap() == count_name);
                     } else {
                         string_count_to_ignore = Some(count_name.to_string());
+                        let p = method.params[i + 1..]
+                            .iter()
+                            .find(|p| &p.paramname == count_name)
+                            .expect("Count param not found");
                         s.push_str(&format!(
-                            "    int {} = luaL_checkint(L, {});\n",
-                            count_name, lua_idx
+                            "    {} {} = luaL_checkint(L, {});\n",
+                            p.paramtype, count_name, lua_idx
                         ));
                         lua_idx += 1;
                     }
@@ -768,7 +790,17 @@ impl Generator {
                     ));
                     param_names.push(format!("{}.data()", param.paramname));
                     pointer_params.push((true, param));
-                } else if let Some(count_name) = &param.out_array_count {
+                } else if let Some(count_name) = param
+                    .out_array_count
+                    .as_deref()
+                    .or(param.array_count.as_deref())
+                    .or_else(|| {
+                        param
+                            .out_array_call
+                            .as_deref()
+                            .map(|s| s.split_once(',').expect("out_array_call must have comma").0)
+                    })
+                {
                     println!(
                         "Unsupported out array parameter: {} {} with count {} (out_array_count is not supported yet)",
                         param.paramtype, param.paramname, count_name

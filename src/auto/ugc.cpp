@@ -488,7 +488,7 @@ EXTERN int luasteam_UGC_GetQueryUGCTag(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 indexTag = static_cast<uint32>(luaL_checkint(L, 3));
-    int cchValueSize = luaL_checkint(L, 4);
+    uint32 cchValueSize = luaL_checkint(L, 4);
     std::vector<char> pchValue(cchValueSize);
     lua_pushboolean(L, SteamUGC()->GetQueryUGCTag(handle, index, indexTag, pchValue.data(), cchValueSize));
     lua_pushstring(L, pchValue.data());
@@ -500,7 +500,7 @@ EXTERN int luasteam_UGC_GetQueryUGCTagDisplayName(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 indexTag = static_cast<uint32>(luaL_checkint(L, 3));
-    int cchValueSize = luaL_checkint(L, 4);
+    uint32 cchValueSize = luaL_checkint(L, 4);
     std::vector<char> pchValue(cchValueSize);
     lua_pushboolean(L, SteamUGC()->GetQueryUGCTagDisplayName(handle, index, indexTag, pchValue.data(), cchValueSize));
     lua_pushstring(L, pchValue.data());
@@ -511,7 +511,7 @@ EXTERN int luasteam_UGC_GetQueryUGCTagDisplayName(lua_State *L) {
 EXTERN int luasteam_UGC_GetQueryUGCPreviewURL(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-    int cchURLSize = luaL_checkint(L, 3);
+    uint32 cchURLSize = luaL_checkint(L, 3);
     std::vector<char> pchURL(cchURLSize);
     lua_pushboolean(L, SteamUGC()->GetQueryUGCPreviewURL(handle, index, pchURL.data(), cchURLSize));
     lua_pushstring(L, pchURL.data());
@@ -522,7 +522,7 @@ EXTERN int luasteam_UGC_GetQueryUGCPreviewURL(lua_State *L) {
 EXTERN int luasteam_UGC_GetQueryUGCMetadata(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-    int cchMetadatasize = luaL_checkint(L, 3);
+    uint32 cchMetadatasize = luaL_checkint(L, 3);
     std::vector<char> pchMetadata(cchMetadatasize);
     lua_pushboolean(L, SteamUGC()->GetQueryUGCMetadata(handle, index, pchMetadata.data(), cchMetadatasize));
     lua_pushstring(L, pchMetadata.data());
@@ -552,9 +552,9 @@ EXTERN int luasteam_UGC_GetQueryUGCAdditionalPreview(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 previewIndex = static_cast<uint32>(luaL_checkint(L, 3));
-    int cchURLSize = luaL_checkint(L, 4);
+    uint32 cchURLSize = luaL_checkint(L, 4);
     std::vector<char> pchURLOrVideoID(cchURLSize);
-    int cchOriginalFileNameSize = luaL_checkint(L, 5);
+    uint32 cchOriginalFileNameSize = luaL_checkint(L, 5);
     std::vector<char> pchOriginalFileName(cchOriginalFileNameSize);
     EItemPreviewType pPreviewType;    lua_pushboolean(L, SteamUGC()->GetQueryUGCAdditionalPreview(handle, index, previewIndex, pchURLOrVideoID.data(), cchURLSize, pchOriginalFileName.data(), cchOriginalFileNameSize, &pPreviewType));
     lua_pushstring(L, pchURLOrVideoID.data());
@@ -576,9 +576,9 @@ EXTERN int luasteam_UGC_GetQueryUGCKeyValueTag(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 keyValueTagIndex = static_cast<uint32>(luaL_checkint(L, 3));
-    int cchKeySize = luaL_checkint(L, 4);
+    uint32 cchKeySize = luaL_checkint(L, 4);
     std::vector<char> pchKey(cchKeySize);
-    int cchValueSize = luaL_checkint(L, 5);
+    uint32 cchValueSize = luaL_checkint(L, 5);
     std::vector<char> pchValue(cchValueSize);
     lua_pushboolean(L, SteamUGC()->GetQueryUGCKeyValueTag(handle, index, keyValueTagIndex, pchKey.data(), cchKeySize, pchValue.data(), cchValueSize));
     lua_pushstring(L, pchKey.data());
@@ -599,7 +599,7 @@ EXTERN int luasteam_UGC_GetSupportedGameVersionData(lua_State *L) {
     UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
     uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 versionIndex = static_cast<uint32>(luaL_checkint(L, 3));
-    int cchGameBranchSize = luaL_checkint(L, 4);
+    uint32 cchGameBranchSize = luaL_checkint(L, 4);
     std::vector<char> pchGameBranchMin(cchGameBranchSize);
     std::vector<char> pchGameBranchMax(cchGameBranchSize);
     lua_pushboolean(L, SteamUGC()->GetSupportedGameVersionData(handle, index, versionIndex, pchGameBranchMin.data(), pchGameBranchMax.data(), cchGameBranchSize));
@@ -1037,7 +1037,7 @@ EXTERN int luasteam_UGC_GetItemState(lua_State *L) {
 // bool GetItemInstallInfo(PublishedFileId_t nPublishedFileID, uint64 * punSizeOnDisk, char * pchFolder, uint32 cchFolderSize, uint32 * punTimeStamp);
 EXTERN int luasteam_UGC_GetItemInstallInfo(lua_State *L) {
     PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
-    uint64 punSizeOnDisk;    int cchFolderSize = luaL_checkint(L, 2);
+    uint64 punSizeOnDisk;    uint32 cchFolderSize = luaL_checkint(L, 2);
     std::vector<char> pchFolder(cchFolderSize);
     uint32 punTimeStamp;    lua_pushboolean(L, SteamUGC()->GetItemInstallInfo(nPublishedFileID, &punSizeOnDisk, pchFolder.data(), cchFolderSize, &punTimeStamp));
     luasteam::pushuint64(L, punSizeOnDisk);

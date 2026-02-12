@@ -545,13 +545,6 @@ EXTERN int luasteam_GameServer_CreateUnauthenticatedUserConnection(lua_State *L)
     return 1;
 }
 
-// void SendUserDisconnect_DEPRECATED(CSteamID steamIDUser);
-EXTERN int luasteam_GameServer_SendUserDisconnect_DEPRECATED(lua_State *L) {
-    CSteamID steamIDUser(luasteam::checkuint64(L, 1));
-    SteamGameServer()->SendUserDisconnect_DEPRECATED(steamIDUser);
-    return 0;
-}
-
 // bool BUpdateUserData(CSteamID steamIDUser, const char * pchPlayerName, uint32 uScore);
 EXTERN int luasteam_GameServer_BUpdateUserData(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
@@ -595,12 +588,11 @@ void register_GameServer_auto(lua_State *L) {
     add_func(L, "AssociateWithClan", luasteam_GameServer_AssociateWithClan);
     add_func(L, "ComputeNewPlayerCompatibility", luasteam_GameServer_ComputeNewPlayerCompatibility);
     add_func(L, "CreateUnauthenticatedUserConnection", luasteam_GameServer_CreateUnauthenticatedUserConnection);
-    add_func(L, "SendUserDisconnect_DEPRECATED", luasteam_GameServer_SendUserDisconnect_DEPRECATED);
     add_func(L, "BUpdateUserData", luasteam_GameServer_BUpdateUserData);
 }
 
 void add_GameServer_auto(lua_State *L) {
-    lua_createtable(L, 0, 35);
+    lua_createtable(L, 0, 34);
     register_GameServer_auto(L);
     lua_pushvalue(L, -1);
     GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
