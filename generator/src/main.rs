@@ -49,8 +49,8 @@ struct SteamApi {
 }
 
 impl SteamApi {
-    /// Fix some known issues in the JSON data
-    fn apply_fixes(&mut self) {
+    /// Remove deprecated methods and parameters
+    fn fix_deprecated(&mut self) {
         self.interfaces.iter_mut().for_each(|i| {
             i.methods.retain_mut(|m| {
                 // remove deprecated parameters
@@ -59,44 +59,112 @@ impl SteamApi {
                 !m.methodname.ends_with("_DEPRECATED")
             })
         });
-        let users = self
-            .interfaces
-            .iter_mut()
-            .find(|i| i.classname == "ISteamUser")
-            .unwrap();
-        let p = &mut users
-            .methods
-            .iter_mut()
-            .find(|m| m.methodname == "RequestEncryptedAppTicket")
-            .unwrap()
-            .params[0];
-        assert!(p.paramtype == "void *");
-        // It should be const void * because it is input, not output.
-        p.paramtype = "const void *".to_string();
-        // Methods that do not use out_string_count when they should
-        let to_mark_counters = [(
+    }
+    /// It should be const void * because it is input, not output.
+    fn fix_missing_const(&mut self) {
+        let data = [(
             "ISteamUser",
-            vec![("GetUserDataFolder", "pchBuffer", "cubBuffer")],
+            vec![("RequestEncryptedAppTicket", vec!["pDataToInclude"])],
         )];
+
+        for (i_name, methods) in data {
+            let i = self
+                .interfaces
+                .iter_mut()
+                .find(|i| i.classname == i_name)
+                .expect("Missing interface");
+            for (m_name, p_names) in methods {
+                let m = i
+                    .methods
+                    .iter_mut()
+                    .find(|m| m.methodname == m_name)
+                    .expect("Missing method");
+                for p_name in p_names {
+                    let p = m
+                        .params
+                        .iter_mut()
+                        .find(|p| p.paramname == p_name)
+                        .expect("missing param");
+                    assert!(p.paramtype.ends_with(" *"));
+                    assert!(!p.paramtype.starts_with("const "));
+                    p.paramtype = format!("const {}", p.paramtype);
+                }
+            }
+        }
+    }
+    /// Methods that do not use out_string_count or out_array_count when they should
+    fn fix_missing_array_count(&mut self) {
+        let to_mark_counters = [
+            (
+                "ISteamUser",
+                vec![("GetUserDataFolder", "pchBuffer", "cubBuffer")],
+            ),
+            (
+                "ISteamRemotePlay",
+                vec![("GetInput", "pInput", "unMaxEvents")],
+            ),
+            (
+                "ISteamApps",
+                vec![
+                    ("GetCurrentBetaName", "pchName", "cchNameBufferSize"),
+                    ("GetLaunchCommandLine", "pszCommandLine", "cubCommandLine"),
+                    ("GetAppInstallDir", "pchFolder", "cchFolderBufferSize"),
+                    ("GetInstalledDepots", "pvecDepots", "cMaxDepots"),
+                    ("BGetDLCDataByIndex", "pchName", "cchNameBufferSize"),
+                ],
+            ),
+            (
+                "ISteamUserStats",
+                vec![
+                    (
+                        "GetNextMostAchievedAchievementInfo",
+                        "pchName",
+                        "unNameBufLen",
+                    ),
+                    ("GetMostAchievedAchievementInfo", "pchName", "unNameBufLen"),
+                    ("GetDownloadedLeaderboardEntry", "pDetails", "cDetailsMax"),
+                ],
+            ),
+        ];
         for (i_name, data) in to_mark_counters {
             let i = self
                 .interfaces
                 .iter_mut()
                 .find(|i| i.classname == i_name)
-                .unwrap();
+                .expect("Interface not found");
             for (m_name, p_name, count_name) in data {
                 let m = i
                     .methods
                     .iter_mut()
                     .find(|m| m.methodname == m_name)
-                    .unwrap();
-                let p = m.params.iter_mut().find(|p| p.paramname == p_name).unwrap();
-                assert!(p.paramtype == "char *");
+                    .expect("Method not found");
+                let p = m
+                    .params
+                    .iter_mut()
+                    .find(|p| p.paramname == p_name)
+                    .expect("Parameter not found");
+                assert!(p.paramtype.ends_with(" *"));
                 assert!(p.out_string_count.is_none());
-                p.out_string_count = Some(count_name.to_string());
-                assert!(m.params.iter().any(|p| p.paramname == count_name));
+                assert!(p.out_array_count.is_none());
+                let field = if p.paramtype == "char *" {
+                    &mut p.out_string_count
+                } else {
+                    &mut p.out_array_count
+                };
+                *field = Some(count_name.to_string());
+                assert!(
+                    m.params.iter().any(|p| p.paramname == count_name),
+                    "Count parameter not found"
+                );
             }
         }
+    }
+
+    /// Fix some known issues in the JSON data
+    fn apply_fixes(&mut self) {
+        self.fix_deprecated();
+        self.fix_missing_const();
+        self.fix_missing_array_count();
     }
 }
 
@@ -313,18 +381,21 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag");
         // Very weird, out_array_count seems to be all wrong
         method_blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices");
+        // Weird API and no explanation or reference
+        method_blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails");
 
         for interface in &self.api.interfaces {
-            if interface.accessors.is_empty() {
-                println!(
-                    "Skipping interface {} because it has no accessors",
-                    interface.classname
-                );
-                continue;
-            }
-            if let Some(name) = self.generate_interface(interface, &method_blocklist, &mut stats) {
-                interface_names.push(name);
-                stats.interfaces_generated += 1;
+            match self.generate_interface(interface, &method_blocklist, &mut stats) {
+                Ok(name) => {
+                    interface_names.push(name);
+                    stats.interfaces_generated += 1;
+                }
+                Err(reason) => {
+                    println!(
+                        "Error generating interface {}: {}",
+                        interface.classname, reason
+                    );
+                }
             }
         }
 
@@ -539,9 +610,19 @@ impl Generator {
         interface: &Interface,
         method_blocklist: &HashSet<&str>,
         stats: &mut Stats,
-    ) -> Option<String> {
+    ) -> Result<String, &str> {
         let mut cpp = String::new();
         let name = &interface.classname["ISteam".len()..];
+        if interface.accessors.is_empty() {
+            return Err("No acessors");
+        }
+        if interface.classname.starts_with("ISteamNetworking")
+            || name == "HTTP"
+            || name == "UGC"
+            || name == "Inventory"
+        {
+            return Err("It has many unsupported types and would require a lot of custom code");
+        }
         let accessor_name = &interface.accessors[0].name;
 
         cpp.push_str(&format!("#include \"auto.hpp\"\n\n"));
@@ -608,7 +689,7 @@ impl Generator {
 
         let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp).expect("Unable to write generated file");
-        Some(name.to_owned())
+        Ok(name.to_owned())
     }
 
     /// Check if a paramtype is a non-const pointer (e.g., "int *", "uint32 *")
@@ -631,6 +712,8 @@ impl Generator {
         // Tricky ones to support:
         // GetItemDefinitionProperty - has a pointer that must have a value and returns another
         // GetItemsWithPrices - The JSON looks different from the API
+        // AddPromoItems - Input arrays with counts
+        // Most PublishedFileId_t * should be const, also pubBody in HTTP
         let mut s = String::new();
 
         let interface_getter = format!("{}()", accessor_name);

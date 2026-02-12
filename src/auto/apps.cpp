@@ -196,6 +196,18 @@ EXTERN int luasteam_Apps_GetDLCCount(lua_State *L) {
     return 1;
 }
 
+// bool BGetDLCDataByIndex(int iDLC, AppId_t * pAppID, bool * pbAvailable, char * pchName, int cchNameBufferSize);
+EXTERN int luasteam_Apps_BGetDLCDataByIndex(lua_State *L) {
+    int iDLC = static_cast<int>(luaL_checkint(L, 1));
+    AppId_t pAppID;    bool pbAvailable;    int cchNameBufferSize = luaL_checkint(L, 2);
+    std::vector<char> pchName(cchNameBufferSize);
+    lua_pushboolean(L, SteamApps()->BGetDLCDataByIndex(iDLC, &pAppID, &pbAvailable, pchName.data(), cchNameBufferSize));
+    lua_pushinteger(L, pAppID);
+    lua_pushboolean(L, pbAvailable);
+    lua_pushstring(L, pchName.data());
+    return 3;
+}
+
 // void InstallDLC(AppId_t nAppID);
 EXTERN int luasteam_Apps_InstallDLC(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -217,10 +229,29 @@ EXTERN int luasteam_Apps_RequestAppProofOfPurchaseKey(lua_State *L) {
     return 0;
 }
 
+// bool GetCurrentBetaName(char * pchName, int cchNameBufferSize);
+EXTERN int luasteam_Apps_GetCurrentBetaName(lua_State *L) {
+    int cchNameBufferSize = luaL_checkint(L, 1);
+    std::vector<char> pchName(cchNameBufferSize);
+    lua_pushboolean(L, SteamApps()->GetCurrentBetaName(pchName.data(), cchNameBufferSize));
+    lua_pushstring(L, pchName.data());
+    return 1;
+}
+
 // bool MarkContentCorrupt(bool bMissingFilesOnly);
 EXTERN int luasteam_Apps_MarkContentCorrupt(lua_State *L) {
     bool bMissingFilesOnly = lua_toboolean(L, 1);
     lua_pushboolean(L, SteamApps()->MarkContentCorrupt(bMissingFilesOnly));
+    return 1;
+}
+
+// uint32 GetAppInstallDir(AppId_t appID, char * pchFolder, uint32 cchFolderBufferSize);
+EXTERN int luasteam_Apps_GetAppInstallDir(lua_State *L) {
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
+    uint32 cchFolderBufferSize = luaL_checkint(L, 2);
+    std::vector<char> pchFolder(cchFolderBufferSize);
+    lua_pushinteger(L, SteamApps()->GetAppInstallDir(appID, pchFolder.data(), cchFolderBufferSize));
+    lua_pushstring(L, pchFolder.data());
     return 1;
 }
 
@@ -272,6 +303,15 @@ EXTERN int luasteam_Apps_GetFileDetails(lua_State *L) {
     return 1;
 }
 
+// int GetLaunchCommandLine(char * pszCommandLine, int cubCommandLine);
+EXTERN int luasteam_Apps_GetLaunchCommandLine(lua_State *L) {
+    int cubCommandLine = luaL_checkint(L, 1);
+    std::vector<char> pszCommandLine(cubCommandLine);
+    lua_pushinteger(L, SteamApps()->GetLaunchCommandLine(pszCommandLine.data(), cubCommandLine));
+    lua_pushstring(L, pszCommandLine.data());
+    return 1;
+}
+
 // bool BIsSubscribedFromFamilySharing();
 EXTERN int luasteam_Apps_BIsSubscribedFromFamilySharing(lua_State *L) {
     lua_pushboolean(L, SteamApps()->BIsSubscribedFromFamilySharing());
@@ -320,10 +360,13 @@ void register_Apps_auto(lua_State *L) {
     add_func(L, "GetEarliestPurchaseUnixTime", luasteam_Apps_GetEarliestPurchaseUnixTime);
     add_func(L, "BIsSubscribedFromFreeWeekend", luasteam_Apps_BIsSubscribedFromFreeWeekend);
     add_func(L, "GetDLCCount", luasteam_Apps_GetDLCCount);
+    add_func(L, "BGetDLCDataByIndex", luasteam_Apps_BGetDLCDataByIndex);
     add_func(L, "InstallDLC", luasteam_Apps_InstallDLC);
     add_func(L, "UninstallDLC", luasteam_Apps_UninstallDLC);
     add_func(L, "RequestAppProofOfPurchaseKey", luasteam_Apps_RequestAppProofOfPurchaseKey);
+    add_func(L, "GetCurrentBetaName", luasteam_Apps_GetCurrentBetaName);
     add_func(L, "MarkContentCorrupt", luasteam_Apps_MarkContentCorrupt);
+    add_func(L, "GetAppInstallDir", luasteam_Apps_GetAppInstallDir);
     add_func(L, "BIsAppInstalled", luasteam_Apps_BIsAppInstalled);
     add_func(L, "GetAppOwner", luasteam_Apps_GetAppOwner);
     add_func(L, "GetLaunchQueryParam", luasteam_Apps_GetLaunchQueryParam);
@@ -331,6 +374,7 @@ void register_Apps_auto(lua_State *L) {
     add_func(L, "GetAppBuildId", luasteam_Apps_GetAppBuildId);
     add_func(L, "RequestAllProofOfPurchaseKeys", luasteam_Apps_RequestAllProofOfPurchaseKeys);
     add_func(L, "GetFileDetails", luasteam_Apps_GetFileDetails);
+    add_func(L, "GetLaunchCommandLine", luasteam_Apps_GetLaunchCommandLine);
     add_func(L, "BIsSubscribedFromFamilySharing", luasteam_Apps_BIsSubscribedFromFamilySharing);
     add_func(L, "BIsTimedTrial", luasteam_Apps_BIsTimedTrial);
     add_func(L, "SetDlcContext", luasteam_Apps_SetDlcContext);
@@ -339,7 +383,7 @@ void register_Apps_auto(lua_State *L) {
 }
 
 void add_Apps_auto(lua_State *L) {
-    lua_createtable(L, 0, 27);
+    lua_createtable(L, 0, 31);
     register_Apps_auto(L);
     lua_pushvalue(L, -1);
     Apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);
