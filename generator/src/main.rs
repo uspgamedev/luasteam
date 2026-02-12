@@ -46,6 +46,8 @@ struct SteamApi {
     enums: Vec<Enum>,
     interfaces: Vec<Interface>,
     typedefs: Vec<Typedef>,
+    // TODO: support structs
+    structs: Vec<Struct>,
 }
 
 impl SteamApi {
@@ -215,6 +217,16 @@ struct CallbackStruct {
 struct Field {
     fieldname: String,
     fieldtype: String,
+    #[serde(default)]
+    private: bool,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Struct {
+    #[serde(rename = "struct")]
+    name: String,
+    fields: Vec<Field>,
+    methods: Vec<Method>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
