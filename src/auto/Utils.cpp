@@ -300,6 +300,15 @@ EXTERN int luasteam_Utils_GetEnteredGamepadTextLength(lua_State *L) {
     return 1;
 }
 
+// bool GetEnteredGamepadTextInput(char * pchText, uint32 cchText);
+EXTERN int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
+    uint32 cchText = luaL_checkint(L, 1);
+    std::vector<char> pchText(cchText);
+    lua_pushboolean(L, SteamUtils()->GetEnteredGamepadTextInput(pchText.data(), cchText));
+    lua_pushstring(L, pchText.data());
+    return 1;
+}
+
 // const char * GetSteamUILanguage();
 EXTERN int luasteam_Utils_GetSteamUILanguage(lua_State *L) {
     lua_pushstring(L, SteamUtils()->GetSteamUILanguage());
@@ -355,6 +364,18 @@ EXTERN int luasteam_Utils_IsSteamChinaLauncher(lua_State *L) {
 EXTERN int luasteam_Utils_InitFilterText(lua_State *L) {
     uint32 unFilterOptions = static_cast<uint32>(luaL_checkint(L, 1));
     lua_pushboolean(L, SteamUtils()->InitFilterText(unFilterOptions));
+    return 1;
+}
+
+// int FilterText(ETextFilteringContext eContext, CSteamID sourceSteamID, const char * pchInputMessage, char * pchOutFilteredText, uint32 nByteSizeOutFilteredText);
+EXTERN int luasteam_Utils_FilterText(lua_State *L) {
+    ETextFilteringContext eContext = static_cast<ETextFilteringContext>(luaL_checkint(L, 1));
+    CSteamID sourceSteamID(luasteam::checkuint64(L, 2));
+    const char *pchInputMessage = luaL_checkstring(L, 3);
+    uint32 nByteSizeOutFilteredText = luaL_checkint(L, 4);
+    std::vector<char> pchOutFilteredText(nByteSizeOutFilteredText);
+    lua_pushinteger(L, SteamUtils()->FilterText(eContext, sourceSteamID, pchInputMessage, pchOutFilteredText.data(), nByteSizeOutFilteredText));
+    lua_pushstring(L, pchOutFilteredText.data());
     return 1;
 }
 
@@ -419,6 +440,7 @@ void register_Utils_auto(lua_State *L) {
     add_func(L, "CheckFileSignature", luasteam_Utils_CheckFileSignature);
     add_func(L, "ShowGamepadTextInput", luasteam_Utils_ShowGamepadTextInput);
     add_func(L, "GetEnteredGamepadTextLength", luasteam_Utils_GetEnteredGamepadTextLength);
+    add_func(L, "GetEnteredGamepadTextInput", luasteam_Utils_GetEnteredGamepadTextInput);
     add_func(L, "GetSteamUILanguage", luasteam_Utils_GetSteamUILanguage);
     add_func(L, "IsSteamRunningInVR", luasteam_Utils_IsSteamRunningInVR);
     add_func(L, "SetOverlayNotificationInset", luasteam_Utils_SetOverlayNotificationInset);
@@ -428,6 +450,7 @@ void register_Utils_auto(lua_State *L) {
     add_func(L, "SetVRHeadsetStreamingEnabled", luasteam_Utils_SetVRHeadsetStreamingEnabled);
     add_func(L, "IsSteamChinaLauncher", luasteam_Utils_IsSteamChinaLauncher);
     add_func(L, "InitFilterText", luasteam_Utils_InitFilterText);
+    add_func(L, "FilterText", luasteam_Utils_FilterText);
     add_func(L, "GetIPv6ConnectivityState", luasteam_Utils_GetIPv6ConnectivityState);
     add_func(L, "IsSteamRunningOnSteamDeck", luasteam_Utils_IsSteamRunningOnSteamDeck);
     add_func(L, "ShowFloatingGamepadTextInput", luasteam_Utils_ShowFloatingGamepadTextInput);
@@ -437,7 +460,7 @@ void register_Utils_auto(lua_State *L) {
 }
 
 void add_Utils_auto(lua_State *L) {
-    lua_createtable(L, 0, 32);
+    lua_createtable(L, 0, 34);
     register_Utils_auto(L);
     lua_pushvalue(L, -1);
     Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

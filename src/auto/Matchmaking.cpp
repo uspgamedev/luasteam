@@ -449,6 +449,20 @@ EXTERN int luasteam_Matchmaking_GetLobbyDataCount(lua_State *L) {
     return 1;
 }
 
+// bool GetLobbyDataByIndex(CSteamID steamIDLobby, int iLobbyData, char * pchKey, int cchKeyBufferSize, char * pchValue, int cchValueBufferSize);
+EXTERN int luasteam_Matchmaking_GetLobbyDataByIndex(lua_State *L) {
+    CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
+    int iLobbyData = static_cast<int>(luaL_checkint(L, 2));
+    int cchKeyBufferSize = luaL_checkint(L, 3);
+    std::vector<char> pchKey(cchKeyBufferSize);
+    int cchValueBufferSize = luaL_checkint(L, 4);
+    std::vector<char> pchValue(cchValueBufferSize);
+    lua_pushboolean(L, SteamMatchmaking()->GetLobbyDataByIndex(steamIDLobby, iLobbyData, pchKey.data(), cchKeyBufferSize, pchValue.data(), cchValueBufferSize));
+    lua_pushstring(L, pchKey.data());
+    lua_pushstring(L, pchValue.data());
+    return 1;
+}
+
 // bool DeleteLobbyData(CSteamID steamIDLobby, const char * pchKey);
 EXTERN int luasteam_Matchmaking_DeleteLobbyData(lua_State *L) {
     CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
@@ -579,6 +593,7 @@ void register_Matchmaking_auto(lua_State *L) {
     add_func(L, "GetLobbyData", luasteam_Matchmaking_GetLobbyData);
     add_func(L, "SetLobbyData", luasteam_Matchmaking_SetLobbyData);
     add_func(L, "GetLobbyDataCount", luasteam_Matchmaking_GetLobbyDataCount);
+    add_func(L, "GetLobbyDataByIndex", luasteam_Matchmaking_GetLobbyDataByIndex);
     add_func(L, "DeleteLobbyData", luasteam_Matchmaking_DeleteLobbyData);
     add_func(L, "GetLobbyMemberData", luasteam_Matchmaking_GetLobbyMemberData);
     add_func(L, "SetLobbyMemberData", luasteam_Matchmaking_SetLobbyMemberData);
@@ -595,7 +610,7 @@ void register_Matchmaking_auto(lua_State *L) {
 }
 
 void add_Matchmaking_auto(lua_State *L) {
-    lua_createtable(L, 0, 35);
+    lua_createtable(L, 0, 36);
     register_Matchmaking_auto(L);
     lua_pushvalue(L, -1);
     Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

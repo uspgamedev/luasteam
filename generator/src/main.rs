@@ -62,10 +62,16 @@ impl SteamApi {
     }
     /// It should be const void * because it is input, not output.
     fn fix_missing_const(&mut self) {
-        let data = [(
-            "ISteamUser",
-            vec![("RequestEncryptedAppTicket", vec!["pDataToInclude"])],
-        )];
+        let data = [
+            (
+                "ISteamUser",
+                vec![("RequestEncryptedAppTicket", vec!["pDataToInclude"])],
+            ),
+            (
+                "ISteamParties",
+                vec![("CreateBeacon", vec!["pBeaconLocation"])],
+            ),
+        ];
 
         for (i_name, methods) in data {
             let i = self
@@ -111,6 +117,8 @@ impl SteamApi {
                     ("GetAppInstallDir", "pchFolder", "cchFolderBufferSize"),
                     ("GetInstalledDepots", "pvecDepots", "cMaxDepots"),
                     ("BGetDLCDataByIndex", "pchName", "cchNameBufferSize"),
+                    ("GetBetaInfo", "pchBetaName", "cchBetaName"),
+                    ("GetBetaInfo", "pchDescription", "cchDescription"),
                 ],
             ),
             (
@@ -123,6 +131,33 @@ impl SteamApi {
                     ),
                     ("GetMostAchievedAchievementInfo", "pchName", "unNameBufLen"),
                     ("GetDownloadedLeaderboardEntry", "pDetails", "cDetailsMax"),
+                ],
+            ),
+            (
+                "ISteamParties",
+                vec![(
+                    "GetAvailableBeaconLocations",
+                    "pLocationList",
+                    "uMaxNumLocations",
+                )],
+            ),
+            (
+                "ISteamMatchmaking",
+                vec![
+                    ("GetLobbyDataByIndex", "pchKey", "cchKeyBufferSize"),
+                    ("GetLobbyDataByIndex", "pchValue", "cchValueBufferSize"),
+                ],
+            ),
+            (
+                "ISteamUtils",
+                vec![
+                    (
+                        "FilterText",
+                        "pchOutFilteredText",
+                        "nByteSizeOutFilteredText",
+                    ),
+                    ("GetEnteredGamepadTextInput", "pchText", "cchText"),
+                    ("GetImageRGBA", "pubDest", "nDestBufferSize"),
                 ],
             ),
         ];
@@ -344,9 +379,10 @@ impl Generator {
         stats.interfaces_total = self.api.interfaces.len();
 
         let auto_dir = Path::new("../src/auto");
-        if !auto_dir.exists() {
-            fs::create_dir_all(auto_dir).expect("Unable to create src/auto");
+        if auto_dir.exists() {
+            fs::remove_dir_all(auto_dir).expect("Unable to delete src/auto");
         }
+        fs::create_dir_all(auto_dir).expect("Unable to create src/auto");
 
         let mut interface_names = Vec::new();
 
@@ -641,15 +677,17 @@ impl Generator {
 
         let mut generated_methods = Vec::new();
 
+        stats.methods_total += interface.methods.len();
         for method in &interface.methods {
-            stats.methods_total += 1;
-
-            if let Some((lua_method_name, generated)) =
+            if method_blocklist.contains(method.methodname_flat.as_str()) {
+                println!(
+                    "Skipped method {}::{} in blocklist",
+                    interface.classname, method.methodname
+                );
+                continue;
+            } else if let Some((lua_method_name, generated)) =
                 self.generate_method(&name, method, stats, accessor_name)
             {
-                if method_blocklist.contains(method.methodname_flat.as_str()) {
-                    continue;
-                }
                 cpp.push_str(&generated);
                 cpp.push_str("\n");
                 generated_methods.push((method, lua_method_name));
@@ -714,6 +752,7 @@ impl Generator {
         // GetItemsWithPrices - The JSON looks different from the API
         // AddPromoItems - Input arrays with counts
         // Most PublishedFileId_t * should be const, also pubBody in HTTP
+        // GetImageRGBA - uint8* should be a byte buffer, probably
         let mut s = String::new();
 
         let interface_getter = format!("{}()", accessor_name);
@@ -759,16 +798,6 @@ impl Generator {
                 }
                 i += 1;
                 continue;
-            }
-            if !is_pointer && on_pointers {
-                // Pointers must be always at the end.
-                // Arrays with size must use out_string_count or out_array_count.
-                dbg!(string_count_to_ignore, &method.params);
-                println!(
-                    "Unsupported parameter order: non-pointer param '{}' comes after pointer params",
-                    param.paramname
-                );
-                return None;
             }
             on_pointers |= is_pointer;
             if !on_pointers {

@@ -341,6 +341,21 @@ EXTERN int luasteam_Apps_GetNumBetas(lua_State *L) {
     return 3;
 }
 
+// bool GetBetaInfo(int iBetaIndex, uint32 * punFlags, uint32 * punBuildID, char * pchBetaName, int cchBetaName, char * pchDescription, int cchDescription);
+EXTERN int luasteam_Apps_GetBetaInfo(lua_State *L) {
+    int iBetaIndex = static_cast<int>(luaL_checkint(L, 1));
+    uint32 punFlags;    uint32 punBuildID;    int cchBetaName = luaL_checkint(L, 2);
+    std::vector<char> pchBetaName(cchBetaName);
+    int cchDescription = luaL_checkint(L, 3);
+    std::vector<char> pchDescription(cchDescription);
+    lua_pushboolean(L, SteamApps()->GetBetaInfo(iBetaIndex, &punFlags, &punBuildID, pchBetaName.data(), cchBetaName, pchDescription.data(), cchDescription));
+    lua_pushinteger(L, punFlags);
+    lua_pushinteger(L, punBuildID);
+    lua_pushstring(L, pchBetaName.data());
+    lua_pushstring(L, pchDescription.data());
+    return 3;
+}
+
 // bool SetActiveBeta(const char * pchBetaName);
 EXTERN int luasteam_Apps_SetActiveBeta(lua_State *L) {
     const char *pchBetaName = luaL_checkstring(L, 1);
@@ -379,11 +394,12 @@ void register_Apps_auto(lua_State *L) {
     add_func(L, "BIsTimedTrial", luasteam_Apps_BIsTimedTrial);
     add_func(L, "SetDlcContext", luasteam_Apps_SetDlcContext);
     add_func(L, "GetNumBetas", luasteam_Apps_GetNumBetas);
+    add_func(L, "GetBetaInfo", luasteam_Apps_GetBetaInfo);
     add_func(L, "SetActiveBeta", luasteam_Apps_SetActiveBeta);
 }
 
 void add_Apps_auto(lua_State *L) {
-    lua_createtable(L, 0, 31);
+    lua_createtable(L, 0, 32);
     register_Apps_auto(L);
     lua_pushvalue(L, -1);
     Apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);
