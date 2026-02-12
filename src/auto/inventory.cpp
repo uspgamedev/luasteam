@@ -197,28 +197,11 @@ EXTERN int luasteam_Inventory_LoadItemDefinitions(lua_State *L) {
     return 1;
 }
 
-// bool GetItemDefinitionIDs(SteamItemDef_t * pItemDefIDs, uint32 * punItemDefIDsArraySize);
-EXTERN int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
-    SteamItemDef_t pItemDefIDs;    uint32 punItemDefIDsArraySize;    lua_pushboolean(L, SteamInventory()->GetItemDefinitionIDs(&pItemDefIDs, &punItemDefIDsArraySize));
-    lua_pushinteger(L, pItemDefIDs);
-    lua_pushinteger(L, punItemDefIDsArraySize);
-    return 3;
-}
-
 // SteamAPICall_t RequestEligiblePromoItemDefinitionsIDs(CSteamID steamID);
 EXTERN int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
     luasteam::pushuint64(L, SteamInventory()->RequestEligiblePromoItemDefinitionsIDs(steamID));
     return 1;
-}
-
-// bool GetEligiblePromoItemDefinitionIDs(CSteamID steamID, SteamItemDef_t * pItemDefIDs, uint32 * punItemDefIDsArraySize);
-EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
-    CSteamID steamID(luasteam::checkuint64(L, 1));
-    SteamItemDef_t pItemDefIDs;    uint32 punItemDefIDsArraySize;    lua_pushboolean(L, SteamInventory()->GetEligiblePromoItemDefinitionIDs(steamID, &pItemDefIDs, &punItemDefIDsArraySize));
-    lua_pushinteger(L, pItemDefIDs);
-    lua_pushinteger(L, punItemDefIDsArraySize);
-    return 3;
 }
 
 // SteamAPICall_t RequestPrices();
@@ -274,9 +257,7 @@ void register_Inventory_auto(lua_State *L) {
     add_func(L, "GrantPromoItems", luasteam_Inventory_GrantPromoItems);
     add_func(L, "SendItemDropHeartbeat", luasteam_Inventory_SendItemDropHeartbeat);
     add_func(L, "LoadItemDefinitions", luasteam_Inventory_LoadItemDefinitions);
-    add_func(L, "GetItemDefinitionIDs", luasteam_Inventory_GetItemDefinitionIDs);
     add_func(L, "RequestEligiblePromoItemDefinitionsIDs", luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs);
-    add_func(L, "GetEligiblePromoItemDefinitionIDs", luasteam_Inventory_GetEligiblePromoItemDefinitionIDs);
     add_func(L, "RequestPrices", luasteam_Inventory_RequestPrices);
     add_func(L, "GetNumItemsWithPrices", luasteam_Inventory_GetNumItemsWithPrices);
     add_func(L, "GetItemPrice", luasteam_Inventory_GetItemPrice);
@@ -286,7 +267,7 @@ void register_Inventory_auto(lua_State *L) {
 }
 
 void add_Inventory_auto(lua_State *L) {
-    lua_createtable(L, 0, 17);
+    lua_createtable(L, 0, 15);
     register_Inventory_auto(L);
     lua_pushvalue(L, -1);
     Inventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);

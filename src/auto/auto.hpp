@@ -2,6 +2,7 @@
 #define LUASTEAM_AUTO_HPP
 
 #include "../common.hpp"
+#include <vector>
 
 namespace luasteam {
 

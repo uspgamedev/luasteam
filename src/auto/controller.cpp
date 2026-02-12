@@ -30,13 +30,6 @@ EXTERN int luasteam_Controller_RunFrame(lua_State *L) {
     return 0;
 }
 
-// int GetConnectedControllers(ControllerHandle_t * handlesOut);
-EXTERN int luasteam_Controller_GetConnectedControllers(lua_State *L) {
-    ControllerHandle_t handlesOut;    lua_pushinteger(L, SteamController()->GetConnectedControllers(&handlesOut));
-    luasteam::pushuint64(L, handlesOut);
-    return 2;
-}
-
 // ControllerActionSetHandle_t GetActionSetHandle(const char * pszActionSetName);
 EXTERN int luasteam_Controller_GetActionSetHandle(lua_State *L) {
     const char *pszActionSetName = luaL_checkstring(L, 1);
@@ -82,14 +75,6 @@ EXTERN int luasteam_Controller_DeactivateAllActionSetLayers(lua_State *L) {
     return 0;
 }
 
-// int GetActiveActionSetLayers(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t * handlesOut);
-EXTERN int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
-    ControllerHandle_t controllerHandle = luasteam::checkuint64(L, 1);
-    ControllerActionSetHandle_t handlesOut;    lua_pushinteger(L, SteamController()->GetActiveActionSetLayers(controllerHandle, &handlesOut));
-    luasteam::pushuint64(L, handlesOut);
-    return 2;
-}
-
 // ControllerDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
 EXTERN int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
     const char *pszActionName = luaL_checkstring(L, 1);
@@ -97,31 +82,11 @@ EXTERN int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
     return 1;
 }
 
-// int GetDigitalActionOrigins(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetHandle, ControllerDigitalActionHandle_t digitalActionHandle, EControllerActionOrigin * originsOut);
-EXTERN int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
-    ControllerHandle_t controllerHandle = luasteam::checkuint64(L, 1);
-    ControllerActionSetHandle_t actionSetHandle = luasteam::checkuint64(L, 2);
-    ControllerDigitalActionHandle_t digitalActionHandle = luasteam::checkuint64(L, 3);
-    EControllerActionOrigin originsOut;    lua_pushinteger(L, SteamController()->GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle, &originsOut));
-    lua_pushinteger(L, originsOut);
-    return 2;
-}
-
 // ControllerAnalogActionHandle_t GetAnalogActionHandle(const char * pszActionName);
 EXTERN int luasteam_Controller_GetAnalogActionHandle(lua_State *L) {
     const char *pszActionName = luaL_checkstring(L, 1);
     luasteam::pushuint64(L, SteamController()->GetAnalogActionHandle(pszActionName));
     return 1;
-}
-
-// int GetAnalogActionOrigins(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetHandle, ControllerAnalogActionHandle_t analogActionHandle, EControllerActionOrigin * originsOut);
-EXTERN int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
-    ControllerHandle_t controllerHandle = luasteam::checkuint64(L, 1);
-    ControllerActionSetHandle_t actionSetHandle = luasteam::checkuint64(L, 2);
-    ControllerAnalogActionHandle_t analogActionHandle = luasteam::checkuint64(L, 3);
-    EControllerActionOrigin originsOut;    lua_pushinteger(L, SteamController()->GetAnalogActionOrigins(controllerHandle, actionSetHandle, analogActionHandle, &originsOut));
-    lua_pushinteger(L, originsOut);
-    return 2;
 }
 
 // const char * GetGlyphForActionOrigin(EControllerActionOrigin eOrigin);
@@ -258,18 +223,14 @@ void register_Controller_auto(lua_State *L) {
     add_func(L, "Init", luasteam_Controller_Init);
     add_func(L, "Shutdown", luasteam_Controller_Shutdown);
     add_func(L, "RunFrame", luasteam_Controller_RunFrame);
-    add_func(L, "GetConnectedControllers", luasteam_Controller_GetConnectedControllers);
     add_func(L, "GetActionSetHandle", luasteam_Controller_GetActionSetHandle);
     add_func(L, "ActivateActionSet", luasteam_Controller_ActivateActionSet);
     add_func(L, "GetCurrentActionSet", luasteam_Controller_GetCurrentActionSet);
     add_func(L, "ActivateActionSetLayer", luasteam_Controller_ActivateActionSetLayer);
     add_func(L, "DeactivateActionSetLayer", luasteam_Controller_DeactivateActionSetLayer);
     add_func(L, "DeactivateAllActionSetLayers", luasteam_Controller_DeactivateAllActionSetLayers);
-    add_func(L, "GetActiveActionSetLayers", luasteam_Controller_GetActiveActionSetLayers);
     add_func(L, "GetDigitalActionHandle", luasteam_Controller_GetDigitalActionHandle);
-    add_func(L, "GetDigitalActionOrigins", luasteam_Controller_GetDigitalActionOrigins);
     add_func(L, "GetAnalogActionHandle", luasteam_Controller_GetAnalogActionHandle);
-    add_func(L, "GetAnalogActionOrigins", luasteam_Controller_GetAnalogActionOrigins);
     add_func(L, "GetGlyphForActionOrigin", luasteam_Controller_GetGlyphForActionOrigin);
     add_func(L, "GetStringForActionOrigin", luasteam_Controller_GetStringForActionOrigin);
     add_func(L, "StopAnalogActionMomentum", luasteam_Controller_StopAnalogActionMomentum);
@@ -289,7 +250,7 @@ void register_Controller_auto(lua_State *L) {
 }
 
 void add_Controller_auto(lua_State *L) {
-    lua_createtable(L, 0, 31);
+    lua_createtable(L, 0, 27);
     register_Controller_auto(L);
     lua_pushvalue(L, -1);
     Controller_ref = luaL_ref(L, LUA_REGISTRYINDEX);

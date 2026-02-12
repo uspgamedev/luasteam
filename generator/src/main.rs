@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeSet, HashMap, HashSet};
-use std::fs;
 use std::path::Path;
+use std::{fs, string};
 
 #[derive(Debug, Default)]
 struct Stats {
@@ -52,6 +52,26 @@ struct SteamApi {
     enums: Vec<Enum>,
     interfaces: Vec<Interface>,
     typedefs: Vec<Typedef>,
+}
+
+impl SteamApi {
+    /// Fix some known issues in the JSON data
+    fn apply_fixes(&mut self) {
+        let users = self
+            .interfaces
+            .iter_mut()
+            .find(|i| i.classname == "ISteamUser")
+            .unwrap();
+        let p = &mut users
+            .methods
+            .iter_mut()
+            .find(|m| m.methodname == "RequestEncryptedAppTicket")
+            .unwrap()
+            .params[0];
+        assert!(p.paramtype == "void *");
+        // It should be const void * because it is input, not output.
+        p.paramtype = "const void *".to_string();
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -107,6 +127,11 @@ struct Method {
 struct Param {
     paramname: String,
     paramtype: String,
+    /// Only present for pointer params that represent arrays, indicates the name of the parameter that contains the size of the array.
+    out_string_count: Option<String>,
+    /// If present, indicates that this pointer param is an output array and the name of the parameter that contains the size of the array (might be the next parameter, or a constant)
+    out_array_count: Option<String>,
+    desc: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -280,6 +305,8 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat");
         // Cursor method is not used
         method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor");
+        // Unused method, not even in API Reference
+        method_blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag");
 
         for interface in &self.api.interfaces {
             if blocklist.contains_key(interface.classname.as_str()) {
@@ -322,7 +349,8 @@ impl Generator {
         let mut h = String::new();
         h.push_str("#ifndef LUASTEAM_AUTO_HPP\n");
         h.push_str("#define LUASTEAM_AUTO_HPP\n\n");
-        h.push_str("#include \"../common.hpp\"\n\n");
+        h.push_str("#include \"../common.hpp\"\n");
+        h.push_str("#include <vector>\n\n");
         h.push_str("namespace luasteam {\n\n");
         h.push_str("void add_enums_auto(lua_State *L);\n");
         for name in interfaces {
@@ -593,6 +621,9 @@ impl Generator {
         stats: &mut Stats,
         accessor_name: &str,
     ) -> Option<(String, String)> {
+        // Tricky ones to support:
+        // GetItemDefinitionProperty - has a pointer that must have a value and returns another
+        // GetItemsWithPrices - The JSON looks different from the API
         let mut s = String::new();
 
         let interface_getter = format!("{}()", accessor_name);
@@ -618,18 +649,36 @@ impl Generator {
         let non_deprecated_params = method
             .params
             .iter()
-            .filter(|p| !p.paramname.ends_with("_Deprecated"));
+            .filter(|p| !p.paramname.ends_with("_Deprecated"))
+            .collect::<Vec<_>>();
 
         let mut on_pointers = false;
         let mut param_names = Vec::new();
         let mut pointer_params = Vec::new();
+        let mut string_count_to_ignore = None;
 
-        for (i, param) in non_deprecated_params.enumerate() {
-            let lua_idx = i + 1;
+        let mut i = 0;
+        let mut lua_idx = 1;
+        while i < non_deprecated_params.len() {
+            let param = non_deprecated_params[i];
             let is_pointer = Self::is_non_const_pointer(&param.paramtype);
+            if Some(&param.paramname) == string_count_to_ignore.as_ref() {
+                // This parameter is just the size for a previous string array, skip it
+                string_count_to_ignore = None;
+                if self.resolve_type(&param.paramtype) != "int" {
+                    println!(
+                            "Unsupported array parameter type: {} (only int is supported for array sizes)",
+                            param.paramtype
+                        );
+                    return None;
+                }
+                i += 1;
+                param_names.push(param.paramname.clone());
+                continue;
+            }
             if !is_pointer && on_pointers {
                 // Pointers must be always at the end.
-                // Arrays with size are still unsupported.
+                // Arrays with size must use out_string_count or out_array_count.
                 println!(
                     "Unsupported parameter order: non-pointer param '{}' comes after pointer params",
                     param.paramname
@@ -697,14 +746,44 @@ impl Generator {
                         return None;
                     }
                 }
+                lua_idx += 1;
             } else {
                 let base_type = Self::extract_pointer_base_type(&param.paramtype);
-                // Create a default variable with that name and type
-                s.push_str(&format!("    {} {};", base_type, param.paramname));
-                param_names.push(format!("&{}", param.paramname));
-                pointer_params.push(param);
+                if let Some(count_name) = &param.out_string_count {
+                    // Assuming it is the next non array parameter (because of lua_idx)
+                    // but sometimes it works for two arrays like in GetSupportedGameVersionData (so we store it in string_count_to_ignore)
+                    if string_count_to_ignore.is_some() {
+                        assert!(string_count_to_ignore.as_ref().unwrap() == count_name);
+                    } else {
+                        string_count_to_ignore = Some(count_name.to_string());
+                        s.push_str(&format!(
+                            "    int {} = luaL_checkint(L, {});\n",
+                            count_name, lua_idx
+                        ));
+                        lua_idx += 1;
+                    }
+                    s.push_str(&format!(
+                        "    std::vector<{}> {}({});\n",
+                        base_type, param.paramname, count_name
+                    ));
+                    param_names.push(format!("{}.data()", param.paramname));
+                    pointer_params.push((true, param));
+                } else if let Some(count_name) = &param.out_array_count {
+                    println!(
+                        "Unsupported out array parameter: {} {} with count {} (out_array_count is not supported yet)",
+                        param.paramtype, param.paramname, count_name
+                    );
+                    return None;
+                } else {
+                    // Create a default variable with that name and type
+                    s.push_str(&format!("    {} {};", base_type, param.paramname));
+                    param_names.push(format!("&{}", param.paramname));
+                    pointer_params.push((false, param));
+                }
             }
+            i += 1;
         }
+        assert!(string_count_to_ignore.is_none());
 
         let call = format!(
             "{}->{}({})",
@@ -730,16 +809,32 @@ impl Generator {
         }
 
         // Push pointer output values onto stack
-        for param in pointer_params {
+        for (is_array, param) in pointer_params {
             let base_type = Self::extract_pointer_base_type(&param.paramtype);
-            let (ok, push) = self.generate_push(base_type.as_str(), &param.paramname);
-            if !ok {
-                println!("Unsupported pointer base type in push: {}", base_type);
-                stats.unsupported_types.insert(base_type.clone());
-                return None;
+            if is_array {
+                if base_type == "char" {
+                    // A string with variable size
+                    s.push_str(&format!(
+                        "    lua_pushstring(L, {}.data());\n",
+                        param.paramname
+                    ));
+                } else {
+                    // Not sure about the size, will it always be the one you sent?
+                    // Also we need to deal with void*, which should probably be treated as bytes.
+                    println!("Unsupported pointer base type in array push: {}", base_type);
+                    stats.unsupported_types.insert(base_type.clone());
+                    return None;
+                }
+            } else {
+                let (ok, push) = self.generate_push(base_type.as_str(), &param.paramname);
+                if !ok {
+                    println!("Unsupported pointer base type in push: {}", base_type);
+                    stats.unsupported_types.insert(base_type.clone());
+                    return None;
+                }
+                s.push_str(&format!("    {}\n", push));
+                return_count += 1;
             }
-            s.push_str(&format!("    {}\n", push));
-            return_count += 1;
         }
 
         s.push_str(&format!("    return {};\n", return_count));
@@ -751,7 +846,8 @@ impl Generator {
 fn main() {
     let json_path = "../sdk/public/steam/steam_api.json";
     let json_str = fs::read_to_string(json_path).expect("Unable to read steam_api.json");
-    let api: SteamApi = serde_json::from_str(&json_str).expect("Unable to parse JSON");
+    let mut api: SteamApi = serde_json::from_str(&json_str).expect("Unable to parse JSON");
+    api.apply_fixes();
 
     let generator = Generator::new(api);
     generator.generate();
