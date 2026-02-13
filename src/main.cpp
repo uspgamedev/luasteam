@@ -46,5 +46,6 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_Parties_auto(L);
     luasteam::add_RemoteStorage_auto(L);
     luasteam::add_enums_auto(L);
+    luasteam::add_consts_auto(L);
     return 1;
 }

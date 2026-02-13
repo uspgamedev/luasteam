@@ -11,6 +11,8 @@ struct Stats {
     methods_generated: usize,
     enum_values_total: usize,
     enum_values_generated: usize,
+    consts_total: usize,
+    const_generated: usize,
     unsupported_types: BTreeSet<String>,
 }
 
@@ -35,6 +37,12 @@ impl Stats {
             self.enum_values_generated,
             self.enum_values_total - self.enum_values_generated
         );
+        println!(
+            "Consts:      {} total, {} generated, {} skipped",
+            self.consts_total,
+            self.const_generated,
+            self.consts_total - self.const_generated
+        );
 
         println!("--------------------------");
     }
@@ -48,6 +56,7 @@ struct SteamApi {
     typedefs: Vec<Typedef>,
     // TODO: support structs
     structs: Vec<Struct>,
+    consts: Vec<Const>,
 }
 
 impl SteamApi {
@@ -112,6 +121,41 @@ impl SteamApi {
                 }
             }
         }
+    }
+    /// Missing constants
+    fn fix_missing_constants(&mut self) {
+        let data = [
+            ("STEAM_INPUT_HANDLE_ALL_CONTROLLERS", "uint64", "UINT64_MAX"),
+            ("STEAM_INPUT_MAX_ANALOG_ACTIONS", "int", "16"),
+            ("STEAM_INPUT_MAX_ANALOG_ACTION_DATA", "float", "1.0f"),
+            ("STEAM_INPUT_MAX_COUNT", "int", "16"),
+            ("STEAM_INPUT_MAX_ACTIVE_LAYERS", "int", "16"), // being replaced by the one above, but still present
+            ("STEAM_INPUT_MAX_DIGITAL_ACTIONS", "int", "128"),
+            ("STEAM_INPUT_MAX_ORIGINS", "int", "8"),
+            ("STEAM_INPUT_MIN_ANALOG_ACTION_DATA", "float", "-8f"),
+        ];
+        for (const_name, const_type, const_val) in data {
+            self.consts.push(Const {
+                constname: const_name.to_string(),
+                consttype: const_type.to_string(),
+                constval: const_val.to_string(),
+            });
+        }
+        let mut changes = 0;
+        // Furthermore, some constants in the data use STEAM_CONTROLLER_* instead of STEAM_INPUT_*
+        for i in &mut self.interfaces {
+            for m in &mut i.methods {
+                for p in &mut m.params {
+                    if let Some(oac) = p.out_array_count.as_mut() {
+                        if oac.starts_with("STEAM_CONTROLLER_") {
+                            *oac = oac.replacen("STEAM_CONTROLLER_", "STEAM_INPUT_", 1);
+                            changes += 1;
+                        }
+                    }
+                }
+            }
+        }
+        assert!(changes == 4);
     }
     /// Methods that do not use out_string_count or out_array_count when they should
     fn fix_missing_array_count(&mut self) {
@@ -237,9 +281,17 @@ impl SteamApi {
     /// Fix some known issues in the JSON data
     fn apply_fixes(&mut self) {
         self.fix_deprecated();
+        self.fix_missing_constants();
         self.fix_missing_const();
         self.fix_missing_array_count();
     }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Const {
+    constname: String,
+    consttype: String,
+    constval: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -389,6 +441,9 @@ enum CppType<'a> {
 impl<'a> CppType<'a> {
     fn is_double_pointer(&self) -> bool {
         matches!(self, CppType::Pointer { ttype, .. } if ttype.ends_with('*') || ttype.ends_with("]"))
+    }
+    fn is_int(&self) -> bool {
+        matches!(self, CppType::Normal("int" | "unsigned char" | "uint8"))
     }
     fn is_buffer(&self) -> bool {
         match self {
@@ -602,9 +657,38 @@ impl Generator {
             }
         }
 
+        self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
         stats.print_summary();
+    }
+
+    fn generate_consts(&self, stats: &mut Stats) {
+        let mut cpp = String::new();
+        cpp.push_str("#include \"auto.hpp\"\n\n");
+        cpp.push_str("namespace luasteam {\n\n");
+        cpp.push_str("void add_consts_auto(lua_State *L) {\n");
+        stats.consts_total = self.api.consts.len();
+
+        for enm in &self.api.consts {
+            let resolved = self.resolve_type(&enm.consttype);
+            if resolved.is_int() {
+                cpp.push_str(&format!("    lua_pushinteger(L, {});\n", enm.constval));
+                cpp.push_str(&format!(
+                    "    lua_setfield(L, -2, \"{}\");\n",
+                    enm.constname
+                ));
+                stats.const_generated += 1;
+            } else {
+                println!(
+                    "Unsupported const type {} for {}",
+                    enm.consttype, enm.constname
+                );
+            }
+        }
+
+        cpp.push_str("}\n\n} // namespace luasteam\n");
+        fs::write("../src/auto/consts.cpp", cpp).expect("Unable to write consts.cpp");
     }
 
     fn generate_enums(&self, stats: &mut Stats) {
@@ -634,6 +718,7 @@ impl Generator {
         h.push_str("#include <vector>\n\n");
         h.push_str("namespace luasteam {\n\n");
         h.push_str("void add_enums_auto(lua_State *L);\n");
+        h.push_str("void add_consts_auto(lua_State *L);\n");
         for name in interfaces {
             h.push_str(&format!("void register_{}_auto(lua_State *L);\n", name));
             h.push_str(&format!("void add_{}_auto(lua_State *L);\n", name));
@@ -1087,11 +1172,15 @@ impl Generator {
                                     p.paramtype, size_param, lua_idx
                                 ));
                                 lua_idx += 1;
+                            } else if let Some(c) =
+                                self.api.consts.iter().find(|c| c.constname == size_param)
+                            {
+                                s.push_str(&format!(
+                                    "    {} {} = {};\n",
+                                    c.consttype, c.constname, c.constval
+                                ));
                             } else {
-                                println!(
-                                    "Unsupported size as constant: {} {}",
-                                    size_param, param.paramname
-                                );
+                                println!("Unknown size: {} {}", size_param, param.paramname);
                                 return None;
                             }
                         }

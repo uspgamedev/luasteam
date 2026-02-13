@@ -7,6 +7,7 @@
 namespace luasteam {
 
 void add_enums_auto(lua_State *L);
+void add_consts_auto(lua_State *L);
 void register_User_auto(lua_State *L);
 void add_User_auto(lua_State *L);
 void init_User_auto(lua_State *L);
