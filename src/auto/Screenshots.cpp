@@ -61,7 +61,7 @@ void shutdown_Screenshots_auto(lua_State *L) {
 
 // ScreenshotHandle WriteScreenshot(const void * pubRGB, uint32 cubRGB, int nWidth, int nHeight);
 EXTERN int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
-    const char *pubRGB = luaL_checkstring(L, 1);
+    char *pubRGB = const_cast<char*>(luaL_checkstring(L, 1));
     uint32 cubRGB = static_cast<uint32>(luaL_checkint(L, 2));
     int nWidth = static_cast<int>(luaL_checkint(L, 3));
     int nHeight = static_cast<int>(luaL_checkint(L, 4));

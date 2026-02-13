@@ -1,7 +1,10 @@
 use serde::{Deserialize, Serialize};
+use std::any::type_name;
 use std::collections::{BTreeSet, HashMap, HashSet};
 use std::fs;
 use std::path::Path;
+
+static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 #[derive(Debug, Default)]
 struct Stats {
@@ -13,6 +16,8 @@ struct Stats {
     enum_values_generated: usize,
     consts_total: usize,
     const_generated: usize,
+    structs_total: usize,
+    structs_generated: usize,
     unsupported_types: BTreeSet<String>,
 }
 
@@ -43,6 +48,12 @@ impl Stats {
             self.const_generated,
             self.consts_total - self.const_generated
         );
+        println!(
+            "Structs:     {} total, {} generated, {} skipped",
+            self.structs_total,
+            self.structs_generated,
+            self.structs_total - self.structs_generated
+        );
 
         println!("--------------------------");
     }
@@ -65,6 +76,12 @@ impl SteamApi {
             .iter_mut()
             .find(|i| i.classname == name)
             .expect("Missing interface")
+    }
+    fn struct_mut(&mut self, name: &str) -> &mut Struct {
+        self.structs
+            .iter_mut()
+            .find(|s| s.name == name)
+            .expect("Missing struct")
     }
 }
 
@@ -132,7 +149,7 @@ impl SteamApi {
             ("STEAM_INPUT_MAX_ACTIVE_LAYERS", "int", "16"), // being replaced by the one above, but still present
             ("STEAM_INPUT_MAX_DIGITAL_ACTIONS", "int", "128"),
             ("STEAM_INPUT_MAX_ORIGINS", "int", "8"),
-            ("STEAM_INPUT_MIN_ANALOG_ACTION_DATA", "float", "-8f"),
+            ("STEAM_INPUT_MIN_ANALOG_ACTION_DATA", "float", "-8"),
         ];
         let all_names = self
             .consts
@@ -294,6 +311,10 @@ impl SteamApi {
         self.fix_missing_constants();
         self.fix_missing_const();
         self.fix_missing_array_count();
+        // Inside a named union
+        self.struct_mut("SteamNetworkingConfigValue_t")
+            .field_mut("m_int64")
+            .fieldname = "m_val.m_int64".to_string();
     }
 }
 
@@ -327,6 +348,15 @@ struct Struct {
     fields: Vec<Field>,
     #[serde(default)]
     methods: Vec<Method>,
+}
+
+impl Struct {
+    fn field_mut(&mut self, name: &str) -> &mut Field {
+        self.fields
+            .iter_mut()
+            .find(|f| f.fieldname == name)
+            .expect("Missing field")
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -432,6 +462,7 @@ struct Generator {
     api: SteamApi,
     type_map: HashMap<String, String>,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
+    added_structs: HashSet<String>,
 }
 
 #[derive(Debug)]
@@ -498,6 +529,7 @@ impl Generator {
         // type_map.insert("uint8".to_string(), "int".to_string());
         type_map.insert("uint64".to_string(), "uint64".to_string());
         // int64 -> uint64 is a bit of a hack
+        type_map.insert("int64_t".to_string(), "uint64".to_string());
         type_map.insert("int64".to_string(), "uint64".to_string());
         type_map.insert("bool".to_string(), "bool".to_string());
         type_map.insert("const char *".to_string(), "const char *".to_string());
@@ -526,6 +558,7 @@ impl Generator {
             api,
             type_map,
             interface_callbacks,
+            added_structs: HashSet::new(),
         }
     }
 
@@ -604,7 +637,7 @@ impl Generator {
         t
     }
 
-    fn generate(&self) {
+    fn generate(&mut self) {
         let mut stats = Stats::default();
         stats.interfaces_total = self.api.interfaces.len();
 
@@ -667,10 +700,113 @@ impl Generator {
             }
         }
 
+        self.generate_structs(&mut stats);
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
         stats.print_summary();
+    }
+
+    fn generate_structs(&mut self, stats: &mut Stats) {
+        let incomplete_structs = [
+            "SteamDatagramHostedAddress",
+            "SteamDatagramGameCoordinatorServerLogin",
+            "SteamDatagramGameCoordinatorServerLogin",
+        ];
+        stats.structs_total = self.api.structs.len();
+        let mut cpp = String::new();
+        cpp.push_str("#include \"auto.hpp\"\n\n");
+        cpp.push_str("namespace luasteam {\n\n");
+
+        for st in &self.api.structs {
+            if incomplete_structs.contains(&st.name.as_str()) {
+                println!("Skipping struct {} because it is incomplete", st.name);
+                continue;
+            }
+            if let Some(code) = self.generate_struct(st) {
+                cpp.push_str(&code);
+                // We are assuming a struct does not depend on one not yet declared
+                self.added_structs.insert(st.name.clone());
+                stats.structs_generated += 1;
+            }
+        }
+
+        cpp.push_str("} // namespace luasteam\n");
+        fs::write("../src/auto/structs.cpp", cpp).expect("Unable to write structs.cpp");
+    }
+
+    fn generate_struct(&self, st: &Struct) -> Option<String> {
+        let mut cpp = String::new();
+        // Generate check function
+        cpp.push_str(&format!(
+            "{} check_{}(lua_State *L, int index) {{\n",
+            st.name, st.name
+        ));
+        cpp.push_str("    luaL_checktype(L, index, LUA_TTABLE);\n");
+        cpp.push_str(&format!("    {} res;\n", st.name));
+        for field in &st.fields {
+            if field.private {
+                println!(
+                    "Skipping struct {} because field {} is private",
+                    st.name, field.fieldname
+                );
+                return None;
+            }
+            cpp.push_str(&format!(
+                "    lua_getfield(L, index, \"{}\");\n",
+                field.fieldname
+            ));
+            let (ok, check) = self.generate_check(
+                &field.fieldtype,
+                false,
+                &format!("res.{}", field.fieldname),
+                "-1",
+            );
+            if ok {
+                cpp.push_str(&format!("    {}\n", check));
+            } else {
+                cpp.push_str(&format!(
+                    "    // Unsupported field type: {}\n",
+                    field.fieldtype
+                ));
+                println!(
+                    "Unsupported field type in check for struct {}: {}",
+                    st.name, field.fieldtype
+                );
+                return None;
+            }
+            cpp.push_str("    lua_pop(L, 1);\n");
+        }
+        cpp.push_str("    return res;\n");
+        cpp.push_str("}\n\n");
+
+        // Generate push function
+        cpp.push_str(&format!(
+            "void push_{}(lua_State *L, {} val) {{\n",
+            st.name, st.name
+        ));
+        cpp.push_str(&format!(
+            "    lua_createtable(L, 0, {});\n",
+            st.fields.len()
+        ));
+        for field in &st.fields {
+            let (ok, push) =
+                self.generate_push(&field.fieldtype, &format!("val.{}", field.fieldname));
+            cpp.push_str(&format!("    {}\n", push));
+            if ok {
+                cpp.push_str(&format!(
+                    "    lua_setfield(L, -2, \"{}\");\n",
+                    field.fieldname
+                ));
+            } else {
+                println!(
+                    "Unsupported field type in push for struct {}: {}",
+                    st.name, field.fieldtype
+                );
+            }
+        }
+        cpp.push_str("}\n\n");
+        Some(cpp)
     }
 
     fn generate_consts(&self, stats: &mut Stats) {
@@ -724,6 +860,10 @@ impl Generator {
         h.push_str("namespace luasteam {\n\n");
         h.push_str("void add_enums_auto(lua_State *L);\n");
         h.push_str("void add_consts_auto(lua_State *L);\n");
+        for st in &self.added_structs {
+            h.push_str(&format!("{} check_{}(lua_State *L, int index);\n", st, st));
+            h.push_str(&format!("void push_{}(lua_State *L, {} val);\n", st, st));
+        }
         for name in interfaces {
             h.push_str(&format!("void register_{}_auto(lua_State *L);\n", name));
             h.push_str(&format!("void add_{}_auto(lua_State *L);\n", name));
@@ -742,6 +882,116 @@ impl Generator {
     }
 
     /// Generate code to push a field into the stack, returns (success, code). No trailing space/newline/indent in code.
+    fn generate_check(
+        &self,
+        ftype: &str,
+        create_var: bool,
+        value_accessor: &str,
+        lua_idx: &str,
+    ) -> (bool, String) {
+        let type_prefix = if create_var {
+            format!("{} ", ftype)
+        } else {
+            String::new()
+        };
+        let resolved = self.resolve_type(ftype);
+        match resolved {
+            CppType::Normal(s) => match s {
+                "int" | "unsigned char" => (
+                    true,
+                    format!(
+                        "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
+                        type_prefix, value_accessor, ftype, lua_idx
+                    ),
+                ),
+                "bool" => (
+                    true,
+                    format!(
+                        "{}{} = lua_toboolean(L, {});",
+                        type_prefix, value_accessor, lua_idx
+                    ),
+                ),
+                "double" | "float" => (
+                    true,
+                    format!(
+                        "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
+                        type_prefix, value_accessor, ftype, lua_idx
+                    ),
+                ),
+                "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
+                    let mut get = format!("luasteam::checkuint64(L, {})", lua_idx);
+                    if s == "CSteamID" || s == "CGameID" {
+                        get = format!("{}({})", s, get);
+                    }
+                    (
+                        true,
+                        format!("{}{} = {};", type_prefix, value_accessor, get),
+                    )
+                }
+                _ => {
+                    if self.added_structs.contains(s) {
+                        (
+                            true,
+                            format!(
+                                "{}{} = check_{}(L, {});",
+                                type_prefix, value_accessor, s, lua_idx
+                            ),
+                        )
+                    } else {
+                        (
+                            false,
+                            format!("// Unsupported check type: {} ({})", ftype, s),
+                        )
+                    }
+                }
+            },
+            CppType::Array {
+                ttype,
+                size,
+                is_const: _,
+            } => {
+                if resolved.is_buffer() {
+                    let var = format!(
+                        "_tmp{}",
+                        COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
+                    );
+                    let mut s = format!(
+                        "const char *{} = luaL_checkstring(L, {}); if (strlen({}) >= {}) luaL_error(L, \"String too long\"); ", var, lua_idx, var, size);
+
+                    if create_var {
+                        s.push_str(&format!("char {}[{}]; ", value_accessor, size));
+                    }
+                    s.push_str(&format!(
+                        "memcpy({}, {}, sizeof({}));",
+                        value_accessor, var, value_accessor
+                    ));
+                    (true, s)
+                } else {
+                    let mut s = format!("luaL_checktype(L, {}, LUA_TTABLE); ", lua_idx);
+                    if create_var {
+                        s.push_str(&format!("{} {}[{}]; ", ttype, value_accessor, size));
+                    }
+                    s.push_str(&format!(
+                        "for(int i=0;i<{};i++){{ lua_rawgeti(L,-1,i+1); ",
+                        size
+                    ));
+                    let (ok, check) =
+                        self.generate_check(ttype, false, &format!("{}[i]", value_accessor), "-1");
+                    if ok {
+                        s.push_str(&format!("{} lua_pop(L, 1); }}", check));
+                        (true, s)
+                    } else {
+                        (
+                            false,
+                            format!("// Unsupported check array type: {} [{}]", ttype, size),
+                        )
+                    }
+                }
+            }
+            _ => (false, format!("// Unsupported check type: {:?}", resolved)),
+        }
+    }
+
     fn generate_push(&self, ftype: &str, value_accessor: &str) -> (bool, String) {
         let resolved = self.resolve_type(ftype);
 
@@ -769,8 +1019,12 @@ impl Generator {
                     }
                 }
                 _ => {
-                    println!("Unsupported field push type: {}", ftype);
-                    format!("// Skip unsupported type: {}", ftype)
+                    if self.added_structs.contains(s) {
+                        format!("push_{}(L, {});", s, value_accessor)
+                    } else {
+                        println!("Unsupported field push type: {}", ftype);
+                        format!("// Skip unsupported type: {}", ftype)
+                    }
                 }
             },
             _ if resolved.is_buffer() => {
@@ -1078,6 +1332,7 @@ impl Generator {
                 return None;
             }
 
+            // This is probably somewhat duplicated with generate_check. Though this needs to deal with output pointers as well.
             match resolved {
                 Normal("char") => {
                     s.push_str(&format!(
@@ -1112,8 +1367,10 @@ impl Generator {
                     lua_idx += 1;
                 }
                 _ if resolved.is_buffer() && resolved.is_const() => {
-                    if method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
-                        && param.paramname == "pDataToInclude"
+                    if (method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
+                        && param.paramname == "pDataToInclude")
+                        || (method.methodname_flat == "SteamAPI_ISteamScreenshots_WriteScreenshot"
+                            && param.paramname == "pubRGB")
                     {
                         // Special case, it is missing the const
                         s.push_str(&format!(
@@ -1311,6 +1568,6 @@ fn main() {
     let mut api: SteamApi = serde_json::from_str(&json_str).expect("Unable to parse JSON");
     api.apply_fixes();
 
-    let generator = Generator::new(api);
+    let mut generator = Generator::new(api);
     generator.generate();
 }

@@ -213,7 +213,7 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "STEAM_INPUT_MAX_DIGITAL_ACTIONS");
     lua_pushinteger(L, 8);
     lua_setfield(L, -2, "STEAM_INPUT_MAX_ORIGINS");
-    lua_pushnumber(L, -8f);
+    lua_pushnumber(L, -8);
     lua_setfield(L, -2, "STEAM_INPUT_MIN_ANALOG_ACTION_DATA");
 }
 
