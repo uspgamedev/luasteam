@@ -134,7 +134,17 @@ impl SteamApi {
             ("STEAM_INPUT_MAX_ORIGINS", "int", "8"),
             ("STEAM_INPUT_MIN_ANALOG_ACTION_DATA", "float", "-8f"),
         ];
+        let all_names = self
+            .consts
+            .iter()
+            .map(|c| c.constname.to_string())
+            .collect::<HashSet<_>>();
         for (const_name, const_type, const_val) in data {
+            assert!(
+                !all_names.contains(const_name),
+                "Constant {} already exists",
+                const_name
+            );
             self.consts.push(Const {
                 constname: const_name.to_string(),
                 consttype: const_type.to_string(),
@@ -671,19 +681,14 @@ impl Generator {
         stats.consts_total = self.api.consts.len();
 
         for enm in &self.api.consts {
-            let resolved = self.resolve_type(&enm.consttype);
-            if resolved.is_int() {
-                cpp.push_str(&format!("    lua_pushinteger(L, {});\n", enm.constval));
+            let (ok, push) = self.generate_push(&enm.consttype, &enm.constval);
+            cpp.push_str(&format!("    {}\n", push));
+            if ok {
                 cpp.push_str(&format!(
                     "    lua_setfield(L, -2, \"{}\");\n",
                     enm.constname
                 ));
                 stats.const_generated += 1;
-            } else {
-                println!(
-                    "Unsupported const type {} for {}",
-                    enm.consttype, enm.constname
-                );
             }
         }
 
@@ -742,7 +747,7 @@ impl Generator {
 
         let push = match resolved {
             CppType::Normal(s) => match s {
-                "double" => {
+                "double" | "float" => {
                     format!("lua_pushnumber(L, {});", value_accessor)
                 }
                 "bool" => {
@@ -989,16 +994,6 @@ impl Generator {
         let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp).expect("Unable to write generated file");
         Ok(name.to_owned())
-    }
-
-    /// Check if a paramtype is a non-const pointer (e.g., "int *", "uint32 *")
-    fn is_non_const_pointer(paramtype: &str) -> bool {
-        paramtype.ends_with(" *") && !paramtype.contains("const")
-    }
-
-    /// Extract the base type from a pointer type, e.g. "int *" -> "int"
-    fn extract_pointer_base_type(paramtype: &str) -> String {
-        paramtype.trim_end_matches(" *").to_string()
     }
 
     fn generate_method(

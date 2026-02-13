@@ -7,8 +7,12 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "k_uAppIdInvalid");
     lua_pushinteger(L, 0x0);
     lua_setfield(L, -2, "k_uDepotIdInvalid");
+    luasteam::pushuint64(L, 0x0);
+    lua_setfield(L, -2, "k_uAPICallInvalid");
     lua_pushinteger(L, 0);
     lua_setfield(L, -2, "k_uAccountIdInvalid");
+    luasteam::pushuint64(L, 0);
+    lua_setfield(L, -2, "k_ulPartyBeaconIdInvalid");
     lua_pushinteger(L, 0);
     lua_setfield(L, -2, "k_HAuthTicketInvalid");
     lua_pushinteger(L, 0xFFFFFFFF);
@@ -57,6 +61,14 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "k_unFavoriteFlagHistory");
     lua_pushinteger(L, 100 * 1024 * 1024);
     lua_setfield(L, -2, "k_unMaxCloudFileChunkSize");
+    luasteam::pushuint64(L, 0);
+    lua_setfield(L, -2, "k_PublishedFileIdInvalid");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_UGCHandleInvalid");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_PublishedFileUpdateHandleInvalid");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_UGCFileStreamHandleInvalid");
     lua_pushinteger(L, 128 + 1);
     lua_setfield(L, -2, "k_cchPublishedDocumentTitleMax");
     lua_pushinteger(L, 8000);
@@ -83,18 +95,28 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "k_cubUFSTagValueMax");
     lua_pushinteger(L, 200);
     lua_setfield(L, -2, "k_ScreenshotThumbWidth");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_UGCQueryHandleInvalid");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_UGCUpdateHandleInvalid");
     lua_pushinteger(L, 50);
     lua_setfield(L, -2, "kNumUGCResultsPerPage");
     lua_pushinteger(L, 5000);
     lua_setfield(L, -2, "k_cchDeveloperMetadataMax");
     lua_pushinteger(L, 0);
     lua_setfield(L, -2, "INVALID_HTMLBROWSER");
+    luasteam::pushuint64(L, ( SteamItemInstanceID_t ) ~ 0);
+    lua_setfield(L, -2, "k_SteamItemInstanceIDInvalid");
     lua_pushinteger(L, - 1);
     lua_setfield(L, -2, "k_SteamInventoryResultInvalid");
+    luasteam::pushuint64(L, 0xffffffffffffffffull);
+    lua_setfield(L, -2, "k_SteamInventoryUpdateHandleInvalid");
     lua_pushinteger(L, 1000);
     lua_setfield(L, -2, "k_unMaxTimelinePriority");
     lua_pushinteger(L, 1000000);
     lua_setfield(L, -2, "k_unTimelinePriority_KeepCurrentValue");
+    lua_pushnumber(L, 600.f);
+    lua_setfield(L, -2, "k_flMaxTimelineEventDuration");
     lua_pushinteger(L, 64);
     lua_setfield(L, -2, "k_cchMaxPhaseIDLength");
     lua_pushinteger(L, 0);
@@ -177,8 +199,12 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "k_cbSteamNetworkingSocketsFakeUDPPortRecommendedMTU");
     lua_pushinteger(L, 4096);
     lua_setfield(L, -2, "k_cbSteamNetworkingSocketsFakeUDPPortMaxMessageSize");
+    luasteam::pushuint64(L, UINT64_MAX);
+    lua_setfield(L, -2, "STEAM_INPUT_HANDLE_ALL_CONTROLLERS");
     lua_pushinteger(L, 16);
     lua_setfield(L, -2, "STEAM_INPUT_MAX_ANALOG_ACTIONS");
+    lua_pushnumber(L, 1.0f);
+    lua_setfield(L, -2, "STEAM_INPUT_MAX_ANALOG_ACTION_DATA");
     lua_pushinteger(L, 16);
     lua_setfield(L, -2, "STEAM_INPUT_MAX_COUNT");
     lua_pushinteger(L, 16);
@@ -187,6 +213,8 @@ void add_consts_auto(lua_State *L) {
     lua_setfield(L, -2, "STEAM_INPUT_MAX_DIGITAL_ACTIONS");
     lua_pushinteger(L, 8);
     lua_setfield(L, -2, "STEAM_INPUT_MAX_ORIGINS");
+    lua_pushnumber(L, -8f);
+    lua_setfield(L, -2, "STEAM_INPUT_MIN_ANALOG_ACTION_DATA");
 }
 
 } // namespace luasteam

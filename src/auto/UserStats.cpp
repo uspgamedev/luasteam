@@ -506,6 +506,40 @@ EXTERN int luasteam_UserStats_RequestGlobalAchievementPercentages(lua_State *L) 
     return 1;
 }
 
+// int GetMostAchievedAchievementInfo(char * pchName, uint32 unNameBufLen, float * pflPercent, bool * pbAchieved);
+EXTERN int luasteam_UserStats_GetMostAchievedAchievementInfo(lua_State *L) {
+    uint32 unNameBufLen = luaL_checkint(L, 1);
+    std::vector<char> pchName(unNameBufLen);
+    float pflPercent;    bool pbAchieved;    int __ret = SteamUserStats()->GetMostAchievedAchievementInfo(pchName.data(), unNameBufLen, &pflPercent, &pbAchieved);
+    lua_pushinteger(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
+    lua_pushnumber(L, pflPercent);
+    lua_pushboolean(L, pbAchieved);
+    return 3;
+}
+
+// int GetNextMostAchievedAchievementInfo(int iIteratorPrevious, char * pchName, uint32 unNameBufLen, float * pflPercent, bool * pbAchieved);
+EXTERN int luasteam_UserStats_GetNextMostAchievedAchievementInfo(lua_State *L) {
+    int iIteratorPrevious = static_cast<int>(luaL_checkint(L, 1));
+    uint32 unNameBufLen = luaL_checkint(L, 2);
+    std::vector<char> pchName(unNameBufLen);
+    float pflPercent;    bool pbAchieved;    int __ret = SteamUserStats()->GetNextMostAchievedAchievementInfo(iIteratorPrevious, pchName.data(), unNameBufLen, &pflPercent, &pbAchieved);
+    lua_pushinteger(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
+    lua_pushnumber(L, pflPercent);
+    lua_pushboolean(L, pbAchieved);
+    return 3;
+}
+
+// bool GetAchievementAchievedPercent(const char * pchName, float * pflPercent);
+EXTERN int luasteam_UserStats_GetAchievementAchievedPercent(lua_State *L) {
+    const char *pchName = luaL_checkstring(L, 1);
+    float pflPercent;    bool __ret = SteamUserStats()->GetAchievementAchievedPercent(pchName, &pflPercent);
+    lua_pushboolean(L, __ret);
+    lua_pushnumber(L, pflPercent);
+    return 2;
+}
+
 // SteamAPICall_t RequestGlobalStats(int nHistoryDays);
 EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
     int nHistoryDays = static_cast<int>(luaL_checkint(L, 1));
@@ -539,11 +573,14 @@ void register_UserStats_auto(lua_State *L) {
     add_func(L, "AttachLeaderboardUGC", luasteam_UserStats_AttachLeaderboardUGC);
     add_func(L, "GetNumberOfCurrentPlayers", luasteam_UserStats_GetNumberOfCurrentPlayers);
     add_func(L, "RequestGlobalAchievementPercentages", luasteam_UserStats_RequestGlobalAchievementPercentages);
+    add_func(L, "GetMostAchievedAchievementInfo", luasteam_UserStats_GetMostAchievedAchievementInfo);
+    add_func(L, "GetNextMostAchievedAchievementInfo", luasteam_UserStats_GetNextMostAchievedAchievementInfo);
+    add_func(L, "GetAchievementAchievedPercent", luasteam_UserStats_GetAchievementAchievedPercent);
     add_func(L, "RequestGlobalStats", luasteam_UserStats_RequestGlobalStats);
 }
 
 void add_UserStats_auto(lua_State *L) {
-    lua_createtable(L, 0, 25);
+    lua_createtable(L, 0, 28);
     register_UserStats_auto(L);
     lua_pushvalue(L, -1);
     UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);

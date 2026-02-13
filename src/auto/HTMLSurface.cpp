@@ -80,7 +80,8 @@ void CallbackListener::OnHTML_NeedsPaint(HTML_NeedsPaint_t *data) {
         lua_setfield(L, -2, "unScrollX");
         lua_pushinteger(L, data->unScrollY);
         lua_setfield(L, -2, "unScrollY");
-        // Skip unsupported type: float
+        lua_pushnumber(L, data->flPageScale);
+        lua_setfield(L, -2, "flPageScale");
         lua_pushinteger(L, data->unPageSerial);
         lua_setfield(L, -2, "unPageSerial");
         lua_call(L, 1, 0);
@@ -274,7 +275,8 @@ void CallbackListener::OnHTML_HorizontalScroll(HTML_HorizontalScroll_t *data) {
         lua_setfield(L, -2, "unScrollMax");
         lua_pushinteger(L, data->unScrollCurrent);
         lua_setfield(L, -2, "unScrollCurrent");
-        // Skip unsupported type: float
+        lua_pushnumber(L, data->flPageScale);
+        lua_setfield(L, -2, "flPageScale");
         lua_pushboolean(L, data->bVisible);
         lua_setfield(L, -2, "bVisible");
         lua_pushinteger(L, data->unPageSize);
@@ -300,7 +302,8 @@ void CallbackListener::OnHTML_VerticalScroll(HTML_VerticalScroll_t *data) {
         lua_setfield(L, -2, "unScrollMax");
         lua_pushinteger(L, data->unScrollCurrent);
         lua_setfield(L, -2, "unScrollCurrent");
-        // Skip unsupported type: float
+        lua_pushnumber(L, data->flPageScale);
+        lua_setfield(L, -2, "flPageScale");
         lua_pushboolean(L, data->bVisible);
         lua_setfield(L, -2, "bVisible");
         lua_pushinteger(L, data->unPageSize);

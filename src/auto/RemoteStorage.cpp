@@ -331,7 +331,8 @@ void CallbackListener::OnRemoteStorageGetPublishedItemVoteDetailsResult(RemoteSt
         lua_setfield(L, -2, "m_nVotesAgainst");
         lua_pushinteger(L, data->m_nReports);
         lua_setfield(L, -2, "m_nReports");
-        // Skip unsupported type: float
+        lua_pushnumber(L, data->m_fScore);
+        lua_setfield(L, -2, "m_fScore");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
