@@ -63,7 +63,8 @@ void CallbackListener::OnAppProofOfPurchaseKeyResponse(AppProofOfPurchaseKeyResp
         lua_setfield(L, -2, "m_nAppID");
         lua_pushinteger(L, data->m_cchKeyLength);
         lua_setfield(L, -2, "m_cchKeyLength");
-        // Skip unsupported type: char [240]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchKey));
+        lua_setfield(L, -2, "m_rgchKey");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -83,7 +84,8 @@ void CallbackListener::OnFileDetailsResult(FileDetailsResult_t *data) {
         lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_ulFileSize);
         lua_setfield(L, -2, "m_ulFileSize");
-        // Skip unsupported type: uint8 [20]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_FileSHA));
+        lua_setfield(L, -2, "m_FileSHA");
         lua_pushinteger(L, data->m_unFlags);
         lua_setfield(L, -2, "m_unFlags");
         lua_call(L, 1, 0);
@@ -129,70 +131,81 @@ void shutdown_Apps_auto(lua_State *L) {
 
 // bool BIsSubscribed();
 EXTERN int luasteam_Apps_BIsSubscribed(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsSubscribed());
+    bool __ret = SteamApps()->BIsSubscribed();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsLowViolence();
 EXTERN int luasteam_Apps_BIsLowViolence(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsLowViolence());
+    bool __ret = SteamApps()->BIsLowViolence();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsCybercafe();
 EXTERN int luasteam_Apps_BIsCybercafe(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsCybercafe());
+    bool __ret = SteamApps()->BIsCybercafe();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsVACBanned();
 EXTERN int luasteam_Apps_BIsVACBanned(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsVACBanned());
+    bool __ret = SteamApps()->BIsVACBanned();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // const char * GetCurrentGameLanguage();
 EXTERN int luasteam_Apps_GetCurrentGameLanguage(lua_State *L) {
-    lua_pushstring(L, SteamApps()->GetCurrentGameLanguage());
+    const char * __ret = SteamApps()->GetCurrentGameLanguage();
+    lua_pushstring(L, reinterpret_cast<const char*>(__ret));
     return 1;
 }
 
 // const char * GetAvailableGameLanguages();
 EXTERN int luasteam_Apps_GetAvailableGameLanguages(lua_State *L) {
-    lua_pushstring(L, SteamApps()->GetAvailableGameLanguages());
+    const char * __ret = SteamApps()->GetAvailableGameLanguages();
+    lua_pushstring(L, reinterpret_cast<const char*>(__ret));
     return 1;
 }
 
 // bool BIsSubscribedApp(AppId_t appID);
 EXTERN int luasteam_Apps_BIsSubscribedApp(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamApps()->BIsSubscribedApp(appID));
+    bool __ret = SteamApps()->BIsSubscribedApp(appID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsDlcInstalled(AppId_t appID);
 EXTERN int luasteam_Apps_BIsDlcInstalled(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamApps()->BIsDlcInstalled(appID));
+    bool __ret = SteamApps()->BIsDlcInstalled(appID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // uint32 GetEarliestPurchaseUnixTime(AppId_t nAppID);
 EXTERN int luasteam_Apps_GetEarliestPurchaseUnixTime(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushinteger(L, SteamApps()->GetEarliestPurchaseUnixTime(nAppID));
+    uint32 __ret = SteamApps()->GetEarliestPurchaseUnixTime(nAppID);
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // bool BIsSubscribedFromFreeWeekend();
 EXTERN int luasteam_Apps_BIsSubscribedFromFreeWeekend(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsSubscribedFromFreeWeekend());
+    bool __ret = SteamApps()->BIsSubscribedFromFreeWeekend();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // int GetDLCCount();
 EXTERN int luasteam_Apps_GetDLCCount(lua_State *L) {
-    lua_pushinteger(L, SteamApps()->GetDLCCount());
+    int __ret = SteamApps()->GetDLCCount();
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
@@ -201,10 +214,11 @@ EXTERN int luasteam_Apps_BGetDLCDataByIndex(lua_State *L) {
     int iDLC = static_cast<int>(luaL_checkint(L, 1));
     AppId_t pAppID;    bool pbAvailable;    int cchNameBufferSize = luaL_checkint(L, 2);
     std::vector<char> pchName(cchNameBufferSize);
-    lua_pushboolean(L, SteamApps()->BGetDLCDataByIndex(iDLC, &pAppID, &pbAvailable, pchName.data(), cchNameBufferSize));
+    bool __ret = SteamApps()->BGetDLCDataByIndex(iDLC, &pAppID, &pbAvailable, pchName.data(), cchNameBufferSize);
+    lua_pushboolean(L, __ret);
     lua_pushinteger(L, pAppID);
     lua_pushboolean(L, pbAvailable);
-    lua_pushstring(L, pchName.data());
+    lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
     return 3;
 }
 
@@ -233,15 +247,17 @@ EXTERN int luasteam_Apps_RequestAppProofOfPurchaseKey(lua_State *L) {
 EXTERN int luasteam_Apps_GetCurrentBetaName(lua_State *L) {
     int cchNameBufferSize = luaL_checkint(L, 1);
     std::vector<char> pchName(cchNameBufferSize);
-    lua_pushboolean(L, SteamApps()->GetCurrentBetaName(pchName.data(), cchNameBufferSize));
-    lua_pushstring(L, pchName.data());
+    bool __ret = SteamApps()->GetCurrentBetaName(pchName.data(), cchNameBufferSize);
+    lua_pushboolean(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
     return 1;
 }
 
 // bool MarkContentCorrupt(bool bMissingFilesOnly);
 EXTERN int luasteam_Apps_MarkContentCorrupt(lua_State *L) {
     bool bMissingFilesOnly = lua_toboolean(L, 1);
-    lua_pushboolean(L, SteamApps()->MarkContentCorrupt(bMissingFilesOnly));
+    bool __ret = SteamApps()->MarkContentCorrupt(bMissingFilesOnly);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -250,35 +266,40 @@ EXTERN int luasteam_Apps_GetAppInstallDir(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
     uint32 cchFolderBufferSize = luaL_checkint(L, 2);
     std::vector<char> pchFolder(cchFolderBufferSize);
-    lua_pushinteger(L, SteamApps()->GetAppInstallDir(appID, pchFolder.data(), cchFolderBufferSize));
-    lua_pushstring(L, pchFolder.data());
+    uint32 __ret = SteamApps()->GetAppInstallDir(appID, pchFolder.data(), cchFolderBufferSize);
+    lua_pushinteger(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pchFolder.data()));
     return 1;
 }
 
 // bool BIsAppInstalled(AppId_t appID);
 EXTERN int luasteam_Apps_BIsAppInstalled(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamApps()->BIsAppInstalled(appID));
+    bool __ret = SteamApps()->BIsAppInstalled(appID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // CSteamID GetAppOwner();
 EXTERN int luasteam_Apps_GetAppOwner(lua_State *L) {
-    luasteam::pushuint64(L, SteamApps()->GetAppOwner().ConvertToUint64());
+    CSteamID __ret = SteamApps()->GetAppOwner();
+    luasteam::pushuint64(L, __ret.ConvertToUint64());
     return 1;
 }
 
 // const char * GetLaunchQueryParam(const char * pchKey);
 EXTERN int luasteam_Apps_GetLaunchQueryParam(lua_State *L) {
     const char *pchKey = luaL_checkstring(L, 1);
-    lua_pushstring(L, SteamApps()->GetLaunchQueryParam(pchKey));
+    const char * __ret = SteamApps()->GetLaunchQueryParam(pchKey);
+    lua_pushstring(L, reinterpret_cast<const char*>(__ret));
     return 1;
 }
 
 // bool GetDlcDownloadProgress(AppId_t nAppID, uint64 * punBytesDownloaded, uint64 * punBytesTotal);
 EXTERN int luasteam_Apps_GetDlcDownloadProgress(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    uint64 punBytesDownloaded;    uint64 punBytesTotal;    lua_pushboolean(L, SteamApps()->GetDlcDownloadProgress(nAppID, &punBytesDownloaded, &punBytesTotal));
+    uint64 punBytesDownloaded;    uint64 punBytesTotal;    bool __ret = SteamApps()->GetDlcDownloadProgress(nAppID, &punBytesDownloaded, &punBytesTotal);
+    lua_pushboolean(L, __ret);
     luasteam::pushuint64(L, punBytesDownloaded);
     luasteam::pushuint64(L, punBytesTotal);
     return 3;
@@ -286,7 +307,8 @@ EXTERN int luasteam_Apps_GetDlcDownloadProgress(lua_State *L) {
 
 // int GetAppBuildId();
 EXTERN int luasteam_Apps_GetAppBuildId(lua_State *L) {
-    lua_pushinteger(L, SteamApps()->GetAppBuildId());
+    int __ret = SteamApps()->GetAppBuildId();
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
@@ -299,7 +321,8 @@ EXTERN int luasteam_Apps_RequestAllProofOfPurchaseKeys(lua_State *L) {
 // SteamAPICall_t GetFileDetails(const char * pszFileName);
 EXTERN int luasteam_Apps_GetFileDetails(lua_State *L) {
     const char *pszFileName = luaL_checkstring(L, 1);
-    luasteam::pushuint64(L, SteamApps()->GetFileDetails(pszFileName));
+    SteamAPICall_t __ret = SteamApps()->GetFileDetails(pszFileName);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
@@ -307,20 +330,23 @@ EXTERN int luasteam_Apps_GetFileDetails(lua_State *L) {
 EXTERN int luasteam_Apps_GetLaunchCommandLine(lua_State *L) {
     int cubCommandLine = luaL_checkint(L, 1);
     std::vector<char> pszCommandLine(cubCommandLine);
-    lua_pushinteger(L, SteamApps()->GetLaunchCommandLine(pszCommandLine.data(), cubCommandLine));
-    lua_pushstring(L, pszCommandLine.data());
+    int __ret = SteamApps()->GetLaunchCommandLine(pszCommandLine.data(), cubCommandLine);
+    lua_pushinteger(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pszCommandLine.data()));
     return 1;
 }
 
 // bool BIsSubscribedFromFamilySharing();
 EXTERN int luasteam_Apps_BIsSubscribedFromFamilySharing(lua_State *L) {
-    lua_pushboolean(L, SteamApps()->BIsSubscribedFromFamilySharing());
+    bool __ret = SteamApps()->BIsSubscribedFromFamilySharing();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsTimedTrial(uint32 * punSecondsAllowed, uint32 * punSecondsPlayed);
 EXTERN int luasteam_Apps_BIsTimedTrial(lua_State *L) {
-    uint32 punSecondsAllowed;    uint32 punSecondsPlayed;    lua_pushboolean(L, SteamApps()->BIsTimedTrial(&punSecondsAllowed, &punSecondsPlayed));
+    uint32 punSecondsAllowed;    uint32 punSecondsPlayed;    bool __ret = SteamApps()->BIsTimedTrial(&punSecondsAllowed, &punSecondsPlayed);
+    lua_pushboolean(L, __ret);
     lua_pushinteger(L, punSecondsAllowed);
     lua_pushinteger(L, punSecondsPlayed);
     return 3;
@@ -329,13 +355,15 @@ EXTERN int luasteam_Apps_BIsTimedTrial(lua_State *L) {
 // bool SetDlcContext(AppId_t nAppID);
 EXTERN int luasteam_Apps_SetDlcContext(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamApps()->SetDlcContext(nAppID));
+    bool __ret = SteamApps()->SetDlcContext(nAppID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // int GetNumBetas(int * pnAvailable, int * pnPrivate);
 EXTERN int luasteam_Apps_GetNumBetas(lua_State *L) {
-    int pnAvailable;    int pnPrivate;    lua_pushinteger(L, SteamApps()->GetNumBetas(&pnAvailable, &pnPrivate));
+    int pnAvailable;    int pnPrivate;    int __ret = SteamApps()->GetNumBetas(&pnAvailable, &pnPrivate);
+    lua_pushinteger(L, __ret);
     lua_pushinteger(L, pnAvailable);
     lua_pushinteger(L, pnPrivate);
     return 3;
@@ -348,18 +376,20 @@ EXTERN int luasteam_Apps_GetBetaInfo(lua_State *L) {
     std::vector<char> pchBetaName(cchBetaName);
     int cchDescription = luaL_checkint(L, 3);
     std::vector<char> pchDescription(cchDescription);
-    lua_pushboolean(L, SteamApps()->GetBetaInfo(iBetaIndex, &punFlags, &punBuildID, pchBetaName.data(), cchBetaName, pchDescription.data(), cchDescription));
+    bool __ret = SteamApps()->GetBetaInfo(iBetaIndex, &punFlags, &punBuildID, pchBetaName.data(), cchBetaName, pchDescription.data(), cchDescription);
+    lua_pushboolean(L, __ret);
     lua_pushinteger(L, punFlags);
     lua_pushinteger(L, punBuildID);
-    lua_pushstring(L, pchBetaName.data());
-    lua_pushstring(L, pchDescription.data());
+    lua_pushstring(L, reinterpret_cast<const char*>(pchBetaName.data()));
+    lua_pushstring(L, reinterpret_cast<const char*>(pchDescription.data()));
     return 3;
 }
 
 // bool SetActiveBeta(const char * pchBetaName);
 EXTERN int luasteam_Apps_SetActiveBeta(lua_State *L) {
     const char *pchBetaName = luaL_checkstring(L, 1);
-    lua_pushboolean(L, SteamApps()->SetActiveBeta(pchBetaName));
+    bool __ret = SteamApps()->SetActiveBeta(pchBetaName);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 

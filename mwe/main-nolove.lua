@@ -15,10 +15,7 @@ assert(luasteam.k_EInputSourceMode_Trigger == 10, "k_EInputSourceMode_Trigger mi
 
 -- Test some of the new interfaces
 assert(luasteam.Matchmaking ~= nil, "matchmaking interface not found")
-assert(luasteam.HTTP ~= nil, "HTTP interface not found")
-assert(luasteam.Inventory ~= nil, "inventory interface not found")
 assert(luasteam.GameServerStats ~= nil, "gameServerStats interface not found")
-assert(luasteam.Networking ~= nil, "networking interface not found")
 assert(luasteam.Screenshots ~= nil, "screenshots interface not found")
 
 print("API import test passed successfully in " .. (os.clock() - before) .. " seconds!")

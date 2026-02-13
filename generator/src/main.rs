@@ -51,6 +51,15 @@ struct SteamApi {
 }
 
 impl SteamApi {
+    fn interface_mut(&mut self, name: &str) -> &mut Interface {
+        self.interfaces
+            .iter_mut()
+            .find(|i| i.classname == name)
+            .expect("Missing interface")
+    }
+}
+
+impl SteamApi {
     /// Remove deprecated methods and parameters
     fn fix_deprecated(&mut self) {
         self.interfaces.iter_mut().for_each(|i| {
@@ -72,6 +81,10 @@ impl SteamApi {
             (
                 "ISteamParties",
                 vec![("CreateBeacon", vec!["pBeaconLocation"])],
+            ),
+            (
+                "ISteamScreenshots",
+                vec![("WriteScreenshot", vec!["pubRGB"])],
             ),
         ];
 
@@ -162,6 +175,18 @@ impl SteamApi {
                     ("GetImageRGBA", "pubDest", "nDestBufferSize"),
                 ],
             ),
+            (
+                "ISteamRemoteStorage",
+                vec![
+                    ("FileRead", "pvData", "cubDataToRead"),
+                    ("FileReadAsyncComplete", "pvBuffer", "cubToRead"),
+                    ("UGCRead", "pvData", "cubDataToRead"),
+                ],
+            ),
+            (
+                "ISteamScreenshots",
+                vec![("WriteScreenshot", "pubRGB", "cubRGB")],
+            ),
         ];
         for (i_name, data) in to_mark_counters {
             let i = self
@@ -195,6 +220,18 @@ impl SteamApi {
                 );
             }
         }
+        let p = self
+            .interface_mut("ISteamUser")
+            .method_mut("GetVoice")
+            .param_mut("pDestBuffer");
+        assert!(
+            p.out_array_count.is_none()
+                && p.out_string_count.is_none()
+                && p.out_array_call.is_none()
+                && p.array_count.is_none()
+        );
+        p.out_array_count = Some("nBytesWritten".to_owned());
+        p.array_count = Some("cbDestBufferSize".to_owned());
     }
 
     /// Fix some known issues in the JSON data
@@ -226,6 +263,7 @@ struct Struct {
     #[serde(rename = "struct")]
     name: String,
     fields: Vec<Field>,
+    #[serde(default)]
     methods: Vec<Method>,
 }
 
@@ -249,6 +287,15 @@ struct Interface {
     accessors: Vec<Accessor>,
 }
 
+impl Interface {
+    fn method_mut(&mut self, name: &str) -> &mut Method {
+        self.methods
+            .iter_mut()
+            .find(|m| m.methodname == name)
+            .expect("Missing method")
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 struct Accessor {
     kind: String,
@@ -262,6 +309,21 @@ struct Method {
     methodname_flat: String,
     params: Vec<Param>,
     returntype: String,
+}
+
+impl Method {
+    fn param(&self, name: &str) -> &Param {
+        self.params
+            .iter()
+            .find(|p| p.paramname == name)
+            .expect("Missing param")
+    }
+    fn param_mut(&mut self, name: &str) -> &mut Param {
+        self.params
+            .iter_mut()
+            .find(|p| p.paramname == name)
+            .expect("Missing param")
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -278,6 +340,25 @@ struct Param {
     desc: Option<String>,
 }
 
+impl Param {
+    /// What parameter has the size should (maybe) output the size. We are assuming they are never different.
+    fn array_size_param(&self) -> Option<&str> {
+        match (
+            self.out_string_count.as_deref(),
+            self.out_array_count.as_deref(),
+            self.array_count.as_deref(),
+            self.out_array_call.as_deref(),
+        ) {
+            (None, None, None, None) => None,
+            (Some(s), None, None, None) => Some(s),
+            (None, Some(s), None, None) => Some(s),
+            (None, None, Some(s), None) => Some(s),
+            (None, None, None, Some(oac)) => Some(oac.split_once(',').unwrap().0),
+            _ => unreachable!(),
+        }
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 struct Typedef {
     typedef: String,
@@ -289,6 +370,46 @@ struct Generator {
     api: SteamApi,
     type_map: HashMap<String, String>,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
+}
+
+#[derive(Debug)]
+enum CppType<'a> {
+    Normal(&'a str),
+    Array {
+        ttype: &'a str,
+        size: usize,
+        is_const: bool,
+    },
+    Pointer {
+        ttype: &'a str,
+        is_const: bool,
+    },
+}
+
+impl<'a> CppType<'a> {
+    fn is_double_pointer(&self) -> bool {
+        matches!(self, CppType::Pointer { ttype, .. } if ttype.ends_with('*') || ttype.ends_with("]"))
+    }
+    fn is_buffer(&self) -> bool {
+        match self {
+            CppType::Array {
+                ttype: "void" | "char" | "uint8" | "unsigned char",
+                ..
+            } => true,
+            CppType::Pointer {
+                ttype: "void" | "char" | "uint8" | "unsigned char",
+                ..
+            } => true,
+            _ => false,
+        }
+    }
+    fn is_const(&self) -> bool {
+        match self {
+            CppType::Normal(_) => true,
+            CppType::Array { is_const, .. } => *is_const,
+            CppType::Pointer { is_const, .. } => *is_const,
+        }
+    }
 }
 
 impl Generator {
@@ -308,14 +429,14 @@ impl Generator {
         type_map.insert("uint16".to_string(), "int".to_string());
         type_map.insert("short".to_string(), "int".to_string());
         type_map.insert("unsigned short".to_string(), "int".to_string());
-        type_map.insert("uint8".to_string(), "int".to_string());
-        type_map.insert("unsigned char".to_string(), "int".to_string());
+        // type_map.insert("unsigned char".to_string(), "int".to_string());
+        // type_map.insert("uint8".to_string(), "int".to_string());
         type_map.insert("uint64".to_string(), "uint64".to_string());
         // int64 -> uint64 is a bit of a hack
         type_map.insert("int64".to_string(), "uint64".to_string());
         type_map.insert("bool".to_string(), "bool".to_string());
         type_map.insert("const char *".to_string(), "const char *".to_string());
-        type_map.insert("float".to_string(), "double".to_string());
+        // type_map.insert("float".to_string(), "double".to_string());
         type_map.insert("double".to_string(), "double".to_string());
 
         let mut interface_callbacks: HashMap<String, Vec<CallbackStruct>> = HashMap::new();
@@ -375,15 +496,47 @@ impl Generator {
         }
     }
 
-    fn resolve_type<'a>(&'a self, t: &'a str) -> &'a str {
-        let mut current = t;
-        while let Some(resolved) = self.type_map.get(current) {
-            if resolved == current {
+    fn resolve_type<'a>(&'a self, t: &'a str) -> CppType<'a> {
+        if t.ends_with("]") {
+            let start_bracket = t.rfind('[').expect("Malformed array type");
+            let size = t[start_bracket + 1..t.len() - 1]
+                .parse::<usize>()
+                .expect("Malformed size");
+            let (ttype, is_const) = if t.starts_with("const ") {
+                (t["const ".len()..start_bracket].trim(), true)
+            } else {
+                (t[..start_bracket].trim(), false)
+            };
+            return CppType::Array {
+                ttype: self.resolve_base_type(ttype),
+                size,
+                is_const,
+            };
+        }
+
+        if t.ends_with("*") {
+            let (ttype, is_const) = if t.starts_with("const ") {
+                (t["const ".len()..t.len() - 1].trim(), true)
+            } else {
+                (t[..t.len() - 1].trim(), false)
+            };
+            return CppType::Pointer {
+                ttype: self.resolve_base_type(ttype),
+                is_const,
+            };
+        }
+
+        CppType::Normal(self.resolve_base_type(t))
+    }
+
+    fn resolve_base_type<'a>(&'a self, mut t: &'a str) -> &'a str {
+        while let Some(resolved) = self.type_map.get(t) {
+            if *resolved == t {
                 break;
             }
-            current = resolved;
+            t = resolved;
         }
-        current
+        t
     }
 
     fn generate(&self) {
@@ -431,6 +584,8 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices");
         // Weird API and no explanation or reference
         method_blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails");
+        // Needs support for out_array_count and array_count at the same time, which is not currently supported
+        method_blocklist.insert("SteamAPI_ISteamUser_GetVoice");
 
         for interface in &self.api.interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -501,32 +656,41 @@ impl Generator {
         let resolved = self.resolve_type(ftype);
 
         let push = match resolved {
-            "double" => {
-                format!("lua_pushnumber(L, {});", value_accessor)
-            }
-            "bool" => {
-                format!("lua_pushboolean(L, {});", value_accessor)
-            }
-            "int" => {
-                format!("lua_pushinteger(L, {});", value_accessor)
-            }
-            "const char *" => {
-                format!("lua_pushstring(L, {});", value_accessor)
-            }
-            "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
-                if ftype == "CSteamID" {
-                    format!(
-                        "luasteam::pushuint64(L, {}.ConvertToUint64());",
-                        value_accessor
-                    )
-                } else if ftype == "CGameID" {
-                    format!("luasteam::pushuint64(L, {}.ToUint64());", value_accessor)
-                } else {
-                    format!("luasteam::pushuint64(L, {});", value_accessor)
+            CppType::Normal(s) => match s {
+                "double" => {
+                    format!("lua_pushnumber(L, {});", value_accessor)
                 }
+                "bool" => {
+                    format!("lua_pushboolean(L, {});", value_accessor)
+                }
+                "int" | "unsigned char" => {
+                    format!("lua_pushinteger(L, {});", value_accessor)
+                }
+                "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
+                    if ftype == "CSteamID" {
+                        format!(
+                            "luasteam::pushuint64(L, {}.ConvertToUint64());",
+                            value_accessor
+                        )
+                    } else if ftype == "CGameID" {
+                        format!("luasteam::pushuint64(L, {}.ToUint64());", value_accessor)
+                    } else {
+                        format!("luasteam::pushuint64(L, {});", value_accessor)
+                    }
+                }
+                _ => {
+                    println!("Unsupported field push type: {}", ftype);
+                    format!("// Skip unsupported type: {}", ftype)
+                }
+            },
+            _ if resolved.is_buffer() => {
+                format!(
+                    "lua_pushstring(L, reinterpret_cast<const char*>({}));",
+                    value_accessor
+                )
             }
             _ => {
-                println!("Unsupported field push type: {}", ftype);
+                println!("Unsupported field push type: {} {:?}", ftype, resolved);
                 format!("// Skip unsupported type: {}", ftype)
             }
         };
@@ -786,160 +950,189 @@ impl Generator {
             lua_method_name
         ));
 
-        let mut on_pointers = false;
         // params used to call the function in C
         let mut param_names = Vec::new();
-        // Pointer params that are returned as output
-        let mut pointer_params = Vec::new();
-        let mut string_count_to_ignore = None;
+        // Pointer params that are returned as output: (param_info, custom_push_code)
+        let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
+        let mut sz_param_to_ignore = None;
 
         let mut i = 0;
         let mut lua_idx = 1;
         while i < method.params.len() {
             let param = &method.params[i];
-            let is_pointer = Self::is_non_const_pointer(&param.paramtype);
-            if Some(&param.paramname) == string_count_to_ignore.as_ref() {
+            let resolved = self.resolve_type(&param.paramtype);
+            use CppType::*;
+            if resolved.is_double_pointer() {
+                println!(
+                    "Unsupported double pointer parameter '{}' of type '{}'",
+                    param.paramname, param.paramtype
+                );
+                stats.unsupported_types.insert(param.paramtype.clone());
+                return None;
+            }
+
+            if Some(&param.paramname) == sz_param_to_ignore.as_ref() {
                 // This parameter is just the size for a previous string array, skip it
-                string_count_to_ignore = None;
-                if is_pointer {
-                    // It is a value returned as well as the size passed in.
-                    pointer_params.push((false, param));
-                    param_names.push(format!("&{}", param.paramname.clone()));
-                } else {
-                    param_names.push(param.paramname.clone());
+                sz_param_to_ignore = None;
+                match resolved {
+                    CppType::Normal(_) => {
+                        param_names.push(param.paramname.clone());
+                    }
+                    CppType::Pointer { .. } => {
+                        // It is a value returned as well as the size passed in.
+                        pointer_params.push((param, false));
+                        param_names.push(format!("&{}", param.paramname.clone()));
+                    }
+                    _ => unreachable!("No array sizes"),
                 }
                 i += 1;
                 continue;
             }
-            on_pointers |= is_pointer;
-            if !on_pointers {
-                if string_count_to_ignore.is_some() {
-                    dbg!(&method.params);
-                    println!(
+
+            if sz_param_to_ignore.is_some() && !matches!(resolved, CppType::Pointer { .. }) {
+                dbg!(&method.params);
+                println!(
                         "Unsupported parameter order: param '{}' comes after a param with out_string_count but is not the count param",
                         param.paramname
                     );
-                    return None;
-                }
-                let resolved = self.resolve_type(&param.paramtype);
-                param_names.push(param.paramname.clone());
+                return None;
+            }
 
-                match resolved {
-                    "char" => {
+            match resolved {
+                Normal("char") => {
+                    s.push_str(&format!(
+                        "    char {} = luaL_checkstring(L, {})[0];\n",
+                        param.paramname, lua_idx
+                    ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                Normal("double") => {
+                    s.push_str(&format!(
+                        "    {} {} = luaL_checknumber(L, {});\n",
+                        param.paramtype, param.paramname, lua_idx
+                    ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                Normal("int") => {
+                    s.push_str(&format!(
+                        "    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n",
+                        param.paramtype, param.paramname, param.paramtype, lua_idx
+                    ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                Normal("bool") => {
+                    s.push_str(&format!(
+                        "    bool {} = lua_toboolean(L, {});\n",
+                        param.paramname, lua_idx
+                    ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                _ if resolved.is_buffer() && resolved.is_const() => {
+                    if method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
+                        && param.paramname == "pDataToInclude"
+                    {
+                        // Special case, it is missing the const
                         s.push_str(&format!(
-                            "    char {} = luaL_checkstring(L, {})[0];\n",
+                            "    char *{} = const_cast<char*>(luaL_checkstring(L, {}));\n",
                             param.paramname, lua_idx
                         ));
-                    }
-                    "double" => {
-                        s.push_str(&format!(
-                            "    {} {} = luaL_checknumber(L, {});\n",
-                            param.paramtype, param.paramname, lua_idx
-                        ));
-                    }
-                    "int" => {
-                        s.push_str(&format!(
-                            "    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n",
-                            param.paramtype, param.paramname, param.paramtype, lua_idx
-                        ));
-                    }
-                    "bool" => {
-                        s.push_str(&format!(
-                            "    bool {} = lua_toboolean(L, {});\n",
-                            param.paramname, lua_idx
-                        ));
-                    }
-                    "const char *" => {
+                    } else {
                         s.push_str(&format!(
                             "    const char *{} = luaL_checkstring(L, {});\n",
                             param.paramname, lua_idx
                         ));
                     }
-                    "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
-                        let param_type = param
-                            .paramtype
-                            .replace("const ", "")
-                            .replace(" &", "")
-                            .replace("class ", "");
-                        if param_type == "CSteamID" || param_type == "CGameID" {
-                            s.push_str(&format!(
-                                "    {} {}(luasteam::checkuint64(L, {}));\n",
-                                param_type, param.paramname, lua_idx
-                            ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                Normal("uint64")
+                | Normal("unsigned long long")
+                | Normal("CSteamID")
+                | Normal("CGameID") => {
+                    s.push_str(&format!(
+                        "    {} {}(luasteam::checkuint64(L, {}));\n",
+                        param.paramtype, param.paramname, lua_idx
+                    ));
+                    param_names.push(param.paramname.clone());
+                    lua_idx += 1;
+                }
+                Normal(_) => {
+                    // Skip methods with unknown types for now
+                    println!("Unsupported param type: {}", param.paramtype);
+                    stats.unsupported_types.insert(param.paramtype.clone());
+                    return None;
+                }
+                CppType::Array { .. } => {
+                    unreachable!()
+                }
+                Pointer {
+                    ttype,
+                    is_const: false,
+                } => {
+                    if let Some(size_param) = param.array_size_param() {
+                        // Assuming it is the next non array parameter (because of lua_idx)
+                        // but sometimes it works for two arrays like in GetSupportedGameVersionData (so we store it in sz_param_to_ignore)
+                        if sz_param_to_ignore.is_some() {
+                            assert!(sz_param_to_ignore.as_ref().unwrap() == size_param);
                         } else {
-                            s.push_str(&format!(
-                                "    {} {} = luasteam::checkuint64(L, {});\n",
-                                param.paramtype, param.paramname, lua_idx
-                            ));
+                            let p = method.params.iter().find(|p| p.paramname == size_param);
+                            if let Some(p) = p {
+                                sz_param_to_ignore = Some(size_param.to_string());
+                                s.push_str(&format!(
+                                    "    {} {} = luaL_checkint(L, {});\n",
+                                    p.paramtype, size_param, lua_idx
+                                ));
+                                lua_idx += 1;
+                            } else {
+                                println!(
+                                    "Unsupported size as constant: {} {}",
+                                    size_param, param.paramname
+                                );
+                                return None;
+                            }
                         }
-                    }
-                    _ => {
-                        // Skip methods with unknown types for now
-                        println!("Unsupported param type: {}", param.paramtype);
-                        stats.unsupported_types.insert(param.paramtype.clone());
-                        return None;
+                        s.push_str(&format!(
+                            "    std::vector<{}> {}({});\n",
+                            if ttype != "void" {
+                                ttype
+                            } else {
+                                "unsigned char"
+                            },
+                            param.paramname,
+                            size_param
+                        ));
+                        param_names.push(format!("{}.data()", param.paramname));
+                        pointer_params.push((param, true));
+                    } else {
+                        // Create a default variable with that name and type
+                        s.push_str(&format!(
+                            "    {} {};",
+                            param
+                                .paramtype
+                                .strip_suffix(" *")
+                                .expect("Malformed pointer type"),
+                            param.paramname
+                        ));
+                        param_names.push(format!("&{}", param.paramname));
+                        pointer_params.push((param, false));
                     }
                 }
-                lua_idx += 1;
-            } else {
-                let base_type = Self::extract_pointer_base_type(&param.paramtype);
-                if base_type == "void" {
+                Pointer { is_const: true, .. } => {
                     println!(
-                        "Unsupported pointer parameter with void base type: {} {}",
+                        "Unsupported const non-buffer pointer pasrameter: {} {}",
                         param.paramtype, param.paramname
                     );
                     stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
                 }
-                if let Some(count_name) = &param.out_string_count {
-                    // Assuming it is the next non array parameter (because of lua_idx)
-                    // but sometimes it works for two arrays like in GetSupportedGameVersionData (so we store it in string_count_to_ignore)
-                    if string_count_to_ignore.is_some() {
-                        assert!(string_count_to_ignore.as_ref().unwrap() == count_name);
-                    } else {
-                        string_count_to_ignore = Some(count_name.to_string());
-                        let p = method.params[i + 1..]
-                            .iter()
-                            .find(|p| &p.paramname == count_name)
-                            .expect("Count param not found");
-                        s.push_str(&format!(
-                            "    {} {} = luaL_checkint(L, {});\n",
-                            p.paramtype, count_name, lua_idx
-                        ));
-                        lua_idx += 1;
-                    }
-                    s.push_str(&format!(
-                        "    std::vector<{}> {}({});\n",
-                        base_type, param.paramname, count_name
-                    ));
-                    param_names.push(format!("{}.data()", param.paramname));
-                    pointer_params.push((true, param));
-                } else if let Some(count_name) = param
-                    .out_array_count
-                    .as_deref()
-                    .or(param.array_count.as_deref())
-                    .or_else(|| {
-                        param
-                            .out_array_call
-                            .as_deref()
-                            .map(|s| s.split_once(',').expect("out_array_call must have comma").0)
-                    })
-                {
-                    println!(
-                        "Unsupported out array parameter: {} {} with count {} (out_array_count is not supported yet)",
-                        param.paramtype, param.paramname, count_name
-                    );
-                    return None;
-                } else {
-                    // Create a default variable with that name and type
-                    s.push_str(&format!("    {} {};", base_type, param.paramname));
-                    param_names.push(format!("&{}", param.paramname));
-                    pointer_params.push((false, param));
-                }
             }
             i += 1;
         }
-        assert!(string_count_to_ignore.is_none());
+        assert!(sz_param_to_ignore.is_none());
 
         let call = format!(
             "{}->{}({})",
@@ -954,7 +1147,8 @@ impl Generator {
         if method.returntype == "void" {
             s.push_str(&format!("    {};\n", call));
         } else {
-            let (ok, push) = self.generate_push(&method.returntype, &call);
+            s.push_str(&format!("    {} __ret = {};\n", method.returntype, call));
+            let (ok, push) = self.generate_push(&method.returntype, "__ret");
             if !ok {
                 // Skip methods with unknown return types
                 stats.unsupported_types.insert(method.returntype.clone());
@@ -965,27 +1159,55 @@ impl Generator {
         }
 
         // Push pointer output values onto stack
-        for (is_array, param) in pointer_params {
-            let base_type = Self::extract_pointer_base_type(&param.paramtype);
+        for (param, is_array) in pointer_params {
+            let resolved = self.resolve_type(&param.paramtype);
             if is_array {
-                if base_type == "char" {
-                    // A string with variable size
-                    s.push_str(&format!(
-                        "    lua_pushstring(L, {}.data());\n",
-                        param.paramname
-                    ));
+                if resolved.is_buffer() {
+                    if matches!(resolved, CppType::Pointer { ttype: "char", .. }) {
+                        // A string with variable size
+                        s.push_str(&format!(
+                            "    lua_pushstring(L, reinterpret_cast<const char*>({}.data()));\n",
+                            param.paramname
+                        ));
+                    } else {
+                        let size = if method.methodname_flat
+                            == "SteamAPI_ISteamRemoteStorage_FileReadAsyncComplete"
+                            || method.methodname_flat == "SteamAPI_ISteamRemoteStorage_UGCRead"
+                        {
+                            param.out_array_count.as_deref().unwrap()
+                        } else if method.methodname_flat == "SteamAPI_ISteamRemoteStorage_FileRead"
+                        {
+                            "__ret"
+                        } else {
+                            println!(
+                                "Unsupported void* pointer parameter '{}' in method '{}', cannot determine size",
+                                param.paramname, method.methodname
+                            );
+                            return None;
+                        };
+                        // A buffer with fixed size
+                        s.push_str(&format!(
+                            "    lua_pushlstring(L, reinterpret_cast<const char*>({}.data()), {});\n",
+                            param.paramname, size
+                        ));
+                    }
                 } else {
                     // Not sure about the size, will it always be the one you sent?
-                    // Also we need to deal with void*, which should probably be treated as bytes.
-                    println!("Unsupported pointer base type in array push: {}", base_type);
-                    stats.unsupported_types.insert(base_type.clone());
+                    println!(
+                        "Unsupported pointer base type in array push: {}",
+                        param.paramtype
+                    );
+                    stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
                 }
             } else {
-                let (ok, push) = self.generate_push(base_type.as_str(), &param.paramname);
+                let (ok, push) = self.generate_push(
+                    param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
+                    &param.paramname,
+                );
                 if !ok {
-                    println!("Unsupported pointer base type in push: {}", base_type);
-                    stats.unsupported_types.insert(base_type.clone());
+                    println!("Unsupported pointer base type in push: {}", param.paramtype);
+                    stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
                 }
                 s.push_str(&format!("    {}\n", push));

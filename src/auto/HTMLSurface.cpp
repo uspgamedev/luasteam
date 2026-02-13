@@ -62,7 +62,7 @@ void CallbackListener::OnHTML_NeedsPaint(HTML_NeedsPaint_t *data) {
         lua_createtable(L, 0, 12);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pBGRA);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pBGRA));
         lua_setfield(L, -2, "pBGRA");
         lua_pushinteger(L, data->unWide);
         lua_setfield(L, -2, "unWide");
@@ -80,8 +80,7 @@ void CallbackListener::OnHTML_NeedsPaint(HTML_NeedsPaint_t *data) {
         lua_setfield(L, -2, "unScrollX");
         lua_pushinteger(L, data->unScrollY);
         lua_setfield(L, -2, "unScrollY");
-        lua_pushnumber(L, data->flPageScale);
-        lua_setfield(L, -2, "flPageScale");
+        // Skip unsupported type: float
         lua_pushinteger(L, data->unPageSerial);
         lua_setfield(L, -2, "unPageSerial");
         lua_call(L, 1, 0);
@@ -101,11 +100,11 @@ void CallbackListener::OnHTML_StartRequest(HTML_StartRequest_t *data) {
         lua_createtable(L, 0, 5);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
-        lua_pushstring(L, data->pchTarget);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchTarget));
         lua_setfield(L, -2, "pchTarget");
-        lua_pushstring(L, data->pchPostData);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchPostData));
         lua_setfield(L, -2, "pchPostData");
         lua_pushboolean(L, data->bIsRedirect);
         lua_setfield(L, -2, "bIsRedirect");
@@ -143,13 +142,13 @@ void CallbackListener::OnHTML_URLChanged(HTML_URLChanged_t *data) {
         lua_createtable(L, 0, 6);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
-        lua_pushstring(L, data->pchPostData);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchPostData));
         lua_setfield(L, -2, "pchPostData");
         lua_pushboolean(L, data->bIsRedirect);
         lua_setfield(L, -2, "bIsRedirect");
-        lua_pushstring(L, data->pchPageTitle);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchPageTitle));
         lua_setfield(L, -2, "pchPageTitle");
         lua_pushboolean(L, data->bNewNavigation);
         lua_setfield(L, -2, "bNewNavigation");
@@ -170,9 +169,9 @@ void CallbackListener::OnHTML_FinishedRequest(HTML_FinishedRequest_t *data) {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
-        lua_pushstring(L, data->pchPageTitle);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchPageTitle));
         lua_setfield(L, -2, "pchPageTitle");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -191,7 +190,7 @@ void CallbackListener::OnHTML_OpenLinkInNewTab(HTML_OpenLinkInNewTab_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -210,7 +209,7 @@ void CallbackListener::OnHTML_ChangedTitle(HTML_ChangedTitle_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchTitle);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchTitle));
         lua_setfield(L, -2, "pchTitle");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -275,8 +274,7 @@ void CallbackListener::OnHTML_HorizontalScroll(HTML_HorizontalScroll_t *data) {
         lua_setfield(L, -2, "unScrollMax");
         lua_pushinteger(L, data->unScrollCurrent);
         lua_setfield(L, -2, "unScrollCurrent");
-        lua_pushnumber(L, data->flPageScale);
-        lua_setfield(L, -2, "flPageScale");
+        // Skip unsupported type: float
         lua_pushboolean(L, data->bVisible);
         lua_setfield(L, -2, "bVisible");
         lua_pushinteger(L, data->unPageSize);
@@ -302,8 +300,7 @@ void CallbackListener::OnHTML_VerticalScroll(HTML_VerticalScroll_t *data) {
         lua_setfield(L, -2, "unScrollMax");
         lua_pushinteger(L, data->unScrollCurrent);
         lua_setfield(L, -2, "unScrollCurrent");
-        lua_pushnumber(L, data->flPageScale);
-        lua_setfield(L, -2, "flPageScale");
+        // Skip unsupported type: float
         lua_pushboolean(L, data->bVisible);
         lua_setfield(L, -2, "bVisible");
         lua_pushinteger(L, data->unPageSize);
@@ -329,7 +326,7 @@ void CallbackListener::OnHTML_LinkAtPosition(HTML_LinkAtPosition_t *data) {
         lua_setfield(L, -2, "x");
         lua_pushinteger(L, data->y);
         lua_setfield(L, -2, "y");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
         lua_pushboolean(L, data->bInput);
         lua_setfield(L, -2, "bInput");
@@ -352,7 +349,7 @@ void CallbackListener::OnHTML_JSAlert(HTML_JSAlert_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchMessage);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchMessage));
         lua_setfield(L, -2, "pchMessage");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -371,7 +368,7 @@ void CallbackListener::OnHTML_JSConfirm(HTML_JSConfirm_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchMessage);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchMessage));
         lua_setfield(L, -2, "pchMessage");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -390,9 +387,9 @@ void CallbackListener::OnHTML_FileOpenDialog(HTML_FileOpenDialog_t *data) {
         lua_createtable(L, 0, 3);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchTitle);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchTitle));
         lua_setfield(L, -2, "pchTitle");
-        lua_pushstring(L, data->pchInitialFile);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchInitialFile));
         lua_setfield(L, -2, "pchInitialFile");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -411,7 +408,7 @@ void CallbackListener::OnHTML_NewWindow(HTML_NewWindow_t *data) {
         lua_createtable(L, 0, 7);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchURL);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchURL));
         lua_setfield(L, -2, "pchURL");
         lua_pushinteger(L, data->unX);
         lua_setfield(L, -2, "unX");
@@ -459,7 +456,7 @@ void CallbackListener::OnHTML_StatusText(HTML_StatusText_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchMsg);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchMsg));
         lua_setfield(L, -2, "pchMsg");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -478,7 +475,7 @@ void CallbackListener::OnHTML_ShowToolTip(HTML_ShowToolTip_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchMsg);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchMsg));
         lua_setfield(L, -2, "pchMsg");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -497,7 +494,7 @@ void CallbackListener::OnHTML_UpdateToolTip(HTML_UpdateToolTip_t *data) {
         lua_createtable(L, 0, 2);
         lua_pushinteger(L, data->unBrowserHandle);
         lua_setfield(L, -2, "unBrowserHandle");
-        lua_pushstring(L, data->pchMsg);
+        lua_pushstring(L, reinterpret_cast<const char*>(data->pchMsg));
         lua_setfield(L, -2, "pchMsg");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
@@ -555,13 +552,15 @@ void shutdown_HTMLSurface_auto(lua_State *L) {
 
 // bool Init();
 EXTERN int luasteam_HTMLSurface_Init(lua_State *L) {
-    lua_pushboolean(L, SteamHTMLSurface()->Init());
+    bool __ret = SteamHTMLSurface()->Init();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool Shutdown();
 EXTERN int luasteam_HTMLSurface_Shutdown(lua_State *L) {
-    lua_pushboolean(L, SteamHTMLSurface()->Shutdown());
+    bool __ret = SteamHTMLSurface()->Shutdown();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -569,7 +568,8 @@ EXTERN int luasteam_HTMLSurface_Shutdown(lua_State *L) {
 EXTERN int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
     const char *pchUserAgent = luaL_checkstring(L, 1);
     const char *pchUserCSS = luaL_checkstring(L, 2);
-    luasteam::pushuint64(L, SteamHTMLSurface()->CreateBrowser(pchUserAgent, pchUserCSS));
+    SteamAPICall_t __ret = SteamHTMLSurface()->CreateBrowser(pchUserAgent, pchUserCSS);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
@@ -744,29 +744,11 @@ EXTERN int luasteam_HTMLSurface_SetCookie(lua_State *L) {
     return 0;
 }
 
-// void SetPageScaleFactor(HHTMLBrowser unBrowserHandle, float flZoom, int nPointX, int nPointY);
-EXTERN int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
-    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-    float flZoom = luaL_checknumber(L, 2);
-    int nPointX = static_cast<int>(luaL_checkint(L, 3));
-    int nPointY = static_cast<int>(luaL_checkint(L, 4));
-    SteamHTMLSurface()->SetPageScaleFactor(unBrowserHandle, flZoom, nPointX, nPointY);
-    return 0;
-}
-
 // void SetBackgroundMode(HHTMLBrowser unBrowserHandle, bool bBackgroundMode);
 EXTERN int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
     HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
     bool bBackgroundMode = lua_toboolean(L, 2);
     SteamHTMLSurface()->SetBackgroundMode(unBrowserHandle, bBackgroundMode);
-    return 0;
-}
-
-// void SetDPIScalingFactor(HHTMLBrowser unBrowserHandle, float flDPIScaling);
-EXTERN int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
-    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-    float flDPIScaling = luaL_checknumber(L, 2);
-    SteamHTMLSurface()->SetDPIScalingFactor(unBrowserHandle, flDPIScaling);
     return 0;
 }
 
@@ -818,16 +800,14 @@ void register_HTMLSurface_auto(lua_State *L) {
     add_func(L, "StopFind", luasteam_HTMLSurface_StopFind);
     add_func(L, "GetLinkAtPosition", luasteam_HTMLSurface_GetLinkAtPosition);
     add_func(L, "SetCookie", luasteam_HTMLSurface_SetCookie);
-    add_func(L, "SetPageScaleFactor", luasteam_HTMLSurface_SetPageScaleFactor);
     add_func(L, "SetBackgroundMode", luasteam_HTMLSurface_SetBackgroundMode);
-    add_func(L, "SetDPIScalingFactor", luasteam_HTMLSurface_SetDPIScalingFactor);
     add_func(L, "OpenDeveloperTools", luasteam_HTMLSurface_OpenDeveloperTools);
     add_func(L, "AllowStartRequest", luasteam_HTMLSurface_AllowStartRequest);
     add_func(L, "JSDialogResponse", luasteam_HTMLSurface_JSDialogResponse);
 }
 
 void add_HTMLSurface_auto(lua_State *L) {
-    lua_createtable(L, 0, 30);
+    lua_createtable(L, 0, 28);
     register_HTMLSurface_auto(L);
     lua_pushvalue(L, -1);
     HTMLSurface_ref = luaL_ref(L, LUA_REGISTRYINDEX);

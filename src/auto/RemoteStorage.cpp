@@ -49,7 +49,8 @@ void CallbackListener::OnRemoteStorageFileShareResult(RemoteStorageFileShareResu
         lua_setfield(L, -2, "m_eResult");
         luasteam::pushuint64(L, data->m_hFile);
         lua_setfield(L, -2, "m_hFile");
-        // Skip unsupported type: char [260]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchFilename));
+        lua_setfield(L, -2, "m_rgchFilename");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -217,7 +218,8 @@ void CallbackListener::OnRemoteStorageDownloadUGCResult(RemoteStorageDownloadUGC
         lua_setfield(L, -2, "m_nAppID");
         lua_pushinteger(L, data->m_nSizeInBytes);
         lua_setfield(L, -2, "m_nSizeInBytes");
-        // Skip unsupported type: char [260]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_pchFileName));
+        lua_setfield(L, -2, "m_pchFileName");
         luasteam::pushuint64(L, data->m_ulSteamIDOwner);
         lua_setfield(L, -2, "m_ulSteamIDOwner");
         lua_call(L, 1, 0);
@@ -243,8 +245,10 @@ void CallbackListener::OnRemoteStorageGetPublishedFileDetailsResult(RemoteStorag
         lua_setfield(L, -2, "m_nCreatorAppID");
         lua_pushinteger(L, data->m_nConsumerAppID);
         lua_setfield(L, -2, "m_nConsumerAppID");
-        // Skip unsupported type: char [129]
-        // Skip unsupported type: char [8000]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchTitle));
+        lua_setfield(L, -2, "m_rgchTitle");
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchDescription));
+        lua_setfield(L, -2, "m_rgchDescription");
         luasteam::pushuint64(L, data->m_hFile);
         lua_setfield(L, -2, "m_hFile");
         luasteam::pushuint64(L, data->m_hPreviewFile);
@@ -259,15 +263,18 @@ void CallbackListener::OnRemoteStorageGetPublishedFileDetailsResult(RemoteStorag
         lua_setfield(L, -2, "m_eVisibility");
         lua_pushboolean(L, data->m_bBanned);
         lua_setfield(L, -2, "m_bBanned");
-        // Skip unsupported type: char [1025]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchTags));
+        lua_setfield(L, -2, "m_rgchTags");
         lua_pushboolean(L, data->m_bTagsTruncated);
         lua_setfield(L, -2, "m_bTagsTruncated");
-        // Skip unsupported type: char [260]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_pchFileName));
+        lua_setfield(L, -2, "m_pchFileName");
         lua_pushinteger(L, data->m_nFileSize);
         lua_setfield(L, -2, "m_nFileSize");
         lua_pushinteger(L, data->m_nPreviewFileSize);
         lua_setfield(L, -2, "m_nPreviewFileSize");
-        // Skip unsupported type: char [256]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchURL));
+        lua_setfield(L, -2, "m_rgchURL");
         lua_pushinteger(L, data->m_eFileType);
         lua_setfield(L, -2, "m_eFileType");
         lua_pushboolean(L, data->m_bAcceptedForUse);
@@ -324,8 +331,7 @@ void CallbackListener::OnRemoteStorageGetPublishedItemVoteDetailsResult(RemoteSt
         lua_setfield(L, -2, "m_nVotesAgainst");
         lua_pushinteger(L, data->m_nReports);
         lua_setfield(L, -2, "m_nReports");
-        lua_pushnumber(L, data->m_fScore);
-        lua_setfield(L, -2, "m_fScore");
+        // Skip unsupported type: float
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -604,33 +610,79 @@ void shutdown_RemoteStorage_auto(lua_State *L) {
 }
 
 
+// bool FileWrite(const char * pchFile, const void * pvData, int32 cubData);
+EXTERN int luasteam_RemoteStorage_FileWrite(lua_State *L) {
+    const char *pchFile = luaL_checkstring(L, 1);
+    const char *pvData = luaL_checkstring(L, 2);
+    int32 cubData = static_cast<int32>(luaL_checkint(L, 3));
+    bool __ret = SteamRemoteStorage()->FileWrite(pchFile, pvData, cubData);
+    lua_pushboolean(L, __ret);
+    return 1;
+}
+
+// int32 FileRead(const char * pchFile, void * pvData, int32 cubDataToRead);
+EXTERN int luasteam_RemoteStorage_FileRead(lua_State *L) {
+    const char *pchFile = luaL_checkstring(L, 1);
+    int32 cubDataToRead = luaL_checkint(L, 2);
+    std::vector<unsigned char> pvData(cubDataToRead);
+    int32 __ret = SteamRemoteStorage()->FileRead(pchFile, pvData.data(), cubDataToRead);
+    lua_pushinteger(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
+    return 1;
+}
+
+// SteamAPICall_t FileWriteAsync(const char * pchFile, const void * pvData, uint32 cubData);
+EXTERN int luasteam_RemoteStorage_FileWriteAsync(lua_State *L) {
+    const char *pchFile = luaL_checkstring(L, 1);
+    const char *pvData = luaL_checkstring(L, 2);
+    uint32 cubData = static_cast<uint32>(luaL_checkint(L, 3));
+    SteamAPICall_t __ret = SteamRemoteStorage()->FileWriteAsync(pchFile, pvData, cubData);
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
 // SteamAPICall_t FileReadAsync(const char * pchFile, uint32 nOffset, uint32 cubToRead);
 EXTERN int luasteam_RemoteStorage_FileReadAsync(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
     uint32 nOffset = static_cast<uint32>(luaL_checkint(L, 2));
     uint32 cubToRead = static_cast<uint32>(luaL_checkint(L, 3));
-    luasteam::pushuint64(L, SteamRemoteStorage()->FileReadAsync(pchFile, nOffset, cubToRead));
+    SteamAPICall_t __ret = SteamRemoteStorage()->FileReadAsync(pchFile, nOffset, cubToRead);
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
+// bool FileReadAsyncComplete(SteamAPICall_t hReadCall, void * pvBuffer, uint32 cubToRead);
+EXTERN int luasteam_RemoteStorage_FileReadAsyncComplete(lua_State *L) {
+    SteamAPICall_t hReadCall(luasteam::checkuint64(L, 1));
+    uint32 cubToRead = luaL_checkint(L, 2);
+    std::vector<unsigned char> pvBuffer(cubToRead);
+    bool __ret = SteamRemoteStorage()->FileReadAsyncComplete(hReadCall, pvBuffer.data(), cubToRead);
+    lua_pushboolean(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pvBuffer.data()), cubToRead);
     return 1;
 }
 
 // bool FileForget(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FileForget(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FileForget(pchFile));
+    bool __ret = SteamRemoteStorage()->FileForget(pchFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool FileDelete(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FileDelete(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FileDelete(pchFile));
+    bool __ret = SteamRemoteStorage()->FileDelete(pchFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t FileShare(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FileShare(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->FileShare(pchFile));
+    SteamAPICall_t __ret = SteamRemoteStorage()->FileShare(pchFile);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
@@ -638,83 +690,105 @@ EXTERN int luasteam_RemoteStorage_FileShare(lua_State *L) {
 EXTERN int luasteam_RemoteStorage_SetSyncPlatforms(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
     ERemoteStoragePlatform eRemoteStoragePlatform = static_cast<ERemoteStoragePlatform>(luaL_checkint(L, 2));
-    lua_pushboolean(L, SteamRemoteStorage()->SetSyncPlatforms(pchFile, eRemoteStoragePlatform));
+    bool __ret = SteamRemoteStorage()->SetSyncPlatforms(pchFile, eRemoteStoragePlatform);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // UGCFileWriteStreamHandle_t FileWriteStreamOpen(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FileWriteStreamOpen(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->FileWriteStreamOpen(pchFile));
+    UGCFileWriteStreamHandle_t __ret = SteamRemoteStorage()->FileWriteStreamOpen(pchFile);
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
+// bool FileWriteStreamWriteChunk(UGCFileWriteStreamHandle_t writeHandle, const void * pvData, int32 cubData);
+EXTERN int luasteam_RemoteStorage_FileWriteStreamWriteChunk(lua_State *L) {
+    UGCFileWriteStreamHandle_t writeHandle(luasteam::checkuint64(L, 1));
+    const char *pvData = luaL_checkstring(L, 2);
+    int32 cubData = static_cast<int32>(luaL_checkint(L, 3));
+    bool __ret = SteamRemoteStorage()->FileWriteStreamWriteChunk(writeHandle, pvData, cubData);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool FileWriteStreamClose(UGCFileWriteStreamHandle_t writeHandle);
 EXTERN int luasteam_RemoteStorage_FileWriteStreamClose(lua_State *L) {
-    UGCFileWriteStreamHandle_t writeHandle = luasteam::checkuint64(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FileWriteStreamClose(writeHandle));
+    UGCFileWriteStreamHandle_t writeHandle(luasteam::checkuint64(L, 1));
+    bool __ret = SteamRemoteStorage()->FileWriteStreamClose(writeHandle);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool FileWriteStreamCancel(UGCFileWriteStreamHandle_t writeHandle);
 EXTERN int luasteam_RemoteStorage_FileWriteStreamCancel(lua_State *L) {
-    UGCFileWriteStreamHandle_t writeHandle = luasteam::checkuint64(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FileWriteStreamCancel(writeHandle));
+    UGCFileWriteStreamHandle_t writeHandle(luasteam::checkuint64(L, 1));
+    bool __ret = SteamRemoteStorage()->FileWriteStreamCancel(writeHandle);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool FileExists(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FileExists(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FileExists(pchFile));
+    bool __ret = SteamRemoteStorage()->FileExists(pchFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool FilePersisted(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_FilePersisted(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushboolean(L, SteamRemoteStorage()->FilePersisted(pchFile));
+    bool __ret = SteamRemoteStorage()->FilePersisted(pchFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // int32 GetFileSize(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_GetFileSize(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushinteger(L, SteamRemoteStorage()->GetFileSize(pchFile));
+    int32 __ret = SteamRemoteStorage()->GetFileSize(pchFile);
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // int64 GetFileTimestamp(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_GetFileTimestamp(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->GetFileTimestamp(pchFile));
+    int64 __ret = SteamRemoteStorage()->GetFileTimestamp(pchFile);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // ERemoteStoragePlatform GetSyncPlatforms(const char * pchFile);
 EXTERN int luasteam_RemoteStorage_GetSyncPlatforms(lua_State *L) {
     const char *pchFile = luaL_checkstring(L, 1);
-    lua_pushinteger(L, SteamRemoteStorage()->GetSyncPlatforms(pchFile));
+    ERemoteStoragePlatform __ret = SteamRemoteStorage()->GetSyncPlatforms(pchFile);
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // int32 GetFileCount();
 EXTERN int luasteam_RemoteStorage_GetFileCount(lua_State *L) {
-    lua_pushinteger(L, SteamRemoteStorage()->GetFileCount());
+    int32 __ret = SteamRemoteStorage()->GetFileCount();
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // const char * GetFileNameAndSize(int iFile, int32 * pnFileSizeInBytes);
 EXTERN int luasteam_RemoteStorage_GetFileNameAndSize(lua_State *L) {
     int iFile = static_cast<int>(luaL_checkint(L, 1));
-    int32 pnFileSizeInBytes;    lua_pushstring(L, SteamRemoteStorage()->GetFileNameAndSize(iFile, &pnFileSizeInBytes));
+    int32 pnFileSizeInBytes;    const char * __ret = SteamRemoteStorage()->GetFileNameAndSize(iFile, &pnFileSizeInBytes);
+    lua_pushstring(L, reinterpret_cast<const char*>(__ret));
     lua_pushinteger(L, pnFileSizeInBytes);
     return 2;
 }
 
 // bool GetQuota(uint64 * pnTotalBytes, uint64 * puAvailableBytes);
 EXTERN int luasteam_RemoteStorage_GetQuota(lua_State *L) {
-    uint64 pnTotalBytes;    uint64 puAvailableBytes;    lua_pushboolean(L, SteamRemoteStorage()->GetQuota(&pnTotalBytes, &puAvailableBytes));
+    uint64 pnTotalBytes;    uint64 puAvailableBytes;    bool __ret = SteamRemoteStorage()->GetQuota(&pnTotalBytes, &puAvailableBytes);
+    lua_pushboolean(L, __ret);
     luasteam::pushuint64(L, pnTotalBytes);
     luasteam::pushuint64(L, puAvailableBytes);
     return 3;
@@ -722,13 +796,15 @@ EXTERN int luasteam_RemoteStorage_GetQuota(lua_State *L) {
 
 // bool IsCloudEnabledForAccount();
 EXTERN int luasteam_RemoteStorage_IsCloudEnabledForAccount(lua_State *L) {
-    lua_pushboolean(L, SteamRemoteStorage()->IsCloudEnabledForAccount());
+    bool __ret = SteamRemoteStorage()->IsCloudEnabledForAccount();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool IsCloudEnabledForApp();
 EXTERN int luasteam_RemoteStorage_IsCloudEnabledForApp(lua_State *L) {
-    lua_pushboolean(L, SteamRemoteStorage()->IsCloudEnabledForApp());
+    bool __ret = SteamRemoteStorage()->IsCloudEnabledForApp();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -741,166 +817,201 @@ EXTERN int luasteam_RemoteStorage_SetCloudEnabledForApp(lua_State *L) {
 
 // SteamAPICall_t UGCDownload(UGCHandle_t hContent, uint32 unPriority);
 EXTERN int luasteam_RemoteStorage_UGCDownload(lua_State *L) {
-    UGCHandle_t hContent = luasteam::checkuint64(L, 1);
+    UGCHandle_t hContent(luasteam::checkuint64(L, 1));
     uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, SteamRemoteStorage()->UGCDownload(hContent, unPriority));
+    SteamAPICall_t __ret = SteamRemoteStorage()->UGCDownload(hContent, unPriority);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // bool GetUGCDownloadProgress(UGCHandle_t hContent, int32 * pnBytesDownloaded, int32 * pnBytesExpected);
 EXTERN int luasteam_RemoteStorage_GetUGCDownloadProgress(lua_State *L) {
-    UGCHandle_t hContent = luasteam::checkuint64(L, 1);
-    int32 pnBytesDownloaded;    int32 pnBytesExpected;    lua_pushboolean(L, SteamRemoteStorage()->GetUGCDownloadProgress(hContent, &pnBytesDownloaded, &pnBytesExpected));
+    UGCHandle_t hContent(luasteam::checkuint64(L, 1));
+    int32 pnBytesDownloaded;    int32 pnBytesExpected;    bool __ret = SteamRemoteStorage()->GetUGCDownloadProgress(hContent, &pnBytesDownloaded, &pnBytesExpected);
+    lua_pushboolean(L, __ret);
     lua_pushinteger(L, pnBytesDownloaded);
     lua_pushinteger(L, pnBytesExpected);
     return 3;
 }
 
+// int32 UGCRead(UGCHandle_t hContent, void * pvData, int32 cubDataToRead, uint32 cOffset, EUGCReadAction eAction);
+EXTERN int luasteam_RemoteStorage_UGCRead(lua_State *L) {
+    UGCHandle_t hContent(luasteam::checkuint64(L, 1));
+    int32 cubDataToRead = luaL_checkint(L, 2);
+    std::vector<unsigned char> pvData(cubDataToRead);
+    uint32 cOffset = static_cast<uint32>(luaL_checkint(L, 3));
+    EUGCReadAction eAction = static_cast<EUGCReadAction>(luaL_checkint(L, 4));
+    int32 __ret = SteamRemoteStorage()->UGCRead(hContent, pvData.data(), cubDataToRead, cOffset, eAction);
+    lua_pushinteger(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), cubDataToRead);
+    return 1;
+}
+
 // int32 GetCachedUGCCount();
 EXTERN int luasteam_RemoteStorage_GetCachedUGCCount(lua_State *L) {
-    lua_pushinteger(L, SteamRemoteStorage()->GetCachedUGCCount());
+    int32 __ret = SteamRemoteStorage()->GetCachedUGCCount();
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // UGCHandle_t GetCachedUGCHandle(int32 iCachedContent);
 EXTERN int luasteam_RemoteStorage_GetCachedUGCHandle(lua_State *L) {
     int32 iCachedContent = static_cast<int32>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, SteamRemoteStorage()->GetCachedUGCHandle(iCachedContent));
+    UGCHandle_t __ret = SteamRemoteStorage()->GetCachedUGCHandle(iCachedContent);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // PublishedFileUpdateHandle_t CreatePublishedFileUpdateRequest(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_CreatePublishedFileUpdateRequest(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->CreatePublishedFileUpdateRequest(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    PublishedFileUpdateHandle_t __ret = SteamRemoteStorage()->CreatePublishedFileUpdateRequest(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFileFile(PublishedFileUpdateHandle_t updateHandle, const char * pchFile);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFileFile(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     const char *pchFile = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileFile(updateHandle, pchFile));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFileFile(updateHandle, pchFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFilePreviewFile(PublishedFileUpdateHandle_t updateHandle, const char * pchPreviewFile);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFilePreviewFile(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     const char *pchPreviewFile = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFileTitle(PublishedFileUpdateHandle_t updateHandle, const char * pchTitle);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFileTitle(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     const char *pchTitle = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileTitle(updateHandle, pchTitle));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFileTitle(updateHandle, pchTitle);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFileDescription(PublishedFileUpdateHandle_t updateHandle, const char * pchDescription);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFileDescription(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     const char *pchDescription = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileDescription(updateHandle, pchDescription));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFileDescription(updateHandle, pchDescription);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFileVisibility(PublishedFileUpdateHandle_t updateHandle, ERemoteStoragePublishedFileVisibility eVisibility);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFileVisibility(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 2));
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileVisibility(updateHandle, eVisibility));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFileVisibility(updateHandle, eVisibility);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t CommitPublishedFileUpdate(PublishedFileUpdateHandle_t updateHandle);
 EXTERN int luasteam_RemoteStorage_CommitPublishedFileUpdate(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->CommitPublishedFileUpdate(updateHandle));
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->CommitPublishedFileUpdate(updateHandle);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t GetPublishedFileDetails(PublishedFileId_t unPublishedFileId, uint32 unMaxSecondsOld);
 EXTERN int luasteam_RemoteStorage_GetPublishedFileDetails(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
     uint32 unMaxSecondsOld = static_cast<uint32>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, SteamRemoteStorage()->GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld));
+    SteamAPICall_t __ret = SteamRemoteStorage()->GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t DeletePublishedFile(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_DeletePublishedFile(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->DeletePublishedFile(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->DeletePublishedFile(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t EnumerateUserPublishedFiles(uint32 unStartIndex);
 EXTERN int luasteam_RemoteStorage_EnumerateUserPublishedFiles(lua_State *L) {
     uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, SteamRemoteStorage()->EnumerateUserPublishedFiles(unStartIndex));
+    SteamAPICall_t __ret = SteamRemoteStorage()->EnumerateUserPublishedFiles(unStartIndex);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t SubscribePublishedFile(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_SubscribePublishedFile(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->SubscribePublishedFile(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->SubscribePublishedFile(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t EnumerateUserSubscribedFiles(uint32 unStartIndex);
 EXTERN int luasteam_RemoteStorage_EnumerateUserSubscribedFiles(lua_State *L) {
     uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 1));
-    luasteam::pushuint64(L, SteamRemoteStorage()->EnumerateUserSubscribedFiles(unStartIndex));
+    SteamAPICall_t __ret = SteamRemoteStorage()->EnumerateUserSubscribedFiles(unStartIndex);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t UnsubscribePublishedFile(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_UnsubscribePublishedFile(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->UnsubscribePublishedFile(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->UnsubscribePublishedFile(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // bool UpdatePublishedFileSetChangeDescription(PublishedFileUpdateHandle_t updateHandle, const char * pchChangeDescription);
 EXTERN int luasteam_RemoteStorage_UpdatePublishedFileSetChangeDescription(lua_State *L) {
-    PublishedFileUpdateHandle_t updateHandle = luasteam::checkuint64(L, 1);
+    PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
     const char *pchChangeDescription = luaL_checkstring(L, 2);
-    lua_pushboolean(L, SteamRemoteStorage()->UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription));
+    bool __ret = SteamRemoteStorage()->UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t GetPublishedItemVoteDetails(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_GetPublishedItemVoteDetails(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->GetPublishedItemVoteDetails(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->GetPublishedItemVoteDetails(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t UpdateUserPublishedItemVote(PublishedFileId_t unPublishedFileId, bool bVoteUp);
 EXTERN int luasteam_RemoteStorage_UpdateUserPublishedItemVote(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
     bool bVoteUp = lua_toboolean(L, 2);
-    luasteam::pushuint64(L, SteamRemoteStorage()->UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp));
+    SteamAPICall_t __ret = SteamRemoteStorage()->UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t GetUserPublishedItemVoteDetails(PublishedFileId_t unPublishedFileId);
 EXTERN int luasteam_RemoteStorage_GetUserPublishedItemVoteDetails(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
-    luasteam::pushuint64(L, SteamRemoteStorage()->GetUserPublishedItemVoteDetails(unPublishedFileId));
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
+    SteamAPICall_t __ret = SteamRemoteStorage()->GetUserPublishedItemVoteDetails(unPublishedFileId);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t SetUserPublishedFileAction(PublishedFileId_t unPublishedFileId, EWorkshopFileAction eAction);
 EXTERN int luasteam_RemoteStorage_SetUserPublishedFileAction(lua_State *L) {
-    PublishedFileId_t unPublishedFileId = luasteam::checkuint64(L, 1);
+    PublishedFileId_t unPublishedFileId(luasteam::checkuint64(L, 1));
     EWorkshopFileAction eAction = static_cast<EWorkshopFileAction>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, SteamRemoteStorage()->SetUserPublishedFileAction(unPublishedFileId, eAction));
+    SteamAPICall_t __ret = SteamRemoteStorage()->SetUserPublishedFileAction(unPublishedFileId, eAction);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
@@ -908,29 +1019,33 @@ EXTERN int luasteam_RemoteStorage_SetUserPublishedFileAction(lua_State *L) {
 EXTERN int luasteam_RemoteStorage_EnumeratePublishedFilesByUserAction(lua_State *L) {
     EWorkshopFileAction eAction = static_cast<EWorkshopFileAction>(luaL_checkint(L, 1));
     uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
-    luasteam::pushuint64(L, SteamRemoteStorage()->EnumeratePublishedFilesByUserAction(eAction, unStartIndex));
+    SteamAPICall_t __ret = SteamRemoteStorage()->EnumeratePublishedFilesByUserAction(eAction, unStartIndex);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t UGCDownloadToLocation(UGCHandle_t hContent, const char * pchLocation, uint32 unPriority);
 EXTERN int luasteam_RemoteStorage_UGCDownloadToLocation(lua_State *L) {
-    UGCHandle_t hContent = luasteam::checkuint64(L, 1);
+    UGCHandle_t hContent(luasteam::checkuint64(L, 1));
     const char *pchLocation = luaL_checkstring(L, 2);
     uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 3));
-    luasteam::pushuint64(L, SteamRemoteStorage()->UGCDownloadToLocation(hContent, pchLocation, unPriority));
+    SteamAPICall_t __ret = SteamRemoteStorage()->UGCDownloadToLocation(hContent, pchLocation, unPriority);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // int32 GetLocalFileChangeCount();
 EXTERN int luasteam_RemoteStorage_GetLocalFileChangeCount(lua_State *L) {
-    lua_pushinteger(L, SteamRemoteStorage()->GetLocalFileChangeCount());
+    int32 __ret = SteamRemoteStorage()->GetLocalFileChangeCount();
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
 // const char * GetLocalFileChange(int iFile, ERemoteStorageLocalFileChange * pEChangeType, ERemoteStorageFilePathType * pEFilePathType);
 EXTERN int luasteam_RemoteStorage_GetLocalFileChange(lua_State *L) {
     int iFile = static_cast<int>(luaL_checkint(L, 1));
-    ERemoteStorageLocalFileChange pEChangeType;    ERemoteStorageFilePathType pEFilePathType;    lua_pushstring(L, SteamRemoteStorage()->GetLocalFileChange(iFile, &pEChangeType, &pEFilePathType));
+    ERemoteStorageLocalFileChange pEChangeType;    ERemoteStorageFilePathType pEFilePathType;    const char * __ret = SteamRemoteStorage()->GetLocalFileChange(iFile, &pEChangeType, &pEFilePathType);
+    lua_pushstring(L, reinterpret_cast<const char*>(__ret));
     lua_pushinteger(L, pEChangeType);
     lua_pushinteger(L, pEFilePathType);
     return 3;
@@ -938,23 +1053,30 @@ EXTERN int luasteam_RemoteStorage_GetLocalFileChange(lua_State *L) {
 
 // bool BeginFileWriteBatch();
 EXTERN int luasteam_RemoteStorage_BeginFileWriteBatch(lua_State *L) {
-    lua_pushboolean(L, SteamRemoteStorage()->BeginFileWriteBatch());
+    bool __ret = SteamRemoteStorage()->BeginFileWriteBatch();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool EndFileWriteBatch();
 EXTERN int luasteam_RemoteStorage_EndFileWriteBatch(lua_State *L) {
-    lua_pushboolean(L, SteamRemoteStorage()->EndFileWriteBatch());
+    bool __ret = SteamRemoteStorage()->EndFileWriteBatch();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 void register_RemoteStorage_auto(lua_State *L) {
+    add_func(L, "FileWrite", luasteam_RemoteStorage_FileWrite);
+    add_func(L, "FileRead", luasteam_RemoteStorage_FileRead);
+    add_func(L, "FileWriteAsync", luasteam_RemoteStorage_FileWriteAsync);
     add_func(L, "FileReadAsync", luasteam_RemoteStorage_FileReadAsync);
+    add_func(L, "FileReadAsyncComplete", luasteam_RemoteStorage_FileReadAsyncComplete);
     add_func(L, "FileForget", luasteam_RemoteStorage_FileForget);
     add_func(L, "FileDelete", luasteam_RemoteStorage_FileDelete);
     add_func(L, "FileShare", luasteam_RemoteStorage_FileShare);
     add_func(L, "SetSyncPlatforms", luasteam_RemoteStorage_SetSyncPlatforms);
     add_func(L, "FileWriteStreamOpen", luasteam_RemoteStorage_FileWriteStreamOpen);
+    add_func(L, "FileWriteStreamWriteChunk", luasteam_RemoteStorage_FileWriteStreamWriteChunk);
     add_func(L, "FileWriteStreamClose", luasteam_RemoteStorage_FileWriteStreamClose);
     add_func(L, "FileWriteStreamCancel", luasteam_RemoteStorage_FileWriteStreamCancel);
     add_func(L, "FileExists", luasteam_RemoteStorage_FileExists);
@@ -970,6 +1092,7 @@ void register_RemoteStorage_auto(lua_State *L) {
     add_func(L, "SetCloudEnabledForApp", luasteam_RemoteStorage_SetCloudEnabledForApp);
     add_func(L, "UGCDownload", luasteam_RemoteStorage_UGCDownload);
     add_func(L, "GetUGCDownloadProgress", luasteam_RemoteStorage_GetUGCDownloadProgress);
+    add_func(L, "UGCRead", luasteam_RemoteStorage_UGCRead);
     add_func(L, "GetCachedUGCCount", luasteam_RemoteStorage_GetCachedUGCCount);
     add_func(L, "GetCachedUGCHandle", luasteam_RemoteStorage_GetCachedUGCHandle);
     add_func(L, "CreatePublishedFileUpdateRequest", luasteam_RemoteStorage_CreatePublishedFileUpdateRequest);
@@ -999,7 +1122,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 }
 
 void add_RemoteStorage_auto(lua_State *L) {
-    lua_createtable(L, 0, 47);
+    lua_createtable(L, 0, 53);
     register_RemoteStorage_auto(L);
     lua_pushvalue(L, -1);
     RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);

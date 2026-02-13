@@ -41,41 +41,47 @@ void shutdown_ParentalSettings_auto(lua_State *L) {
 
 // bool BIsParentalLockEnabled();
 EXTERN int luasteam_ParentalSettings_BIsParentalLockEnabled(lua_State *L) {
-    lua_pushboolean(L, SteamParentalSettings()->BIsParentalLockEnabled());
+    bool __ret = SteamParentalSettings()->BIsParentalLockEnabled();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsParentalLockLocked();
 EXTERN int luasteam_ParentalSettings_BIsParentalLockLocked(lua_State *L) {
-    lua_pushboolean(L, SteamParentalSettings()->BIsParentalLockLocked());
+    bool __ret = SteamParentalSettings()->BIsParentalLockLocked();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsAppBlocked(AppId_t nAppID);
 EXTERN int luasteam_ParentalSettings_BIsAppBlocked(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamParentalSettings()->BIsAppBlocked(nAppID));
+    bool __ret = SteamParentalSettings()->BIsAppBlocked(nAppID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsAppInBlockList(AppId_t nAppID);
 EXTERN int luasteam_ParentalSettings_BIsAppInBlockList(lua_State *L) {
     AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamParentalSettings()->BIsAppInBlockList(nAppID));
+    bool __ret = SteamParentalSettings()->BIsAppInBlockList(nAppID);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsFeatureBlocked(EParentalFeature eFeature);
 EXTERN int luasteam_ParentalSettings_BIsFeatureBlocked(lua_State *L) {
     EParentalFeature eFeature = static_cast<EParentalFeature>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamParentalSettings()->BIsFeatureBlocked(eFeature));
+    bool __ret = SteamParentalSettings()->BIsFeatureBlocked(eFeature);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BIsFeatureInBlockList(EParentalFeature eFeature);
 EXTERN int luasteam_ParentalSettings_BIsFeatureInBlockList(lua_State *L) {
     EParentalFeature eFeature = static_cast<EParentalFeature>(luaL_checkint(L, 1));
-    lua_pushboolean(L, SteamParentalSettings()->BIsFeatureInBlockList(eFeature));
+    bool __ret = SteamParentalSettings()->BIsFeatureInBlockList(eFeature);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 

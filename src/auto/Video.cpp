@@ -28,7 +28,8 @@ void CallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
         lua_setfield(L, -2, "m_eResult");
         lua_pushinteger(L, data->m_unVideoAppID);
         lua_setfield(L, -2, "m_unVideoAppID");
-        // Skip unsupported type: char [256]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchURL));
+        lua_setfield(L, -2, "m_rgchURL");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -109,7 +110,8 @@ EXTERN int luasteam_Video_GetVideoURL(lua_State *L) {
 
 // bool IsBroadcasting(int * pnNumViewers);
 EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
-    int pnNumViewers;    lua_pushboolean(L, SteamVideo()->IsBroadcasting(&pnNumViewers));
+    int pnNumViewers;    bool __ret = SteamVideo()->IsBroadcasting(&pnNumViewers);
+    lua_pushboolean(L, __ret);
     lua_pushinteger(L, pnNumViewers);
     return 2;
 }

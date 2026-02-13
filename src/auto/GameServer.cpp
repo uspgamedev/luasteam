@@ -129,7 +129,8 @@ void CallbackListener::OnGSClientDeny(GSClientDeny_t *data) {
         lua_setfield(L, -2, "m_SteamID");
         lua_pushinteger(L, data->m_eDenyReason);
         lua_setfield(L, -2, "m_eDenyReason");
-        // Skip unsupported type: char [128]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchOptionalText));
+        lua_setfield(L, -2, "m_rgchOptionalText");
         lua_call(L, 1, 0);
         lua_pop(L, 1);
     }
@@ -166,7 +167,8 @@ void CallbackListener::OnGSClientAchievementStatus(GSClientAchievementStatus_t *
         lua_createtable(L, 0, 3);
         luasteam::pushuint64(L, data->m_SteamID);
         lua_setfield(L, -2, "m_SteamID");
-        // Skip unsupported type: char [128]
+        lua_pushstring(L, reinterpret_cast<const char*>(data->m_pchAchievement));
+        lua_setfield(L, -2, "m_pchAchievement");
         lua_pushboolean(L, data->m_bUnlocked);
         lua_setfield(L, -2, "m_bUnlocked");
         lua_call(L, 1, 0);
@@ -370,25 +372,29 @@ EXTERN int luasteam_GameServer_LogOff(lua_State *L) {
 
 // bool BLoggedOn();
 EXTERN int luasteam_GameServer_BLoggedOn(lua_State *L) {
-    lua_pushboolean(L, SteamGameServer()->BLoggedOn());
+    bool __ret = SteamGameServer()->BLoggedOn();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // bool BSecure();
 EXTERN int luasteam_GameServer_BSecure(lua_State *L) {
-    lua_pushboolean(L, SteamGameServer()->BSecure());
+    bool __ret = SteamGameServer()->BSecure();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // CSteamID GetSteamID();
 EXTERN int luasteam_GameServer_GetSteamID(lua_State *L) {
-    luasteam::pushuint64(L, SteamGameServer()->GetSteamID().ConvertToUint64());
+    CSteamID __ret = SteamGameServer()->GetSteamID();
+    luasteam::pushuint64(L, __ret.ConvertToUint64());
     return 1;
 }
 
 // bool WasRestartRequested();
 EXTERN int luasteam_GameServer_WasRestartRequested(lua_State *L) {
-    lua_pushboolean(L, SteamGameServer()->WasRestartRequested());
+    bool __ret = SteamGameServer()->WasRestartRequested();
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -483,6 +489,16 @@ EXTERN int luasteam_GameServer_SetAdvertiseServerActive(lua_State *L) {
     return 0;
 }
 
+// EBeginAuthSessionResult BeginAuthSession(const void * pAuthTicket, int cbAuthTicket, CSteamID steamID);
+EXTERN int luasteam_GameServer_BeginAuthSession(lua_State *L) {
+    const char *pAuthTicket = luaL_checkstring(L, 1);
+    int cbAuthTicket = static_cast<int>(luaL_checkint(L, 2));
+    CSteamID steamID(luasteam::checkuint64(L, 3));
+    EBeginAuthSessionResult __ret = SteamGameServer()->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
+    lua_pushinteger(L, __ret);
+    return 1;
+}
+
 // void EndAuthSession(CSteamID steamID);
 EXTERN int luasteam_GameServer_EndAuthSession(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
@@ -501,7 +517,8 @@ EXTERN int luasteam_GameServer_CancelAuthTicket(lua_State *L) {
 EXTERN int luasteam_GameServer_UserHasLicenseForApp(lua_State *L) {
     CSteamID steamID(luasteam::checkuint64(L, 1));
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
-    lua_pushinteger(L, SteamGameServer()->UserHasLicenseForApp(steamID, appID));
+    EUserHasLicenseForAppResult __ret = SteamGameServer()->UserHasLicenseForApp(steamID, appID);
+    lua_pushinteger(L, __ret);
     return 1;
 }
 
@@ -509,7 +526,8 @@ EXTERN int luasteam_GameServer_UserHasLicenseForApp(lua_State *L) {
 EXTERN int luasteam_GameServer_RequestUserGroupStatus(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
     CSteamID steamIDGroup(luasteam::checkuint64(L, 2));
-    lua_pushboolean(L, SteamGameServer()->RequestUserGroupStatus(steamIDUser, steamIDGroup));
+    bool __ret = SteamGameServer()->RequestUserGroupStatus(steamIDUser, steamIDGroup);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -521,27 +539,42 @@ EXTERN int luasteam_GameServer_GetGameplayStats(lua_State *L) {
 
 // SteamAPICall_t GetServerReputation();
 EXTERN int luasteam_GameServer_GetServerReputation(lua_State *L) {
-    luasteam::pushuint64(L, SteamGameServer()->GetServerReputation());
+    SteamAPICall_t __ret = SteamGameServer()->GetServerReputation();
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
+// bool HandleIncomingPacket(const void * pData, int cbData, uint32 srcIP, uint16 srcPort);
+EXTERN int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
+    const char *pData = luaL_checkstring(L, 1);
+    int cbData = static_cast<int>(luaL_checkint(L, 2));
+    uint32 srcIP = static_cast<uint32>(luaL_checkint(L, 3));
+    uint16 srcPort = static_cast<uint16>(luaL_checkint(L, 4));
+    bool __ret = SteamGameServer()->HandleIncomingPacket(pData, cbData, srcIP, srcPort);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t AssociateWithClan(CSteamID steamIDClan);
 EXTERN int luasteam_GameServer_AssociateWithClan(lua_State *L) {
     CSteamID steamIDClan(luasteam::checkuint64(L, 1));
-    luasteam::pushuint64(L, SteamGameServer()->AssociateWithClan(steamIDClan));
+    SteamAPICall_t __ret = SteamGameServer()->AssociateWithClan(steamIDClan);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // SteamAPICall_t ComputeNewPlayerCompatibility(CSteamID steamIDNewPlayer);
 EXTERN int luasteam_GameServer_ComputeNewPlayerCompatibility(lua_State *L) {
     CSteamID steamIDNewPlayer(luasteam::checkuint64(L, 1));
-    luasteam::pushuint64(L, SteamGameServer()->ComputeNewPlayerCompatibility(steamIDNewPlayer));
+    SteamAPICall_t __ret = SteamGameServer()->ComputeNewPlayerCompatibility(steamIDNewPlayer);
+    luasteam::pushuint64(L, __ret);
     return 1;
 }
 
 // CSteamID CreateUnauthenticatedUserConnection();
 EXTERN int luasteam_GameServer_CreateUnauthenticatedUserConnection(lua_State *L) {
-    luasteam::pushuint64(L, SteamGameServer()->CreateUnauthenticatedUserConnection().ConvertToUint64());
+    CSteamID __ret = SteamGameServer()->CreateUnauthenticatedUserConnection();
+    luasteam::pushuint64(L, __ret.ConvertToUint64());
     return 1;
 }
 
@@ -550,7 +583,8 @@ EXTERN int luasteam_GameServer_BUpdateUserData(lua_State *L) {
     CSteamID steamIDUser(luasteam::checkuint64(L, 1));
     const char *pchPlayerName = luaL_checkstring(L, 2);
     uint32 uScore = static_cast<uint32>(luaL_checkint(L, 3));
-    lua_pushboolean(L, SteamGameServer()->BUpdateUserData(steamIDUser, pchPlayerName, uScore));
+    bool __ret = SteamGameServer()->BUpdateUserData(steamIDUser, pchPlayerName, uScore);
+    lua_pushboolean(L, __ret);
     return 1;
 }
 
@@ -579,12 +613,14 @@ void register_GameServer_auto(lua_State *L) {
     add_func(L, "SetGameData", luasteam_GameServer_SetGameData);
     add_func(L, "SetRegion", luasteam_GameServer_SetRegion);
     add_func(L, "SetAdvertiseServerActive", luasteam_GameServer_SetAdvertiseServerActive);
+    add_func(L, "BeginAuthSession", luasteam_GameServer_BeginAuthSession);
     add_func(L, "EndAuthSession", luasteam_GameServer_EndAuthSession);
     add_func(L, "CancelAuthTicket", luasteam_GameServer_CancelAuthTicket);
     add_func(L, "UserHasLicenseForApp", luasteam_GameServer_UserHasLicenseForApp);
     add_func(L, "RequestUserGroupStatus", luasteam_GameServer_RequestUserGroupStatus);
     add_func(L, "GetGameplayStats", luasteam_GameServer_GetGameplayStats);
     add_func(L, "GetServerReputation", luasteam_GameServer_GetServerReputation);
+    add_func(L, "HandleIncomingPacket", luasteam_GameServer_HandleIncomingPacket);
     add_func(L, "AssociateWithClan", luasteam_GameServer_AssociateWithClan);
     add_func(L, "ComputeNewPlayerCompatibility", luasteam_GameServer_ComputeNewPlayerCompatibility);
     add_func(L, "CreateUnauthenticatedUserConnection", luasteam_GameServer_CreateUnauthenticatedUserConnection);
@@ -592,7 +628,7 @@ void register_GameServer_auto(lua_State *L) {
 }
 
 void add_GameServer_auto(lua_State *L) {
-    lua_createtable(L, 0, 34);
+    lua_createtable(L, 0, 36);
     register_GameServer_auto(L);
     lua_pushvalue(L, -1);
     GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
