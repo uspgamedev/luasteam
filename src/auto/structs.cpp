@@ -688,7 +688,13 @@ void push_SteamNetConnectionInfo_t(lua_State *L, SteamNetConnectionInfo_t val) {
     lua_setfield(L, -2, "m_szConnectionDescription");
     lua_pushinteger(L, val.m_nFlags);
     lua_setfield(L, -2, "m_nFlags");
-    // Skip unsupported type: uint32 [63]
+        lua_createtable(L, 63, 0);
+    for(int i=0;i<63;i++){
+    lua_pushinteger(L, val.reserved[i]);
+    lua_rawseti(L, -2, i+1);
+    }
+
+    lua_setfield(L, -2, "reserved");
 }
 
 SteamNetworkPingLocation_t check_SteamNetworkPingLocation_t(lua_State *L, int index) {

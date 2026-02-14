@@ -29,7 +29,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     // luasteam::add_networkingUtils(L);
     luasteam::add_gameServer(L);
     luasteam::add_Matchmaking_auto(L);
-    luasteam::add_MatchmakingServers_auto(L);
+    // luasteam::add_MatchmakingServers_auto(L);
     // luasteam::add_Networking_auto(L);
     luasteam::add_Screenshots_auto(L);
     luasteam::add_Music_auto(L);

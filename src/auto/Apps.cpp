@@ -261,6 +261,21 @@ EXTERN int luasteam_Apps_MarkContentCorrupt(lua_State *L) {
     return 1;
 }
 
+// uint32 GetInstalledDepots(AppId_t appID, DepotId_t * pvecDepots, uint32 cMaxDepots);
+EXTERN int luasteam_Apps_GetInstalledDepots(lua_State *L) {
+    AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
+    uint32 cMaxDepots = luaL_checkint(L, 2);
+    std::vector<int> pvecDepots(cMaxDepots);
+    uint32 __ret = SteamApps()->GetInstalledDepots(appID, pvecDepots.data(), cMaxDepots);
+    lua_pushinteger(L, __ret);
+    lua_createtable(L, __ret, 0);
+    for(int i=0;i<__ret;i++){
+    lua_pushinteger(L, pvecDepots[i]);
+    lua_rawseti(L, -2, i+1);
+    }
+    return 1;
+}
+
 // uint32 GetAppInstallDir(AppId_t appID, char * pchFolder, uint32 cchFolderBufferSize);
 EXTERN int luasteam_Apps_GetAppInstallDir(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -411,6 +426,7 @@ void register_Apps_auto(lua_State *L) {
     add_func(L, "RequestAppProofOfPurchaseKey", luasteam_Apps_RequestAppProofOfPurchaseKey);
     add_func(L, "GetCurrentBetaName", luasteam_Apps_GetCurrentBetaName);
     add_func(L, "MarkContentCorrupt", luasteam_Apps_MarkContentCorrupt);
+    add_func(L, "GetInstalledDepots", luasteam_Apps_GetInstalledDepots);
     add_func(L, "GetAppInstallDir", luasteam_Apps_GetAppInstallDir);
     add_func(L, "BIsAppInstalled", luasteam_Apps_BIsAppInstalled);
     add_func(L, "GetAppOwner", luasteam_Apps_GetAppOwner);
@@ -429,7 +445,7 @@ void register_Apps_auto(lua_State *L) {
 }
 
 void add_Apps_auto(lua_State *L) {
-    lua_createtable(L, 0, 32);
+    lua_createtable(L, 0, 33);
     register_Apps_auto(L);
     lua_pushvalue(L, -1);
     Apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);

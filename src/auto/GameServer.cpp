@@ -544,6 +544,13 @@ EXTERN int luasteam_GameServer_GetServerReputation(lua_State *L) {
     return 1;
 }
 
+// SteamIPAddress_t GetPublicIP();
+EXTERN int luasteam_GameServer_GetPublicIP(lua_State *L) {
+    SteamIPAddress_t __ret = SteamGameServer()->GetPublicIP();
+    push_SteamIPAddress_t(L, __ret);
+    return 1;
+}
+
 // bool HandleIncomingPacket(const void * pData, int cbData, uint32 srcIP, uint16 srcPort);
 EXTERN int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
     const char *pData = luaL_checkstring(L, 1);
@@ -553,6 +560,18 @@ EXTERN int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
     bool __ret = SteamGameServer()->HandleIncomingPacket(pData, cbData, srcIP, srcPort);
     lua_pushboolean(L, __ret);
     return 1;
+}
+
+// int GetNextOutgoingPacket(void * pOut, int cbMaxOut, uint32 * pNetAdr, uint16 * pPort);
+EXTERN int luasteam_GameServer_GetNextOutgoingPacket(lua_State *L) {
+    int cbMaxOut = luaL_checkint(L, 1);
+    std::vector<unsigned char> pOut(cbMaxOut);
+    uint32 pNetAdr;    uint16 pPort;    int __ret = SteamGameServer()->GetNextOutgoingPacket(pOut.data(), cbMaxOut, &pNetAdr, &pPort);
+    lua_pushinteger(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pOut.data()), cbMaxOut);
+    lua_pushinteger(L, pNetAdr);
+    lua_pushinteger(L, pPort);
+    return 3;
 }
 
 // SteamAPICall_t AssociateWithClan(CSteamID steamIDClan);
@@ -620,7 +639,9 @@ void register_GameServer_auto(lua_State *L) {
     add_func(L, "RequestUserGroupStatus", luasteam_GameServer_RequestUserGroupStatus);
     add_func(L, "GetGameplayStats", luasteam_GameServer_GetGameplayStats);
     add_func(L, "GetServerReputation", luasteam_GameServer_GetServerReputation);
+    add_func(L, "GetPublicIP", luasteam_GameServer_GetPublicIP);
     add_func(L, "HandleIncomingPacket", luasteam_GameServer_HandleIncomingPacket);
+    add_func(L, "GetNextOutgoingPacket", luasteam_GameServer_GetNextOutgoingPacket);
     add_func(L, "AssociateWithClan", luasteam_GameServer_AssociateWithClan);
     add_func(L, "ComputeNewPlayerCompatibility", luasteam_GameServer_ComputeNewPlayerCompatibility);
     add_func(L, "CreateUnauthenticatedUserConnection", luasteam_GameServer_CreateUnauthenticatedUserConnection);
@@ -628,7 +649,7 @@ void register_GameServer_auto(lua_State *L) {
 }
 
 void add_GameServer_auto(lua_State *L) {
-    lua_createtable(L, 0, 36);
+    lua_createtable(L, 0, 38);
     register_GameServer_auto(L);
     lua_pushvalue(L, -1);
     GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);

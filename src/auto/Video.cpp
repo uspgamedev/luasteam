@@ -123,14 +123,27 @@ EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
     return 0;
 }
 
+// bool GetOPFStringForApp(AppId_t unVideoAppID, char * pchBuffer, int32 * pnBufferSize);
+EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
+    AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
+    int32 * pnBufferSize = luaL_checkint(L, 2);
+    std::vector<char> pchBuffer(pnBufferSize);
+    bool __ret = SteamVideo()->GetOPFStringForApp(unVideoAppID, pchBuffer.data(), &pnBufferSize);
+    lua_pushboolean(L, __ret);
+    lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
+    lua_pushinteger(L, pnBufferSize);
+    return 2;
+}
+
 void register_Video_auto(lua_State *L) {
     add_func(L, "GetVideoURL", luasteam_Video_GetVideoURL);
     add_func(L, "IsBroadcasting", luasteam_Video_IsBroadcasting);
     add_func(L, "GetOPFSettings", luasteam_Video_GetOPFSettings);
+    add_func(L, "GetOPFStringForApp", luasteam_Video_GetOPFStringForApp);
 }
 
 void add_Video_auto(lua_State *L) {
-    lua_createtable(L, 0, 3);
+    lua_createtable(L, 0, 4);
     register_Video_auto(L);
     lua_pushvalue(L, -1);
     Video_ref = luaL_ref(L, LUA_REGISTRYINDEX);

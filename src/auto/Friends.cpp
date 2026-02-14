@@ -365,7 +365,13 @@ void CallbackListener::OnFriendsEnumerateFollowingList(FriendsEnumerateFollowing
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
         lua_setfield(L, -2, "m_eResult");
-        // Skip unsupported type: CSteamID [50]
+            lua_createtable(L, 50, 0);
+    for(int i=0;i<50;i++){
+    luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
+    lua_rawseti(L, -2, i+1);
+    }
+
+        lua_setfield(L, -2, "m_rgSteamID");
         lua_pushinteger(L, data->m_nResultsReturned);
         lua_setfield(L, -2, "m_nResultsReturned");
         lua_pushinteger(L, data->m_nTotalResultCount);
@@ -523,6 +529,15 @@ EXTERN int luasteam_Friends_GetFriendPersonaName(lua_State *L) {
     return 1;
 }
 
+// bool GetFriendGamePlayed(CSteamID steamIDFriend, FriendGameInfo_t * pFriendGameInfo);
+EXTERN int luasteam_Friends_GetFriendGamePlayed(lua_State *L) {
+    CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
+    FriendGameInfo_t pFriendGameInfo;    bool __ret = SteamFriends()->GetFriendGamePlayed(steamIDFriend, &pFriendGameInfo);
+    lua_pushboolean(L, __ret);
+    push_FriendGameInfo_t(L, pFriendGameInfo);
+    return 2;
+}
+
 // const char * GetFriendPersonaNameHistory(CSteamID steamIDFriend, int iPersonaName);
 EXTERN int luasteam_Friends_GetFriendPersonaNameHistory(lua_State *L) {
     CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
@@ -579,6 +594,20 @@ EXTERN int luasteam_Friends_GetFriendsGroupMembersCount(lua_State *L) {
     return 1;
 }
 
+// void GetFriendsGroupMembersList(FriendsGroupID_t friendsGroupID, CSteamID * pOutSteamIDMembers, int nMembersCount);
+EXTERN int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
+    FriendsGroupID_t friendsGroupID = static_cast<FriendsGroupID_t>(luaL_checkint(L, 1));
+    int nMembersCount = luaL_checkint(L, 2);
+    std::vector<CSteamID> pOutSteamIDMembers(nMembersCount);
+    SteamFriends()->GetFriendsGroupMembersList(friendsGroupID, pOutSteamIDMembers.data(), nMembersCount);
+    lua_createtable(L, nMembersCount, 0);
+    for(int i=0;i<nMembersCount;i++){
+    luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
+    lua_rawseti(L, -2, i+1);
+    }
+    return 0;
+}
+
 // bool HasFriend(CSteamID steamIDFriend, int iFriendFlags);
 EXTERN int luasteam_Friends_HasFriend(lua_State *L) {
     CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
@@ -628,6 +657,20 @@ EXTERN int luasteam_Friends_GetClanActivityCounts(lua_State *L) {
     lua_pushinteger(L, pnInGame);
     lua_pushinteger(L, pnChatting);
     return 4;
+}
+
+// SteamAPICall_t DownloadClanActivityCounts(CSteamID * psteamIDClans, int cClansToRequest);
+EXTERN int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
+    int cClansToRequest = luaL_checkint(L, 1);
+    std::vector<CSteamID> psteamIDClans(cClansToRequest);
+    SteamAPICall_t __ret = SteamFriends()->DownloadClanActivityCounts(psteamIDClans.data(), cClansToRequest);
+    luasteam::pushuint64(L, __ret);
+    lua_createtable(L, cClansToRequest, 0);
+    for(int i=0;i<cClansToRequest;i++){
+    luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
+    lua_rawseti(L, -2, i+1);
+    }
+    return 1;
 }
 
 // int GetFriendCountFromSource(CSteamID steamIDSource);
@@ -905,6 +948,20 @@ EXTERN int luasteam_Friends_SendClanChatMessage(lua_State *L) {
     return 1;
 }
 
+// int GetClanChatMessage(CSteamID steamIDClanChat, int iMessage, void * prgchText, int cchTextMax, EChatEntryType * peChatEntryType, CSteamID * psteamidChatter);
+EXTERN int luasteam_Friends_GetClanChatMessage(lua_State *L) {
+    CSteamID steamIDClanChat(luasteam::checkuint64(L, 1));
+    int iMessage = static_cast<int>(luaL_checkint(L, 2));
+    int cchTextMax = luaL_checkint(L, 3);
+    std::vector<unsigned char> prgchText(cchTextMax);
+    EChatEntryType peChatEntryType;    CSteamID psteamidChatter;    int __ret = SteamFriends()->GetClanChatMessage(steamIDClanChat, iMessage, prgchText.data(), cchTextMax, &peChatEntryType, &psteamidChatter);
+    lua_pushinteger(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(prgchText.data()), __ret);
+    lua_pushinteger(L, peChatEntryType);
+    luasteam::pushuint64(L, psteamidChatter.ConvertToUint64());
+    return 3;
+}
+
 // bool IsClanChatAdmin(CSteamID steamIDClanChat, CSteamID steamIDUser);
 EXTERN int luasteam_Friends_IsClanChatAdmin(lua_State *L) {
     CSteamID steamIDClanChat(luasteam::checkuint64(L, 1));
@@ -953,6 +1010,19 @@ EXTERN int luasteam_Friends_ReplyToFriendMessage(lua_State *L) {
     bool __ret = SteamFriends()->ReplyToFriendMessage(steamIDFriend, pchMsgToSend);
     lua_pushboolean(L, __ret);
     return 1;
+}
+
+// int GetFriendMessage(CSteamID steamIDFriend, int iMessageID, void * pvData, int cubData, EChatEntryType * peChatEntryType);
+EXTERN int luasteam_Friends_GetFriendMessage(lua_State *L) {
+    CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
+    int iMessageID = static_cast<int>(luaL_checkint(L, 2));
+    int cubData = luaL_checkint(L, 3);
+    std::vector<unsigned char> pvData(cubData);
+    EChatEntryType peChatEntryType;    int __ret = SteamFriends()->GetFriendMessage(steamIDFriend, iMessageID, pvData.data(), cubData, &peChatEntryType);
+    lua_pushinteger(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
+    lua_pushinteger(L, peChatEntryType);
+    return 2;
 }
 
 // SteamAPICall_t GetFollowerCount(CSteamID steamID);
@@ -1069,6 +1139,7 @@ void register_Friends_auto(lua_State *L) {
     add_func(L, "GetFriendRelationship", luasteam_Friends_GetFriendRelationship);
     add_func(L, "GetFriendPersonaState", luasteam_Friends_GetFriendPersonaState);
     add_func(L, "GetFriendPersonaName", luasteam_Friends_GetFriendPersonaName);
+    add_func(L, "GetFriendGamePlayed", luasteam_Friends_GetFriendGamePlayed);
     add_func(L, "GetFriendPersonaNameHistory", luasteam_Friends_GetFriendPersonaNameHistory);
     add_func(L, "GetFriendSteamLevel", luasteam_Friends_GetFriendSteamLevel);
     add_func(L, "GetPlayerNickname", luasteam_Friends_GetPlayerNickname);
@@ -1076,12 +1147,14 @@ void register_Friends_auto(lua_State *L) {
     add_func(L, "GetFriendsGroupIDByIndex", luasteam_Friends_GetFriendsGroupIDByIndex);
     add_func(L, "GetFriendsGroupName", luasteam_Friends_GetFriendsGroupName);
     add_func(L, "GetFriendsGroupMembersCount", luasteam_Friends_GetFriendsGroupMembersCount);
+    add_func(L, "GetFriendsGroupMembersList", luasteam_Friends_GetFriendsGroupMembersList);
     add_func(L, "HasFriend", luasteam_Friends_HasFriend);
     add_func(L, "GetClanCount", luasteam_Friends_GetClanCount);
     add_func(L, "GetClanByIndex", luasteam_Friends_GetClanByIndex);
     add_func(L, "GetClanName", luasteam_Friends_GetClanName);
     add_func(L, "GetClanTag", luasteam_Friends_GetClanTag);
     add_func(L, "GetClanActivityCounts", luasteam_Friends_GetClanActivityCounts);
+    add_func(L, "DownloadClanActivityCounts", luasteam_Friends_DownloadClanActivityCounts);
     add_func(L, "GetFriendCountFromSource", luasteam_Friends_GetFriendCountFromSource);
     add_func(L, "GetFriendFromSourceByIndex", luasteam_Friends_GetFriendFromSourceByIndex);
     add_func(L, "IsUserInSource", luasteam_Friends_IsUserInSource);
@@ -1116,12 +1189,14 @@ void register_Friends_auto(lua_State *L) {
     add_func(L, "GetClanChatMemberCount", luasteam_Friends_GetClanChatMemberCount);
     add_func(L, "GetChatMemberByIndex", luasteam_Friends_GetChatMemberByIndex);
     add_func(L, "SendClanChatMessage", luasteam_Friends_SendClanChatMessage);
+    add_func(L, "GetClanChatMessage", luasteam_Friends_GetClanChatMessage);
     add_func(L, "IsClanChatAdmin", luasteam_Friends_IsClanChatAdmin);
     add_func(L, "IsClanChatWindowOpenInSteam", luasteam_Friends_IsClanChatWindowOpenInSteam);
     add_func(L, "OpenClanChatWindowInSteam", luasteam_Friends_OpenClanChatWindowInSteam);
     add_func(L, "CloseClanChatWindowInSteam", luasteam_Friends_CloseClanChatWindowInSteam);
     add_func(L, "SetListenForFriendsMessages", luasteam_Friends_SetListenForFriendsMessages);
     add_func(L, "ReplyToFriendMessage", luasteam_Friends_ReplyToFriendMessage);
+    add_func(L, "GetFriendMessage", luasteam_Friends_GetFriendMessage);
     add_func(L, "GetFollowerCount", luasteam_Friends_GetFollowerCount);
     add_func(L, "IsFollowing", luasteam_Friends_IsFollowing);
     add_func(L, "EnumerateFollowingList", luasteam_Friends_EnumerateFollowingList);
@@ -1138,7 +1213,7 @@ void register_Friends_auto(lua_State *L) {
 }
 
 void add_Friends_auto(lua_State *L) {
-    lua_createtable(L, 0, 73);
+    lua_createtable(L, 0, 78);
     register_Friends_auto(L);
     lua_pushvalue(L, -1);
     Friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);

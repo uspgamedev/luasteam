@@ -301,6 +301,16 @@ void shutdown_UserStats_auto(lua_State *L) {
 }
 
 
+// bool UpdateAvgRateStat(const char * pchName, float flCountThisSession, double dSessionLength);
+EXTERN int luasteam_UserStats_UpdateAvgRateStat(lua_State *L) {
+    const char *pchName = luaL_checkstring(L, 1);
+    float flCountThisSession = luaL_checknumber(L, 2);
+    double dSessionLength = luaL_checknumber(L, 3);
+    bool __ret = SteamUserStats()->UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength);
+    lua_pushboolean(L, __ret);
+    return 1;
+}
+
 // bool GetAchievement(const char * pchName, bool * pbAchieved);
 EXTERN int luasteam_UserStats_GetAchievement(lua_State *L) {
     const char *pchName = luaL_checkstring(L, 1);
@@ -483,6 +493,53 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntries(lua_State *L) {
     return 1;
 }
 
+// SteamAPICall_t DownloadLeaderboardEntriesForUsers(SteamLeaderboard_t hSteamLeaderboard, const CSteamID * prgUsers, int cUsers);
+EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
+    SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+    lua_createtable(L, cUsers, 0);
+    for(int i=0;i<cUsers;i++){
+    luasteam::pushuint64(L, prgUsers[i].ConvertToUint64());
+    lua_rawseti(L, -2, i+1);
+    }
+    int cUsers = static_cast<int>(luaL_checkint(L, 2));
+    SteamAPICall_t __ret = SteamUserStats()->DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers);
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
+// bool GetDownloadedLeaderboardEntry(SteamLeaderboardEntries_t hSteamLeaderboardEntries, int index, LeaderboardEntry_t * pLeaderboardEntry, int32 * pDetails, int cDetailsMax);
+EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
+    SteamLeaderboardEntries_t hSteamLeaderboardEntries(luasteam::checkuint64(L, 1));
+    int index = static_cast<int>(luaL_checkint(L, 2));
+    LeaderboardEntry_t pLeaderboardEntry;    int cDetailsMax = luaL_checkint(L, 3);
+    std::vector<int> pDetails(cDetailsMax);
+    bool __ret = SteamUserStats()->GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, &pLeaderboardEntry, pDetails.data(), cDetailsMax);
+    lua_pushboolean(L, __ret);
+    push_LeaderboardEntry_t(L, pLeaderboardEntry);
+    lua_createtable(L, cDetailsMax, 0);
+    for(int i=0;i<cDetailsMax;i++){
+    lua_pushinteger(L, pDetails[i]);
+    lua_rawseti(L, -2, i+1);
+    }
+    return 2;
+}
+
+// SteamAPICall_t UploadLeaderboardScore(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore, const int32 * pScoreDetails, int cScoreDetailsCount);
+EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
+    SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+    ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkint(L, 2));
+    int32 nScore = static_cast<int32>(luaL_checkint(L, 3));
+    lua_createtable(L, cScoreDetailsCount, 0);
+    for(int i=0;i<cScoreDetailsCount;i++){
+    lua_pushinteger(L, pScoreDetails[i]);
+    lua_rawseti(L, -2, i+1);
+    }
+    int cScoreDetailsCount = static_cast<int>(luaL_checkint(L, 4));
+    SteamAPICall_t __ret = SteamUserStats()->UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount);
+    luasteam::pushuint64(L, __ret);
+    return 1;
+}
+
 // SteamAPICall_t AttachLeaderboardUGC(SteamLeaderboard_t hSteamLeaderboard, UGCHandle_t hUGC);
 EXTERN int luasteam_UserStats_AttachLeaderboardUGC(lua_State *L) {
     SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
@@ -549,6 +606,7 @@ EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
 }
 
 void register_UserStats_auto(lua_State *L) {
+    add_func(L, "UpdateAvgRateStat", luasteam_UserStats_UpdateAvgRateStat);
     add_func(L, "GetAchievement", luasteam_UserStats_GetAchievement);
     add_func(L, "SetAchievement", luasteam_UserStats_SetAchievement);
     add_func(L, "ClearAchievement", luasteam_UserStats_ClearAchievement);
@@ -570,6 +628,9 @@ void register_UserStats_auto(lua_State *L) {
     add_func(L, "GetLeaderboardSortMethod", luasteam_UserStats_GetLeaderboardSortMethod);
     add_func(L, "GetLeaderboardDisplayType", luasteam_UserStats_GetLeaderboardDisplayType);
     add_func(L, "DownloadLeaderboardEntries", luasteam_UserStats_DownloadLeaderboardEntries);
+    add_func(L, "DownloadLeaderboardEntriesForUsers", luasteam_UserStats_DownloadLeaderboardEntriesForUsers);
+    add_func(L, "GetDownloadedLeaderboardEntry", luasteam_UserStats_GetDownloadedLeaderboardEntry);
+    add_func(L, "UploadLeaderboardScore", luasteam_UserStats_UploadLeaderboardScore);
     add_func(L, "AttachLeaderboardUGC", luasteam_UserStats_AttachLeaderboardUGC);
     add_func(L, "GetNumberOfCurrentPlayers", luasteam_UserStats_GetNumberOfCurrentPlayers);
     add_func(L, "RequestGlobalAchievementPercentages", luasteam_UserStats_RequestGlobalAchievementPercentages);
@@ -580,7 +641,7 @@ void register_UserStats_auto(lua_State *L) {
 }
 
 void add_UserStats_auto(lua_State *L) {
-    lua_createtable(L, 0, 28);
+    lua_createtable(L, 0, 32);
     register_UserStats_auto(L);
     lua_pushvalue(L, -1);
     UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);

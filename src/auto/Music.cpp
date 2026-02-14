@@ -102,6 +102,13 @@ EXTERN int luasteam_Music_PlayNext(lua_State *L) {
     return 0;
 }
 
+// void SetVolume(float flVolume);
+EXTERN int luasteam_Music_SetVolume(lua_State *L) {
+    float flVolume = luaL_checknumber(L, 1);
+    SteamMusic()->SetVolume(flVolume);
+    return 0;
+}
+
 // float GetVolume();
 EXTERN int luasteam_Music_GetVolume(lua_State *L) {
     float __ret = SteamMusic()->GetVolume();
@@ -117,11 +124,12 @@ void register_Music_auto(lua_State *L) {
     add_func(L, "Pause", luasteam_Music_Pause);
     add_func(L, "PlayPrevious", luasteam_Music_PlayPrevious);
     add_func(L, "PlayNext", luasteam_Music_PlayNext);
+    add_func(L, "SetVolume", luasteam_Music_SetVolume);
     add_func(L, "GetVolume", luasteam_Music_GetVolume);
 }
 
 void add_Music_auto(lua_State *L) {
-    lua_createtable(L, 0, 8);
+    lua_createtable(L, 0, 9);
     register_Music_auto(L);
     lua_pushvalue(L, -1);
     Music_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -747,11 +747,29 @@ EXTERN int luasteam_HTMLSurface_SetCookie(lua_State *L) {
     return 0;
 }
 
+// void SetPageScaleFactor(HHTMLBrowser unBrowserHandle, float flZoom, int nPointX, int nPointY);
+EXTERN int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    float flZoom = luaL_checknumber(L, 2);
+    int nPointX = static_cast<int>(luaL_checkint(L, 3));
+    int nPointY = static_cast<int>(luaL_checkint(L, 4));
+    SteamHTMLSurface()->SetPageScaleFactor(unBrowserHandle, flZoom, nPointX, nPointY);
+    return 0;
+}
+
 // void SetBackgroundMode(HHTMLBrowser unBrowserHandle, bool bBackgroundMode);
 EXTERN int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
     HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
     bool bBackgroundMode = lua_toboolean(L, 2);
     SteamHTMLSurface()->SetBackgroundMode(unBrowserHandle, bBackgroundMode);
+    return 0;
+}
+
+// void SetDPIScalingFactor(HHTMLBrowser unBrowserHandle, float flDPIScaling);
+EXTERN int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    float flDPIScaling = luaL_checknumber(L, 2);
+    SteamHTMLSurface()->SetDPIScalingFactor(unBrowserHandle, flDPIScaling);
     return 0;
 }
 
@@ -803,14 +821,16 @@ void register_HTMLSurface_auto(lua_State *L) {
     add_func(L, "StopFind", luasteam_HTMLSurface_StopFind);
     add_func(L, "GetLinkAtPosition", luasteam_HTMLSurface_GetLinkAtPosition);
     add_func(L, "SetCookie", luasteam_HTMLSurface_SetCookie);
+    add_func(L, "SetPageScaleFactor", luasteam_HTMLSurface_SetPageScaleFactor);
     add_func(L, "SetBackgroundMode", luasteam_HTMLSurface_SetBackgroundMode);
+    add_func(L, "SetDPIScalingFactor", luasteam_HTMLSurface_SetDPIScalingFactor);
     add_func(L, "OpenDeveloperTools", luasteam_HTMLSurface_OpenDeveloperTools);
     add_func(L, "AllowStartRequest", luasteam_HTMLSurface_AllowStartRequest);
     add_func(L, "JSDialogResponse", luasteam_HTMLSurface_JSDialogResponse);
 }
 
 void add_HTMLSurface_auto(lua_State *L) {
-    lua_createtable(L, 0, 28);
+    lua_createtable(L, 0, 30);
     register_HTMLSurface_auto(L);
     lua_pushvalue(L, -1);
     HTMLSurface_ref = luaL_ref(L, LUA_REGISTRYINDEX);

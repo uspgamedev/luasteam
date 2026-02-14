@@ -516,6 +516,20 @@ EXTERN int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
     return 1;
 }
 
+// int GetLobbyChatEntry(CSteamID steamIDLobby, int iChatID, CSteamID * pSteamIDUser, void * pvData, int cubData, EChatEntryType * peChatEntryType);
+EXTERN int luasteam_Matchmaking_GetLobbyChatEntry(lua_State *L) {
+    CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
+    int iChatID = static_cast<int>(luaL_checkint(L, 2));
+    CSteamID pSteamIDUser;    int cubData = luaL_checkint(L, 3);
+    std::vector<unsigned char> pvData(cubData);
+    EChatEntryType peChatEntryType;    int __ret = SteamMatchmaking()->GetLobbyChatEntry(steamIDLobby, iChatID, &pSteamIDUser, pvData.data(), cubData, &peChatEntryType);
+    lua_pushinteger(L, __ret);
+    luasteam::pushuint64(L, pSteamIDUser.ConvertToUint64());
+    lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
+    lua_pushinteger(L, peChatEntryType);
+    return 3;
+}
+
 // bool RequestLobbyData(CSteamID steamIDLobby);
 EXTERN int luasteam_Matchmaking_RequestLobbyData(lua_State *L) {
     CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
@@ -634,6 +648,7 @@ void register_Matchmaking_auto(lua_State *L) {
     add_func(L, "GetLobbyMemberData", luasteam_Matchmaking_GetLobbyMemberData);
     add_func(L, "SetLobbyMemberData", luasteam_Matchmaking_SetLobbyMemberData);
     add_func(L, "SendLobbyChatMsg", luasteam_Matchmaking_SendLobbyChatMsg);
+    add_func(L, "GetLobbyChatEntry", luasteam_Matchmaking_GetLobbyChatEntry);
     add_func(L, "RequestLobbyData", luasteam_Matchmaking_RequestLobbyData);
     add_func(L, "SetLobbyGameServer", luasteam_Matchmaking_SetLobbyGameServer);
     add_func(L, "GetLobbyGameServer", luasteam_Matchmaking_GetLobbyGameServer);
@@ -647,7 +662,7 @@ void register_Matchmaking_auto(lua_State *L) {
 }
 
 void add_Matchmaking_auto(lua_State *L) {
-    lua_createtable(L, 0, 37);
+    lua_createtable(L, 0, 38);
     register_Matchmaking_auto(L);
     lua_pushvalue(L, -1);
     Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

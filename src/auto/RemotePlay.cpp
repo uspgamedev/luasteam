@@ -162,6 +162,15 @@ EXTERN int luasteam_RemotePlay_SetMouseVisibility(lua_State *L) {
     return 0;
 }
 
+// void SetMousePosition(RemotePlaySessionID_t unSessionID, float flNormalizedX, float flNormalizedY);
+EXTERN int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
+    RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+    float flNormalizedX = luaL_checknumber(L, 2);
+    float flNormalizedY = luaL_checknumber(L, 3);
+    SteamRemotePlay()->SetMousePosition(unSessionID, flNormalizedX, flNormalizedY);
+    return 0;
+}
+
 // RemotePlayCursorID_t CreateMouseCursor(int nWidth, int nHeight, int nHotX, int nHotY, const void * pBGRA, int nPitch);
 EXTERN int luasteam_RemotePlay_CreateMouseCursor(lua_State *L) {
     int nWidth = static_cast<int>(luaL_checkint(L, 1));
@@ -195,12 +204,13 @@ void register_RemotePlay_auto(lua_State *L) {
     add_func(L, "BEnableRemotePlayTogetherDirectInput", luasteam_RemotePlay_BEnableRemotePlayTogetherDirectInput);
     add_func(L, "DisableRemotePlayTogetherDirectInput", luasteam_RemotePlay_DisableRemotePlayTogetherDirectInput);
     add_func(L, "SetMouseVisibility", luasteam_RemotePlay_SetMouseVisibility);
+    add_func(L, "SetMousePosition", luasteam_RemotePlay_SetMousePosition);
     add_func(L, "CreateMouseCursor", luasteam_RemotePlay_CreateMouseCursor);
     add_func(L, "SetMouseCursor", luasteam_RemotePlay_SetMouseCursor);
 }
 
 void add_RemotePlay_auto(lua_State *L) {
-    lua_createtable(L, 0, 13);
+    lua_createtable(L, 0, 14);
     register_RemotePlay_auto(L);
     lua_pushvalue(L, -1);
     RemotePlay_ref = luaL_ref(L, LUA_REGISTRYINDEX);

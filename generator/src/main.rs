@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::any::type_name;
 use std::collections::{BTreeSet, HashMap, HashSet};
 use std::fs;
 use std::path::Path;
@@ -112,6 +111,7 @@ impl SteamApi {
                 "ISteamScreenshots",
                 vec![("WriteScreenshot", vec!["pubRGB"])],
             ),
+            ("ISteamUserStats", vec![("DownloadLeaderboardEntriesForUsers", vec!["prgUsers"])]),
         ];
 
         for (i_name, methods) in data {
@@ -217,6 +217,7 @@ impl SteamApi {
                     ),
                     ("GetMostAchievedAchievementInfo", "pchName", "unNameBufLen"),
                     ("GetDownloadedLeaderboardEntry", "pDetails", "cDetailsMax"),
+                    ("UploadLeaderboardScore", "pScoreDetails", "cScoreDetailsCount"),
                 ],
             ),
             (
@@ -232,6 +233,7 @@ impl SteamApi {
                 vec![
                     ("GetLobbyDataByIndex", "pchKey", "cchKeyBufferSize"),
                     ("GetLobbyDataByIndex", "pchValue", "cchValueBufferSize"),
+                    ("GetLobbyChatEntry", "pvData", "cubData"),
                 ],
             ),
             (
@@ -244,6 +246,7 @@ impl SteamApi {
                     ),
                     ("GetEnteredGamepadTextInput", "pchText", "cchText"),
                     ("GetImageRGBA", "pubDest", "nDestBufferSize"),
+                    ("GetAPICallResult", "pCallback", "cubCallback"),
                 ],
             ),
             (
@@ -258,6 +261,21 @@ impl SteamApi {
                 "ISteamScreenshots",
                 vec![("WriteScreenshot", "pubRGB", "cubRGB")],
             ),
+            (
+                "ISteamFriends",
+                vec![
+                    ("GetClanChatMessage", "prgchText", "cchTextMax"),
+                    ("GetFriendMessage", "pvData", "cubData"),
+                ],
+            ),
+            (
+                "ISteamGameServer",
+                vec![("GetNextOutgoingPacket", "pOut", "cbMaxOut")],
+            ),
+            (
+                "ISteamVideo",
+                vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
+            )
         ];
         for (i_name, data) in to_mark_counters {
             let i = self
@@ -483,9 +501,6 @@ impl<'a> CppType<'a> {
     fn is_double_pointer(&self) -> bool {
         matches!(self, CppType::Pointer { ttype, .. } if ttype.ends_with('*') || ttype.ends_with("]"))
     }
-    fn is_int(&self) -> bool {
-        matches!(self, CppType::Normal("int" | "unsigned char" | "uint8"))
-    }
     fn is_buffer(&self) -> bool {
         match self {
             CppType::Array {
@@ -646,6 +661,8 @@ impl Generator {
             fs::remove_dir_all(auto_dir).expect("Unable to delete src/auto");
         }
         fs::create_dir_all(auto_dir).expect("Unable to create src/auto");
+        // Start with structs to populate added_structs
+        self.generate_structs(&mut stats);
 
         let mut interface_names = Vec::new();
 
@@ -684,6 +701,12 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails");
         // Needs support for out_array_count and array_count at the same time, which is not currently supported
         method_blocklist.insert("SteamAPI_ISteamUser_GetVoice");
+        method_blocklist.insert("SteamAPI_ISteamUser_DecompressVoice");
+        method_blocklist.insert("SteamAPI_ISteamUser_GetAuthSessionTicket");
+        method_blocklist.insert("SteamAPI_ISteamGameServer_GetAuthSessionTicket");
+        method_blocklist.insert("SteamAPI_ISteamUser_GetEncryptedAppTicket");
+        // Has function pointers, can't be implemented automatically
+        method_blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook");
 
         for interface in &self.api.interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -700,7 +723,6 @@ impl Generator {
             }
         }
 
-        self.generate_structs(&mut stats);
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
@@ -1022,7 +1044,7 @@ impl Generator {
                     if self.added_structs.contains(s) {
                         format!("push_{}(L, {});", s, value_accessor)
                     } else {
-                        println!("Unsupported field push type: {}", ftype);
+                        println!("Unsupported field push type: {} {:?}", ftype, resolved);
                         format!("// Skip unsupported type: {}", ftype)
                     }
                 }
@@ -1033,8 +1055,33 @@ impl Generator {
                     value_accessor
                 )
             }
+            CppType::Array {
+                ttype,
+                size,
+                is_const: _,
+            } => {
+                if resolved.is_buffer() {
+                    format!(
+                        "lua_pushlstring(L, reinterpret_cast<const char*>({}), {});",
+                        value_accessor, size
+                    )
+                } else if let Some(code) =
+                    self.push_array(ttype, value_accessor, size.to_string().as_str())
+                {
+                    code
+                } else {
+                    println!(
+                        "Unsupported field push array type: {} {:?} {}",
+                        ftype, resolved, value_accessor
+                    );
+                    format!("// Skip unsupported array type: {}", ftype)
+                }
+            }
             _ => {
-                println!("Unsupported field push type: {} {:?}", ftype, resolved);
+                println!(
+                    "Unsupported field push type: {} {:?} {}",
+                    ftype, resolved, value_accessor
+                );
                 format!("// Skip unsupported type: {}", ftype)
             }
         };
@@ -1176,6 +1223,7 @@ impl Generator {
             || name == "HTTP"
             || name == "UGC"
             || name == "Inventory"
+            || name == "MatchmakingServers"
         {
             return Err("It has many unsupported types and would require a lot of custom code");
         }
@@ -1199,6 +1247,10 @@ impl Generator {
 
         stats.methods_total += interface.methods.len();
         for method in &interface.methods {
+            // println!(
+            //     "Processing method {}::{}",
+            //     interface.classname, method.methodname
+            // );
             if method_blocklist.contains(method.methodname_flat.as_str()) {
                 println!(
                     "Skipped method {}::{} in blocklist",
@@ -1248,6 +1300,21 @@ impl Generator {
         let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp).expect("Unable to write generated file");
         Ok(name.to_owned())
+    }
+
+    fn push_array(&self, ttype: &str, value_accessor: &str, size: &str) -> Option<String> {
+        let mut s = format!("    lua_createtable(L, {}, 0);\n", size);
+        let (ok, push) = self.generate_push(ttype, &format!("{}[i]", value_accessor));
+        if ok {
+            s.push_str(&format!(
+                "    for(int i=0;i<{};i++){{\n    {}\n    lua_rawseti(L, -2, i+1);\n    }}\n",
+                size, push
+            ));
+        } else {
+            println!("Unsupported type in array push: {}", ttype);
+            return None;
+        }
+        Some(s)
     }
 
     fn generate_method(
@@ -1342,7 +1409,7 @@ impl Generator {
                     param_names.push(param.paramname.clone());
                     lua_idx += 1;
                 }
-                Normal("double") => {
+                Normal("double" | "float") => {
                     s.push_str(&format!(
                         "    {} {} = luaL_checknumber(L, {});\n",
                         param.paramtype, param.paramname, lua_idx
@@ -1350,7 +1417,7 @@ impl Generator {
                     param_names.push(param.paramname.clone());
                     lua_idx += 1;
                 }
-                Normal("int") => {
+                Normal("int" | "unsigned char") => {
                     s.push_str(&format!(
                         "    {} {} = static_cast<{}>(luaL_checkint(L, {}));\n",
                         param.paramtype, param.paramname, param.paramtype, lua_idx
@@ -1462,13 +1529,19 @@ impl Generator {
                         pointer_params.push((param, false));
                     }
                 }
-                Pointer { is_const: true, .. } => {
+                Pointer { is_const: true, ttype } => {
+                    if let Some(code) = param.array_size_param().and_then(|sz| self.push_array(ttype, &param.paramname, sz)) {
+                        s.push_str(&code);
+                        param_names.push(param.paramname.clone());
+                    } else {
                     println!(
-                        "Unsupported const non-buffer pointer pasrameter: {} {}",
+                        "Unsupported const non-buffer pointer parameter: {} {}",
                         param.paramtype, param.paramname
                     );
                     stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
+                        
+                    }
                 }
             }
             i += 1;
@@ -1511,12 +1584,27 @@ impl Generator {
                             param.paramname
                         ));
                     } else {
-                        let size = if method.methodname_flat
-                            == "SteamAPI_ISteamRemoteStorage_FileReadAsyncComplete"
-                            || method.methodname_flat == "SteamAPI_ISteamRemoteStorage_UGCRead"
+                        // This should probably go somewhere in the JSON and thus in the fix_* functions
+                        let size = if let Some(sz) = param.array_size_param() && method.param(sz).paramname.ends_with(" *") {
+                            // If the size is a pointer, it is updated, use that
+                            sz
+                        } else if [
+                            "SteamAPI_ISteamRemoteStorage_FileReadAsyncComplete",
+                            "SteamAPI_ISteamRemoteStorage_UGCRead",
+                            "SteamAPI_ISteamUtils_GetImageRGBA",
+                            "SteamAPI_ISteamUtils_GetAPICallResult",
+                            "SteamAPI_ISteamGameServer_GetNextOutgoingPacket",
+                        ]
+                        .contains(&method.methodname_flat.as_str())
                         {
-                            param.out_array_count.as_deref().unwrap()
-                        } else if method.methodname_flat == "SteamAPI_ISteamRemoteStorage_FileRead"
+                            param.array_size_param().unwrap()
+                        } else if [
+                            "SteamAPI_ISteamRemoteStorage_FileRead",
+                            "SteamAPI_ISteamFriends_GetClanChatMessage",
+                            "SteamAPI_ISteamFriends_GetFriendMessage",
+                            "SteamAPI_ISteamMatchmaking_GetLobbyChatEntry",
+                        ]
+                        .contains(&method.methodname_flat.as_str())
                         {
                             "__ret"
                         } else {
@@ -1533,13 +1621,38 @@ impl Generator {
                         ));
                     }
                 } else {
-                    // Not sure about the size, will it always be the one you sent?
-                    println!(
-                        "Unsupported pointer base type in array push: {}",
-                        param.paramtype
-                    );
-                    stats.unsupported_types.insert(param.paramtype.clone());
-                    return None;
+                    let size = if let Some(oac) = param.array_size_param() && self.api.consts.iter().any(|c| c.constname == oac) {
+                        // If the size is a constant, simply use the same size
+                        oac
+                    } else if [
+                        "SteamAPI_ISteamFriends_GetFriendsGroupMembersList",
+                        "SteamAPI_ISteamFriends_DownloadClanActivityCounts",
+                        "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
+                        "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
+                    ]
+                    .contains(&method.methodname_flat.as_str())
+                    {
+                        // Some special case where the size is the same as the one you sent
+                        param.array_size_param().unwrap()
+                    } else if ["SteamAPI_ISteamApps_GetInstalledDepots"].contains(&method.methodname_flat.as_str()) {
+                        // Some special case where the size is returned
+                        "__ret"
+                    } else {
+                        // Not sure about the size, will it always be the one you sent?
+                        println!("Unknown size for array push: {}", param.paramtype);
+                        stats.unsupported_types.insert(param.paramtype.clone());
+                        return None;
+                    };
+                    if let Some(code) = self.push_array(
+                        param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
+                        &param.paramname,
+                        size,
+                    ) {
+                        s.push_str(&code);
+                    } else {
+                        stats.unsupported_types.insert(param.paramtype.clone());
+                        return None;
+                    }
                 }
             } else {
                 let (ok, push) = self.generate_push(
@@ -1547,7 +1660,10 @@ impl Generator {
                     &param.paramname,
                 );
                 if !ok {
-                    println!("Unsupported pointer base type in push: {}", param.paramtype);
+                    println!(
+                        "Unsupported pointer base type in push: '{}'",
+                        param.paramtype
+                    );
                     stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
                 }

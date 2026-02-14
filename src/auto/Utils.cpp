@@ -230,6 +230,17 @@ EXTERN int luasteam_Utils_GetImageSize(lua_State *L) {
     return 3;
 }
 
+// bool GetImageRGBA(int iImage, uint8 * pubDest, int nDestBufferSize);
+EXTERN int luasteam_Utils_GetImageRGBA(lua_State *L) {
+    int iImage = static_cast<int>(luaL_checkint(L, 1));
+    int nDestBufferSize = luaL_checkint(L, 2);
+    std::vector<unsigned char> pubDest(nDestBufferSize);
+    bool __ret = SteamUtils()->GetImageRGBA(iImage, pubDest.data(), nDestBufferSize);
+    lua_pushboolean(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), nDestBufferSize);
+    return 1;
+}
+
 // uint8 GetCurrentBatteryPower();
 EXTERN int luasteam_Utils_GetCurrentBatteryPower(lua_State *L) {
     uint8 __ret = SteamUtils()->GetCurrentBatteryPower();
@@ -266,6 +277,19 @@ EXTERN int luasteam_Utils_GetAPICallFailureReason(lua_State *L) {
     ESteamAPICallFailure __ret = SteamUtils()->GetAPICallFailureReason(hSteamAPICall);
     lua_pushinteger(L, __ret);
     return 1;
+}
+
+// bool GetAPICallResult(SteamAPICall_t hSteamAPICall, void * pCallback, int cubCallback, int iCallbackExpected, bool * pbFailed);
+EXTERN int luasteam_Utils_GetAPICallResult(lua_State *L) {
+    SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
+    int cubCallback = luaL_checkint(L, 2);
+    std::vector<unsigned char> pCallback(cubCallback);
+    int iCallbackExpected = static_cast<int>(luaL_checkint(L, 3));
+    bool pbFailed;    bool __ret = SteamUtils()->GetAPICallResult(hSteamAPICall, pCallback.data(), cubCallback, iCallbackExpected, &pbFailed);
+    lua_pushboolean(L, __ret);
+    lua_pushlstring(L, reinterpret_cast<const char*>(pCallback.data()), cubCallback);
+    lua_pushboolean(L, pbFailed);
+    return 2;
 }
 
 // uint32 GetIPCCallCount();
@@ -458,11 +482,13 @@ void register_Utils_auto(lua_State *L) {
     add_func(L, "GetServerRealTime", luasteam_Utils_GetServerRealTime);
     add_func(L, "GetIPCountry", luasteam_Utils_GetIPCountry);
     add_func(L, "GetImageSize", luasteam_Utils_GetImageSize);
+    add_func(L, "GetImageRGBA", luasteam_Utils_GetImageRGBA);
     add_func(L, "GetCurrentBatteryPower", luasteam_Utils_GetCurrentBatteryPower);
     add_func(L, "GetAppID", luasteam_Utils_GetAppID);
     add_func(L, "SetOverlayNotificationPosition", luasteam_Utils_SetOverlayNotificationPosition);
     add_func(L, "IsAPICallCompleted", luasteam_Utils_IsAPICallCompleted);
     add_func(L, "GetAPICallFailureReason", luasteam_Utils_GetAPICallFailureReason);
+    add_func(L, "GetAPICallResult", luasteam_Utils_GetAPICallResult);
     add_func(L, "GetIPCCallCount", luasteam_Utils_GetIPCCallCount);
     add_func(L, "IsOverlayEnabled", luasteam_Utils_IsOverlayEnabled);
     add_func(L, "BOverlayNeedsPresent", luasteam_Utils_BOverlayNeedsPresent);
@@ -489,7 +515,7 @@ void register_Utils_auto(lua_State *L) {
 }
 
 void add_Utils_auto(lua_State *L) {
-    lua_createtable(L, 0, 34);
+    lua_createtable(L, 0, 36);
     register_Utils_auto(L);
     lua_pushvalue(L, -1);
     Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
