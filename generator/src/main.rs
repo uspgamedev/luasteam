@@ -395,6 +395,16 @@ struct Interface {
     methods: Vec<Method>,
     #[serde(default)]
     accessors: Vec<Accessor>,
+    #[serde(default)]
+    enums: Vec<InterfaceEnum>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct InterfaceEnum {
+    enumname: String,
+    #[serde(default)]
+    fqname: String,
+    values: Vec<EnumValue>,
 }
 
 impl Interface {
@@ -532,6 +542,14 @@ impl Generator {
         for enm in &api.enums {
             type_map.insert(enm.enumname.clone(), "int".to_string());
         }
+        for interface in &api.interfaces {
+            for enm in &interface.enums {
+                type_map.insert(enm.enumname.clone(), "int".to_string());
+                if !enm.fqname.is_empty() {
+                    type_map.insert(enm.fqname.clone(), "int".to_string());
+                }
+            }
+        }
         // Basic types
         type_map.insert("int".to_string(), "int".to_string());
         type_map.insert("int32".to_string(), "int".to_string());
@@ -666,47 +684,74 @@ impl Generator {
 
         let mut interface_names = Vec::new();
 
-        let mut method_blocklist = HashSet::new();
+        let mut method_blocklist: HashSet<String> = HashSet::new();
         // These are added because they have many overloads
         // TODO: Add a custom one for these
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyString");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64");
-        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatInt64");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatDouble");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatInt32");
-        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatFloat");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32");
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat");
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyString".to_string());
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyBool".to_string());
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyInt64".to_string());
+        method_blocklist.insert("SteamAPI_ISteamInventory_SetPropertyFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatInt64".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatDouble".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_SetUserStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetUserStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatFloat".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat".to_string());
         // Cursor method is not used
-        method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor");
+        method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string());
         // Unused method, not even in API Reference
-        method_blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag");
+        method_blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string());
         // Very weird, out_array_count seems to be all wrong
-        method_blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices");
+        method_blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices".to_string());
         // Weird API and no explanation or reference
-        method_blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails");
+        method_blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string());
         // Needs support for out_array_count and array_count at the same time, which is not currently supported
-        method_blocklist.insert("SteamAPI_ISteamUser_GetVoice");
-        method_blocklist.insert("SteamAPI_ISteamUser_DecompressVoice");
-        method_blocklist.insert("SteamAPI_ISteamUser_GetAuthSessionTicket");
-        method_blocklist.insert("SteamAPI_ISteamGameServer_GetAuthSessionTicket");
-        method_blocklist.insert("SteamAPI_ISteamUser_GetEncryptedAppTicket");
+        method_blocklist.insert("SteamAPI_ISteamUser_GetVoice".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUser_DecompressVoice".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUser_GetAuthSessionTicket".to_string());
+        method_blocklist.insert("SteamAPI_ISteamGameServer_GetAuthSessionTicket".to_string());
+        method_blocklist.insert("SteamAPI_ISteamUser_GetEncryptedAppTicket".to_string());
         // Has function pointers, can't be implemented automatically
-        method_blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook");
+        method_blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook".to_string());
+        // Uses a pointer as input when it could just use an object
+        method_blocklist.insert("SteamAPI_ISteamParties_CreateBeacon".to_string());
+
+        let mut auto_blocklisted_conflicts = 0;
+        for interface in &self.api.interfaces {
+            let mut method_counts: HashMap<&str, usize> = HashMap::new();
+            for method in &interface.methods {
+                *method_counts.entry(method.methodname.as_str()).or_default() += 1;
+            }
+            for method in &interface.methods {
+                if method_counts
+                    .get(method.methodname.as_str())
+                    .copied()
+                    .unwrap_or(0)
+                    > 1
+                    && method_blocklist.insert(method.methodname_flat.clone())
+                {
+                    auto_blocklisted_conflicts += 1;
+                }
+            }
+        }
+        if auto_blocklisted_conflicts > 0 {
+            println!(
+                "Added {} overloaded methods to blocklist for custom implementation",
+                auto_blocklisted_conflicts
+            );
+        }
 
         for interface in &self.api.interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -862,7 +907,7 @@ impl Generator {
 
         for enm in &self.api.enums {
             for val in &enm.values {
-                cpp.push_str(&format!("    lua_pushinteger(L, {});\n", val.value));
+                cpp.push_str(&format!("    lua_pushinteger(L, {});\n", val.name));
                 cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", val.name));
                 stats.enum_values_generated += 1;
             }
@@ -1211,7 +1256,7 @@ impl Generator {
     fn generate_interface(
         &self,
         interface: &Interface,
-        method_blocklist: &HashSet<&str>,
+        method_blocklist: &HashSet<String>,
         stats: &mut Stats,
     ) -> Result<String, &str> {
         let mut cpp = String::new();
@@ -1283,12 +1328,23 @@ impl Generator {
         cpp.push_str("}\n\n");
 
         // Generate add_..._auto function
+        let interface_enum_values_count: usize =
+            interface.enums.iter().map(|enm| enm.values.len()).sum();
         cpp.push_str(&format!("void add_{}_auto(lua_State *L) {{\n", name));
         cpp.push_str(&format!(
             "    lua_createtable(L, 0, {});\n",
-            generated_methods.len()
+            generated_methods.len() + interface_enum_values_count
         ));
         cpp.push_str(&format!("    register_{}_auto(L);\n", name));
+        for enm in &interface.enums {
+            for val in &enm.values {
+                cpp.push_str(&format!(
+                    "    lua_pushinteger(L, {}::{});\n",
+                    interface.classname, val.name
+                ));
+                cpp.push_str(&format!("    lua_setfield(L, -2, \"{}\");\n", val.name));
+            }
+        }
         cpp.push_str(&format!("    lua_pushvalue(L, -1);\n"));
         cpp.push_str(&format!(
             "    {}_ref = luaL_ref(L, LUA_REGISTRYINDEX);\n",

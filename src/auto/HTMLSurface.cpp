@@ -646,6 +646,30 @@ EXTERN int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
     return 0;
 }
 
+// void MouseUp(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+EXTERN int luasteam_HTMLSurface_MouseUp(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+    SteamHTMLSurface()->MouseUp(unBrowserHandle, eMouseButton);
+    return 0;
+}
+
+// void MouseDown(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+EXTERN int luasteam_HTMLSurface_MouseDown(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+    SteamHTMLSurface()->MouseDown(unBrowserHandle, eMouseButton);
+    return 0;
+}
+
+// void MouseDoubleClick(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+EXTERN int luasteam_HTMLSurface_MouseDoubleClick(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+    SteamHTMLSurface()->MouseDoubleClick(unBrowserHandle, eMouseButton);
+    return 0;
+}
+
 // void MouseMove(HHTMLBrowser unBrowserHandle, int x, int y);
 EXTERN int luasteam_HTMLSurface_MouseMove(lua_State *L) {
     HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
@@ -660,6 +684,34 @@ EXTERN int luasteam_HTMLSurface_MouseWheel(lua_State *L) {
     HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
     int32 nDelta = static_cast<int32>(luaL_checkint(L, 2));
     SteamHTMLSurface()->MouseWheel(unBrowserHandle, nDelta);
+    return 0;
+}
+
+// void KeyDown(HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers, bool bIsSystemKey);
+EXTERN int luasteam_HTMLSurface_KeyDown(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
+    ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+    bool bIsSystemKey = lua_toboolean(L, 4);
+    SteamHTMLSurface()->KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey);
+    return 0;
+}
+
+// void KeyUp(HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers);
+EXTERN int luasteam_HTMLSurface_KeyUp(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
+    ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+    SteamHTMLSurface()->KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers);
+    return 0;
+}
+
+// void KeyChar(HHTMLBrowser unBrowserHandle, uint32 cUnicodeChar, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers);
+EXTERN int luasteam_HTMLSurface_KeyChar(lua_State *L) {
+    HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+    uint32 cUnicodeChar = static_cast<uint32>(luaL_checkint(L, 2));
+    ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+    SteamHTMLSurface()->KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers);
     return 0;
 }
 
@@ -809,8 +861,14 @@ void register_HTMLSurface_auto(lua_State *L) {
     add_func(L, "GoForward", luasteam_HTMLSurface_GoForward);
     add_func(L, "AddHeader", luasteam_HTMLSurface_AddHeader);
     add_func(L, "ExecuteJavascript", luasteam_HTMLSurface_ExecuteJavascript);
+    add_func(L, "MouseUp", luasteam_HTMLSurface_MouseUp);
+    add_func(L, "MouseDown", luasteam_HTMLSurface_MouseDown);
+    add_func(L, "MouseDoubleClick", luasteam_HTMLSurface_MouseDoubleClick);
     add_func(L, "MouseMove", luasteam_HTMLSurface_MouseMove);
     add_func(L, "MouseWheel", luasteam_HTMLSurface_MouseWheel);
+    add_func(L, "KeyDown", luasteam_HTMLSurface_KeyDown);
+    add_func(L, "KeyUp", luasteam_HTMLSurface_KeyUp);
+    add_func(L, "KeyChar", luasteam_HTMLSurface_KeyChar);
     add_func(L, "SetHorizontalScroll", luasteam_HTMLSurface_SetHorizontalScroll);
     add_func(L, "SetVerticalScroll", luasteam_HTMLSurface_SetVerticalScroll);
     add_func(L, "SetKeyFocus", luasteam_HTMLSurface_SetKeyFocus);
@@ -830,8 +888,110 @@ void register_HTMLSurface_auto(lua_State *L) {
 }
 
 void add_HTMLSurface_auto(lua_State *L) {
-    lua_createtable(L, 0, 30);
+    lua_createtable(L, 0, 87);
     register_HTMLSurface_auto(L);
+    lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Left);
+    lua_setfield(L, -2, "eHTMLMouseButton_Left");
+    lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Right);
+    lua_setfield(L, -2, "eHTMLMouseButton_Right");
+    lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Middle);
+    lua_setfield(L, -2, "eHTMLMouseButton_Middle");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_User);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_User");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_None);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_None");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Arrow);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Arrow");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_IBeam);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_IBeam");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Hourglass);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Hourglass");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_WaitArrow);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_WaitArrow");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Crosshair);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Crosshair");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Up);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Up");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeNW);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeNW");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeSE);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeSE");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeNE);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeNE");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeSW);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeSW");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeW);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeW");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeE);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeE");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeN);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeN");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeS);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeS");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeWE);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeWE");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeNS);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeNS");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeAll);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeAll");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_No);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_No");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Hand);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Hand");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Blank);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Blank");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_MiddlePan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_MiddlePan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_NorthPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_NorthPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_NorthEastPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_NorthEastPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_EastPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_EastPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SouthEastPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SouthEastPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SouthPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SouthPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SouthWestPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SouthWestPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_WestPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_WestPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_NorthWestPan);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_NorthWestPan");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Alias);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Alias");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Cell);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Cell");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_ColResize);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_ColResize");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_CopyCur);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_CopyCur");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_VerticalText);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_VerticalText");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_RowResize);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_RowResize");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_ZoomIn);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_ZoomIn");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_ZoomOut);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_ZoomOut");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Help);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Help");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_Custom);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_Custom");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeNWSE);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeNWSE");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_SizeNESW);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_SizeNESW");
+    lua_pushinteger(L, ISteamHTMLSurface::k_EHTMLMouseCursor_last);
+    lua_setfield(L, -2, "k_EHTMLMouseCursor_last");
+    lua_pushinteger(L, ISteamHTMLSurface::k_eHTMLKeyModifier_None);
+    lua_setfield(L, -2, "k_eHTMLKeyModifier_None");
+    lua_pushinteger(L, ISteamHTMLSurface::k_eHTMLKeyModifier_AltDown);
+    lua_setfield(L, -2, "k_eHTMLKeyModifier_AltDown");
+    lua_pushinteger(L, ISteamHTMLSurface::k_eHTMLKeyModifier_CtrlDown);
+    lua_setfield(L, -2, "k_eHTMLKeyModifier_CtrlDown");
+    lua_pushinteger(L, ISteamHTMLSurface::k_eHTMLKeyModifier_ShiftDown);
+    lua_setfield(L, -2, "k_eHTMLKeyModifier_ShiftDown");
     lua_pushvalue(L, -1);
     HTMLSurface_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "HTMLSurface");
