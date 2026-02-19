@@ -188,7 +188,7 @@ EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
     bool __ret = SteamParties()->GetAvailableBeaconLocations(pLocationList.data(), uMaxNumLocations);
     lua_pushboolean(L, __ret);
     lua_createtable(L, uMaxNumLocations, 0);
-    for(int i=0;i<uMaxNumLocations;i++){
+    for(decltype(uMaxNumLocations) i=0;i<uMaxNumLocations;i++){
     push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
     lua_rawseti(L, -2, i+1);
     }

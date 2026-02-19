@@ -111,7 +111,10 @@ impl SteamApi {
                 "ISteamScreenshots",
                 vec![("WriteScreenshot", vec!["pubRGB"])],
             ),
-            ("ISteamUserStats", vec![("DownloadLeaderboardEntriesForUsers", vec!["prgUsers"])]),
+            (
+                "ISteamUserStats",
+                vec![("DownloadLeaderboardEntriesForUsers", vec!["prgUsers"])],
+            ),
         ];
 
         for (i_name, methods) in data {
@@ -217,7 +220,11 @@ impl SteamApi {
                     ),
                     ("GetMostAchievedAchievementInfo", "pchName", "unNameBufLen"),
                     ("GetDownloadedLeaderboardEntry", "pDetails", "cDetailsMax"),
-                    ("UploadLeaderboardScore", "pScoreDetails", "cScoreDetailsCount"),
+                    (
+                        "UploadLeaderboardScore",
+                        "pScoreDetails",
+                        "cScoreDetailsCount",
+                    ),
                 ],
             ),
             (
@@ -275,7 +282,7 @@ impl SteamApi {
             (
                 "ISteamVideo",
                 vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
-            )
+            ),
         ];
         for (i_name, data) in to_mark_counters {
             let i = self
@@ -498,13 +505,47 @@ enum CppType<'a> {
     Normal(&'a str),
     Array {
         ttype: &'a str,
-        size: usize,
+        size: &'a str,
         is_const: bool,
     },
     Pointer {
         ttype: &'a str,
         is_const: bool,
     },
+}
+
+impl<'a> ToString for CppType<'a> {
+    fn to_string(&self) -> String {
+        match self {
+            CppType::Normal(s) => s.to_string(),
+            CppType::Array {
+                ttype,
+                size,
+                is_const,
+            } => {
+                if size.parse::<usize>().is_ok() {
+                    if *is_const {
+                        format!("const {}[{}]", ttype, size)
+                    } else {
+                        format!("{}[{}]", ttype, size)
+                    }
+                } else {
+                    if *is_const {
+                        format!("const {} *", ttype)
+                    } else {
+                        format!("{} *", ttype)
+                    }
+                }
+            }
+            CppType::Pointer { ttype, is_const } => {
+                if *is_const {
+                    format!("const {}", ttype)
+                } else {
+                    ttype.to_string()
+                }
+            }
+        }
+    }
 }
 
 impl<'a> CppType<'a> {
@@ -630,9 +671,8 @@ impl Generator {
     fn resolve_type<'a>(&'a self, t: &'a str) -> CppType<'a> {
         if t.ends_with("]") {
             let start_bracket = t.rfind('[').expect("Malformed array type");
-            let size = t[start_bracket + 1..t.len() - 1]
-                .parse::<usize>()
-                .expect("Malformed size");
+            let size_str = &t[start_bracket + 1..t.len() - 1];
+            let _size = size_str.parse::<usize>().expect("Malformed size");
             let (ttype, is_const) = if t.starts_with("const ") {
                 (t["const ".len()..start_bracket].trim(), true)
             } else {
@@ -640,7 +680,7 @@ impl Generator {
             };
             return CppType::Array {
                 ttype: self.resolve_base_type(ttype),
-                size,
+                size: &size_str,
                 is_const,
             };
         }
@@ -707,8 +747,10 @@ impl Generator {
         method_blocklist.insert("SteamAPI_ISteamGameServerStats_SetUserStatFloat".to_string());
         method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatInt32".to_string());
         method_blocklist.insert("SteamAPI_ISteamGameServerStats_GetUserStatFloat".to_string());
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32".to_string());
-        method_blocklist.insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat".to_string());
+        method_blocklist
+            .insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32".to_string());
+        method_blocklist
+            .insert("SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat".to_string());
         // Cursor method is not used
         method_blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string());
         // Unused method, not even in API Reference
@@ -825,6 +867,7 @@ impl Generator {
             ));
             let (ok, check) = self.generate_check(
                 &field.fieldtype,
+                self.resolve_type(&field.fieldtype),
                 false,
                 &format!("res.{}", field.fieldname),
                 "-1",
@@ -951,24 +994,24 @@ impl Generator {
     /// Generate code to push a field into the stack, returns (success, code). No trailing space/newline/indent in code.
     fn generate_check(
         &self,
-        ftype: &str,
+        original_type: &str,
+        resolved: CppType<'_>,
         create_var: bool,
         value_accessor: &str,
         lua_idx: &str,
     ) -> (bool, String) {
         let type_prefix = if create_var {
-            format!("{} ", ftype)
+            format!("{} ", original_type)
         } else {
             String::new()
         };
-        let resolved = self.resolve_type(ftype);
         match resolved {
             CppType::Normal(s) => match s {
                 "int" | "unsigned char" => (
                     true,
                     format!(
                         "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
-                        type_prefix, value_accessor, ftype, lua_idx
+                        type_prefix, value_accessor, original_type, lua_idx
                     ),
                 ),
                 "bool" => (
@@ -982,7 +1025,7 @@ impl Generator {
                     true,
                     format!(
                         "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
-                        type_prefix, value_accessor, ftype, lua_idx
+                        type_prefix, value_accessor, original_type, lua_idx
                     ),
                 ),
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
@@ -1007,7 +1050,7 @@ impl Generator {
                     } else {
                         (
                             false,
-                            format!("// Unsupported check type: {} ({})", ftype, s),
+                            format!("// Unsupported check type: {} ({})", original_type, s),
                         )
                     }
                 }
@@ -1023,7 +1066,9 @@ impl Generator {
                         COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
                     );
                     let mut s = format!(
-                        "const char *{} = luaL_checkstring(L, {}); if (strlen({}) >= {}) luaL_error(L, \"String too long\"); ", var, lua_idx, var, size);
+                        "const char *{} = luaL_checkstring(L, {}); if (strlen({}) >= {}) luaL_error(L, \"String too long\"); ",
+                        var, lua_idx, var, size
+                    );
 
                     if create_var {
                         s.push_str(&format!("char {}[{}]; ", value_accessor, size));
@@ -1036,14 +1081,22 @@ impl Generator {
                 } else {
                     let mut s = format!("luaL_checktype(L, {}, LUA_TTABLE); ", lua_idx);
                     if create_var {
-                        s.push_str(&format!("{} {}[{}]; ", ttype, value_accessor, size));
+                        s.push_str(&format!(
+                            "std::vector<{}> {}({}); ",
+                            ttype, value_accessor, size
+                        ));
                     }
                     s.push_str(&format!(
-                        "for(int i=0;i<{};i++){{ lua_rawgeti(L,-1,i+1); ",
-                        size
+                        "for(decltype({}) i=0;i<{};i++){{ lua_rawgeti(L,-1,i+1); ",
+                        size, size
                     ));
-                    let (ok, check) =
-                        self.generate_check(ttype, false, &format!("{}[i]", value_accessor), "-1");
+                    let (ok, check) = self.generate_check(
+                        ttype,
+                        self.resolve_type(ttype),
+                        false,
+                        &format!("{}[i]", value_accessor),
+                        "-1",
+                    );
                     if ok {
                         s.push_str(&format!("{} lua_pop(L, 1); }}", check));
                         (true, s)
@@ -1363,8 +1416,8 @@ impl Generator {
         let (ok, push) = self.generate_push(ttype, &format!("{}[i]", value_accessor));
         if ok {
             s.push_str(&format!(
-                "    for(int i=0;i<{};i++){{\n    {}\n    lua_rawseti(L, -2, i+1);\n    }}\n",
-                size, push
+                "    for(decltype({}) i=0;i<{};i++){{\n    {}\n    lua_rawseti(L, -2, i+1);\n    }}\n",
+                size, size, push
             ));
         } else {
             println!("Unsupported type in array push: {}", ttype);
@@ -1449,9 +1502,9 @@ impl Generator {
             if sz_param_to_ignore.is_some() && !matches!(resolved, CppType::Pointer { .. }) {
                 dbg!(&method.params);
                 println!(
-                        "Unsupported parameter order: param '{}' comes after a param with out_string_count but is not the count param",
-                        param.paramname
-                    );
+                    "Unsupported parameter order: param '{}' comes after a param with out_string_count but is not the count param",
+                    param.paramname
+                );
                 return None;
             }
 
@@ -1530,7 +1583,7 @@ impl Generator {
                     unreachable!()
                 }
                 Pointer {
-                    ttype,
+                    ttype: _,
                     is_const: false,
                 } => {
                     if let Some(size_param) = param.array_size_param() {
@@ -1544,25 +1597,32 @@ impl Generator {
                                 sz_param_to_ignore = Some(size_param.to_string());
                                 s.push_str(&format!(
                                     "    {} {} = luaL_checkint(L, {});\n",
-                                    p.paramtype, size_param, lua_idx
+                                    // remove pointer if it is
+                                    p.paramtype
+                                        .strip_suffix(" *")
+                                        .unwrap_or(p.paramtype.as_str()),
+                                    size_param,
+                                    lua_idx
                                 ));
                                 lua_idx += 1;
                             } else if let Some(c) =
                                 self.api.consts.iter().find(|c| c.constname == size_param)
                             {
-                                s.push_str(&format!(
-                                    "    {} {} = {};\n",
-                                    c.consttype, c.constname, c.constval
-                                ));
+                                let _ = c;
                             } else {
                                 println!("Unknown size: {} {}", size_param, param.paramname);
                                 return None;
                             }
                         }
+                        // Consider the original type, since e.g. we want the enum type, not it
+                        let pointee_type = param
+                            .paramtype
+                            .strip_suffix(" *")
+                            .expect("Malformed pointer type");
                         s.push_str(&format!(
                             "    std::vector<{}> {}({});\n",
-                            if ttype != "void" {
-                                ttype
+                            if pointee_type != "void" {
+                                pointee_type
                             } else {
                                 "unsigned char"
                             },
@@ -1585,18 +1645,52 @@ impl Generator {
                         pointer_params.push((param, false));
                     }
                 }
-                Pointer { is_const: true, ttype } => {
-                    if let Some(code) = param.array_size_param().and_then(|sz| self.push_array(ttype, &param.paramname, sz)) {
-                        s.push_str(&code);
-                        param_names.push(param.paramname.clone());
+                Pointer {
+                    is_const: true,
+                    ttype,
+                } => {
+                    if let Some(sz) = param.array_size_param() {
+                        let p = &method.params[i + 1];
+                        assert!(p.paramname == sz, "Unsupported arrays with size param that is not right after the array");
+                        let lua_idx_str = lua_idx.to_string();
+                        let (ok, code) = self.generate_check(
+                            &param.paramtype,
+                            CppType::Array {
+                                ttype,
+                                size: sz,
+                                is_const: true,
+                            },
+                            true,
+                            &param.paramname,
+                            &lua_idx_str,
+                        );
+                        if ok {
+                            assert!(sz_param_to_ignore.is_none());
+                            sz_param_to_ignore = Some(sz.to_string());
+                            lua_idx += 1;
+                            s.push_str(&format!(
+                                "    {} {} = luaL_checkint(L, {});\n",
+                                p.paramtype
+                                    .strip_suffix(" *")
+                                    .unwrap_or(p.paramtype.as_str()),
+                                sz,
+                                lua_idx
+                            ));
+                            lua_idx += 1;
+
+                            s.push_str(&format!("    {}\n", code));
+                            param_names.push(format!("{}.data()", param.paramname));
+                        } else {
+                            println!("Size param {} not found or unsupported array ({})", sz, ok);
+                            return None;
+                        }
                     } else {
-                    println!(
-                        "Unsupported const non-buffer pointer parameter: {} {}",
-                        param.paramtype, param.paramname
-                    );
-                    stats.unsupported_types.insert(param.paramtype.clone());
-                    return None;
-                        
+                        println!(
+                            "Unsupported const non-buffer pointer parameter: {} {}",
+                            param.paramtype, param.paramname
+                        );
+                        stats.unsupported_types.insert(param.paramtype.clone());
+                        return None;
                     }
                 }
             }
@@ -1641,7 +1735,9 @@ impl Generator {
                         ));
                     } else {
                         // This should probably go somewhere in the JSON and thus in the fix_* functions
-                        let size = if let Some(sz) = param.array_size_param() && method.param(sz).paramname.ends_with(" *") {
+                        let size = if let Some(sz) = param.array_size_param()
+                            && method.param(sz).paramname.ends_with(" *")
+                        {
                             // If the size is a pointer, it is updated, use that
                             sz
                         } else if [
@@ -1677,7 +1773,9 @@ impl Generator {
                         ));
                     }
                 } else {
-                    let size = if let Some(oac) = param.array_size_param() && self.api.consts.iter().any(|c| c.constname == oac) {
+                    let size = if let Some(oac) = param.array_size_param()
+                        && self.api.consts.iter().any(|c| c.constname == oac)
+                    {
                         // If the size is a constant, simply use the same size
                         oac
                     } else if [
@@ -1690,7 +1788,9 @@ impl Generator {
                     {
                         // Some special case where the size is the same as the one you sent
                         param.array_size_param().unwrap()
-                    } else if ["SteamAPI_ISteamApps_GetInstalledDepots"].contains(&method.methodname_flat.as_str()) {
+                    } else if ["SteamAPI_ISteamApps_GetInstalledDepots"]
+                        .contains(&method.methodname_flat.as_str())
+                    {
                         // Some special case where the size is returned
                         "__ret"
                     } else {

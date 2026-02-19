@@ -265,11 +265,11 @@ EXTERN int luasteam_Apps_MarkContentCorrupt(lua_State *L) {
 EXTERN int luasteam_Apps_GetInstalledDepots(lua_State *L) {
     AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 1));
     uint32 cMaxDepots = luaL_checkint(L, 2);
-    std::vector<int> pvecDepots(cMaxDepots);
+    std::vector<DepotId_t> pvecDepots(cMaxDepots);
     uint32 __ret = SteamApps()->GetInstalledDepots(appID, pvecDepots.data(), cMaxDepots);
     lua_pushinteger(L, __ret);
     lua_createtable(L, __ret, 0);
-    for(int i=0;i<__ret;i++){
+    for(decltype(__ret) i=0;i<__ret;i++){
     lua_pushinteger(L, pvecDepots[i]);
     lua_rawseti(L, -2, i+1);
     }

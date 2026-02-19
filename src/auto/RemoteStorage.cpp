@@ -113,7 +113,7 @@ void CallbackListener::OnRemoteStorageEnumerateUserPublishedFilesResult(RemoteSt
         lua_pushinteger(L, data->m_nTotalResultCount);
         lua_setfield(L, -2, "m_nTotalResultCount");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -160,14 +160,14 @@ void CallbackListener::OnRemoteStorageEnumerateUserSubscribedFilesResult(RemoteS
         lua_pushinteger(L, data->m_nTotalResultCount);
         lua_setfield(L, -2, "m_nTotalResultCount");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
     lua_rawseti(L, -2, i+1);
     }
 
         lua_setfield(L, -2, "m_rgPublishedFileId");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     lua_pushinteger(L, data->m_rgRTimeSubscribed[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -319,14 +319,14 @@ void CallbackListener::OnRemoteStorageEnumerateWorkshopFilesResult(RemoteStorage
         lua_pushinteger(L, data->m_nTotalResultCount);
         lua_setfield(L, -2, "m_nTotalResultCount");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
     lua_rawseti(L, -2, i+1);
     }
 
         lua_setfield(L, -2, "m_rgPublishedFileId");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     lua_pushnumber(L, data->m_rgScore[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -482,7 +482,7 @@ void CallbackListener::OnRemoteStorageEnumerateUserSharedWorkshopFilesResult(Rem
         lua_pushinteger(L, data->m_nTotalResultCount);
         lua_setfield(L, -2, "m_nTotalResultCount");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -533,14 +533,14 @@ void CallbackListener::OnRemoteStorageEnumeratePublishedFilesByUserActionResult(
         lua_pushinteger(L, data->m_nTotalResultCount);
         lua_setfield(L, -2, "m_nTotalResultCount");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
     lua_rawseti(L, -2, i+1);
     }
 
         lua_setfield(L, -2, "m_rgPublishedFileId");
             lua_createtable(L, 50, 0);
-    for(int i=0;i<50;i++){
+    for(decltype(50) i=0;i<50;i++){
     lua_pushinteger(L, data->m_rgRTimeUpdated[i]);
     lua_rawseti(L, -2, i+1);
     }

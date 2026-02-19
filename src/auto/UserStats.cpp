@@ -496,13 +496,9 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntries(lua_State *L) {
 // SteamAPICall_t DownloadLeaderboardEntriesForUsers(SteamLeaderboard_t hSteamLeaderboard, const CSteamID * prgUsers, int cUsers);
 EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
     SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
-    lua_createtable(L, cUsers, 0);
-    for(int i=0;i<cUsers;i++){
-    luasteam::pushuint64(L, prgUsers[i].ConvertToUint64());
-    lua_rawseti(L, -2, i+1);
-    }
-    int cUsers = static_cast<int>(luaL_checkint(L, 2));
-    SteamAPICall_t __ret = SteamUserStats()->DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers);
+    int cUsers = luaL_checkint(L, 3);
+    luaL_checktype(L, 2, LUA_TTABLE); std::vector<CSteamID> prgUsers(cUsers); for(decltype(cUsers) i=0;i<cUsers;i++){ lua_rawgeti(L,-1,i+1); prgUsers[i] = CSteamID(luasteam::checkuint64(L, -1)); lua_pop(L, 1); }
+    SteamAPICall_t __ret = SteamUserStats()->DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers.data(), cUsers);
     luasteam::pushuint64(L, __ret);
     return 1;
 }
@@ -512,12 +508,12 @@ EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
     SteamLeaderboardEntries_t hSteamLeaderboardEntries(luasteam::checkuint64(L, 1));
     int index = static_cast<int>(luaL_checkint(L, 2));
     LeaderboardEntry_t pLeaderboardEntry;    int cDetailsMax = luaL_checkint(L, 3);
-    std::vector<int> pDetails(cDetailsMax);
+    std::vector<int32> pDetails(cDetailsMax);
     bool __ret = SteamUserStats()->GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, &pLeaderboardEntry, pDetails.data(), cDetailsMax);
     lua_pushboolean(L, __ret);
     push_LeaderboardEntry_t(L, pLeaderboardEntry);
     lua_createtable(L, cDetailsMax, 0);
-    for(int i=0;i<cDetailsMax;i++){
+    for(decltype(cDetailsMax) i=0;i<cDetailsMax;i++){
     lua_pushinteger(L, pDetails[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -529,13 +525,9 @@ EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
     SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
     ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkint(L, 2));
     int32 nScore = static_cast<int32>(luaL_checkint(L, 3));
-    lua_createtable(L, cScoreDetailsCount, 0);
-    for(int i=0;i<cScoreDetailsCount;i++){
-    lua_pushinteger(L, pScoreDetails[i]);
-    lua_rawseti(L, -2, i+1);
-    }
-    int cScoreDetailsCount = static_cast<int>(luaL_checkint(L, 4));
-    SteamAPICall_t __ret = SteamUserStats()->UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount);
+    int cScoreDetailsCount = luaL_checkint(L, 5);
+    luaL_checktype(L, 4, LUA_TTABLE); std::vector<int> pScoreDetails(cScoreDetailsCount); for(decltype(cScoreDetailsCount) i=0;i<cScoreDetailsCount;i++){ lua_rawgeti(L,-1,i+1); pScoreDetails[i] = static_cast<int>(luaL_checkint(L, -1)); lua_pop(L, 1); }
+    SteamAPICall_t __ret = SteamUserStats()->UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails.data(), cScoreDetailsCount);
     luasteam::pushuint64(L, __ret);
     return 1;
 }

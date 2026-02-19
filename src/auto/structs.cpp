@@ -657,7 +657,7 @@ SteamNetConnectionInfo_t check_SteamNetConnectionInfo_t(lua_State *L, int index)
     res.m_nFlags = static_cast<int>(luaL_checkint(L, -1));
     lua_pop(L, 1);
     lua_getfield(L, index, "reserved");
-    luaL_checktype(L, -1, LUA_TTABLE); for(int i=0;i<63;i++){ lua_rawgeti(L,-1,i+1); res.reserved[i] = static_cast<int>(luaL_checkint(L, -1)); lua_pop(L, 1); }
+    luaL_checktype(L, -1, LUA_TTABLE); for(decltype(63) i=0;i<63;i++){ lua_rawgeti(L,-1,i+1); res.reserved[i] = static_cast<int>(luaL_checkint(L, -1)); lua_pop(L, 1); }
     lua_pop(L, 1);
     return res;
 }
@@ -689,7 +689,7 @@ void push_SteamNetConnectionInfo_t(lua_State *L, SteamNetConnectionInfo_t val) {
     lua_pushinteger(L, val.m_nFlags);
     lua_setfield(L, -2, "m_nFlags");
         lua_createtable(L, 63, 0);
-    for(int i=0;i<63;i++){
+    for(decltype(63) i=0;i<63;i++){
     lua_pushinteger(L, val.reserved[i]);
     lua_rawseti(L, -2, i+1);
     }

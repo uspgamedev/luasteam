@@ -234,7 +234,7 @@ EXTERN int luasteam_Utils_GetImageSize(lua_State *L) {
 EXTERN int luasteam_Utils_GetImageRGBA(lua_State *L) {
     int iImage = static_cast<int>(luaL_checkint(L, 1));
     int nDestBufferSize = luaL_checkint(L, 2);
-    std::vector<unsigned char> pubDest(nDestBufferSize);
+    std::vector<uint8> pubDest(nDestBufferSize);
     bool __ret = SteamUtils()->GetImageRGBA(iImage, pubDest.data(), nDestBufferSize);
     lua_pushboolean(L, __ret);
     lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), nDestBufferSize);

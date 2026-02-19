@@ -163,12 +163,11 @@ EXTERN int luasteam_Input_BNewDataAvailable(lua_State *L) {
 
 // int GetConnectedControllers(InputHandle_t * handlesOut);
 EXTERN int luasteam_Input_GetConnectedControllers(lua_State *L) {
-    int STEAM_INPUT_MAX_COUNT = 16;
-    std::vector<unsigned long long> handlesOut(STEAM_INPUT_MAX_COUNT);
+    std::vector<InputHandle_t> handlesOut(STEAM_INPUT_MAX_COUNT);
     int __ret = SteamInput()->GetConnectedControllers(handlesOut.data());
     lua_pushinteger(L, __ret);
     lua_createtable(L, STEAM_INPUT_MAX_COUNT, 0);
-    for(int i=0;i<STEAM_INPUT_MAX_COUNT;i++){
+    for(decltype(STEAM_INPUT_MAX_COUNT) i=0;i<STEAM_INPUT_MAX_COUNT;i++){
     luasteam::pushuint64(L, handlesOut[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -231,12 +230,11 @@ EXTERN int luasteam_Input_DeactivateAllActionSetLayers(lua_State *L) {
 // int GetActiveActionSetLayers(InputHandle_t inputHandle, InputActionSetHandle_t * handlesOut);
 EXTERN int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
     InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-    int STEAM_INPUT_MAX_ACTIVE_LAYERS = 16;
-    std::vector<unsigned long long> handlesOut(STEAM_INPUT_MAX_ACTIVE_LAYERS);
+    std::vector<InputActionSetHandle_t> handlesOut(STEAM_INPUT_MAX_ACTIVE_LAYERS);
     int __ret = SteamInput()->GetActiveActionSetLayers(inputHandle, handlesOut.data());
     lua_pushinteger(L, __ret);
     lua_createtable(L, STEAM_INPUT_MAX_ACTIVE_LAYERS, 0);
-    for(int i=0;i<STEAM_INPUT_MAX_ACTIVE_LAYERS;i++){
+    for(decltype(STEAM_INPUT_MAX_ACTIVE_LAYERS) i=0;i<STEAM_INPUT_MAX_ACTIVE_LAYERS;i++){
     luasteam::pushuint64(L, handlesOut[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -265,12 +263,11 @@ EXTERN int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
     InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
     InputActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
     InputDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 3));
-    int STEAM_INPUT_MAX_ORIGINS = 8;
-    std::vector<int> originsOut(STEAM_INPUT_MAX_ORIGINS);
+    std::vector<EInputActionOrigin> originsOut(STEAM_INPUT_MAX_ORIGINS);
     int __ret = SteamInput()->GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle, originsOut.data());
     lua_pushinteger(L, __ret);
     lua_createtable(L, STEAM_INPUT_MAX_ORIGINS, 0);
-    for(int i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
+    for(decltype(STEAM_INPUT_MAX_ORIGINS) i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
     lua_pushinteger(L, originsOut[i]);
     lua_rawseti(L, -2, i+1);
     }
@@ -307,12 +304,11 @@ EXTERN int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
     InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
     InputActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
     InputAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 3));
-    int STEAM_INPUT_MAX_ORIGINS = 8;
-    std::vector<int> originsOut(STEAM_INPUT_MAX_ORIGINS);
+    std::vector<EInputActionOrigin> originsOut(STEAM_INPUT_MAX_ORIGINS);
     int __ret = SteamInput()->GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle, originsOut.data());
     lua_pushinteger(L, __ret);
     lua_createtable(L, STEAM_INPUT_MAX_ORIGINS, 0);
-    for(int i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
+    for(decltype(STEAM_INPUT_MAX_ORIGINS) i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
     lua_pushinteger(L, originsOut[i]);
     lua_rawseti(L, -2, i+1);
     }

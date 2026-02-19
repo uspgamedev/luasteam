@@ -126,7 +126,7 @@ EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
 // bool GetOPFStringForApp(AppId_t unVideoAppID, char * pchBuffer, int32 * pnBufferSize);
 EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
     AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-    int32 * pnBufferSize = luaL_checkint(L, 2);
+    int32 pnBufferSize = luaL_checkint(L, 2);
     std::vector<char> pchBuffer(pnBufferSize);
     bool __ret = SteamVideo()->GetOPFStringForApp(unVideoAppID, pchBuffer.data(), &pnBufferSize);
     lua_pushboolean(L, __ret);
