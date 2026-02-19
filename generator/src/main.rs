@@ -4,6 +4,7 @@ use std::fs;
 use std::path::Path;
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+const BASE_INDENT: &str = "\t";
 
 #[derive(Debug, Default)]
 struct Stats {
@@ -871,9 +872,10 @@ impl Generator {
                 false,
                 &format!("res.{}", field.fieldname),
                 "-1",
+                "    ",
             );
             if ok {
-                cpp.push_str(&format!("    {}\n", check));
+                cpp.push_str(&check);
             } else {
                 cpp.push_str(&format!(
                     "    // Unsupported field type: {}\n",
@@ -900,9 +902,12 @@ impl Generator {
             st.fields.len()
         ));
         for field in &st.fields {
-            let (ok, push) =
-                self.generate_push(&field.fieldtype, &format!("val.{}", field.fieldname));
-            cpp.push_str(&format!("    {}\n", push));
+            let (ok, push) = self.generate_push(
+                &field.fieldtype,
+                &format!("val.{}", field.fieldname),
+                "    ",
+            );
+            cpp.push_str(&format!("{}\n", push));
             if ok {
                 cpp.push_str(&format!(
                     "    lua_setfield(L, -2, \"{}\");\n",
@@ -927,8 +932,8 @@ impl Generator {
         stats.consts_total = self.api.consts.len();
 
         for enm in &self.api.consts {
-            let (ok, push) = self.generate_push(&enm.consttype, &enm.constval);
-            cpp.push_str(&format!("    {}\n", push));
+            let (ok, push) = self.generate_push(&enm.consttype, &enm.constval, "    ");
+            cpp.push_str(&format!("{}\n", push));
             if ok {
                 cpp.push_str(&format!(
                     "    lua_setfield(L, -2, \"{}\");\n",
@@ -991,7 +996,7 @@ impl Generator {
         format!("On{}", &struct_name[..struct_name.len() - 2])
     }
 
-    /// Generate code to push a field into the stack, returns (success, code). No trailing space/newline/indent in code.
+    /// Generate code to check a field from the stack, returns (success, code). Code is indented.
     fn generate_check(
         &self,
         original_type: &str,
@@ -999,59 +1004,76 @@ impl Generator {
         create_var: bool,
         value_accessor: &str,
         lua_idx: &str,
+        indent: &str,
     ) -> (bool, String) {
+        let mut out = String::new();
+        let i1 = indent;
+        let i2 = format!("{}{}", indent, BASE_INDENT);
+        macro_rules! add_line {
+            ($line_indent:expr, $line:expr $(,)?) => {{
+                out.push_str($line_indent);
+                out.push_str($line);
+                out.push('\n');
+            }};
+        }
         let type_prefix = if create_var {
             format!("{} ", original_type)
         } else {
             String::new()
         };
         match resolved {
-            CppType::Normal(s) => match s {
-                "int" | "unsigned char" => (
-                    true,
-                    format!(
-                        "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
-                        type_prefix, value_accessor, original_type, lua_idx
-                    ),
-                ),
-                "bool" => (
-                    true,
-                    format!(
-                        "{}{} = lua_toboolean(L, {});",
-                        type_prefix, value_accessor, lua_idx
-                    ),
-                ),
-                "double" | "float" => (
-                    true,
-                    format!(
-                        "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
-                        type_prefix, value_accessor, original_type, lua_idx
-                    ),
-                ),
+            CppType::Normal(type_name) => match type_name {
+                "int" | "unsigned char" => {
+                    add_line!(i1,
+                        &format!(
+                            "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
+                            type_prefix, value_accessor, original_type, lua_idx
+                        ),
+                    );
+                    (true, out)
+                }
+                "bool" => {
+                    add_line!(i1,
+                        &format!("{}{} = lua_toboolean(L, {});", type_prefix, value_accessor, lua_idx),
+                    );
+                    (true, out)
+                }
+                "double" | "float" => {
+                    add_line!(i1,
+                        &format!(
+                            "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
+                            type_prefix, value_accessor, original_type, lua_idx
+                        ),
+                    );
+                    (true, out)
+                }
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
                     let mut get = format!("luasteam::checkuint64(L, {})", lua_idx);
-                    if s == "CSteamID" || s == "CGameID" {
-                        get = format!("{}({})", s, get);
+                    if type_name == "CSteamID" || type_name == "CGameID" {
+                        get = format!("{}({})", type_name, get);
                     }
-                    (
-                        true,
-                        format!("{}{} = {};", type_prefix, value_accessor, get),
-                    )
+                    add_line!(i1,
+                        &format!("{}{} = {};", type_prefix, value_accessor, get),
+                    );
+                    (true, out)
                 }
                 _ => {
-                    if self.added_structs.contains(s) {
-                        (
-                            true,
-                            format!(
+                    if self.added_structs.contains(type_name) {
+                        add_line!(i1,
+                            &format!(
                                 "{}{} = check_{}(L, {});",
-                                type_prefix, value_accessor, s, lua_idx
+                                type_prefix, value_accessor, type_name, lua_idx
                             ),
-                        )
+                        );
+                        (true, out)
                     } else {
-                        (
-                            false,
-                            format!("// Unsupported check type: {} ({})", original_type, s),
-                        )
+                        add_line!(i1,
+                            &format!(
+                                "// Unsupported check type: {} ({})",
+                                original_type, type_name
+                            ),
+                        );
+                        (false, out)
                     }
                 }
             },
@@ -1065,54 +1087,74 @@ impl Generator {
                         "_tmp{}",
                         COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
                     );
-                    let mut s = format!(
-                        "const char *{} = luaL_checkstring(L, {}); if (strlen({}) >= {}) luaL_error(L, \"String too long\"); ",
-                        var, lua_idx, var, size
+                    add_line!(i1,
+                        &format!("const char *{} = luaL_checkstring(L, {});", var, lua_idx),
+                    );
+                    add_line!(i1,
+                        &format!(
+                            "if (strlen({}) >= {}) luaL_error(L, \"String too long\");",
+                            var, size
+                        ),
                     );
 
                     if create_var {
-                        s.push_str(&format!("char {}[{}]; ", value_accessor, size));
+                        add_line!(i1,
+                            &format!("char {}[{}];", value_accessor, size),
+                        );
                     }
-                    s.push_str(&format!(
-                        "memcpy({}, {}, sizeof({}));",
-                        value_accessor, var, value_accessor
-                    ));
-                    (true, s)
+                    add_line!(i1,
+                        &format!(
+                            "memcpy({}, {}, sizeof({}));",
+                            value_accessor, var, value_accessor
+                        ),
+                    );
+                    (true, out)
                 } else {
-                    let mut s = format!("luaL_checktype(L, {}, LUA_TTABLE); ", lua_idx);
+                    add_line!(i1,
+                        &format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx),
+                    );
                     if create_var {
-                        s.push_str(&format!(
-                            "std::vector<{}> {}({}); ",
-                            ttype, value_accessor, size
-                        ));
+                        add_line!(i1,
+                            &format!("std::vector<{}> {}({});", ttype, value_accessor, size),
+                        );
                     }
-                    s.push_str(&format!(
-                        "for(decltype({}) i=0;i<{};i++){{ lua_rawgeti(L,-1,i+1); ",
-                        size, size
-                    ));
+                    add_line!(i1,
+                        &format!("for(decltype({}) i=0;i<{};i++){{", size, size),
+                    );
+                    add_line!(&i2, "lua_rawgeti(L, -1, i+1);");
                     let (ok, check) = self.generate_check(
                         ttype,
                         self.resolve_type(ttype),
                         false,
                         &format!("{}[i]", value_accessor),
                         "-1",
+                        &i2,
                     );
                     if ok {
-                        s.push_str(&format!("{} lua_pop(L, 1); }}", check));
-                        (true, s)
+                        out.push_str(&check);
+                        add_line!(&i2, "lua_pop(L, 1);");
+                        add_line!(i1, "}");
+                        (true, out)
                     } else {
-                        (
-                            false,
-                            format!("// Unsupported check array type: {} [{}]", ttype, size),
-                        )
+                        add_line!(
+                            i1,
+                            &format!("// Unsupported check array type: {} [{}]", ttype, size),
+                        );
+                        (false, out)
                     }
                 }
             }
-            _ => (false, format!("// Unsupported check type: {:?}", resolved)),
+            _ => {
+                add_line!(
+                    i1,
+                    &format!("// Unsupported check type: {:?}", resolved),
+                );
+                (false, out)
+            }
         }
     }
 
-    fn generate_push(&self, ftype: &str, value_accessor: &str) -> (bool, String) {
+    fn generate_push(&self, ftype: &str, value_accessor: &str, indent: &str) -> (bool, String) {
         let resolved = self.resolve_type(ftype);
 
         let push = match resolved {
@@ -1164,9 +1206,9 @@ impl Generator {
                         value_accessor, size
                     )
                 } else if let Some(code) =
-                    self.push_array(ttype, value_accessor, size.to_string().as_str())
+                    self.push_array(ttype, value_accessor, size.to_string().as_str(), indent)
                 {
-                    code
+                    return (true, code);
                 } else {
                     println!(
                         "Unsupported field push array type: {} {:?} {}",
@@ -1183,7 +1225,8 @@ impl Generator {
                 format!("// Skip unsupported type: {}", ftype)
             }
         };
-        (!push.starts_with("//"), push)
+        let ok = !push.starts_with("//");
+        (ok, format!("{}{}", indent, push))
     }
 
     fn generate_callback_listener(
@@ -1264,9 +1307,12 @@ impl Generator {
                 cb.fields.len()
             ));
             for field in &cb.fields {
-                let (ok, push) =
-                    self.generate_push(&field.fieldtype, &format!("data->{}", field.fieldname));
-                s.push_str(&format!("        {}\n", push));
+                let (ok, push) = self.generate_push(
+                    &field.fieldtype,
+                    &format!("data->{}", field.fieldname),
+                    "        ",
+                );
+                s.push_str(&format!("{}\n", push));
                 if ok {
                     s.push_str(&format!(
                         "        lua_setfield(L, -2, \"{}\");\n",
@@ -1411,14 +1457,32 @@ impl Generator {
         Ok(name.to_owned())
     }
 
-    fn push_array(&self, ttype: &str, value_accessor: &str, size: &str) -> Option<String> {
-        let mut s = format!("    lua_createtable(L, {}, 0);\n", size);
-        let (ok, push) = self.generate_push(ttype, &format!("{}[i]", value_accessor));
+    fn push_array(&self, ttype: &str, value_accessor: &str, size: &str, indent: &str) -> Option<String> {
+        let mut s = String::new();
+        let add_line = |s: &mut String, indent: &str, line: &str| {
+            if !s.is_empty() {
+                s.push('\n');
+            }
+            s.push_str(indent);
+            s.push_str(line);
+        };
+
+        add_line(&mut s, indent, &format!("lua_createtable(L, {}, 0);", size));
+        let inner_indent = format!("{}    ", indent);
+        let (ok, push) =
+            self.generate_push(ttype, &format!("{}[i]", value_accessor), &inner_indent);
         if ok {
-            s.push_str(&format!(
-                "    for(decltype({}) i=0;i<{};i++){{\n    {}\n    lua_rawseti(L, -2, i+1);\n    }}\n",
-                size, size, push
-            ));
+            add_line(
+                &mut s,
+                indent,
+                &format!("for(decltype({}) i=0;i<{};i++){{", size, size),
+            );
+            if !push.is_empty() {
+                s.push('\n');
+                s.push_str(&push);
+            }
+            add_line(&mut s, &inner_indent, "lua_rawseti(L, -2, i+1);");
+            add_line(&mut s, indent, "}");
         } else {
             println!("Unsupported type in array push: {}", ttype);
             return None;
@@ -1663,6 +1727,7 @@ impl Generator {
                             true,
                             &param.paramname,
                             &lua_idx_str,
+                            "    ",
                         );
                         if ok {
                             assert!(sz_param_to_ignore.is_none());
@@ -1678,7 +1743,7 @@ impl Generator {
                             ));
                             lua_idx += 1;
 
-                            s.push_str(&format!("    {}\n", code));
+                            s.push_str(&format!("{}\n", code));
                             param_names.push(format!("{}.data()", param.paramname));
                         } else {
                             println!("Size param {} not found or unsupported array ({})", sz, ok);
@@ -1712,13 +1777,13 @@ impl Generator {
             s.push_str(&format!("    {};\n", call));
         } else {
             s.push_str(&format!("    {} __ret = {};\n", method.returntype, call));
-            let (ok, push) = self.generate_push(&method.returntype, "__ret");
+            let (ok, push) = self.generate_push(&method.returntype, "__ret", "    ");
             if !ok {
                 // Skip methods with unknown return types
                 stats.unsupported_types.insert(method.returntype.clone());
                 return None;
             }
-            s.push_str(&format!("    {}\n", push));
+            s.push_str(&format!("{}\n", push));
             return_count = 1;
         }
 
@@ -1803,6 +1868,7 @@ impl Generator {
                         param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
                         &param.paramname,
                         size,
+                        "    ",
                     ) {
                         s.push_str(&code);
                     } else {
@@ -1814,6 +1880,7 @@ impl Generator {
                 let (ok, push) = self.generate_push(
                     param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
                     &param.paramname,
+                    "    ",
                 );
                 if !ok {
                     println!(
@@ -1823,7 +1890,7 @@ impl Generator {
                     stats.unsupported_types.insert(param.paramtype.clone());
                     return None;
                 }
-                s.push_str(&format!("    {}\n", push));
+                s.push_str(&format!("{}\n", push));
                 return_count += 1;
             }
         }

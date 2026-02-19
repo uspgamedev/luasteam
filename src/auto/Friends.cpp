@@ -365,12 +365,11 @@ void CallbackListener::OnFriendsEnumerateFollowingList(FriendsEnumerateFollowing
         lua_createtable(L, 0, 4);
         lua_pushinteger(L, data->m_eResult);
         lua_setfield(L, -2, "m_eResult");
-            lua_createtable(L, 50, 0);
-    for(decltype(50) i=0;i<50;i++){
-    luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
-    lua_rawseti(L, -2, i+1);
-    }
-
+        lua_createtable(L, 50, 0);
+        for(decltype(50) i=0;i<50;i++){
+            luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
+            lua_rawseti(L, -2, i+1);
+        }
         lua_setfield(L, -2, "m_rgSteamID");
         lua_pushinteger(L, data->m_nResultsReturned);
         lua_setfield(L, -2, "m_nResultsReturned");
@@ -602,10 +601,9 @@ EXTERN int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
     SteamFriends()->GetFriendsGroupMembersList(friendsGroupID, pOutSteamIDMembers.data(), nMembersCount);
     lua_createtable(L, nMembersCount, 0);
     for(decltype(nMembersCount) i=0;i<nMembersCount;i++){
-    luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
-    lua_rawseti(L, -2, i+1);
-    }
-    return 0;
+        luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
+        lua_rawseti(L, -2, i+1);
+    }    return 0;
 }
 
 // bool HasFriend(CSteamID steamIDFriend, int iFriendFlags);
@@ -667,10 +665,9 @@ EXTERN int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
     luasteam::pushuint64(L, __ret);
     lua_createtable(L, cClansToRequest, 0);
     for(decltype(cClansToRequest) i=0;i<cClansToRequest;i++){
-    luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
-    lua_rawseti(L, -2, i+1);
-    }
-    return 1;
+        luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
+        lua_rawseti(L, -2, i+1);
+    }    return 1;
 }
 
 // int GetFriendCountFromSource(CSteamID steamIDSource);

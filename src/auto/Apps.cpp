@@ -270,10 +270,9 @@ EXTERN int luasteam_Apps_GetInstalledDepots(lua_State *L) {
     lua_pushinteger(L, __ret);
     lua_createtable(L, __ret, 0);
     for(decltype(__ret) i=0;i<__ret;i++){
-    lua_pushinteger(L, pvecDepots[i]);
-    lua_rawseti(L, -2, i+1);
-    }
-    return 1;
+        lua_pushinteger(L, pvecDepots[i]);
+        lua_rawseti(L, -2, i+1);
+    }    return 1;
 }
 
 // uint32 GetAppInstallDir(AppId_t appID, char * pchFolder, uint32 cchFolderBufferSize);

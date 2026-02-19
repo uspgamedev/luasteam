@@ -189,10 +189,9 @@ EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
     lua_pushboolean(L, __ret);
     lua_createtable(L, uMaxNumLocations, 0);
     for(decltype(uMaxNumLocations) i=0;i<uMaxNumLocations;i++){
-    push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
-    lua_rawseti(L, -2, i+1);
-    }
-    return 1;
+        push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
+        lua_rawseti(L, -2, i+1);
+    }    return 1;
 }
 
 // void OnReservationCompleted(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
