@@ -8,7 +8,7 @@ mod schema;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
-use schema::{CallbackStruct, Interface, Method, Param, Stats, SteamApi, Struct};
+use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
@@ -146,6 +146,8 @@ impl Generator {
     }
 
     fn resolve_base_type<'a>(&'a self, mut t: &'a str) -> &'a str {
+        // Sometimes a non-pointer type is const, which makes no sense.
+        t = t.strip_prefix("const ").unwrap_or(t);
         while let Some(resolved) = self.type_map.get(t) {
             if *resolved == t {
                 break;
@@ -155,8 +157,11 @@ impl Generator {
         t
     }
 
-    fn manual_method_blocklist(&self) -> HashSet<String> {
-        [
+    fn manual_method_blocklist(&self) -> HashMap<String, SkipReason> {
+        let mut blocklist = HashMap::new();
+        
+        // These are added because they have many overloads - TODO: Add a custom one for these
+        let overload_methods = [
             "SteamAPI_ISteamInventory_SetPropertyString",
             "SteamAPI_ISteamInventory_SetPropertyBool",
             "SteamAPI_ISteamInventory_SetPropertyInt64",
@@ -179,24 +184,51 @@ impl Generator {
             "SteamAPI_ISteamGameServerStats_GetUserStatFloat",
             "SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32",
             "SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat",
-            "SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor",
-            "SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag",
-            "SteamAPI_ISteamInventory_GetItemsWithPrices",
-            "SteamAPI_ISteamRemoteStorage_GetUGCDetails",
+        ];
+        for method in overload_methods {
+            blocklist.insert(method.to_string(), SkipReason::ManualBlocklist("has many overloads, needs custom implementation".to_string()));
+        }
+        
+        // Cursor method is not used
+        blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string(), 
+            SkipReason::ManualBlocklist("cursor method is not used".to_string()));
+        
+        // Unused method, not even in API Reference
+        blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string(), 
+            SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()));
+        
+        // Very weird, out_array_count seems to be all wrong
+        blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices".to_string(), 
+            SkipReason::ManualBlocklist("out_array_count seems to be wrong".to_string()));
+        
+        // Weird API and no explanation or reference
+        blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(), 
+            SkipReason::ManualBlocklist("weird API, no explanation or reference".to_string()));
+        
+        // Needs support for out_array_count and array_count at the same time, which is not currently supported
+        let dual_count_methods = [
             "SteamAPI_ISteamUser_GetVoice",
             "SteamAPI_ISteamUser_DecompressVoice",
             "SteamAPI_ISteamUser_GetAuthSessionTicket",
             "SteamAPI_ISteamGameServer_GetAuthSessionTicket",
             "SteamAPI_ISteamUser_GetEncryptedAppTicket",
-            "SteamAPI_ISteamUtils_SetWarningMessageHook",
-            "SteamAPI_ISteamParties_CreateBeacon",
-        ]
-        .into_iter()
-        .map(str::to_string)
-        .collect()
+        ];
+        for method in dual_count_methods {
+            blocklist.insert(method.to_string(), 
+                SkipReason::ManualBlocklist("needs both out_array_count and array_count (not supported)".to_string()));
+        }
+        
+        // Has function pointers, can't be implemented automatically
+        blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(), 
+            SkipReason::ManualBlocklist("has function pointers".to_string()));
+        
+        blocklist.insert("SteamAPI_ISteamParties_CreateBeacon".to_string(), 
+            SkipReason::ManualBlocklist("requires custom implementation".to_string()));
+        
+        blocklist
     }
 
-    fn auto_blocklist_overloads(&self, method_blocklist: &mut HashSet<String>) -> usize {
+    fn auto_blocklist_overloads(&self, method_blocklist: &mut HashMap<String, SkipReason>) -> usize {
         let mut auto_blocklisted_conflicts = 0;
         for interface in &self.api.interfaces {
             let mut method_counts: HashMap<&str, usize> = HashMap::new();
@@ -209,8 +241,12 @@ impl Generator {
                     .copied()
                     .unwrap_or(0)
                     > 1
-                    && method_blocklist.insert(method.methodname_flat.clone())
+                    && !method_blocklist.contains_key(&method.methodname_flat)
                 {
+                    method_blocklist.insert(
+                        method.methodname_flat.clone(), 
+                        SkipReason::AutoBlocklist
+                    );
                     auto_blocklisted_conflicts += 1;
                 }
             }
@@ -233,13 +269,7 @@ impl Generator {
         let mut interface_names = Vec::new();
 
         let mut method_blocklist = self.manual_method_blocklist();
-        let auto_blocklisted_conflicts = self.auto_blocklist_overloads(&mut method_blocklist);
-        if auto_blocklisted_conflicts > 0 {
-            println!(
-                "Added {} overloaded methods to blocklist for custom implementation",
-                auto_blocklisted_conflicts
-            );
-        }
+        let _auto_blocklisted_conflicts = self.auto_blocklist_overloads(&mut method_blocklist);
 
         for interface in &self.api.interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -248,9 +278,11 @@ impl Generator {
                     stats.interfaces_generated += 1;
                 }
                 Err(reason) => {
-                    println!(
-                        "Error generating interface {}: {}",
-                        interface.classname, reason
+                    stats.skipped_interfaces.push((interface.classname.clone(), reason));
+                    // Track coverage for skipped interfaces too
+                    stats.interface_coverage.insert(
+                        interface.classname.clone(), 
+                        (interface.methods.len(), 0)
                     );
                 }
             }
@@ -266,7 +298,6 @@ impl Generator {
         let incomplete_structs = [
             "SteamDatagramHostedAddress",
             "SteamDatagramGameCoordinatorServerLogin",
-            "SteamDatagramGameCoordinatorServerLogin",
         ];
         stats.structs_total = self.api.structs.len();
         let mut cpp = CodeBuilder::new();
@@ -277,14 +308,19 @@ impl Generator {
 
         for st in &self.api.structs {
             if incomplete_structs.contains(&st.name.as_str()) {
-                println!("Skipping struct {} because it is incomplete", st.name);
+                stats.skipped_structs.push((st.name.clone(), SkipReason::Incomplete));
                 continue;
             }
-            if let Some(code) = self.generate_struct(st) {
-                cpp.raw(&code);
-                // We are assuming a struct does not depend on one not yet declared
-                self.added_structs.insert(st.name.clone());
-                stats.structs_generated += 1;
+            match self.generate_struct(st) {
+                Ok(code) => {
+                    cpp.raw(&code);
+                    // We are assuming a struct does not depend on one not yet declared
+                    self.added_structs.insert(st.name.clone());
+                    stats.structs_generated += 1;
+                }
+                Err(reason) => {
+                    stats.skipped_structs.push((st.name.clone(), reason));
+                }
             }
         }
 
@@ -292,20 +328,19 @@ impl Generator {
         fs::write("../src/auto/structs.cpp", cpp.finish()).expect("Unable to write structs.cpp");
     }
 
-    fn generate_struct(&self, st: &Struct) -> Option<String> {
+    fn generate_struct(&self, st: &Struct) -> Result<String, SkipReason> {
         let mut cpp = CodeBuilder::new();
         // Generate check function
-        cpp.line(&format!("{} check_{}(lua_State *L, int index) {{", st.name, st.name));
+        cpp.line(&format!(
+            "{} check_{}(lua_State *L, int index) {{",
+            st.name, st.name
+        ));
         cpp.indent_right();
         cpp.line("luaL_checktype(L, index, LUA_TTABLE);");
         cpp.line(&format!("{} res;", st.name));
         for field in &st.fields {
             if field.private {
-                println!(
-                    "Skipping struct {} because field {} is private",
-                    st.name, field.fieldname
-                );
-                return None;
+                return Err(SkipReason::PrivateField);
             }
             cpp.line(&format!("lua_getfield(L, index, \"{}\");", field.fieldname));
             let (ok, check) = self.generate_check(
@@ -320,11 +355,7 @@ impl Generator {
                 cpp.raw(&check);
             } else {
                 cpp.line(&format!("// Unsupported field type: {}", field.fieldtype));
-                println!(
-                    "Unsupported field type in check for struct {}: {}",
-                    st.name, field.fieldtype
-                );
-                return None;
+                return Err(SkipReason::UnsupportedType(field.fieldtype.clone()));
             }
             cpp.line("lua_pop(L, 1);");
         }
@@ -334,29 +365,25 @@ impl Generator {
         cpp.preceeding_blank_line();
 
         // Generate push function
-        cpp.line(&format!("void push_{}(lua_State *L, {} val) {{", st.name, st.name));
+        cpp.line(&format!(
+            "void push_{}(lua_State *L, {} val) {{",
+            st.name, st.name
+        ));
         cpp.indent_right();
         cpp.line(&format!("lua_createtable(L, 0, {});", st.fields.len()));
         for field in &st.fields {
-            let (ok, push) = self.generate_push(
-                &field.fieldtype,
-                &format!("val.{}", field.fieldname),
-                1,
-            );
+            let (ok, push) =
+                self.generate_push(&field.fieldtype, &format!("val.{}", field.fieldname), 1);
             cpp.raw(&push);
-            if ok {
-                cpp.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
-            } else {
-                println!(
-                    "Unsupported field type in push for struct {}: {}",
-                    st.name, field.fieldtype
-                );
+            if !ok {
+                return Err(SkipReason::UnsupportedType(field.fieldtype.clone()));
             }
+            cpp.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
         }
         cpp.indent_left();
         cpp.line("}");
         cpp.preceeding_blank_line();
-        Some(cpp.finish())
+        Ok(cpp.finish())
     }
 
     fn generate_consts(&self, stats: &mut Stats) {
@@ -466,27 +493,24 @@ impl Generator {
         match resolved {
             CppType::Normal(type_name) => match type_name {
                 "int" | "unsigned char" => {
-                    out.line(
-                        &format!(
-                            "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
-                            type_prefix, value_accessor, original_type, lua_idx
-                        ),
-                    );
+                    out.line(&format!(
+                        "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
+                        type_prefix, value_accessor, original_type, lua_idx
+                    ));
                     (true, out.finish())
                 }
                 "bool" => {
-                    out.line(
-                        &format!("{}{} = lua_toboolean(L, {});", type_prefix, value_accessor, lua_idx),
-                    );
+                    out.line(&format!(
+                        "{}{} = lua_toboolean(L, {});",
+                        type_prefix, value_accessor, lua_idx
+                    ));
                     (true, out.finish())
                 }
                 "double" | "float" => {
-                    out.line(
-                        &format!(
-                            "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
-                            type_prefix, value_accessor, original_type, lua_idx
-                        ),
-                    );
+                    out.line(&format!(
+                        "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
+                        type_prefix, value_accessor, original_type, lua_idx
+                    ));
                     (true, out.finish())
                 }
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
@@ -494,27 +518,21 @@ impl Generator {
                     if type_name == "CSteamID" || type_name == "CGameID" {
                         get = format!("{}({})", type_name, get);
                     }
-                    out.line(
-                        &format!("{}{} = {};", type_prefix, value_accessor, get),
-                    );
+                    out.line(&format!("{}{} = {};", type_prefix, value_accessor, get));
                     (true, out.finish())
                 }
                 _ => {
                     if self.added_structs.contains(type_name) {
-                        out.line(
-                            &format!(
-                                "{}{} = check_{}(L, {});",
-                                type_prefix, value_accessor, type_name, lua_idx
-                            ),
-                        );
+                        out.line(&format!(
+                            "{}{} = check_{}(L, {});",
+                            type_prefix, value_accessor, type_name, lua_idx
+                        ));
                         (true, out.finish())
                     } else {
-                        out.line(
-                            &format!(
-                                "// Unsupported check type: {} ({})",
-                                original_type, type_name
-                            ),
-                        );
+                        out.line(&format!(
+                            "// Unsupported check type: {} ({})",
+                            original_type, type_name
+                        ));
                         (false, out.finish())
                     }
                 }
@@ -529,40 +547,32 @@ impl Generator {
                         "_tmp{}",
                         COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
                     );
-                    out.line(
-                        &format!("const char *{} = luaL_checkstring(L, {});", var, lua_idx),
-                    );
-                    out.line(
-                        &format!(
-                            "if (strlen({}) >= {}) luaL_error(L, \"String too long\");",
-                            var, size
-                        ),
-                    );
+                    out.line(&format!(
+                        "const char *{} = luaL_checkstring(L, {});",
+                        var, lua_idx
+                    ));
+                    out.line(&format!(
+                        "if (strlen({}) >= {}) luaL_error(L, \"String too long\");",
+                        var, size
+                    ));
 
                     if create_var {
-                        out.line(
-                            &format!("char {}[{}];", value_accessor, size),
-                        );
+                        out.line(&format!("char {}[{}];", value_accessor, size));
                     }
-                    out.line(
-                        &format!(
-                            "memcpy({}, {}, sizeof({}));",
-                            value_accessor, var, value_accessor
-                        ),
-                    );
+                    out.line(&format!(
+                        "memcpy({}, {}, sizeof({}));",
+                        value_accessor, var, value_accessor
+                    ));
                     (true, out.finish())
                 } else {
-                    out.line(
-                        &format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx),
-                    );
+                    out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
                     if create_var {
-                        out.line(
-                            &format!("std::vector<{}> {}({});", ttype, value_accessor, size),
-                        );
+                        out.line(&format!(
+                            "std::vector<{}> {}({});",
+                            ttype, value_accessor, size
+                        ));
                     }
-                    out.line(
-                        &format!("for(decltype({}) i=0;i<{};i++){{", size, size),
-                    );
+                    out.line(&format!("for(decltype({}) i=0;i<{};i++){{", size, size));
                     out.indent_right();
                     out.line("lua_rawgeti(L, -1, i+1);");
                     let (ok, check) = self.generate_check(
@@ -577,20 +587,19 @@ impl Generator {
                         out.raw(&check);
                         out.line("lua_pop(L, 1);");
                         out.indent_left();
-                        out.line( "}");
+                        out.line("}");
                         (true, out.finish())
                     } else {
-                        out.line(
-                            &format!("// Unsupported check array type: {} [{}]", ttype, size),
-                        );
+                        out.line(&format!(
+                            "// Unsupported check array type: {} [{}]",
+                            ttype, size
+                        ));
                         (false, out.finish())
                     }
                 }
             }
             _ => {
-                out.line(
-                    &format!("// Unsupported check type: {:?}", resolved),
-                );
+                out.line(&format!("// Unsupported check type: {:?}", resolved));
                 (false, out.finish())
             }
         }
@@ -626,7 +635,7 @@ impl Generator {
                     if self.added_structs.contains(s) {
                         format!("push_{}(L, {});", s, value_accessor)
                     } else {
-                        println!("Unsupported field push type: {} {:?}", ftype, resolved);
+                        // Don't print, just mark as skip
                         format!("// Skip unsupported type: {}", ftype)
                     }
                 }
@@ -652,18 +661,12 @@ impl Generator {
                 {
                     return (true, code);
                 } else {
-                    println!(
-                        "Unsupported field push array type: {} {:?} {}",
-                        ftype, resolved, value_accessor
-                    );
+                    // Don't print, just mark as skip
                     format!("// Skip unsupported array type: {}", ftype)
                 }
             }
             _ => {
-                println!(
-                    "Unsupported field push type: {} {:?} {}",
-                    ftype, resolved, value_accessor
-                );
+                // Don't print, just mark as skip
                 format!("// Skip unsupported type: {}", ftype)
             }
         };
@@ -681,10 +684,7 @@ impl Generator {
     ) -> String {
         let mut s = CodeBuilder::new();
         if callbacks.is_empty() {
-            s.line(&format!(
-                "void init_{}_auto(lua_State *L) {{}}",
-                name_lower
-            ));
+            s.line(&format!("void init_{}_auto(lua_State *L) {{}}", name_lower));
             s.line(&format!(
                 "void shutdown_{}_auto(lua_State *L) {{",
                 name_lower
@@ -744,10 +744,7 @@ impl Generator {
                 "lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::{}_ref);",
                 name_lower
             ));
-            s.line(&format!(
-                "lua_getfield(L, -1, \"{}\");",
-                lua_func_name
-            ));
+            s.line(&format!("lua_getfield(L, -1, \"{}\");", lua_func_name));
             s.line("if (lua_isnil(L, -1)) {");
             s.indent_right();
             s.line("lua_pop(L, 2);");
@@ -763,10 +760,7 @@ impl Generator {
                 );
                 s.raw(&push);
                 if ok {
-                    s.line(&format!(
-                        "lua_setfield(L, -2, \"{}\");",
-                        field.fieldname
-                    ));
+                    s.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
                 }
             }
             s.line("lua_call(L, 1, 0);");
@@ -809,21 +803,18 @@ impl Generator {
     fn generate_interface(
         &self,
         interface: &Interface,
-        method_blocklist: &HashSet<String>,
+        method_blocklist: &HashMap<String, SkipReason>,
         stats: &mut Stats,
-    ) -> Result<String, &str> {
+    ) -> Result<String, SkipReason> {
         let mut cpp = CodeBuilder::new();
         let name = &interface.classname["ISteam".len()..];
         if interface.accessors.is_empty() {
-            return Err("No acessors");
+            return Err(SkipReason::NoAccessors);
         }
         if interface.classname.starts_with("ISteamNetworking")
-            || name == "HTTP"
-            || name == "UGC"
-            || name == "Inventory"
-            || name == "MatchmakingServers"
+            || interface.classname == "ISteamHTTP"
         {
-            return Err("It has many unsupported types and would require a lot of custom code");
+            return Err(SkipReason::RequiresCustomCode);
         }
         let accessor_name = &interface.accessors[0].name;
 
@@ -843,33 +834,37 @@ impl Generator {
         cpp.preceeding_blank_line();
 
         let mut generated_methods = Vec::new();
+        let interface_methods_total = interface.methods.len();
+        let mut interface_methods_generated = 0;
 
         stats.methods_total += interface.methods.len();
         for method in &interface.methods {
-            // println!(
-            //     "Processing method {}::{}",
-            //     interface.classname, method.methodname
-            // );
-            if method_blocklist.contains(method.methodname_flat.as_str()) {
-                println!(
-                    "Skipped method {}::{} in blocklist",
-                    interface.classname, method.methodname
-                );
+            let full_method_name = format!("{}::{}", interface.classname, method.methodname);
+            
+            if let Some(reason) = method_blocklist.get(&method.methodname_flat) {
+                stats.skipped_methods.push((full_method_name, reason.clone()));
                 continue;
-            } else if let Some((lua_method_name, generated)) =
-                self.generate_method(&name, method, stats, accessor_name)
-            {
-                cpp.raw(&generated);
-                cpp.preceeding_blank_line();
-                generated_methods.push((method, lua_method_name));
-                stats.methods_generated += 1;
-            } else {
-                println!(
-                    "Skipped method {}::{} due to unsupported types",
-                    interface.classname, method.methodname
-                );
+            }
+            
+            match self.generate_method(&name, method, accessor_name) {
+                Ok((lua_method_name, generated)) => {
+                    cpp.raw(&generated);
+                    cpp.preceeding_blank_line();
+                    generated_methods.push((method, lua_method_name));
+                    stats.methods_generated += 1;
+                    interface_methods_generated += 1;
+                }
+                Err(reason) => {
+                    stats.skipped_methods.push((full_method_name, reason));
+                }
             }
         }
+        
+        // Track per-interface coverage
+        stats.interface_coverage.insert(
+            interface.classname.clone(), 
+            (interface_methods_total, interface_methods_generated)
+        );
 
         // Generate register_..._auto function
         cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
@@ -893,7 +888,10 @@ impl Generator {
         cpp.line(&format!("register_{}_auto(L);", name));
         for enm in &interface.enums {
             for val in &enm.values {
-                cpp.line(&format!("lua_pushinteger(L, {}::{});", interface.classname, val.name));
+                cpp.line(&format!(
+                    "lua_pushinteger(L, {}::{});",
+                    interface.classname, val.name
+                ));
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", val.name));
             }
         }
@@ -933,7 +931,7 @@ impl Generator {
             s.indent_left();
             s.line("}");
         } else {
-            println!("Unsupported type in array push: {}", ttype);
+            // Don't print, just return None
             return None;
         }
         Some(s.finish())
@@ -943,9 +941,8 @@ impl Generator {
         &self,
         interface: &str,
         method: &Method,
-        stats: &mut Stats,
         accessor_name: &str,
-    ) -> Option<(String, String)> {
+    ) -> Result<(String, String), SkipReason> {
         // Tricky ones to support:
         // GetItemDefinitionProperty - has a pointer that must have a value and returns another
         // GetItemsWithPrices - The JSON looks different from the API
@@ -984,12 +981,7 @@ impl Generator {
             let resolved = self.resolve_type(&param.paramtype);
             use CppType::*;
             if resolved.is_double_pointer() {
-                println!(
-                    "Unsupported double pointer parameter '{}' of type '{}'",
-                    param.paramname, param.paramtype
-                );
-                stats.unsupported_types.insert(param.paramtype.clone());
-                return None;
+                return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
             }
 
             if Some(&param.paramname) == sz_param_to_ignore.as_ref() {
@@ -1011,12 +1003,7 @@ impl Generator {
             }
 
             if sz_param_to_ignore.is_some() && !matches!(resolved, CppType::Pointer { .. }) {
-                dbg!(&method.params);
-                println!(
-                    "Unsupported parameter order: param '{}' comes after a param with out_string_count but is not the count param",
-                    param.paramname
-                );
-                return None;
+                return Err(SkipReason::UnsupportedType("parameter order mismatch".to_string()));
             }
 
             // This is probably somewhat duplicated with generate_check. Though this needs to deal with output pointers as well.
@@ -1046,7 +1033,10 @@ impl Generator {
                     lua_idx += 1;
                 }
                 Normal("bool") => {
-                    s.line(&format!("bool {} = lua_toboolean(L, {});", param.paramname, lua_idx));
+                    s.line(&format!(
+                        "bool {} = lua_toboolean(L, {});",
+                        param.paramname, lua_idx
+                    ));
                     param_names.push(param.paramname.clone());
                     lua_idx += 1;
                 }
@@ -1083,9 +1073,7 @@ impl Generator {
                 }
                 Normal(_) => {
                     // Skip methods with unknown types for now
-                    println!("Unsupported param type: {}", param.paramtype);
-                    stats.unsupported_types.insert(param.paramtype.clone());
-                    return None;
+                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                 }
                 CppType::Array { .. } => {
                     unreachable!()
@@ -1117,8 +1105,7 @@ impl Generator {
                             {
                                 let _ = c;
                             } else {
-                                println!("Unknown size: {} {}", size_param, param.paramname);
-                                return None;
+                                return Err(SkipReason::UnsupportedType(format!("unknown size param: {}", size_param)));
                             }
                         }
                         // Consider the original type, since e.g. we want the enum type, not it
@@ -1154,16 +1141,23 @@ impl Generator {
                 }
                 Pointer {
                     is_const: true,
-                    ttype,
+                    ttype: _,
                 } => {
                     if let Some(sz) = param.array_size_param() {
-                        let p = &method.params[i + 1];
-                        assert!(p.paramname == sz, "Unsupported arrays with size param that is not right after the array");
+                        let p = method
+                            .params
+                            .iter()
+                            .find(|p| p.paramname == sz)
+                            .expect("Size param not found");
                         let lua_idx_str = lua_idx.to_string();
                         let (ok, code) = self.generate_check(
                             &param.paramtype,
                             CppType::Array {
-                                ttype,
+                                ttype: param
+                                    .paramtype
+                                    .strip_suffix(" *")
+                                    .and_then(|p| p.strip_prefix("const "))
+                                    .expect("Malformed pointer type"),
                                 size: sz,
                                 is_const: true,
                             },
@@ -1173,32 +1167,28 @@ impl Generator {
                             1,
                         );
                         if ok {
-                            assert!(sz_param_to_ignore.is_none());
-                            sz_param_to_ignore = Some(sz.to_string());
-                            lua_idx += 1;
-                            s.line(&format!(
-                                "{} {} = luaL_checkint(L, {});",
-                                p.paramtype
-                                    .strip_suffix(" *")
-                                    .unwrap_or(p.paramtype.as_str()),
-                                sz,
-                                lua_idx
-                            ));
-                            lua_idx += 1;
+                            if sz_param_to_ignore != Some(sz.to_string()) {
+                                assert!(sz_param_to_ignore.is_none());
+                                sz_param_to_ignore = Some(sz.to_string());
+                                lua_idx += 1;
+                                s.line(&format!(
+                                    "{} {} = luaL_checkint(L, {});",
+                                    p.paramtype
+                                        .strip_suffix(" *")
+                                        .unwrap_or(p.paramtype.as_str()),
+                                    sz,
+                                    lua_idx
+                                ));
+                                lua_idx += 1;
+                            }
 
                             s.raw(&code);
                             param_names.push(format!("{}.data()", param.paramname));
                         } else {
-                            println!("Size param {} not found or unsupported array ({})", sz, ok);
-                            return None;
+                            return Err(SkipReason::UnsupportedType(format!("size param {} not found", sz)));
                         }
                     } else {
-                        println!(
-                            "Unsupported const non-buffer pointer parameter: {} {}",
-                            param.paramtype, param.paramname
-                        );
-                        stats.unsupported_types.insert(param.paramtype.clone());
-                        return None;
+                        return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
                 }
             }
@@ -1223,8 +1213,7 @@ impl Generator {
             let (ok, push) = self.generate_push(&method.returntype, "__ret", 1);
             if !ok {
                 // Skip methods with unknown return types
-                stats.unsupported_types.insert(method.returntype.clone());
-                return None;
+                return Err(SkipReason::UnsupportedType(method.returntype.clone()));
             }
             s.raw(&push);
             return_count = 1;
@@ -1268,11 +1257,7 @@ impl Generator {
                         {
                             "__ret"
                         } else {
-                            println!(
-                                "Unsupported void* pointer parameter '{}' in method '{}', cannot determine size",
-                                param.paramname, method.methodname
-                            );
-                            return None;
+                            return Err(SkipReason::UnsupportedType("void* with unknown size".to_string()));
                         };
                         // A buffer with fixed size
                         s.line(&format!(
@@ -1281,31 +1266,39 @@ impl Generator {
                         ));
                     }
                 } else {
-                    let size = if let Some(oac) = param.array_size_param()
-                        && self.api.consts.iter().any(|c| c.constname == oac)
-                    {
-                        // If the size is a constant, simply use the same size
-                        oac
-                    } else if [
-                        "SteamAPI_ISteamFriends_GetFriendsGroupMembersList",
-                        "SteamAPI_ISteamFriends_DownloadClanActivityCounts",
-                        "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
-                        "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
+                    let size = if [
+                        "SteamAPI_ISteamApps_GetInstalledDepots",
+                        "SteamAPI_ISteamRemotePlay_GetInput",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {
-                        // Some special case where the size is the same as the one you sent
-                        param.array_size_param().unwrap()
-                    } else if ["SteamAPI_ISteamApps_GetInstalledDepots"]
-                        .contains(&method.methodname_flat.as_str())
-                    {
                         // Some special case where the size is returned
                         "__ret"
+                    } else if let Some(oac) = param.array_size_param() {
+                        if self.api.consts.iter().any(|c| c.constname == oac) {
+                            // If the size is a constant, simply use the same size
+                            oac
+                        } else if let Some(p) = method.params.iter().find(|p| p.paramname == oac)
+                            && p.paramtype.ends_with(" *")
+                        {
+                            // If the size is a pointer, it is updated, use that
+                            oac
+                        } else if [
+                            "SteamAPI_ISteamFriends_GetFriendsGroupMembersList",
+                            "SteamAPI_ISteamFriends_DownloadClanActivityCounts",
+                            "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
+                            "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
+                        ]
+                        .contains(&method.methodname_flat.as_str())
+                        {
+                            // Some special case where the size is returned in a parameter that is not the one you sent
+                            oac
+                        } else {
+                            return Err(SkipReason::UnsupportedType(format!("unknown array size: {}", param.paramtype)));
+                        }
                     } else {
                         // Not sure about the size, will it always be the one you sent?
-                        println!("Unknown size for array push: {}", param.paramtype);
-                        stats.unsupported_types.insert(param.paramtype.clone());
-                        return None;
+                        return Err(SkipReason::UnsupportedType(format!("unknown array size: {}", param.paramtype)));
                     };
                     if let Some(code) = self.push_array(
                         param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
@@ -1315,8 +1308,7 @@ impl Generator {
                     ) {
                         s.raw(&code);
                     } else {
-                        stats.unsupported_types.insert(param.paramtype.clone());
-                        return None;
+                        return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
                 }
             } else {
@@ -1326,12 +1318,7 @@ impl Generator {
                     1,
                 );
                 if !ok {
-                    println!(
-                        "Unsupported pointer base type in push: '{}'",
-                        param.paramtype
-                    );
-                    stats.unsupported_types.insert(param.paramtype.clone());
-                    return None;
+                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                 }
                 s.raw(&push);
                 return_count += 1;
@@ -1341,7 +1328,7 @@ impl Generator {
         s.line(&format!("return {};", return_count));
         s.indent_left();
         s.line("}");
-        Some((lua_method_name, s.finish()))
+        Ok((lua_method_name, s.finish()))
     }
 }
 

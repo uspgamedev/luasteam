@@ -212,6 +212,13 @@ EXTERN int luasteam_Timeline_OpenOverlayToGamePhase(lua_State *L) {
 	return 0;
 }
 
+// void OpenOverlayToTimelineEvent(const TimelineEventHandle_t ulEvent);
+EXTERN int luasteam_Timeline_OpenOverlayToTimelineEvent(lua_State *L) {
+	const TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
+	SteamTimeline()->OpenOverlayToTimelineEvent(ulEvent);
+	return 0;
+}
+
 void register_Timeline_auto(lua_State *L) {
 	add_func(L, "SetTimelineTooltip", luasteam_Timeline_SetTimelineTooltip);
 	add_func(L, "ClearTimelineTooltip", luasteam_Timeline_ClearTimelineTooltip);
@@ -230,10 +237,11 @@ void register_Timeline_auto(lua_State *L) {
 	add_func(L, "AddGamePhaseTag", luasteam_Timeline_AddGamePhaseTag);
 	add_func(L, "SetGamePhaseAttribute", luasteam_Timeline_SetGamePhaseAttribute);
 	add_func(L, "OpenOverlayToGamePhase", luasteam_Timeline_OpenOverlayToGamePhase);
+	add_func(L, "OpenOverlayToTimelineEvent", luasteam_Timeline_OpenOverlayToTimelineEvent);
 }
 
 void add_Timeline_auto(lua_State *L) {
-	lua_createtable(L, 0, 17);
+	lua_createtable(L, 0, 18);
 	register_Timeline_auto(L);
 	lua_pushvalue(L, -1);
 	Timeline_ref = luaL_ref(L, LUA_REGISTRYINDEX);

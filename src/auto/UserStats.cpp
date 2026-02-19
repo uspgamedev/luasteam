@@ -522,10 +522,10 @@ EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
 	int32 nScore = static_cast<int32>(luaL_checkint(L, 3));
 	int cScoreDetailsCount = luaL_checkint(L, 5);
 	luaL_checktype(L, 4, LUA_TTABLE);
-	std::vector<int> pScoreDetails(cScoreDetailsCount);
+	std::vector<int32> pScoreDetails(cScoreDetailsCount);
 	for(decltype(cScoreDetailsCount) i=0;i<cScoreDetailsCount;i++){
 		lua_rawgeti(L, -1, i+1);
-		pScoreDetails[i] = static_cast<int>(luaL_checkint(L, -1));
+		pScoreDetails[i] = static_cast<int32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
 	SteamAPICall_t __ret = SteamUserStats()->UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails.data(), cScoreDetailsCount);

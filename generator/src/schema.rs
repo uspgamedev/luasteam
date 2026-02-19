@@ -1,5 +1,30 @@
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeSet, HashSet};
+use std::collections::{HashMap, HashSet};
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SkipReason {
+    ManualBlocklist(String), // Detailed reason for manual blocklist
+    AutoBlocklist,
+    UnsupportedType(String),
+    NoAccessors,
+    RequiresCustomCode,
+    Incomplete,
+    PrivateField,
+}
+
+impl SkipReason {
+    pub fn description(&self) -> String {
+        match self {
+            SkipReason::ManualBlocklist(reason) => format!("manual: {}", reason),
+            SkipReason::AutoBlocklist => "auto-blocklisted (overload)".to_string(),
+            SkipReason::UnsupportedType(t) => format!("unsupported type: {}", t),
+            SkipReason::NoAccessors => "no accessors".to_string(),
+            SkipReason::RequiresCustomCode => "requires custom code".to_string(),
+            SkipReason::Incomplete => "incomplete".to_string(),
+            SkipReason::PrivateField => "has private field".to_string(),
+        }
+    }
+}
 
 #[derive(Debug, Default)]
 pub struct Stats {
@@ -13,14 +38,24 @@ pub struct Stats {
     pub const_generated: usize,
     pub structs_total: usize,
     pub structs_generated: usize,
-    pub unsupported_types: BTreeSet<String>,
+
+    // Track skipped items with reasons
+    pub skipped_interfaces: Vec<(String, SkipReason)>,
+    pub skipped_methods: Vec<(String, SkipReason)>,
+    pub skipped_structs: Vec<(String, SkipReason)>,
+
+    // Per-interface coverage: (total_methods, generated_methods)
+    pub interface_coverage: HashMap<String, (usize, usize)>,
 }
 
 impl Stats {
     pub fn print_summary(&self) {
-        println!("--- Generation Summary ---");
+        println!("\n╔═══════════════════════════════════════════════════════════════╗");
+        println!("║                    Generation Summary                        ║");
+        println!("╚═══════════════════════════════════════════════════════════════╝");
+
         println!(
-            "Interfaces:  {} total, {} generated, {} skipped",
+            "\nInterfaces:  {} total, {} generated, {} skipped",
             self.interfaces_total,
             self.interfaces_generated,
             self.interfaces_total - self.interfaces_generated
@@ -50,7 +85,91 @@ impl Stats {
             self.structs_total - self.structs_generated
         );
 
-        println!("--------------------------");
+        // Print per-interface coverage
+        if !self.interface_coverage.is_empty() {
+            println!("\n┌─────────────────────────────────────────────────────────────┐");
+            println!("│ Interface Coverage");
+            println!("└─────────────────────────────────────────────────────────────┘");
+
+            let mut interfaces: Vec<_> = self.interface_coverage.iter().collect();
+            interfaces.sort_by_key(|(name, _)| *name); // Sort by interface name alphabetically
+            interfaces.sort_by(|(_, (a, b)), (_, (c, d))| {
+                let a = *a as f64;
+                let b = *b as f64;
+                let c = *c as f64;
+                let d = *d as f64;
+                (d / c).partial_cmp(&(b / a)).unwrap() // Sort by coverage percentage descending
+            });
+
+            for (name, (total, generated)) in interfaces {
+                let percentage = if *total > 0 {
+                    (*generated as f64 / *total as f64) * 100.0
+                } else {
+                    0.0
+                };
+                let bar_width = 30;
+                let filled = ((percentage / 100.0) * bar_width as f64) as usize;
+                let bar: String = "█".repeat(filled) + &"░".repeat(bar_width - filled);
+
+                println!(
+                    "  {:35} [{:3}/{:3}] {:5.1}% {}",
+                    name, generated, total, percentage, bar
+                );
+            }
+        }
+
+        // Print skipped interfaces
+        if !self.skipped_interfaces.is_empty() {
+            println!("\n┌─────────────────────────────────────────────────────────────┐");
+            println!("│ Skipped Interfaces ({})", self.skipped_interfaces.len());
+            println!("└─────────────────────────────────────────────────────────────┘");
+            for (name, reason) in &self.skipped_interfaces {
+                println!("  • {} — {}", name, reason.description());
+            }
+        }
+
+        // Print skipped methods grouped by reason
+        if !self.skipped_methods.is_empty() {
+            println!("\n┌─────────────────────────────────────────────────────────────┐");
+            println!(
+                "│ Skipped Methods ({}) — Grouped by Reason",
+                self.skipped_methods.len()
+            );
+            println!("└─────────────────────────────────────────────────────────────┘");
+
+            // Group by reason
+            let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
+            for (name, reason) in &self.skipped_methods {
+                by_reason
+                    .entry(reason.description())
+                    .or_default()
+                    .push(name);
+            }
+
+            // Sort and display
+            let mut reasons: Vec<_> = by_reason.keys().collect();
+            reasons.sort();
+
+            for reason_desc in reasons {
+                let methods = by_reason.get(reason_desc).unwrap();
+                println!("\n  [{}] ({} methods)", reason_desc, methods.len());
+                for method_name in methods {
+                    println!("    • {}", method_name);
+                }
+            }
+        }
+
+        // Print skipped structs
+        if !self.skipped_structs.is_empty() {
+            println!("\n┌─────────────────────────────────────────────────────────────┐");
+            println!("│ Skipped Structs ({})", self.skipped_structs.len());
+            println!("└─────────────────────────────────────────────────────────────┘");
+            for (name, reason) in &self.skipped_structs {
+                println!("  • {} — {}", name, reason.description());
+            }
+        }
+
+        println!("\n═══════════════════════════════════════════════════════════════\n");
     }
 }
 
@@ -272,6 +391,10 @@ impl SteamApi {
             (
                 "ISteamVideo",
                 vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
+            ),
+            (
+                "ISteamInventory",
+                vec![("DeserializeResult", "pBuffer", "unBufferSize")],
             ),
         ];
         for (i_name, data) in to_mark_counters {
