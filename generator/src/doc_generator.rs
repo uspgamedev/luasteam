@@ -1,4 +1,4 @@
-use crate::schema::{CallbackStruct, Interface, Method, Param, SkipReason, Struct};
+use crate::schema::{CallbackStruct, Interface, Method, SkipReason, Struct};
 use crate::type_resolver::TypeResolver;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -176,7 +176,7 @@ impl DocGenerator {
         let params: Vec<String> = method
             .params
             .iter()
-            .filter(|p| !self.is_output_param(p))
+            .filter(|p| !p.is_output_param())
             .map(|p| p.paramname.clone())
             .collect();
 
@@ -194,7 +194,7 @@ impl DocGenerator {
 
         // Parameters
         for param in &method.params {
-            if self.is_output_param(param) {
+            if param.is_output_param() {
                 continue;
             }
             let lua_type = self.get_type_reference(&param.paramtype);
@@ -294,13 +294,6 @@ impl DocGenerator {
         doc
     }
 
-    fn is_output_param(&self, param: &Param) -> bool {
-        param.paramtype.ends_with(" *")
-            && !param.paramtype.starts_with("const")
-            && param.out_string_count.is_none()
-            && param.array_count.is_none()
-    }
-
     fn detect_return_values(&self, method: &Method) -> Vec<(String, String)> {
         let mut returns = Vec::new();
 
@@ -312,7 +305,7 @@ impl DocGenerator {
 
         // Output parameters become additional return values
         for param in &method.params {
-            if self.is_output_param(param) {
+            if param.is_output_param() {
                 let base_type = param.paramtype.trim_end_matches(" *");
                 let lua_type = self.get_type_reference(base_type);
                 returns.push((lua_type, format!("Value for `{}`", param.paramname)));
@@ -334,7 +327,7 @@ impl DocGenerator {
 
         // Check for output parameters that become return values
         for param in &method.params {
-            if self.is_output_param(param) {
+            if param.is_output_param() {
                 let base_type = param.paramtype.trim_end_matches(" *");
                 let lua_type = self.lua_type_name(base_type);
                 differences.push(format!(

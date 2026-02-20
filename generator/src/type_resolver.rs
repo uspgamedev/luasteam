@@ -48,6 +48,7 @@ impl TypeResolver {
         type_map.insert("unsigned short".to_string(), "int".to_string());
         type_map.insert("uint64".to_string(), "uint64".to_string());
         type_map.insert("int64_t".to_string(), "uint64".to_string());
+        type_map.insert("unsigned long long".to_string(), "uint64".to_string());
         type_map.insert("int64".to_string(), "uint64".to_string());
         type_map.insert("bool".to_string(), "bool".to_string());
         type_map.insert("const char *".to_string(), "const char *".to_string());
@@ -72,26 +73,54 @@ impl TypeResolver {
         t
     }
 
-    /// Maps a C++ type to its Lua representation.
+    /// Maps a C++ type to its Lua representation (general Lua typing).
     pub fn to_lua_type(&self, cpp_type: &str) -> &str {
+        self.resolve_to_type(cpp_type, false)
+    }
+
+    /// Maps a C++ type to a LuaLS-friendly representation.
+    pub fn to_luals_type(&self, cpp_type: &str) -> &str {
+        self.resolve_to_type(cpp_type, true)
+    }
+
+    /// Core type resolution logic used by both to_lua_type and to_luals_type.
+    /// When `luals` is true, uses LuaLS-specific type names (e.g., "integer" instead of "number").
+    fn resolve_to_type(&self, cpp_type: &str, luals: bool) -> &str {
         let resolved = self.resolve_base_type(cpp_type);
 
+        // Special cases that apply to both Lua and LuaLS
+        if cpp_type.trim() == "SteamAPICall_t" {
+            return "SteamAPICall_t";
+        }
+        if resolved == "CSteamID" || resolved == "CGameID" {
+            return "uint64";
+        }
+
+        // Type mapping with LuaLS-specific variants
         match resolved {
+            // Booleans
             "bool" => "boolean",
-            "int" | "int32" | "uint32" | "unsigned int" | "uint16" | "short" | "unsigned short" => {
-                "number"
-            }
-            "uint64" | "int64" | "int64_t" | "unsigned long long" | "long long" => "uint64",
-            "const char *" => "string",
-            "float" | "double" => "number",
-            _ => {
-                if resolved.ends_with(" *") {
-                    "table"
-                } else if resolved.starts_with("E") {
-                    "number" // Enums
+
+            // Integral types (variable naming between Lua and LuaLS)
+            "int" | "int8_t" | "int16_t" | "int32_t" | "int64_t" | "uint8_t" | "uint16_t"
+            | "uint32_t" | "uint64_t" | "short" | "unsigned" | "uint" => {
+                if luals {
+                    "integer"
                 } else {
-                    "table"
+                    "number"
                 }
+            }
+
+            // Floating point (always "number")
+            "float" | "double" => "number",
+
+            // Strings
+            "const char *" | "char *" => "string",
+
+            // Default to table for unknown types (likely structs)
+            _ => {
+                println!("What is {resolved}?");
+                "table"
             }
         }
     }

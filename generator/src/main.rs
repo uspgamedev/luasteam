@@ -5,12 +5,14 @@ use std::path::Path;
 mod code_builder;
 mod cpp_type;
 mod doc_generator;
+mod luals_generator;
 mod schema;
 mod type_resolver;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
 use doc_generator::DocGenerator;
+use luals_generator::LuaLsGenerator;
 use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
 use type_resolver::TypeResolver;
 
@@ -23,6 +25,7 @@ struct Generator {
     added_structs: HashSet<String>,
     generated_callresults: HashSet<String>,
     doc_generator: DocGenerator,
+    luals_generator: LuaLsGenerator,
 }
 
 impl Generator {
@@ -56,6 +59,7 @@ impl Generator {
 
         let doc_generator =
             DocGenerator::new(type_resolver.clone()).with_structs(api.structs.clone());
+        let luals_generator = LuaLsGenerator::new(type_resolver.clone());
 
         Self {
             api,
@@ -64,6 +68,7 @@ impl Generator {
             added_structs: HashSet::new(),
             generated_callresults: HashSet::new(),
             doc_generator,
+            luals_generator,
         }
     }
 
@@ -174,6 +179,14 @@ impl Generator {
         }
         fs::create_dir_all(docs_auto_dir).expect("Unable to create docs/auto");
 
+        let luals_dir = Path::new("../luals");
+        if luals_dir.exists() {
+            fs::remove_dir_all(luals_dir).expect("Unable to delete luals");
+        }
+        fs::create_dir_all(luals_dir).expect("Unable to create luals");
+
+        let luals_dir = luals_dir.to_path_buf();
+
         // Start with structs to populate added_structs
         self.generate_structs(&mut stats);
 
@@ -183,7 +196,7 @@ impl Generator {
 
         let interfaces = self.api.interfaces.clone();
         for interface in &interfaces {
-            match self.generate_interface(interface, &method_blocklist, &mut stats) {
+            match self.generate_interface(interface, &method_blocklist, &mut stats, &luals_dir) {
                 Ok(name) => {
                     interface_names.push(name);
                     stats.interfaces_generated += 1;
@@ -203,6 +216,7 @@ impl Generator {
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
+        self.luals_generator.write_index(&luals_dir, &interface_names);
         stats.print_summary();
     }
 
@@ -792,6 +806,7 @@ impl Generator {
         interface: &Interface,
         method_blocklist: &HashMap<String, SkipReason>,
         stats: &mut Stats,
+        luals_dir: &Path,
     ) -> Result<String, SkipReason> {
         let mut cpp = CodeBuilder::new();
         let name = &interface.classname["ISteam".len()..];
@@ -874,6 +889,9 @@ impl Generator {
             interface.classname.clone(),
             (interface_methods_total, interface_methods_generated),
         );
+
+        self.luals_generator
+            .write_interface(luals_dir, interface, &generated_methods, callbacks);
 
         // Generate register_..._auto function
         cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
