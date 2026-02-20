@@ -1,11 +1,56 @@
+use crate::cpp_type::CppType;
+use crate::schema::{Enum, InterfaceEnum, Typedef};
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub struct TypeResolver {
     type_map: HashMap<String, String>,
 }
 
 impl TypeResolver {
-    pub fn new(type_map: HashMap<String, String>) -> Self {
+    /// Creates a TypeResolver from scratch, building the type_map from API data.
+    pub fn from_api(
+        typedefs: &[Typedef],
+        enums: &[Enum],
+        interface_enums: &[(String, Vec<InterfaceEnum>)],
+    ) -> Self {
+        let mut type_map = HashMap::new();
+
+        // Add typedefs
+        for td in typedefs {
+            type_map.insert(td.typedef.clone(), td.type_name.clone());
+        }
+
+        // Add global enums
+        for enm in enums {
+            type_map.insert(enm.enumname.clone(), "int".to_string());
+        }
+
+        // Add interface enums
+        for (_, enums) in interface_enums {
+            for enm in enums {
+                type_map.insert(enm.enumname.clone(), "int".to_string());
+                if !enm.fqname.is_empty() {
+                    type_map.insert(enm.fqname.clone(), "int".to_string());
+                }
+            }
+        }
+
+        // Add basic types
+        type_map.insert("int".to_string(), "int".to_string());
+        type_map.insert("int32".to_string(), "int".to_string());
+        type_map.insert("uint32".to_string(), "int".to_string());
+        type_map.insert("unsigned int".to_string(), "int".to_string());
+        type_map.insert("uint16".to_string(), "int".to_string());
+        type_map.insert("short".to_string(), "int".to_string());
+        type_map.insert("unsigned short".to_string(), "int".to_string());
+        type_map.insert("uint64".to_string(), "uint64".to_string());
+        type_map.insert("int64_t".to_string(), "uint64".to_string());
+        type_map.insert("int64".to_string(), "uint64".to_string());
+        type_map.insert("bool".to_string(), "bool".to_string());
+        type_map.insert("const char *".to_string(), "const char *".to_string());
+        type_map.insert("double".to_string(), "double".to_string());
+
         Self { type_map }
     }
 
@@ -14,7 +59,7 @@ impl TypeResolver {
     pub fn resolve_base_type<'a>(&'a self, mut t: &'a str) -> &'a str {
         // Strip const prefix
         t = t.strip_prefix("const ").unwrap_or(t).trim();
-        
+
         // Follow the typedef chain
         while let Some(resolved) = self.type_map.get(t) {
             if *resolved == t {
@@ -47,5 +92,38 @@ impl TypeResolver {
                 }
             }
         }
+    }
+
+    /// Resolves a C++ type to a structured CppType, handling arrays and pointers.
+    pub fn resolve_type<'a>(&'a self, t: &'a str) -> CppType<'a> {
+        if t.ends_with("]") {
+            let start_bracket = t.rfind('[').expect("Malformed array type");
+            let size_str = &t[start_bracket + 1..t.len() - 1];
+            let _size = size_str.parse::<usize>().expect("Malformed size");
+            let (ttype, is_const) = if t.starts_with("const ") {
+                (t["const ".len()..start_bracket].trim(), true)
+            } else {
+                (t[..start_bracket].trim(), false)
+            };
+            return CppType::Array {
+                ttype: self.resolve_base_type(ttype),
+                size: &size_str,
+                is_const,
+            };
+        }
+
+        if t.ends_with("*") {
+            let (ttype, is_const) = if t.starts_with("const ") {
+                (t["const ".len()..t.len() - 1].trim(), true)
+            } else {
+                (t[..t.len() - 1].trim(), false)
+            };
+            return CppType::Pointer {
+                ttype: self.resolve_base_type(ttype),
+                is_const,
+            };
+        }
+
+        CppType::Normal(self.resolve_base_type(t))
     }
 }

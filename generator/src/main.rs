@@ -18,7 +18,7 @@ static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize:
 
 struct Generator {
     api: SteamApi,
-    type_map: HashMap<String, String>,
+    type_resolver: TypeResolver,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
     added_structs: HashSet<String>,
     doc_generator: DocGenerator,
@@ -26,39 +26,14 @@ struct Generator {
 
 impl Generator {
     fn new(api: SteamApi) -> Self {
-        let mut type_map = HashMap::new();
-        for td in &api.typedefs {
-            type_map.insert(td.typedef.clone(), td.type_name.clone());
-        }
-        for enm in &api.enums {
-            type_map.insert(enm.enumname.clone(), "int".to_string());
-        }
-        for interface in &api.interfaces {
-            for enm in &interface.enums {
-                type_map.insert(enm.enumname.clone(), "int".to_string());
-                if !enm.fqname.is_empty() {
-                    type_map.insert(enm.fqname.clone(), "int".to_string());
-                }
-            }
-        }
-        // Basic types
-        type_map.insert("int".to_string(), "int".to_string());
-        type_map.insert("int32".to_string(), "int".to_string());
-        type_map.insert("uint32".to_string(), "int".to_string());
-        type_map.insert("unsigned int".to_string(), "int".to_string());
-        type_map.insert("uint16".to_string(), "int".to_string());
-        type_map.insert("short".to_string(), "int".to_string());
-        type_map.insert("unsigned short".to_string(), "int".to_string());
-        // type_map.insert("unsigned char".to_string(), "int".to_string());
-        // type_map.insert("uint8".to_string(), "int".to_string());
-        type_map.insert("uint64".to_string(), "uint64".to_string());
-        // int64 -> uint64 is a bit of a hack
-        type_map.insert("int64_t".to_string(), "uint64".to_string());
-        type_map.insert("int64".to_string(), "uint64".to_string());
-        type_map.insert("bool".to_string(), "bool".to_string());
-        type_map.insert("const char *".to_string(), "const char *".to_string());
-        // type_map.insert("float".to_string(), "double".to_string());
-        type_map.insert("double".to_string(), "double".to_string());
+        // Build interface enums list for TypeResolver
+        let interface_enums: Vec<(String, Vec<schema::Enum>)> = api
+            .interfaces
+            .iter()
+            .map(|iface| (iface.classname.clone(), iface.enums.clone()))
+            .collect();
+
+        let type_resolver = TypeResolver::from_api(&api.typedefs, &api.enums, &interface_enums);
 
         let mut interface_callbacks: HashMap<String, Vec<CallbackStruct>> = HashMap::new();
         for callback in &api.callback_structs {
@@ -78,12 +53,12 @@ impl Generator {
             }
         }
 
-        let doc_generator = DocGenerator::new(TypeResolver::new(type_map.clone()))
+        let doc_generator = DocGenerator::new(type_resolver.clone())
             .with_structs(api.structs.clone());
 
         Self {
             api,
-            type_map,
+            type_resolver,
             interface_callbacks,
             added_structs: HashSet::new(),
             doc_generator,
@@ -120,50 +95,6 @@ impl Generator {
             6000..6100 => "ISteamTimeline",
             _ => unreachable!("Unknown callback ID: {}", id),
         }
-    }
-
-    fn resolve_type<'a>(&'a self, t: &'a str) -> CppType<'a> {
-        if t.ends_with("]") {
-            let start_bracket = t.rfind('[').expect("Malformed array type");
-            let size_str = &t[start_bracket + 1..t.len() - 1];
-            let _size = size_str.parse::<usize>().expect("Malformed size");
-            let (ttype, is_const) = if t.starts_with("const ") {
-                (t["const ".len()..start_bracket].trim(), true)
-            } else {
-                (t[..start_bracket].trim(), false)
-            };
-            return CppType::Array {
-                ttype: self.resolve_base_type(ttype),
-                size: &size_str,
-                is_const,
-            };
-        }
-
-        if t.ends_with("*") {
-            let (ttype, is_const) = if t.starts_with("const ") {
-                (t["const ".len()..t.len() - 1].trim(), true)
-            } else {
-                (t[..t.len() - 1].trim(), false)
-            };
-            return CppType::Pointer {
-                ttype: self.resolve_base_type(ttype),
-                is_const,
-            };
-        }
-
-        CppType::Normal(self.resolve_base_type(t))
-    }
-
-    fn resolve_base_type<'a>(&'a self, mut t: &'a str) -> &'a str {
-        // Sometimes a non-pointer type is const, which makes no sense.
-        t = t.strip_prefix("const ").unwrap_or(t);
-        while let Some(resolved) = self.type_map.get(t) {
-            if *resolved == t {
-                break;
-            }
-            t = resolved;
-        }
-        t
     }
 
     fn manual_method_blocklist(&self) -> HashMap<String, SkipReason> {
@@ -361,7 +292,7 @@ impl Generator {
             cpp.line(&format!("lua_getfield(L, index, \"{}\");", field.fieldname));
             let (ok, check) = self.generate_check(
                 &field.fieldtype,
-                self.resolve_type(&field.fieldtype),
+                self.type_resolver.resolve_type(&field.fieldtype),
                 false,
                 &format!("res.{}", field.fieldname),
                 "-1",
@@ -593,7 +524,7 @@ impl Generator {
                     out.line("lua_rawgeti(L, -1, i+1);");
                     let (ok, check) = self.generate_check(
                         ttype,
-                        self.resolve_type(ttype),
+                        self.type_resolver.resolve_type(ttype),
                         false,
                         &format!("{}[i]", value_accessor),
                         "-1",
@@ -622,7 +553,7 @@ impl Generator {
     }
 
     fn generate_push(&self, ftype: &str, value_accessor: &str, indent: usize) -> (bool, String) {
-        let resolved = self.resolve_type(ftype);
+        let resolved = self.type_resolver.resolve_type(ftype);
 
         let push = match resolved {
             CppType::Normal(s) => match s {
@@ -1012,7 +943,7 @@ impl Generator {
         let mut lua_idx = 1;
         while i < method.params.len() {
             let param = &method.params[i];
-            let resolved = self.resolve_type(&param.paramtype);
+            let resolved = self.type_resolver.resolve_type(&param.paramtype);
             use CppType::*;
             if resolved.is_double_pointer() {
                 return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
@@ -1255,7 +1186,7 @@ impl Generator {
 
         // Push pointer output values onto stack
         for (param, is_array) in pointer_params {
-            let resolved = self.resolve_type(&param.paramtype);
+            let resolved = self.type_resolver.resolve_type(&param.paramtype);
             if is_array {
                 if resolved.is_buffer() {
                     if matches!(resolved, CppType::Pointer { ttype: "char", .. }) {

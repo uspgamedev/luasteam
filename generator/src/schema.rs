@@ -495,15 +495,17 @@ impl Struct {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Enum {
     pub enumname: String,
     pub values: Vec<EnumValue>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct EnumValue {
     pub name: String,
+    #[serde(default)]
+    pub fqname: String,
     pub value: String,
 }
 
@@ -514,15 +516,7 @@ pub struct Interface {
     #[serde(default)]
     pub accessors: Vec<Accessor>,
     #[serde(default)]
-    pub enums: Vec<InterfaceEnum>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct InterfaceEnum {
-    pub enumname: String,
-    #[serde(default)]
-    pub fqname: String,
-    pub values: Vec<EnumValue>,
+    pub enums: Vec<Enum>,
 }
 
 impl Interface {
@@ -594,7 +588,7 @@ impl Param {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Typedef {
     pub typedef: String,
     #[serde(rename = "type")]
