@@ -116,19 +116,6 @@ impl Generator {
         blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(), 
             SkipReason::ManualBlocklist("weird API, no explanation or reference".to_string()));
         
-        // Needs support for out_array_count and array_count at the same time, which is not currently supported
-        let dual_count_methods = [
-            "SteamAPI_ISteamUser_GetVoice",
-            "SteamAPI_ISteamUser_DecompressVoice",
-            "SteamAPI_ISteamUser_GetAuthSessionTicket",
-            "SteamAPI_ISteamGameServer_GetAuthSessionTicket",
-            "SteamAPI_ISteamUser_GetEncryptedAppTicket",
-        ];
-        for method in dual_count_methods {
-            blocklist.insert(method.to_string(), 
-                SkipReason::ManualBlocklist("needs both out_array_count and array_count (not supported)".to_string()));
-        }
-        
         // Has function pointers, can't be implemented automatically
         blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(), 
             SkipReason::ManualBlocklist("has function pointers".to_string()));
@@ -155,34 +142,6 @@ impl Generator {
         }
     }
 
-    fn auto_blocklist_overloads(&self, method_blocklist: &mut HashMap<String, SkipReason>) -> usize {
-        let mut auto_blocklisted_conflicts = 0;
-        for interface in &self.api.interfaces {
-            let mut method_counts: HashMap<String, usize> = HashMap::new();
-            for method in &interface.methods {
-                let lua_name = Self::lua_method_public_name(method);
-                *method_counts.entry(lua_name).or_default() += 1;
-            }
-            for method in &interface.methods {
-                let lua_name = Self::lua_method_public_name(method);
-                if method_counts
-                    .get(&lua_name)
-                    .copied()
-                    .unwrap_or(0)
-                    > 1
-                    && !method_blocklist.contains_key(&method.methodname_flat)
-                {
-                    method_blocklist.insert(
-                        method.methodname_flat.clone(), 
-                        SkipReason::AutoBlocklist
-                    );
-                    auto_blocklisted_conflicts += 1;
-                }
-            }
-        }
-        auto_blocklisted_conflicts
-    }
-
     fn generate(&mut self) {
         let mut stats = Stats::default();
         stats.interfaces_total = self.api.interfaces.len();
@@ -205,7 +164,6 @@ impl Generator {
         let mut interface_names = Vec::new();
 
         let mut method_blocklist = self.manual_method_blocklist();
-        let _auto_blocklisted_conflicts = self.auto_blocklist_overloads(&mut method_blocklist);
 
         for interface in &self.api.interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
@@ -928,7 +886,7 @@ impl Generator {
         let mut param_names = Vec::new();
         // Pointer params that are returned as output: (param_info, custom_push_code)
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
-        let mut sz_param_to_ignore = None;
+        let mut size_params_to_ignore: HashSet<String> = HashSet::new();
 
         let mut i = 0;
         let mut lua_idx = 1;
@@ -940,9 +898,8 @@ impl Generator {
                 return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
             }
 
-            if Some(&param.paramname) == sz_param_to_ignore.as_ref() {
+            if size_params_to_ignore.remove(&param.paramname) {
                 // This parameter is just the size for a previous string array, skip it
-                sz_param_to_ignore = None;
                 match resolved {
                     CppType::Normal(_) => {
                         param_names.push(param.paramname.clone());
@@ -956,10 +913,6 @@ impl Generator {
                 }
                 i += 1;
                 continue;
-            }
-
-            if sz_param_to_ignore.is_some() && !matches!(resolved, CppType::Pointer { .. }) {
-                return Err(SkipReason::UnsupportedType("parameter order mismatch".to_string()));
             }
 
             // This is probably somewhat duplicated with generate_check. Though this needs to deal with output pointers as well.
@@ -1038,15 +991,11 @@ impl Generator {
                     ttype: _,
                     is_const: false,
                 } => {
-                    if let Some(size_param) = param.array_size_param() {
-                        // Assuming it is the next non array parameter (because of lua_idx)
-                        // but sometimes it works for two arrays like in GetSupportedGameVersionData (so we store it in sz_param_to_ignore)
-                        if sz_param_to_ignore.is_some() {
-                            assert!(sz_param_to_ignore.as_ref().unwrap() == size_param);
-                        } else {
-                            let p = method.params.iter().find(|p| p.paramname == size_param);
-                            if let Some(p) = p {
-                                sz_param_to_ignore = Some(size_param.to_string());
+                    if let Some(size_param) = param.input_array_size_param() {
+                        let p = method.params.iter().find(|p| p.paramname == size_param);
+                        if let Some(p) = p {
+                            if !size_params_to_ignore.contains(size_param) {
+                                size_params_to_ignore.insert(size_param.to_string());
                                 s.line(&format!(
                                     "{} {} = luaL_checkint(L, {});",
                                     p.paramtype
@@ -1056,12 +1005,39 @@ impl Generator {
                                     lua_idx
                                 ));
                                 lua_idx += 1;
-                            } else if let Some(c) =
-                                self.api.consts.iter().find(|c| c.constname == size_param)
-                            {
-                                let _ = c;
-                            } else {
-                                return Err(SkipReason::UnsupportedType(format!("unknown size param: {}", size_param)));
+                            }
+                        } else if let Some(c) =
+                            self.api.consts.iter().find(|c| c.constname == size_param)
+                        {
+                            let _ = c;
+                        } else {
+                            return Err(SkipReason::UnsupportedType(format!("unknown size param: {}", size_param)));
+                        }
+
+                        if let Some(out_size_param) = param.out_array_count.as_deref()
+                            && out_size_param != size_param
+                        {
+                            let out_param = method
+                                .params
+                                .iter()
+                                .find(|p| p.paramname == out_size_param)
+                                .ok_or_else(|| {
+                                    SkipReason::UnsupportedType(format!(
+                                        "unknown out size param: {}",
+                                        out_size_param
+                                    ))
+                                })?;
+                            if !size_params_to_ignore.contains(out_size_param) {
+                                size_params_to_ignore.insert(out_size_param.to_string());
+                                s.line(&format!(
+                                    "{} {} = {};",
+                                    out_param
+                                        .paramtype
+                                        .strip_suffix(" *")
+                                        .unwrap_or(out_param.paramtype.as_str()),
+                                    out_size_param,
+                                    size_param
+                                ));
                             }
                         }
                         // Consider the original type, since e.g. we want the enum type, not it
@@ -1099,7 +1075,7 @@ impl Generator {
                     is_const: true,
                     ttype: _,
                 } => {
-                    if let Some(sz) = param.array_size_param() {
+                    if let Some(sz) = param.input_array_size_param() {
                         let p = method
                             .params
                             .iter()
@@ -1123,9 +1099,8 @@ impl Generator {
                             1,
                         );
                         if ok {
-                            if sz_param_to_ignore != Some(sz.to_string()) {
-                                assert!(sz_param_to_ignore.is_none());
-                                sz_param_to_ignore = Some(sz.to_string());
+                            if !size_params_to_ignore.contains(sz) {
+                                size_params_to_ignore.insert(sz.to_string());
                                 lua_idx += 1;
                                 s.line(&format!(
                                     "{} {} = luaL_checkint(L, {});",
@@ -1150,7 +1125,6 @@ impl Generator {
             }
             i += 1;
         }
-        assert!(sz_param_to_ignore.is_none());
 
         let call = format!(
             "{}->{}({})",
@@ -1188,8 +1162,8 @@ impl Generator {
                         ));
                     } else {
                         // This should probably go somewhere in the JSON and thus in the fix_* functions
-                        let size = if let Some(sz) = param.array_size_param()
-                            && method.param(sz).paramname.ends_with(" *")
+                        let size = if let Some(sz) = param.output_array_size_param()
+                            && method.param(sz).paramtype.ends_with(" *")
                         {
                             // If the size is a pointer, it is updated, use that
                             sz
@@ -1202,7 +1176,7 @@ impl Generator {
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {
-                            param.array_size_param().unwrap()
+                            param.output_array_size_param().unwrap()
                         } else if [
                             "SteamAPI_ISteamRemoteStorage_FileRead",
                             "SteamAPI_ISteamFriends_GetClanChatMessage",
@@ -1232,7 +1206,7 @@ impl Generator {
                     {
                         // Some special case where the size is returned
                         "__ret"
-                    } else if let Some(oac) = param.array_size_param() {
+                    } else if let Some(oac) = param.output_array_size_param() {
                         if self.api.consts.iter().any(|c| c.constname == oac) {
                             // If the size is a constant, simply use the same size
                             oac

@@ -429,18 +429,52 @@ impl SteamApi {
                 );
             }
         }
-        let p = self
-            .interface_mut("ISteamUser")
-            .method_mut("GetVoice")
-            .param_mut("pDestBuffer");
-        assert!(
-            p.out_array_count.is_none()
-                && p.out_string_count.is_none()
-                && p.out_array_call.is_none()
-                && p.array_count.is_none()
-        );
-        p.out_array_count = Some("nBytesWritten".to_owned());
-        p.array_count = Some("cbDestBufferSize".to_owned());
+        for (interface_name, method_name, param_name, in_name, out_name) in [
+            (
+                "ISteamUser",
+                "GetVoice",
+                "pDestBuffer",
+                "cbDestBufferSize",
+                "nBytesWritten",
+            ),
+            (
+                "ISteamUser",
+                "DecompressVoice",
+                "pDestBuffer",
+                "cbDestBufferSize",
+                "nBytesWritten",
+            ),
+            (
+                "ISteamUser",
+                "GetAuthSessionTicket",
+                "pTicket",
+                "cbMaxTicket",
+                "pcbTicket",
+            ),
+            (
+                "ISteamUser",
+                "GetEncryptedAppTicket",
+                "pTicket",
+                "cbMaxTicket",
+                "pcbTicket",
+            ),
+            (
+                "ISteamGameServer",
+                "GetAuthSessionTicket",
+                "pTicket",
+                "cbMaxTicket",
+                "pcbTicket",
+            ),
+        ] {
+            let p = self
+                .interface_mut(interface_name)
+                .method_mut(method_name)
+                .param_mut(param_name);
+            assert!(p.array_count.is_none());
+            assert!(p.out_array_count.is_none());
+            p.array_count = Some(in_name.to_owned());
+            p.out_array_count = Some(out_name.to_owned());
+        }
     }
 
     pub fn apply_fixes(&mut self) {
@@ -571,7 +605,26 @@ pub struct Param {
 }
 
 impl Param {
-    pub fn array_size_param(&self) -> Option<&str> {
+    pub fn input_array_size_param(&self) -> Option<&str> {
+        match (
+            self.out_string_count.as_deref(),
+            self.array_count.as_deref(),
+            self.out_array_count.as_deref(),
+            self.out_array_call.as_deref(),
+        ) {
+            (None, None, None, None) => None,
+            (Some(s), None, None, None) => Some(s),
+            (None, Some(s), None, None) => Some(s),
+            (None, None, Some(s), None) => Some(s),
+            (None, None, None, Some(oac)) => Some(oac.split_once(',').unwrap().0),
+            (Some(s), Some(_), _, _) => Some(s),
+            (None, Some(s), Some(_), _) => Some(s),
+            (None, None, Some(s), Some(_)) => Some(s),
+            _ => unreachable!(),
+        }
+    }
+
+    pub fn output_array_size_param(&self) -> Option<&str> {
         match (
             self.out_string_count.as_deref(),
             self.out_array_count.as_deref(),
@@ -583,6 +636,9 @@ impl Param {
             (None, Some(s), None, None) => Some(s),
             (None, None, Some(s), None) => Some(s),
             (None, None, None, Some(oac)) => Some(oac.split_once(',').unwrap().0),
+            (Some(s), Some(_), _, _) => Some(s),
+            (None, Some(s), Some(_), _) => Some(s),
+            (None, Some(s), None, Some(_)) => Some(s),
             _ => unreachable!(),
         }
     }

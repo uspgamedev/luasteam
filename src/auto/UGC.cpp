@@ -601,6 +601,22 @@ EXTERN int luasteam_UGC_GetQueryUGCNumKeyValueTags(lua_State *L) {
 	return 1;
 }
 
+// bool GetQueryUGCKeyValueTag(UGCQueryHandle_t handle, uint32 index, uint32 keyValueTagIndex, char * pchKey, uint32 cchKeySize, char * pchValue, uint32 cchValueSize);
+EXTERN int luasteam_UGC_GetQueryUGCKeyValueTag(lua_State *L) {
+	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
+	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
+	uint32 keyValueTagIndex = static_cast<uint32>(luaL_checkint(L, 3));
+	uint32 cchKeySize = luaL_checkint(L, 4);
+	std::vector<char> pchKey(cchKeySize);
+	uint32 cchValueSize = luaL_checkint(L, 5);
+	std::vector<char> pchValue(cchValueSize);
+	bool __ret = SteamUGC()->GetQueryUGCKeyValueTag(handle, index, keyValueTagIndex, pchKey.data(), cchKeySize, pchValue.data(), cchValueSize);
+	lua_pushboolean(L, __ret);
+	lua_pushstring(L, reinterpret_cast<const char*>(pchKey.data()));
+	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
+	return 1;
+}
+
 // uint32 GetNumSupportedGameVersions(UGCQueryHandle_t handle, uint32 index);
 EXTERN int luasteam_UGC_GetNumSupportedGameVersions(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
@@ -1321,6 +1337,7 @@ void register_UGC_auto(lua_State *L) {
 	add_func(L, "GetQueryUGCNumAdditionalPreviews", luasteam_UGC_GetQueryUGCNumAdditionalPreviews);
 	add_func(L, "GetQueryUGCAdditionalPreview", luasteam_UGC_GetQueryUGCAdditionalPreview);
 	add_func(L, "GetQueryUGCNumKeyValueTags", luasteam_UGC_GetQueryUGCNumKeyValueTags);
+	add_func(L, "GetQueryUGCKeyValueTag", luasteam_UGC_GetQueryUGCKeyValueTag);
 	add_func(L, "GetNumSupportedGameVersions", luasteam_UGC_GetNumSupportedGameVersions);
 	add_func(L, "GetSupportedGameVersionData", luasteam_UGC_GetSupportedGameVersionData);
 	add_func(L, "GetQueryUGCContentDescriptors", luasteam_UGC_GetQueryUGCContentDescriptors);
@@ -1400,7 +1417,7 @@ void register_UGC_auto(lua_State *L) {
 }
 
 void add_UGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 91);
+	lua_createtable(L, 0, 92);
 	register_UGC_auto(L);
 	lua_pushvalue(L, -1);
 	UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);

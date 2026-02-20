@@ -395,6 +395,34 @@ EXTERN int luasteam_User_GetAvailableVoice(lua_State *L) {
 	return 2;
 }
 
+// EVoiceResult GetVoice(bool bWantCompressed, void * pDestBuffer, uint32 cbDestBufferSize, uint32 * nBytesWritten);
+EXTERN int luasteam_User_GetVoice(lua_State *L) {
+	bool bWantCompressed = lua_toboolean(L, 1);
+	uint32 cbDestBufferSize = luaL_checkint(L, 2);
+	uint32 nBytesWritten = cbDestBufferSize;
+	std::vector<unsigned char> pDestBuffer(cbDestBufferSize);
+	EVoiceResult __ret = SteamUser()->GetVoice(bWantCompressed, pDestBuffer.data(), cbDestBufferSize, &nBytesWritten);
+	lua_pushinteger(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pDestBuffer.data()), nBytesWritten);
+	lua_pushinteger(L, nBytesWritten);
+	return 2;
+}
+
+// EVoiceResult DecompressVoice(const void * pCompressed, uint32 cbCompressed, void * pDestBuffer, uint32 cbDestBufferSize, uint32 * nBytesWritten, uint32 nDesiredSampleRate);
+EXTERN int luasteam_User_DecompressVoice(lua_State *L) {
+	const char *pCompressed = luaL_checkstring(L, 1);
+	uint32 cbCompressed = static_cast<uint32>(luaL_checkint(L, 2));
+	uint32 cbDestBufferSize = luaL_checkint(L, 3);
+	uint32 nBytesWritten = cbDestBufferSize;
+	std::vector<unsigned char> pDestBuffer(cbDestBufferSize);
+	uint32 nDesiredSampleRate = static_cast<uint32>(luaL_checkint(L, 4));
+	EVoiceResult __ret = SteamUser()->DecompressVoice(pCompressed, cbCompressed, pDestBuffer.data(), cbDestBufferSize, &nBytesWritten, nDesiredSampleRate);
+	lua_pushinteger(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pDestBuffer.data()), nBytesWritten);
+	lua_pushinteger(L, nBytesWritten);
+	return 2;
+}
+
 // uint32 GetVoiceOptimalSampleRate();
 EXTERN int luasteam_User_GetVoiceOptimalSampleRate(lua_State *L) {
 	uint32 __ret = SteamUser()->GetVoiceOptimalSampleRate();
@@ -466,6 +494,18 @@ EXTERN int luasteam_User_RequestEncryptedAppTicket(lua_State *L) {
 	SteamAPICall_t __ret = SteamUser()->RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude);
 	luasteam::pushuint64(L, __ret);
 	return 1;
+}
+
+// bool GetEncryptedAppTicket(void * pTicket, int cbMaxTicket, uint32 * pcbTicket);
+EXTERN int luasteam_User_GetEncryptedAppTicket(lua_State *L) {
+	int cbMaxTicket = luaL_checkint(L, 1);
+	uint32 pcbTicket = cbMaxTicket;
+	std::vector<unsigned char> pTicket(cbMaxTicket);
+	bool __ret = SteamUser()->GetEncryptedAppTicket(pTicket.data(), cbMaxTicket, &pcbTicket);
+	lua_pushboolean(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pTicket.data()), pcbTicket);
+	lua_pushinteger(L, pcbTicket);
+	return 2;
 }
 
 // int GetGameBadgeLevel(int nSeries, bool bFoil);
@@ -551,6 +591,8 @@ void register_User_auto(lua_State *L) {
 	add_func(L, "StartVoiceRecording", luasteam_User_StartVoiceRecording);
 	add_func(L, "StopVoiceRecording", luasteam_User_StopVoiceRecording);
 	add_func(L, "GetAvailableVoice", luasteam_User_GetAvailableVoice);
+	add_func(L, "GetVoice", luasteam_User_GetVoice);
+	add_func(L, "DecompressVoice", luasteam_User_DecompressVoice);
 	add_func(L, "GetVoiceOptimalSampleRate", luasteam_User_GetVoiceOptimalSampleRate);
 	add_func(L, "GetAuthTicketForWebApi", luasteam_User_GetAuthTicketForWebApi);
 	add_func(L, "BeginAuthSession", luasteam_User_BeginAuthSession);
@@ -560,6 +602,7 @@ void register_User_auto(lua_State *L) {
 	add_func(L, "BIsBehindNAT", luasteam_User_BIsBehindNAT);
 	add_func(L, "AdvertiseGame", luasteam_User_AdvertiseGame);
 	add_func(L, "RequestEncryptedAppTicket", luasteam_User_RequestEncryptedAppTicket);
+	add_func(L, "GetEncryptedAppTicket", luasteam_User_GetEncryptedAppTicket);
 	add_func(L, "GetGameBadgeLevel", luasteam_User_GetGameBadgeLevel);
 	add_func(L, "GetPlayerSteamLevel", luasteam_User_GetPlayerSteamLevel);
 	add_func(L, "RequestStoreAuthURL", luasteam_User_RequestStoreAuthURL);
@@ -573,7 +616,7 @@ void register_User_auto(lua_State *L) {
 }
 
 void add_User_auto(lua_State *L) {
-	lua_createtable(L, 0, 27);
+	lua_createtable(L, 0, 30);
 	register_User_auto(L);
 	lua_pushvalue(L, -1);
 	User_ref = luaL_ref(L, LUA_REGISTRYINDEX);
