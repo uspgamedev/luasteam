@@ -283,6 +283,44 @@ void shutdown_UserStats_auto(lua_State *L) {
 	delete UserStats_listener; UserStats_listener = nullptr;
 }
 
+// bool GetStat(const char * pchName, int32 * pData);
+EXTERN int luasteam_UserStats_GetStatInt32(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	int32 pData;
+	bool __ret = SteamUserStats()->GetStat(pchName, &pData);
+	lua_pushboolean(L, __ret);
+	lua_pushinteger(L, pData);
+	return 2;
+}
+
+// bool GetStat(const char * pchName, float * pData);
+EXTERN int luasteam_UserStats_GetStatFloat(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	float pData;
+	bool __ret = SteamUserStats()->GetStat(pchName, &pData);
+	lua_pushboolean(L, __ret);
+	lua_pushnumber(L, pData);
+	return 2;
+}
+
+// bool SetStat(const char * pchName, int32 nData);
+EXTERN int luasteam_UserStats_SetStatInt32(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	int32 nData = static_cast<int32>(luaL_checkint(L, 2));
+	bool __ret = SteamUserStats()->SetStat(pchName, nData);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// bool SetStat(const char * pchName, float fData);
+EXTERN int luasteam_UserStats_SetStatFloat(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	float fData = luaL_checknumber(L, 2);
+	bool __ret = SteamUserStats()->SetStat(pchName, fData);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
 // bool UpdateAvgRateStat(const char * pchName, float flCountThisSession, double dSessionLength);
 EXTERN int luasteam_UserStats_UpdateAvgRateStat(lua_State *L) {
 	const char *pchName = luaL_checkstring(L, 1);
@@ -386,6 +424,28 @@ EXTERN int luasteam_UserStats_RequestUserStats(lua_State *L) {
 	SteamAPICall_t __ret = SteamUserStats()->RequestUserStats(steamIDUser);
 	luasteam::pushuint64(L, __ret);
 	return 1;
+}
+
+// bool GetUserStat(CSteamID steamIDUser, const char * pchName, int32 * pData);
+EXTERN int luasteam_UserStats_GetUserStatInt32(lua_State *L) {
+	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	const char *pchName = luaL_checkstring(L, 2);
+	int32 pData;
+	bool __ret = SteamUserStats()->GetUserStat(steamIDUser, pchName, &pData);
+	lua_pushboolean(L, __ret);
+	lua_pushinteger(L, pData);
+	return 2;
+}
+
+// bool GetUserStat(CSteamID steamIDUser, const char * pchName, float * pData);
+EXTERN int luasteam_UserStats_GetUserStatFloat(lua_State *L) {
+	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	const char *pchName = luaL_checkstring(L, 2);
+	float pData;
+	bool __ret = SteamUserStats()->GetUserStat(steamIDUser, pchName, &pData);
+	lua_pushboolean(L, __ret);
+	lua_pushnumber(L, pData);
+	return 2;
 }
 
 // bool GetUserAchievement(CSteamID steamIDUser, const char * pchName, bool * pbAchieved);
@@ -603,7 +663,85 @@ EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
 	return 1;
 }
 
+// bool GetGlobalStat(const char * pchStatName, int64 * pData);
+EXTERN int luasteam_UserStats_GetGlobalStatInt64(lua_State *L) {
+	const char *pchStatName = luaL_checkstring(L, 1);
+	int64 pData;
+	bool __ret = SteamUserStats()->GetGlobalStat(pchStatName, &pData);
+	lua_pushboolean(L, __ret);
+	luasteam::pushuint64(L, pData);
+	return 2;
+}
+
+// bool GetGlobalStat(const char * pchStatName, double * pData);
+EXTERN int luasteam_UserStats_GetGlobalStatDouble(lua_State *L) {
+	const char *pchStatName = luaL_checkstring(L, 1);
+	double pData;
+	bool __ret = SteamUserStats()->GetGlobalStat(pchStatName, &pData);
+	lua_pushboolean(L, __ret);
+	lua_pushnumber(L, pData);
+	return 2;
+}
+
+// int32 GetGlobalStatHistory(const char * pchStatName, int64 * pData, uint32 cubData);
+EXTERN int luasteam_UserStats_GetGlobalStatHistoryInt64(lua_State *L) {
+	const char *pchStatName = luaL_checkstring(L, 1);
+	uint32 cubData = luaL_checkint(L, 2);
+	std::vector<int64> pData(cubData);
+	int32 __ret = SteamUserStats()->GetGlobalStatHistory(pchStatName, pData.data(), cubData);
+	lua_pushinteger(L, __ret);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i=0;i<__ret;i++){
+		luasteam::pushuint64(L, pData[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	return 1;
+}
+
+// int32 GetGlobalStatHistory(const char * pchStatName, double * pData, uint32 cubData);
+EXTERN int luasteam_UserStats_GetGlobalStatHistoryDouble(lua_State *L) {
+	const char *pchStatName = luaL_checkstring(L, 1);
+	uint32 cubData = luaL_checkint(L, 2);
+	std::vector<double> pData(cubData);
+	int32 __ret = SteamUserStats()->GetGlobalStatHistory(pchStatName, pData.data(), cubData);
+	lua_pushinteger(L, __ret);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i=0;i<__ret;i++){
+		lua_pushnumber(L, pData[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	return 1;
+}
+
+// bool GetAchievementProgressLimits(const char * pchName, int32 * pnMinProgress, int32 * pnMaxProgress);
+EXTERN int luasteam_UserStats_GetAchievementProgressLimitsInt32(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	int32 pnMinProgress;
+	int32 pnMaxProgress;
+	bool __ret = SteamUserStats()->GetAchievementProgressLimits(pchName, &pnMinProgress, &pnMaxProgress);
+	lua_pushboolean(L, __ret);
+	lua_pushinteger(L, pnMinProgress);
+	lua_pushinteger(L, pnMaxProgress);
+	return 3;
+}
+
+// bool GetAchievementProgressLimits(const char * pchName, float * pfMinProgress, float * pfMaxProgress);
+EXTERN int luasteam_UserStats_GetAchievementProgressLimitsFloat(lua_State *L) {
+	const char *pchName = luaL_checkstring(L, 1);
+	float pfMinProgress;
+	float pfMaxProgress;
+	bool __ret = SteamUserStats()->GetAchievementProgressLimits(pchName, &pfMinProgress, &pfMaxProgress);
+	lua_pushboolean(L, __ret);
+	lua_pushnumber(L, pfMinProgress);
+	lua_pushnumber(L, pfMaxProgress);
+	return 3;
+}
+
 void register_UserStats_auto(lua_State *L) {
+	add_func(L, "GetStatInt32", luasteam_UserStats_GetStatInt32);
+	add_func(L, "GetStatFloat", luasteam_UserStats_GetStatFloat);
+	add_func(L, "SetStatInt32", luasteam_UserStats_SetStatInt32);
+	add_func(L, "SetStatFloat", luasteam_UserStats_SetStatFloat);
 	add_func(L, "UpdateAvgRateStat", luasteam_UserStats_UpdateAvgRateStat);
 	add_func(L, "GetAchievement", luasteam_UserStats_GetAchievement);
 	add_func(L, "SetAchievement", luasteam_UserStats_SetAchievement);
@@ -616,6 +754,8 @@ void register_UserStats_auto(lua_State *L) {
 	add_func(L, "GetNumAchievements", luasteam_UserStats_GetNumAchievements);
 	add_func(L, "GetAchievementName", luasteam_UserStats_GetAchievementName);
 	add_func(L, "RequestUserStats", luasteam_UserStats_RequestUserStats);
+	add_func(L, "GetUserStatInt32", luasteam_UserStats_GetUserStatInt32);
+	add_func(L, "GetUserStatFloat", luasteam_UserStats_GetUserStatFloat);
 	add_func(L, "GetUserAchievement", luasteam_UserStats_GetUserAchievement);
 	add_func(L, "GetUserAchievementAndUnlockTime", luasteam_UserStats_GetUserAchievementAndUnlockTime);
 	add_func(L, "ResetAllStats", luasteam_UserStats_ResetAllStats);
@@ -636,10 +776,16 @@ void register_UserStats_auto(lua_State *L) {
 	add_func(L, "GetNextMostAchievedAchievementInfo", luasteam_UserStats_GetNextMostAchievedAchievementInfo);
 	add_func(L, "GetAchievementAchievedPercent", luasteam_UserStats_GetAchievementAchievedPercent);
 	add_func(L, "RequestGlobalStats", luasteam_UserStats_RequestGlobalStats);
+	add_func(L, "GetGlobalStatInt64", luasteam_UserStats_GetGlobalStatInt64);
+	add_func(L, "GetGlobalStatDouble", luasteam_UserStats_GetGlobalStatDouble);
+	add_func(L, "GetGlobalStatHistoryInt64", luasteam_UserStats_GetGlobalStatHistoryInt64);
+	add_func(L, "GetGlobalStatHistoryDouble", luasteam_UserStats_GetGlobalStatHistoryDouble);
+	add_func(L, "GetAchievementProgressLimitsInt32", luasteam_UserStats_GetAchievementProgressLimitsInt32);
+	add_func(L, "GetAchievementProgressLimitsFloat", luasteam_UserStats_GetAchievementProgressLimitsFloat);
 }
 
 void add_UserStats_auto(lua_State *L) {
-	lua_createtable(L, 0, 32);
+	lua_createtable(L, 0, 44);
 	register_UserStats_auto(L);
 	lua_pushvalue(L, -1);
 	UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);

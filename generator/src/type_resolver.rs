@@ -1,5 +1,5 @@
 use crate::cpp_type::CppType;
-use crate::schema::{Enum, InterfaceEnum, Typedef};
+use crate::schema::{Enum, Typedef};
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -12,7 +12,7 @@ impl TypeResolver {
     pub fn from_api(
         typedefs: &[Typedef],
         enums: &[Enum],
-        interface_enums: &[(String, Vec<InterfaceEnum>)],
+        interface_enums: &[(String, Vec<Enum>)],
     ) -> Self {
         let mut type_map = HashMap::new();
 
@@ -30,8 +30,10 @@ impl TypeResolver {
         for (_, enums) in interface_enums {
             for enm in enums {
                 type_map.insert(enm.enumname.clone(), "int".to_string());
-                if !enm.fqname.is_empty() {
-                    type_map.insert(enm.fqname.clone(), "int".to_string());
+                for value in &enm.values {
+                    if !value.fqname.is_empty() {
+                        type_map.insert(value.fqname.clone(), "int".to_string());
+                    }
                 }
             }
         }

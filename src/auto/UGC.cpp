@@ -441,6 +441,18 @@ EXTERN int luasteam_UGC_CreateQueryUserUGCRequest(lua_State *L) {
 	return 1;
 }
 
+// UGCQueryHandle_t CreateQueryAllUGCRequest(EUGCQuery eQueryType, EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
+EXTERN int luasteam_UGC_CreateQueryAllUGCRequestPage(lua_State *L) {
+	EUGCQuery eQueryType = static_cast<EUGCQuery>(luaL_checkint(L, 1));
+	EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 2));
+	AppId_t nCreatorAppID = static_cast<AppId_t>(luaL_checkint(L, 3));
+	AppId_t nConsumerAppID = static_cast<AppId_t>(luaL_checkint(L, 4));
+	uint32 unPage = static_cast<uint32>(luaL_checkint(L, 5));
+	UGCQueryHandle_t __ret = SteamUGC()->CreateQueryAllUGCRequest(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage);
+	luasteam::pushuint64(L, __ret);
+	return 1;
+}
+
 // UGCQueryHandle_t CreateQueryUGCDetailsRequest(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
 EXTERN int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L) {
 	PublishedFileId_t pvecPublishedFileID;
@@ -1295,6 +1307,7 @@ EXTERN int luasteam_UGC_SetSubscriptionsLoadOrder(lua_State *L) {
 
 void register_UGC_auto(lua_State *L) {
 	add_func(L, "CreateQueryUserUGCRequest", luasteam_UGC_CreateQueryUserUGCRequest);
+	add_func(L, "CreateQueryAllUGCRequestPage", luasteam_UGC_CreateQueryAllUGCRequestPage);
 	add_func(L, "CreateQueryUGCDetailsRequest", luasteam_UGC_CreateQueryUGCDetailsRequest);
 	add_func(L, "SendQueryUGCRequest", luasteam_UGC_SendQueryUGCRequest);
 	add_func(L, "GetQueryUGCResult", luasteam_UGC_GetQueryUGCResult);
@@ -1387,7 +1400,7 @@ void register_UGC_auto(lua_State *L) {
 }
 
 void add_UGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 90);
+	lua_createtable(L, 0, 91);
 	register_UGC_auto(L);
 	lua_pushvalue(L, -1);
 	UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);

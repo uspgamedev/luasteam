@@ -69,6 +69,8 @@ Normal functions
 
 The lua bindings for normal functions are very similar to the C++ API, so for example
 
+For overloaded Steam methods, luasteam exposes distinct Lua names with a type suffix, such as ``GetStatInt32`` and ``SetStatFloat``.
+
 .. code-block:: C++
 
     SteamFriends()->ActivateGameOverlay("achievements");

@@ -69,14 +69,21 @@ impl DocGenerator {
         doc.push_str(".. note::\n");
         doc.push_str("   This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.\n");
         doc.push_str("   Methods marked with ✋ require manual implementation.\n\n");
+        if generated_methods
+            .iter()
+            .any(|(method, lua_method_name)| self.is_overload_renamed(method, lua_method_name))
+        {
+            doc.push_str(".. note::\n");
+            doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
+        }
 
         // List of Functions
         doc.push_str("List of Functions\n");
         doc.push_str("-----------------\n\n");
-        for (method, _) in generated_methods {
+        for (_, lua_method_name) in generated_methods {
             doc.push_str(&format!(
                 "* :func:`{}.{}`\n",
-                lua_namespace, method.methodname
+                lua_namespace, lua_method_name
             ));
         }
         doc.push_str("\n");
@@ -99,9 +106,10 @@ impl DocGenerator {
         doc.push_str("Function Reference\n");
         doc.push_str("------------------\n\n");
 
-        for (method, _) in generated_methods {
+        for (method, lua_method_name) in generated_methods {
             doc.push_str(&self.generate_function_doc(
                 method,
+                lua_method_name,
                 &lua_namespace,
                 &interface.classname,
                 true,
@@ -157,11 +165,11 @@ impl DocGenerator {
     fn generate_function_doc(
         &self,
         method: &Method,
+        lua_method_name: &str,
         lua_namespace: &str,
         interface_name: &str,
         is_auto: bool,
     ) -> String {
-        let lua_method_name = &method.methodname;
         let custom_key = format!("{}.{}", interface_name, method.methodname);
         let custom_doc = self.custom_docs.methods.get(&custom_key);
 
@@ -233,7 +241,7 @@ impl DocGenerator {
         }
 
         // Signature differences
-        let differences = self.detect_signature_differences(method);
+        let differences = self.detect_signature_differences(method, lua_method_name);
         if !differences.is_empty() {
             doc.push_str("    **Signature differences from C++ API:**\n\n");
             for diff in &differences {
@@ -324,8 +332,15 @@ impl DocGenerator {
         returns
     }
 
-    fn detect_signature_differences(&self, method: &Method) -> Vec<String> {
+    fn detect_signature_differences(&self, method: &Method, lua_method_name: &str) -> Vec<String> {
         let mut differences = Vec::new();
+
+        if self.is_overload_renamed(method, lua_method_name) {
+            differences.push(format!(
+                "This overload is exposed as ``{}`` in Lua (instead of ``{}``) to avoid naming collisions between C++ overloads",
+                lua_method_name, method.methodname
+            ));
+        }
 
         // Check for output parameters that become return values
         for param in &method.params {
@@ -355,6 +370,22 @@ impl DocGenerator {
         }
 
         differences
+    }
+
+    fn is_overload_renamed(&self, method: &Method, lua_method_name: &str) -> bool {
+        let flat_tail = method
+            .methodname_flat
+            .rsplit('_')
+            .next()
+            .unwrap_or(method.methodname.as_str());
+
+        if let Some(suffix) = flat_tail.strip_prefix(&method.methodname)
+            && !suffix.is_empty()
+        {
+            return lua_method_name == format!("{}{}", method.methodname, suffix);
+        }
+
+        false
     }
 
     fn lua_type_name(&self, cpp_type: &str) -> &str {

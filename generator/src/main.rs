@@ -100,35 +100,6 @@ impl Generator {
     fn manual_method_blocklist(&self) -> HashMap<String, SkipReason> {
         let mut blocklist = HashMap::new();
         
-        // These are added because they have many overloads - TODO: Add a custom one for these
-        let overload_methods = [
-            "SteamAPI_ISteamInventory_SetPropertyString",
-            "SteamAPI_ISteamInventory_SetPropertyBool",
-            "SteamAPI_ISteamInventory_SetPropertyInt64",
-            "SteamAPI_ISteamInventory_SetPropertyFloat",
-            "SteamAPI_ISteamUserStats_GetGlobalStatInt64",
-            "SteamAPI_ISteamUserStats_GetGlobalStatDouble",
-            "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
-            "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
-            "SteamAPI_ISteamUserStats_SetStatInt32",
-            "SteamAPI_ISteamUserStats_SetStatFloat",
-            "SteamAPI_ISteamUserStats_GetStatInt32",
-            "SteamAPI_ISteamUserStats_GetStatFloat",
-            "SteamAPI_ISteamUserStats_SetUserStatInt32",
-            "SteamAPI_ISteamUserStats_SetUserStatFloat",
-            "SteamAPI_ISteamUserStats_GetUserStatInt32",
-            "SteamAPI_ISteamUserStats_GetUserStatFloat",
-            "SteamAPI_ISteamGameServerStats_SetUserStatInt32",
-            "SteamAPI_ISteamGameServerStats_SetUserStatFloat",
-            "SteamAPI_ISteamGameServerStats_GetUserStatInt32",
-            "SteamAPI_ISteamGameServerStats_GetUserStatFloat",
-            "SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32",
-            "SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat",
-        ];
-        for method in overload_methods {
-            blocklist.insert(method.to_string(), SkipReason::ManualBlocklist("has many overloads, needs custom implementation".to_string()));
-        }
-        
         // Cursor method is not used
         blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string(), 
             SkipReason::ManualBlocklist("cursor method is not used".to_string()));
@@ -168,16 +139,34 @@ impl Generator {
         blocklist
     }
 
+    fn lua_method_public_name(method: &Method) -> String {
+        let flat_tail = method
+            .methodname_flat
+            .rsplit('_')
+            .next()
+            .unwrap_or(method.methodname.as_str());
+
+        if let Some(suffix) = flat_tail.strip_prefix(&method.methodname)
+            && !suffix.is_empty()
+        {
+            format!("{}{}", method.methodname, suffix)
+        } else {
+            method.methodname.clone()
+        }
+    }
+
     fn auto_blocklist_overloads(&self, method_blocklist: &mut HashMap<String, SkipReason>) -> usize {
         let mut auto_blocklisted_conflicts = 0;
         for interface in &self.api.interfaces {
-            let mut method_counts: HashMap<&str, usize> = HashMap::new();
+            let mut method_counts: HashMap<String, usize> = HashMap::new();
             for method in &interface.methods {
-                *method_counts.entry(method.methodname.as_str()).or_default() += 1;
+                let lua_name = Self::lua_method_public_name(method);
+                *method_counts.entry(lua_name).or_default() += 1;
             }
             for method in &interface.methods {
+                let lua_name = Self::lua_method_public_name(method);
                 if method_counts
-                    .get(method.methodname.as_str())
+                    .get(&lua_name)
                     .copied()
                     .unwrap_or(0)
                     > 1
@@ -816,8 +805,9 @@ impl Generator {
         // Generate register_..._auto function
         cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
         cpp.indent_right();
-        for (m, c_name) in &generated_methods {
-            cpp.line(&format!("add_func(L, \"{}\", {});", m.methodname, c_name));
+        for (_, lua_name) in &generated_methods {
+            let c_name = format!("luasteam_{}_{}", name, lua_name);
+            cpp.line(&format!("add_func(L, \"{}\", {});", lua_name, c_name));
         }
         cpp.indent_left();
         cpp.line("}");
@@ -929,8 +919,9 @@ impl Generator {
             method.methodname,
             params_str.join(", ")
         ));
-        let lua_method_name = format!("luasteam_{}_{}", interface, method.methodname);
-        s.line(&format!("EXTERN int {}(lua_State *L) {{", lua_method_name));
+        let lua_method_name = Self::lua_method_public_name(method);
+        let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
+        s.line(&format!("EXTERN int {}(lua_State *L) {{", c_method_name));
         s.indent_right();
 
         // params used to call the function in C
@@ -1234,6 +1225,8 @@ impl Generator {
                     let size = if [
                         "SteamAPI_ISteamApps_GetInstalledDepots",
                         "SteamAPI_ISteamRemotePlay_GetInput",
+                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
+                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {

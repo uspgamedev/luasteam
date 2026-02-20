@@ -534,6 +534,50 @@ EXTERN int luasteam_Inventory_RemoveProperty(lua_State *L) {
 	return 1;
 }
 
+// bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, const char * pchPropertyValue);
+EXTERN int luasteam_Inventory_SetPropertyString(lua_State *L) {
+	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	const char *pchPropertyName = luaL_checkstring(L, 3);
+	const char *pchPropertyValue = luaL_checkstring(L, 4);
+	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, pchPropertyValue);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, bool bValue);
+EXTERN int luasteam_Inventory_SetPropertyBool(lua_State *L) {
+	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	const char *pchPropertyName = luaL_checkstring(L, 3);
+	bool bValue = lua_toboolean(L, 4);
+	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, bValue);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, int64 nValue);
+EXTERN int luasteam_Inventory_SetPropertyInt64(lua_State *L) {
+	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	const char *pchPropertyName = luaL_checkstring(L, 3);
+	int64 nValue(luasteam::checkuint64(L, 4));
+	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, nValue);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, float flValue);
+EXTERN int luasteam_Inventory_SetPropertyFloat(lua_State *L) {
+	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	const char *pchPropertyName = luaL_checkstring(L, 3);
+	float flValue = luaL_checknumber(L, 4);
+	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, flValue);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
 // bool SubmitUpdateProperties(SteamInventoryUpdateHandle_t handle, SteamInventoryResult_t * pResultHandle);
 EXTERN int luasteam_Inventory_SubmitUpdateProperties(lua_State *L) {
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
@@ -585,12 +629,16 @@ void register_Inventory_auto(lua_State *L) {
 	add_func(L, "GetItemPrice", luasteam_Inventory_GetItemPrice);
 	add_func(L, "StartUpdateProperties", luasteam_Inventory_StartUpdateProperties);
 	add_func(L, "RemoveProperty", luasteam_Inventory_RemoveProperty);
+	add_func(L, "SetPropertyString", luasteam_Inventory_SetPropertyString);
+	add_func(L, "SetPropertyBool", luasteam_Inventory_SetPropertyBool);
+	add_func(L, "SetPropertyInt64", luasteam_Inventory_SetPropertyInt64);
+	add_func(L, "SetPropertyFloat", luasteam_Inventory_SetPropertyFloat);
 	add_func(L, "SubmitUpdateProperties", luasteam_Inventory_SubmitUpdateProperties);
 	add_func(L, "InspectItem", luasteam_Inventory_InspectItem);
 }
 
 void add_Inventory_auto(lua_State *L) {
-	lua_createtable(L, 0, 32);
+	lua_createtable(L, 0, 36);
 	register_Inventory_auto(L);
 	lua_pushvalue(L, -1);
 	Inventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
