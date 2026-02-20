@@ -1,0 +1,85 @@
+# Custom documentation for Steam API methods
+# Format: [InterfaceName.MethodName]
+
+[ISteamUserStats.GetStat]
+description = "Gets the current value of a stat. The stat must be set as an integer. For float stats, use GetStatFloat."
+notes = [
+    "The stat 'API Name' must exist in App Admin on Steamworks",
+    "For other users' stats, use GetUserStat (currently not implemented)"
+]
+
+[ISteamUserStats.SetStat]
+description = "Sets the value of a stat for the current user. This only modifies in-memory state - call StoreStats() to persist."
+
+[ISteamUserStats.StoreStats]
+description = "Stores the current stats and achievements on the server. This will cause a callback when complete."
+example = """
+Steam.userStats.setStatInt('kills', 100)
+Steam.userStats.storeStats()
+"""
+
+[ISteamUserStats.GetAchievement]
+description = "Gets the unlock status of an Achievement."
+param_descriptions = { pchName = "The 'API Name' of the achievement" }
+
+[ISteamUserStats.SetAchievement]
+description = "Unlocks an achievement. Call StoreStats() to persist."
+param_descriptions = { pchName = "The 'API Name' of the achievement" }
+
+[ISteamUserStats.FindLeaderboard]
+description = "Asynchronously finds a leaderboard by name."
+example = """
+local call = Steam.userStats.findLeaderboard('TopScores')
+Steam.userStats.onLeaderboardFindResult = function(data)
+    if data.m_bLeaderboardFound == 1 then
+        print('Found leaderboard:', data.m_hSteamLeaderboard)
+    end
+end
+"""
+
+[ISteamUserStats.UploadLeaderboardScore]
+description = "Uploads a user score to a specified leaderboard."
+param_descriptions = { 
+    hSteamLeaderboard = "Handle to the leaderboard",
+    eLeaderboardUploadScoreMethod = "Upload method (see ELeaderboardUploadScoreMethod)",
+    nScore = "The score to upload",
+    pScoreDetails = "Optional table of score details (integers)"
+}
+example = """
+local details = {100, 200, 300}  -- Optional score details
+local call = Steam.userStats.uploadLeaderboardScore(
+    leaderboardHandle,
+    Steam.k_ELeaderboardUploadScoreMethodKeepBest,
+    9999,
+    details
+)
+"""
+
+[ISteamFriends.GetPersonaName]
+description = "Gets the current user's persona (display) name."
+
+[ISteamFriends.SetRichPresence]
+description = "Sets a Rich Presence key/value for the current user that is shared with friends."
+param_descriptions = {
+    pchKey = "The Rich Presence key to set",
+    pchValue = "The value to associate with the key"
+}
+
+[ISteamUser.GetSteamID]
+description = "Returns the CSteamID of the account currently logged in to the Steam client."
+
+[ISteamApps.BIsSubscribedApp]
+description = "Checks if the user owns a specific piece of Downloadable Content (DLC)."
+param_descriptions = { appID = "The App ID of the DLC" }
+
+[ISteamUGC.CreateQueryUserUGCRequest]
+description = "Creates a query to retrieve the details for user-generated content (UGC)."
+param_descriptions = {
+    unAccountID = "The account ID to query",
+    eListType = "The type of list to query",
+    eMatchingUGCType = "The type of UGC to match",
+    eSortOrder = "How to sort the results",
+    nCreatorAppID = "The app that created the items",
+    nConsumerAppID = "The app that will consume the items",
+    unPage = "The page number of results to retrieve (starts at 1)"
+}

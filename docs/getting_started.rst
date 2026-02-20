@@ -77,12 +77,12 @@ becomes
 
 .. code-block:: Lua
 
-    Steam.friends.activateGameOverlay("achievements")
+    Steam.Friends.ActivateGameOverlay("achievements")
 
 Callbacks
 ---------
 
-Callbacks work a little different, for example, the ``GameOverlayActivated_t`` callback in ``ISteamUserFriends`` can be used creating a function named ``onGameOverlayActivated`` inside ``friends``.
+Callbacks work a little different, for example, the ``GameOverlayActivated_t`` callback in ``ISteamUserFriends`` can be used creating a function named ``onGameOverlayActivated`` inside ``Friends``.
 
 Original code:
 
@@ -103,7 +103,7 @@ Code using luasteam:
 
 .. code-block:: Lua
 
-    function Steam.friends.onGameOverlayActivated(data)
+    function Steam.Friends.onGameOverlayActivated(data)
         if data.active then
             print("Steam overlay now active")
         else
@@ -146,7 +146,7 @@ Code in luasteam
 
 .. code-block:: Lua
 
-    Steam.userStats.findLeaderboard("test", function(data, err)
+    Steam.UserStats.FindLeaderboard("test", function(data, err)
         if err or not data.leaderboardFound then
             print("Leaderboard not found!")
         else
@@ -173,7 +173,7 @@ They can only be compared for equality or converted to strings (using the `tostr
 
 ::
 
-    local original = Steam.user.getSteamID()
+    local original = Steam.User.GetSteamID()
     local str = tostring(original)
     print("Your id is " .. str)
     local id = Steam.extra.parseUint64(str)

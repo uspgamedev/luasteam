@@ -14,21 +14,21 @@ While using this documentation, you may also like to check the `SteamWorks API R
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contents:
+    :caption: General Documentation:
 
     Getting Started <getting_started>
     Core Functions <steam_api>
-    ISteamFriends <friends>
-    ISteamUser <user>
-    ISteamUserStats <user_stats>
-    ISteamUtils <utils>
-    ISteamApps <apps>
-    ISteamUGC <UGC>
-    ISteamInput <input>
     ISteamNetworkingSockets <networking_sockets>
     ISteamNetworkingUtils <networking_utils>
-    ISteamGameServer <game_server>
+    ISteamUGC <UGC>
     Extra <extra>
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Auto-Generated API Reference:
+    :glob:
+    
+    auto/*
 
 Indices and tables
 ==================

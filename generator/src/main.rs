@@ -4,10 +4,12 @@ use std::path::Path;
 
 mod code_builder;
 mod cpp_type;
+mod doc_generator;
 mod schema;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
+use doc_generator::DocGenerator;
 use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
@@ -17,6 +19,7 @@ struct Generator {
     type_map: HashMap<String, String>,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
     added_structs: HashSet<String>,
+    doc_generator: DocGenerator,
 }
 
 impl Generator {
@@ -73,11 +76,14 @@ impl Generator {
             }
         }
 
+        let doc_generator = DocGenerator::new(type_map.clone());
+
         Self {
             api,
             type_map,
             interface_callbacks,
             added_structs: HashSet::new(),
+            doc_generator,
         }
     }
 
@@ -263,6 +269,13 @@ impl Generator {
             fs::remove_dir_all(auto_dir).expect("Unable to delete src/auto");
         }
         fs::create_dir_all(auto_dir).expect("Unable to create src/auto");
+        
+        let docs_auto_dir = Path::new("../docs/auto");
+        if docs_auto_dir.exists() {
+            fs::remove_dir_all(docs_auto_dir).expect("Unable to delete docs/auto");
+        }
+        fs::create_dir_all(docs_auto_dir).expect("Unable to create docs/auto");
+        
         // Start with structs to populate added_structs
         self.generate_structs(&mut stats);
 
@@ -905,6 +918,24 @@ impl Generator {
 
         let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp.finish()).expect("Unable to write generated file");
+        
+        // Generate documentation
+        let skipped_for_interface: Vec<(String, SkipReason)> = stats.skipped_methods
+            .iter()
+            .filter(|(method_name, _)| method_name.starts_with(&format!("{}::", interface.classname)))
+            .cloned()
+            .collect();
+        
+        let doc_content = self.doc_generator.generate_interface_doc(
+            interface,
+            &generated_methods,
+            &skipped_for_interface,
+            callbacks
+        );
+        
+        let doc_path = format!("../docs/auto/{}.rst", name.to_lowercase());
+        fs::write(doc_path, doc_content).expect("Unable to write doc file");
+        
         Ok(name.to_owned())
     }
 
