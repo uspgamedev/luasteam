@@ -80,7 +80,7 @@ function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end
 
 ---@param pDataToInclude string
 ---@param cbDataToInclude integer
----@param callback fun(data: EncryptedAppTicketResponse_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback) end
 
@@ -100,7 +100,7 @@ function User.GetGameBadgeLevel(nSeries, bFoil) end
 function User.GetPlayerSteamLevel() end
 
 ---@param pchRedirectURL string
----@param callback fun(data: StoreAuthURLResponse_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function User.RequestStoreAuthURL(pchRedirectURL, callback) end
 
@@ -116,11 +116,11 @@ function User.BIsPhoneIdentifying() end
 ---@return boolean
 function User.BIsPhoneRequiringVerification() end
 
----@param callback fun(data: MarketEligibilityResponse_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function User.GetMarketEligibility(callback) end
 
----@param callback fun(data: DurationControl_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function User.GetDurationControl(callback) end
 

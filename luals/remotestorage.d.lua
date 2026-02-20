@@ -16,14 +16,14 @@ function RemoteStorage.FileRead(pchFile, cubDataToRead) end
 ---@param pchFile string
 ---@param pvData string
 ---@param cubData integer
----@param callback fun(data: RemoteStorageFileWriteAsyncComplete_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 
 ---@param pchFile string
 ---@param nOffset integer
 ---@param cubToRead integer
----@param callback fun(data: RemoteStorageFileReadAsyncComplete_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback) end
 
@@ -42,7 +42,7 @@ function RemoteStorage.FileForget(pchFile) end
 function RemoteStorage.FileDelete(pchFile) end
 
 ---@param pchFile string
----@param callback fun(data: RemoteStorageFileShareResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileShare(pchFile, callback) end
 
@@ -113,7 +113,7 @@ function RemoteStorage.SetCloudEnabledForApp(bEnabled) end
 
 ---@param hContent uint64
 ---@param unPriority integer
----@param callback fun(data: RemoteStorageDownloadUGCResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 
@@ -168,38 +168,38 @@ function RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescripti
 function RemoteStorage.UpdatePublishedFileVisibility(updateHandle, eVisibility) end
 
 ---@param updateHandle uint64
----@param callback fun(data: RemoteStorageUpdatePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param unMaxSecondsOld integer
----@param callback fun(data: RemoteStorageGetPublishedFileDetailsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback) end
 
 ---@param unPublishedFileId uint64
----@param callback fun(data: RemoteStorageDeletePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.DeletePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
----@param callback fun(data: RemoteStorageEnumerateUserPublishedFilesResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback) end
 
 ---@param unPublishedFileId uint64
----@param callback fun(data: RemoteStorageSubscribePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
----@param callback fun(data: RemoteStorageEnumerateUserSubscribedFilesResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback) end
 
 ---@param unPublishedFileId uint64
----@param callback fun(data: RemoteStorageUnsubscribePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback) end
 
@@ -209,37 +209,37 @@ function RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback) end
 function RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription) end
 
 ---@param unPublishedFileId uint64
----@param callback fun(data: RemoteStorageGetPublishedItemVoteDetailsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param bVoteUp boolean
----@param callback fun(data: RemoteStorageUpdateUserPublishedItemVoteResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, callback) end
 
 ---@param unPublishedFileId uint64
----@param callback fun(data: RemoteStorageGetPublishedItemVoteDetailsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param eAction integer
----@param callback fun(data: RemoteStorageSetUserPublishedFileActionResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback) end
 
 ---@param eAction integer
 ---@param unStartIndex integer
----@param callback fun(data: RemoteStorageEnumeratePublishedFilesByUserActionResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex, callback) end
 
 ---@param hContent uint64
 ---@param pchLocation string
 ---@param unPriority integer
----@param callback fun(data: RemoteStorageDownloadUGCResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback) end
 

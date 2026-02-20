@@ -55,7 +55,7 @@ function Timeline.EndRangeTimelineEvent(ulEvent, flEndOffsetSeconds) end
 function Timeline.RemoveTimelineEvent(ulEvent) end
 
 ---@param ulEvent uint64
----@param callback fun(data: SteamTimelineEventRecordingExists_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Timeline.DoesEventRecordingExist(ulEvent, callback) end
 
@@ -67,7 +67,7 @@ function Timeline.EndGamePhase() end
 function Timeline.SetGamePhaseID(pchPhaseID) end
 
 ---@param pchPhaseID string
----@param callback fun(data: SteamTimelineGamePhaseRecordingExists_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Timeline.DoesGamePhaseRecordingExist(pchPhaseID, callback) end
 

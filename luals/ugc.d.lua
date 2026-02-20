@@ -25,7 +25,7 @@ function UGC.CreateQueryAllUGCRequestPage(eQueryType, eMatchingeMatchingUGCTypeF
 function UGC.CreateQueryUGCDetailsRequest(unNumPublishedFileIDs) end
 
 ---@param handle uint64
----@param callback fun(data: SteamUGCQueryCompleted_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.SendQueryUGCRequest(handle, callback) end
 
@@ -245,13 +245,13 @@ function UGC.AddRequiredKeyValueTag(handle, pKey, pValue) end
 
 ---@param nPublishedFileID uint64
 ---@param unMaxAgeSeconds integer
----@param callback fun(data: SteamUGCRequestUGCDetailsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.RequestUGCDetails(nPublishedFileID, unMaxAgeSeconds, callback) end
 
 ---@param nConsumerAppId integer
 ---@param eFileType integer
----@param callback fun(data: CreateItemResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.CreateItem(nConsumerAppId, eFileType, callback) end
 
@@ -361,7 +361,7 @@ function UGC.SetRequiredGameVersions(handle, pszGameBranchMin, pszGameBranchMax)
 
 ---@param handle uint64
 ---@param pchChangeNote string
----@param callback fun(data: SubmitItemUpdateResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.SubmitItemUpdate(handle, pchChangeNote, callback) end
 
@@ -373,34 +373,34 @@ function UGC.GetItemUpdateProgress(handle) end
 
 ---@param nPublishedFileID uint64
 ---@param bVoteUp boolean
----@param callback fun(data: SetUserItemVoteResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.SetUserItemVote(nPublishedFileID, bVoteUp, callback) end
 
 ---@param nPublishedFileID uint64
----@param callback fun(data: GetUserItemVoteResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.GetUserItemVote(nPublishedFileID, callback) end
 
 ---@param nAppId integer
 ---@param nPublishedFileID uint64
----@param callback fun(data: UserFavoriteItemsListChanged_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.AddItemToFavorites(nAppId, nPublishedFileID, callback) end
 
 ---@param nAppId integer
 ---@param nPublishedFileID uint64
----@param callback fun(data: UserFavoriteItemsListChanged_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.RemoveItemFromFavorites(nAppId, nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
----@param callback fun(data: RemoteStorageSubscribePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.SubscribeItem(nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
----@param callback fun(data: RemoteStorageUnsubscribePublishedFileResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.UnsubscribeItem(nPublishedFileID, callback) end
 
@@ -446,59 +446,59 @@ function UGC.BInitWorkshopForGameServer(unWorkshopDepotID, pszFolder) end
 function UGC.SuspendDownloads(bSuspend) end
 
 ---@param unNumPublishedFileIDs integer
----@param callback fun(data: StartPlaytimeTrackingResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 ---@return uint64 -- Value of: pvecPublishedFileID
 function UGC.StartPlaytimeTracking(unNumPublishedFileIDs, callback) end
 
 ---@param unNumPublishedFileIDs integer
----@param callback fun(data: StopPlaytimeTrackingResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 ---@return uint64 -- Value of: pvecPublishedFileID
 function UGC.StopPlaytimeTracking(unNumPublishedFileIDs, callback) end
 
----@param callback fun(data: StopPlaytimeTrackingResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.StopPlaytimeTrackingForAllItems(callback) end
 
 ---@param nParentPublishedFileID uint64
 ---@param nChildPublishedFileID uint64
----@param callback fun(data: AddUGCDependencyResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.AddDependency(nParentPublishedFileID, nChildPublishedFileID, callback) end
 
 ---@param nParentPublishedFileID uint64
 ---@param nChildPublishedFileID uint64
----@param callback fun(data: RemoveUGCDependencyResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.RemoveDependency(nParentPublishedFileID, nChildPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param nAppID integer
----@param callback fun(data: AddAppDependencyResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.AddAppDependency(nPublishedFileID, nAppID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param nAppID integer
----@param callback fun(data: RemoveAppDependencyResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.RemoveAppDependency(nPublishedFileID, nAppID, callback) end
 
 ---@param nPublishedFileID uint64
----@param callback fun(data: GetAppDependenciesResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.GetAppDependencies(nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
----@param callback fun(data: DeleteItemResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.DeleteItem(nPublishedFileID, callback) end
 
 ---@return boolean
 function UGC.ShowWorkshopEULA() end
 
----@param callback fun(data: WorkshopEULAStatus_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.GetWorkshopEULAStatus(callback) end
 

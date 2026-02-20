@@ -95,7 +95,7 @@ function GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup) end
 
 function GameServer.GetGameplayStats() end
 
----@param callback fun(data: GSReputation_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function GameServer.GetServerReputation(callback) end
 
@@ -117,12 +117,12 @@ function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 function GameServer.GetNextOutgoingPacket(cbMaxOut) end
 
 ---@param steamIDClan uint64
----@param callback fun(data: AssociateWithClanResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function GameServer.AssociateWithClan(steamIDClan, callback) end
 
 ---@param steamIDNewPlayer uint64
----@param callback fun(data: ComputeNewPlayerCompatibilityResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback) end
 

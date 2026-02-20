@@ -64,7 +64,7 @@ function Utils.IsOverlayEnabled() end
 function Utils.BOverlayNeedsPresent() end
 
 ---@param szFileName string
----@param callback fun(data: CheckFileSignature_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Utils.CheckFileSignature(szFileName, callback) end
 

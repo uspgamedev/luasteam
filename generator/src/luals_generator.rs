@@ -3,16 +3,13 @@ use std::path::Path;
 
 use crate::code_builder::CodeBuilder;
 use crate::lua_type_info::LuaMethodSignature;
-use crate::schema::{CallbackStruct, Interface, Method, Param};
-use crate::type_resolver::TypeResolver;
+use crate::schema::{CallbackStruct, Interface};
 
-pub struct LuaLsGenerator {
-    type_resolver: TypeResolver,
-}
+pub struct LuaLsGenerator;
 
 impl LuaLsGenerator {
-    pub fn new(type_resolver: TypeResolver) -> Self {
-        Self { type_resolver }
+    pub fn new() -> Self {
+        Self
     }
 
     pub fn write_index(&self, output_dir: &Path, interface_names: &[String]) {
@@ -62,12 +59,6 @@ impl LuaLsGenerator {
         cb.line(&format!("---@class Steam.{}", name));
         cb.line(&format!("local {} = {{}}", name));
         cb.preceeding_blank_line();
-
-        // Create a map of method names to signatures for easy lookup
-        let sig_map: std::collections::HashMap<&str, &LuaMethodSignature> = method_signatures
-            .iter()
-            .map(|(name, sig)| (name.as_str(), sig))
-            .collect();
 
         for (lua_method_name, signature) in method_signatures {
             self.write_method(&mut cb, name, lua_method_name, signature);

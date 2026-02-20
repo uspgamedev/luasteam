@@ -1,0 +1,207 @@
+#############
+ISteamParties
+#############
+
+.. note::
+   This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
+   Methods marked with ✋ require manual implementation.
+
+List of Functions
+-----------------
+
+* :func:`Parties.GetNumActiveBeacons`
+* :func:`Parties.GetBeaconByIndex`
+* :func:`Parties.GetBeaconDetails`
+* :func:`Parties.JoinParty`
+* :func:`Parties.GetNumAvailableBeaconLocations`
+* :func:`Parties.GetAvailableBeaconLocations`
+* :func:`Parties.OnReservationCompleted`
+* :func:`Parties.CancelReservation`
+* :func:`Parties.ChangeNumOpenSlots`
+* :func:`Parties.DestroyBeacon`
+
+List of Callbacks
+-----------------
+
+* :func:`Parties.onJoinPartyCallback`
+* :func:`Parties.onCreateBeaconCallback`
+* :func:`Parties.onReservationNotificationCallback`
+* :func:`Parties.onChangeNumOpenSlotsCallback`
+* :func:`Parties.onAvailableBeaconLocationsUpdated`
+* :func:`Parties.onActiveBeaconsUpdated`
+
+Function Reference
+------------------
+
+.. function:: Parties.GetNumActiveBeacons()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetNumActiveBeacons <https://partner.steamgames.com/doc/api/ISteamParties#GetNumActiveBeacons>`_
+
+.. function:: Parties.GetBeaconByIndex(unIndex)
+
+    🤖 **Auto-generated binding**
+
+    :param int unIndex:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetBeaconByIndex <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconByIndex>`_
+
+.. function:: Parties.GetBeaconDetails(ulBeaconID, cchMetadata)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeaconID:
+    :param int cchMetadata:
+    :returns: (bool) Return value
+    :returns: (uint64) Value for `pSteamIDBeaconOwner`
+    :returns: (table) Value for `pLocation`
+    :returns: (str) Value for `pchMetadata`
+    :SteamWorks: `GetBeaconDetails <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconDetails>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pSteamIDBeaconOwner`` is returned as an additional return value
+    * Parameter ``pLocation`` is returned as an additional return value
+    * Parameter ``pchMetadata`` is returned as an additional return value
+
+.. function:: Parties.JoinParty(ulBeaconID, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeaconID:
+    :param function callback: CallResult callback receiving struct `JoinPartyCallback_t` and a boolean)
+    :returns: (uint64) Return value
+    :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
+
+.. function:: Parties.GetNumAvailableBeaconLocations()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :returns: (int) Value for `puNumLocations`
+    :SteamWorks: `GetNumAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetNumAvailableBeaconLocations>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``puNumLocations`` is returned as an additional return value
+
+.. function:: Parties.GetAvailableBeaconLocations(uMaxNumLocations)
+
+    🤖 **Auto-generated binding**
+
+    :param int uMaxNumLocations:
+    :returns: (bool) Return value
+    :returns: (table[]) Value for `pLocationList`
+    :SteamWorks: `GetAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetAvailableBeaconLocations>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pLocationList`` is returned as an additional return value
+
+.. function:: Parties.OnReservationCompleted(ulBeacon, steamIDUser)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeacon:
+    :param uint64 steamIDUser:
+    :SteamWorks: `OnReservationCompleted <https://partner.steamgames.com/doc/api/ISteamParties#OnReservationCompleted>`_
+
+.. function:: Parties.CancelReservation(ulBeacon, steamIDUser)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeacon:
+    :param uint64 steamIDUser:
+    :SteamWorks: `CancelReservation <https://partner.steamgames.com/doc/api/ISteamParties#CancelReservation>`_
+
+.. function:: Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeacon:
+    :param int unOpenSlots:
+    :param function callback: CallResult callback receiving struct `ChangeNumOpenSlotsCallback_t` and a boolean)
+    :returns: (uint64) Return value
+    :SteamWorks: `ChangeNumOpenSlots <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlots>`_
+
+.. function:: Parties.DestroyBeacon(ulBeacon)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 ulBeacon:
+    :returns: (bool) Return value
+    :SteamWorks: `DestroyBeacon <https://partner.steamgames.com/doc/api/ISteamParties#DestroyBeacon>`_
+
+
+Unimplemented Methods
+---------------------
+
+.. function:: Parties.createBeacon
+
+    ✋ **Not implemented** - manual: requires custom implementation
+    
+    :SteamWorks: `CreateBeacon <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeacon>`_
+
+.. function:: Parties.getBeaconLocationData
+
+    ✋ **Not implemented** - unsupported type: SteamPartyBeaconLocation_t
+    
+    :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_
+
+
+Callbacks
+---------
+
+.. function:: Parties.onJoinPartyCallback
+
+    Callback for `JoinPartyCallback_t <https://partner.steamgames.com/doc/api/steam_api#JoinPartyCallback_t>`_
+
+    **callback(data)** receives:
+
+    * **data.m_eResult** -- m_eResult
+    * **data.m_ulBeaconID** -- m_ulBeaconID
+    * **data.m_SteamIDBeaconOwner** -- m_SteamIDBeaconOwner
+    * **data.m_rgchConnectString** -- m_rgchConnectString
+
+.. function:: Parties.onCreateBeaconCallback
+
+    Callback for `CreateBeaconCallback_t <https://partner.steamgames.com/doc/api/steam_api#CreateBeaconCallback_t>`_
+
+    **callback(data)** receives:
+
+    * **data.m_eResult** -- m_eResult
+    * **data.m_ulBeaconID** -- m_ulBeaconID
+
+.. function:: Parties.onReservationNotificationCallback
+
+    Callback for `ReservationNotificationCallback_t <https://partner.steamgames.com/doc/api/steam_api#ReservationNotificationCallback_t>`_
+
+    **callback(data)** receives:
+
+    * **data.m_ulBeaconID** -- m_ulBeaconID
+    * **data.m_steamIDJoiner** -- m_steamIDJoiner
+
+.. function:: Parties.onChangeNumOpenSlotsCallback
+
+    Callback for `ChangeNumOpenSlotsCallback_t <https://partner.steamgames.com/doc/api/steam_api#ChangeNumOpenSlotsCallback_t>`_
+
+    **callback(data)** receives:
+
+    * **data.m_eResult** -- m_eResult
+
+.. function:: Parties.onAvailableBeaconLocationsUpdated
+
+    Callback for `AvailableBeaconLocationsUpdated_t <https://partner.steamgames.com/doc/api/steam_api#AvailableBeaconLocationsUpdated_t>`_
+
+    **callback(data)** receives:
+
+
+.. function:: Parties.onActiveBeaconsUpdated
+
+    Callback for `ActiveBeaconsUpdated_t <https://partner.steamgames.com/doc/api/steam_api#ActiveBeaconsUpdated_t>`_
+
+    **callback(data)** receives:
+
+

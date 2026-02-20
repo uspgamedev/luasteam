@@ -98,7 +98,7 @@ function Apps.GetAppBuildId() end
 function Apps.RequestAllProofOfPurchaseKeys() end
 
 ---@param pszFileName string
----@param callback fun(data: FileDetailsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Apps.GetFileDetails(pszFileName, callback) end
 

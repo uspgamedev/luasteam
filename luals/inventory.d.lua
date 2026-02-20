@@ -135,7 +135,7 @@ function Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize) end
 function Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punValueBufferSizeOut) end
 
 ---@param steamID uint64
----@param callback fun(data: SteamInventoryEligiblePromoItemDefIDs_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback) end
 
@@ -150,11 +150,11 @@ function Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArray
 ---@param unArrayLength integer
 ---@param pArrayItemDefs integer[]
 ---@param punArrayQuantity integer[]
----@param callback fun(data: SteamInventoryStartPurchaseResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Inventory.StartPurchase(unArrayLength, pArrayItemDefs, punArrayQuantity, callback) end
 
----@param callback fun(data: SteamInventoryRequestPricesResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Inventory.RequestPrices(callback) end
 

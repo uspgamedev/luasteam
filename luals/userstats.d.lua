@@ -72,7 +72,7 @@ function UserStats.GetNumAchievements() end
 function UserStats.GetAchievementName(iAchievement) end
 
 ---@param steamIDUser uint64
----@param callback fun(data: UserStatsReceived_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.RequestUserStats(steamIDUser, callback) end
 
@@ -108,12 +108,12 @@ function UserStats.ResetAllStats(bAchievementsToo) end
 ---@param pchLeaderboardName string
 ---@param eLeaderboardSortMethod integer
 ---@param eLeaderboardDisplayType integer
----@param callback fun(data: LeaderboardFindResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback) end
 
 ---@param pchLeaderboardName string
----@param callback fun(data: LeaderboardFindResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.FindLeaderboard(pchLeaderboardName, callback) end
 
@@ -137,14 +137,14 @@ function UserStats.GetLeaderboardDisplayType(hSteamLeaderboard) end
 ---@param eLeaderboardDataRequest integer
 ---@param nRangeStart integer
 ---@param nRangeEnd integer
----@param callback fun(data: LeaderboardScoresDownloaded_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback) end
 
 ---@param hSteamLeaderboard uint64
 ---@param cUsers integer
 ---@param prgUsers uint64[]
----@param callback fun(data: LeaderboardScoresDownloaded_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, cUsers, prgUsers, callback) end
 
@@ -161,21 +161,21 @@ function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index
 ---@param nScore integer
 ---@param cScoreDetailsCount integer
 ---@param pScoreDetails integer[]
----@param callback fun(data: LeaderboardScoreUploaded_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, cScoreDetailsCount, pScoreDetails, callback) end
 
 ---@param hSteamLeaderboard uint64
 ---@param hUGC uint64
----@param callback fun(data: LeaderboardUGCSet_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.AttachLeaderboardUGC(hSteamLeaderboard, hUGC, callback) end
 
----@param callback fun(data: NumberOfCurrentPlayers_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.GetNumberOfCurrentPlayers(callback) end
 
----@param callback fun(data: GlobalAchievementPercentagesReady_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.RequestGlobalAchievementPercentages(callback) end
 
@@ -200,7 +200,7 @@ function UserStats.GetNextMostAchievedAchievementInfo(iIteratorPrevious, unNameB
 function UserStats.GetAchievementAchievedPercent(pchName) end
 
 ---@param nHistoryDays integer
----@param callback fun(data: GlobalStatsReceived_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.RequestGlobalStats(nHistoryDays, callback) end
 

@@ -1,5 +1,5 @@
-use crate::schema::{CallbackStruct, Interface, Method, SkipReason, Struct};
-use crate::type_resolver::TypeResolver;
+use crate::lua_type_info::{LuaMethodSignature, LType};
+use crate::schema::{CallbackStruct, Interface, SkipReason, Struct};
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
@@ -24,12 +24,11 @@ pub struct CustomDoc {
 
 pub struct DocGenerator {
     custom_docs: CustomDocs,
-    type_resolver: TypeResolver,
     structs: Vec<Struct>,
 }
 
 impl DocGenerator {
-    pub fn new(type_resolver: TypeResolver) -> Self {
+    pub fn new() -> Self {
         let custom_docs = if let Ok(content) = fs::read_to_string("custom_docs.toml") {
             toml::from_str(&content).unwrap_or_default()
         } else {
@@ -38,7 +37,6 @@ impl DocGenerator {
 
         Self {
             custom_docs,
-            type_resolver,
             structs: Vec::new(),
         }
     }
@@ -51,7 +49,7 @@ impl DocGenerator {
     pub fn generate_interface_doc(
         &self,
         interface: &Interface,
-        generated_methods: &[(&Method, String)],
+        method_signatures: &[(String, LuaMethodSignature)],
         skipped_methods: &[(String, SkipReason)],
         callbacks: &[CallbackStruct],
     ) -> String {
@@ -69,10 +67,19 @@ impl DocGenerator {
         doc.push_str(".. note::\n");
         doc.push_str("   This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.\n");
         doc.push_str("   Methods marked with ✋ require manual implementation.\n\n");
-        if generated_methods
-            .iter()
-            .any(|(method, lua_method_name)| self.is_overload_renamed(method, lua_method_name))
-        {
+        // Check if any methods have multiple overloads (detected by searching for similar names)
+        let has_overloads = !method_signatures.is_empty() && {
+            let mut name_counts: HashMap<String, usize> = HashMap::new();
+            for (lua_method_name, _) in method_signatures {
+                let base_name = lua_method_name
+                    .chars()
+                    .take_while(|c| c.is_alphabetic())
+                    .collect::<String>();
+                *name_counts.entry(base_name).or_insert(0) += 1;
+            }
+            name_counts.values().any(|&count| count > 1)
+        };
+        if has_overloads {
             doc.push_str(".. note::\n");
             doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
         }
@@ -80,7 +87,7 @@ impl DocGenerator {
         // List of Functions
         doc.push_str("List of Functions\n");
         doc.push_str("-----------------\n\n");
-        for (_, lua_method_name) in generated_methods {
+        for (lua_method_name, _) in method_signatures {
             doc.push_str(&format!(
                 "* :func:`{}.{}`\n",
                 lua_namespace, lua_method_name
@@ -106,18 +113,18 @@ impl DocGenerator {
         doc.push_str("Function Reference\n");
         doc.push_str("------------------\n\n");
 
-        for (method, lua_method_name) in generated_methods {
-            doc.push_str(&self.generate_function_doc(
-                method,
+        for (lua_method_name, signature) in method_signatures {
+            doc.push_str(&self.generate_function_doc_from_signature(
                 lua_method_name,
+                signature,
                 lua_namespace,
                 &interface.classname,
-                true,
             ));
         }
 
         // Struct Reference (only structs used by this interface)
-        let used_structs = self.get_structs_for_interface(interface, generated_methods);
+        let used_structs =
+            self.get_structs_for_interface_from_signatures(interface, method_signatures);
         if !used_structs.is_empty() {
             doc.push_str("\nData Structures\n");
             doc.push_str("---------------\n\n");
@@ -159,26 +166,20 @@ impl DocGenerator {
         doc
     }
 
-    fn generate_function_doc(
+    fn generate_function_doc_from_signature(
         &self,
-        method: &Method,
         lua_method_name: &str,
+        signature: &LuaMethodSignature,
         lua_namespace: &str,
         interface_name: &str,
-        is_auto: bool,
     ) -> String {
-        let custom_key = format!("{}.{}", interface_name, method.methodname);
+        let custom_key = format!("{}.{}", interface_name, lua_method_name);
         let custom_doc = self.custom_docs.methods.get(&custom_key);
 
         let mut doc = String::new();
 
-        // Build parameter list
-        let params: Vec<String> = method
-            .params
-            .iter()
-            .filter(|p| !p.is_output_param())
-            .map(|p| p.paramname.clone())
-            .collect();
+        // Build parameter list from signature
+        let params: Vec<String> = signature.params.iter().map(|p| p.name.clone()).collect();
 
         doc.push_str(&format!(
             ".. function:: {}.{}({})\n\n",
@@ -188,57 +189,67 @@ impl DocGenerator {
         ));
 
         // Auto-generated marker
-        if is_auto {
-            doc.push_str("    🤖 **Auto-generated binding**\n\n");
-        }
+        doc.push_str("    🤖 **Auto-generated binding**\n\n");
 
-        // Parameters
-        for param in &method.params {
-            if param.is_output_param() {
-                continue;
-            }
-            let lua_type = self.get_type_reference(&param.paramtype);
+        // Parameters with types from signature
+        for param in &signature.params {
+            let ltype = param.ltype.to_lua_doc_reference(&self.structs);
 
             let param_desc = custom_doc
-                .and_then(|cd| cd.param_descriptions.get(&param.paramname))
+                .and_then(|cd| cd.param_descriptions.get(&param.name))
                 .map(|s| s.as_str())
                 .unwrap_or("");
 
-            if param_desc.is_empty() {
-                doc.push_str(&format!("    :param {} {}:\n", lua_type, param.paramname));
+            if let LType::CallresultCallback { struct_t }  = &param.ltype {
+                doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
+            }          
+            else if param_desc.is_empty() {
+                doc.push_str(&format!("    :param {} {}:\n", ltype, param.name));
             } else {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
-                    lua_type, param.paramname, param_desc
+                    ltype, param.name, param_desc
                 ));
             }
         }
 
-        // Return values
-        let return_values = self.detect_return_values(method);
-        for (ret_type, ret_desc) in &return_values {
-            doc.push_str(&format!("    :returns: ({}) {}\n", ret_type, ret_desc));
+        // Return values from signature
+        if let Some(ret_type) = &signature.return_type {
+            let lua_type = ret_type.to_lua_doc_reference(&self.structs);
+            doc.push_str(&format!("    :returns: ({}) Return value\n", lua_type));
         }
 
-        // SteamWorks link
+        // Output parameters become additional return values
+        for output_param in &signature.output_params {
+            let lua_type = output_param.ltype.to_lua_doc_reference(&self.structs);
+            doc.push_str(&format!(
+                "    :returns: ({}) Value for `{}`\n",
+                lua_type, output_param.name
+            ));
+        }
+
+        // SteamWorks link (extract method name from lua_method_name for URL)
+        let method_name_for_url = lua_method_name;
         doc.push_str(&format!(
             "    :SteamWorks: `{} <https://partner.steamgames.com/doc/api/{}#{}>`_\n\n",
-            method.methodname, interface_name, method.methodname
+            method_name_for_url, interface_name, method_name_for_url
         ));
 
-        // Description
+        // Description from custom docs
         if let Some(custom) = custom_doc
             && !custom.description.is_empty()
         {
             doc.push_str(&format!("    {}\n\n", custom.description));
         }
 
-        // Signature differences
-        let differences = self.detect_signature_differences(method, lua_method_name);
-        if !differences.is_empty() {
+        // Signature differences notes
+        if !signature.output_params.is_empty() {
             doc.push_str("    **Signature differences from C++ API:**\n\n");
-            for diff in &differences {
-                doc.push_str(&format!("    * {}\n", diff));
+            for output_param in &signature.output_params {
+                doc.push_str(&format!(
+                    "    * Parameter ``{}`` is returned as an additional return value\n",
+                    output_param.name
+                ));
             }
             doc.push('\n');
         }
@@ -283,10 +294,9 @@ impl DocGenerator {
         doc.push_str("    **callback(data)** receives:\n\n");
 
         for field in &callback.fields {
-            let lua_type = self.lua_type_name(&field.fieldtype);
             doc.push_str(&format!(
-                "    * **data.{}** ({}) -- {}\n",
-                field.fieldname, lua_type, field.fieldname
+                "    * **data.{}** -- {}\n",
+                field.fieldname, field.fieldname
             ));
         }
         doc.push('\n');
@@ -294,132 +304,78 @@ impl DocGenerator {
         doc
     }
 
-    fn detect_return_values(&self, method: &Method) -> Vec<(String, String)> {
-        let mut returns = Vec::new();
-
-        // Main return value
-        if method.returntype != "void" {
-            let lua_type = self.get_type_reference(&method.returntype);
-            returns.push((lua_type, "Return value".to_string()));
-        }
-
-        // Output parameters become additional return values
-        for param in &method.params {
-            if param.is_output_param() {
-                let base_type = param.paramtype.trim_end_matches(" *");
-                let lua_type = self.get_type_reference(base_type);
-                returns.push((lua_type, format!("Value for `{}`", param.paramname)));
-            }
-        }
-
-        returns
-    }
-
-    fn detect_signature_differences(&self, method: &Method, lua_method_name: &str) -> Vec<String> {
-        let mut differences = Vec::new();
-
-        if self.is_overload_renamed(method, lua_method_name) {
-            differences.push(format!(
-                "This overload is exposed as ``{}`` in Lua (instead of ``{}``) to avoid naming collisions between C++ overloads",
-                lua_method_name, method.methodname
-            ));
-        }
-
-        // Check for output parameters that become return values
-        for param in &method.params {
-            if param.is_output_param() {
-                let base_type = param.paramtype.trim_end_matches(" *");
-                let lua_type = self.lua_type_name(base_type);
-                differences.push(format!(
-                    "Parameter ``{}`` is returned as an additional return value ({})",
-                    param.paramname, lua_type
-                ));
-            }
-
-            // Check for array parameters
-            if param.array_count.is_some() {
-                differences.push(format!(
-                    "Parameter ``{}`` is passed as a Lua table instead of array+size",
-                    param.paramname
-                ));
-            }
-
-            if param.out_array_count.is_some() {
-                differences.push(format!(
-                    "Parameter ``{}`` returns as a Lua table",
-                    param.paramname
-                ));
-            }
-        }
-
-        differences
-    }
-
-    fn is_overload_renamed(&self, method: &Method, lua_method_name: &str) -> bool {
-        let flat_tail = method
-            .methodname_flat
-            .rsplit('_')
-            .next()
-            .unwrap_or(method.methodname.as_str());
-
-        if let Some(suffix) = flat_tail.strip_prefix(&method.methodname)
-            && !suffix.is_empty()
-        {
-            return lua_method_name == format!("{}{}", method.methodname, suffix);
-        }
-
-        false
-    }
-
-    fn lua_type_name(&self, cpp_type: &str) -> &str {
-        self.type_resolver.to_lua_type(cpp_type)
-    }
-
-    fn get_type_reference(&self, cpp_type: &str) -> String {
-        // Check if this is a struct type
-        if let Some(strct) = self.get_struct_for_type(cpp_type) {
-            format!(":data:`{}`", strct.name)
-        } else {
-            self.lua_type_name(cpp_type).to_string()
-        }
-    }
-
-    fn get_structs_for_interface(
+    fn get_structs_for_interface_from_signatures(
         &self,
         _interface: &Interface,
-        generated_methods: &[(&Method, String)],
+        method_signatures: &[(String, LuaMethodSignature)],
     ) -> Vec<&Struct> {
         let mut used_structs = Vec::new();
         let mut seen = std::collections::HashSet::new();
 
-        // Find all struct types used in parameters
-        for (method, _) in generated_methods {
-            for param in &method.params {
-                if let Some(strct) = self.get_struct_for_type(&param.paramtype)
+        // Find all table/struct types used in parameters and return values
+        for (_, signature) in method_signatures {
+            // Check parameters
+            for param in &signature.params {
+                if self.is_struct_type_in_ltype(&param.ltype)
+                    && let Some(struct_name) = self.extract_struct_name_from_ltype(&param.ltype)
+                    && let Some(strct) = self.get_struct_by_name(&struct_name)
                     && seen.insert(&strct.name)
                 {
                     used_structs.push(strct);
                 }
             }
-            // Also check return type
-            if let Some(strct) = self.get_struct_for_type(&method.returntype)
+            // Check return type
+            if let Some(ret_type) = &signature.return_type
+                && self.is_struct_type_in_ltype(ret_type)
+                && let Some(struct_name) = self.extract_struct_name_from_ltype(ret_type)
+                && let Some(strct) = self.get_struct_by_name(&struct_name)
                 && seen.insert(&strct.name)
             {
                 used_structs.push(strct);
+            }
+            // Check output parameters
+            for output_param in &signature.output_params {
+                if self.is_struct_type_in_ltype(&output_param.ltype)
+                    && let Some(struct_name) =
+                        self.extract_struct_name_from_ltype(&output_param.ltype)
+                    && let Some(strct) = self.get_struct_by_name(&struct_name)
+                    && seen.insert(&strct.name)
+                {
+                    used_structs.push(strct);
+                }
             }
         }
 
         used_structs
     }
 
-    fn get_struct_for_type(&self, cpp_type: &str) -> Option<&Struct> {
-        // Extract base type from pointers and const
-        let base_type = cpp_type
-            .trim_start_matches("const ")
-            .trim_end_matches(" *")
-            .trim();
+    fn is_struct_type_in_ltype(&self, ltype: &crate::lua_type_info::LType) -> bool {
+        use crate::lua_type_info::LType;
+        match ltype {
+            LType::Table => true,
+            LType::Array(inner) => self.is_struct_type_in_ltype(inner),
+            _ => false,
+        }
+    }
 
-        self.structs.iter().find(|s| s.name == base_type)
+    fn extract_struct_name_from_ltype(
+        &self,
+        ltype: &crate::lua_type_info::LType,
+    ) -> Option<String> {
+        use crate::lua_type_info::LType;
+        match ltype {
+            LType::Table => {
+                // For now, we can't determine struct name from LType::Table
+                // This would need to be extended if we want struct type tracking
+                None
+            }
+            LType::Array(inner) => self.extract_struct_name_from_ltype(inner),
+            _ => None,
+        }
+    }
+
+    fn get_struct_by_name(&self, name: &str) -> Option<&Struct> {
+        self.structs.iter().find(|s| s.name == name)
     }
 
     fn generate_struct_doc(&self, strct: &Struct, _lua_namespace: &str) -> String {
@@ -435,8 +391,7 @@ impl DocGenerator {
             doc.push_str("    **Fields:**\n\n");
             for field in &strct.fields {
                 if !field.private {
-                    let lua_type = self.lua_type_name(&field.fieldtype);
-                    doc.push_str(&format!("    * **{}** ({})\n", field.fieldname, lua_type));
+                    doc.push_str(&format!("    * **{}**\n", field.fieldname));
                 }
             }
             doc.push('\n');

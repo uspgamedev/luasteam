@@ -73,58 +73,6 @@ impl TypeResolver {
         t
     }
 
-    /// Maps a C++ type to its Lua representation (general Lua typing).
-    pub fn to_lua_type(&self, cpp_type: &str) -> &str {
-        self.resolve_to_type(cpp_type, false)
-    }
-
-    /// Maps a C++ type to a LuaLS-friendly representation.
-    pub fn to_luals_type(&self, cpp_type: &str) -> &str {
-        self.resolve_to_type(cpp_type, true)
-    }
-
-    /// Core type resolution logic used by both to_lua_type and to_luals_type.
-    /// When `luals` is true, uses LuaLS-specific type names (e.g., "integer" instead of "number").
-    fn resolve_to_type(&self, cpp_type: &str, luals: bool) -> &str {
-        let resolved = self.resolve_base_type(cpp_type);
-
-        // Special cases that apply to both Lua and LuaLS
-        if cpp_type.trim() == "SteamAPICall_t" {
-            return "SteamAPICall_t";
-        }
-        if resolved == "CSteamID" || resolved == "CGameID" {
-            return "uint64";
-        }
-
-        // Type mapping with LuaLS-specific variants
-        match resolved {
-            // Booleans
-            "bool" => "boolean",
-
-            // Integral types (variable naming between Lua and LuaLS)
-            "int" | "int8_t" | "int16_t" | "int32_t" | "int64_t" | "uint8_t" | "uint16_t"
-            | "uint32_t" | "uint64_t" | "short" | "unsigned" | "uint" => {
-                if luals {
-                    "integer"
-                } else {
-                    "number"
-                }
-            }
-
-            // Floating point (always "number")
-            "float" | "double" => "number",
-
-            // Strings
-            "const char *" | "char *" => "string",
-
-            // Default to table for unknown types (likely structs)
-            _ => {
-                println!("What is {resolved}?");
-                "table"
-            }
-        }
-    }
-
     /// Resolves a C++ type to a structured CppType, handling arrays and pointers.
     pub fn resolve_type<'a>(&'a self, t: &'a str) -> CppType<'a> {
         if t.ends_with("]") {

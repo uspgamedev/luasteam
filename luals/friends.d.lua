@@ -94,7 +94,7 @@ function Friends.GetClanTag(steamIDClan) end
 function Friends.GetClanActivityCounts(steamIDClan) end
 
 ---@param cClansToRequest integer
----@param callback fun(data: DownloadClanActivityCountsResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 ---@return uint64[] -- Value of: psteamIDClans
 function Friends.DownloadClanActivityCounts(cClansToRequest, callback) end
@@ -156,7 +156,7 @@ function Friends.GetLargeFriendAvatar(steamIDFriend) end
 function Friends.RequestUserInformation(steamIDUser, bRequireNameOnly) end
 
 ---@param steamIDClan uint64
----@param callback fun(data: ClanOfficerListResponse_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.RequestClanOfficerList(steamIDClan, callback) end
 
@@ -218,7 +218,7 @@ function Friends.GetFriendCoplayTime(steamIDFriend) end
 function Friends.GetFriendCoplayGame(steamIDFriend) end
 
 ---@param steamIDClan uint64
----@param callback fun(data: JoinClanChatRoomCompletionResult_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.JoinClanChatRoom(steamIDClan, callback) end
 
@@ -284,17 +284,17 @@ function Friends.ReplyToFriendMessage(steamIDFriend, pchMsgToSend) end
 function Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData) end
 
 ---@param steamID uint64
----@param callback fun(data: FriendsGetFollowerCount_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.GetFollowerCount(steamID, callback) end
 
 ---@param steamID uint64
----@param callback fun(data: FriendsIsFollowing_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.IsFollowing(steamID, callback) end
 
 ---@param unStartIndex integer
----@param callback fun(data: FriendsEnumerateFollowingList_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.EnumerateFollowingList(unStartIndex, callback) end
 
@@ -320,7 +320,7 @@ function Friends.RegisterProtocolInOverlayBrowser(pchProtocol) end
 function Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString) end
 
 ---@param steamID uint64
----@param callback fun(data: EquippedProfileItems_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Friends.RequestEquippedProfileItems(steamID, callback) end
 

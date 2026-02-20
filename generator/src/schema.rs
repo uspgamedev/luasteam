@@ -642,15 +642,6 @@ impl Param {
             _ => unreachable!(),
         }
     }
-
-    /// Determines whether this parameter is an output parameter (non-const pointer).
-    /// Output parameters are returned as additional return values from Lua functions.
-    pub fn is_output_param(&self) -> bool {
-        self.paramtype.ends_with(" *")
-            && !self.paramtype.starts_with("const")
-            && self.out_string_count.is_none()
-            && self.array_count.is_none()
-    }
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]

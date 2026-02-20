@@ -31,7 +31,7 @@ function Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags
 ---@return boolean
 function Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags) end
 
----@param callback fun(data: LobbyMatchList_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Matchmaking.RequestLobbyList(callback) end
 
@@ -67,12 +67,12 @@ function Matchmaking.GetLobbyByIndex(iLobby) end
 
 ---@param eLobbyType integer
 ---@param cMaxMembers integer
----@param callback fun(data: LobbyCreated_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Matchmaking.CreateLobby(eLobbyType, cMaxMembers, callback) end
 
 ---@param steamIDLobby uint64
----@param callback fun(data: LobbyEnter_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Matchmaking.JoinLobby(steamIDLobby, callback) end
 

@@ -9,7 +9,7 @@ function HTMLSurface.Shutdown() end
 
 ---@param pchUserAgent string
 ---@param pchUserCSS string
----@param callback fun(data: HTML_BrowserReady_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback) end
 

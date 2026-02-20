@@ -20,7 +20,7 @@ OSX_FLAGS=$(IPATHS) -mmacosx-version-min=$(OSX_MIN_VERSION)
 
 
 
-.PHONY: all osx linux32 linux64 win32 win64 clean test test-osx test-linux32 test-linux64 test-win32 test-win64
+.PHONY: all osx linux32 linux64 win32 win64 clean test test-osx test-linux32 test-linux64 test-win32 test-win64 docs
 
 test:
 	@echo "choose platform: test-linux64 | test-linux32 | test-win32 | test-win64 | test-osx"
@@ -108,3 +108,6 @@ test-win32:
 
 generate:
 	cd generator && cargo run
+
+docs:
+	$(MAKE) -C docs html

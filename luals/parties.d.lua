@@ -17,7 +17,7 @@ function Parties.GetBeaconByIndex(unIndex) end
 function Parties.GetBeaconDetails(ulBeaconID, cchMetadata) end
 
 ---@param ulBeaconID uint64
----@param callback fun(data: JoinPartyCallback_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Parties.JoinParty(ulBeaconID, callback) end
 
@@ -40,7 +40,7 @@ function Parties.CancelReservation(ulBeacon, steamIDUser) end
 
 ---@param ulBeacon uint64
 ---@param unOpenSlots integer
----@param callback fun(data: ChangeNumOpenSlotsCallback_t?, io_fail: boolean)?
+---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback) end
 

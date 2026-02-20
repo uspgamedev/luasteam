@@ -13,7 +13,7 @@ mod type_resolver;
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
 use doc_generator::DocGenerator;
-use lua_type_info::{LType, LuaMethodSignature, LuaTypeInfo};
+use lua_type_info::{LType, LuaMethodSignature};
 use luals_generator::LuaLsGenerator;
 use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
 use type_resolver::TypeResolver;
@@ -59,9 +59,8 @@ impl Generator {
             }
         }
 
-        let doc_generator =
-            DocGenerator::new(type_resolver.clone()).with_structs(api.structs.clone());
-        let luals_generator = LuaLsGenerator::new(type_resolver.clone());
+        let doc_generator = DocGenerator::new().with_structs(api.structs.clone());
+        let luals_generator = LuaLsGenerator::new();
 
         Self {
             api,
@@ -972,7 +971,7 @@ impl Generator {
 
         let doc_content = self.doc_generator.generate_interface_doc(
             interface,
-            &generated_methods,
+            &method_signatures,
             &skipped_for_interface,
             callbacks,
         );
@@ -1303,10 +1302,7 @@ impl Generator {
                                 lua_idx += 1;
                             }
                             // TODO: fix, not necessarily integer
-                            sig.add_param(
-                                param.paramname.clone(),
-                                ltype,
-                            );
+                            sig.add_param(param.paramname.clone(), ltype);
 
                             s.raw(&code);
                             param_names.push(format!("{}.data()", param.paramname));
@@ -1335,12 +1331,20 @@ impl Generator {
         let mut return_count = 0;
 
         if method.returntype == "void" {
-            assert!(method.callresult.is_none(), "void methods should not have callresults");
+            assert!(
+                method.callresult.is_none(),
+                "void methods should not have callresults"
+            );
             s.line(&format!("{};", call));
         } else {
             s.line(&format!("{} __ret = {};", method.returntype, call));
             if let Some(callresult) = &method.callresult {
-                sig.add_param("callback".to_string(), LType::CallresultCallback { struct_t: callresult.clone() });
+                sig.add_param(
+                    "callback".to_string(),
+                    LType::CallresultCallback {
+                        struct_t: callresult.clone(),
+                    },
+                );
                 s.line("if (callback_ref != LUA_NOREF) {");
                 s.indent_right();
                 s.line(&format!(

@@ -36,8 +36,26 @@ impl LType {
             LType::Array(inner) => format!("{}[]", inner.to_luals_string()),
             LType::CallresultCallback { struct_t: _ } => {
                 // We can use the struct_t name once we have those types
-                format!("fun(data: table?, io_fail: boolean)?")
+                "fun(data: table?, io_fail: boolean)?".to_string()
             }
+        }
+    }
+
+    /// Returns the Lua documentation reference string (for Sphinx docs)
+    pub fn to_lua_doc_reference(&self, _structs: &[crate::schema::Struct]) -> String {
+        match self {
+            LType::Integer => "int".to_string(),
+            LType::Float => "float".to_string(),
+            LType::Boolean => "bool".to_string(),
+            LType::String => "str".to_string(),
+            LType::Char => "str".to_string(),
+            LType::Table => {
+                // Check if this is a struct type
+                "table".to_string()
+            }
+            LType::Uint64 => "uint64".to_string(),
+            LType::Array(inner) => format!("{}[]", inner.to_lua_doc_reference(_structs)),
+            LType::CallresultCallback { struct_t: _ } => "function".to_string(),
         }
     }
 }
