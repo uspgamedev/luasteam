@@ -1,4 +1,5 @@
-use crate::schema::{CallbackStruct, Interface, Method, Param, SkipReason};
+use crate::schema::{CallbackStruct, Interface, Method, Param, SkipReason, Struct};
+use crate::type_resolver::TypeResolver;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
@@ -23,11 +24,12 @@ pub struct CustomDoc {
 
 pub struct DocGenerator {
     custom_docs: CustomDocs,
-    type_map: HashMap<String, String>,
+    type_resolver: TypeResolver,
+    structs: Vec<Struct>,
 }
 
 impl DocGenerator {
-    pub fn new(type_map: HashMap<String, String>) -> Self {
+    pub fn new(type_resolver: TypeResolver) -> Self {
         let custom_docs = if let Ok(content) = fs::read_to_string("custom_docs.toml") {
             toml::from_str(&content).unwrap_or_default()
         } else {
@@ -36,8 +38,14 @@ impl DocGenerator {
 
         Self {
             custom_docs,
-            type_map,
+            type_resolver,
+            structs: Vec::new(),
         }
+    }
+
+    pub fn with_structs(mut self, structs: Vec<Struct>) -> Self {
+        self.structs = structs;
+        self
     }
 
     pub fn generate_interface_doc(
@@ -98,6 +106,19 @@ impl DocGenerator {
                 &interface.classname,
                 true,
             ));
+        }
+
+        // Struct Reference (only structs used by this interface)
+        let used_structs = self.get_structs_for_interface(
+            interface,
+            generated_methods,
+        );
+        if !used_structs.is_empty() {
+            doc.push_str("\nData Structures\n");
+            doc.push_str("---------------\n\n");
+            for strct in used_structs {
+                doc.push_str(&self.generate_struct_doc(strct, &lua_namespace));
+            }
         }
 
         // Skipped methods
@@ -171,7 +192,7 @@ impl DocGenerator {
             if self.is_output_param(param) {
                 continue;
             }
-            let lua_type = self.lua_type_name(&param.paramtype);
+            let lua_type = self.get_type_reference(&param.paramtype);
 
             let param_desc = custom_doc
                 .and_then(|cd| cd.param_descriptions.get(&param.paramname))
@@ -284,17 +305,17 @@ impl DocGenerator {
 
         // Main return value
         if method.returntype != "void" {
-            let lua_type = self.lua_type_name(&method.returntype);
-            returns.push((lua_type.to_string(), "Return value".to_string()));
+            let lua_type = self.get_type_reference(&method.returntype);
+            returns.push((lua_type, "Return value".to_string()));
         }
 
         // Output parameters become additional return values
         for param in &method.params {
             if self.is_output_param(param) {
                 let base_type = param.paramtype.trim_end_matches(" *");
-                let lua_type = self.lua_type_name(base_type);
+                let lua_type = self.get_type_reference(base_type);
                 returns.push((
-                    lua_type.to_string(),
+                    lua_type,
                     format!("Value for `{}`", param.paramname),
                 ));
             }
@@ -337,33 +358,77 @@ impl DocGenerator {
     }
 
     fn lua_type_name(&self, cpp_type: &str) -> &str {
-        let resolved = self.resolve_type(cpp_type);
+        self.type_resolver.to_lua_type(cpp_type)
+    }
 
-        match resolved {
-            "bool" => "boolean",
-            "int" | "int32" | "uint32" | "unsigned int" | "uint16" | "short" | "unsigned short" => {
-                "number"
-            }
-            "uint64" | "int64" | "int64_t" => "uint64",
-            "const char *" => "string",
-            "float" | "double" => "number",
-            _ => {
-                if resolved.ends_with(" *") {
-                    "table"
-                } else if resolved.starts_with("E") {
-                    "number" // Enums
-                } else {
-                    "table"
-                }
-            }
+    fn get_type_reference(&self, cpp_type: &str) -> String {
+        // Check if this is a struct type
+        if let Some(strct) = self.get_struct_for_type(cpp_type) {
+            format!(":data:`{}`", strct.name)
+        } else {
+            self.lua_type_name(cpp_type).to_string()
         }
     }
 
-    fn resolve_type<'a>(&'a self, ttype: &'a str) -> &'a str {
-        self.type_map
-            .get(ttype)
-            .map(|s| s.as_str())
-            .unwrap_or(ttype)
+    fn get_structs_for_interface(
+        &self,
+        _interface: &Interface,
+        generated_methods: &[(&Method, String)],
+    ) -> Vec<&Struct> {
+        let mut used_structs = Vec::new();
+        let mut seen = std::collections::HashSet::new();
+
+        // Find all struct types used in parameters
+        for (method, _) in generated_methods {
+            for param in &method.params {
+                if let Some(strct) = self.get_struct_for_type(&param.paramtype) {
+                    if seen.insert(&strct.name) {
+                        used_structs.push(strct);
+                    }
+                }
+            }
+            // Also check return type
+            if let Some(strct) = self.get_struct_for_type(&method.returntype) {
+                if seen.insert(&strct.name) {
+                    used_structs.push(strct);
+                }
+            }
+        }
+
+        used_structs
+    }
+
+    fn get_struct_for_type(&self, cpp_type: &str) -> Option<&Struct> {
+        // Extract base type from pointers and const
+        let base_type = cpp_type
+            .trim_start_matches("const ")
+            .trim_end_matches(" *")
+            .trim();
+
+        self.structs.iter().find(|s| s.name == base_type)
+    }
+
+    fn generate_struct_doc(&self, strct: &Struct, _lua_namespace: &str) -> String {
+        let mut doc = String::new();
+
+        doc.push_str(&format!(".. data:: {}\n\n", strct.name));
+        doc.push_str(&format!(
+            "    A table representing a **{}** structure from the SteamWorks API.\n\n",
+            strct.name
+        ));
+
+        if !strct.fields.is_empty() {
+            doc.push_str("    **Fields:**\n\n");
+            for field in &strct.fields {
+                if !field.private {
+                    let lua_type = self.lua_type_name(&field.fieldtype);
+                    doc.push_str(&format!("    * **{}** ({})\n", field.fieldname, lua_type));
+                }
+            }
+            doc.push_str("\n");
+        }
+
+        doc
     }
 
     fn to_camel_case(s: &str) -> String {

@@ -477,7 +477,7 @@ pub struct Field {
     pub private: bool,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Struct {
     #[serde(rename = "struct")]
     pub name: String,
@@ -541,7 +541,7 @@ pub struct Accessor {
     pub name_flat: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Method {
     pub methodname: String,
     pub methodname_flat: String,
@@ -565,7 +565,7 @@ impl Method {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Param {
     pub paramname: String,
     pub paramtype: String,

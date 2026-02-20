@@ -6,11 +6,13 @@ mod code_builder;
 mod cpp_type;
 mod doc_generator;
 mod schema;
+mod type_resolver;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
 use doc_generator::DocGenerator;
 use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
+use type_resolver::TypeResolver;
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
@@ -76,7 +78,8 @@ impl Generator {
             }
         }
 
-        let doc_generator = DocGenerator::new(type_map.clone());
+        let doc_generator = DocGenerator::new(TypeResolver::new(type_map.clone()))
+            .with_structs(api.structs.clone());
 
         Self {
             api,
