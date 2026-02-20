@@ -18,17 +18,17 @@ function Utils.GetIPCountry() end
 
 ---@param iImage integer
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: pnWidth
+---@return integer -- Value of: pnHeight
 function Utils.GetImageSize(iImage) end
 
 ---@param iImage integer
 ---@param nDestBufferSize integer
 ---@return boolean
----@return table
+---@return string -- Value of: pubDest
 function Utils.GetImageRGBA(iImage, nDestBufferSize) end
 
----@return table
+---@return integer
 function Utils.GetCurrentBatteryPower() end
 
 ---@return integer
@@ -37,21 +37,21 @@ function Utils.GetAppID() end
 ---@param eNotificationPosition integer
 function Utils.SetOverlayNotificationPosition(eNotificationPosition) end
 
----@param hSteamAPICall SteamAPICall_t
+---@param hSteamAPICall uint64
 ---@return boolean
----@return boolean
+---@return boolean -- Value of: pbFailed
 function Utils.IsAPICallCompleted(hSteamAPICall) end
 
----@param hSteamAPICall SteamAPICall_t
+---@param hSteamAPICall uint64
 ---@return integer
 function Utils.GetAPICallFailureReason(hSteamAPICall) end
 
----@param hSteamAPICall SteamAPICall_t
+---@param hSteamAPICall uint64
 ---@param cubCallback integer
 ---@param iCallbackExpected integer
 ---@return boolean
----@return table
----@return boolean
+---@return string -- Value of: pCallback
+---@return boolean -- Value of: pbFailed
 function Utils.GetAPICallResult(hSteamAPICall, cubCallback, iCallbackExpected) end
 
 ---@return integer
@@ -64,8 +64,8 @@ function Utils.IsOverlayEnabled() end
 function Utils.BOverlayNeedsPresent() end
 
 ---@param szFileName string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: CheckFileSignature_t?, io_fail: boolean)?
+---@return uint64
 function Utils.CheckFileSignature(szFileName, callback) end
 
 ---@param eInputMode integer
@@ -79,10 +79,10 @@ function Utils.ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, 
 ---@return integer
 function Utils.GetEnteredGamepadTextLength() end
 
----@param pchText string
 ---@param cchText integer
 ---@return boolean
-function Utils.GetEnteredGamepadTextInput(pchText, cchText) end
+---@return string -- Value of: pchText
+function Utils.GetEnteredGamepadTextInput(cchText) end
 
 ---@return string
 function Utils.GetSteamUILanguage() end
@@ -115,10 +115,10 @@ function Utils.InitFilterText(unFilterOptions) end
 ---@param eContext integer
 ---@param sourceSteamID uint64
 ---@param pchInputMessage string
----@param pchOutFilteredText string
 ---@param nByteSizeOutFilteredText integer
 ---@return integer
-function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, pchOutFilteredText, nByteSizeOutFilteredText) end
+---@return string -- Value of: pchOutFilteredText
+function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOutFilteredText) end
 
 ---@param eProtocol integer
 ---@return integer

@@ -5,6 +5,7 @@ use std::path::Path;
 mod code_builder;
 mod cpp_type;
 mod doc_generator;
+mod lua_type_info;
 mod luals_generator;
 mod schema;
 mod type_resolver;
@@ -12,6 +13,7 @@ mod type_resolver;
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
 use doc_generator::DocGenerator;
+use lua_type_info::{LType, LuaMethodSignature, LuaTypeInfo};
 use luals_generator::LuaLsGenerator;
 use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
 use type_resolver::TypeResolver;
@@ -216,7 +218,8 @@ impl Generator {
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
-        self.luals_generator.write_index(&luals_dir, &interface_names);
+        self.luals_generator
+            .write_index(&luals_dir, &interface_names);
         stats.print_summary();
     }
 
@@ -271,7 +274,7 @@ impl Generator {
                 return Err(SkipReason::PrivateField);
             }
             cpp.line(&format!("lua_getfield(L, index, \"{}\");", field.fieldname));
-            let (ok, check) = self.generate_check(
+            let (ok, check, _) = self.generate_check(
                 &field.fieldtype,
                 self.type_resolver.resolve_type(&field.fieldtype),
                 false,
@@ -300,7 +303,7 @@ impl Generator {
         cpp.indent_right();
         cpp.line(&format!("lua_createtable(L, 0, {});", st.fields.len()));
         for field in &st.fields {
-            let (ok, push) =
+            let (ok, push, _) =
                 self.generate_push(&field.fieldtype, &format!("val.{}", field.fieldname), 1);
             cpp.raw(&push);
             if !ok {
@@ -325,7 +328,7 @@ impl Generator {
         stats.consts_total = self.api.consts.len();
 
         for enm in &self.api.consts {
-            let (ok, push) = self.generate_push(&enm.consttype, &enm.constval, 1);
+            let (ok, push, _) = self.generate_push(&enm.consttype, &enm.constval, 1);
             cpp.raw(&push);
             if ok {
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", enm.constname));
@@ -411,7 +414,7 @@ impl Generator {
         value_accessor: &str,
         lua_idx: &str,
         indent: usize,
-    ) -> (bool, String) {
+    ) -> (bool, String, LType) {
         let mut out = CodeBuilder::with_indent(indent);
         let type_prefix = if create_var {
             format!("{} ", original_type)
@@ -425,21 +428,21 @@ impl Generator {
                         "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
                         type_prefix, value_accessor, original_type, lua_idx
                     ));
-                    (true, out.finish())
+                    (true, out.finish(), LType::Integer)
                 }
                 "bool" => {
                     out.line(&format!(
                         "{}{} = lua_toboolean(L, {});",
                         type_prefix, value_accessor, lua_idx
                     ));
-                    (true, out.finish())
+                    (true, out.finish(), LType::Boolean)
                 }
                 "double" | "float" => {
                     out.line(&format!(
                         "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
                         type_prefix, value_accessor, original_type, lua_idx
                     ));
-                    (true, out.finish())
+                    (true, out.finish(), LType::Float)
                 }
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
                     let mut get = format!("luasteam::checkuint64(L, {})", lua_idx);
@@ -447,7 +450,7 @@ impl Generator {
                         get = format!("{}({})", type_name, get);
                     }
                     out.line(&format!("{}{} = {};", type_prefix, value_accessor, get));
-                    (true, out.finish())
+                    (true, out.finish(), LType::Uint64)
                 }
                 _ => {
                     if self.added_structs.contains(type_name) {
@@ -455,13 +458,13 @@ impl Generator {
                             "{}{} = check_{}(L, {});",
                             type_prefix, value_accessor, type_name, lua_idx
                         ));
-                        (true, out.finish())
+                        (true, out.finish(), LType::Table)
                     } else {
                         out.line(&format!(
                             "// Unsupported check type: {} ({})",
                             original_type, type_name
                         ));
-                        (false, out.finish())
+                        (false, out.finish(), LType::Integer)
                     }
                 }
             },
@@ -491,7 +494,7 @@ impl Generator {
                         "memcpy({}, {}, sizeof({}));",
                         value_accessor, var, value_accessor
                     ));
-                    (true, out.finish())
+                    (true, out.finish(), LType::String)
                 } else {
                     out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
                     if create_var {
@@ -500,10 +503,13 @@ impl Generator {
                             ttype, value_accessor, size
                         ));
                     }
-                    out.line(&format!("for(decltype({}) i = 0; i < {}; i++) {{", size, size));
+                    out.line(&format!(
+                        "for(decltype({}) i = 0; i < {}; i++) {{",
+                        size, size
+                    ));
                     out.indent_right();
                     out.line("lua_rawgeti(L, -1, i+1);");
-                    let (ok, check) = self.generate_check(
+                    let (ok, check, elem_ltype) = self.generate_check(
                         ttype,
                         self.type_resolver.resolve_type(ttype),
                         false,
@@ -516,13 +522,13 @@ impl Generator {
                         out.line("lua_pop(L, 1);");
                         out.indent_left();
                         out.line("}");
-                        (true, out.finish())
+                        (true, out.finish(), LType::Array(Box::new(elem_ltype)))
                     } else {
                         out.line(&format!(
                             "// Unsupported check array type: {} [{}]",
                             ttype, size
                         ));
-                        (false, out.finish())
+                        (false, out.finish(), LType::Integer)
                     }
                 }
             }
@@ -534,31 +540,39 @@ impl Generator {
                     "{}{} = static_cast<void*>(luasteam::checkvoid_ptr(L, {}));",
                     type_prefix, value_accessor, lua_idx
                 ));
-                (true, out.finish())
+                (true, out.finish(), LType::Table)
             }
             _ => {
                 out.line(&format!("// Unsupported check type: {:?}", resolved));
-                (false, out.finish())
+                (false, out.finish(), LType::Integer)
             }
         }
     }
 
-    fn generate_push(&self, ftype: &str, value_accessor: &str, indent: usize) -> (bool, String) {
+    fn generate_push(
+        &self,
+        ftype: &str,
+        value_accessor: &str,
+        indent: usize,
+    ) -> (bool, String, LType) {
         let resolved = self.type_resolver.resolve_type(ftype);
 
-        let push = match resolved {
+        let (push, ltype) = match resolved {
             CppType::Normal(s) => match s {
-                "double" | "float" => {
-                    format!("lua_pushnumber(L, {});", value_accessor)
-                }
-                "bool" => {
-                    format!("lua_pushboolean(L, {});", value_accessor)
-                }
-                "int" | "unsigned char" => {
-                    format!("lua_pushinteger(L, {});", value_accessor)
-                }
+                "double" | "float" => (
+                    format!("lua_pushnumber(L, {});", value_accessor),
+                    LType::Float,
+                ),
+                "bool" => (
+                    format!("lua_pushboolean(L, {});", value_accessor),
+                    LType::Boolean,
+                ),
+                "int" | "unsigned char" => (
+                    format!("lua_pushinteger(L, {});", value_accessor),
+                    LType::Integer,
+                ),
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
-                    if ftype == "CSteamID" {
+                    let push = if ftype == "CSteamID" {
                         format!(
                             "luasteam::pushuint64(L, {}.ConvertToUint64());",
                             value_accessor
@@ -567,57 +581,67 @@ impl Generator {
                         format!("luasteam::pushuint64(L, {}.ToUint64());", value_accessor)
                     } else {
                         format!("luasteam::pushuint64(L, {});", value_accessor)
-                    }
+                    };
+                    (push, LType::Uint64)
                 }
                 _ => {
                     if self.added_structs.contains(s) {
-                        format!("push_{}(L, {});", s, value_accessor)
+                        (format!("push_{}(L, {});", s, value_accessor), LType::Table)
                     } else {
-                        // Don't print, just mark as skip
-                        format!("// Skip unsupported type: {}", ftype)
+                        (
+                            format!("// Skip unsupported type: {}", ftype),
+                            LType::Integer, // ignored
+                        )
                     }
                 }
             },
-            _ if resolved.is_buffer() => {
+            _ if resolved.is_buffer() => (
                 format!(
                     "lua_pushstring(L, reinterpret_cast<const char*>({}));",
                     value_accessor
-                )
-            }
+                ),
+                LType::String,
+            ),
             CppType::Array {
                 ttype,
                 size,
                 is_const: _,
             } => {
                 if resolved.is_buffer() {
-                    format!(
-                        "lua_pushlstring(L, reinterpret_cast<const char*>({}), {});",
-                        value_accessor, size
+                    (
+                        format!(
+                            "lua_pushlstring(L, reinterpret_cast<const char*>({}), {});",
+                            value_accessor, size
+                        ),
+                        LType::String,
                     )
-                } else if let Some(code) =
+                } else if let Some((code, ltype)) =
                     self.push_array(ttype, value_accessor, size.to_string().as_str(), indent)
                 {
-                    return (true, code);
+                    return (true, code, ltype);
                 } else {
-                    // Don't print, just mark as skip
-                    format!("// Skip unsupported array type: {}", ftype)
+                    (
+                        format!("// Skip unsupported array type: {}", ftype),
+                        LType::Integer, // ignored
+                    )
                 }
             }
             CppType::Pointer {
                 ttype: "void",
                 is_const: false,
-            } => {
-                format!("luasteam::pushvoid_ptr(L, {});", value_accessor)
-            }
-            _ => {
-                // Don't print, just mark as skip
-                format!("// Skip unsupported type: {}", ftype)
-            }
+            } => (
+                format!("luasteam::pushvoid_ptr(L, {});", value_accessor),
+                LType::Table, // Wrong, should be something else
+            ),
+            _ => (
+                format!("// Skip unsupported type: {}", ftype),
+                LType::Integer, // ignored
+            ),
         };
         let ok = !push.starts_with("//");
         let mut out = CodeBuilder::with_indent(indent);
         out.line(&push);
-        (ok, out.finish())
+        (ok, out.finish(), ltype)
     }
 
     fn generate_callback_listener(
@@ -697,7 +721,7 @@ impl Generator {
             s.indent_right();
             s.line(&format!("lua_createtable(L, 0, {});", cb.fields.len()));
             for field in &cb.fields {
-                let (ok, push) = self.generate_push(
+                let (ok, push, _) = self.generate_push(
                     &field.fieldtype,
                     &format!("data->{}", field.fieldname),
                     s.indent(),
@@ -779,7 +803,7 @@ impl Generator {
             s.indent_right();
             s.line(&format!("lua_createtable(L, 0, {});", cb.fields.len()));
             for field in &cb.fields {
-                let (ok, push) = self.generate_push(
+                let (ok, push, _) = self.generate_push(
                     &field.fieldtype,
                     &format!("data->{}", field.fieldname),
                     s.indent(),
@@ -856,6 +880,7 @@ impl Generator {
         }
 
         let mut generated_methods = Vec::new();
+        let mut method_signatures = Vec::new();
         let interface_methods_total = interface.methods.len();
         let mut interface_methods_generated = 0;
 
@@ -871,10 +896,11 @@ impl Generator {
             }
 
             match self.generate_method(name, method, accessor_name) {
-                Ok((lua_method_name, generated)) => {
+                Ok((lua_method_name, generated, signature)) => {
                     cpp.raw(&generated);
                     cpp.preceeding_blank_line();
-                    generated_methods.push((method, lua_method_name));
+                    generated_methods.push((method, lua_method_name.clone()));
+                    method_signatures.push((lua_method_name, signature));
                     stats.methods_generated += 1;
                     interface_methods_generated += 1;
                 }
@@ -891,7 +917,7 @@ impl Generator {
         );
 
         self.luals_generator
-            .write_interface(luals_dir, interface, &generated_methods, callbacks);
+            .write_interface(luals_dir, interface, &method_signatures, callbacks);
 
         // Generate register_..._auto function
         cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
@@ -963,15 +989,19 @@ impl Generator {
         value_accessor: &str,
         size: &str,
         indent: usize,
-    ) -> Option<String> {
+    ) -> Option<(String, LType)> {
         let mut s = CodeBuilder::with_indent(indent);
 
         s.line(&format!("lua_createtable(L, {}, 0);", size));
         s.indent_right();
-        let (ok, push) = self.generate_push(ttype, &format!("{}[i]", value_accessor), s.indent());
+        let (ok, push, ltype) =
+            self.generate_push(ttype, &format!("{}[i]", value_accessor), s.indent());
         s.indent_left();
         if ok {
-            s.line(&format!("for(decltype({}) i = 0; i < {}; i++) {{", size, size));
+            s.line(&format!(
+                "for(decltype({}) i = 0; i < {}; i++) {{",
+                size, size
+            ));
             s.indent_right();
             if !push.is_empty() {
                 s.raw(&push);
@@ -983,7 +1013,7 @@ impl Generator {
             // Don't print, just return None
             return None;
         }
-        Some(s.finish())
+        Some((s.finish(), LType::Array(Box::new(ltype))))
     }
 
     fn generate_method(
@@ -991,7 +1021,7 @@ impl Generator {
         interface: &str,
         method: &Method,
         accessor_name: &str,
-    ) -> Result<(String, String), SkipReason> {
+    ) -> Result<(String, String, LuaMethodSignature), SkipReason> {
         // Tricky ones to support:
         // GetItemDefinitionProperty - has a pointer that must have a value and returns another
         // GetItemsWithPrices - The JSON looks different from the API
@@ -1034,6 +1064,8 @@ impl Generator {
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
 
+        let mut sig = LuaMethodSignature::default();
+
         let mut i = 0;
         let mut lua_idx = 1;
         while i < method.params.len() {
@@ -1053,6 +1085,7 @@ impl Generator {
                     CppType::Pointer { .. } => {
                         // It is a value returned as well as the size passed in.
                         pointer_params.push((param, false));
+                        sig.add_output_param(param.paramname.clone(), LType::Integer);
                         param_names.push(format!("&{}", param.paramname.clone()));
                     }
                     _ => unreachable!("No array sizes"),
@@ -1069,6 +1102,7 @@ impl Generator {
                         param.paramname, lua_idx
                     ));
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Char);
                     lua_idx += 1;
                 }
                 Normal("double" | "float") => {
@@ -1077,6 +1111,7 @@ impl Generator {
                         param.paramtype, param.paramname, lua_idx
                     ));
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Float);
                     lua_idx += 1;
                 }
                 Normal("int" | "unsigned char") => {
@@ -1085,6 +1120,7 @@ impl Generator {
                         param.paramtype, param.paramname, param.paramtype, lua_idx
                     ));
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Integer);
                     lua_idx += 1;
                 }
                 Normal("bool") => {
@@ -1093,6 +1129,7 @@ impl Generator {
                         param.paramname, lua_idx
                     ));
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Boolean);
                     lua_idx += 1;
                 }
                 _ if resolved.is_buffer() && resolved.is_const() => {
@@ -1113,6 +1150,7 @@ impl Generator {
                         ));
                     }
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::String);
                     lua_idx += 1;
                 }
                 Normal("uint64")
@@ -1124,6 +1162,7 @@ impl Generator {
                         param.paramtype, param.paramname, lua_idx
                     ));
                     param_names.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Uint64);
                     lua_idx += 1;
                 }
                 Normal(_) => {
@@ -1150,6 +1189,7 @@ impl Generator {
                                     size_param,
                                     lua_idx
                                 ));
+                                sig.add_param(size_param.to_string(), LType::Integer);
                                 lua_idx += 1;
                             }
                         } else if let Some(c) =
@@ -1231,7 +1271,7 @@ impl Generator {
                             .find(|p| p.paramname == sz)
                             .expect("Size param not found");
                         let lua_idx_str = lua_idx.to_string();
-                        let (ok, code) = self.generate_check(
+                        let (ok, code, ltype) = self.generate_check(
                             &param.paramtype,
                             CppType::Array {
                                 ttype: param
@@ -1259,8 +1299,14 @@ impl Generator {
                                     sz,
                                     lua_idx
                                 ));
+                                sig.add_param(sz.to_string(), LType::Integer);
                                 lua_idx += 1;
                             }
+                            // TODO: fix, not necessarily integer
+                            sig.add_param(
+                                param.paramname.clone(),
+                                ltype,
+                            );
 
                             s.raw(&code);
                             param_names.push(format!("{}.data()", param.paramname));
@@ -1289,10 +1335,12 @@ impl Generator {
         let mut return_count = 0;
 
         if method.returntype == "void" {
+            assert!(method.callresult.is_none(), "void methods should not have callresults");
             s.line(&format!("{};", call));
         } else {
             s.line(&format!("{} __ret = {};", method.returntype, call));
             if let Some(callresult) = &method.callresult {
+                sig.add_param("callback".to_string(), LType::CallresultCallback { struct_t: callresult.clone() });
                 s.line("if (callback_ref != LUA_NOREF) {");
                 s.indent_right();
                 s.line(&format!(
@@ -1307,12 +1355,13 @@ impl Generator {
                 s.indent_left();
                 s.line("}");
             }
-            let (ok, push) = self.generate_push(&method.returntype, "__ret", 1);
+            let (ok, push, ltype) = self.generate_push(&method.returntype, "__ret", 1);
             if !ok {
                 // Skip methods with unknown return types
                 return Err(SkipReason::UnsupportedType(method.returntype.clone()));
             }
             s.raw(&push);
+            sig.set_return_type(ltype);
             return_count = 1;
         }
 
@@ -1327,6 +1376,7 @@ impl Generator {
                             "lua_pushstring(L, reinterpret_cast<const char*>({}.data()));",
                             param.paramname
                         ));
+                        sig.add_output_param(param.paramname.clone(), LType::String);
                     } else {
                         // This should probably go somewhere in the JSON and thus in the fix_* functions
                         let size = if let Some(sz) = param.output_array_size_param()
@@ -1363,6 +1413,7 @@ impl Generator {
                             "lua_pushlstring(L, reinterpret_cast<const char*>({}.data()), {});",
                             param.paramname, size
                         ));
+                        sig.add_output_param(param.paramname.clone(), LType::String);
                     }
                 } else {
                     let size = if [
@@ -1407,19 +1458,20 @@ impl Generator {
                             param.paramtype
                         )));
                     };
-                    if let Some(code) = self.push_array(
+                    if let Some((code, ltype)) = self.push_array(
                         param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
                         &param.paramname,
                         size,
                         1,
                     ) {
                         s.raw(&code);
+                        sig.add_output_param(param.paramname.clone(), ltype);
                     } else {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
                 }
             } else {
-                let (ok, push) = self.generate_push(
+                let (ok, push, ltype) = self.generate_push(
                     param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
                     &param.paramname,
                     1,
@@ -1428,6 +1480,7 @@ impl Generator {
                     return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                 }
                 s.raw(&push);
+                sig.add_output_param(param.paramname.clone(), ltype);
                 return_count += 1;
             }
         }
@@ -1435,7 +1488,8 @@ impl Generator {
         s.line(&format!("return {};", return_count));
         s.indent_left();
         s.line("}");
-        Ok((lua_method_name, s.finish()))
+
+        Ok((lua_method_name, s.finish(), sig))
     }
 }
 

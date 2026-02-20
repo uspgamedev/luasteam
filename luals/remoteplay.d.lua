@@ -22,8 +22,8 @@ function RemotePlay.GetSessionClientFormFactor(unSessionID) end
 
 ---@param unSessionID integer
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: pnResolutionX
+---@return integer -- Value of: pnResolutionY
 function RemotePlay.BGetSessionClientResolution(unSessionID) end
 
 ---@return boolean
@@ -40,7 +40,7 @@ function RemotePlay.DisableRemotePlayTogetherDirectInput() end
 
 ---@param unMaxEvents integer
 ---@return integer
----@return table
+---@return table[] -- Value of: pInput
 function RemotePlay.GetInput(unMaxEvents) end
 
 ---@param unSessionID integer
@@ -56,7 +56,7 @@ function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) 
 ---@param nHeight integer
 ---@param nHotX integer
 ---@param nHotY integer
----@param pBGRA table
+---@param pBGRA string
 ---@param nPitch integer
 ---@return integer
 function RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch) end

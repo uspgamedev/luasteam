@@ -5,16 +5,18 @@ local Video = {}
 function Video.GetVideoURL(unVideoAppID) end
 
 ---@return boolean
----@return integer
+---@return integer -- Value of: pnNumViewers
 function Video.IsBroadcasting() end
 
 ---@param unVideoAppID integer
 function Video.GetOPFSettings(unVideoAppID) end
 
 ---@param unVideoAppID integer
----@param pchBuffer string
+---@param pnBufferSize integer
 ---@return boolean
----@return integer
-function Video.GetOPFStringForApp(unVideoAppID, pchBuffer) end
+---@return integer -- Value of: pnBufferSize
+---@return string -- Value of: pchBuffer
+---@return integer -- Value of: pnBufferSize
+function Video.GetOPFStringForApp(unVideoAppID, pnBufferSize) end
 
 Steam.Video = Video

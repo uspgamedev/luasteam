@@ -15,34 +15,36 @@ function User.GetSteamID() end
 ---@param pchExtraInfo string
 function User.TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo) end
 
----@param pchBuffer string
 ---@param cubBuffer integer
 ---@return boolean
-function User.GetUserDataFolder(pchBuffer, cubBuffer) end
+---@return string -- Value of: pchBuffer
+function User.GetUserDataFolder(cubBuffer) end
 
 function User.StartVoiceRecording() end
 
 function User.StopVoiceRecording() end
 
 ---@return integer
----@return integer
+---@return integer -- Value of: pcbCompressed
 function User.GetAvailableVoice() end
 
 ---@param bWantCompressed boolean
----@param pDestBuffer table
 ---@param cbDestBufferSize integer
 ---@return integer
----@return integer
-function User.GetVoice(bWantCompressed, pDestBuffer, cbDestBufferSize) end
+---@return integer -- Value of: nBytesWritten
+---@return string -- Value of: pDestBuffer
+---@return integer -- Value of: nBytesWritten
+function User.GetVoice(bWantCompressed, cbDestBufferSize) end
 
----@param pCompressed table
+---@param pCompressed string
 ---@param cbCompressed integer
----@param pDestBuffer table
 ---@param cbDestBufferSize integer
 ---@param nDesiredSampleRate integer
 ---@return integer
----@return integer
-function User.DecompressVoice(pCompressed, cbCompressed, pDestBuffer, cbDestBufferSize, nDesiredSampleRate) end
+---@return integer -- Value of: nBytesWritten
+---@return string -- Value of: pDestBuffer
+---@return integer -- Value of: nBytesWritten
+function User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate) end
 
 ---@return integer
 function User.GetVoiceOptimalSampleRate() end
@@ -51,7 +53,7 @@ function User.GetVoiceOptimalSampleRate() end
 ---@return integer
 function User.GetAuthTicketForWebApi(pchIdentity) end
 
----@param pAuthTicket table
+---@param pAuthTicket string
 ---@param cbAuthTicket integer
 ---@param steamID uint64
 ---@return integer
@@ -76,17 +78,18 @@ function User.BIsBehindNAT() end
 ---@param usPortServer integer
 function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end
 
----@param pDataToInclude table
+---@param pDataToInclude string
 ---@param cbDataToInclude integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: EncryptedAppTicketResponse_t?, io_fail: boolean)?
+---@return uint64
 function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback) end
 
----@param pTicket table
 ---@param cbMaxTicket integer
 ---@return boolean
----@return integer
-function User.GetEncryptedAppTicket(pTicket, cbMaxTicket) end
+---@return integer -- Value of: pcbTicket
+---@return string -- Value of: pTicket
+---@return integer -- Value of: pcbTicket
+function User.GetEncryptedAppTicket(cbMaxTicket) end
 
 ---@param nSeries integer
 ---@param bFoil boolean
@@ -97,8 +100,8 @@ function User.GetGameBadgeLevel(nSeries, bFoil) end
 function User.GetPlayerSteamLevel() end
 
 ---@param pchRedirectURL string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: StoreAuthURLResponse_t?, io_fail: boolean)?
+---@return uint64
 function User.RequestStoreAuthURL(pchRedirectURL, callback) end
 
 ---@return boolean
@@ -113,12 +116,12 @@ function User.BIsPhoneIdentifying() end
 ---@return boolean
 function User.BIsPhoneRequiringVerification() end
 
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: MarketEligibilityResponse_t?, io_fail: boolean)?
+---@return uint64
 function User.GetMarketEligibility(callback) end
 
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: DurationControl_t?, io_fail: boolean)?
+---@return uint64
 function User.GetDurationControl(callback) end
 
 ---@param eNewState integer

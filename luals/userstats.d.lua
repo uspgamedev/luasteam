@@ -3,12 +3,12 @@ local UserStats = {}
 
 ---@param pchName string
 ---@return boolean
----@return integer
+---@return integer -- Value of: pData
 function UserStats.GetStatInt32(pchName) end
 
 ---@param pchName string
 ---@return boolean
----@return number
+---@return number -- Value of: pData
 function UserStats.GetStatFloat(pchName) end
 
 ---@param pchName string
@@ -29,7 +29,7 @@ function UserStats.UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength
 
 ---@param pchName string
 ---@return boolean
----@return boolean
+---@return boolean -- Value of: pbAchieved
 function UserStats.GetAchievement(pchName) end
 
 ---@param pchName string
@@ -42,8 +42,8 @@ function UserStats.ClearAchievement(pchName) end
 
 ---@param pchName string
 ---@return boolean
----@return boolean
----@return integer
+---@return boolean -- Value of: pbAchieved
+---@return integer -- Value of: punUnlockTime
 function UserStats.GetAchievementAndUnlockTime(pchName) end
 
 ---@return boolean
@@ -72,33 +72,33 @@ function UserStats.GetNumAchievements() end
 function UserStats.GetAchievementName(iAchievement) end
 
 ---@param steamIDUser uint64
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: UserStatsReceived_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.RequestUserStats(steamIDUser, callback) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return integer
+---@return integer -- Value of: pData
 function UserStats.GetUserStatInt32(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return number
+---@return number -- Value of: pData
 function UserStats.GetUserStatFloat(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return boolean
+---@return boolean -- Value of: pbAchieved
 function UserStats.GetUserAchievement(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return boolean
----@return integer
+---@return boolean -- Value of: pbAchieved
+---@return integer -- Value of: punUnlockTime
 function UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName) end
 
 ---@param bAchievementsToo boolean
@@ -108,134 +108,134 @@ function UserStats.ResetAllStats(bAchievementsToo) end
 ---@param pchLeaderboardName string
 ---@param eLeaderboardSortMethod integer
 ---@param eLeaderboardDisplayType integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: LeaderboardFindResult_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback) end
 
 ---@param pchLeaderboardName string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: LeaderboardFindResult_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.FindLeaderboard(pchLeaderboardName, callback) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@return string
 function UserStats.GetLeaderboardName(hSteamLeaderboard) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@return integer
 function UserStats.GetLeaderboardEntryCount(hSteamLeaderboard) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@return integer
 function UserStats.GetLeaderboardSortMethod(hSteamLeaderboard) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@return integer
 function UserStats.GetLeaderboardDisplayType(hSteamLeaderboard) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@param eLeaderboardDataRequest integer
 ---@param nRangeStart integer
 ---@param nRangeEnd integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: LeaderboardScoresDownloaded_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback) end
 
----@param hSteamLeaderboard table
----@param prgUsers table
+---@param hSteamLeaderboard uint64
 ---@param cUsers integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
-function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback) end
+---@param prgUsers uint64[]
+---@param callback fun(data: LeaderboardScoresDownloaded_t?, io_fail: boolean)?
+---@return uint64
+function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, cUsers, prgUsers, callback) end
 
----@param hSteamLeaderboardEntries table
+---@param hSteamLeaderboardEntries uint64
 ---@param index integer
 ---@param cDetailsMax integer
 ---@return boolean
----@return table
----@return integer
+---@return table -- Value of: pLeaderboardEntry
+---@return integer[] -- Value of: pDetails
 function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, cDetailsMax) end
 
----@param hSteamLeaderboard table
+---@param hSteamLeaderboard uint64
 ---@param eLeaderboardUploadScoreMethod integer
 ---@param nScore integer
----@param pScoreDetails table
 ---@param cScoreDetailsCount integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
-function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback) end
+---@param pScoreDetails integer[]
+---@param callback fun(data: LeaderboardScoreUploaded_t?, io_fail: boolean)?
+---@return uint64
+function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, cScoreDetailsCount, pScoreDetails, callback) end
 
----@param hSteamLeaderboard table
----@param hUGC table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param hSteamLeaderboard uint64
+---@param hUGC uint64
+---@param callback fun(data: LeaderboardUGCSet_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.AttachLeaderboardUGC(hSteamLeaderboard, hUGC, callback) end
 
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: NumberOfCurrentPlayers_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.GetNumberOfCurrentPlayers(callback) end
 
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: GlobalAchievementPercentagesReady_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.RequestGlobalAchievementPercentages(callback) end
 
----@param pchName string
 ---@param unNameBufLen integer
 ---@return integer
----@return number
----@return boolean
-function UserStats.GetMostAchievedAchievementInfo(pchName, unNameBufLen) end
+---@return string -- Value of: pchName
+---@return number -- Value of: pflPercent
+---@return boolean -- Value of: pbAchieved
+function UserStats.GetMostAchievedAchievementInfo(unNameBufLen) end
 
 ---@param iIteratorPrevious integer
----@param pchName string
 ---@param unNameBufLen integer
 ---@return integer
----@return number
----@return boolean
-function UserStats.GetNextMostAchievedAchievementInfo(iIteratorPrevious, pchName, unNameBufLen) end
+---@return string -- Value of: pchName
+---@return number -- Value of: pflPercent
+---@return boolean -- Value of: pbAchieved
+function UserStats.GetNextMostAchievedAchievementInfo(iIteratorPrevious, unNameBufLen) end
 
 ---@param pchName string
 ---@return boolean
----@return number
+---@return number -- Value of: pflPercent
 function UserStats.GetAchievementAchievedPercent(pchName) end
 
 ---@param nHistoryDays integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: GlobalStatsReceived_t?, io_fail: boolean)?
+---@return uint64
 function UserStats.RequestGlobalStats(nHistoryDays, callback) end
 
 ---@param pchStatName string
 ---@return boolean
----@return table
+---@return uint64 -- Value of: pData
 function UserStats.GetGlobalStatInt64(pchStatName) end
 
 ---@param pchStatName string
 ---@return boolean
----@return number
+---@return number -- Value of: pData
 function UserStats.GetGlobalStatDouble(pchStatName) end
 
 ---@param pchStatName string
----@param pData table
 ---@param cubData integer
 ---@return integer
-function UserStats.GetGlobalStatHistoryInt64(pchStatName, pData, cubData) end
+---@return uint64[] -- Value of: pData
+function UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData) end
 
 ---@param pchStatName string
----@param pData table
 ---@param cubData integer
 ---@return integer
-function UserStats.GetGlobalStatHistoryDouble(pchStatName, pData, cubData) end
+---@return number[] -- Value of: pData
+function UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData) end
 
 ---@param pchName string
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: pnMinProgress
+---@return integer -- Value of: pnMaxProgress
 function UserStats.GetAchievementProgressLimitsInt32(pchName) end
 
 ---@param pchName string
 ---@return boolean
----@return number
----@return number
+---@return number -- Value of: pfMinProgress
+---@return number -- Value of: pfMaxProgress
 function UserStats.GetAchievementProgressLimitsFloat(pchName) end
 
 Steam.UserStats = UserStats

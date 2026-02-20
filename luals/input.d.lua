@@ -24,73 +24,73 @@ function Input.BWaitForData(bWaitForever, unTimeout) end
 function Input.BNewDataAvailable() end
 
 ---@return integer
----@return table
+---@return uint64[] -- Value of: handlesOut
 function Input.GetConnectedControllers() end
 
 function Input.EnableDeviceCallbacks() end
 
 ---@param pszActionSetName string
----@return table
+---@return uint64
 function Input.GetActionSetHandle(pszActionSetName) end
 
----@param inputHandle table
----@param actionSetHandle table
+---@param inputHandle uint64
+---@param actionSetHandle uint64
 function Input.ActivateActionSet(inputHandle, actionSetHandle) end
 
----@param inputHandle table
----@return table
+---@param inputHandle uint64
+---@return uint64
 function Input.GetCurrentActionSet(inputHandle) end
 
----@param inputHandle table
----@param actionSetLayerHandle table
+---@param inputHandle uint64
+---@param actionSetLayerHandle uint64
 function Input.ActivateActionSetLayer(inputHandle, actionSetLayerHandle) end
 
----@param inputHandle table
----@param actionSetLayerHandle table
+---@param inputHandle uint64
+---@param actionSetLayerHandle uint64
 function Input.DeactivateActionSetLayer(inputHandle, actionSetLayerHandle) end
 
----@param inputHandle table
+---@param inputHandle uint64
 function Input.DeactivateAllActionSetLayers(inputHandle) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return integer
----@return table
+---@return uint64[] -- Value of: handlesOut
 function Input.GetActiveActionSetLayers(inputHandle) end
 
 ---@param pszActionName string
----@return table
+---@return uint64
 function Input.GetDigitalActionHandle(pszActionName) end
 
----@param inputHandle table
----@param digitalActionHandle table
+---@param inputHandle uint64
+---@param digitalActionHandle uint64
 ---@return table
 function Input.GetDigitalActionData(inputHandle, digitalActionHandle) end
 
----@param inputHandle table
----@param actionSetHandle table
----@param digitalActionHandle table
+---@param inputHandle uint64
+---@param actionSetHandle uint64
+---@param digitalActionHandle uint64
 ---@return integer
----@return integer
+---@return integer[] -- Value of: originsOut
 function Input.GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle) end
 
----@param eActionHandle table
+---@param eActionHandle uint64
 ---@return string
 function Input.GetStringForDigitalActionName(eActionHandle) end
 
 ---@param pszActionName string
----@return table
+---@return uint64
 function Input.GetAnalogActionHandle(pszActionName) end
 
----@param inputHandle table
----@param analogActionHandle table
+---@param inputHandle uint64
+---@param analogActionHandle uint64
 ---@return table
 function Input.GetAnalogActionData(inputHandle, analogActionHandle) end
 
----@param inputHandle table
----@param actionSetHandle table
----@param analogActionHandle table
+---@param inputHandle uint64
+---@param actionSetHandle uint64
+---@param analogActionHandle uint64
 ---@return integer
----@return integer
+---@return integer[] -- Value of: originsOut
 function Input.GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle) end
 
 ---@param eOrigin integer
@@ -112,51 +112,51 @@ function Input.GetGlyphForActionOrigin_Legacy(eOrigin) end
 ---@return string
 function Input.GetStringForActionOrigin(eOrigin) end
 
----@param eActionHandle table
+---@param eActionHandle uint64
 ---@return string
 function Input.GetStringForAnalogActionName(eActionHandle) end
 
----@param inputHandle table
----@param eAction table
+---@param inputHandle uint64
+---@param eAction uint64
 function Input.StopAnalogActionMomentum(inputHandle, eAction) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return table
 function Input.GetMotionData(inputHandle) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param usLeftSpeed integer
 ---@param usRightSpeed integer
 function Input.TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param usLeftSpeed integer
 ---@param usRightSpeed integer
 ---@param usLeftTriggerSpeed integer
 ---@param usRightTriggerSpeed integer
 function Input.TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param eHapticLocation integer
----@param nIntensity table
----@param nGainDB table
----@param nOtherIntensity table
----@param nOtherGainDB table
+---@param nIntensity integer
+---@param nGainDB string
+---@param nOtherIntensity integer
+---@param nOtherGainDB string
 function Input.TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB) end
 
----@param inputHandle table
----@param nColorR table
----@param nColorG table
----@param nColorB table
+---@param inputHandle uint64
+---@param nColorR integer
+---@param nColorG integer
+---@param nColorB integer
 ---@param nFlags integer
 function Input.SetLEDColor(inputHandle, nColorR, nColorG, nColorB, nFlags) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param eTargetPad integer
 ---@param usDurationMicroSec integer
 function Input.Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param eTargetPad integer
 ---@param usDurationMicroSec integer
 ---@param usOffMicroSec integer
@@ -164,19 +164,19 @@ function Input.Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicr
 ---@param nFlags integer
 function Input.Legacy_TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return boolean
 function Input.ShowBindingPanel(inputHandle) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return integer
 function Input.GetInputTypeForHandle(inputHandle) end
 
 ---@param nIndex integer
----@return table
+---@return uint64
 function Input.GetControllerForGamepadIndex(nIndex) end
 
----@param ulinputHandle table
+---@param ulinputHandle uint64
 ---@return integer
 function Input.GetGamepadIndexForController(ulinputHandle) end
 
@@ -188,7 +188,7 @@ function Input.GetStringForXboxOrigin(eOrigin) end
 ---@return string
 function Input.GetGlyphForXboxOrigin(eOrigin) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@param eOrigin integer
 ---@return integer
 function Input.GetActionOriginFromXboxOrigin(inputHandle, eOrigin) end
@@ -198,13 +198,13 @@ function Input.GetActionOriginFromXboxOrigin(inputHandle, eOrigin) end
 ---@return integer
 function Input.TranslateActionOrigin(eDestinationInputType, eSourceOrigin) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: pMajor
+---@return integer -- Value of: pMinor
 function Input.GetDeviceBindingRevision(inputHandle) end
 
----@param inputHandle table
+---@param inputHandle uint64
 ---@return integer
 function Input.GetRemotePlaySessionID(inputHandle) end
 

@@ -38,12 +38,12 @@ function Apps.BIsSubscribedFromFreeWeekend() end
 function Apps.GetDLCCount() end
 
 ---@param iDLC integer
----@param pchName string
 ---@param cchNameBufferSize integer
 ---@return boolean
----@return integer
----@return boolean
-function Apps.BGetDLCDataByIndex(iDLC, pchName, cchNameBufferSize) end
+---@return integer -- Value of: pAppID
+---@return boolean -- Value of: pbAvailable
+---@return string -- Value of: pchName
+function Apps.BGetDLCDataByIndex(iDLC, cchNameBufferSize) end
 
 ---@param nAppID integer
 function Apps.InstallDLC(nAppID) end
@@ -54,10 +54,10 @@ function Apps.UninstallDLC(nAppID) end
 ---@param nAppID integer
 function Apps.RequestAppProofOfPurchaseKey(nAppID) end
 
----@param pchName string
 ---@param cchNameBufferSize integer
 ---@return boolean
-function Apps.GetCurrentBetaName(pchName, cchNameBufferSize) end
+---@return string -- Value of: pchName
+function Apps.GetCurrentBetaName(cchNameBufferSize) end
 
 ---@param bMissingFilesOnly boolean
 ---@return boolean
@@ -66,14 +66,14 @@ function Apps.MarkContentCorrupt(bMissingFilesOnly) end
 ---@param appID integer
 ---@param cMaxDepots integer
 ---@return integer
----@return integer
+---@return integer[] -- Value of: pvecDepots
 function Apps.GetInstalledDepots(appID, cMaxDepots) end
 
 ---@param appID integer
----@param pchFolder string
 ---@param cchFolderBufferSize integer
 ---@return integer
-function Apps.GetAppInstallDir(appID, pchFolder, cchFolderBufferSize) end
+---@return string -- Value of: pchFolder
+function Apps.GetAppInstallDir(appID, cchFolderBufferSize) end
 
 ---@param appID integer
 ---@return boolean
@@ -88,8 +88,8 @@ function Apps.GetLaunchQueryParam(pchKey) end
 
 ---@param nAppID integer
 ---@return boolean
----@return table
----@return table
+---@return uint64 -- Value of: punBytesDownloaded
+---@return uint64 -- Value of: punBytesTotal
 function Apps.GetDlcDownloadProgress(nAppID) end
 
 ---@return integer
@@ -98,21 +98,21 @@ function Apps.GetAppBuildId() end
 function Apps.RequestAllProofOfPurchaseKeys() end
 
 ---@param pszFileName string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: FileDetailsResult_t?, io_fail: boolean)?
+---@return uint64
 function Apps.GetFileDetails(pszFileName, callback) end
 
----@param pszCommandLine string
 ---@param cubCommandLine integer
 ---@return integer
-function Apps.GetLaunchCommandLine(pszCommandLine, cubCommandLine) end
+---@return string -- Value of: pszCommandLine
+function Apps.GetLaunchCommandLine(cubCommandLine) end
 
 ---@return boolean
 function Apps.BIsSubscribedFromFamilySharing() end
 
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: punSecondsAllowed
+---@return integer -- Value of: punSecondsPlayed
 function Apps.BIsTimedTrial() end
 
 ---@param nAppID integer
@@ -120,19 +120,19 @@ function Apps.BIsTimedTrial() end
 function Apps.SetDlcContext(nAppID) end
 
 ---@return integer
----@return integer
----@return integer
+---@return integer -- Value of: pnAvailable
+---@return integer -- Value of: pnPrivate
 function Apps.GetNumBetas() end
 
 ---@param iBetaIndex integer
----@param pchBetaName string
 ---@param cchBetaName integer
----@param pchDescription string
 ---@param cchDescription integer
 ---@return boolean
----@return integer
----@return integer
-function Apps.GetBetaInfo(iBetaIndex, pchBetaName, cchBetaName, pchDescription, cchDescription) end
+---@return integer -- Value of: punFlags
+---@return integer -- Value of: punBuildID
+---@return string -- Value of: pchBetaName
+---@return string -- Value of: pchDescription
+function Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription) end
 
 ---@param pchBetaName string
 ---@return boolean

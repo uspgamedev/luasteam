@@ -2,7 +2,7 @@
 local RemoteStorage = {}
 
 ---@param pchFile string
----@param pvData table
+---@param pvData string
 ---@param cubData integer
 ---@return boolean
 function RemoteStorage.FileWrite(pchFile, pvData, cubData) end
@@ -10,27 +10,27 @@ function RemoteStorage.FileWrite(pchFile, pvData, cubData) end
 ---@param pchFile string
 ---@param cubDataToRead integer
 ---@return integer
----@return table
+---@return string -- Value of: pvData
 function RemoteStorage.FileRead(pchFile, cubDataToRead) end
 
 ---@param pchFile string
----@param pvData table
+---@param pvData string
 ---@param cubData integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageFileWriteAsyncComplete_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 
 ---@param pchFile string
 ---@param nOffset integer
 ---@param cubToRead integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageFileReadAsyncComplete_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback) end
 
----@param hReadCall SteamAPICall_t
+---@param hReadCall uint64
 ---@param cubToRead integer
 ---@return boolean
----@return table
+---@return string -- Value of: pvBuffer
 function RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead) end
 
 ---@param pchFile string
@@ -42,8 +42,8 @@ function RemoteStorage.FileForget(pchFile) end
 function RemoteStorage.FileDelete(pchFile) end
 
 ---@param pchFile string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageFileShareResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.FileShare(pchFile, callback) end
 
 ---@param pchFile string
@@ -52,20 +52,20 @@ function RemoteStorage.FileShare(pchFile, callback) end
 function RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform) end
 
 ---@param pchFile string
----@return table
+---@return uint64
 function RemoteStorage.FileWriteStreamOpen(pchFile) end
 
----@param writeHandle table
----@param pvData table
+---@param writeHandle uint64
+---@param pvData string
 ---@param cubData integer
 ---@return boolean
 function RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData) end
 
----@param writeHandle table
+---@param writeHandle uint64
 ---@return boolean
 function RemoteStorage.FileWriteStreamClose(writeHandle) end
 
----@param writeHandle table
+---@param writeHandle uint64
 ---@return boolean
 function RemoteStorage.FileWriteStreamCancel(writeHandle) end
 
@@ -82,7 +82,7 @@ function RemoteStorage.FilePersisted(pchFile) end
 function RemoteStorage.GetFileSize(pchFile) end
 
 ---@param pchFile string
----@return table
+---@return uint64
 function RemoteStorage.GetFileTimestamp(pchFile) end
 
 ---@param pchFile string
@@ -94,12 +94,12 @@ function RemoteStorage.GetFileCount() end
 
 ---@param iFile integer
 ---@return string
----@return integer
+---@return integer -- Value of: pnFileSizeInBytes
 function RemoteStorage.GetFileNameAndSize(iFile) end
 
 ---@return boolean
----@return table
----@return table
+---@return uint64 -- Value of: pnTotalBytes
+---@return uint64 -- Value of: puAvailableBytes
 function RemoteStorage.GetQuota() end
 
 ---@return boolean
@@ -111,136 +111,136 @@ function RemoteStorage.IsCloudEnabledForApp() end
 ---@param bEnabled boolean
 function RemoteStorage.SetCloudEnabledForApp(bEnabled) end
 
----@param hContent table
+---@param hContent uint64
 ---@param unPriority integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageDownloadUGCResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 
----@param hContent table
+---@param hContent uint64
 ---@return boolean
----@return integer
----@return integer
+---@return integer -- Value of: pnBytesDownloaded
+---@return integer -- Value of: pnBytesExpected
 function RemoteStorage.GetUGCDownloadProgress(hContent) end
 
----@param hContent table
+---@param hContent uint64
 ---@param cubDataToRead integer
 ---@param cOffset integer
 ---@param eAction integer
 ---@return integer
----@return table
+---@return string -- Value of: pvData
 function RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction) end
 
 ---@return integer
 function RemoteStorage.GetCachedUGCCount() end
 
 ---@param iCachedContent integer
----@return table
+---@return uint64
 function RemoteStorage.GetCachedUGCHandle(iCachedContent) end
 
----@param unPublishedFileId table
----@return table
+---@param unPublishedFileId uint64
+---@return uint64
 function RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param pchFile string
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileFile(updateHandle, pchFile) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param pchPreviewFile string
 ---@return boolean
 function RemoteStorage.UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param pchTitle string
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileTitle(updateHandle, pchTitle) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param pchDescription string
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescription) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param eVisibility integer
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileVisibility(updateHandle, eVisibility) end
 
----@param updateHandle table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param updateHandle uint64
+---@param callback fun(data: RemoteStorageUpdatePublishedFileResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback) end
 
----@param unPublishedFileId table
+---@param unPublishedFileId uint64
 ---@param unMaxSecondsOld integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageGetPublishedFileDetailsResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback) end
 
----@param unPublishedFileId table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param unPublishedFileId uint64
+---@param callback fun(data: RemoteStorageDeletePublishedFileResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.DeletePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageEnumerateUserPublishedFilesResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback) end
 
----@param unPublishedFileId table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param unPublishedFileId uint64
+---@param callback fun(data: RemoteStorageSubscribePublishedFileResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageEnumerateUserSubscribedFilesResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback) end
 
----@param unPublishedFileId table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param unPublishedFileId uint64
+---@param callback fun(data: RemoteStorageUnsubscribePublishedFileResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback) end
 
----@param updateHandle table
+---@param updateHandle uint64
 ---@param pchChangeDescription string
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription) end
 
----@param unPublishedFileId table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param unPublishedFileId uint64
+---@param callback fun(data: RemoteStorageGetPublishedItemVoteDetailsResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback) end
 
----@param unPublishedFileId table
+---@param unPublishedFileId uint64
 ---@param bVoteUp boolean
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageUpdateUserPublishedItemVoteResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, callback) end
 
----@param unPublishedFileId table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param unPublishedFileId uint64
+---@param callback fun(data: RemoteStorageGetPublishedItemVoteDetailsResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback) end
 
----@param unPublishedFileId table
+---@param unPublishedFileId uint64
 ---@param eAction integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageSetUserPublishedFileActionResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback) end
 
 ---@param eAction integer
 ---@param unStartIndex integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageEnumeratePublishedFilesByUserActionResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex, callback) end
 
----@param hContent table
+---@param hContent uint64
 ---@param pchLocation string
 ---@param unPriority integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: RemoteStorageDownloadUGCResult_t?, io_fail: boolean)?
+---@return uint64
 function RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback) end
 
 ---@return integer
@@ -248,8 +248,8 @@ function RemoteStorage.GetLocalFileChangeCount() end
 
 ---@param iFile integer
 ---@return string
----@return integer
----@return integer
+---@return integer -- Value of: pEChangeType
+---@return integer -- Value of: pEFilePathType
 function RemoteStorage.GetLocalFileChange(iFile) end
 
 ---@return boolean

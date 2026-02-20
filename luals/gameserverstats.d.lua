@@ -2,26 +2,26 @@
 local GameServerStats = {}
 
 ---@param steamIDUser uint64
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: GSStatsReceived_t?, io_fail: boolean)?
+---@return uint64
 function GameServerStats.RequestUserStats(steamIDUser, callback) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return integer
+---@return integer -- Value of: pData
 function GameServerStats.GetUserStatInt32(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return number
+---@return number -- Value of: pData
 function GameServerStats.GetUserStatFloat(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param pchName string
 ---@return boolean
----@return boolean
+---@return boolean -- Value of: pbAchieved
 function GameServerStats.GetUserAchievement(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
@@ -54,8 +54,8 @@ function GameServerStats.SetUserAchievement(steamIDUser, pchName) end
 function GameServerStats.ClearUserAchievement(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: GSStatsStored_t?, io_fail: boolean)?
+---@return uint64
 function GameServerStats.StoreUserStats(steamIDUser, callback) end
 
 Steam.GameServerStats = GameServerStats

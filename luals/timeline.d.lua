@@ -17,7 +17,7 @@ function Timeline.SetTimelineGameMode(eMode) end
 ---@param unIconPriority integer
 ---@param flStartOffsetSeconds number
 ---@param ePossibleClip integer
----@return table
+---@return uint64
 function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, ePossibleClip) end
 
 ---@param pchTitle string
@@ -27,7 +27,7 @@ function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIco
 ---@param flStartOffsetSeconds number
 ---@param flDuration number
 ---@param ePossibleClip integer
----@return table
+---@return uint64
 function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, flDuration, ePossibleClip) end
 
 ---@param pchTitle string
@@ -36,10 +36,10 @@ function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIco
 ---@param unPriority integer
 ---@param flStartOffsetSeconds number
 ---@param ePossibleClip integer
----@return table
+---@return uint64
 function Timeline.StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unPriority, flStartOffsetSeconds, ePossibleClip) end
 
----@param ulEvent table
+---@param ulEvent uint64
 ---@param pchTitle string
 ---@param pchDescription string
 ---@param pchIcon string
@@ -47,16 +47,16 @@ function Timeline.StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unP
 ---@param ePossibleClip integer
 function Timeline.UpdateRangeTimelineEvent(ulEvent, pchTitle, pchDescription, pchIcon, unPriority, ePossibleClip) end
 
----@param ulEvent table
+---@param ulEvent uint64
 ---@param flEndOffsetSeconds number
 function Timeline.EndRangeTimelineEvent(ulEvent, flEndOffsetSeconds) end
 
----@param ulEvent table
+---@param ulEvent uint64
 function Timeline.RemoveTimelineEvent(ulEvent) end
 
----@param ulEvent table
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param ulEvent uint64
+---@param callback fun(data: SteamTimelineEventRecordingExists_t?, io_fail: boolean)?
+---@return uint64
 function Timeline.DoesEventRecordingExist(ulEvent, callback) end
 
 function Timeline.StartGamePhase() end
@@ -67,8 +67,8 @@ function Timeline.EndGamePhase() end
 function Timeline.SetGamePhaseID(pchPhaseID) end
 
 ---@param pchPhaseID string
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: SteamTimelineGamePhaseRecordingExists_t?, io_fail: boolean)?
+---@return uint64
 function Timeline.DoesGamePhaseRecordingExist(pchPhaseID, callback) end
 
 ---@param pchTagName string
@@ -85,7 +85,7 @@ function Timeline.SetGamePhaseAttribute(pchAttributeGroup, pchAttributeValue, un
 ---@param pchPhaseID string
 function Timeline.OpenOverlayToGamePhase(pchPhaseID) end
 
----@param ulEvent table
+---@param ulEvent uint64
 function Timeline.OpenOverlayToTimelineEvent(ulEvent) end
 
 Steam.Timeline = Timeline

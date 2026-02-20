@@ -1,7 +1,7 @@
 ---@class Steam.Screenshots
 local Screenshots = {}
 
----@param pubRGB table
+---@param pubRGB string
 ---@param cubRGB integer
 ---@param nWidth integer
 ---@param nHeight integer
@@ -31,7 +31,7 @@ function Screenshots.SetLocation(hScreenshot, pchLocation) end
 function Screenshots.TagUser(hScreenshot, steamID) end
 
 ---@param hScreenshot integer
----@param unPublishedFileID table
+---@param unPublishedFileID uint64
 ---@return boolean
 function Screenshots.TagPublishedFile(hScreenshot, unPublishedFileID) end
 

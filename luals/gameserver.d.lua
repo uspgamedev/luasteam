@@ -71,7 +71,7 @@ function GameServer.SetRegion(pszRegion) end
 ---@param bActive boolean
 function GameServer.SetAdvertiseServerActive(bActive) end
 
----@param pAuthTicket table
+---@param pAuthTicket string
 ---@param cbAuthTicket integer
 ---@param steamID uint64
 ---@return integer
@@ -95,14 +95,14 @@ function GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup) end
 
 function GameServer.GetGameplayStats() end
 
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: GSReputation_t?, io_fail: boolean)?
+---@return uint64
 function GameServer.GetServerReputation(callback) end
 
 ---@return table
 function GameServer.GetPublicIP() end
 
----@param pData table
+---@param pData string
 ---@param cbData integer
 ---@param srcIP integer
 ---@param srcPort integer
@@ -111,19 +111,19 @@ function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 
 ---@param cbMaxOut integer
 ---@return integer
----@return table
----@return integer
----@return integer
+---@return string -- Value of: pOut
+---@return integer -- Value of: pNetAdr
+---@return integer -- Value of: pPort
 function GameServer.GetNextOutgoingPacket(cbMaxOut) end
 
 ---@param steamIDClan uint64
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: AssociateWithClanResult_t?, io_fail: boolean)?
+---@return uint64
 function GameServer.AssociateWithClan(steamIDClan, callback) end
 
 ---@param steamIDNewPlayer uint64
----@param callback fun(data: table?, io_fail: boolean)?
----@return SteamAPICall_t
+---@param callback fun(data: ComputeNewPlayerCompatibilityResult_t?, io_fail: boolean)?
+---@return uint64
 function GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback) end
 
 ---@return uint64
