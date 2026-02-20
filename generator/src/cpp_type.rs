@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(Debug)]
 pub enum CppType<'a> {
     Normal(&'a str),
@@ -12,10 +14,10 @@ pub enum CppType<'a> {
     },
 }
 
-impl<'a> ToString for CppType<'a> {
-    fn to_string(&self) -> String {
+impl<'a> fmt::Display for CppType<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            CppType::Normal(s) => s.to_string(),
+            CppType::Normal(s) => write!(f, "{}", s),
             CppType::Array {
                 ttype,
                 size,
@@ -23,23 +25,21 @@ impl<'a> ToString for CppType<'a> {
             } => {
                 if size.parse::<usize>().is_ok() {
                     if *is_const {
-                        format!("const {}[{}]", ttype, size)
+                        write!(f, "const {}[{}]", ttype, size)
                     } else {
-                        format!("{}[{}]", ttype, size)
+                        write!(f, "{}[{}]", ttype, size)
                     }
+                } else if *is_const {
+                    write!(f, "const {} *", ttype)
                 } else {
-                    if *is_const {
-                        format!("const {} *", ttype)
-                    } else {
-                        format!("{} *", ttype)
-                    }
+                    write!(f, "{} *", ttype)
                 }
             }
             CppType::Pointer { ttype, is_const } => {
                 if *is_const {
-                    format!("const {}", ttype)
+                    write!(f, "const {}", ttype)
                 } else {
-                    ttype.to_string()
+                    write!(f, "{}", ttype)
                 }
             }
         }
@@ -52,17 +52,16 @@ impl<'a> CppType<'a> {
     }
 
     pub fn is_buffer(&self) -> bool {
-        match self {
+        matches!(
+            self,
             CppType::Array {
                 ttype: "void" | "char" | "uint8" | "unsigned char",
                 ..
-            } => true,
-            CppType::Pointer {
+            } | CppType::Pointer {
                 ttype: "void" | "char" | "uint8" | "unsigned char",
                 ..
-            } => true,
-            _ => false,
-        }
+            }
+        )
     }
 
     pub fn is_const(&self) -> bool {

@@ -304,6 +304,89 @@ void shutdown_GameServer_auto(lua_State *L) {
 	delete GameServer_listener; GameServer_listener = nullptr;
 }
 
+template <> void CallResultListener<AssociateWithClanResult_t>::Result(AssociateWithClanResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 1);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<ComputeNewPlayerCompatibilityResult_t>::Result(ComputeNewPlayerCompatibilityResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 5);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		lua_pushinteger(L, data->m_cPlayersThatDontLikeCandidate);
+		lua_setfield(L, -2, "m_cPlayersThatDontLikeCandidate");
+		lua_pushinteger(L, data->m_cPlayersThatCandidateDoesntLike);
+		lua_setfield(L, -2, "m_cPlayersThatCandidateDoesntLike");
+		lua_pushinteger(L, data->m_cClanPlayersThatDontLikeCandidate);
+		lua_setfield(L, -2, "m_cClanPlayersThatDontLikeCandidate");
+		luasteam::pushuint64(L, data->m_SteamIDCandidate.ConvertToUint64());
+		lua_setfield(L, -2, "m_SteamIDCandidate");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<GSReputation_t>::Result(GSReputation_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 7);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		lua_pushinteger(L, data->m_unReputationScore);
+		lua_setfield(L, -2, "m_unReputationScore");
+		lua_pushboolean(L, data->m_bBanned);
+		lua_setfield(L, -2, "m_bBanned");
+		lua_pushinteger(L, data->m_unBannedIP);
+		lua_setfield(L, -2, "m_unBannedIP");
+		lua_pushinteger(L, data->m_usBannedPort);
+		lua_setfield(L, -2, "m_usBannedPort");
+		luasteam::pushuint64(L, data->m_ulBannedGameID);
+		lua_setfield(L, -2, "m_ulBannedGameID");
+		lua_pushinteger(L, data->m_unBanExpires);
+		lua_setfield(L, -2, "m_unBanExpires");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // void SetProduct(const char * pszProduct);
 EXTERN int luasteam_GameServer_SetProduct(lua_State *L) {
 	const char *pszProduct = luaL_checkstring(L, 1);
@@ -520,7 +603,16 @@ EXTERN int luasteam_GameServer_GetGameplayStats(lua_State *L) {
 
 // SteamAPICall_t GetServerReputation();
 EXTERN int luasteam_GameServer_GetServerReputation(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamGameServer()->GetServerReputation();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<GSReputation_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<GSReputation_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -559,16 +651,34 @@ EXTERN int luasteam_GameServer_GetNextOutgoingPacket(lua_State *L) {
 
 // SteamAPICall_t AssociateWithClan(CSteamID steamIDClan);
 EXTERN int luasteam_GameServer_AssociateWithClan(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamIDClan(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamGameServer()->AssociateWithClan(steamIDClan);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<AssociateWithClanResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<AssociateWithClanResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t ComputeNewPlayerCompatibility(CSteamID steamIDNewPlayer);
 EXTERN int luasteam_GameServer_ComputeNewPlayerCompatibility(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamIDNewPlayer(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamGameServer()->ComputeNewPlayerCompatibility(steamIDNewPlayer);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<ComputeNewPlayerCompatibilityResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<ComputeNewPlayerCompatibilityResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

@@ -15,7 +15,6 @@ extern "C" {
 #    define EXTERN extern "C"
 #endif
 
-
 namespace luasteam {
 
 // Use this with care. Should only be used for Callbacks and CallResults.
@@ -25,6 +24,10 @@ extern lua_State *global_lua_state;
 void pushuint64(lua_State *L, uint64 v);
 uint64 checkuint64(lua_State *L, int nParam);
 uint64 assertuint64(lua_State *L, int index, const char *fmt, ...);
+
+// using lightuserdata for opaque pointers (void*, HServerListRequest, etc.)
+void pushvoid_ptr(lua_State *L, void *v);
+void *checkvoid_ptr(lua_State *L, int nParam);
 
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);

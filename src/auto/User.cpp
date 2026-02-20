@@ -334,6 +334,112 @@ void shutdown_User_auto(lua_State *L) {
 	delete User_listener; User_listener = nullptr;
 }
 
+template <> void CallResultListener<DurationControl_t>::Result(DurationControl_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 8);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		lua_pushinteger(L, data->m_appid);
+		lua_setfield(L, -2, "m_appid");
+		lua_pushboolean(L, data->m_bApplicable);
+		lua_setfield(L, -2, "m_bApplicable");
+		lua_pushinteger(L, data->m_csecsLast5h);
+		lua_setfield(L, -2, "m_csecsLast5h");
+		lua_pushinteger(L, data->m_progress);
+		lua_setfield(L, -2, "m_progress");
+		lua_pushinteger(L, data->m_notification);
+		lua_setfield(L, -2, "m_notification");
+		lua_pushinteger(L, data->m_csecsToday);
+		lua_setfield(L, -2, "m_csecsToday");
+		lua_pushinteger(L, data->m_csecsRemaining);
+		lua_setfield(L, -2, "m_csecsRemaining");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<EncryptedAppTicketResponse_t>::Result(EncryptedAppTicketResponse_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 1);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<MarketEligibilityResponse_t>::Result(MarketEligibilityResponse_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 5);
+		lua_pushboolean(L, data->m_bAllowed);
+		lua_setfield(L, -2, "m_bAllowed");
+		lua_pushinteger(L, data->m_eNotAllowedReason);
+		lua_setfield(L, -2, "m_eNotAllowedReason");
+		lua_pushinteger(L, data->m_rtAllowedAtTime);
+		lua_setfield(L, -2, "m_rtAllowedAtTime");
+		lua_pushinteger(L, data->m_cdaySteamGuardRequiredDays);
+		lua_setfield(L, -2, "m_cdaySteamGuardRequiredDays");
+		lua_pushinteger(L, data->m_cdayNewDeviceCooldown);
+		lua_setfield(L, -2, "m_cdayNewDeviceCooldown");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<StoreAuthURLResponse_t>::Result(StoreAuthURLResponse_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 1);
+		lua_pushstring(L, reinterpret_cast<const char*>(data->m_szURL));
+		lua_setfield(L, -2, "m_szURL");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // HSteamUser GetHSteamUser();
 EXTERN int luasteam_User_GetHSteamUser(lua_State *L) {
 	HSteamUser __ret = SteamUser()->GetHSteamUser();
@@ -489,9 +595,18 @@ EXTERN int luasteam_User_AdvertiseGame(lua_State *L) {
 
 // SteamAPICall_t RequestEncryptedAppTicket(const void * pDataToInclude, int cbDataToInclude);
 EXTERN int luasteam_User_RequestEncryptedAppTicket(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	char *pDataToInclude = const_cast<char*>(luaL_checkstring(L, 1));
 	int cbDataToInclude = static_cast<int>(luaL_checkint(L, 2));
 	SteamAPICall_t __ret = SteamUser()->RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<EncryptedAppTicketResponse_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<EncryptedAppTicketResponse_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -526,8 +641,17 @@ EXTERN int luasteam_User_GetPlayerSteamLevel(lua_State *L) {
 
 // SteamAPICall_t RequestStoreAuthURL(const char * pchRedirectURL);
 EXTERN int luasteam_User_RequestStoreAuthURL(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pchRedirectURL = luaL_checkstring(L, 1);
 	SteamAPICall_t __ret = SteamUser()->RequestStoreAuthURL(pchRedirectURL);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<StoreAuthURLResponse_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<StoreAuthURLResponse_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -562,14 +686,32 @@ EXTERN int luasteam_User_BIsPhoneRequiringVerification(lua_State *L) {
 
 // SteamAPICall_t GetMarketEligibility();
 EXTERN int luasteam_User_GetMarketEligibility(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamUser()->GetMarketEligibility();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<MarketEligibilityResponse_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<MarketEligibilityResponse_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t GetDurationControl();
 EXTERN int luasteam_User_GetDurationControl(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamUser()->GetDurationControl();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<DurationControl_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<DurationControl_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

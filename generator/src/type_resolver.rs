@@ -109,16 +109,16 @@ impl TypeResolver {
             };
             return CppType::Array {
                 ttype: self.resolve_base_type(ttype),
-                size: &size_str,
+                size: size_str,
                 is_const,
             };
         }
 
-        if t.ends_with("*") {
-            let (ttype, is_const) = if t.starts_with("const ") {
-                (t["const ".len()..t.len() - 1].trim(), true)
+        if let Some(stripped) = t.strip_suffix("*") {
+            let (ttype, is_const) = if let Some(const_stripped) = stripped.strip_prefix("const ") {
+                (const_stripped.trim(), true)
             } else {
-                (t[..t.len() - 1].trim(), false)
+                (stripped.trim(), false)
             };
             return CppType::Pointer {
                 ttype: self.resolve_base_type(ttype),

@@ -171,6 +171,27 @@ void shutdown_Utils_auto(lua_State *L) {
 	delete Utils_listener; Utils_listener = nullptr;
 }
 
+template <> void CallResultListener<CheckFileSignature_t>::Result(CheckFileSignature_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 1);
+		lua_pushinteger(L, data->m_eCheckFileSignature);
+		lua_setfield(L, -2, "m_eCheckFileSignature");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // uint32 GetSecondsSinceAppActive();
 EXTERN int luasteam_Utils_GetSecondsSinceAppActive(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetSecondsSinceAppActive();
@@ -305,8 +326,17 @@ EXTERN int luasteam_Utils_BOverlayNeedsPresent(lua_State *L) {
 
 // SteamAPICall_t CheckFileSignature(const char * szFileName);
 EXTERN int luasteam_Utils_CheckFileSignature(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *szFileName = luaL_checkstring(L, 1);
 	SteamAPICall_t __ret = SteamUtils()->CheckFileSignature(szFileName);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<CheckFileSignature_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<CheckFileSignature_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

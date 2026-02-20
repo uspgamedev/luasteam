@@ -132,6 +132,81 @@ void shutdown_Inventory_auto(lua_State *L) {
 	delete Inventory_listener; Inventory_listener = nullptr;
 }
 
+template <> void CallResultListener<SteamInventoryEligiblePromoItemDefIDs_t>::Result(SteamInventoryEligiblePromoItemDefIDs_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 4);
+		lua_pushinteger(L, data->m_result);
+		lua_setfield(L, -2, "m_result");
+		luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
+		lua_setfield(L, -2, "m_steamID");
+		lua_pushinteger(L, data->m_numEligiblePromoItemDefs);
+		lua_setfield(L, -2, "m_numEligiblePromoItemDefs");
+		lua_pushboolean(L, data->m_bCachedData);
+		lua_setfield(L, -2, "m_bCachedData");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<SteamInventoryRequestPricesResult_t>::Result(SteamInventoryRequestPricesResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		lua_pushinteger(L, data->m_result);
+		lua_setfield(L, -2, "m_result");
+		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency));
+		lua_setfield(L, -2, "m_rgchCurrency");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<SteamInventoryStartPurchaseResult_t>::Result(SteamInventoryStartPurchaseResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 3);
+		lua_pushinteger(L, data->m_result);
+		lua_setfield(L, -2, "m_result");
+		luasteam::pushuint64(L, data->m_ulOrderID);
+		lua_setfield(L, -2, "m_ulOrderID");
+		luasteam::pushuint64(L, data->m_ulTransID);
+		lua_setfield(L, -2, "m_ulTransID");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // EResult GetResultStatus(SteamInventoryResult_t resultHandle);
 EXTERN int luasteam_Inventory_GetResultStatus(lua_State *L) {
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
@@ -447,8 +522,17 @@ EXTERN int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
 
 // SteamAPICall_t RequestEligiblePromoItemDefinitionsIDs(CSteamID steamID);
 EXTERN int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamInventory()->RequestEligiblePromoItemDefinitionsIDs(steamID);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<SteamInventoryEligiblePromoItemDefIDs_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<SteamInventoryEligiblePromoItemDefIDs_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -471,6 +555,10 @@ EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
 
 // SteamAPICall_t StartPurchase(const SteamItemDef_t * pArrayItemDefs, const uint32 * punArrayQuantity, uint32 unArrayLength);
 EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemDef_t> pArrayItemDefs(unArrayLength);
@@ -487,13 +575,27 @@ EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	SteamAPICall_t __ret = SteamInventory()->StartPurchase(pArrayItemDefs.data(), punArrayQuantity.data(), unArrayLength);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<SteamInventoryStartPurchaseResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<SteamInventoryStartPurchaseResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t RequestPrices();
 EXTERN int luasteam_Inventory_RequestPrices(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamInventory()->RequestPrices();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<SteamInventoryRequestPricesResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<SteamInventoryRequestPricesResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

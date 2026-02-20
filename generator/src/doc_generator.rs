@@ -86,7 +86,7 @@ impl DocGenerator {
                 lua_namespace, lua_method_name
             ));
         }
-        doc.push_str("\n");
+        doc.push('\n');
 
         // List of Callbacks
         if !callbacks.is_empty() {
@@ -99,7 +99,7 @@ impl DocGenerator {
                     lua_namespace, callback_name
                 ));
             }
-            doc.push_str("\n");
+            doc.push('\n');
         }
 
         // Function Reference
@@ -110,22 +110,19 @@ impl DocGenerator {
             doc.push_str(&self.generate_function_doc(
                 method,
                 lua_method_name,
-                &lua_namespace,
+                lua_namespace,
                 &interface.classname,
                 true,
             ));
         }
 
         // Struct Reference (only structs used by this interface)
-        let used_structs = self.get_structs_for_interface(
-            interface,
-            generated_methods,
-        );
+        let used_structs = self.get_structs_for_interface(interface, generated_methods);
         if !used_structs.is_empty() {
             doc.push_str("\nData Structures\n");
             doc.push_str("---------------\n\n");
             for strct in used_structs {
-                doc.push_str(&self.generate_struct_doc(strct, &lua_namespace));
+                doc.push_str(&self.generate_struct_doc(strct, lua_namespace));
             }
         }
 
@@ -155,7 +152,7 @@ impl DocGenerator {
             doc.push_str("\nCallbacks\n");
             doc.push_str("---------\n\n");
             for callback in callbacks {
-                doc.push_str(&self.generate_callback_doc(callback, &lua_namespace));
+                doc.push_str(&self.generate_callback_doc(callback, lua_namespace));
             }
         }
 
@@ -219,12 +216,8 @@ impl DocGenerator {
 
         // Return values
         let return_values = self.detect_return_values(method);
-        for (idx, (ret_type, ret_desc)) in return_values.iter().enumerate() {
-            if idx == 0 && return_values.len() == 1 {
-                doc.push_str(&format!("    :returns: ({}) {}\n", ret_type, ret_desc));
-            } else {
-                doc.push_str(&format!("    :returns: ({}) {}\n", ret_type, ret_desc));
-            }
+        for (ret_type, ret_desc) in &return_values {
+            doc.push_str(&format!("    :returns: ({}) {}\n", ret_type, ret_desc));
         }
 
         // SteamWorks link
@@ -234,10 +227,10 @@ impl DocGenerator {
         ));
 
         // Description
-        if let Some(custom) = custom_doc {
-            if !custom.description.is_empty() {
-                doc.push_str(&format!("    {}\n\n", custom.description));
-            }
+        if let Some(custom) = custom_doc
+            && !custom.description.is_empty()
+        {
+            doc.push_str(&format!("    {}\n\n", custom.description));
         }
 
         // Signature differences
@@ -247,29 +240,29 @@ impl DocGenerator {
             for diff in &differences {
                 doc.push_str(&format!("    * {}\n", diff));
             }
-            doc.push_str("\n");
+            doc.push('\n');
         }
 
         // Custom notes
-        if let Some(custom) = custom_doc {
-            if !custom.notes.is_empty() {
-                doc.push_str("    **Notes:**\n\n");
-                for note in &custom.notes {
-                    doc.push_str(&format!("    * {}\n", note));
-                }
-                doc.push_str("\n");
+        if let Some(custom) = custom_doc
+            && !custom.notes.is_empty()
+        {
+            doc.push_str("    **Notes:**\n\n");
+            for note in &custom.notes {
+                doc.push_str(&format!("    * {}\n", note));
             }
+            doc.push('\n');
         }
 
         // Example
-        if let Some(custom) = custom_doc {
-            if let Some(example) = &custom.example {
-                doc.push_str("**Example**::\n\n");
-                for line in example.lines() {
-                    doc.push_str(&format!("    {}\n", line));
-                }
-                doc.push_str("\n");
+        if let Some(custom) = custom_doc
+            && let Some(example) = &custom.example
+        {
+            doc.push_str("**Example**::\n\n");
+            for line in example.lines() {
+                doc.push_str(&format!("    {}\n", line));
             }
+            doc.push('\n');
         }
 
         doc
@@ -296,7 +289,7 @@ impl DocGenerator {
                 field.fieldname, lua_type, field.fieldname
             ));
         }
-        doc.push_str("\n");
+        doc.push('\n');
 
         doc
     }
@@ -322,10 +315,7 @@ impl DocGenerator {
             if self.is_output_param(param) {
                 let base_type = param.paramtype.trim_end_matches(" *");
                 let lua_type = self.get_type_reference(base_type);
-                returns.push((
-                    lua_type,
-                    format!("Value for `{}`", param.paramname),
-                ));
+                returns.push((lua_type, format!("Value for `{}`", param.paramname)));
             }
         }
 
@@ -412,17 +402,17 @@ impl DocGenerator {
         // Find all struct types used in parameters
         for (method, _) in generated_methods {
             for param in &method.params {
-                if let Some(strct) = self.get_struct_for_type(&param.paramtype) {
-                    if seen.insert(&strct.name) {
-                        used_structs.push(strct);
-                    }
+                if let Some(strct) = self.get_struct_for_type(&param.paramtype)
+                    && seen.insert(&strct.name)
+                {
+                    used_structs.push(strct);
                 }
             }
             // Also check return type
-            if let Some(strct) = self.get_struct_for_type(&method.returntype) {
-                if seen.insert(&strct.name) {
-                    used_structs.push(strct);
-                }
+            if let Some(strct) = self.get_struct_for_type(&method.returntype)
+                && seen.insert(&strct.name)
+            {
+                used_structs.push(strct);
             }
         }
 
@@ -456,7 +446,7 @@ impl DocGenerator {
                     doc.push_str(&format!("    * **{}** ({})\n", field.fieldname, lua_type));
                 }
             }
-            doc.push_str("\n");
+            doc.push('\n');
         }
 
         doc

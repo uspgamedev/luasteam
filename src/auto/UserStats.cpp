@@ -283,6 +283,202 @@ void shutdown_UserStats_auto(lua_State *L) {
 	delete UserStats_listener; UserStats_listener = nullptr;
 }
 
+template <> void CallResultListener<GlobalAchievementPercentagesReady_t>::Result(GlobalAchievementPercentagesReady_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		luasteam::pushuint64(L, data->m_nGameID);
+		lua_setfield(L, -2, "m_nGameID");
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<GlobalStatsReceived_t>::Result(GlobalStatsReceived_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		luasteam::pushuint64(L, data->m_nGameID);
+		lua_setfield(L, -2, "m_nGameID");
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<LeaderboardFindResult_t>::Result(LeaderboardFindResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		luasteam::pushuint64(L, data->m_hSteamLeaderboard);
+		lua_setfield(L, -2, "m_hSteamLeaderboard");
+		lua_pushinteger(L, data->m_bLeaderboardFound);
+		lua_setfield(L, -2, "m_bLeaderboardFound");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<LeaderboardScoreUploaded_t>::Result(LeaderboardScoreUploaded_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 6);
+		lua_pushinteger(L, data->m_bSuccess);
+		lua_setfield(L, -2, "m_bSuccess");
+		luasteam::pushuint64(L, data->m_hSteamLeaderboard);
+		lua_setfield(L, -2, "m_hSteamLeaderboard");
+		lua_pushinteger(L, data->m_nScore);
+		lua_setfield(L, -2, "m_nScore");
+		lua_pushinteger(L, data->m_bScoreChanged);
+		lua_setfield(L, -2, "m_bScoreChanged");
+		lua_pushinteger(L, data->m_nGlobalRankNew);
+		lua_setfield(L, -2, "m_nGlobalRankNew");
+		lua_pushinteger(L, data->m_nGlobalRankPrevious);
+		lua_setfield(L, -2, "m_nGlobalRankPrevious");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<LeaderboardScoresDownloaded_t>::Result(LeaderboardScoresDownloaded_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 3);
+		luasteam::pushuint64(L, data->m_hSteamLeaderboard);
+		lua_setfield(L, -2, "m_hSteamLeaderboard");
+		luasteam::pushuint64(L, data->m_hSteamLeaderboardEntries);
+		lua_setfield(L, -2, "m_hSteamLeaderboardEntries");
+		lua_pushinteger(L, data->m_cEntryCount);
+		lua_setfield(L, -2, "m_cEntryCount");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<LeaderboardUGCSet_t>::Result(LeaderboardUGCSet_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		luasteam::pushuint64(L, data->m_hSteamLeaderboard);
+		lua_setfield(L, -2, "m_hSteamLeaderboard");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<NumberOfCurrentPlayers_t>::Result(NumberOfCurrentPlayers_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		lua_pushinteger(L, data->m_bSuccess);
+		lua_setfield(L, -2, "m_bSuccess");
+		lua_pushinteger(L, data->m_cPlayers);
+		lua_setfield(L, -2, "m_cPlayers");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<UserStatsReceived_t>::Result(UserStatsReceived_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 3);
+		luasteam::pushuint64(L, data->m_nGameID);
+		lua_setfield(L, -2, "m_nGameID");
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+		lua_setfield(L, -2, "m_steamIDUser");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // bool GetStat(const char * pchName, int32 * pData);
 EXTERN int luasteam_UserStats_GetStatInt32(lua_State *L) {
 	const char *pchName = luaL_checkstring(L, 1);
@@ -420,8 +616,17 @@ EXTERN int luasteam_UserStats_GetAchievementName(lua_State *L) {
 
 // SteamAPICall_t RequestUserStats(CSteamID steamIDUser);
 EXTERN int luasteam_UserStats_RequestUserStats(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamUserStats()->RequestUserStats(steamIDUser);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<UserStatsReceived_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<UserStatsReceived_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -482,18 +687,36 @@ EXTERN int luasteam_UserStats_ResetAllStats(lua_State *L) {
 
 // SteamAPICall_t FindOrCreateLeaderboard(const char * pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType eLeaderboardDisplayType);
 EXTERN int luasteam_UserStats_FindOrCreateLeaderboard(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pchLeaderboardName = luaL_checkstring(L, 1);
 	ELeaderboardSortMethod eLeaderboardSortMethod = static_cast<ELeaderboardSortMethod>(luaL_checkint(L, 2));
 	ELeaderboardDisplayType eLeaderboardDisplayType = static_cast<ELeaderboardDisplayType>(luaL_checkint(L, 3));
 	SteamAPICall_t __ret = SteamUserStats()->FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardFindResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardFindResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t FindLeaderboard(const char * pchLeaderboardName);
 EXTERN int luasteam_UserStats_FindLeaderboard(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pchLeaderboardName = luaL_checkstring(L, 1);
 	SteamAPICall_t __ret = SteamUserStats()->FindLeaderboard(pchLeaderboardName);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardFindResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardFindResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -532,17 +755,30 @@ EXTERN int luasteam_UserStats_GetLeaderboardDisplayType(lua_State *L) {
 
 // SteamAPICall_t DownloadLeaderboardEntries(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardDataRequest eLeaderboardDataRequest, int nRangeStart, int nRangeEnd);
 EXTERN int luasteam_UserStats_DownloadLeaderboardEntries(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
 	ELeaderboardDataRequest eLeaderboardDataRequest = static_cast<ELeaderboardDataRequest>(luaL_checkint(L, 2));
 	int nRangeStart = static_cast<int>(luaL_checkint(L, 3));
 	int nRangeEnd = static_cast<int>(luaL_checkint(L, 4));
 	SteamAPICall_t __ret = SteamUserStats()->DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardScoresDownloaded_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardScoresDownloaded_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t DownloadLeaderboardEntriesForUsers(SteamLeaderboard_t hSteamLeaderboard, const CSteamID * prgUsers, int cUsers);
 EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
 	int cUsers = luaL_checkint(L, 3);
 	luaL_checktype(L, 2, LUA_TTABLE);
@@ -553,6 +789,11 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	SteamAPICall_t __ret = SteamUserStats()->DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers.data(), cUsers);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardScoresDownloaded_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardScoresDownloaded_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -577,6 +818,10 @@ EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 
 // SteamAPICall_t UploadLeaderboardScore(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore, const int32 * pScoreDetails, int cScoreDetailsCount);
 EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
 	ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkint(L, 2));
 	int32 nScore = static_cast<int32>(luaL_checkint(L, 3));
@@ -589,29 +834,61 @@ EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	SteamAPICall_t __ret = SteamUserStats()->UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails.data(), cScoreDetailsCount);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardScoreUploaded_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardScoreUploaded_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t AttachLeaderboardUGC(SteamLeaderboard_t hSteamLeaderboard, UGCHandle_t hUGC);
 EXTERN int luasteam_UserStats_AttachLeaderboardUGC(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
 	UGCHandle_t hUGC(luasteam::checkuint64(L, 2));
 	SteamAPICall_t __ret = SteamUserStats()->AttachLeaderboardUGC(hSteamLeaderboard, hUGC);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<LeaderboardUGCSet_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<LeaderboardUGCSet_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t GetNumberOfCurrentPlayers();
 EXTERN int luasteam_UserStats_GetNumberOfCurrentPlayers(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamUserStats()->GetNumberOfCurrentPlayers();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<NumberOfCurrentPlayers_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<NumberOfCurrentPlayers_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
 // SteamAPICall_t RequestGlobalAchievementPercentages();
 EXTERN int luasteam_UserStats_RequestGlobalAchievementPercentages(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	SteamAPICall_t __ret = SteamUserStats()->RequestGlobalAchievementPercentages();
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<GlobalAchievementPercentagesReady_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<GlobalAchievementPercentagesReady_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -657,8 +934,17 @@ EXTERN int luasteam_UserStats_GetAchievementAchievedPercent(lua_State *L) {
 
 // SteamAPICall_t RequestGlobalStats(int nHistoryDays);
 EXTERN int luasteam_UserStats_RequestGlobalStats(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	int nHistoryDays = static_cast<int>(luaL_checkint(L, 1));
 	SteamAPICall_t __ret = SteamUserStats()->RequestGlobalStats(nHistoryDays);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<GlobalStatsReceived_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<GlobalStatsReceived_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

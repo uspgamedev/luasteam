@@ -525,6 +525,27 @@ void shutdown_HTMLSurface_auto(lua_State *L) {
 	delete HTMLSurface_listener; HTMLSurface_listener = nullptr;
 }
 
+template <> void CallResultListener<HTML_BrowserReady_t>::Result(HTML_BrowserReady_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 1);
+		lua_pushinteger(L, data->unBrowserHandle);
+		lua_setfield(L, -2, "unBrowserHandle");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // bool Init();
 EXTERN int luasteam_HTMLSurface_Init(lua_State *L) {
 	bool __ret = SteamHTMLSurface()->Init();
@@ -541,9 +562,18 @@ EXTERN int luasteam_HTMLSurface_Shutdown(lua_State *L) {
 
 // SteamAPICall_t CreateBrowser(const char * pchUserAgent, const char * pchUserCSS);
 EXTERN int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pchUserAgent = luaL_checkstring(L, 1);
 	const char *pchUserCSS = luaL_checkstring(L, 2);
 	SteamAPICall_t __ret = SteamHTMLSurface()->CreateBrowser(pchUserAgent, pchUserCSS);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<HTML_BrowserReady_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<HTML_BrowserReady_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

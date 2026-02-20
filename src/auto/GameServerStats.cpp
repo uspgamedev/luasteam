@@ -56,10 +56,65 @@ void shutdown_GameServerStats_auto(lua_State *L) {
 	delete GameServerStats_listener; GameServerStats_listener = nullptr;
 }
 
+template <> void CallResultListener<GSStatsReceived_t>::Result(GSStatsReceived_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+		lua_setfield(L, -2, "m_steamIDUser");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<GSStatsStored_t>::Result(GSStatsStored_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
+		lua_setfield(L, -2, "m_steamIDUser");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // SteamAPICall_t RequestUserStats(CSteamID steamIDUser);
 EXTERN int luasteam_GameServerStats_RequestUserStats(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamGameServerStats()->RequestUserStats(steamIDUser);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<GSStatsReceived_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<GSStatsReceived_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -148,8 +203,17 @@ EXTERN int luasteam_GameServerStats_ClearUserAchievement(lua_State *L) {
 
 // SteamAPICall_t StoreUserStats(CSteamID steamIDUser);
 EXTERN int luasteam_GameServerStats_StoreUserStats(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamGameServerStats()->StoreUserStats(steamIDUser);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<GSStatsStored_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<GSStatsStored_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

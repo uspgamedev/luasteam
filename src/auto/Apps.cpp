@@ -119,6 +119,33 @@ void shutdown_Apps_auto(lua_State *L) {
 	delete Apps_listener; Apps_listener = nullptr;
 }
 
+template <> void CallResultListener<FileDetailsResult_t>::Result(FileDetailsResult_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 4);
+		lua_pushinteger(L, data->m_eResult);
+		lua_setfield(L, -2, "m_eResult");
+		luasteam::pushuint64(L, data->m_ulFileSize);
+		lua_setfield(L, -2, "m_ulFileSize");
+		lua_pushstring(L, reinterpret_cast<const char*>(data->m_FileSHA));
+		lua_setfield(L, -2, "m_FileSHA");
+		lua_pushinteger(L, data->m_unFlags);
+		lua_setfield(L, -2, "m_unFlags");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // bool BIsSubscribed();
 EXTERN int luasteam_Apps_BIsSubscribed(lua_State *L) {
 	bool __ret = SteamApps()->BIsSubscribed();
@@ -329,8 +356,17 @@ EXTERN int luasteam_Apps_RequestAllProofOfPurchaseKeys(lua_State *L) {
 
 // SteamAPICall_t GetFileDetails(const char * pszFileName);
 EXTERN int luasteam_Apps_GetFileDetails(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pszFileName = luaL_checkstring(L, 1);
 	SteamAPICall_t __ret = SteamApps()->GetFileDetails(pszFileName);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<FileDetailsResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<FileDetailsResult_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }

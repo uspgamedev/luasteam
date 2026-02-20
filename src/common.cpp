@@ -55,6 +55,13 @@ uint64 assertuint64(lua_State *L, int index, const char *fmt, ...) {
     return *ptr;
 }
 
+void pushvoid_ptr(lua_State *L, void *v) { lua_pushlightuserdata(L, v); }
+
+void *checkvoid_ptr(lua_State *L, int nParam) {
+    luaL_argcheck(L, lua_islightuserdata(L, nParam), nParam, "must be opaque pointer");
+    return lua_touserdata(L, nParam);
+}
+
 void add_func(lua_State *L, const char *name, lua_CFunction func) {
     lua_pushcfunction(L, func);
     lua_setfield(L, -2, name);

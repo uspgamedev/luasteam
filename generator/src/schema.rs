@@ -4,7 +4,6 @@ use std::collections::{HashMap, HashSet};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SkipReason {
     ManualBlocklist(String), // Detailed reason for manual blocklist
-    AutoBlocklist,
     UnsupportedType(String),
     NoAccessors,
     RequiresCustomCode,
@@ -16,7 +15,6 @@ impl SkipReason {
     pub fn description(&self) -> String {
         match self {
             SkipReason::ManualBlocklist(reason) => format!("manual: {}", reason),
-            SkipReason::AutoBlocklist => "auto-blocklisted (overload)".to_string(),
             SkipReason::UnsupportedType(t) => format!("unsupported type: {}", t),
             SkipReason::NoAccessors => "no accessors".to_string(),
             SkipReason::RequiresCustomCode => "requires custom code".to_string(),
@@ -285,11 +283,11 @@ impl SteamApi {
         for i in &mut self.interfaces {
             for m in &mut i.methods {
                 for p in &mut m.params {
-                    if let Some(oac) = p.out_array_count.as_mut() {
-                        if oac.starts_with("STEAM_CONTROLLER_") {
-                            *oac = oac.replacen("STEAM_CONTROLLER_", "STEAM_INPUT_", 1);
-                            changes += 1;
-                        }
+                    if let Some(oac) = p.out_array_count.as_mut()
+                        && oac.starts_with("STEAM_CONTROLLER_")
+                    {
+                        *oac = oac.replacen("STEAM_CONTROLLER_", "STEAM_INPUT_", 1);
+                        changes += 1;
                     }
                 }
             }
@@ -543,7 +541,7 @@ pub struct EnumValue {
     pub value: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Interface {
     pub classname: String,
     pub methods: Vec<Method>,
@@ -562,7 +560,7 @@ impl Interface {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Accessor {
     pub kind: String,
     pub name: String,
@@ -575,6 +573,8 @@ pub struct Method {
     pub methodname_flat: String,
     pub params: Vec<Param>,
     pub returntype: String,
+    #[serde(default)]
+    pub callresult: Option<String>,
 }
 
 impl Method {

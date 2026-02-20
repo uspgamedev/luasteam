@@ -21,6 +21,7 @@ struct Generator {
     type_resolver: TypeResolver,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
     added_structs: HashSet<String>,
+    generated_callresults: HashSet<String>,
     doc_generator: DocGenerator,
 }
 
@@ -53,14 +54,15 @@ impl Generator {
             }
         }
 
-        let doc_generator = DocGenerator::new(type_resolver.clone())
-            .with_structs(api.structs.clone());
+        let doc_generator =
+            DocGenerator::new(type_resolver.clone()).with_structs(api.structs.clone());
 
         Self {
             api,
             type_resolver,
             interface_callbacks,
             added_structs: HashSet::new(),
+            generated_callresults: HashSet::new(),
             doc_generator,
         }
     }
@@ -99,30 +101,42 @@ impl Generator {
 
     fn manual_method_blocklist(&self) -> HashMap<String, SkipReason> {
         let mut blocklist = HashMap::new();
-        
+
         // Cursor method is not used
-        blocklist.insert("SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string(), 
-            SkipReason::ManualBlocklist("cursor method is not used".to_string()));
-        
+        blocklist.insert(
+            "SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string(),
+            SkipReason::ManualBlocklist("cursor method is not used".to_string()),
+        );
+
         // Unused method, not even in API Reference
-        blocklist.insert("SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string(), 
-            SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()));
-        
+        blocklist.insert(
+            "SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string(),
+            SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()),
+        );
+
         // Very weird, out_array_count seems to be all wrong
-        blocklist.insert("SteamAPI_ISteamInventory_GetItemsWithPrices".to_string(), 
-            SkipReason::ManualBlocklist("out_array_count seems to be wrong".to_string()));
-        
+        blocklist.insert(
+            "SteamAPI_ISteamInventory_GetItemsWithPrices".to_string(),
+            SkipReason::ManualBlocklist("out_array_count seems to be wrong".to_string()),
+        );
+
         // Weird API and no explanation or reference
-        blocklist.insert("SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(), 
-            SkipReason::ManualBlocklist("weird API, no explanation or reference".to_string()));
-        
+        blocklist.insert(
+            "SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(),
+            SkipReason::ManualBlocklist("weird API, no explanation or reference".to_string()),
+        );
+
         // Has function pointers, can't be implemented automatically
-        blocklist.insert("SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(), 
-            SkipReason::ManualBlocklist("has function pointers".to_string()));
-        
-        blocklist.insert("SteamAPI_ISteamParties_CreateBeacon".to_string(), 
-            SkipReason::ManualBlocklist("requires custom implementation".to_string()));
-        
+        blocklist.insert(
+            "SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(),
+            SkipReason::ManualBlocklist("has function pointers".to_string()),
+        );
+
+        blocklist.insert(
+            "SteamAPI_ISteamParties_CreateBeacon".to_string(),
+            SkipReason::ManualBlocklist("requires custom implementation".to_string()),
+        );
+
         blocklist
     }
 
@@ -143,41 +157,45 @@ impl Generator {
     }
 
     fn generate(&mut self) {
-        let mut stats = Stats::default();
-        stats.interfaces_total = self.api.interfaces.len();
+        let mut stats = Stats {
+            interfaces_total: self.api.interfaces.len(),
+            ..Default::default()
+        };
 
         let auto_dir = Path::new("../src/auto");
         if auto_dir.exists() {
             fs::remove_dir_all(auto_dir).expect("Unable to delete src/auto");
         }
         fs::create_dir_all(auto_dir).expect("Unable to create src/auto");
-        
+
         let docs_auto_dir = Path::new("../docs/auto");
         if docs_auto_dir.exists() {
             fs::remove_dir_all(docs_auto_dir).expect("Unable to delete docs/auto");
         }
         fs::create_dir_all(docs_auto_dir).expect("Unable to create docs/auto");
-        
+
         // Start with structs to populate added_structs
         self.generate_structs(&mut stats);
 
         let mut interface_names = Vec::new();
 
-        let mut method_blocklist = self.manual_method_blocklist();
+        let method_blocklist = self.manual_method_blocklist();
 
-        for interface in &self.api.interfaces {
+        let interfaces = self.api.interfaces.clone();
+        for interface in &interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats) {
                 Ok(name) => {
                     interface_names.push(name);
                     stats.interfaces_generated += 1;
                 }
                 Err(reason) => {
-                    stats.skipped_interfaces.push((interface.classname.clone(), reason));
+                    stats
+                        .skipped_interfaces
+                        .push((interface.classname.clone(), reason));
                     // Track coverage for skipped interfaces too
-                    stats.interface_coverage.insert(
-                        interface.classname.clone(), 
-                        (interface.methods.len(), 0)
-                    );
+                    stats
+                        .interface_coverage
+                        .insert(interface.classname.clone(), (interface.methods.len(), 0));
                 }
             }
         }
@@ -202,7 +220,9 @@ impl Generator {
 
         for st in &self.api.structs {
             if incomplete_structs.contains(&st.name.as_str()) {
-                stats.skipped_structs.push((st.name.clone(), SkipReason::Incomplete));
+                stats
+                    .skipped_structs
+                    .push((st.name.clone(), SkipReason::Incomplete));
                 continue;
             }
             match self.generate_struct(st) {
@@ -492,6 +512,16 @@ impl Generator {
                     }
                 }
             }
+            CppType::Pointer {
+                ttype: "void",
+                is_const: false,
+            } => {
+                out.line(&format!(
+                    "{}{} = static_cast<void*>(luasteam::checkvoid_ptr(L, {}));",
+                    type_prefix, value_accessor, lua_idx
+                ));
+                (true, out.finish())
+            }
             _ => {
                 out.line(&format!("// Unsupported check type: {:?}", resolved));
                 (false, out.finish())
@@ -558,6 +588,12 @@ impl Generator {
                     // Don't print, just mark as skip
                     format!("// Skip unsupported array type: {}", ftype)
                 }
+            }
+            CppType::Pointer {
+                ttype: "void",
+                is_const: false,
+            } => {
+                format!("luasteam::pushvoid_ptr(L, {});", value_accessor)
             }
             _ => {
                 // Don't print, just mark as skip
@@ -694,8 +730,65 @@ impl Generator {
         s.finish()
     }
 
+    fn get_callresult_struct(&self, name: &str) -> &CallbackStruct {
+        self.api
+            .callback_structs
+            .iter()
+            .find(|cb| cb.name == name)
+            .expect("missing callresult struct")
+    }
+
+    fn generate_callresult_listeners(&self, callresults: &[String]) -> Result<String, SkipReason> {
+        let mut s = CodeBuilder::new();
+        for callresult in callresults {
+            let cb = self.get_callresult_struct(callresult);
+            s.line(&format!(
+                "template <> void CallResultListener<{}>::Result({} *data, bool io_fail) {{",
+                cb.name, cb.name
+            ));
+            s.indent_right();
+            s.line("lua_State *L = luasteam::global_lua_state;");
+            s.line("if (!lua_checkstack(L, 4)) {");
+            s.indent_right();
+            s.line("luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);");
+            s.line("delete this;");
+            s.line("return;");
+            s.indent_left();
+            s.line("}");
+            s.line("lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);");
+            s.line("luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);");
+            s.line("if (io_fail || data == nullptr) {");
+            s.indent_right();
+            s.line("lua_pushnil(L);");
+            s.indent_left();
+            s.line("} else {");
+            s.indent_right();
+            s.line(&format!("lua_createtable(L, 0, {});", cb.fields.len()));
+            for field in &cb.fields {
+                let (ok, push) = self.generate_push(
+                    &field.fieldtype,
+                    &format!("data->{}", field.fieldname),
+                    s.indent(),
+                );
+                s.raw(&push);
+                if ok {
+                    s.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
+                }
+            }
+            s.indent_left();
+            s.line("}");
+            s.line("lua_pushboolean(L, io_fail);");
+            s.line("lua_call(L, 2, 0);");
+            s.line("delete this;");
+            s.indent_left();
+            s.line("}");
+            s.preceeding_blank_line();
+        }
+        Ok(s.finish())
+    }
+
     fn generate_interface(
-        &self,
+        &mut self,
         interface: &Interface,
         method_blocklist: &HashMap<String, SkipReason>,
         stats: &mut Stats,
@@ -724,8 +817,28 @@ impl Generator {
             .get(&interface.classname)
             .map(|v| v.as_slice())
             .unwrap_or(&[]);
-        cpp.raw(&self.generate_callback_listener(&name, &interface.classname, callbacks));
+        cpp.raw(&self.generate_callback_listener(name, &interface.classname, callbacks));
         cpp.preceeding_blank_line();
+
+        let mut callresults = HashSet::new();
+        for method in &interface.methods {
+            if let Some(callresult) = &method.callresult {
+                callresults.insert(callresult.clone());
+            }
+        }
+        if !callresults.is_empty() {
+            let mut callresults_sorted: Vec<String> = callresults.into_iter().collect();
+            callresults_sorted.sort();
+            callresults_sorted.retain(|name| !self.generated_callresults.contains(name));
+            if !callresults_sorted.is_empty() {
+                cpp.raw(&self.generate_callresult_listeners(&callresults_sorted)?);
+                cpp.preceeding_blank_line();
+                for name in &callresults_sorted {
+                    self.generated_callresults.insert(name.clone());
+                }
+            }
+            cpp.preceeding_blank_line();
+        }
 
         let mut generated_methods = Vec::new();
         let interface_methods_total = interface.methods.len();
@@ -734,13 +847,15 @@ impl Generator {
         stats.methods_total += interface.methods.len();
         for method in &interface.methods {
             let full_method_name = format!("{}::{}", interface.classname, method.methodname);
-            
+
             if let Some(reason) = method_blocklist.get(&method.methodname_flat) {
-                stats.skipped_methods.push((full_method_name, reason.clone()));
+                stats
+                    .skipped_methods
+                    .push((full_method_name, reason.clone()));
                 continue;
             }
-            
-            match self.generate_method(&name, method, accessor_name) {
+
+            match self.generate_method(name, method, accessor_name) {
                 Ok((lua_method_name, generated)) => {
                     cpp.raw(&generated);
                     cpp.preceeding_blank_line();
@@ -753,11 +868,11 @@ impl Generator {
                 }
             }
         }
-        
+
         // Track per-interface coverage
         stats.interface_coverage.insert(
-            interface.classname.clone(), 
-            (interface_methods_total, interface_methods_generated)
+            interface.classname.clone(),
+            (interface_methods_total, interface_methods_generated),
         );
 
         // Generate register_..._auto function
@@ -800,24 +915,27 @@ impl Generator {
 
         let path = format!("../src/auto/{}.cpp", name);
         fs::write(path, cpp.finish()).expect("Unable to write generated file");
-        
+
         // Generate documentation
-        let skipped_for_interface: Vec<(String, SkipReason)> = stats.skipped_methods
+        let skipped_for_interface: Vec<(String, SkipReason)> = stats
+            .skipped_methods
             .iter()
-            .filter(|(method_name, _)| method_name.starts_with(&format!("{}::", interface.classname)))
+            .filter(|(method_name, _)| {
+                method_name.starts_with(&format!("{}::", interface.classname))
+            })
             .cloned()
             .collect();
-        
+
         let doc_content = self.doc_generator.generate_interface_doc(
             interface,
             &generated_methods,
             &skipped_for_interface,
-            callbacks
+            callbacks,
         );
-        
+
         let doc_path = format!("../docs/auto/{}.rst", name.to_lowercase());
         fs::write(doc_path, doc_content).expect("Unable to write doc file");
-        
+
         Ok(name.to_owned())
     }
 
@@ -881,6 +999,16 @@ impl Generator {
         let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
         s.line(&format!("EXTERN int {}(lua_State *L) {{", c_method_name));
         s.indent_right();
+
+        if method.callresult.is_some() {
+            s.line("int callback_ref = LUA_NOREF;");
+            s.line("if (lua_isfunction(L, lua_gettop(L))) {");
+            s.indent_right();
+            // This will remove the function from the stack, but that's fine since we don't need it anymore
+            s.line("callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);");
+            s.indent_left();
+            s.line("}");
+        }
 
         // params used to call the function in C
         let mut param_names = Vec::new();
@@ -1011,7 +1139,10 @@ impl Generator {
                         {
                             let _ = c;
                         } else {
-                            return Err(SkipReason::UnsupportedType(format!("unknown size param: {}", size_param)));
+                            return Err(SkipReason::UnsupportedType(format!(
+                                "unknown size param: {}",
+                                size_param
+                            )));
                         }
 
                         if let Some(out_size_param) = param.out_array_count.as_deref()
@@ -1116,7 +1247,10 @@ impl Generator {
                             s.raw(&code);
                             param_names.push(format!("{}.data()", param.paramname));
                         } else {
-                            return Err(SkipReason::UnsupportedType(format!("size param {} not found", sz)));
+                            return Err(SkipReason::UnsupportedType(format!(
+                                "size param {} not found",
+                                sz
+                            )));
                         }
                     } else {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
@@ -1140,6 +1274,21 @@ impl Generator {
             s.line(&format!("{};", call));
         } else {
             s.line(&format!("{} __ret = {};", method.returntype, call));
+            if let Some(callresult) = &method.callresult {
+                s.line("if (callback_ref != LUA_NOREF) {");
+                s.indent_right();
+                s.line(&format!(
+                    "auto *listener = new luasteam::CallResultListener<{}>();",
+                    callresult
+                ));
+                s.line("listener->callback_ref = callback_ref;");
+                s.line(&format!(
+                    "listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<{}>::Result);",
+                    callresult
+                ));
+                s.indent_left();
+                s.line("}");
+            }
             let (ok, push) = self.generate_push(&method.returntype, "__ret", 1);
             if !ok {
                 // Skip methods with unknown return types
@@ -1187,7 +1336,9 @@ impl Generator {
                         {
                             "__ret"
                         } else {
-                            return Err(SkipReason::UnsupportedType("void* with unknown size".to_string()));
+                            return Err(SkipReason::UnsupportedType(
+                                "void* with unknown size".to_string(),
+                            ));
                         };
                         // A buffer with fixed size
                         s.line(&format!(
@@ -1226,11 +1377,17 @@ impl Generator {
                             // Some special case where the size is returned in a parameter that is not the one you sent
                             oac
                         } else {
-                            return Err(SkipReason::UnsupportedType(format!("unknown array size: {}", param.paramtype)));
+                            return Err(SkipReason::UnsupportedType(format!(
+                                "unknown array size: {}",
+                                param.paramtype
+                            )));
                         }
                     } else {
                         // Not sure about the size, will it always be the one you sent?
-                        return Err(SkipReason::UnsupportedType(format!("unknown array size: {}", param.paramtype)));
+                        return Err(SkipReason::UnsupportedType(format!(
+                            "unknown array size: {}",
+                            param.paramtype
+                        )));
                     };
                     if let Some(code) = self.push_array(
                         param.paramtype.strip_suffix(" *").expect("Invalid pointer"),

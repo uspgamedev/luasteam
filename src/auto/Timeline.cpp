@@ -62,6 +62,58 @@ void shutdown_Timeline_auto(lua_State *L) {
 	delete Timeline_listener; Timeline_listener = nullptr;
 }
 
+template <> void CallResultListener<SteamTimelineEventRecordingExists_t>::Result(SteamTimelineEventRecordingExists_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 2);
+		luasteam::pushuint64(L, data->m_ulEventID);
+		lua_setfield(L, -2, "m_ulEventID");
+		lua_pushboolean(L, data->m_bRecordingExists);
+		lua_setfield(L, -2, "m_bRecordingExists");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
+template <> void CallResultListener<SteamTimelineGamePhaseRecordingExists_t>::Result(SteamTimelineGamePhaseRecordingExists_t *data, bool io_fail) {
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) {
+		luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+		delete this;
+		return;
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, callback_ref);
+	if (io_fail || data == nullptr) {
+		lua_pushnil(L);
+	} else {
+		lua_createtable(L, 0, 5);
+		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchPhaseID));
+		lua_setfield(L, -2, "m_rgchPhaseID");
+		luasteam::pushuint64(L, data->m_ulRecordingMS);
+		lua_setfield(L, -2, "m_ulRecordingMS");
+		luasteam::pushuint64(L, data->m_ulLongestClipMS);
+		lua_setfield(L, -2, "m_ulLongestClipMS");
+		lua_pushinteger(L, data->m_unClipCount);
+		lua_setfield(L, -2, "m_unClipCount");
+		lua_pushinteger(L, data->m_unScreenshotCount);
+		lua_setfield(L, -2, "m_unScreenshotCount");
+	}
+	lua_pushboolean(L, io_fail);
+	lua_call(L, 2, 0);
+	delete this;
+}
+
 // void SetTimelineTooltip(const char * pchDescription, float flTimeDelta);
 EXTERN int luasteam_Timeline_SetTimelineTooltip(lua_State *L) {
 	const char *pchDescription = luaL_checkstring(L, 1);
@@ -153,8 +205,17 @@ EXTERN int luasteam_Timeline_RemoveTimelineEvent(lua_State *L) {
 
 // SteamAPICall_t DoesEventRecordingExist(TimelineEventHandle_t ulEvent);
 EXTERN int luasteam_Timeline_DoesEventRecordingExist(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = SteamTimeline()->DoesEventRecordingExist(ulEvent);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<SteamTimelineEventRecordingExists_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<SteamTimelineEventRecordingExists_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -180,8 +241,17 @@ EXTERN int luasteam_Timeline_SetGamePhaseID(lua_State *L) {
 
 // SteamAPICall_t DoesGamePhaseRecordingExist(const char * pchPhaseID);
 EXTERN int luasteam_Timeline_DoesGamePhaseRecordingExist(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 	const char *pchPhaseID = luaL_checkstring(L, 1);
 	SteamAPICall_t __ret = SteamTimeline()->DoesGamePhaseRecordingExist(pchPhaseID);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<SteamTimelineGamePhaseRecordingExists_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<SteamTimelineGamePhaseRecordingExists_t>::Result);
+	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
