@@ -382,6 +382,7 @@ EXTERN int luasteam_Matchmaking_RemoveFavoriteGame(lua_State *L) {
 EXTERN int luasteam_Matchmaking_RequestLobbyList(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamMatchmaking()->RequestLobbyList();
@@ -460,6 +461,7 @@ EXTERN int luasteam_Matchmaking_GetLobbyByIndex(lua_State *L) {
 EXTERN int luasteam_Matchmaking_CreateLobby(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	ELobbyType eLobbyType = static_cast<ELobbyType>(luaL_checkint(L, 1));
@@ -478,6 +480,7 @@ EXTERN int luasteam_Matchmaking_CreateLobby(lua_State *L) {
 EXTERN int luasteam_Matchmaking_JoinLobby(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDLobby(luasteam::checkuint64(L, 1));

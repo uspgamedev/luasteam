@@ -344,7 +344,7 @@ void CallbackListener::OnGetAppDependenciesResult(GetAppDependenciesResult_t *da
 		luasteam::pushuint64(L, data->m_nPublishedFileId);
 		lua_setfield(L, -2, "m_nPublishedFileId");
 		lua_createtable(L, 32, 0);
-		for(decltype(32) i=0;i<32;i++){
+		for(decltype(32) i = 0; i < 32; i++) {
 			lua_pushinteger(L, data->m_rgAppIDs[i]);
 			lua_rawseti(L, -2, i+1);
 		}
@@ -543,7 +543,7 @@ template <> void CallResultListener<GetAppDependenciesResult_t>::Result(GetAppDe
 		luasteam::pushuint64(L, data->m_nPublishedFileId);
 		lua_setfield(L, -2, "m_nPublishedFileId");
 		lua_createtable(L, 32, 0);
-		for(decltype(32) i=0;i<32;i++){
+		for(decltype(32) i = 0; i < 32; i++) {
 			lua_pushinteger(L, data->m_rgAppIDs[i]);
 			lua_rawseti(L, -2, i+1);
 		}
@@ -879,6 +879,7 @@ EXTERN int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L) {
 EXTERN int luasteam_UGC_SendQueryUGCRequest(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
@@ -1269,6 +1270,7 @@ EXTERN int luasteam_UGC_AddRequiredKeyValueTag(lua_State *L) {
 EXTERN int luasteam_UGC_RequestUGCDetails(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1287,6 +1289,7 @@ EXTERN int luasteam_UGC_RequestUGCDetails(lua_State *L) {
 EXTERN int luasteam_UGC_CreateItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -1489,6 +1492,7 @@ EXTERN int luasteam_UGC_SetRequiredGameVersions(lua_State *L) {
 EXTERN int luasteam_UGC_SubmitItemUpdate(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
@@ -1519,6 +1523,7 @@ EXTERN int luasteam_UGC_GetItemUpdateProgress(lua_State *L) {
 EXTERN int luasteam_UGC_SetUserItemVote(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1537,6 +1542,7 @@ EXTERN int luasteam_UGC_SetUserItemVote(lua_State *L) {
 EXTERN int luasteam_UGC_GetUserItemVote(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1554,6 +1560,7 @@ EXTERN int luasteam_UGC_GetUserItemVote(lua_State *L) {
 EXTERN int luasteam_UGC_AddItemToFavorites(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	AppId_t nAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -1572,6 +1579,7 @@ EXTERN int luasteam_UGC_AddItemToFavorites(lua_State *L) {
 EXTERN int luasteam_UGC_RemoveItemFromFavorites(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	AppId_t nAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
@@ -1590,6 +1598,7 @@ EXTERN int luasteam_UGC_RemoveItemFromFavorites(lua_State *L) {
 EXTERN int luasteam_UGC_SubscribeItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1607,6 +1616,7 @@ EXTERN int luasteam_UGC_SubscribeItem(lua_State *L) {
 EXTERN int luasteam_UGC_UnsubscribeItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1703,6 +1713,7 @@ EXTERN int luasteam_UGC_SuspendDownloads(lua_State *L) {
 EXTERN int luasteam_UGC_StartPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t pvecPublishedFileID;
@@ -1722,6 +1733,7 @@ EXTERN int luasteam_UGC_StartPlaytimeTracking(lua_State *L) {
 EXTERN int luasteam_UGC_StopPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t pvecPublishedFileID;
@@ -1741,6 +1753,7 @@ EXTERN int luasteam_UGC_StopPlaytimeTracking(lua_State *L) {
 EXTERN int luasteam_UGC_StopPlaytimeTrackingForAllItems(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamUGC()->StopPlaytimeTrackingForAllItems();
@@ -1757,6 +1770,7 @@ EXTERN int luasteam_UGC_StopPlaytimeTrackingForAllItems(lua_State *L) {
 EXTERN int luasteam_UGC_AddDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nParentPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1775,6 +1789,7 @@ EXTERN int luasteam_UGC_AddDependency(lua_State *L) {
 EXTERN int luasteam_UGC_RemoveDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nParentPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1793,6 +1808,7 @@ EXTERN int luasteam_UGC_RemoveDependency(lua_State *L) {
 EXTERN int luasteam_UGC_AddAppDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1811,6 +1827,7 @@ EXTERN int luasteam_UGC_AddAppDependency(lua_State *L) {
 EXTERN int luasteam_UGC_RemoveAppDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1829,6 +1846,7 @@ EXTERN int luasteam_UGC_RemoveAppDependency(lua_State *L) {
 EXTERN int luasteam_UGC_GetAppDependencies(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1846,6 +1864,7 @@ EXTERN int luasteam_UGC_GetAppDependencies(lua_State *L) {
 EXTERN int luasteam_UGC_DeleteItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
@@ -1870,6 +1889,7 @@ EXTERN int luasteam_UGC_ShowWorkshopEULA(lua_State *L) {
 EXTERN int luasteam_UGC_GetWorkshopEULAStatus(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamUGC()->GetWorkshopEULAStatus();

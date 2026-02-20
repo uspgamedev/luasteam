@@ -486,7 +486,7 @@ impl Generator {
                             ttype, value_accessor, size
                         ));
                     }
-                    out.line(&format!("for(decltype({}) i=0;i<{};i++){{", size, size));
+                    out.line(&format!("for(decltype({}) i = 0; i < {}; i++) {{", size, size));
                     out.indent_right();
                     out.line("lua_rawgeti(L, -1, i+1);");
                     let (ok, check) = self.generate_check(
@@ -953,7 +953,7 @@ impl Generator {
         let (ok, push) = self.generate_push(ttype, &format!("{}[i]", value_accessor), s.indent());
         s.indent_left();
         if ok {
-            s.line(&format!("for(decltype({}) i=0;i<{};i++){{", size, size));
+            s.line(&format!("for(decltype({}) i = 0; i < {}; i++) {{", size, size));
             s.indent_right();
             if !push.is_empty() {
                 s.raw(&push);
@@ -1004,7 +1004,7 @@ impl Generator {
             s.line("int callback_ref = LUA_NOREF;");
             s.line("if (lua_isfunction(L, lua_gettop(L))) {");
             s.indent_right();
-            // This will remove the function from the stack, but that's fine since we don't need it anymore
+            s.line("lua_pushvalue(L, lua_gettop(L));");
             s.line("callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);");
             s.indent_left();
             s.line("}");

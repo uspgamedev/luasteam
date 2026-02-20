@@ -3,12 +3,10 @@
 #include "apps.hpp"
 #include "auto/auto.hpp"
 #include "extra.hpp"
-#include "friends.hpp"
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
 #include "user.hpp"
-#include "user_stats.hpp"
 #include "utils.hpp"
 
 // ========================
@@ -21,9 +19,9 @@ EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
     if (success) {
         luasteam::init_common(L);
-        luasteam::init_friends(L);
+        luasteam::init_Friends_auto(L);
         luasteam::init_user(L);
-        luasteam::init_user_stats(L);
+        luasteam::init_UserStats_auto(L);
         luasteam::init_utils(L);
         luasteam::init_UGC(L);
         luasteam::init_extra(L);
@@ -85,8 +83,8 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_UGC(L);
     luasteam::shutdown_utils(L);
     luasteam::shutdown_user(L);
-    luasteam::shutdown_user_stats(L);
-    luasteam::shutdown_friends(L);
+    luasteam::shutdown_UserStats_auto(L);
+    luasteam::shutdown_Friends_auto(L);
     luasteam::shutdown_common(L);
     return 0;
 }

@@ -564,6 +564,7 @@ EXTERN int luasteam_HTMLSurface_Shutdown(lua_State *L) {
 EXTERN int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	const char *pchUserAgent = luaL_checkstring(L, 1);

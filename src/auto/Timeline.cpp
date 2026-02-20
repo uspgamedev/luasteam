@@ -207,6 +207,7 @@ EXTERN int luasteam_Timeline_RemoveTimelineEvent(lua_State *L) {
 EXTERN int luasteam_Timeline_DoesEventRecordingExist(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
@@ -243,6 +244,7 @@ EXTERN int luasteam_Timeline_SetGamePhaseID(lua_State *L) {
 EXTERN int luasteam_Timeline_DoesGamePhaseRecordingExist(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	const char *pchPhaseID = luaL_checkstring(L, 1);

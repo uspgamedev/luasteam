@@ -605,6 +605,7 @@ EXTERN int luasteam_GameServer_GetGameplayStats(lua_State *L) {
 EXTERN int luasteam_GameServer_GetServerReputation(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamGameServer()->GetServerReputation();
@@ -653,6 +654,7 @@ EXTERN int luasteam_GameServer_GetNextOutgoingPacket(lua_State *L) {
 EXTERN int luasteam_GameServer_AssociateWithClan(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDClan(luasteam::checkuint64(L, 1));
@@ -670,6 +672,7 @@ EXTERN int luasteam_GameServer_AssociateWithClan(lua_State *L) {
 EXTERN int luasteam_GameServer_ComputeNewPlayerCompatibility(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDNewPlayer(luasteam::checkuint64(L, 1));

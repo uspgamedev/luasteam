@@ -597,6 +597,7 @@ EXTERN int luasteam_User_AdvertiseGame(lua_State *L) {
 EXTERN int luasteam_User_RequestEncryptedAppTicket(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	char *pDataToInclude = const_cast<char*>(luaL_checkstring(L, 1));
@@ -643,6 +644,7 @@ EXTERN int luasteam_User_GetPlayerSteamLevel(lua_State *L) {
 EXTERN int luasteam_User_RequestStoreAuthURL(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	const char *pchRedirectURL = luaL_checkstring(L, 1);
@@ -688,6 +690,7 @@ EXTERN int luasteam_User_BIsPhoneRequiringVerification(lua_State *L) {
 EXTERN int luasteam_User_GetMarketEligibility(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamUser()->GetMarketEligibility();
@@ -704,6 +707,7 @@ EXTERN int luasteam_User_GetMarketEligibility(lua_State *L) {
 EXTERN int luasteam_User_GetDurationControl(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamUser()->GetDurationControl();

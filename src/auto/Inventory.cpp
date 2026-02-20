@@ -223,7 +223,7 @@ EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
 	bool __ret = SteamInventory()->GetResultItems(resultHandle, pOutItemsArray.data(), &punOutItemsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punOutItemsArraySize, 0);
-	for(decltype(punOutItemsArraySize) i=0;i<punOutItemsArraySize;i++){
+	for(decltype(punOutItemsArraySize) i = 0; i < punOutItemsArraySize; i++) {
 		push_SteamItemDetails_t(L, pOutItemsArray[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -284,7 +284,7 @@ EXTERN int luasteam_Inventory_GetItemsByID(lua_State *L) {
 	uint32 unCountInstanceIDs = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemInstanceID_t> pInstanceIDs(unCountInstanceIDs);
-	for(decltype(unCountInstanceIDs) i=0;i<unCountInstanceIDs;i++){
+	for(decltype(unCountInstanceIDs) i = 0; i < unCountInstanceIDs; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pInstanceIDs[i] = luasteam::checkuint64(L, -1);
 		lua_pop(L, 1);
@@ -313,14 +313,14 @@ EXTERN int luasteam_Inventory_GenerateItems(lua_State *L) {
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemDef_t> pArrayItemDefs(unArrayLength);
-	for(decltype(unArrayLength) i=0;i<unArrayLength;i++){
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayItemDefs[i] = static_cast<SteamItemDef_t>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 3, LUA_TTABLE);
 	std::vector<uint32> punArrayQuantity(unArrayLength);
-	for(decltype(unArrayLength) i=0;i<unArrayLength;i++){
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		punArrayQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -356,7 +356,7 @@ EXTERN int luasteam_Inventory_AddPromoItems(lua_State *L) {
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemDef_t> pArrayItemDefs(unArrayLength);
-	for(decltype(unArrayLength) i=0;i<unArrayLength;i++){
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayItemDefs[i] = static_cast<SteamItemDef_t>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -384,14 +384,14 @@ EXTERN int luasteam_Inventory_ExchangeItems(lua_State *L) {
 	uint32 unArrayGenerateLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemDef_t> pArrayGenerate(unArrayGenerateLength);
-	for(decltype(unArrayGenerateLength) i=0;i<unArrayGenerateLength;i++){
+	for(decltype(unArrayGenerateLength) i = 0; i < unArrayGenerateLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayGenerate[i] = static_cast<SteamItemDef_t>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 3, LUA_TTABLE);
 	std::vector<uint32> punArrayGenerateQuantity(unArrayGenerateLength);
-	for(decltype(unArrayGenerateLength) i=0;i<unArrayGenerateLength;i++){
+	for(decltype(unArrayGenerateLength) i = 0; i < unArrayGenerateLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		punArrayGenerateQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -399,14 +399,14 @@ EXTERN int luasteam_Inventory_ExchangeItems(lua_State *L) {
 	uint32 unArrayDestroyLength = luaL_checkint(L, 4);
 	luaL_checktype(L, 3, LUA_TTABLE);
 	std::vector<SteamItemInstanceID_t> pArrayDestroy(unArrayDestroyLength);
-	for(decltype(unArrayDestroyLength) i=0;i<unArrayDestroyLength;i++){
+	for(decltype(unArrayDestroyLength) i = 0; i < unArrayDestroyLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayDestroy[i] = luasteam::checkuint64(L, -1);
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 5, LUA_TTABLE);
 	std::vector<uint32> punArrayDestroyQuantity(unArrayDestroyLength);
-	for(decltype(unArrayDestroyLength) i=0;i<unArrayDestroyLength;i++){
+	for(decltype(unArrayDestroyLength) i = 0; i < unArrayDestroyLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		punArrayDestroyQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -452,14 +452,14 @@ EXTERN int luasteam_Inventory_TradeItems(lua_State *L) {
 	uint32 nArrayGiveLength = luaL_checkint(L, 3);
 	luaL_checktype(L, 2, LUA_TTABLE);
 	std::vector<SteamItemInstanceID_t> pArrayGive(nArrayGiveLength);
-	for(decltype(nArrayGiveLength) i=0;i<nArrayGiveLength;i++){
+	for(decltype(nArrayGiveLength) i = 0; i < nArrayGiveLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayGive[i] = luasteam::checkuint64(L, -1);
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 4, LUA_TTABLE);
 	std::vector<uint32> pArrayGiveQuantity(nArrayGiveLength);
-	for(decltype(nArrayGiveLength) i=0;i<nArrayGiveLength;i++){
+	for(decltype(nArrayGiveLength) i = 0; i < nArrayGiveLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayGiveQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -467,14 +467,14 @@ EXTERN int luasteam_Inventory_TradeItems(lua_State *L) {
 	uint32 nArrayGetLength = luaL_checkint(L, 5);
 	luaL_checktype(L, 4, LUA_TTABLE);
 	std::vector<SteamItemInstanceID_t> pArrayGet(nArrayGetLength);
-	for(decltype(nArrayGetLength) i=0;i<nArrayGetLength;i++){
+	for(decltype(nArrayGetLength) i = 0; i < nArrayGetLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayGet[i] = luasteam::checkuint64(L, -1);
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 6, LUA_TTABLE);
 	std::vector<uint32> pArrayGetQuantity(nArrayGetLength);
-	for(decltype(nArrayGetLength) i=0;i<nArrayGetLength;i++){
+	for(decltype(nArrayGetLength) i = 0; i < nArrayGetLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayGetQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -499,7 +499,7 @@ EXTERN int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
 	bool __ret = SteamInventory()->GetItemDefinitionIDs(pItemDefIDs.data(), &punItemDefIDsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punItemDefIDsArraySize, 0);
-	for(decltype(punItemDefIDsArraySize) i=0;i<punItemDefIDsArraySize;i++){
+	for(decltype(punItemDefIDsArraySize) i = 0; i < punItemDefIDsArraySize; i++) {
 		lua_pushinteger(L, pItemDefIDs[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -524,6 +524,7 @@ EXTERN int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
 EXTERN int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
@@ -545,7 +546,7 @@ EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
 	bool __ret = SteamInventory()->GetEligiblePromoItemDefinitionIDs(steamID, pItemDefIDs.data(), &punItemDefIDsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punItemDefIDsArraySize, 0);
-	for(decltype(punItemDefIDsArraySize) i=0;i<punItemDefIDsArraySize;i++){
+	for(decltype(punItemDefIDsArraySize) i = 0; i < punItemDefIDsArraySize; i++) {
 		lua_pushinteger(L, pItemDefIDs[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -557,19 +558,20 @@ EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
 EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
 	std::vector<SteamItemDef_t> pArrayItemDefs(unArrayLength);
-	for(decltype(unArrayLength) i=0;i<unArrayLength;i++){
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		pArrayItemDefs[i] = static_cast<SteamItemDef_t>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
 	luaL_checktype(L, 3, LUA_TTABLE);
 	std::vector<uint32> punArrayQuantity(unArrayLength);
-	for(decltype(unArrayLength) i=0;i<unArrayLength;i++){
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
 		lua_rawgeti(L, -1, i+1);
 		punArrayQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
@@ -588,6 +590,7 @@ EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
 EXTERN int luasteam_Inventory_RequestPrices(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	SteamAPICall_t __ret = SteamInventory()->RequestPrices();

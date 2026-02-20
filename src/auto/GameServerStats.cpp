@@ -106,6 +106,7 @@ template <> void CallResultListener<GSStatsStored_t>::Result(GSStatsStored_t *da
 EXTERN int luasteam_GameServerStats_RequestUserStats(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
@@ -205,6 +206,7 @@ EXTERN int luasteam_GameServerStats_ClearUserAchievement(lua_State *L) {
 EXTERN int luasteam_GameServerStats_StoreUserStats(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDUser(luasteam::checkuint64(L, 1));

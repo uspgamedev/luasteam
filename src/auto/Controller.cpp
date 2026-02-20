@@ -36,7 +36,7 @@ EXTERN int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 	int __ret = SteamController()->GetConnectedControllers(handlesOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, STEAM_INPUT_MAX_COUNT, 0);
-	for(decltype(STEAM_INPUT_MAX_COUNT) i=0;i<STEAM_INPUT_MAX_COUNT;i++){
+	for(decltype(STEAM_INPUT_MAX_COUNT) i = 0; i < STEAM_INPUT_MAX_COUNT; i++) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -97,7 +97,7 @@ EXTERN int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 	int __ret = SteamController()->GetActiveActionSetLayers(controllerHandle, handlesOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, STEAM_INPUT_MAX_ACTIVE_LAYERS, 0);
-	for(decltype(STEAM_INPUT_MAX_ACTIVE_LAYERS) i=0;i<STEAM_INPUT_MAX_ACTIVE_LAYERS;i++){
+	for(decltype(STEAM_INPUT_MAX_ACTIVE_LAYERS) i = 0; i < STEAM_INPUT_MAX_ACTIVE_LAYERS; i++) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -130,7 +130,7 @@ EXTERN int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 	int __ret = SteamController()->GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle, originsOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, STEAM_INPUT_MAX_ORIGINS, 0);
-	for(decltype(STEAM_INPUT_MAX_ORIGINS) i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
+	for(decltype(STEAM_INPUT_MAX_ORIGINS) i = 0; i < STEAM_INPUT_MAX_ORIGINS; i++) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
@@ -163,7 +163,7 @@ EXTERN int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
 	int __ret = SteamController()->GetAnalogActionOrigins(controllerHandle, actionSetHandle, analogActionHandle, originsOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, STEAM_INPUT_MAX_ORIGINS, 0);
-	for(decltype(STEAM_INPUT_MAX_ORIGINS) i=0;i<STEAM_INPUT_MAX_ORIGINS;i++){
+	for(decltype(STEAM_INPUT_MAX_ORIGINS) i = 0; i < STEAM_INPUT_MAX_ORIGINS; i++) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}

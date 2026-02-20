@@ -155,7 +155,7 @@ EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 	uint32 __ret = SteamRemotePlay()->GetInput(pInput.data(), unMaxEvents);
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
-	for(decltype(__ret) i=0;i<__ret;i++){
+	for(decltype(__ret) i = 0; i < __ret; i++) {
 		push_RemotePlayInput_t(L, pInput[i]);
 		lua_rawseti(L, -2, i+1);
 	}

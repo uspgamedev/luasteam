@@ -328,6 +328,7 @@ EXTERN int luasteam_Utils_BOverlayNeedsPresent(lua_State *L) {
 EXTERN int luasteam_Utils_CheckFileSignature(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	const char *szFileName = luaL_checkstring(L, 1);

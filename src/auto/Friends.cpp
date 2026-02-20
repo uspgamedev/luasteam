@@ -348,7 +348,7 @@ void CallbackListener::OnFriendsEnumerateFollowingList(FriendsEnumerateFollowing
 		lua_pushinteger(L, data->m_eResult);
 		lua_setfield(L, -2, "m_eResult");
 		lua_createtable(L, 50, 0);
-		for(decltype(50) i=0;i<50;i++){
+		for(decltype(50) i = 0; i < 50; i++) {
 			luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
 			lua_rawseti(L, -2, i+1);
 		}
@@ -544,7 +544,7 @@ template <> void CallResultListener<FriendsEnumerateFollowingList_t>::Result(Fri
 		lua_pushinteger(L, data->m_eResult);
 		lua_setfield(L, -2, "m_eResult");
 		lua_createtable(L, 50, 0);
-		for(decltype(50) i=0;i<50;i++){
+		for(decltype(50) i = 0; i < 50; i++) {
 			luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
 			lua_rawseti(L, -2, i+1);
 		}
@@ -760,7 +760,7 @@ EXTERN int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
 	std::vector<CSteamID> pOutSteamIDMembers(nMembersCount);
 	SteamFriends()->GetFriendsGroupMembersList(friendsGroupID, pOutSteamIDMembers.data(), nMembersCount);
 	lua_createtable(L, nMembersCount, 0);
-	for(decltype(nMembersCount) i=0;i<nMembersCount;i++){
+	for(decltype(nMembersCount) i = 0; i < nMembersCount; i++) {
 		luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
@@ -825,6 +825,7 @@ EXTERN int luasteam_Friends_GetClanActivityCounts(lua_State *L) {
 EXTERN int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	int cClansToRequest = luaL_checkint(L, 1);
@@ -837,7 +838,7 @@ EXTERN int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
 	}
 	luasteam::pushuint64(L, __ret);
 	lua_createtable(L, cClansToRequest, 0);
-	for(decltype(cClansToRequest) i=0;i<cClansToRequest;i++){
+	for(decltype(cClansToRequest) i = 0; i < cClansToRequest; i++) {
 		luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
@@ -960,6 +961,7 @@ EXTERN int luasteam_Friends_RequestUserInformation(lua_State *L) {
 EXTERN int luasteam_Friends_RequestClanOfficerList(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDClan(luasteam::checkuint64(L, 1));
@@ -1090,6 +1092,7 @@ EXTERN int luasteam_Friends_GetFriendCoplayGame(lua_State *L) {
 EXTERN int luasteam_Friends_JoinClanChatRoom(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamIDClan(luasteam::checkuint64(L, 1));
@@ -1221,6 +1224,7 @@ EXTERN int luasteam_Friends_GetFriendMessage(lua_State *L) {
 EXTERN int luasteam_Friends_GetFollowerCount(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
@@ -1238,6 +1242,7 @@ EXTERN int luasteam_Friends_GetFollowerCount(lua_State *L) {
 EXTERN int luasteam_Friends_IsFollowing(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
@@ -1255,6 +1260,7 @@ EXTERN int luasteam_Friends_IsFollowing(lua_State *L) {
 EXTERN int luasteam_Friends_EnumerateFollowingList(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 1));
@@ -1317,6 +1323,7 @@ EXTERN int luasteam_Friends_ActivateGameOverlayInviteDialogConnectString(lua_Sta
 EXTERN int luasteam_Friends_RequestEquippedProfileItems(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
