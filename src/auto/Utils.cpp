@@ -192,42 +192,60 @@ template <> void CallResultListener<CheckFileSignature_t>::Result(CheckFileSigna
 	delete this;
 }
 
+// In C++:
 // uint32 GetSecondsSinceAppActive();
+// In Lua:
+// int Utils.GetSecondsSinceAppActive()
 EXTERN int luasteam_Utils_GetSecondsSinceAppActive(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetSecondsSinceAppActive();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // uint32 GetSecondsSinceComputerActive();
+// In Lua:
+// int Utils.GetSecondsSinceComputerActive()
 EXTERN int luasteam_Utils_GetSecondsSinceComputerActive(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetSecondsSinceComputerActive();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // EUniverse GetConnectedUniverse();
+// In Lua:
+// int Utils.GetConnectedUniverse()
 EXTERN int luasteam_Utils_GetConnectedUniverse(lua_State *L) {
 	EUniverse __ret = SteamUtils()->GetConnectedUniverse();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // uint32 GetServerRealTime();
+// In Lua:
+// int Utils.GetServerRealTime()
 EXTERN int luasteam_Utils_GetServerRealTime(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetServerRealTime();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // const char * GetIPCountry();
+// In Lua:
+// str Utils.GetIPCountry()
 EXTERN int luasteam_Utils_GetIPCountry(lua_State *L) {
 	const char * __ret = SteamUtils()->GetIPCountry();
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
 
+// In C++:
 // bool GetImageSize(int iImage, uint32 * pnWidth, uint32 * pnHeight);
+// In Lua:
+// (bool, pnWidth: int, pnHeight: int) Utils.GetImageSize(iImage: int)
 EXTERN int luasteam_Utils_GetImageSize(lua_State *L) {
 	int iImage = static_cast<int>(luaL_checkint(L, 1));
 	uint32 pnWidth;
@@ -239,7 +257,10 @@ EXTERN int luasteam_Utils_GetImageSize(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // bool GetImageRGBA(int iImage, uint8 * pubDest, int nDestBufferSize);
+// In Lua:
+// (bool, pubDest: str) Utils.GetImageRGBA(iImage: int, nDestBufferSize: int)
 EXTERN int luasteam_Utils_GetImageRGBA(lua_State *L) {
 	int iImage = static_cast<int>(luaL_checkint(L, 1));
 	int nDestBufferSize = luaL_checkint(L, 2);
@@ -250,28 +271,40 @@ EXTERN int luasteam_Utils_GetImageRGBA(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // uint8 GetCurrentBatteryPower();
+// In Lua:
+// int Utils.GetCurrentBatteryPower()
 EXTERN int luasteam_Utils_GetCurrentBatteryPower(lua_State *L) {
 	uint8 __ret = SteamUtils()->GetCurrentBatteryPower();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // uint32 GetAppID();
+// In Lua:
+// int Utils.GetAppID()
 EXTERN int luasteam_Utils_GetAppID(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetAppID();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void SetOverlayNotificationPosition(ENotificationPosition eNotificationPosition);
+// In Lua:
+// Utils.SetOverlayNotificationPosition(eNotificationPosition: int)
 EXTERN int luasteam_Utils_SetOverlayNotificationPosition(lua_State *L) {
 	ENotificationPosition eNotificationPosition = static_cast<ENotificationPosition>(luaL_checkint(L, 1));
 	SteamUtils()->SetOverlayNotificationPosition(eNotificationPosition);
 	return 0;
 }
 
+// In C++:
 // bool IsAPICallCompleted(SteamAPICall_t hSteamAPICall, bool * pbFailed);
+// In Lua:
+// (bool, pbFailed: bool) Utils.IsAPICallCompleted(hSteamAPICall: uint64)
 EXTERN int luasteam_Utils_IsAPICallCompleted(lua_State *L) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	bool pbFailed;
@@ -281,7 +314,10 @@ EXTERN int luasteam_Utils_IsAPICallCompleted(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // ESteamAPICallFailure GetAPICallFailureReason(SteamAPICall_t hSteamAPICall);
+// In Lua:
+// int Utils.GetAPICallFailureReason(hSteamAPICall: uint64)
 EXTERN int luasteam_Utils_GetAPICallFailureReason(lua_State *L) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	ESteamAPICallFailure __ret = SteamUtils()->GetAPICallFailureReason(hSteamAPICall);
@@ -289,7 +325,10 @@ EXTERN int luasteam_Utils_GetAPICallFailureReason(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetAPICallResult(SteamAPICall_t hSteamAPICall, void * pCallback, int cubCallback, int iCallbackExpected, bool * pbFailed);
+// In Lua:
+// (bool, pCallback: str, pbFailed: bool) Utils.GetAPICallResult(hSteamAPICall: uint64, cubCallback: int, iCallbackExpected: int)
 EXTERN int luasteam_Utils_GetAPICallResult(lua_State *L) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	int cubCallback = luaL_checkint(L, 2);
@@ -303,28 +342,40 @@ EXTERN int luasteam_Utils_GetAPICallResult(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // uint32 GetIPCCallCount();
+// In Lua:
+// int Utils.GetIPCCallCount()
 EXTERN int luasteam_Utils_GetIPCCallCount(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetIPCCallCount();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool IsOverlayEnabled();
+// In Lua:
+// bool Utils.IsOverlayEnabled()
 EXTERN int luasteam_Utils_IsOverlayEnabled(lua_State *L) {
 	bool __ret = SteamUtils()->IsOverlayEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool BOverlayNeedsPresent();
+// In Lua:
+// bool Utils.BOverlayNeedsPresent()
 EXTERN int luasteam_Utils_BOverlayNeedsPresent(lua_State *L) {
 	bool __ret = SteamUtils()->BOverlayNeedsPresent();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t CheckFileSignature(const char * szFileName);
+// In Lua:
+// uint64 Utils.CheckFileSignature(szFileName: str, callback: function)
 EXTERN int luasteam_Utils_CheckFileSignature(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -342,7 +393,10 @@ EXTERN int luasteam_Utils_CheckFileSignature(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool ShowGamepadTextInput(EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char * pchDescription, uint32 unCharMax, const char * pchExistingText);
+// In Lua:
+// bool Utils.ShowGamepadTextInput(eInputMode: int, eLineInputMode: int, pchDescription: str, unCharMax: int, pchExistingText: str)
 EXTERN int luasteam_Utils_ShowGamepadTextInput(lua_State *L) {
 	EGamepadTextInputMode eInputMode = static_cast<EGamepadTextInputMode>(luaL_checkint(L, 1));
 	EGamepadTextInputLineMode eLineInputMode = static_cast<EGamepadTextInputLineMode>(luaL_checkint(L, 2));
@@ -354,14 +408,20 @@ EXTERN int luasteam_Utils_ShowGamepadTextInput(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // uint32 GetEnteredGamepadTextLength();
+// In Lua:
+// int Utils.GetEnteredGamepadTextLength()
 EXTERN int luasteam_Utils_GetEnteredGamepadTextLength(lua_State *L) {
 	uint32 __ret = SteamUtils()->GetEnteredGamepadTextLength();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool GetEnteredGamepadTextInput(char * pchText, uint32 cchText);
+// In Lua:
+// (bool, pchText: str) Utils.GetEnteredGamepadTextInput(cchText: int)
 EXTERN int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
 	uint32 cchText = luaL_checkint(L, 1);
 	std::vector<char> pchText(cchText);
@@ -371,21 +431,30 @@ EXTERN int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // const char * GetSteamUILanguage();
+// In Lua:
+// str Utils.GetSteamUILanguage()
 EXTERN int luasteam_Utils_GetSteamUILanguage(lua_State *L) {
 	const char * __ret = SteamUtils()->GetSteamUILanguage();
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
 
+// In C++:
 // bool IsSteamRunningInVR();
+// In Lua:
+// bool Utils.IsSteamRunningInVR()
 EXTERN int luasteam_Utils_IsSteamRunningInVR(lua_State *L) {
 	bool __ret = SteamUtils()->IsSteamRunningInVR();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void SetOverlayNotificationInset(int nHorizontalInset, int nVerticalInset);
+// In Lua:
+// Utils.SetOverlayNotificationInset(nHorizontalInset: int, nVerticalInset: int)
 EXTERN int luasteam_Utils_SetOverlayNotificationInset(lua_State *L) {
 	int nHorizontalInset = static_cast<int>(luaL_checkint(L, 1));
 	int nVerticalInset = static_cast<int>(luaL_checkint(L, 2));
@@ -393,41 +462,59 @@ EXTERN int luasteam_Utils_SetOverlayNotificationInset(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // bool IsSteamInBigPictureMode();
+// In Lua:
+// bool Utils.IsSteamInBigPictureMode()
 EXTERN int luasteam_Utils_IsSteamInBigPictureMode(lua_State *L) {
 	bool __ret = SteamUtils()->IsSteamInBigPictureMode();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void StartVRDashboard();
+// In Lua:
+// Utils.StartVRDashboard()
 EXTERN int luasteam_Utils_StartVRDashboard(lua_State *L) {
 	SteamUtils()->StartVRDashboard();
 	return 0;
 }
 
+// In C++:
 // bool IsVRHeadsetStreamingEnabled();
+// In Lua:
+// bool Utils.IsVRHeadsetStreamingEnabled()
 EXTERN int luasteam_Utils_IsVRHeadsetStreamingEnabled(lua_State *L) {
 	bool __ret = SteamUtils()->IsVRHeadsetStreamingEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void SetVRHeadsetStreamingEnabled(bool bEnabled);
+// In Lua:
+// Utils.SetVRHeadsetStreamingEnabled(bEnabled: bool)
 EXTERN int luasteam_Utils_SetVRHeadsetStreamingEnabled(lua_State *L) {
 	bool bEnabled = lua_toboolean(L, 1);
 	SteamUtils()->SetVRHeadsetStreamingEnabled(bEnabled);
 	return 0;
 }
 
+// In C++:
 // bool IsSteamChinaLauncher();
+// In Lua:
+// bool Utils.IsSteamChinaLauncher()
 EXTERN int luasteam_Utils_IsSteamChinaLauncher(lua_State *L) {
 	bool __ret = SteamUtils()->IsSteamChinaLauncher();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool InitFilterText(uint32 unFilterOptions);
+// In Lua:
+// bool Utils.InitFilterText(unFilterOptions: int)
 EXTERN int luasteam_Utils_InitFilterText(lua_State *L) {
 	uint32 unFilterOptions = static_cast<uint32>(luaL_checkint(L, 1));
 	bool __ret = SteamUtils()->InitFilterText(unFilterOptions);
@@ -435,7 +522,10 @@ EXTERN int luasteam_Utils_InitFilterText(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // int FilterText(ETextFilteringContext eContext, CSteamID sourceSteamID, const char * pchInputMessage, char * pchOutFilteredText, uint32 nByteSizeOutFilteredText);
+// In Lua:
+// (int, pchOutFilteredText: str) Utils.FilterText(eContext: int, sourceSteamID: uint64, pchInputMessage: str, nByteSizeOutFilteredText: int)
 EXTERN int luasteam_Utils_FilterText(lua_State *L) {
 	ETextFilteringContext eContext = static_cast<ETextFilteringContext>(luaL_checkint(L, 1));
 	CSteamID sourceSteamID(luasteam::checkuint64(L, 2));
@@ -448,7 +538,10 @@ EXTERN int luasteam_Utils_FilterText(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // ESteamIPv6ConnectivityState GetIPv6ConnectivityState(ESteamIPv6ConnectivityProtocol eProtocol);
+// In Lua:
+// int Utils.GetIPv6ConnectivityState(eProtocol: int)
 EXTERN int luasteam_Utils_GetIPv6ConnectivityState(lua_State *L) {
 	ESteamIPv6ConnectivityProtocol eProtocol = static_cast<ESteamIPv6ConnectivityProtocol>(luaL_checkint(L, 1));
 	ESteamIPv6ConnectivityState __ret = SteamUtils()->GetIPv6ConnectivityState(eProtocol);
@@ -456,14 +549,20 @@ EXTERN int luasteam_Utils_GetIPv6ConnectivityState(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool IsSteamRunningOnSteamDeck();
+// In Lua:
+// bool Utils.IsSteamRunningOnSteamDeck()
 EXTERN int luasteam_Utils_IsSteamRunningOnSteamDeck(lua_State *L) {
 	bool __ret = SteamUtils()->IsSteamRunningOnSteamDeck();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+// In Lua:
+// bool Utils.ShowFloatingGamepadTextInput(eKeyboardMode: int, nTextFieldXPosition: int, nTextFieldYPosition: int, nTextFieldWidth: int, nTextFieldHeight: int)
 EXTERN int luasteam_Utils_ShowFloatingGamepadTextInput(lua_State *L) {
 	EFloatingGamepadTextInputMode eKeyboardMode = static_cast<EFloatingGamepadTextInputMode>(luaL_checkint(L, 1));
 	int nTextFieldXPosition = static_cast<int>(luaL_checkint(L, 2));
@@ -475,21 +574,30 @@ EXTERN int luasteam_Utils_ShowFloatingGamepadTextInput(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void SetGameLauncherMode(bool bLauncherMode);
+// In Lua:
+// Utils.SetGameLauncherMode(bLauncherMode: bool)
 EXTERN int luasteam_Utils_SetGameLauncherMode(lua_State *L) {
 	bool bLauncherMode = lua_toboolean(L, 1);
 	SteamUtils()->SetGameLauncherMode(bLauncherMode);
 	return 0;
 }
 
+// In C++:
 // bool DismissFloatingGamepadTextInput();
+// In Lua:
+// bool Utils.DismissFloatingGamepadTextInput()
 EXTERN int luasteam_Utils_DismissFloatingGamepadTextInput(lua_State *L) {
 	bool __ret = SteamUtils()->DismissFloatingGamepadTextInput();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool DismissGamepadTextInput();
+// In Lua:
+// bool Utils.DismissGamepadTextInput()
 EXTERN int luasteam_Utils_DismissGamepadTextInput(lua_State *L) {
 	bool __ret = SteamUtils()->DismissGamepadTextInput();
 	lua_pushboolean(L, __ret);

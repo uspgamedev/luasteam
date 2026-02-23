@@ -1,5 +1,4 @@
 #include "UGC.hpp"
-#include "apps.hpp"
 #include "auto/auto.hpp"
 #include "common.hpp"
 #include "core.hpp"
@@ -21,7 +20,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_utils(L);
     luasteam::add_UGC(L);
     luasteam::add_extra(L);
-    luasteam::add_apps(L);
+    luasteam::add_Apps_auto(L);
     luasteam::add_input(L);
     // luasteam::add_networkingSockets(L);
     // luasteam::add_networkingUtils(L);

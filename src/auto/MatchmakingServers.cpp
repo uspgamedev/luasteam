@@ -10,7 +10,10 @@ void shutdown_MatchmakingServers_auto(lua_State *L) {
 	MatchmakingServers_ref = LUA_NOREF;
 }
 
+// In C++:
 // void CancelServerQuery(HServerQuery hServerQuery);
+// In Lua:
+// MatchmakingServers.CancelServerQuery(hServerQuery: int)
 EXTERN int luasteam_MatchmakingServers_CancelServerQuery(lua_State *L) {
 	HServerQuery hServerQuery = static_cast<HServerQuery>(luaL_checkint(L, 1));
 	SteamMatchmakingServers()->CancelServerQuery(hServerQuery);

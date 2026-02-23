@@ -839,7 +839,10 @@ template <> void CallResultListener<WorkshopEULAStatus_t>::Result(WorkshopEULASt
 	delete this;
 }
 
+// In C++:
 // UGCQueryHandle_t CreateQueryUserUGCRequest(AccountID_t unAccountID, EUserUGCList eListType, EUGCMatchingUGCType eMatchingUGCType, EUserUGCListSortOrder eSortOrder, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
+// In Lua:
+// uint64 UGC.CreateQueryUserUGCRequest(unAccountID: int, eListType: int, eMatchingUGCType: int, eSortOrder: int, nCreatorAppID: int, nConsumerAppID: int, unPage: int)
 EXTERN int luasteam_UGC_CreateQueryUserUGCRequest(lua_State *L) {
 	AccountID_t unAccountID = static_cast<AccountID_t>(luaL_checkint(L, 1));
 	EUserUGCList eListType = static_cast<EUserUGCList>(luaL_checkint(L, 2));
@@ -853,7 +856,10 @@ EXTERN int luasteam_UGC_CreateQueryUserUGCRequest(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // UGCQueryHandle_t CreateQueryAllUGCRequest(EUGCQuery eQueryType, EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType, AppId_t nCreatorAppID, AppId_t nConsumerAppID, uint32 unPage);
+// In Lua:
+// uint64 UGC.CreateQueryAllUGCRequestPage(eQueryType: int, eMatchingeMatchingUGCTypeFileType: int, nCreatorAppID: int, nConsumerAppID: int, unPage: int)
 EXTERN int luasteam_UGC_CreateQueryAllUGCRequestPage(lua_State *L) {
 	EUGCQuery eQueryType = static_cast<EUGCQuery>(luaL_checkint(L, 1));
 	EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 2));
@@ -865,7 +871,10 @@ EXTERN int luasteam_UGC_CreateQueryAllUGCRequestPage(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // UGCQueryHandle_t CreateQueryUGCDetailsRequest(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// In Lua:
+// (uint64, pvecPublishedFileID: uint64) UGC.CreateQueryUGCDetailsRequest(unNumPublishedFileIDs: int)
 EXTERN int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L) {
 	PublishedFileId_t pvecPublishedFileID;
 	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
@@ -875,7 +884,10 @@ EXTERN int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // SteamAPICall_t SendQueryUGCRequest(UGCQueryHandle_t handle);
+// In Lua:
+// uint64 UGC.SendQueryUGCRequest(handle: uint64, callback: function)
 EXTERN int luasteam_UGC_SendQueryUGCRequest(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -893,7 +905,10 @@ EXTERN int luasteam_UGC_SendQueryUGCRequest(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetQueryUGCResult(UGCQueryHandle_t handle, uint32 index, SteamUGCDetails_t * pDetails);
+// In Lua:
+// (bool, pDetails: table) UGC.GetQueryUGCResult(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetQueryUGCResult(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -904,7 +919,10 @@ EXTERN int luasteam_UGC_GetQueryUGCResult(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // uint32 GetQueryUGCNumTags(UGCQueryHandle_t handle, uint32 index);
+// In Lua:
+// int UGC.GetQueryUGCNumTags(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetQueryUGCNumTags(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -913,7 +931,10 @@ EXTERN int luasteam_UGC_GetQueryUGCNumTags(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetQueryUGCTag(UGCQueryHandle_t handle, uint32 index, uint32 indexTag, char * pchValue, uint32 cchValueSize);
+// In Lua:
+// (bool, pchValue: str) UGC.GetQueryUGCTag(handle: uint64, index: int, indexTag: int, cchValueSize: int)
 EXTERN int luasteam_UGC_GetQueryUGCTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -926,7 +947,10 @@ EXTERN int luasteam_UGC_GetQueryUGCTag(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetQueryUGCTagDisplayName(UGCQueryHandle_t handle, uint32 index, uint32 indexTag, char * pchValue, uint32 cchValueSize);
+// In Lua:
+// (bool, pchValue: str) UGC.GetQueryUGCTagDisplayName(handle: uint64, index: int, indexTag: int, cchValueSize: int)
 EXTERN int luasteam_UGC_GetQueryUGCTagDisplayName(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -939,7 +963,10 @@ EXTERN int luasteam_UGC_GetQueryUGCTagDisplayName(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetQueryUGCPreviewURL(UGCQueryHandle_t handle, uint32 index, char * pchURL, uint32 cchURLSize);
+// In Lua:
+// (bool, pchURL: str) UGC.GetQueryUGCPreviewURL(handle: uint64, index: int, cchURLSize: int)
 EXTERN int luasteam_UGC_GetQueryUGCPreviewURL(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -951,7 +978,10 @@ EXTERN int luasteam_UGC_GetQueryUGCPreviewURL(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetQueryUGCMetadata(UGCQueryHandle_t handle, uint32 index, char * pchMetadata, uint32 cchMetadatasize);
+// In Lua:
+// (bool, pchMetadata: str) UGC.GetQueryUGCMetadata(handle: uint64, index: int, cchMetadatasize: int)
 EXTERN int luasteam_UGC_GetQueryUGCMetadata(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -963,7 +993,10 @@ EXTERN int luasteam_UGC_GetQueryUGCMetadata(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetQueryUGCChildren(UGCQueryHandle_t handle, uint32 index, PublishedFileId_t * pvecPublishedFileID, uint32 cMaxEntries);
+// In Lua:
+// (bool, pvecPublishedFileID: uint64) UGC.GetQueryUGCChildren(handle: uint64, index: int, cMaxEntries: int)
 EXTERN int luasteam_UGC_GetQueryUGCChildren(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -975,7 +1008,10 @@ EXTERN int luasteam_UGC_GetQueryUGCChildren(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetQueryUGCStatistic(UGCQueryHandle_t handle, uint32 index, EItemStatistic eStatType, uint64 * pStatValue);
+// In Lua:
+// (bool, pStatValue: uint64) UGC.GetQueryUGCStatistic(handle: uint64, index: int, eStatType: int)
 EXTERN int luasteam_UGC_GetQueryUGCStatistic(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -987,7 +1023,10 @@ EXTERN int luasteam_UGC_GetQueryUGCStatistic(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // uint32 GetQueryUGCNumAdditionalPreviews(UGCQueryHandle_t handle, uint32 index);
+// In Lua:
+// int UGC.GetQueryUGCNumAdditionalPreviews(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetQueryUGCNumAdditionalPreviews(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -996,7 +1035,10 @@ EXTERN int luasteam_UGC_GetQueryUGCNumAdditionalPreviews(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetQueryUGCAdditionalPreview(UGCQueryHandle_t handle, uint32 index, uint32 previewIndex, char * pchURLOrVideoID, uint32 cchURLSize, char * pchOriginalFileName, uint32 cchOriginalFileNameSize, EItemPreviewType * pPreviewType);
+// In Lua:
+// (bool, pchURLOrVideoID: str, pchOriginalFileName: str, pPreviewType: int) UGC.GetQueryUGCAdditionalPreview(handle: uint64, index: int, previewIndex: int, cchURLSize: int, cchOriginalFileNameSize: int)
 EXTERN int luasteam_UGC_GetQueryUGCAdditionalPreview(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1014,7 +1056,10 @@ EXTERN int luasteam_UGC_GetQueryUGCAdditionalPreview(lua_State *L) {
 	return 4;
 }
 
+// In C++:
 // uint32 GetQueryUGCNumKeyValueTags(UGCQueryHandle_t handle, uint32 index);
+// In Lua:
+// int UGC.GetQueryUGCNumKeyValueTags(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetQueryUGCNumKeyValueTags(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1023,7 +1068,10 @@ EXTERN int luasteam_UGC_GetQueryUGCNumKeyValueTags(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetQueryUGCKeyValueTag(UGCQueryHandle_t handle, uint32 index, uint32 keyValueTagIndex, char * pchKey, uint32 cchKeySize, char * pchValue, uint32 cchValueSize);
+// In Lua:
+// (bool, pchKey: str, pchValue: str) UGC.GetQueryUGCKeyValueTag(handle: uint64, index: int, keyValueTagIndex: int, cchKeySize: int, cchValueSize: int)
 EXTERN int luasteam_UGC_GetQueryUGCKeyValueTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1039,7 +1087,10 @@ EXTERN int luasteam_UGC_GetQueryUGCKeyValueTag(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // uint32 GetNumSupportedGameVersions(UGCQueryHandle_t handle, uint32 index);
+// In Lua:
+// int UGC.GetNumSupportedGameVersions(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetNumSupportedGameVersions(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1048,7 +1099,10 @@ EXTERN int luasteam_UGC_GetNumSupportedGameVersions(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetSupportedGameVersionData(UGCQueryHandle_t handle, uint32 index, uint32 versionIndex, char * pchGameBranchMin, char * pchGameBranchMax, uint32 cchGameBranchSize);
+// In Lua:
+// (bool, pchGameBranchMin: str, pchGameBranchMax: str) UGC.GetSupportedGameVersionData(handle: uint64, index: int, versionIndex: int, cchGameBranchSize: int)
 EXTERN int luasteam_UGC_GetSupportedGameVersionData(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1063,7 +1117,10 @@ EXTERN int luasteam_UGC_GetSupportedGameVersionData(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // uint32 GetQueryUGCContentDescriptors(UGCQueryHandle_t handle, uint32 index, EUGCContentDescriptorID * pvecDescriptors, uint32 cMaxEntries);
+// In Lua:
+// (int, pvecDescriptors: int) UGC.GetQueryUGCContentDescriptors(handle: uint64, index: int, cMaxEntries: int)
 EXTERN int luasteam_UGC_GetQueryUGCContentDescriptors(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1075,7 +1132,10 @@ EXTERN int luasteam_UGC_GetQueryUGCContentDescriptors(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool ReleaseQueryUGCRequest(UGCQueryHandle_t handle);
+// In Lua:
+// bool UGC.ReleaseQueryUGCRequest(handle: uint64)
 EXTERN int luasteam_UGC_ReleaseQueryUGCRequest(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool __ret = SteamUGC()->ReleaseQueryUGCRequest(handle);
@@ -1083,7 +1143,10 @@ EXTERN int luasteam_UGC_ReleaseQueryUGCRequest(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddRequiredTag(UGCQueryHandle_t handle, const char * pTagName);
+// In Lua:
+// bool UGC.AddRequiredTag(handle: uint64, pTagName: str)
 EXTERN int luasteam_UGC_AddRequiredTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pTagName = luaL_checkstring(L, 2);
@@ -1092,7 +1155,10 @@ EXTERN int luasteam_UGC_AddRequiredTag(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddExcludedTag(UGCQueryHandle_t handle, const char * pTagName);
+// In Lua:
+// bool UGC.AddExcludedTag(handle: uint64, pTagName: str)
 EXTERN int luasteam_UGC_AddExcludedTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pTagName = luaL_checkstring(L, 2);
@@ -1101,7 +1167,10 @@ EXTERN int luasteam_UGC_AddExcludedTag(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnOnlyIDs(UGCQueryHandle_t handle, bool bReturnOnlyIDs);
+// In Lua:
+// bool UGC.SetReturnOnlyIDs(handle: uint64, bReturnOnlyIDs: bool)
 EXTERN int luasteam_UGC_SetReturnOnlyIDs(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnOnlyIDs = lua_toboolean(L, 2);
@@ -1110,7 +1179,10 @@ EXTERN int luasteam_UGC_SetReturnOnlyIDs(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnKeyValueTags(UGCQueryHandle_t handle, bool bReturnKeyValueTags);
+// In Lua:
+// bool UGC.SetReturnKeyValueTags(handle: uint64, bReturnKeyValueTags: bool)
 EXTERN int luasteam_UGC_SetReturnKeyValueTags(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnKeyValueTags = lua_toboolean(L, 2);
@@ -1119,7 +1191,10 @@ EXTERN int luasteam_UGC_SetReturnKeyValueTags(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnLongDescription(UGCQueryHandle_t handle, bool bReturnLongDescription);
+// In Lua:
+// bool UGC.SetReturnLongDescription(handle: uint64, bReturnLongDescription: bool)
 EXTERN int luasteam_UGC_SetReturnLongDescription(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnLongDescription = lua_toboolean(L, 2);
@@ -1128,7 +1203,10 @@ EXTERN int luasteam_UGC_SetReturnLongDescription(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnMetadata(UGCQueryHandle_t handle, bool bReturnMetadata);
+// In Lua:
+// bool UGC.SetReturnMetadata(handle: uint64, bReturnMetadata: bool)
 EXTERN int luasteam_UGC_SetReturnMetadata(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnMetadata = lua_toboolean(L, 2);
@@ -1137,7 +1215,10 @@ EXTERN int luasteam_UGC_SetReturnMetadata(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnChildren(UGCQueryHandle_t handle, bool bReturnChildren);
+// In Lua:
+// bool UGC.SetReturnChildren(handle: uint64, bReturnChildren: bool)
 EXTERN int luasteam_UGC_SetReturnChildren(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnChildren = lua_toboolean(L, 2);
@@ -1146,7 +1227,10 @@ EXTERN int luasteam_UGC_SetReturnChildren(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnAdditionalPreviews(UGCQueryHandle_t handle, bool bReturnAdditionalPreviews);
+// In Lua:
+// bool UGC.SetReturnAdditionalPreviews(handle: uint64, bReturnAdditionalPreviews: bool)
 EXTERN int luasteam_UGC_SetReturnAdditionalPreviews(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnAdditionalPreviews = lua_toboolean(L, 2);
@@ -1155,7 +1239,10 @@ EXTERN int luasteam_UGC_SetReturnAdditionalPreviews(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnTotalOnly(UGCQueryHandle_t handle, bool bReturnTotalOnly);
+// In Lua:
+// bool UGC.SetReturnTotalOnly(handle: uint64, bReturnTotalOnly: bool)
 EXTERN int luasteam_UGC_SetReturnTotalOnly(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bReturnTotalOnly = lua_toboolean(L, 2);
@@ -1164,7 +1251,10 @@ EXTERN int luasteam_UGC_SetReturnTotalOnly(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetReturnPlaytimeStats(UGCQueryHandle_t handle, uint32 unDays);
+// In Lua:
+// bool UGC.SetReturnPlaytimeStats(handle: uint64, unDays: int)
 EXTERN int luasteam_UGC_SetReturnPlaytimeStats(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 unDays = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1173,7 +1263,10 @@ EXTERN int luasteam_UGC_SetReturnPlaytimeStats(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetLanguage(UGCQueryHandle_t handle, const char * pchLanguage);
+// In Lua:
+// bool UGC.SetLanguage(handle: uint64, pchLanguage: str)
 EXTERN int luasteam_UGC_SetLanguage(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchLanguage = luaL_checkstring(L, 2);
@@ -1182,7 +1275,10 @@ EXTERN int luasteam_UGC_SetLanguage(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetAllowCachedResponse(UGCQueryHandle_t handle, uint32 unMaxAgeSeconds);
+// In Lua:
+// bool UGC.SetAllowCachedResponse(handle: uint64, unMaxAgeSeconds: int)
 EXTERN int luasteam_UGC_SetAllowCachedResponse(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 unMaxAgeSeconds = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1191,7 +1287,10 @@ EXTERN int luasteam_UGC_SetAllowCachedResponse(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetAdminQuery(UGCUpdateHandle_t handle, bool bAdminQuery);
+// In Lua:
+// bool UGC.SetAdminQuery(handle: uint64, bAdminQuery: bool)
 EXTERN int luasteam_UGC_SetAdminQuery(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bAdminQuery = lua_toboolean(L, 2);
@@ -1200,7 +1299,10 @@ EXTERN int luasteam_UGC_SetAdminQuery(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetCloudFileNameFilter(UGCQueryHandle_t handle, const char * pMatchCloudFileName);
+// In Lua:
+// bool UGC.SetCloudFileNameFilter(handle: uint64, pMatchCloudFileName: str)
 EXTERN int luasteam_UGC_SetCloudFileNameFilter(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pMatchCloudFileName = luaL_checkstring(L, 2);
@@ -1209,7 +1311,10 @@ EXTERN int luasteam_UGC_SetCloudFileNameFilter(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetMatchAnyTag(UGCQueryHandle_t handle, bool bMatchAnyTag);
+// In Lua:
+// bool UGC.SetMatchAnyTag(handle: uint64, bMatchAnyTag: bool)
 EXTERN int luasteam_UGC_SetMatchAnyTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bMatchAnyTag = lua_toboolean(L, 2);
@@ -1218,7 +1323,10 @@ EXTERN int luasteam_UGC_SetMatchAnyTag(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetSearchText(UGCQueryHandle_t handle, const char * pSearchText);
+// In Lua:
+// bool UGC.SetSearchText(handle: uint64, pSearchText: str)
 EXTERN int luasteam_UGC_SetSearchText(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pSearchText = luaL_checkstring(L, 2);
@@ -1227,7 +1335,10 @@ EXTERN int luasteam_UGC_SetSearchText(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetRankedByTrendDays(UGCQueryHandle_t handle, uint32 unDays);
+// In Lua:
+// bool UGC.SetRankedByTrendDays(handle: uint64, unDays: int)
 EXTERN int luasteam_UGC_SetRankedByTrendDays(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 unDays = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1236,7 +1347,10 @@ EXTERN int luasteam_UGC_SetRankedByTrendDays(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetTimeCreatedDateRange(UGCQueryHandle_t handle, RTime32 rtStart, RTime32 rtEnd);
+// In Lua:
+// bool UGC.SetTimeCreatedDateRange(handle: uint64, rtStart: int, rtEnd: int)
 EXTERN int luasteam_UGC_SetTimeCreatedDateRange(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	RTime32 rtStart = static_cast<RTime32>(luaL_checkint(L, 2));
@@ -1246,7 +1360,10 @@ EXTERN int luasteam_UGC_SetTimeCreatedDateRange(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetTimeUpdatedDateRange(UGCQueryHandle_t handle, RTime32 rtStart, RTime32 rtEnd);
+// In Lua:
+// bool UGC.SetTimeUpdatedDateRange(handle: uint64, rtStart: int, rtEnd: int)
 EXTERN int luasteam_UGC_SetTimeUpdatedDateRange(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	RTime32 rtStart = static_cast<RTime32>(luaL_checkint(L, 2));
@@ -1256,7 +1373,10 @@ EXTERN int luasteam_UGC_SetTimeUpdatedDateRange(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddRequiredKeyValueTag(UGCQueryHandle_t handle, const char * pKey, const char * pValue);
+// In Lua:
+// bool UGC.AddRequiredKeyValueTag(handle: uint64, pKey: str, pValue: str)
 EXTERN int luasteam_UGC_AddRequiredKeyValueTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pKey = luaL_checkstring(L, 2);
@@ -1266,7 +1386,10 @@ EXTERN int luasteam_UGC_AddRequiredKeyValueTag(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t RequestUGCDetails(PublishedFileId_t nPublishedFileID, uint32 unMaxAgeSeconds);
+// In Lua:
+// uint64 UGC.RequestUGCDetails(nPublishedFileID: uint64, unMaxAgeSeconds: int, callback: function)
 EXTERN int luasteam_UGC_RequestUGCDetails(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1285,7 +1408,10 @@ EXTERN int luasteam_UGC_RequestUGCDetails(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t CreateItem(AppId_t nConsumerAppId, EWorkshopFileType eFileType);
+// In Lua:
+// uint64 UGC.CreateItem(nConsumerAppId: int, eFileType: int, callback: function)
 EXTERN int luasteam_UGC_CreateItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1304,7 +1430,10 @@ EXTERN int luasteam_UGC_CreateItem(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // UGCUpdateHandle_t StartItemUpdate(AppId_t nConsumerAppId, PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.StartItemUpdate(nConsumerAppId: int, nPublishedFileID: uint64)
 EXTERN int luasteam_UGC_StartItemUpdate(lua_State *L) {
 	AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 1));
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 2));
@@ -1313,7 +1442,10 @@ EXTERN int luasteam_UGC_StartItemUpdate(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemTitle(UGCUpdateHandle_t handle, const char * pchTitle);
+// In Lua:
+// bool UGC.SetItemTitle(handle: uint64, pchTitle: str)
 EXTERN int luasteam_UGC_SetItemTitle(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchTitle = luaL_checkstring(L, 2);
@@ -1322,7 +1454,10 @@ EXTERN int luasteam_UGC_SetItemTitle(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemDescription(UGCUpdateHandle_t handle, const char * pchDescription);
+// In Lua:
+// bool UGC.SetItemDescription(handle: uint64, pchDescription: str)
 EXTERN int luasteam_UGC_SetItemDescription(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchDescription = luaL_checkstring(L, 2);
@@ -1331,7 +1466,10 @@ EXTERN int luasteam_UGC_SetItemDescription(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemUpdateLanguage(UGCUpdateHandle_t handle, const char * pchLanguage);
+// In Lua:
+// bool UGC.SetItemUpdateLanguage(handle: uint64, pchLanguage: str)
 EXTERN int luasteam_UGC_SetItemUpdateLanguage(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchLanguage = luaL_checkstring(L, 2);
@@ -1340,7 +1478,10 @@ EXTERN int luasteam_UGC_SetItemUpdateLanguage(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemMetadata(UGCUpdateHandle_t handle, const char * pchMetaData);
+// In Lua:
+// bool UGC.SetItemMetadata(handle: uint64, pchMetaData: str)
 EXTERN int luasteam_UGC_SetItemMetadata(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchMetaData = luaL_checkstring(L, 2);
@@ -1349,7 +1490,10 @@ EXTERN int luasteam_UGC_SetItemMetadata(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemVisibility(UGCUpdateHandle_t handle, ERemoteStoragePublishedFileVisibility eVisibility);
+// In Lua:
+// bool UGC.SetItemVisibility(handle: uint64, eVisibility: int)
 EXTERN int luasteam_UGC_SetItemVisibility(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 2));
@@ -1358,7 +1502,10 @@ EXTERN int luasteam_UGC_SetItemVisibility(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemContent(UGCUpdateHandle_t handle, const char * pszContentFolder);
+// In Lua:
+// bool UGC.SetItemContent(handle: uint64, pszContentFolder: str)
 EXTERN int luasteam_UGC_SetItemContent(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pszContentFolder = luaL_checkstring(L, 2);
@@ -1367,7 +1514,10 @@ EXTERN int luasteam_UGC_SetItemContent(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetItemPreview(UGCUpdateHandle_t handle, const char * pszPreviewFile);
+// In Lua:
+// bool UGC.SetItemPreview(handle: uint64, pszPreviewFile: str)
 EXTERN int luasteam_UGC_SetItemPreview(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pszPreviewFile = luaL_checkstring(L, 2);
@@ -1376,7 +1526,10 @@ EXTERN int luasteam_UGC_SetItemPreview(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetAllowLegacyUpload(UGCUpdateHandle_t handle, bool bAllowLegacyUpload);
+// In Lua:
+// bool UGC.SetAllowLegacyUpload(handle: uint64, bAllowLegacyUpload: bool)
 EXTERN int luasteam_UGC_SetAllowLegacyUpload(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	bool bAllowLegacyUpload = lua_toboolean(L, 2);
@@ -1385,7 +1538,10 @@ EXTERN int luasteam_UGC_SetAllowLegacyUpload(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool RemoveAllItemKeyValueTags(UGCUpdateHandle_t handle);
+// In Lua:
+// bool UGC.RemoveAllItemKeyValueTags(handle: uint64)
 EXTERN int luasteam_UGC_RemoveAllItemKeyValueTags(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	bool __ret = SteamUGC()->RemoveAllItemKeyValueTags(handle);
@@ -1393,7 +1549,10 @@ EXTERN int luasteam_UGC_RemoveAllItemKeyValueTags(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool RemoveItemKeyValueTags(UGCUpdateHandle_t handle, const char * pchKey);
+// In Lua:
+// bool UGC.RemoveItemKeyValueTags(handle: uint64, pchKey: str)
 EXTERN int luasteam_UGC_RemoveItemKeyValueTags(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchKey = luaL_checkstring(L, 2);
@@ -1402,7 +1561,10 @@ EXTERN int luasteam_UGC_RemoveItemKeyValueTags(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddItemKeyValueTag(UGCUpdateHandle_t handle, const char * pchKey, const char * pchValue);
+// In Lua:
+// bool UGC.AddItemKeyValueTag(handle: uint64, pchKey: str, pchValue: str)
 EXTERN int luasteam_UGC_AddItemKeyValueTag(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pchKey = luaL_checkstring(L, 2);
@@ -1412,7 +1574,10 @@ EXTERN int luasteam_UGC_AddItemKeyValueTag(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddItemPreviewFile(UGCUpdateHandle_t handle, const char * pszPreviewFile, EItemPreviewType type);
+// In Lua:
+// bool UGC.AddItemPreviewFile(handle: uint64, pszPreviewFile: str, type: int)
 EXTERN int luasteam_UGC_AddItemPreviewFile(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pszPreviewFile = luaL_checkstring(L, 2);
@@ -1422,7 +1587,10 @@ EXTERN int luasteam_UGC_AddItemPreviewFile(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddItemPreviewVideo(UGCUpdateHandle_t handle, const char * pszVideoID);
+// In Lua:
+// bool UGC.AddItemPreviewVideo(handle: uint64, pszVideoID: str)
 EXTERN int luasteam_UGC_AddItemPreviewVideo(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pszVideoID = luaL_checkstring(L, 2);
@@ -1431,7 +1599,10 @@ EXTERN int luasteam_UGC_AddItemPreviewVideo(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool UpdateItemPreviewFile(UGCUpdateHandle_t handle, uint32 index, const char * pszPreviewFile);
+// In Lua:
+// bool UGC.UpdateItemPreviewFile(handle: uint64, index: int, pszPreviewFile: str)
 EXTERN int luasteam_UGC_UpdateItemPreviewFile(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1441,7 +1612,10 @@ EXTERN int luasteam_UGC_UpdateItemPreviewFile(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool UpdateItemPreviewVideo(UGCUpdateHandle_t handle, uint32 index, const char * pszVideoID);
+// In Lua:
+// bool UGC.UpdateItemPreviewVideo(handle: uint64, index: int, pszVideoID: str)
 EXTERN int luasteam_UGC_UpdateItemPreviewVideo(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1451,7 +1625,10 @@ EXTERN int luasteam_UGC_UpdateItemPreviewVideo(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool RemoveItemPreview(UGCUpdateHandle_t handle, uint32 index);
+// In Lua:
+// bool UGC.RemoveItemPreview(handle: uint64, index: int)
 EXTERN int luasteam_UGC_RemoveItemPreview(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
@@ -1460,7 +1637,10 @@ EXTERN int luasteam_UGC_RemoveItemPreview(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool AddContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid);
+// In Lua:
+// bool UGC.AddContentDescriptor(handle: uint64, descid: int)
 EXTERN int luasteam_UGC_AddContentDescriptor(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	EUGCContentDescriptorID descid = static_cast<EUGCContentDescriptorID>(luaL_checkint(L, 2));
@@ -1469,7 +1649,10 @@ EXTERN int luasteam_UGC_AddContentDescriptor(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool RemoveContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid);
+// In Lua:
+// bool UGC.RemoveContentDescriptor(handle: uint64, descid: int)
 EXTERN int luasteam_UGC_RemoveContentDescriptor(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	EUGCContentDescriptorID descid = static_cast<EUGCContentDescriptorID>(luaL_checkint(L, 2));
@@ -1478,7 +1661,10 @@ EXTERN int luasteam_UGC_RemoveContentDescriptor(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool SetRequiredGameVersions(UGCUpdateHandle_t handle, const char * pszGameBranchMin, const char * pszGameBranchMax);
+// In Lua:
+// bool UGC.SetRequiredGameVersions(handle: uint64, pszGameBranchMin: str, pszGameBranchMax: str)
 EXTERN int luasteam_UGC_SetRequiredGameVersions(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pszGameBranchMin = luaL_checkstring(L, 2);
@@ -1488,7 +1674,10 @@ EXTERN int luasteam_UGC_SetRequiredGameVersions(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t SubmitItemUpdate(UGCUpdateHandle_t handle, const char * pchChangeNote);
+// In Lua:
+// uint64 UGC.SubmitItemUpdate(handle: uint64, pchChangeNote: str, callback: function)
 EXTERN int luasteam_UGC_SubmitItemUpdate(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1507,7 +1696,10 @@ EXTERN int luasteam_UGC_SubmitItemUpdate(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // EItemUpdateStatus GetItemUpdateProgress(UGCUpdateHandle_t handle, uint64 * punBytesProcessed, uint64 * punBytesTotal);
+// In Lua:
+// (int, punBytesProcessed: uint64, punBytesTotal: uint64) UGC.GetItemUpdateProgress(handle: uint64)
 EXTERN int luasteam_UGC_GetItemUpdateProgress(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	uint64 punBytesProcessed;
@@ -1519,7 +1711,10 @@ EXTERN int luasteam_UGC_GetItemUpdateProgress(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // SteamAPICall_t SetUserItemVote(PublishedFileId_t nPublishedFileID, bool bVoteUp);
+// In Lua:
+// uint64 UGC.SetUserItemVote(nPublishedFileID: uint64, bVoteUp: bool, callback: function)
 EXTERN int luasteam_UGC_SetUserItemVote(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1538,7 +1733,10 @@ EXTERN int luasteam_UGC_SetUserItemVote(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t GetUserItemVote(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.GetUserItemVote(nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_GetUserItemVote(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1556,7 +1754,10 @@ EXTERN int luasteam_UGC_GetUserItemVote(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t AddItemToFavorites(AppId_t nAppId, PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.AddItemToFavorites(nAppId: int, nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_AddItemToFavorites(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1575,7 +1776,10 @@ EXTERN int luasteam_UGC_AddItemToFavorites(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t RemoveItemFromFavorites(AppId_t nAppId, PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.RemoveItemFromFavorites(nAppId: int, nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_RemoveItemFromFavorites(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1594,7 +1798,10 @@ EXTERN int luasteam_UGC_RemoveItemFromFavorites(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t SubscribeItem(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.SubscribeItem(nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_SubscribeItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1612,7 +1819,10 @@ EXTERN int luasteam_UGC_SubscribeItem(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t UnsubscribeItem(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.UnsubscribeItem(nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_UnsubscribeItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1630,7 +1840,10 @@ EXTERN int luasteam_UGC_UnsubscribeItem(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // uint32 GetNumSubscribedItems(bool bIncludeLocallyDisabled);
+// In Lua:
+// int UGC.GetNumSubscribedItems(bIncludeLocallyDisabled: bool)
 EXTERN int luasteam_UGC_GetNumSubscribedItems(lua_State *L) {
 	bool bIncludeLocallyDisabled = lua_toboolean(L, 1);
 	uint32 __ret = SteamUGC()->GetNumSubscribedItems(bIncludeLocallyDisabled);
@@ -1638,7 +1851,10 @@ EXTERN int luasteam_UGC_GetNumSubscribedItems(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // uint32 GetSubscribedItems(PublishedFileId_t * pvecPublishedFileID, uint32 cMaxEntries, bool bIncludeLocallyDisabled);
+// In Lua:
+// (int, pvecPublishedFileID: uint64) UGC.GetSubscribedItems(cMaxEntries: int, bIncludeLocallyDisabled: bool)
 EXTERN int luasteam_UGC_GetSubscribedItems(lua_State *L) {
 	PublishedFileId_t pvecPublishedFileID;
 	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 1));
@@ -1649,7 +1865,10 @@ EXTERN int luasteam_UGC_GetSubscribedItems(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // uint32 GetItemState(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// int UGC.GetItemState(nPublishedFileID: uint64)
 EXTERN int luasteam_UGC_GetItemState(lua_State *L) {
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
 	uint32 __ret = SteamUGC()->GetItemState(nPublishedFileID);
@@ -1657,7 +1876,10 @@ EXTERN int luasteam_UGC_GetItemState(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetItemInstallInfo(PublishedFileId_t nPublishedFileID, uint64 * punSizeOnDisk, char * pchFolder, uint32 cchFolderSize, uint32 * punTimeStamp);
+// In Lua:
+// (bool, punSizeOnDisk: uint64, pchFolder: str, punTimeStamp: int) UGC.GetItemInstallInfo(nPublishedFileID: uint64, cchFolderSize: int)
 EXTERN int luasteam_UGC_GetItemInstallInfo(lua_State *L) {
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
 	uint64 punSizeOnDisk;
@@ -1672,7 +1894,10 @@ EXTERN int luasteam_UGC_GetItemInstallInfo(lua_State *L) {
 	return 4;
 }
 
+// In C++:
 // bool GetItemDownloadInfo(PublishedFileId_t nPublishedFileID, uint64 * punBytesDownloaded, uint64 * punBytesTotal);
+// In Lua:
+// (bool, punBytesDownloaded: uint64, punBytesTotal: uint64) UGC.GetItemDownloadInfo(nPublishedFileID: uint64)
 EXTERN int luasteam_UGC_GetItemDownloadInfo(lua_State *L) {
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
 	uint64 punBytesDownloaded;
@@ -1684,7 +1909,10 @@ EXTERN int luasteam_UGC_GetItemDownloadInfo(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // bool DownloadItem(PublishedFileId_t nPublishedFileID, bool bHighPriority);
+// In Lua:
+// bool UGC.DownloadItem(nPublishedFileID: uint64, bHighPriority: bool)
 EXTERN int luasteam_UGC_DownloadItem(lua_State *L) {
 	PublishedFileId_t nPublishedFileID(luasteam::checkuint64(L, 1));
 	bool bHighPriority = lua_toboolean(L, 2);
@@ -1693,7 +1921,10 @@ EXTERN int luasteam_UGC_DownloadItem(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BInitWorkshopForGameServer(DepotId_t unWorkshopDepotID, const char * pszFolder);
+// In Lua:
+// bool UGC.BInitWorkshopForGameServer(unWorkshopDepotID: int, pszFolder: str)
 EXTERN int luasteam_UGC_BInitWorkshopForGameServer(lua_State *L) {
 	DepotId_t unWorkshopDepotID = static_cast<DepotId_t>(luaL_checkint(L, 1));
 	const char *pszFolder = luaL_checkstring(L, 2);
@@ -1702,14 +1933,20 @@ EXTERN int luasteam_UGC_BInitWorkshopForGameServer(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void SuspendDownloads(bool bSuspend);
+// In Lua:
+// UGC.SuspendDownloads(bSuspend: bool)
 EXTERN int luasteam_UGC_SuspendDownloads(lua_State *L) {
 	bool bSuspend = lua_toboolean(L, 1);
 	SteamUGC()->SuspendDownloads(bSuspend);
 	return 0;
 }
 
+// In C++:
 // SteamAPICall_t StartPlaytimeTracking(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// In Lua:
+// (uint64, pvecPublishedFileID: uint64) UGC.StartPlaytimeTracking(unNumPublishedFileIDs: int, callback: function)
 EXTERN int luasteam_UGC_StartPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1729,7 +1966,10 @@ EXTERN int luasteam_UGC_StartPlaytimeTracking(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // SteamAPICall_t StopPlaytimeTracking(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// In Lua:
+// (uint64, pvecPublishedFileID: uint64) UGC.StopPlaytimeTracking(unNumPublishedFileIDs: int, callback: function)
 EXTERN int luasteam_UGC_StopPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1749,7 +1989,10 @@ EXTERN int luasteam_UGC_StopPlaytimeTracking(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // SteamAPICall_t StopPlaytimeTrackingForAllItems();
+// In Lua:
+// uint64 UGC.StopPlaytimeTrackingForAllItems(callback: function)
 EXTERN int luasteam_UGC_StopPlaytimeTrackingForAllItems(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1766,7 +2009,10 @@ EXTERN int luasteam_UGC_StopPlaytimeTrackingForAllItems(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t AddDependency(PublishedFileId_t nParentPublishedFileID, PublishedFileId_t nChildPublishedFileID);
+// In Lua:
+// uint64 UGC.AddDependency(nParentPublishedFileID: uint64, nChildPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_AddDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1785,7 +2031,10 @@ EXTERN int luasteam_UGC_AddDependency(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t RemoveDependency(PublishedFileId_t nParentPublishedFileID, PublishedFileId_t nChildPublishedFileID);
+// In Lua:
+// uint64 UGC.RemoveDependency(nParentPublishedFileID: uint64, nChildPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_RemoveDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1804,7 +2053,10 @@ EXTERN int luasteam_UGC_RemoveDependency(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t AddAppDependency(PublishedFileId_t nPublishedFileID, AppId_t nAppID);
+// In Lua:
+// uint64 UGC.AddAppDependency(nPublishedFileID: uint64, nAppID: int, callback: function)
 EXTERN int luasteam_UGC_AddAppDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1823,7 +2075,10 @@ EXTERN int luasteam_UGC_AddAppDependency(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t RemoveAppDependency(PublishedFileId_t nPublishedFileID, AppId_t nAppID);
+// In Lua:
+// uint64 UGC.RemoveAppDependency(nPublishedFileID: uint64, nAppID: int, callback: function)
 EXTERN int luasteam_UGC_RemoveAppDependency(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1842,7 +2097,10 @@ EXTERN int luasteam_UGC_RemoveAppDependency(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t GetAppDependencies(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.GetAppDependencies(nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_GetAppDependencies(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1860,7 +2118,10 @@ EXTERN int luasteam_UGC_GetAppDependencies(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t DeleteItem(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// uint64 UGC.DeleteItem(nPublishedFileID: uint64, callback: function)
 EXTERN int luasteam_UGC_DeleteItem(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1878,14 +2139,20 @@ EXTERN int luasteam_UGC_DeleteItem(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool ShowWorkshopEULA();
+// In Lua:
+// bool UGC.ShowWorkshopEULA()
 EXTERN int luasteam_UGC_ShowWorkshopEULA(lua_State *L) {
 	bool __ret = SteamUGC()->ShowWorkshopEULA();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t GetWorkshopEULAStatus();
+// In Lua:
+// uint64 UGC.GetWorkshopEULAStatus(callback: function)
 EXTERN int luasteam_UGC_GetWorkshopEULAStatus(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -1902,7 +2169,10 @@ EXTERN int luasteam_UGC_GetWorkshopEULAStatus(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // uint32 GetUserContentDescriptorPreferences(EUGCContentDescriptorID * pvecDescriptors, uint32 cMaxEntries);
+// In Lua:
+// (int, pvecDescriptors: int) UGC.GetUserContentDescriptorPreferences(cMaxEntries: int)
 EXTERN int luasteam_UGC_GetUserContentDescriptorPreferences(lua_State *L) {
 	EUGCContentDescriptorID pvecDescriptors;
 	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 1));
@@ -1912,7 +2182,10 @@ EXTERN int luasteam_UGC_GetUserContentDescriptorPreferences(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool SetItemsDisabledLocally(PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs, bool bDisabledLocally);
+// In Lua:
+// (bool, pvecPublishedFileIDs: uint64) UGC.SetItemsDisabledLocally(unNumPublishedFileIDs: int, bDisabledLocally: bool)
 EXTERN int luasteam_UGC_SetItemsDisabledLocally(lua_State *L) {
 	PublishedFileId_t pvecPublishedFileIDs;
 	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
@@ -1923,7 +2196,10 @@ EXTERN int luasteam_UGC_SetItemsDisabledLocally(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool SetSubscriptionsLoadOrder(PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs);
+// In Lua:
+// (bool, pvecPublishedFileIDs: uint64) UGC.SetSubscriptionsLoadOrder(unNumPublishedFileIDs: int)
 EXTERN int luasteam_UGC_SetSubscriptionsLoadOrder(lua_State *L) {
 	PublishedFileId_t pvecPublishedFileIDs;
 	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));

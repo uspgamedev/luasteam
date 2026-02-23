@@ -52,7 +52,10 @@ void shutdown_Screenshots_auto(lua_State *L) {
 	delete Screenshots_listener; Screenshots_listener = nullptr;
 }
 
+// In C++:
 // ScreenshotHandle WriteScreenshot(const void * pubRGB, uint32 cubRGB, int nWidth, int nHeight);
+// In Lua:
+// int Screenshots.WriteScreenshot(pubRGB: str, cubRGB: int, nWidth: int, nHeight: int)
 EXTERN int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	char *pubRGB = const_cast<char*>(luaL_checkstring(L, 1));
 	uint32 cubRGB = static_cast<uint32>(luaL_checkint(L, 2));
@@ -63,7 +66,10 @@ EXTERN int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // ScreenshotHandle AddScreenshotToLibrary(const char * pchFilename, const char * pchThumbnailFilename, int nWidth, int nHeight);
+// In Lua:
+// int Screenshots.AddScreenshotToLibrary(pchFilename: str, pchThumbnailFilename: str, nWidth: int, nHeight: int)
 EXTERN int luasteam_Screenshots_AddScreenshotToLibrary(lua_State *L) {
 	const char *pchFilename = luaL_checkstring(L, 1);
 	const char *pchThumbnailFilename = luaL_checkstring(L, 2);
@@ -74,20 +80,29 @@ EXTERN int luasteam_Screenshots_AddScreenshotToLibrary(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void TriggerScreenshot();
+// In Lua:
+// Screenshots.TriggerScreenshot()
 EXTERN int luasteam_Screenshots_TriggerScreenshot(lua_State *L) {
 	SteamScreenshots()->TriggerScreenshot();
 	return 0;
 }
 
+// In C++:
 // void HookScreenshots(bool bHook);
+// In Lua:
+// Screenshots.HookScreenshots(bHook: bool)
 EXTERN int luasteam_Screenshots_HookScreenshots(lua_State *L) {
 	bool bHook = lua_toboolean(L, 1);
 	SteamScreenshots()->HookScreenshots(bHook);
 	return 0;
 }
 
+// In C++:
 // bool SetLocation(ScreenshotHandle hScreenshot, const char * pchLocation);
+// In Lua:
+// bool Screenshots.SetLocation(hScreenshot: int, pchLocation: str)
 EXTERN int luasteam_Screenshots_SetLocation(lua_State *L) {
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
 	const char *pchLocation = luaL_checkstring(L, 2);
@@ -96,7 +111,10 @@ EXTERN int luasteam_Screenshots_SetLocation(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool TagUser(ScreenshotHandle hScreenshot, CSteamID steamID);
+// In Lua:
+// bool Screenshots.TagUser(hScreenshot: int, steamID: uint64)
 EXTERN int luasteam_Screenshots_TagUser(lua_State *L) {
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
 	CSteamID steamID(luasteam::checkuint64(L, 2));
@@ -105,7 +123,10 @@ EXTERN int luasteam_Screenshots_TagUser(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool TagPublishedFile(ScreenshotHandle hScreenshot, PublishedFileId_t unPublishedFileID);
+// In Lua:
+// bool Screenshots.TagPublishedFile(hScreenshot: int, unPublishedFileID: uint64)
 EXTERN int luasteam_Screenshots_TagPublishedFile(lua_State *L) {
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
 	PublishedFileId_t unPublishedFileID(luasteam::checkuint64(L, 2));
@@ -114,14 +135,20 @@ EXTERN int luasteam_Screenshots_TagPublishedFile(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool IsScreenshotsHooked();
+// In Lua:
+// bool Screenshots.IsScreenshotsHooked()
 EXTERN int luasteam_Screenshots_IsScreenshotsHooked(lua_State *L) {
 	bool __ret = SteamScreenshots()->IsScreenshotsHooked();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // ScreenshotHandle AddVRScreenshotToLibrary(EVRScreenshotType eType, const char * pchFilename, const char * pchVRFilename);
+// In Lua:
+// int Screenshots.AddVRScreenshotToLibrary(eType: int, pchFilename: str, pchVRFilename: str)
 EXTERN int luasteam_Screenshots_AddVRScreenshotToLibrary(lua_State *L) {
 	EVRScreenshotType eType = static_cast<EVRScreenshotType>(luaL_checkint(L, 1));
 	const char *pchFilename = luaL_checkstring(L, 2);

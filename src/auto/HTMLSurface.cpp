@@ -546,21 +546,30 @@ template <> void CallResultListener<HTML_BrowserReady_t>::Result(HTML_BrowserRea
 	delete this;
 }
 
+// In C++:
 // bool Init();
+// In Lua:
+// bool HTMLSurface.Init()
 EXTERN int luasteam_HTMLSurface_Init(lua_State *L) {
 	bool __ret = SteamHTMLSurface()->Init();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool Shutdown();
+// In Lua:
+// bool HTMLSurface.Shutdown()
 EXTERN int luasteam_HTMLSurface_Shutdown(lua_State *L) {
 	bool __ret = SteamHTMLSurface()->Shutdown();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // SteamAPICall_t CreateBrowser(const char * pchUserAgent, const char * pchUserCSS);
+// In Lua:
+// uint64 HTMLSurface.CreateBrowser(pchUserAgent: str, pchUserCSS: str, callback: function)
 EXTERN int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -579,14 +588,20 @@ EXTERN int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void RemoveBrowser(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.RemoveBrowser(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_RemoveBrowser(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->RemoveBrowser(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void LoadURL(HHTMLBrowser unBrowserHandle, const char * pchURL, const char * pchPostData);
+// In Lua:
+// HTMLSurface.LoadURL(unBrowserHandle: int, pchURL: str, pchPostData: str)
 EXTERN int luasteam_HTMLSurface_LoadURL(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchURL = luaL_checkstring(L, 2);
@@ -595,7 +610,10 @@ EXTERN int luasteam_HTMLSurface_LoadURL(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetSize(HHTMLBrowser unBrowserHandle, uint32 unWidth, uint32 unHeight);
+// In Lua:
+// HTMLSurface.SetSize(unBrowserHandle: int, unWidth: int, unHeight: int)
 EXTERN int luasteam_HTMLSurface_SetSize(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 unWidth = static_cast<uint32>(luaL_checkint(L, 2));
@@ -604,35 +622,50 @@ EXTERN int luasteam_HTMLSurface_SetSize(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void StopLoad(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.StopLoad(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_StopLoad(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->StopLoad(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void Reload(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.Reload(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_Reload(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->Reload(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void GoBack(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.GoBack(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_GoBack(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->GoBack(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void GoForward(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.GoForward(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_GoForward(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->GoForward(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void AddHeader(HHTMLBrowser unBrowserHandle, const char * pchKey, const char * pchValue);
+// In Lua:
+// HTMLSurface.AddHeader(unBrowserHandle: int, pchKey: str, pchValue: str)
 EXTERN int luasteam_HTMLSurface_AddHeader(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchKey = luaL_checkstring(L, 2);
@@ -641,7 +674,10 @@ EXTERN int luasteam_HTMLSurface_AddHeader(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void ExecuteJavascript(HHTMLBrowser unBrowserHandle, const char * pchScript);
+// In Lua:
+// HTMLSurface.ExecuteJavascript(unBrowserHandle: int, pchScript: str)
 EXTERN int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchScript = luaL_checkstring(L, 2);
@@ -649,7 +685,10 @@ EXTERN int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void MouseMove(HHTMLBrowser unBrowserHandle, int x, int y);
+// In Lua:
+// HTMLSurface.MouseMove(unBrowserHandle: int, x: int, y: int)
 EXTERN int luasteam_HTMLSurface_MouseMove(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int x = static_cast<int>(luaL_checkint(L, 2));
@@ -658,7 +697,10 @@ EXTERN int luasteam_HTMLSurface_MouseMove(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void MouseWheel(HHTMLBrowser unBrowserHandle, int32 nDelta);
+// In Lua:
+// HTMLSurface.MouseWheel(unBrowserHandle: int, nDelta: int)
 EXTERN int luasteam_HTMLSurface_MouseWheel(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int32 nDelta = static_cast<int32>(luaL_checkint(L, 2));
@@ -666,7 +708,10 @@ EXTERN int luasteam_HTMLSurface_MouseWheel(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetHorizontalScroll(HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll);
+// In Lua:
+// HTMLSurface.SetHorizontalScroll(unBrowserHandle: int, nAbsolutePixelScroll: int)
 EXTERN int luasteam_HTMLSurface_SetHorizontalScroll(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 nAbsolutePixelScroll = static_cast<uint32>(luaL_checkint(L, 2));
@@ -674,7 +719,10 @@ EXTERN int luasteam_HTMLSurface_SetHorizontalScroll(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetVerticalScroll(HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll);
+// In Lua:
+// HTMLSurface.SetVerticalScroll(unBrowserHandle: int, nAbsolutePixelScroll: int)
 EXTERN int luasteam_HTMLSurface_SetVerticalScroll(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 nAbsolutePixelScroll = static_cast<uint32>(luaL_checkint(L, 2));
@@ -682,7 +730,10 @@ EXTERN int luasteam_HTMLSurface_SetVerticalScroll(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetKeyFocus(HHTMLBrowser unBrowserHandle, bool bHasKeyFocus);
+// In Lua:
+// HTMLSurface.SetKeyFocus(unBrowserHandle: int, bHasKeyFocus: bool)
 EXTERN int luasteam_HTMLSurface_SetKeyFocus(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bHasKeyFocus = lua_toboolean(L, 2);
@@ -690,28 +741,40 @@ EXTERN int luasteam_HTMLSurface_SetKeyFocus(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void ViewSource(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.ViewSource(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_ViewSource(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->ViewSource(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void CopyToClipboard(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.CopyToClipboard(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_CopyToClipboard(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->CopyToClipboard(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void PasteFromClipboard(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.PasteFromClipboard(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_PasteFromClipboard(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->PasteFromClipboard(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void Find(HHTMLBrowser unBrowserHandle, const char * pchSearchStr, bool bCurrentlyInFind, bool bReverse);
+// In Lua:
+// HTMLSurface.Find(unBrowserHandle: int, pchSearchStr: str, bCurrentlyInFind: bool, bReverse: bool)
 EXTERN int luasteam_HTMLSurface_Find(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchSearchStr = luaL_checkstring(L, 2);
@@ -721,14 +784,20 @@ EXTERN int luasteam_HTMLSurface_Find(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void StopFind(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.StopFind(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_StopFind(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->StopFind(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void GetLinkAtPosition(HHTMLBrowser unBrowserHandle, int x, int y);
+// In Lua:
+// HTMLSurface.GetLinkAtPosition(unBrowserHandle: int, x: int, y: int)
 EXTERN int luasteam_HTMLSurface_GetLinkAtPosition(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int x = static_cast<int>(luaL_checkint(L, 2));
@@ -737,7 +806,10 @@ EXTERN int luasteam_HTMLSurface_GetLinkAtPosition(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetCookie(const char * pchHostname, const char * pchKey, const char * pchValue, const char * pchPath, RTime32 nExpires, bool bSecure, bool bHTTPOnly);
+// In Lua:
+// HTMLSurface.SetCookie(pchHostname: str, pchKey: str, pchValue: str, pchPath: str, nExpires: int, bSecure: bool, bHTTPOnly: bool)
 EXTERN int luasteam_HTMLSurface_SetCookie(lua_State *L) {
 	const char *pchHostname = luaL_checkstring(L, 1);
 	const char *pchKey = luaL_checkstring(L, 2);
@@ -750,7 +822,10 @@ EXTERN int luasteam_HTMLSurface_SetCookie(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetPageScaleFactor(HHTMLBrowser unBrowserHandle, float flZoom, int nPointX, int nPointY);
+// In Lua:
+// HTMLSurface.SetPageScaleFactor(unBrowserHandle: int, flZoom: float, nPointX: int, nPointY: int)
 EXTERN int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	float flZoom = luaL_checknumber(L, 2);
@@ -760,7 +835,10 @@ EXTERN int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetBackgroundMode(HHTMLBrowser unBrowserHandle, bool bBackgroundMode);
+// In Lua:
+// HTMLSurface.SetBackgroundMode(unBrowserHandle: int, bBackgroundMode: bool)
 EXTERN int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bBackgroundMode = lua_toboolean(L, 2);
@@ -768,7 +846,10 @@ EXTERN int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetDPIScalingFactor(HHTMLBrowser unBrowserHandle, float flDPIScaling);
+// In Lua:
+// HTMLSurface.SetDPIScalingFactor(unBrowserHandle: int, flDPIScaling: float)
 EXTERN int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	float flDPIScaling = luaL_checknumber(L, 2);
@@ -776,14 +857,20 @@ EXTERN int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void OpenDeveloperTools(HHTMLBrowser unBrowserHandle);
+// In Lua:
+// HTMLSurface.OpenDeveloperTools(unBrowserHandle: int)
 EXTERN int luasteam_HTMLSurface_OpenDeveloperTools(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	SteamHTMLSurface()->OpenDeveloperTools(unBrowserHandle);
 	return 0;
 }
 
+// In C++:
 // void AllowStartRequest(HHTMLBrowser unBrowserHandle, bool bAllowed);
+// In Lua:
+// HTMLSurface.AllowStartRequest(unBrowserHandle: int, bAllowed: bool)
 EXTERN int luasteam_HTMLSurface_AllowStartRequest(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bAllowed = lua_toboolean(L, 2);
@@ -791,7 +878,10 @@ EXTERN int luasteam_HTMLSurface_AllowStartRequest(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void JSDialogResponse(HHTMLBrowser unBrowserHandle, bool bResult);
+// In Lua:
+// HTMLSurface.JSDialogResponse(unBrowserHandle: int, bResult: bool)
 EXTERN int luasteam_HTMLSurface_JSDialogResponse(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bResult = lua_toboolean(L, 2);

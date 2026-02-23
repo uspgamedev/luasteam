@@ -896,6 +896,19 @@ impl Generator {
 
             match self.generate_method(name, method, accessor_name) {
                 Ok((lua_method_name, generated, signature)) => {
+                    let params_str = method
+                        .params
+                        .iter()
+                        .map(|p| format!("{} {}", p.paramtype, p.paramname))
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    cpp.line("// In C++:");
+                    cpp.line(&format!(
+                        "// {} {}({});",
+                        method.returntype, method.methodname, params_str
+                    ));
+                    cpp.line("// In Lua:");
+                    cpp.line(&signature.to_lua_comment(name, &lua_method_name));
                     cpp.raw(&generated);
                     cpp.preceeding_blank_line();
                     generated_methods.push((method, lua_method_name.clone()));
@@ -1031,17 +1044,6 @@ impl Generator {
 
         let interface_getter = format!("{}()", accessor_name);
 
-        let params_str: Vec<String> = method
-            .params
-            .iter()
-            .map(|p| format!("{} {}", p.paramtype, p.paramname))
-            .collect();
-        s.line(&format!(
-            "// {} {}({});",
-            method.returntype,
-            method.methodname,
-            params_str.join(", ")
-        ));
         let lua_method_name = Self::lua_method_public_name(method);
         let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
         s.line(&format!("EXTERN int {}(lua_State *L) {{", c_method_name));
@@ -1484,7 +1486,10 @@ impl Generator {
             }
         }
 
-        s.line(&format!("return {};", sig.output_params.len() + if sig.return_type.is_some() { 1 } else { 0 }));
+        s.line(&format!(
+            "return {};",
+            sig.output_params.len() + if sig.return_type.is_some() { 1 } else { 0 }
+        ));
         s.indent_left();
         s.line("}");
 

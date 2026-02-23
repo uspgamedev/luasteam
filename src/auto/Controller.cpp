@@ -10,27 +10,39 @@ void shutdown_Controller_auto(lua_State *L) {
 	Controller_ref = LUA_NOREF;
 }
 
+// In C++:
 // bool Init();
+// In Lua:
+// bool Controller.Init()
 EXTERN int luasteam_Controller_Init(lua_State *L) {
 	bool __ret = SteamController()->Init();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool Shutdown();
+// In Lua:
+// bool Controller.Shutdown()
 EXTERN int luasteam_Controller_Shutdown(lua_State *L) {
 	bool __ret = SteamController()->Shutdown();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void RunFrame();
+// In Lua:
+// Controller.RunFrame()
 EXTERN int luasteam_Controller_RunFrame(lua_State *L) {
 	SteamController()->RunFrame();
 	return 0;
 }
 
+// In C++:
 // int GetConnectedControllers(ControllerHandle_t * handlesOut);
+// In Lua:
+// (int, handlesOut: uint64[]) Controller.GetConnectedControllers()
 EXTERN int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 	std::vector<ControllerHandle_t> handlesOut(STEAM_INPUT_MAX_COUNT);
 	int __ret = SteamController()->GetConnectedControllers(handlesOut.data());
@@ -43,7 +55,10 @@ EXTERN int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // ControllerActionSetHandle_t GetActionSetHandle(const char * pszActionSetName);
+// In Lua:
+// uint64 Controller.GetActionSetHandle(pszActionSetName: str)
 EXTERN int luasteam_Controller_GetActionSetHandle(lua_State *L) {
 	const char *pszActionSetName = luaL_checkstring(L, 1);
 	ControllerActionSetHandle_t __ret = SteamController()->GetActionSetHandle(pszActionSetName);
@@ -51,7 +66,10 @@ EXTERN int luasteam_Controller_GetActionSetHandle(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void ActivateActionSet(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetHandle);
+// In Lua:
+// Controller.ActivateActionSet(controllerHandle: uint64, actionSetHandle: uint64)
 EXTERN int luasteam_Controller_ActivateActionSet(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
@@ -59,7 +77,10 @@ EXTERN int luasteam_Controller_ActivateActionSet(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // ControllerActionSetHandle_t GetCurrentActionSet(ControllerHandle_t controllerHandle);
+// In Lua:
+// uint64 Controller.GetCurrentActionSet(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetCurrentActionSet(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t __ret = SteamController()->GetCurrentActionSet(controllerHandle);
@@ -67,7 +88,10 @@ EXTERN int luasteam_Controller_GetCurrentActionSet(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void ActivateActionSetLayer(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetLayerHandle);
+// In Lua:
+// Controller.ActivateActionSetLayer(controllerHandle: uint64, actionSetLayerHandle: uint64)
 EXTERN int luasteam_Controller_ActivateActionSetLayer(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t actionSetLayerHandle(luasteam::checkuint64(L, 2));
@@ -75,7 +99,10 @@ EXTERN int luasteam_Controller_ActivateActionSetLayer(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void DeactivateActionSetLayer(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetLayerHandle);
+// In Lua:
+// Controller.DeactivateActionSetLayer(controllerHandle: uint64, actionSetLayerHandle: uint64)
 EXTERN int luasteam_Controller_DeactivateActionSetLayer(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t actionSetLayerHandle(luasteam::checkuint64(L, 2));
@@ -83,14 +110,20 @@ EXTERN int luasteam_Controller_DeactivateActionSetLayer(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void DeactivateAllActionSetLayers(ControllerHandle_t controllerHandle);
+// In Lua:
+// Controller.DeactivateAllActionSetLayers(controllerHandle: uint64)
 EXTERN int luasteam_Controller_DeactivateAllActionSetLayers(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	SteamController()->DeactivateAllActionSetLayers(controllerHandle);
 	return 0;
 }
 
+// In C++:
 // int GetActiveActionSetLayers(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t * handlesOut);
+// In Lua:
+// (int, handlesOut: uint64[]) Controller.GetActiveActionSetLayers(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	std::vector<ControllerActionSetHandle_t> handlesOut(STEAM_INPUT_MAX_ACTIVE_LAYERS);
@@ -104,7 +137,10 @@ EXTERN int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // ControllerDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
+// In Lua:
+// uint64 Controller.GetDigitalActionHandle(pszActionName: str)
 EXTERN int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
 	const char *pszActionName = luaL_checkstring(L, 1);
 	ControllerDigitalActionHandle_t __ret = SteamController()->GetDigitalActionHandle(pszActionName);
@@ -112,7 +148,10 @@ EXTERN int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // InputDigitalActionData_t GetDigitalActionData(ControllerHandle_t controllerHandle, ControllerDigitalActionHandle_t digitalActionHandle);
+// In Lua:
+// table Controller.GetDigitalActionData(controllerHandle: uint64, digitalActionHandle: uint64)
 EXTERN int luasteam_Controller_GetDigitalActionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 2));
@@ -121,7 +160,10 @@ EXTERN int luasteam_Controller_GetDigitalActionData(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // int GetDigitalActionOrigins(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetHandle, ControllerDigitalActionHandle_t digitalActionHandle, EControllerActionOrigin * originsOut);
+// In Lua:
+// (int, originsOut: int[]) Controller.GetDigitalActionOrigins(controllerHandle: uint64, actionSetHandle: uint64, digitalActionHandle: uint64)
 EXTERN int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
@@ -137,7 +179,10 @@ EXTERN int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // ControllerAnalogActionHandle_t GetAnalogActionHandle(const char * pszActionName);
+// In Lua:
+// uint64 Controller.GetAnalogActionHandle(pszActionName: str)
 EXTERN int luasteam_Controller_GetAnalogActionHandle(lua_State *L) {
 	const char *pszActionName = luaL_checkstring(L, 1);
 	ControllerAnalogActionHandle_t __ret = SteamController()->GetAnalogActionHandle(pszActionName);
@@ -145,7 +190,10 @@ EXTERN int luasteam_Controller_GetAnalogActionHandle(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // InputAnalogActionData_t GetAnalogActionData(ControllerHandle_t controllerHandle, ControllerAnalogActionHandle_t analogActionHandle);
+// In Lua:
+// table Controller.GetAnalogActionData(controllerHandle: uint64, analogActionHandle: uint64)
 EXTERN int luasteam_Controller_GetAnalogActionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 2));
@@ -154,7 +202,10 @@ EXTERN int luasteam_Controller_GetAnalogActionData(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // int GetAnalogActionOrigins(ControllerHandle_t controllerHandle, ControllerActionSetHandle_t actionSetHandle, ControllerAnalogActionHandle_t analogActionHandle, EControllerActionOrigin * originsOut);
+// In Lua:
+// (int, originsOut: int[]) Controller.GetAnalogActionOrigins(controllerHandle: uint64, actionSetHandle: uint64, analogActionHandle: uint64)
 EXTERN int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
@@ -170,7 +221,10 @@ EXTERN int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // const char * GetGlyphForActionOrigin(EControllerActionOrigin eOrigin);
+// In Lua:
+// str Controller.GetGlyphForActionOrigin(eOrigin: int)
 EXTERN int luasteam_Controller_GetGlyphForActionOrigin(lua_State *L) {
 	EControllerActionOrigin eOrigin = static_cast<EControllerActionOrigin>(luaL_checkint(L, 1));
 	const char * __ret = SteamController()->GetGlyphForActionOrigin(eOrigin);
@@ -178,7 +232,10 @@ EXTERN int luasteam_Controller_GetGlyphForActionOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // const char * GetStringForActionOrigin(EControllerActionOrigin eOrigin);
+// In Lua:
+// str Controller.GetStringForActionOrigin(eOrigin: int)
 EXTERN int luasteam_Controller_GetStringForActionOrigin(lua_State *L) {
 	EControllerActionOrigin eOrigin = static_cast<EControllerActionOrigin>(luaL_checkint(L, 1));
 	const char * __ret = SteamController()->GetStringForActionOrigin(eOrigin);
@@ -186,7 +243,10 @@ EXTERN int luasteam_Controller_GetStringForActionOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void StopAnalogActionMomentum(ControllerHandle_t controllerHandle, ControllerAnalogActionHandle_t eAction);
+// In Lua:
+// Controller.StopAnalogActionMomentum(controllerHandle: uint64, eAction: uint64)
 EXTERN int luasteam_Controller_StopAnalogActionMomentum(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerAnalogActionHandle_t eAction(luasteam::checkuint64(L, 2));
@@ -194,7 +254,10 @@ EXTERN int luasteam_Controller_StopAnalogActionMomentum(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // InputMotionData_t GetMotionData(ControllerHandle_t controllerHandle);
+// In Lua:
+// table Controller.GetMotionData(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetMotionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	InputMotionData_t __ret = SteamController()->GetMotionData(controllerHandle);
@@ -202,7 +265,10 @@ EXTERN int luasteam_Controller_GetMotionData(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void TriggerHapticPulse(ControllerHandle_t controllerHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec);
+// In Lua:
+// Controller.TriggerHapticPulse(controllerHandle: uint64, eTargetPad: int, usDurationMicroSec: int)
 EXTERN int luasteam_Controller_TriggerHapticPulse(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkint(L, 2));
@@ -211,7 +277,10 @@ EXTERN int luasteam_Controller_TriggerHapticPulse(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void TriggerRepeatedHapticPulse(ControllerHandle_t controllerHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags);
+// In Lua:
+// Controller.TriggerRepeatedHapticPulse(controllerHandle: uint64, eTargetPad: int, usDurationMicroSec: int, usOffMicroSec: int, unRepeat: int, nFlags: int)
 EXTERN int luasteam_Controller_TriggerRepeatedHapticPulse(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkint(L, 2));
@@ -223,7 +292,10 @@ EXTERN int luasteam_Controller_TriggerRepeatedHapticPulse(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void TriggerVibration(ControllerHandle_t controllerHandle, unsigned short usLeftSpeed, unsigned short usRightSpeed);
+// In Lua:
+// Controller.TriggerVibration(controllerHandle: uint64, usLeftSpeed: int, usRightSpeed: int)
 EXTERN int luasteam_Controller_TriggerVibration(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	unsigned short usLeftSpeed = static_cast<unsigned short>(luaL_checkint(L, 2));
@@ -232,7 +304,10 @@ EXTERN int luasteam_Controller_TriggerVibration(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetLEDColor(ControllerHandle_t controllerHandle, uint8 nColorR, uint8 nColorG, uint8 nColorB, unsigned int nFlags);
+// In Lua:
+// Controller.SetLEDColor(controllerHandle: uint64, nColorR: int, nColorG: int, nColorB: int, nFlags: int)
 EXTERN int luasteam_Controller_SetLEDColor(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	uint8 nColorR = static_cast<uint8>(luaL_checkint(L, 2));
@@ -243,7 +318,10 @@ EXTERN int luasteam_Controller_SetLEDColor(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // bool ShowBindingPanel(ControllerHandle_t controllerHandle);
+// In Lua:
+// bool Controller.ShowBindingPanel(controllerHandle: uint64)
 EXTERN int luasteam_Controller_ShowBindingPanel(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	bool __ret = SteamController()->ShowBindingPanel(controllerHandle);
@@ -251,7 +329,10 @@ EXTERN int luasteam_Controller_ShowBindingPanel(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // ESteamInputType GetInputTypeForHandle(ControllerHandle_t controllerHandle);
+// In Lua:
+// int Controller.GetInputTypeForHandle(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetInputTypeForHandle(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ESteamInputType __ret = SteamController()->GetInputTypeForHandle(controllerHandle);
@@ -259,7 +340,10 @@ EXTERN int luasteam_Controller_GetInputTypeForHandle(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // ControllerHandle_t GetControllerForGamepadIndex(int nIndex);
+// In Lua:
+// uint64 Controller.GetControllerForGamepadIndex(nIndex: int)
 EXTERN int luasteam_Controller_GetControllerForGamepadIndex(lua_State *L) {
 	int nIndex = static_cast<int>(luaL_checkint(L, 1));
 	ControllerHandle_t __ret = SteamController()->GetControllerForGamepadIndex(nIndex);
@@ -267,7 +351,10 @@ EXTERN int luasteam_Controller_GetControllerForGamepadIndex(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // int GetGamepadIndexForController(ControllerHandle_t ulControllerHandle);
+// In Lua:
+// int Controller.GetGamepadIndexForController(ulControllerHandle: uint64)
 EXTERN int luasteam_Controller_GetGamepadIndexForController(lua_State *L) {
 	ControllerHandle_t ulControllerHandle(luasteam::checkuint64(L, 1));
 	int __ret = SteamController()->GetGamepadIndexForController(ulControllerHandle);
@@ -275,7 +362,10 @@ EXTERN int luasteam_Controller_GetGamepadIndexForController(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // const char * GetStringForXboxOrigin(EXboxOrigin eOrigin);
+// In Lua:
+// str Controller.GetStringForXboxOrigin(eOrigin: int)
 EXTERN int luasteam_Controller_GetStringForXboxOrigin(lua_State *L) {
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 1));
 	const char * __ret = SteamController()->GetStringForXboxOrigin(eOrigin);
@@ -283,7 +373,10 @@ EXTERN int luasteam_Controller_GetStringForXboxOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // const char * GetGlyphForXboxOrigin(EXboxOrigin eOrigin);
+// In Lua:
+// str Controller.GetGlyphForXboxOrigin(eOrigin: int)
 EXTERN int luasteam_Controller_GetGlyphForXboxOrigin(lua_State *L) {
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 1));
 	const char * __ret = SteamController()->GetGlyphForXboxOrigin(eOrigin);
@@ -291,7 +384,10 @@ EXTERN int luasteam_Controller_GetGlyphForXboxOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // EControllerActionOrigin GetActionOriginFromXboxOrigin(ControllerHandle_t controllerHandle, EXboxOrigin eOrigin);
+// In Lua:
+// int Controller.GetActionOriginFromXboxOrigin(controllerHandle: uint64, eOrigin: int)
 EXTERN int luasteam_Controller_GetActionOriginFromXboxOrigin(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 2));
@@ -300,7 +396,10 @@ EXTERN int luasteam_Controller_GetActionOriginFromXboxOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // EControllerActionOrigin TranslateActionOrigin(ESteamInputType eDestinationInputType, EControllerActionOrigin eSourceOrigin);
+// In Lua:
+// int Controller.TranslateActionOrigin(eDestinationInputType: int, eSourceOrigin: int)
 EXTERN int luasteam_Controller_TranslateActionOrigin(lua_State *L) {
 	ESteamInputType eDestinationInputType = static_cast<ESteamInputType>(luaL_checkint(L, 1));
 	EControllerActionOrigin eSourceOrigin = static_cast<EControllerActionOrigin>(luaL_checkint(L, 2));
@@ -309,7 +408,10 @@ EXTERN int luasteam_Controller_TranslateActionOrigin(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetControllerBindingRevision(ControllerHandle_t controllerHandle, int * pMajor, int * pMinor);
+// In Lua:
+// (bool, pMajor: int, pMinor: int) Controller.GetControllerBindingRevision(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetControllerBindingRevision(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	int pMajor;

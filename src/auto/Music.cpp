@@ -50,59 +50,86 @@ void shutdown_Music_auto(lua_State *L) {
 	delete Music_listener; Music_listener = nullptr;
 }
 
+// In C++:
 // bool BIsEnabled();
+// In Lua:
+// bool Music.BIsEnabled()
 EXTERN int luasteam_Music_BIsEnabled(lua_State *L) {
 	bool __ret = SteamMusic()->BIsEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool BIsPlaying();
+// In Lua:
+// bool Music.BIsPlaying()
 EXTERN int luasteam_Music_BIsPlaying(lua_State *L) {
 	bool __ret = SteamMusic()->BIsPlaying();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // AudioPlayback_Status GetPlaybackStatus();
+// In Lua:
+// int Music.GetPlaybackStatus()
 EXTERN int luasteam_Music_GetPlaybackStatus(lua_State *L) {
 	AudioPlayback_Status __ret = SteamMusic()->GetPlaybackStatus();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void Play();
+// In Lua:
+// Music.Play()
 EXTERN int luasteam_Music_Play(lua_State *L) {
 	SteamMusic()->Play();
 	return 0;
 }
 
+// In C++:
 // void Pause();
+// In Lua:
+// Music.Pause()
 EXTERN int luasteam_Music_Pause(lua_State *L) {
 	SteamMusic()->Pause();
 	return 0;
 }
 
+// In C++:
 // void PlayPrevious();
+// In Lua:
+// Music.PlayPrevious()
 EXTERN int luasteam_Music_PlayPrevious(lua_State *L) {
 	SteamMusic()->PlayPrevious();
 	return 0;
 }
 
+// In C++:
 // void PlayNext();
+// In Lua:
+// Music.PlayNext()
 EXTERN int luasteam_Music_PlayNext(lua_State *L) {
 	SteamMusic()->PlayNext();
 	return 0;
 }
 
+// In C++:
 // void SetVolume(float flVolume);
+// In Lua:
+// Music.SetVolume(flVolume: float)
 EXTERN int luasteam_Music_SetVolume(lua_State *L) {
 	float flVolume = luaL_checknumber(L, 1);
 	SteamMusic()->SetVolume(flVolume);
 	return 0;
 }
 
+// In C++:
 // float GetVolume();
+// In Lua:
+// float Music.GetVolume()
 EXTERN int luasteam_Music_GetVolume(lua_State *L) {
 	float __ret = SteamMusic()->GetVolume();
 	lua_pushnumber(L, __ret);

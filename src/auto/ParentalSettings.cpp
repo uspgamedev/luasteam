@@ -33,21 +33,30 @@ void shutdown_ParentalSettings_auto(lua_State *L) {
 	delete ParentalSettings_listener; ParentalSettings_listener = nullptr;
 }
 
+// In C++:
 // bool BIsParentalLockEnabled();
+// In Lua:
+// bool ParentalSettings.BIsParentalLockEnabled()
 EXTERN int luasteam_ParentalSettings_BIsParentalLockEnabled(lua_State *L) {
 	bool __ret = SteamParentalSettings()->BIsParentalLockEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool BIsParentalLockLocked();
+// In Lua:
+// bool ParentalSettings.BIsParentalLockLocked()
 EXTERN int luasteam_ParentalSettings_BIsParentalLockLocked(lua_State *L) {
 	bool __ret = SteamParentalSettings()->BIsParentalLockLocked();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool BIsAppBlocked(AppId_t nAppID);
+// In Lua:
+// bool ParentalSettings.BIsAppBlocked(nAppID: int)
 EXTERN int luasteam_ParentalSettings_BIsAppBlocked(lua_State *L) {
 	AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	bool __ret = SteamParentalSettings()->BIsAppBlocked(nAppID);
@@ -55,7 +64,10 @@ EXTERN int luasteam_ParentalSettings_BIsAppBlocked(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BIsAppInBlockList(AppId_t nAppID);
+// In Lua:
+// bool ParentalSettings.BIsAppInBlockList(nAppID: int)
 EXTERN int luasteam_ParentalSettings_BIsAppInBlockList(lua_State *L) {
 	AppId_t nAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	bool __ret = SteamParentalSettings()->BIsAppInBlockList(nAppID);
@@ -63,7 +75,10 @@ EXTERN int luasteam_ParentalSettings_BIsAppInBlockList(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BIsFeatureBlocked(EParentalFeature eFeature);
+// In Lua:
+// bool ParentalSettings.BIsFeatureBlocked(eFeature: int)
 EXTERN int luasteam_ParentalSettings_BIsFeatureBlocked(lua_State *L) {
 	EParentalFeature eFeature = static_cast<EParentalFeature>(luaL_checkint(L, 1));
 	bool __ret = SteamParentalSettings()->BIsFeatureBlocked(eFeature);
@@ -71,7 +86,10 @@ EXTERN int luasteam_ParentalSettings_BIsFeatureBlocked(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BIsFeatureInBlockList(EParentalFeature eFeature);
+// In Lua:
+// bool ParentalSettings.BIsFeatureInBlockList(eFeature: int)
 EXTERN int luasteam_ParentalSettings_BIsFeatureInBlockList(lua_State *L) {
 	EParentalFeature eFeature = static_cast<EParentalFeature>(luaL_checkint(L, 1));
 	bool __ret = SteamParentalSettings()->BIsFeatureInBlockList(eFeature);

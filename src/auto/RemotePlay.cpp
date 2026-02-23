@@ -69,14 +69,20 @@ void shutdown_RemotePlay_auto(lua_State *L) {
 	delete RemotePlay_listener; RemotePlay_listener = nullptr;
 }
 
+// In C++:
 // uint32 GetSessionCount();
+// In Lua:
+// int RemotePlay.GetSessionCount()
 EXTERN int luasteam_RemotePlay_GetSessionCount(lua_State *L) {
 	uint32 __ret = SteamRemotePlay()->GetSessionCount();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // RemotePlaySessionID_t GetSessionID(int iSessionIndex);
+// In Lua:
+// int RemotePlay.GetSessionID(iSessionIndex: int)
 EXTERN int luasteam_RemotePlay_GetSessionID(lua_State *L) {
 	int iSessionIndex = static_cast<int>(luaL_checkint(L, 1));
 	RemotePlaySessionID_t __ret = SteamRemotePlay()->GetSessionID(iSessionIndex);
@@ -84,7 +90,10 @@ EXTERN int luasteam_RemotePlay_GetSessionID(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // CSteamID GetSessionSteamID(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// uint64 RemotePlay.GetSessionSteamID(unSessionID: int)
 EXTERN int luasteam_RemotePlay_GetSessionSteamID(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	CSteamID __ret = SteamRemotePlay()->GetSessionSteamID(unSessionID);
@@ -92,7 +101,10 @@ EXTERN int luasteam_RemotePlay_GetSessionSteamID(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // const char * GetSessionClientName(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// str RemotePlay.GetSessionClientName(unSessionID: int)
 EXTERN int luasteam_RemotePlay_GetSessionClientName(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	const char * __ret = SteamRemotePlay()->GetSessionClientName(unSessionID);
@@ -100,7 +112,10 @@ EXTERN int luasteam_RemotePlay_GetSessionClientName(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // ESteamDeviceFormFactor GetSessionClientFormFactor(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// int RemotePlay.GetSessionClientFormFactor(unSessionID: int)
 EXTERN int luasteam_RemotePlay_GetSessionClientFormFactor(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	ESteamDeviceFormFactor __ret = SteamRemotePlay()->GetSessionClientFormFactor(unSessionID);
@@ -108,7 +123,10 @@ EXTERN int luasteam_RemotePlay_GetSessionClientFormFactor(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BGetSessionClientResolution(RemotePlaySessionID_t unSessionID, int * pnResolutionX, int * pnResolutionY);
+// In Lua:
+// (bool, pnResolutionX: int, pnResolutionY: int) RemotePlay.BGetSessionClientResolution(unSessionID: int)
 EXTERN int luasteam_RemotePlay_BGetSessionClientResolution(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	int pnResolutionX;
@@ -120,14 +138,20 @@ EXTERN int luasteam_RemotePlay_BGetSessionClientResolution(lua_State *L) {
 	return 3;
 }
 
+// In C++:
 // bool ShowRemotePlayTogetherUI();
+// In Lua:
+// bool RemotePlay.ShowRemotePlayTogetherUI()
 EXTERN int luasteam_RemotePlay_ShowRemotePlayTogetherUI(lua_State *L) {
 	bool __ret = SteamRemotePlay()->ShowRemotePlayTogetherUI();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // bool BSendRemotePlayTogetherInvite(CSteamID steamIDFriend);
+// In Lua:
+// bool RemotePlay.BSendRemotePlayTogetherInvite(steamIDFriend: uint64)
 EXTERN int luasteam_RemotePlay_BSendRemotePlayTogetherInvite(lua_State *L) {
 	CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
 	bool __ret = SteamRemotePlay()->BSendRemotePlayTogetherInvite(steamIDFriend);
@@ -135,20 +159,29 @@ EXTERN int luasteam_RemotePlay_BSendRemotePlayTogetherInvite(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool BEnableRemotePlayTogetherDirectInput();
+// In Lua:
+// bool RemotePlay.BEnableRemotePlayTogetherDirectInput()
 EXTERN int luasteam_RemotePlay_BEnableRemotePlayTogetherDirectInput(lua_State *L) {
 	bool __ret = SteamRemotePlay()->BEnableRemotePlayTogetherDirectInput();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 
+// In C++:
 // void DisableRemotePlayTogetherDirectInput();
+// In Lua:
+// RemotePlay.DisableRemotePlayTogetherDirectInput()
 EXTERN int luasteam_RemotePlay_DisableRemotePlayTogetherDirectInput(lua_State *L) {
 	SteamRemotePlay()->DisableRemotePlayTogetherDirectInput();
 	return 0;
 }
 
+// In C++:
 // uint32 GetInput(RemotePlayInput_t * pInput, uint32 unMaxEvents);
+// In Lua:
+// (int, pInput: table[]) RemotePlay.GetInput(unMaxEvents: int)
 EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 	uint32 unMaxEvents = luaL_checkint(L, 1);
 	std::vector<RemotePlayInput_t> pInput(unMaxEvents);
@@ -162,7 +195,10 @@ EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // void SetMouseVisibility(RemotePlaySessionID_t unSessionID, bool bVisible);
+// In Lua:
+// RemotePlay.SetMouseVisibility(unSessionID: int, bVisible: bool)
 EXTERN int luasteam_RemotePlay_SetMouseVisibility(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	bool bVisible = lua_toboolean(L, 2);
@@ -170,7 +206,10 @@ EXTERN int luasteam_RemotePlay_SetMouseVisibility(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void SetMousePosition(RemotePlaySessionID_t unSessionID, float flNormalizedX, float flNormalizedY);
+// In Lua:
+// RemotePlay.SetMousePosition(unSessionID: int, flNormalizedX: float, flNormalizedY: float)
 EXTERN int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	float flNormalizedX = luaL_checknumber(L, 2);
@@ -179,7 +218,10 @@ EXTERN int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // RemotePlayCursorID_t CreateMouseCursor(int nWidth, int nHeight, int nHotX, int nHotY, const void * pBGRA, int nPitch);
+// In Lua:
+// int RemotePlay.CreateMouseCursor(nWidth: int, nHeight: int, nHotX: int, nHotY: int, pBGRA: str, nPitch: int)
 EXTERN int luasteam_RemotePlay_CreateMouseCursor(lua_State *L) {
 	int nWidth = static_cast<int>(luaL_checkint(L, 1));
 	int nHeight = static_cast<int>(luaL_checkint(L, 2));
@@ -192,7 +234,10 @@ EXTERN int luasteam_RemotePlay_CreateMouseCursor(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // void SetMouseCursor(RemotePlaySessionID_t unSessionID, RemotePlayCursorID_t unCursorID);
+// In Lua:
+// RemotePlay.SetMouseCursor(unSessionID: int, unCursorID: int)
 EXTERN int luasteam_RemotePlay_SetMouseCursor(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	RemotePlayCursorID_t unCursorID = static_cast<RemotePlayCursorID_t>(luaL_checkint(L, 2));

@@ -197,14 +197,20 @@ template <> void CallResultListener<JoinPartyCallback_t>::Result(JoinPartyCallba
 	delete this;
 }
 
+// In C++:
 // uint32 GetNumActiveBeacons();
+// In Lua:
+// int Parties.GetNumActiveBeacons()
 EXTERN int luasteam_Parties_GetNumActiveBeacons(lua_State *L) {
 	uint32 __ret = SteamParties()->GetNumActiveBeacons();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 
+// In C++:
 // PartyBeaconID_t GetBeaconByIndex(uint32 unIndex);
+// In Lua:
+// uint64 Parties.GetBeaconByIndex(unIndex: int)
 EXTERN int luasteam_Parties_GetBeaconByIndex(lua_State *L) {
 	uint32 unIndex = static_cast<uint32>(luaL_checkint(L, 1));
 	PartyBeaconID_t __ret = SteamParties()->GetBeaconByIndex(unIndex);
@@ -212,7 +218,10 @@ EXTERN int luasteam_Parties_GetBeaconByIndex(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetBeaconDetails(PartyBeaconID_t ulBeaconID, CSteamID * pSteamIDBeaconOwner, SteamPartyBeaconLocation_t * pLocation, char * pchMetadata, int cchMetadata);
+// In Lua:
+// (bool, pSteamIDBeaconOwner: uint64, pLocation: table, pchMetadata: str) Parties.GetBeaconDetails(ulBeaconID: uint64, cchMetadata: int)
 EXTERN int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	PartyBeaconID_t ulBeaconID(luasteam::checkuint64(L, 1));
 	CSteamID pSteamIDBeaconOwner;
@@ -227,7 +236,10 @@ EXTERN int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	return 4;
 }
 
+// In C++:
 // SteamAPICall_t JoinParty(PartyBeaconID_t ulBeaconID);
+// In Lua:
+// uint64 Parties.JoinParty(ulBeaconID: uint64, callback: function)
 EXTERN int luasteam_Parties_JoinParty(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -245,7 +257,10 @@ EXTERN int luasteam_Parties_JoinParty(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool GetNumAvailableBeaconLocations(uint32 * puNumLocations);
+// In Lua:
+// (bool, puNumLocations: int) Parties.GetNumAvailableBeaconLocations()
 EXTERN int luasteam_Parties_GetNumAvailableBeaconLocations(lua_State *L) {
 	uint32 puNumLocations;
 	bool __ret = SteamParties()->GetNumAvailableBeaconLocations(&puNumLocations);
@@ -254,7 +269,10 @@ EXTERN int luasteam_Parties_GetNumAvailableBeaconLocations(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // bool GetAvailableBeaconLocations(SteamPartyBeaconLocation_t * pLocationList, uint32 uMaxNumLocations);
+// In Lua:
+// (bool, pLocationList: table[]) Parties.GetAvailableBeaconLocations(uMaxNumLocations: int)
 EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 	uint32 uMaxNumLocations = luaL_checkint(L, 1);
 	std::vector<SteamPartyBeaconLocation_t> pLocationList(uMaxNumLocations);
@@ -268,7 +286,10 @@ EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // void OnReservationCompleted(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
+// In Lua:
+// Parties.OnReservationCompleted(ulBeacon: uint64, steamIDUser: uint64)
 EXTERN int luasteam_Parties_OnReservationCompleted(lua_State *L) {
 	PartyBeaconID_t ulBeacon(luasteam::checkuint64(L, 1));
 	CSteamID steamIDUser(luasteam::checkuint64(L, 2));
@@ -276,7 +297,10 @@ EXTERN int luasteam_Parties_OnReservationCompleted(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // void CancelReservation(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);
+// In Lua:
+// Parties.CancelReservation(ulBeacon: uint64, steamIDUser: uint64)
 EXTERN int luasteam_Parties_CancelReservation(lua_State *L) {
 	PartyBeaconID_t ulBeacon(luasteam::checkuint64(L, 1));
 	CSteamID steamIDUser(luasteam::checkuint64(L, 2));
@@ -284,7 +308,10 @@ EXTERN int luasteam_Parties_CancelReservation(lua_State *L) {
 	return 0;
 }
 
+// In C++:
 // SteamAPICall_t ChangeNumOpenSlots(PartyBeaconID_t ulBeacon, uint32 unOpenSlots);
+// In Lua:
+// uint64 Parties.ChangeNumOpenSlots(ulBeacon: uint64, unOpenSlots: int, callback: function)
 EXTERN int luasteam_Parties_ChangeNumOpenSlots(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -303,7 +330,10 @@ EXTERN int luasteam_Parties_ChangeNumOpenSlots(lua_State *L) {
 	return 1;
 }
 
+// In C++:
 // bool DestroyBeacon(PartyBeaconID_t ulBeacon);
+// In Lua:
+// bool Parties.DestroyBeacon(ulBeacon: uint64)
 EXTERN int luasteam_Parties_DestroyBeacon(lua_State *L) {
 	PartyBeaconID_t ulBeacon(luasteam::checkuint64(L, 1));
 	bool __ret = SteamParties()->DestroyBeacon(ulBeacon);

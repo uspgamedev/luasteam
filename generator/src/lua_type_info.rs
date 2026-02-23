@@ -91,4 +91,42 @@ impl LuaMethodSignature {
     pub fn add_output_param(&mut self, name: String, ltype: LType) {
         self.output_params.push(LuaTypeInfo { name, ltype });
     }
+
+    /// Formats the Lua method signature as a comment string, e.g.
+    /// `// (int, str) apps.GetLaunchCommandLine(cubCommandLine: int)`
+    pub fn to_lua_comment(&self, interface: &str, method_name: &str) -> String {
+        let structs = [];
+        // Build return list: return type first, then output params
+        let mut returns: Vec<String> = Vec::new();
+        if let Some(rt) = &self.return_type {
+            returns.push(rt.to_lua_doc_reference(&structs));
+        }
+        for p in &self.output_params {
+            returns.push(format!(
+                "{}: {}",
+                p.name,
+                p.ltype.to_lua_doc_reference(&structs)
+            ));
+        }
+        let returns_str = if returns.is_empty() {
+            String::new()
+        } else if returns.len() == 1 {
+            format!("{} ", returns[0])
+        } else {
+            format!("({}) ", returns.join(", "))
+        };
+
+        // Build input params list
+        let params_str = self
+            .params
+            .iter()
+            .map(|p| format!("{}: {}", p.name, p.ltype.to_lua_doc_reference(&structs)))
+            .collect::<Vec<_>>()
+            .join(", ");
+
+        format!(
+            "// {}{}.{}({})",
+            returns_str, interface, method_name, params_str
+        )
+    }
 }

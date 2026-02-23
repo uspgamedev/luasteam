@@ -92,14 +92,20 @@ void shutdown_Video_auto(lua_State *L) {
 	delete Video_listener; Video_listener = nullptr;
 }
 
+// In C++:
 // void GetVideoURL(AppId_t unVideoAppID);
+// In Lua:
+// Video.GetVideoURL(unVideoAppID: int)
 EXTERN int luasteam_Video_GetVideoURL(lua_State *L) {
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	SteamVideo()->GetVideoURL(unVideoAppID);
 	return 0;
 }
 
+// In C++:
 // bool IsBroadcasting(int * pnNumViewers);
+// In Lua:
+// (bool, pnNumViewers: int) Video.IsBroadcasting()
 EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
 	int pnNumViewers;
 	bool __ret = SteamVideo()->IsBroadcasting(&pnNumViewers);
@@ -108,14 +114,20 @@ EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
 	return 2;
 }
 
+// In C++:
 // void GetOPFSettings(AppId_t unVideoAppID);
+// In Lua:
+// Video.GetOPFSettings(unVideoAppID: int)
 EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	SteamVideo()->GetOPFSettings(unVideoAppID);
 	return 0;
 }
 
+// In C++:
 // bool GetOPFStringForApp(AppId_t unVideoAppID, char * pchBuffer, int32 * pnBufferSize);
+// In Lua:
+// (bool, pnBufferSize: int, pchBuffer: str, pnBufferSize: int) Video.GetOPFStringForApp(unVideoAppID: int, pnBufferSize: int)
 EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	int32 pnBufferSize = luaL_checkint(L, 2);

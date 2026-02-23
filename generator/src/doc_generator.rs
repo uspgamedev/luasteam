@@ -1,4 +1,4 @@
-use crate::lua_type_info::{LuaMethodSignature, LType};
+use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{CallbackStruct, Interface, SkipReason, Struct};
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -200,10 +200,9 @@ impl DocGenerator {
                 .map(|s| s.as_str())
                 .unwrap_or("");
 
-            if let LType::CallresultCallback { struct_t }  = &param.ltype {
+            if let LType::CallresultCallback { struct_t } = &param.ltype {
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
-            }          
-            else if param_desc.is_empty() {
+            } else if param_desc.is_empty() {
                 doc.push_str(&format!("    :param {} {}:\n", ltype, param.name));
             } else {
                 doc.push_str(&format!(
