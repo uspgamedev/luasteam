@@ -131,7 +131,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulEvent:
-    :param function callback: CallResult callback receiving struct `SteamTimelineEventRecordingExists_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `SteamTimelineEventRecordingExists_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DoesEventRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesEventRecordingExist>`_
 
@@ -159,7 +159,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchPhaseID:
-    :param function callback: CallResult callback receiving struct `SteamTimelineGamePhaseRecordingExists_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `SteamTimelineGamePhaseRecordingExists_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DoesGamePhaseRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesGamePhaseRecordingExist>`_
 

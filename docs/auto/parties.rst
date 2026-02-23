@@ -71,7 +71,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulBeaconID:
-    :param function callback: CallResult callback receiving struct `JoinPartyCallback_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `JoinPartyCallback_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
 
@@ -122,7 +122,7 @@ Function Reference
 
     :param uint64 ulBeacon:
     :param int unOpenSlots:
-    :param function callback: CallResult callback receiving struct `ChangeNumOpenSlotsCallback_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `ChangeNumOpenSlotsCallback_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `ChangeNumOpenSlots <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlots>`_
 

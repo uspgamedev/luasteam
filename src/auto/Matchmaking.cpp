@@ -566,7 +566,7 @@ EXTERN int luasteam_Matchmaking_GetLobbyDataByIndex(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchKey.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
-	return 1;
+	return 3;
 }
 
 // bool DeleteLobbyData(CSteamID steamIDLobby, const char * pchKey);
@@ -620,7 +620,7 @@ EXTERN int luasteam_Matchmaking_GetLobbyChatEntry(lua_State *L) {
 	luasteam::pushuint64(L, pSteamIDUser.ConvertToUint64());
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
 	lua_pushinteger(L, peChatEntryType);
-	return 3;
+	return 4;
 }
 
 // bool RequestLobbyData(CSteamID steamIDLobby);

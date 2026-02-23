@@ -211,7 +211,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str szFileName:
-    :param function callback: CallResult callback receiving struct `CheckFileSignature_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `CheckFileSignature_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CheckFileSignature <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature>`_
 

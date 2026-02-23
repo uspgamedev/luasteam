@@ -238,7 +238,7 @@ EXTERN int luasteam_Apps_BGetDLCDataByIndex(lua_State *L) {
 	lua_pushinteger(L, pAppID);
 	lua_pushboolean(L, pbAvailable);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
-	return 3;
+	return 4;
 }
 
 // void InstallDLC(AppId_t nAppID);
@@ -269,7 +269,7 @@ EXTERN int luasteam_Apps_GetCurrentBetaName(lua_State *L) {
 	bool __ret = SteamApps()->GetCurrentBetaName(pchName.data(), cchNameBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
-	return 1;
+	return 2;
 }
 
 // bool MarkContentCorrupt(bool bMissingFilesOnly);
@@ -292,7 +292,7 @@ EXTERN int luasteam_Apps_GetInstalledDepots(lua_State *L) {
 		lua_pushinteger(L, pvecDepots[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // uint32 GetAppInstallDir(AppId_t appID, char * pchFolder, uint32 cchFolderBufferSize);
@@ -303,7 +303,7 @@ EXTERN int luasteam_Apps_GetAppInstallDir(lua_State *L) {
 	uint32 __ret = SteamApps()->GetAppInstallDir(appID, pchFolder.data(), cchFolderBufferSize);
 	lua_pushinteger(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchFolder.data()));
-	return 1;
+	return 2;
 }
 
 // bool BIsAppInstalled(AppId_t appID);
@@ -379,7 +379,7 @@ EXTERN int luasteam_Apps_GetLaunchCommandLine(lua_State *L) {
 	int __ret = SteamApps()->GetLaunchCommandLine(pszCommandLine.data(), cubCommandLine);
 	lua_pushinteger(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pszCommandLine.data()));
-	return 1;
+	return 2;
 }
 
 // bool BIsSubscribedFromFamilySharing();
@@ -434,7 +434,7 @@ EXTERN int luasteam_Apps_GetBetaInfo(lua_State *L) {
 	lua_pushinteger(L, punBuildID);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBetaName.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchDescription.data()));
-	return 3;
+	return 5;
 }
 
 // bool SetActiveBeta(const char * pchBetaName);

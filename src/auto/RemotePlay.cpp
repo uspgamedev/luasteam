@@ -159,7 +159,7 @@ EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 		push_RemotePlayInput_t(L, pInput[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // void SetMouseVisibility(RemotePlaySessionID_t unSessionID, bool bVisible);

@@ -818,7 +818,7 @@ EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 		lua_pushinteger(L, pDetails[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 2;
+	return 3;
 }
 
 // SteamAPICall_t UploadLeaderboardScore(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore, const int32 * pScoreDetails, int cScoreDetailsCount);
@@ -913,7 +913,7 @@ EXTERN int luasteam_UserStats_GetMostAchievedAchievementInfo(lua_State *L) {
 	lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
 	lua_pushnumber(L, pflPercent);
 	lua_pushboolean(L, pbAchieved);
-	return 3;
+	return 4;
 }
 
 // int GetNextMostAchievedAchievementInfo(int iIteratorPrevious, char * pchName, uint32 unNameBufLen, float * pflPercent, bool * pbAchieved);
@@ -928,7 +928,7 @@ EXTERN int luasteam_UserStats_GetNextMostAchievedAchievementInfo(lua_State *L) {
 	lua_pushstring(L, reinterpret_cast<const char*>(pchName.data()));
 	lua_pushnumber(L, pflPercent);
 	lua_pushboolean(L, pbAchieved);
-	return 3;
+	return 4;
 }
 
 // bool GetAchievementAchievedPercent(const char * pchName, float * pflPercent);
@@ -991,7 +991,7 @@ EXTERN int luasteam_UserStats_GetGlobalStatHistoryInt64(lua_State *L) {
 		luasteam::pushuint64(L, pData[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // int32 GetGlobalStatHistory(const char * pchStatName, double * pData, uint32 cubData);
@@ -1006,7 +1006,7 @@ EXTERN int luasteam_UserStats_GetGlobalStatHistoryDouble(lua_State *L) {
 		lua_pushnumber(L, pData[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // bool GetAchievementProgressLimits(const char * pchName, int32 * pnMinProgress, int32 * pnMaxProgress);

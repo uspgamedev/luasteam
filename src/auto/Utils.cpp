@@ -247,7 +247,7 @@ EXTERN int luasteam_Utils_GetImageRGBA(lua_State *L) {
 	bool __ret = SteamUtils()->GetImageRGBA(iImage, pubDest.data(), nDestBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), nDestBufferSize);
-	return 1;
+	return 2;
 }
 
 // uint8 GetCurrentBatteryPower();
@@ -300,7 +300,7 @@ EXTERN int luasteam_Utils_GetAPICallResult(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pCallback.data()), cubCallback);
 	lua_pushboolean(L, pbFailed);
-	return 2;
+	return 3;
 }
 
 // uint32 GetIPCCallCount();
@@ -368,7 +368,7 @@ EXTERN int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
 	bool __ret = SteamUtils()->GetEnteredGamepadTextInput(pchText.data(), cchText);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchText.data()));
-	return 1;
+	return 2;
 }
 
 // const char * GetSteamUILanguage();
@@ -445,7 +445,7 @@ EXTERN int luasteam_Utils_FilterText(lua_State *L) {
 	int __ret = SteamUtils()->FilterText(eContext, sourceSteamID, pchInputMessage, pchOutFilteredText.data(), nByteSizeOutFilteredText);
 	lua_pushinteger(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchOutFilteredText.data()));
-	return 1;
+	return 2;
 }
 
 // ESteamIPv6ConnectivityState GetIPv6ConnectivityState(ESteamIPv6ConnectivityProtocol eProtocol);

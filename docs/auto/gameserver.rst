@@ -287,7 +287,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `GSReputation_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `GSReputation_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetServerReputation <https://partner.steamgames.com/doc/api/ISteamGameServer#GetServerReputation>`_
 
@@ -331,7 +331,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `AssociateWithClanResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `AssociateWithClanResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
 
@@ -340,7 +340,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDNewPlayer:
-    :param function callback: CallResult callback receiving struct `ComputeNewPlayerCompatibilityResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `ComputeNewPlayerCompatibilityResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
 

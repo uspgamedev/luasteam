@@ -228,7 +228,7 @@ EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
 		lua_rawseti(L, -2, i+1);
 	}
 	lua_pushinteger(L, punOutItemsArraySize);
-	return 2;
+	return 4;
 }
 
 // bool GetResultItemProperty(SteamInventoryResult_t resultHandle, uint32 unItemIndex, const char * pchPropertyName, char * pchValueBuffer, uint32 * punValueBufferSizeOut);
@@ -242,7 +242,7 @@ EXTERN int luasteam_Inventory_GetResultItemProperty(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValueBuffer.data()));
 	lua_pushinteger(L, punValueBufferSizeOut);
-	return 2;
+	return 4;
 }
 
 // uint32 GetResultTimestamp(SteamInventoryResult_t resultHandle);
@@ -504,7 +504,7 @@ EXTERN int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
 		lua_rawseti(L, -2, i+1);
 	}
 	lua_pushinteger(L, punItemDefIDsArraySize);
-	return 2;
+	return 4;
 }
 
 // bool GetItemDefinitionProperty(SteamItemDef_t iDefinition, const char * pchPropertyName, char * pchValueBuffer, uint32 * punValueBufferSizeOut);
@@ -517,7 +517,7 @@ EXTERN int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValueBuffer.data()));
 	lua_pushinteger(L, punValueBufferSizeOut);
-	return 2;
+	return 4;
 }
 
 // SteamAPICall_t RequestEligiblePromoItemDefinitionsIDs(CSteamID steamID);
@@ -551,7 +551,7 @@ EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
 		lua_rawseti(L, -2, i+1);
 	}
 	lua_pushinteger(L, punItemDefIDsArraySize);
-	return 2;
+	return 4;
 }
 
 // SteamAPICall_t StartPurchase(const SteamItemDef_t * pArrayItemDefs, const uint32 * punArrayQuantity, uint32 unArrayLength);

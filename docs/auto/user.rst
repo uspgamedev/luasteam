@@ -238,7 +238,7 @@ Function Reference
 
     :param str pDataToInclude:
     :param int cbDataToInclude:
-    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
@@ -280,7 +280,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchRedirectURL:
-    :param function callback: CallResult callback receiving struct `StoreAuthURLResponse_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `StoreAuthURLResponse_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestStoreAuthURL <https://partner.steamgames.com/doc/api/ISteamUser#RequestStoreAuthURL>`_
 
@@ -316,7 +316,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `MarketEligibilityResponse_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `MarketEligibilityResponse_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetMarketEligibility <https://partner.steamgames.com/doc/api/ISteamUser#GetMarketEligibility>`_
 
@@ -324,7 +324,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `DurationControl_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `DurationControl_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetDurationControl <https://partner.steamgames.com/doc/api/ISteamUser#GetDurationControl>`_
 

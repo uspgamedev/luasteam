@@ -764,7 +764,7 @@ EXTERN int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
 		luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
-	return 0;
+	return 1;
 }
 
 // bool HasFriend(CSteamID steamIDFriend, int iFriendFlags);
@@ -842,7 +842,7 @@ EXTERN int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
 		luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // int GetFriendCountFromSource(CSteamID steamIDSource);
@@ -1153,7 +1153,7 @@ EXTERN int luasteam_Friends_GetClanChatMessage(lua_State *L) {
 	lua_pushlstring(L, reinterpret_cast<const char*>(prgchText.data()), __ret);
 	lua_pushinteger(L, peChatEntryType);
 	luasteam::pushuint64(L, psteamidChatter.ConvertToUint64());
-	return 3;
+	return 4;
 }
 
 // bool IsClanChatAdmin(CSteamID steamIDClanChat, CSteamID steamIDUser);
@@ -1217,7 +1217,7 @@ EXTERN int luasteam_Friends_GetFriendMessage(lua_State *L) {
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
 	lua_pushinteger(L, peChatEntryType);
-	return 2;
+	return 3;
 }
 
 // SteamAPICall_t GetFollowerCount(CSteamID steamID);

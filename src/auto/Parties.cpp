@@ -224,7 +224,7 @@ EXTERN int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	luasteam::pushuint64(L, pSteamIDBeaconOwner.ConvertToUint64());
 	push_SteamPartyBeaconLocation_t(L, pLocation);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchMetadata.data()));
-	return 3;
+	return 4;
 }
 
 // SteamAPICall_t JoinParty(PartyBeaconID_t ulBeaconID);
@@ -265,7 +265,7 @@ EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 		push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // void OnReservationCompleted(PartyBeaconID_t ulBeacon, CSteamID steamIDUser);

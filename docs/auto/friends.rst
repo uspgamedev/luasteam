@@ -315,7 +315,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cClansToRequest:
-    :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean
     :returns: (uint64) Return value
     :returns: (uint64[]) Value for `psteamIDClans`
     :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
@@ -441,7 +441,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `ClanOfficerListResponse_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `ClanOfficerListResponse_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
 
@@ -563,7 +563,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
 
@@ -692,7 +692,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsGetFollowerCount_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `FriendsGetFollowerCount_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
 
@@ -701,7 +701,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsIsFollowing_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `FriendsIsFollowing_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
 
@@ -710,7 +710,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `FriendsEnumerateFollowingList_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `FriendsEnumerateFollowingList_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `EnumerateFollowingList <https://partner.steamgames.com/doc/api/ISteamFriends#EnumerateFollowingList>`_
 
@@ -764,7 +764,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `EquippedProfileItems_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `EquippedProfileItems_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
 

@@ -1327,9 +1327,6 @@ impl Generator {
             param_names.join(", ")
         );
 
-        // Calculate return count
-        let mut return_count = 0;
-
         if method.returntype == "void" {
             assert!(
                 method.callresult.is_none(),
@@ -1366,7 +1363,6 @@ impl Generator {
             }
             s.raw(&push);
             sig.set_return_type(ltype);
-            return_count = 1;
         }
 
         // Push pointer output values onto stack
@@ -1485,11 +1481,10 @@ impl Generator {
                 }
                 s.raw(&push);
                 sig.add_output_param(param.paramname.clone(), ltype);
-                return_count += 1;
             }
         }
 
-        s.line(&format!("return {};", return_count));
+        s.line(&format!("return {};", sig.output_params.len() + if sig.return_type.is_some() { 1 } else { 0 }));
         s.indent_left();
         s.line("}");
 

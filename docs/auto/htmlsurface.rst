@@ -90,7 +90,7 @@ Function Reference
 
     :param str pchUserAgent:
     :param str pchUserCSS:
-    :param function callback: CallResult callback receiving struct `HTML_BrowserReady_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `HTML_BrowserReady_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CreateBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CreateBrowser>`_
 

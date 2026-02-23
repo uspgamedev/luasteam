@@ -34,7 +34,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `GSStatsReceived_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `GSStatsReceived_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
 
@@ -134,7 +134,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `GSStatsStored_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `GSStatsStored_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
 

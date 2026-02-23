@@ -647,7 +647,7 @@ EXTERN int luasteam_GameServer_GetNextOutgoingPacket(lua_State *L) {
 	lua_pushlstring(L, reinterpret_cast<const char*>(pOut.data()), cbMaxOut);
 	lua_pushinteger(L, pNetAdr);
 	lua_pushinteger(L, pPort);
-	return 3;
+	return 4;
 }
 
 // SteamAPICall_t AssociateWithClan(CSteamID steamIDClan);

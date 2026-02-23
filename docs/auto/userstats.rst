@@ -226,7 +226,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `UserStatsReceived_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `UserStatsReceived_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
 
@@ -303,7 +303,7 @@ Function Reference
     :param str pchLeaderboardName:
     :param int eLeaderboardSortMethod:
     :param int eLeaderboardDisplayType:
-    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
 
@@ -312,7 +312,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchLeaderboardName:
-    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
 
@@ -356,7 +356,7 @@ Function Reference
     :param int eLeaderboardDataRequest:
     :param int nRangeStart:
     :param int nRangeEnd:
-    :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntries <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntries>`_
 
@@ -367,7 +367,7 @@ Function Reference
     :param uint64 hSteamLeaderboard:
     :param int cUsers:
     :param uint64[] prgUsers:
-    :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
 
@@ -397,7 +397,7 @@ Function Reference
     :param int nScore:
     :param int cScoreDetailsCount:
     :param int[] pScoreDetails:
-    :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_
 
@@ -407,7 +407,7 @@ Function Reference
 
     :param uint64 hSteamLeaderboard:
     :param uint64 hUGC:
-    :param function callback: CallResult callback receiving struct `LeaderboardUGCSet_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `LeaderboardUGCSet_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AttachLeaderboardUGC <https://partner.steamgames.com/doc/api/ISteamUserStats#AttachLeaderboardUGC>`_
 
@@ -415,7 +415,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `NumberOfCurrentPlayers_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `NumberOfCurrentPlayers_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetNumberOfCurrentPlayers <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumberOfCurrentPlayers>`_
 
@@ -423,7 +423,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `GlobalAchievementPercentagesReady_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `GlobalAchievementPercentagesReady_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestGlobalAchievementPercentages <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalAchievementPercentages>`_
 
@@ -480,7 +480,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nHistoryDays:
-    :param function callback: CallResult callback receiving struct `GlobalStatsReceived_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `GlobalStatsReceived_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestGlobalStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalStats>`_
 

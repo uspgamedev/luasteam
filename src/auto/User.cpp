@@ -477,7 +477,7 @@ EXTERN int luasteam_User_GetUserDataFolder(lua_State *L) {
 	bool __ret = SteamUser()->GetUserDataFolder(pchBuffer.data(), cubBuffer);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
-	return 1;
+	return 2;
 }
 
 // void StartVoiceRecording();
@@ -511,7 +511,7 @@ EXTERN int luasteam_User_GetVoice(lua_State *L) {
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pDestBuffer.data()), nBytesWritten);
 	lua_pushinteger(L, nBytesWritten);
-	return 2;
+	return 4;
 }
 
 // EVoiceResult DecompressVoice(const void * pCompressed, uint32 cbCompressed, void * pDestBuffer, uint32 cbDestBufferSize, uint32 * nBytesWritten, uint32 nDesiredSampleRate);
@@ -526,7 +526,7 @@ EXTERN int luasteam_User_DecompressVoice(lua_State *L) {
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pDestBuffer.data()), nBytesWritten);
 	lua_pushinteger(L, nBytesWritten);
-	return 2;
+	return 4;
 }
 
 // uint32 GetVoiceOptimalSampleRate();
@@ -621,7 +621,7 @@ EXTERN int luasteam_User_GetEncryptedAppTicket(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pTicket.data()), pcbTicket);
 	lua_pushinteger(L, pcbTicket);
-	return 2;
+	return 4;
 }
 
 // int GetGameBadgeLevel(int nSeries, bool bFoil);

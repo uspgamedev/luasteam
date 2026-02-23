@@ -162,7 +162,7 @@ EXTERN int luasteam_Input_GetConnectedControllers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // void EnableDeviceCallbacks();
@@ -229,7 +229,7 @@ EXTERN int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // InputDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
@@ -262,7 +262,7 @@ EXTERN int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // const char * GetStringForDigitalActionName(InputDigitalActionHandle_t eActionHandle);
@@ -303,7 +303,7 @@ EXTERN int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // const char * GetGlyphPNGForActionOrigin(EInputActionOrigin eOrigin, ESteamInputGlyphSize eSize, uint32 unFlags);

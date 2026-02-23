@@ -1148,7 +1148,7 @@ EXTERN int luasteam_RemoteStorage_FileRead(lua_State *L) {
 	int32 __ret = SteamRemoteStorage()->FileRead(pchFile, pvData.data(), cubDataToRead);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
-	return 1;
+	return 2;
 }
 
 // SteamAPICall_t FileWriteAsync(const char * pchFile, const void * pvData, uint32 cubData);
@@ -1199,7 +1199,7 @@ EXTERN int luasteam_RemoteStorage_FileReadAsyncComplete(lua_State *L) {
 	bool __ret = SteamRemoteStorage()->FileReadAsyncComplete(hReadCall, pvBuffer.data(), cubToRead);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvBuffer.data()), cubToRead);
-	return 1;
+	return 2;
 }
 
 // bool FileForget(const char * pchFile);
@@ -1409,7 +1409,7 @@ EXTERN int luasteam_RemoteStorage_UGCRead(lua_State *L) {
 	int32 __ret = SteamRemoteStorage()->UGCRead(hContent, pvData.data(), cubDataToRead, cOffset, eAction);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), cubDataToRead);
-	return 1;
+	return 2;
 }
 
 // int32 GetCachedUGCCount();

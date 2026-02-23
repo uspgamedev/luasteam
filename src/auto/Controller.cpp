@@ -40,7 +40,7 @@ EXTERN int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // ControllerActionSetHandle_t GetActionSetHandle(const char * pszActionSetName);
@@ -101,7 +101,7 @@ EXTERN int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // ControllerDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
@@ -134,7 +134,7 @@ EXTERN int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // ControllerAnalogActionHandle_t GetAnalogActionHandle(const char * pszActionName);
@@ -167,7 +167,7 @@ EXTERN int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
-	return 1;
+	return 2;
 }
 
 // const char * GetGlyphForActionOrigin(EControllerActionOrigin eOrigin);

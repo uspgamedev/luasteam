@@ -357,7 +357,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `SteamInventoryEligiblePromoItemDefIDs_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `SteamInventoryEligiblePromoItemDefIDs_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEligiblePromoItemDefinitionsIDs <https://partner.steamgames.com/doc/api/ISteamInventory#RequestEligiblePromoItemDefinitionsIDs>`_
 
@@ -386,7 +386,7 @@ Function Reference
     :param int unArrayLength:
     :param int[] pArrayItemDefs:
     :param int[] punArrayQuantity:
-    :param function callback: CallResult callback receiving struct `SteamInventoryStartPurchaseResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `SteamInventoryStartPurchaseResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
 
@@ -394,7 +394,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `SteamInventoryRequestPricesResult_t` and a boolean)
+    :param function callback: CallResult callback receiving struct `SteamInventoryRequestPricesResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestPrices <https://partner.steamgames.com/doc/api/ISteamInventory#RequestPrices>`_
 

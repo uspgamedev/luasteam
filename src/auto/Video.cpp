@@ -124,7 +124,7 @@ EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
 	lua_pushinteger(L, pnBufferSize);
-	return 2;
+	return 4;
 }
 
 void register_Video_auto(lua_State *L) {
