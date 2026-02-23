@@ -14,7 +14,6 @@ function Video.GetOPFSettings(unVideoAppID) end
 ---@param unVideoAppID integer
 ---@param pnBufferSize integer
 ---@return boolean
----@return integer -- Value of: pnBufferSize
 ---@return string -- Value of: pchBuffer
 ---@return integer -- Value of: pnBufferSize
 function Video.GetOPFStringForApp(unVideoAppID, pnBufferSize) end

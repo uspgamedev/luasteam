@@ -20,6 +20,8 @@ pub enum LType {
     CallresultCallback {
         struct_t: String,
     }, // Represents a callback parameter for callresult methods
+    /// Arbitrary userdata (e.g. SteamNetworkingIdentity)
+    Userdata(&'static str),
 }
 
 impl LType {
@@ -38,6 +40,7 @@ impl LType {
                 // We can use the struct_t name once we have those types
                 "fun(data: table?, io_fail: boolean)?".to_string()
             }
+            LType::Userdata(name) => name.to_string(),
         }
     }
 
@@ -56,6 +59,7 @@ impl LType {
             LType::Uint64 => "uint64".to_string(),
             LType::Array(inner) => format!("{}[]", inner.to_lua_doc_reference(_structs)),
             LType::CallresultCallback { struct_t: _ } => "function".to_string(),
+            LType::Userdata(name) => name.to_string(),
         }
     }
 }

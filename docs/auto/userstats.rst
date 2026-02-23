@@ -360,13 +360,13 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntries <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntries>`_
 
-.. function:: UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, cUsers, prgUsers, callback)
+.. function:: UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback)
 
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :param int cUsers:
     :param uint64[] prgUsers:
+    :param int cUsers:
     :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
@@ -388,15 +388,15 @@ Function Reference
     * Parameter ``pLeaderboardEntry`` is returned as an additional return value
     * Parameter ``pDetails`` is returned as an additional return value
 
-.. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, cScoreDetailsCount, pScoreDetails, callback)
+.. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback)
 
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
     :param int eLeaderboardUploadScoreMethod:
     :param int nScore:
-    :param int cScoreDetailsCount:
     :param int[] pScoreDetails:
+    :param int cScoreDetailsCount:
     :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_

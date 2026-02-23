@@ -74,14 +74,12 @@ Function Reference
     :param int resultHandle:
     :param int punOutItemsArraySize:
     :returns: (bool) Return value
-    :returns: (int) Value for `punOutItemsArraySize`
     :returns: (table[]) Value for `pOutItemsArray`
     :returns: (int) Value for `punOutItemsArraySize`
     :SteamWorks: `GetResultItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItems>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punOutItemsArraySize`` is returned as an additional return value
     * Parameter ``pOutItemsArray`` is returned as an additional return value
     * Parameter ``punOutItemsArraySize`` is returned as an additional return value
 
@@ -94,14 +92,12 @@ Function Reference
     :param str pchPropertyName:
     :param int punValueBufferSizeOut:
     :returns: (bool) Return value
-    :returns: (int) Value for `punValueBufferSizeOut`
     :returns: (str) Value for `pchValueBuffer`
     :returns: (int) Value for `punValueBufferSizeOut`
     :SteamWorks: `GetResultItemProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItemProperty>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
     * Parameter ``pchValueBuffer`` is returned as an additional return value
     * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
 
@@ -141,12 +137,12 @@ Function Reference
 
     * Parameter ``pResultHandle`` is returned as an additional return value
 
-.. function:: Inventory.GetItemsByID(unCountInstanceIDs, pInstanceIDs)
+.. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
 
     🤖 **Auto-generated binding**
 
-    :param int unCountInstanceIDs:
     :param uint64[] pInstanceIDs:
+    :param int unCountInstanceIDs:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
     :SteamWorks: `GetItemsByID <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsByID>`_
@@ -170,12 +166,12 @@ Function Reference
 
     * Parameter ``pOutResultHandle`` is returned as an additional return value
 
-.. function:: Inventory.GenerateItems(unArrayLength, pArrayItemDefs, punArrayQuantity)
+.. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
 
     🤖 **Auto-generated binding**
 
-    :param int unArrayLength:
     :param int[] pArrayItemDefs:
+    :param int unArrayLength:
     :param int[] punArrayQuantity:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
@@ -210,12 +206,12 @@ Function Reference
 
     * Parameter ``pResultHandle`` is returned as an additional return value
 
-.. function:: Inventory.AddPromoItems(unArrayLength, pArrayItemDefs)
+.. function:: Inventory.AddPromoItems(pArrayItemDefs, unArrayLength)
 
     🤖 **Auto-generated binding**
 
-    :param int unArrayLength:
     :param int[] pArrayItemDefs:
+    :param int unArrayLength:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
     :SteamWorks: `AddPromoItems <https://partner.steamgames.com/doc/api/ISteamInventory#AddPromoItems>`_
@@ -238,15 +234,15 @@ Function Reference
 
     * Parameter ``pResultHandle`` is returned as an additional return value
 
-.. function:: Inventory.ExchangeItems(unArrayGenerateLength, pArrayGenerate, punArrayGenerateQuantity, unArrayDestroyLength, pArrayDestroy, punArrayDestroyQuantity)
+.. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
 
     🤖 **Auto-generated binding**
 
-    :param int unArrayGenerateLength:
     :param int[] pArrayGenerate:
+    :param int unArrayGenerateLength:
     :param int[] punArrayGenerateQuantity:
-    :param int unArrayDestroyLength:
     :param uint64[] pArrayDestroy:
+    :param int unArrayDestroyLength:
     :param int[] punArrayDestroyQuantity:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
@@ -290,16 +286,16 @@ Function Reference
 
     * Parameter ``pResultHandle`` is returned as an additional return value
 
-.. function:: Inventory.TradeItems(steamIDTradePartner, nArrayGiveLength, pArrayGive, pArrayGiveQuantity, nArrayGetLength, pArrayGet, pArrayGetQuantity)
+.. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDTradePartner:
-    :param int nArrayGiveLength:
     :param uint64[] pArrayGive:
+    :param int nArrayGiveLength:
     :param int[] pArrayGiveQuantity:
-    :param int nArrayGetLength:
     :param uint64[] pArrayGet:
+    :param int nArrayGetLength:
     :param int[] pArrayGetQuantity:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
@@ -322,14 +318,12 @@ Function Reference
 
     :param int punItemDefIDsArraySize:
     :returns: (bool) Return value
-    :returns: (int) Value for `punItemDefIDsArraySize`
     :returns: (int[]) Value for `pItemDefIDs`
     :returns: (int) Value for `punItemDefIDsArraySize`
     :SteamWorks: `GetItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionIDs>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
     * Parameter ``pItemDefIDs`` is returned as an additional return value
     * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
 
@@ -341,14 +335,12 @@ Function Reference
     :param str pchPropertyName:
     :param int punValueBufferSizeOut:
     :returns: (bool) Return value
-    :returns: (int) Value for `punValueBufferSizeOut`
     :returns: (str) Value for `pchValueBuffer`
     :returns: (int) Value for `punValueBufferSizeOut`
     :SteamWorks: `GetItemDefinitionProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionProperty>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
     * Parameter ``pchValueBuffer`` is returned as an additional return value
     * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
 
@@ -368,23 +360,21 @@ Function Reference
     :param uint64 steamID:
     :param int punItemDefIDsArraySize:
     :returns: (bool) Return value
-    :returns: (int) Value for `punItemDefIDsArraySize`
     :returns: (int[]) Value for `pItemDefIDs`
     :returns: (int) Value for `punItemDefIDsArraySize`
     :SteamWorks: `GetEligiblePromoItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetEligiblePromoItemDefinitionIDs>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
     * Parameter ``pItemDefIDs`` is returned as an additional return value
     * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
 
-.. function:: Inventory.StartPurchase(unArrayLength, pArrayItemDefs, punArrayQuantity, callback)
+.. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
 
     🤖 **Auto-generated binding**
 
-    :param int unArrayLength:
     :param int[] pArrayItemDefs:
+    :param int unArrayLength:
     :param int[] punArrayQuantity:
     :param function callback: CallResult callback receiving struct `SteamInventoryStartPurchaseResult_t` and a boolean
     :returns: (uint64) Return value

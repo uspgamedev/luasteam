@@ -20,6 +20,7 @@ List of Functions
 * :func:`User.GetVoice`
 * :func:`User.DecompressVoice`
 * :func:`User.GetVoiceOptimalSampleRate`
+* :func:`User.GetAuthSessionTicket`
 * :func:`User.GetAuthTicketForWebApi`
 * :func:`User.BeginAuthSession`
 * :func:`User.EndAuthSession`
@@ -137,14 +138,12 @@ Function Reference
     :param bool bWantCompressed:
     :param int cbDestBufferSize:
     :returns: (int) Return value
-    :returns: (int) Value for `nBytesWritten`
     :returns: (str) Value for `pDestBuffer`
     :returns: (int) Value for `nBytesWritten`
     :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``nBytesWritten`` is returned as an additional return value
     * Parameter ``pDestBuffer`` is returned as an additional return value
     * Parameter ``nBytesWritten`` is returned as an additional return value
 
@@ -157,14 +156,12 @@ Function Reference
     :param int cbDestBufferSize:
     :param int nDesiredSampleRate:
     :returns: (int) Return value
-    :returns: (int) Value for `nBytesWritten`
     :returns: (str) Value for `pDestBuffer`
     :returns: (int) Value for `nBytesWritten`
     :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``nBytesWritten`` is returned as an additional return value
     * Parameter ``pDestBuffer`` is returned as an additional return value
     * Parameter ``nBytesWritten`` is returned as an additional return value
 
@@ -174,6 +171,22 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `GetVoiceOptimalSampleRate <https://partner.steamgames.com/doc/api/ISteamUser#GetVoiceOptimalSampleRate>`_
+
+.. function:: User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity)
+
+    🤖 **Auto-generated binding**
+
+    :param int cbMaxTicket:
+    :param SteamNetworkingIdentity pSteamNetworkingIdentity:
+    :returns: (int) Return value
+    :returns: (str) Value for `pTicket`
+    :returns: (int) Value for `pcbTicket`
+    :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTicket`` is returned as an additional return value
+    * Parameter ``pcbTicket`` is returned as an additional return value
 
 .. function:: User.GetAuthTicketForWebApi(pchIdentity)
 
@@ -248,14 +261,12 @@ Function Reference
 
     :param int cbMaxTicket:
     :returns: (bool) Return value
-    :returns: (int) Value for `pcbTicket`
     :returns: (str) Value for `pTicket`
     :returns: (int) Value for `pcbTicket`
     :SteamWorks: `GetEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetEncryptedAppTicket>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcbTicket`` is returned as an additional return value
     * Parameter ``pTicket`` is returned as an additional return value
     * Parameter ``pcbTicket`` is returned as an additional return value
 
@@ -335,16 +346,6 @@ Function Reference
     :param int eNewState:
     :returns: (bool) Return value
     :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: User.getAuthSessionTicket
-
-    ✋ **Not implemented** - unsupported type: const SteamNetworkingIdentity *
-    
-    :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
 
 
 Callbacks

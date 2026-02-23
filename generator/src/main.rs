@@ -19,6 +19,11 @@ use schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats, SteamA
 use type_resolver::TypeResolver;
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+//
+// Structs with custom manual implementations — skip auto-generation
+const MANUAL_STRUCTS: [&str; 1] = [
+    "SteamNetworkingIdentity", // Uses private fields; must use accessor API (ParseString/ToString etc.)
+];
 
 struct Generator {
     api: SteamApi,
@@ -241,6 +246,15 @@ impl Generator {
                     .push((st.name.clone(), SkipReason::Incomplete));
                 continue;
             }
+            if MANUAL_STRUCTS.contains(&st.name.as_str()) {
+                stats.skipped_structs.push((
+                    st.name.clone(),
+                    SkipReason::ManualBlocklist("has private fields; use accessor API".to_string()),
+                ));
+                // Still add to added_structs so generate_check/push special-cases can be resolved
+                self.added_structs.insert(st.name.clone());
+                continue;
+            }
             match self.generate_struct(st) {
                 Ok(code) => {
                     cpp.raw(&code);
@@ -382,6 +396,9 @@ impl Generator {
         let mut structs_sorted: Vec<_> = self.added_structs.iter().collect();
         structs_sorted.sort();
         for st in structs_sorted {
+            if MANUAL_STRUCTS.contains(&st.as_str()) {
+                continue;
+            }
             h.line(&format!("{} check_{}(lua_State *L, int index);", st, st));
             h.line(&format!("void push_{}(lua_State *L, {} val);", st, st));
         }
@@ -507,7 +524,7 @@ impl Generator {
                         size, size
                     ));
                     out.indent_right();
-                    out.line("lua_rawgeti(L, -1, i+1);");
+                    out.line(&format!("lua_rawgeti(L, {lua_idx}, i+1);"));
                     let (ok, check, elem_ltype) = self.generate_check(
                         ttype,
                         self.type_resolver.resolve_type(ttype),
@@ -1060,7 +1077,7 @@ impl Generator {
         }
 
         // params used to call the function in C
-        let mut param_names = Vec::new();
+        let mut cpp_call_params = Vec::new();
         // Pointer params that are returned as output: (param_info, custom_push_code)
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
@@ -1081,13 +1098,12 @@ impl Generator {
                 // This parameter is just the size for a previous string array, skip it
                 match resolved {
                     CppType::Normal(_) => {
-                        param_names.push(param.paramname.clone());
+                        cpp_call_params.push(param.paramname.clone());
                     }
                     CppType::Pointer { .. } => {
                         // It is a value returned as well as the size passed in.
                         pointer_params.push((param, false));
-                        sig.add_output_param(param.paramname.clone(), LType::Integer);
-                        param_names.push(format!("&{}", param.paramname.clone()));
+                        cpp_call_params.push(format!("&{}", param.paramname.clone()));
                     }
                     _ => unreachable!("No array sizes"),
                 }
@@ -1102,7 +1118,7 @@ impl Generator {
                         "char {} = luaL_checkstring(L, {})[0];",
                         param.paramname, lua_idx
                     ));
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::Char);
                     lua_idx += 1;
                 }
@@ -1111,7 +1127,7 @@ impl Generator {
                         "{} {} = luaL_checknumber(L, {});",
                         param.paramtype, param.paramname, lua_idx
                     ));
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::Float);
                     lua_idx += 1;
                 }
@@ -1120,7 +1136,7 @@ impl Generator {
                         "{} {} = static_cast<{}>(luaL_checkint(L, {}));",
                         param.paramtype, param.paramname, param.paramtype, lua_idx
                     ));
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::Integer);
                     lua_idx += 1;
                 }
@@ -1129,7 +1145,7 @@ impl Generator {
                         "bool {} = lua_toboolean(L, {});",
                         param.paramname, lua_idx
                     ));
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::Boolean);
                     lua_idx += 1;
                 }
@@ -1150,7 +1166,7 @@ impl Generator {
                             param.paramname, lua_idx
                         ));
                     }
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::String);
                     lua_idx += 1;
                 }
@@ -1162,7 +1178,7 @@ impl Generator {
                         "{} {}(luasteam::checkuint64(L, {}));",
                         param.paramtype, param.paramname, lua_idx
                     ));
-                    param_names.push(param.paramname.clone());
+                    cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::Uint64);
                     lua_idx += 1;
                 }
@@ -1245,7 +1261,7 @@ impl Generator {
                             param.paramname,
                             size_param
                         ));
-                        param_names.push(format!("{}.data()", param.paramname));
+                        cpp_call_params.push(format!("{}.data()", param.paramname));
                         pointer_params.push((param, true));
                     } else {
                         // Create a default variable with that name and type
@@ -1257,9 +1273,53 @@ impl Generator {
                                 .expect("Malformed pointer type"),
                             param.paramname
                         ));
-                        param_names.push(format!("&{}", param.paramname));
+                        cpp_call_params.push(format!("&{}", param.paramname));
                         pointer_params.push((param, false));
                     }
+                }
+                // TODO: This should not be a special case. The const pointer case, when no input array size is given, should do this.
+                // TODO: We should probably change check_SteamNetworkingIdentity to check_ptr_SteamNetworkingIdentity which returns a pointer, so things don't need to be copied. But then this will need to be dealt with in other places.
+                Pointer {
+                    ttype: "SteamNetworkingIdentity",
+                    is_const: true,
+                } => {
+                    // Optional input: nil → nullptr is valid for some calls (e.g. GetAuthSessionTicket).
+                    s.line(&format!(
+                        "SteamNetworkingIdentity {n}_val;",
+                        n = param.paramname
+                    ));
+                    s.line(&format!(
+                        "if (!lua_isnil(L, {idx})) {n}_val = luasteam::check_SteamNetworkingIdentity(L, {idx});",
+                        n = param.paramname,
+                        idx = lua_idx
+                    ));
+                    s.line(&format!(
+                        "const SteamNetworkingIdentity *{n} = lua_isnil(L, {idx}) ? nullptr : &{n}_val;",
+                        n = param.paramname,
+                        idx = lua_idx
+                    ));
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(
+                        param.paramname.clone(),
+                        LType::Userdata("SteamNetworkingIdentity"),
+                    );
+                    lua_idx += 1;
+                }
+                Reference {
+                    ttype: "SteamNetworkingIdentity",
+                    is_const: true,
+                } => {
+                    s.line(&format!(
+                        "SteamNetworkingIdentity {n} = luasteam::check_SteamNetworkingIdentity(L, {idx});",
+                        n = param.paramname,
+                        idx = lua_idx
+                    ));
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(
+                        param.paramname.clone(),
+                        LType::Userdata("SteamNetworkingIdentity"),
+                    );
+                    lua_idx += 1;
                 }
                 Pointer {
                     is_const: true,
@@ -1289,6 +1349,7 @@ impl Generator {
                             1,
                         );
                         if ok {
+                            sig.add_param(param.paramname.clone(), ltype);
                             if !size_params_to_ignore.contains(sz) {
                                 size_params_to_ignore.insert(sz.to_string());
                                 lua_idx += 1;
@@ -1303,11 +1364,9 @@ impl Generator {
                                 sig.add_param(sz.to_string(), LType::Integer);
                                 lua_idx += 1;
                             }
-                            // TODO: fix, not necessarily integer
-                            sig.add_param(param.paramname.clone(), ltype);
 
                             s.raw(&code);
-                            param_names.push(format!("{}.data()", param.paramname));
+                            cpp_call_params.push(format!("{}.data()", param.paramname));
                         } else {
                             return Err(SkipReason::UnsupportedType(format!(
                                 "size param {} not found",
@@ -1318,6 +1377,9 @@ impl Generator {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
                 }
+                CppType::Reference { .. } => {
+                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                }
             }
             i += 1;
         }
@@ -1326,7 +1388,7 @@ impl Generator {
             "{}->{}({})",
             interface_getter,
             method.methodname,
-            param_names.join(", ")
+            cpp_call_params.join(", ")
         );
 
         if method.returntype == "void" {
@@ -1423,6 +1485,7 @@ impl Generator {
                         "SteamAPI_ISteamRemotePlay_GetInput",
                         "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
                         "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
+                        "SteamAPI_ISteamUGC_GetSubscribedItems",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {

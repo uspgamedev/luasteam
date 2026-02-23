@@ -1,4 +1,3 @@
-#include "UGC.hpp"
 #include "auto/auto.hpp"
 #include "common.hpp"
 #include "core.hpp"
@@ -18,7 +17,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_user(L);
     luasteam::add_UserStats_auto(L);
     luasteam::add_utils(L);
-    luasteam::add_UGC(L);
+    luasteam::add_UGC_auto(L);
     luasteam::add_extra(L);
     luasteam::add_Apps_auto(L);
     luasteam::add_input(L);

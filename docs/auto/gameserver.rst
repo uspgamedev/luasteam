@@ -33,6 +33,7 @@ List of Functions
 * :func:`GameServer.SetGameData`
 * :func:`GameServer.SetRegion`
 * :func:`GameServer.SetAdvertiseServerActive`
+* :func:`GameServer.GetAuthSessionTicket`
 * :func:`GameServer.BeginAuthSession`
 * :func:`GameServer.EndAuthSession`
 * :func:`GameServer.CancelAuthTicket`
@@ -235,6 +236,22 @@ Function Reference
     :param bool bActive:
     :SteamWorks: `SetAdvertiseServerActive <https://partner.steamgames.com/doc/api/ISteamGameServer#SetAdvertiseServerActive>`_
 
+.. function:: GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid)
+
+    🤖 **Auto-generated binding**
+
+    :param int cbMaxTicket:
+    :param SteamNetworkingIdentity pSnid:
+    :returns: (int) Return value
+    :returns: (str) Value for `pTicket`
+    :returns: (int) Value for `pcbTicket`
+    :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetAuthSessionTicket>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTicket`` is returned as an additional return value
+    * Parameter ``pcbTicket`` is returned as an additional return value
+
 .. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
 
     🤖 **Auto-generated binding**
@@ -360,16 +377,6 @@ Function Reference
     :param int uScore:
     :returns: (bool) Return value
     :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: GameServer.getAuthSessionTicket
-
-    ✋ **Not implemented** - unsupported type: const SteamNetworkingIdentity *
-    
-    :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetAuthSessionTicket>`_
 
 
 Callbacks

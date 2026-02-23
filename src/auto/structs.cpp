@@ -612,33 +612,6 @@ void push_SteamNetworkingIPAddr(lua_State *L, SteamNetworkingIPAddr val) {
 	lua_setfield(L, -2, "m_port");
 }
 
-SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int index) {
-	luaL_checktype(L, index, LUA_TTABLE);
-	SteamNetworkingIdentity res;
-	lua_getfield(L, index, "m_eType");
-	res.m_eType = static_cast<ESteamNetworkingIdentityType>(luaL_checkint(L, -1));
-	lua_pop(L, 1);
-	lua_getfield(L, index, "m_cbSize");
-	res.m_cbSize = static_cast<int>(luaL_checkint(L, -1));
-	lua_pop(L, 1);
-	lua_getfield(L, index, "m_szUnknownRawString");
-	const char *_tmp10 = luaL_checkstring(L, -1);
-	if (strlen(_tmp10) >= 128) luaL_error(L, "String too long");
-	memcpy(res.m_szUnknownRawString, _tmp10, sizeof(res.m_szUnknownRawString));
-	lua_pop(L, 1);
-	return res;
-}
-
-void push_SteamNetworkingIdentity(lua_State *L, SteamNetworkingIdentity val) {
-	lua_createtable(L, 0, 3);
-	lua_pushinteger(L, val.m_eType);
-	lua_setfield(L, -2, "m_eType");
-	lua_pushinteger(L, val.m_cbSize);
-	lua_setfield(L, -2, "m_cbSize");
-	lua_pushstring(L, reinterpret_cast<const char*>(val.m_szUnknownRawString));
-	lua_setfield(L, -2, "m_szUnknownRawString");
-}
-
 SteamNetConnectionInfo_t check_SteamNetConnectionInfo_t(lua_State *L, int index) {
 	luaL_checktype(L, index, LUA_TTABLE);
 	SteamNetConnectionInfo_t res;
@@ -670,14 +643,14 @@ SteamNetConnectionInfo_t check_SteamNetConnectionInfo_t(lua_State *L, int index)
 	res.m_eEndReason = static_cast<int>(luaL_checkint(L, -1));
 	lua_pop(L, 1);
 	lua_getfield(L, index, "m_szEndDebug");
-	const char *_tmp11 = luaL_checkstring(L, -1);
-	if (strlen(_tmp11) >= 128) luaL_error(L, "String too long");
-	memcpy(res.m_szEndDebug, _tmp11, sizeof(res.m_szEndDebug));
+	const char *_tmp10 = luaL_checkstring(L, -1);
+	if (strlen(_tmp10) >= 128) luaL_error(L, "String too long");
+	memcpy(res.m_szEndDebug, _tmp10, sizeof(res.m_szEndDebug));
 	lua_pop(L, 1);
 	lua_getfield(L, index, "m_szConnectionDescription");
-	const char *_tmp12 = luaL_checkstring(L, -1);
-	if (strlen(_tmp12) >= 128) luaL_error(L, "String too long");
-	memcpy(res.m_szConnectionDescription, _tmp12, sizeof(res.m_szConnectionDescription));
+	const char *_tmp11 = luaL_checkstring(L, -1);
+	if (strlen(_tmp11) >= 128) luaL_error(L, "String too long");
+	memcpy(res.m_szConnectionDescription, _tmp11, sizeof(res.m_szConnectionDescription));
 	lua_pop(L, 1);
 	lua_getfield(L, index, "m_nFlags");
 	res.m_nFlags = static_cast<int>(luaL_checkint(L, -1));
@@ -731,9 +704,9 @@ SteamNetworkPingLocation_t check_SteamNetworkPingLocation_t(lua_State *L, int in
 	luaL_checktype(L, index, LUA_TTABLE);
 	SteamNetworkPingLocation_t res;
 	lua_getfield(L, index, "m_data");
-	const char *_tmp13 = luaL_checkstring(L, -1);
-	if (strlen(_tmp13) >= 512) luaL_error(L, "String too long");
-	memcpy(res.m_data, _tmp13, sizeof(res.m_data));
+	const char *_tmp12 = luaL_checkstring(L, -1);
+	if (strlen(_tmp12) >= 512) luaL_error(L, "String too long");
+	memcpy(res.m_data, _tmp12, sizeof(res.m_data));
 	lua_pop(L, 1);
 	return res;
 }

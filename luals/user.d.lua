@@ -31,7 +31,6 @@ function User.GetAvailableVoice() end
 ---@param bWantCompressed boolean
 ---@param cbDestBufferSize integer
 ---@return integer
----@return integer -- Value of: nBytesWritten
 ---@return string -- Value of: pDestBuffer
 ---@return integer -- Value of: nBytesWritten
 function User.GetVoice(bWantCompressed, cbDestBufferSize) end
@@ -41,13 +40,19 @@ function User.GetVoice(bWantCompressed, cbDestBufferSize) end
 ---@param cbDestBufferSize integer
 ---@param nDesiredSampleRate integer
 ---@return integer
----@return integer -- Value of: nBytesWritten
 ---@return string -- Value of: pDestBuffer
 ---@return integer -- Value of: nBytesWritten
 function User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate) end
 
 ---@return integer
 function User.GetVoiceOptimalSampleRate() end
+
+---@param cbMaxTicket integer
+---@param pSteamNetworkingIdentity SteamNetworkingIdentity
+---@return integer
+---@return string -- Value of: pTicket
+---@return integer -- Value of: pcbTicket
+function User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity) end
 
 ---@param pchIdentity string
 ---@return integer
@@ -86,7 +91,6 @@ function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callbac
 
 ---@param cbMaxTicket integer
 ---@return boolean
----@return integer -- Value of: pcbTicket
 ---@return string -- Value of: pTicket
 ---@return integer -- Value of: pcbTicket
 function User.GetEncryptedAppTicket(cbMaxTicket) end

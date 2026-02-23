@@ -58,14 +58,12 @@ Function Reference
     :param int unVideoAppID:
     :param int pnBufferSize:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnBufferSize`
     :returns: (str) Value for `pchBuffer`
     :returns: (int) Value for `pnBufferSize`
     :SteamWorks: `GetOPFStringForApp <https://partner.steamgames.com/doc/api/ISteamVideo#GetOPFStringForApp>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnBufferSize`` is returned as an additional return value
     * Parameter ``pchBuffer`` is returned as an additional return value
     * Parameter ``pnBufferSize`` is returned as an additional return value
 

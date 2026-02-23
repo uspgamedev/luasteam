@@ -12,6 +12,10 @@ pub enum CppType<'a> {
         ttype: &'a str,
         is_const: bool,
     },
+    Reference {
+        ttype: &'a str,
+        is_const: bool,
+    },
 }
 
 impl<'a> fmt::Display for CppType<'a> {
@@ -42,6 +46,13 @@ impl<'a> fmt::Display for CppType<'a> {
                     write!(f, "{}", ttype)
                 }
             }
+            CppType::Reference { ttype, is_const } => {
+                if *is_const {
+                    write!(f, "const {} &", ttype)
+                } else {
+                    write!(f, "{} &", ttype)
+                }
+            }
         }
     }
 }
@@ -69,6 +80,7 @@ impl<'a> CppType<'a> {
             CppType::Normal(_) => true,
             CppType::Array { is_const, .. } => *is_const,
             CppType::Pointer { is_const, .. } => *is_const,
+            CppType::Reference { is_const, .. } => *is_const,
         }
     }
 }

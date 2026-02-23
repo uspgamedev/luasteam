@@ -411,7 +411,7 @@ function UGC.GetNumSubscribedItems(bIncludeLocallyDisabled) end
 ---@param cMaxEntries integer
 ---@param bIncludeLocallyDisabled boolean
 ---@return integer
----@return uint64 -- Value of: pvecPublishedFileID
+---@return uint64[] -- Value of: pvecPublishedFileID
 function UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled) end
 
 ---@param nPublishedFileID uint64
@@ -445,17 +445,17 @@ function UGC.BInitWorkshopForGameServer(unWorkshopDepotID, pszFolder) end
 ---@param bSuspend boolean
 function UGC.SuspendDownloads(bSuspend) end
 
+---@param pvecPublishedFileID uint64[]
 ---@param unNumPublishedFileIDs integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
----@return uint64 -- Value of: pvecPublishedFileID
-function UGC.StartPlaytimeTracking(unNumPublishedFileIDs, callback) end
+function UGC.StartPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
 
+---@param pvecPublishedFileID uint64[]
 ---@param unNumPublishedFileIDs integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
----@return uint64 -- Value of: pvecPublishedFileID
-function UGC.StopPlaytimeTracking(unNumPublishedFileIDs, callback) end
+function UGC.StopPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64

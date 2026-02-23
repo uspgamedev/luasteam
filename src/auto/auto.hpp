@@ -42,8 +42,6 @@ SteamNetworkingConfigValue_t check_SteamNetworkingConfigValue_t(lua_State *L, in
 void push_SteamNetworkingConfigValue_t(lua_State *L, SteamNetworkingConfigValue_t val);
 SteamNetworkingIPAddr check_SteamNetworkingIPAddr(lua_State *L, int index);
 void push_SteamNetworkingIPAddr(lua_State *L, SteamNetworkingIPAddr val);
-SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int index);
-void push_SteamNetworkingIdentity(lua_State *L, SteamNetworkingIdentity val);
 SteamPartyBeaconLocation_t check_SteamPartyBeaconLocation_t(lua_State *L, int index);
 void push_SteamPartyBeaconLocation_t(lua_State *L, SteamPartyBeaconLocation_t val);
 SteamUGCDetails_t check_SteamUGCDetails_t(lua_State *L, int index);

@@ -1854,14 +1854,18 @@ EXTERN int luasteam_UGC_GetNumSubscribedItems(lua_State *L) {
 // In C++:
 // uint32 GetSubscribedItems(PublishedFileId_t * pvecPublishedFileID, uint32 cMaxEntries, bool bIncludeLocallyDisabled);
 // In Lua:
-// (int, pvecPublishedFileID: uint64) UGC.GetSubscribedItems(cMaxEntries: int, bIncludeLocallyDisabled: bool)
+// (int, pvecPublishedFileID: uint64[]) UGC.GetSubscribedItems(cMaxEntries: int, bIncludeLocallyDisabled: bool)
 EXTERN int luasteam_UGC_GetSubscribedItems(lua_State *L) {
-	PublishedFileId_t pvecPublishedFileID;
-	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 1));
+	uint32 cMaxEntries = luaL_checkint(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileID(cMaxEntries);
 	bool bIncludeLocallyDisabled = lua_toboolean(L, 2);
-	uint32 __ret = SteamUGC()->GetSubscribedItems(&pvecPublishedFileID, cMaxEntries, bIncludeLocallyDisabled);
+	uint32 __ret = SteamUGC()->GetSubscribedItems(pvecPublishedFileID.data(), cMaxEntries, bIncludeLocallyDisabled);
 	lua_pushinteger(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileID);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i = 0; i < __ret; i++) {
+		luasteam::pushuint64(L, pvecPublishedFileID[i]);
+		lua_rawseti(L, -2, i+1);
+	}
 	return 2;
 }
 
@@ -1944,49 +1948,59 @@ EXTERN int luasteam_UGC_SuspendDownloads(lua_State *L) {
 }
 
 // In C++:
-// SteamAPICall_t StartPlaytimeTracking(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// SteamAPICall_t StartPlaytimeTracking(const PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
 // In Lua:
-// (uint64, pvecPublishedFileID: uint64) UGC.StartPlaytimeTracking(unNumPublishedFileIDs: int, callback: function)
+// uint64 UGC.StartPlaytimeTracking(pvecPublishedFileID: uint64[], unNumPublishedFileIDs: int, callback: function)
 EXTERN int luasteam_UGC_StartPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	PublishedFileId_t pvecPublishedFileID;
-	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
-	SteamAPICall_t __ret = SteamUGC()->StartPlaytimeTracking(&pvecPublishedFileID, unNumPublishedFileIDs);
+	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
+	luaL_checktype(L, 1, LUA_TTABLE);
+	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
+	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+		lua_rawgeti(L, 1, i+1);
+		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+		lua_pop(L, 1);
+	}
+	SteamAPICall_t __ret = SteamUGC()->StartPlaytimeTracking(pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<StartPlaytimeTrackingResult_t>();
 		listener->callback_ref = callback_ref;
 		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<StartPlaytimeTrackingResult_t>::Result);
 	}
 	luasteam::pushuint64(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileID);
-	return 2;
+	return 1;
 }
 
 // In C++:
-// SteamAPICall_t StopPlaytimeTracking(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// SteamAPICall_t StopPlaytimeTracking(const PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
 // In Lua:
-// (uint64, pvecPublishedFileID: uint64) UGC.StopPlaytimeTracking(unNumPublishedFileIDs: int, callback: function)
+// uint64 UGC.StopPlaytimeTracking(pvecPublishedFileID: uint64[], unNumPublishedFileIDs: int, callback: function)
 EXTERN int luasteam_UGC_StopPlaytimeTracking(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	PublishedFileId_t pvecPublishedFileID;
-	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
-	SteamAPICall_t __ret = SteamUGC()->StopPlaytimeTracking(&pvecPublishedFileID, unNumPublishedFileIDs);
+	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
+	luaL_checktype(L, 1, LUA_TTABLE);
+	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
+	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+		lua_rawgeti(L, 1, i+1);
+		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+		lua_pop(L, 1);
+	}
+	SteamAPICall_t __ret = SteamUGC()->StopPlaytimeTracking(pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<StopPlaytimeTrackingResult_t>();
 		listener->callback_ref = callback_ref;
 		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<StopPlaytimeTrackingResult_t>::Result);
 	}
 	luasteam::pushuint64(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileID);
-	return 2;
+	return 1;
 }
 
 // In C++:

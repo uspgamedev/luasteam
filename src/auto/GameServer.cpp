@@ -626,6 +626,24 @@ EXTERN int luasteam_GameServer_SetAdvertiseServerActive(lua_State *L) {
 }
 
 // In C++:
+// HAuthTicket GetAuthSessionTicket(void * pTicket, int cbMaxTicket, uint32 * pcbTicket, const SteamNetworkingIdentity * pSnid);
+// In Lua:
+// (int, pTicket: str, pcbTicket: int) GameServer.GetAuthSessionTicket(cbMaxTicket: int, pSnid: SteamNetworkingIdentity)
+EXTERN int luasteam_GameServer_GetAuthSessionTicket(lua_State *L) {
+	int cbMaxTicket = luaL_checkint(L, 1);
+	uint32 pcbTicket = cbMaxTicket;
+	std::vector<unsigned char> pTicket(cbMaxTicket);
+	SteamNetworkingIdentity pSnid_val;
+	if (!lua_isnil(L, 2)) pSnid_val = luasteam::check_SteamNetworkingIdentity(L, 2);
+	const SteamNetworkingIdentity *pSnid = lua_isnil(L, 2) ? nullptr : &pSnid_val;
+	HAuthTicket __ret = SteamGameServer()->GetAuthSessionTicket(pTicket.data(), cbMaxTicket, &pcbTicket, pSnid);
+	lua_pushinteger(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pTicket.data()), pcbTicket);
+	lua_pushinteger(L, pcbTicket);
+	return 3;
+}
+
+// In C++:
 // EBeginAuthSessionResult BeginAuthSession(const void * pAuthTicket, int cbAuthTicket, CSteamID steamID);
 // In Lua:
 // int GameServer.BeginAuthSession(pAuthTicket: str, cbAuthTicket: int, steamID: uint64)
@@ -842,6 +860,7 @@ void register_GameServer_auto(lua_State *L) {
 	add_func(L, "SetGameData", luasteam_GameServer_SetGameData);
 	add_func(L, "SetRegion", luasteam_GameServer_SetRegion);
 	add_func(L, "SetAdvertiseServerActive", luasteam_GameServer_SetAdvertiseServerActive);
+	add_func(L, "GetAuthSessionTicket", luasteam_GameServer_GetAuthSessionTicket);
 	add_func(L, "BeginAuthSession", luasteam_GameServer_BeginAuthSession);
 	add_func(L, "EndAuthSession", luasteam_GameServer_EndAuthSession);
 	add_func(L, "CancelAuthTicket", luasteam_GameServer_CancelAuthTicket);
@@ -859,7 +878,7 @@ void register_GameServer_auto(lua_State *L) {
 }
 
 void add_GameServer_auto(lua_State *L) {
-	lua_createtable(L, 0, 38);
+	lua_createtable(L, 0, 39);
 	register_GameServer_auto(L);
 	lua_pushvalue(L, -1);
 	GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);

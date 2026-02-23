@@ -71,6 +71,13 @@ function GameServer.SetRegion(pszRegion) end
 ---@param bActive boolean
 function GameServer.SetAdvertiseServerActive(bActive) end
 
+---@param cbMaxTicket integer
+---@param pSnid SteamNetworkingIdentity
+---@return integer
+---@return string -- Value of: pTicket
+---@return integer -- Value of: pcbTicket
+function GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid) end
+
 ---@param pAuthTicket string
 ---@param cbAuthTicket integer
 ---@param steamID uint64

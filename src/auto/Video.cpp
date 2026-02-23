@@ -127,7 +127,7 @@ EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
 // In C++:
 // bool GetOPFStringForApp(AppId_t unVideoAppID, char * pchBuffer, int32 * pnBufferSize);
 // In Lua:
-// (bool, pnBufferSize: int, pchBuffer: str, pnBufferSize: int) Video.GetOPFStringForApp(unVideoAppID: int, pnBufferSize: int)
+// (bool, pchBuffer: str, pnBufferSize: int) Video.GetOPFStringForApp(unVideoAppID: int, pnBufferSize: int)
 EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	int32 pnBufferSize = luaL_checkint(L, 2);
@@ -136,7 +136,7 @@ EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
 	lua_pushinteger(L, pnBufferSize);
-	return 4;
+	return 3;
 }
 
 void register_Video_auto(lua_State *L) {

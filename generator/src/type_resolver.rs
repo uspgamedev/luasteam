@@ -91,6 +91,18 @@ impl TypeResolver {
             };
         }
 
+        if let Some(stripped) = t.strip_suffix(" &") {
+            let (ttype, is_const) = if let Some(const_stripped) = stripped.strip_prefix("const ") {
+                (const_stripped.trim(), true)
+            } else {
+                (stripped.trim(), false)
+            };
+            return CppType::Reference {
+                ttype: self.resolve_base_type(ttype),
+                is_const,
+            };
+        }
+
         if let Some(stripped) = t.strip_suffix("*") {
             let (ttype, is_const) = if let Some(const_stripped) = stripped.strip_prefix("const ") {
                 (const_stripped.trim(), true)

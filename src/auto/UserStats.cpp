@@ -864,7 +864,7 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntries(lua_State *L) {
 // In C++:
 // SteamAPICall_t DownloadLeaderboardEntriesForUsers(SteamLeaderboard_t hSteamLeaderboard, const CSteamID * prgUsers, int cUsers);
 // In Lua:
-// uint64 UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard: uint64, cUsers: int, prgUsers: uint64[], callback: function)
+// uint64 UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard: uint64, prgUsers: uint64[], cUsers: int, callback: function)
 EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -876,7 +876,7 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 	luaL_checktype(L, 2, LUA_TTABLE);
 	std::vector<CSteamID> prgUsers(cUsers);
 	for(decltype(cUsers) i = 0; i < cUsers; i++) {
-		lua_rawgeti(L, -1, i+1);
+		lua_rawgeti(L, 2, i+1);
 		prgUsers[i] = CSteamID(luasteam::checkuint64(L, -1));
 		lua_pop(L, 1);
 	}
@@ -914,7 +914,7 @@ EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 // In C++:
 // SteamAPICall_t UploadLeaderboardScore(SteamLeaderboard_t hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore, const int32 * pScoreDetails, int cScoreDetailsCount);
 // In Lua:
-// uint64 UserStats.UploadLeaderboardScore(hSteamLeaderboard: uint64, eLeaderboardUploadScoreMethod: int, nScore: int, cScoreDetailsCount: int, pScoreDetails: int[], callback: function)
+// uint64 UserStats.UploadLeaderboardScore(hSteamLeaderboard: uint64, eLeaderboardUploadScoreMethod: int, nScore: int, pScoreDetails: int[], cScoreDetailsCount: int, callback: function)
 EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
@@ -928,7 +928,7 @@ EXTERN int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
 	luaL_checktype(L, 4, LUA_TTABLE);
 	std::vector<int32> pScoreDetails(cScoreDetailsCount);
 	for(decltype(cScoreDetailsCount) i = 0; i < cScoreDetailsCount; i++) {
-		lua_rawgeti(L, -1, i+1);
+		lua_rawgeti(L, 4, i+1);
 		pScoreDetails[i] = static_cast<int32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}

@@ -883,7 +883,7 @@ Function Reference
     :param int cMaxEntries:
     :param bool bIncludeLocallyDisabled:
     :returns: (int) Return value
-    :returns: (uint64) Value for `pvecPublishedFileID`
+    :returns: (uint64[]) Value for `pvecPublishedFileID`
     :SteamWorks: `GetSubscribedItems <https://partner.steamgames.com/doc/api/ISteamUGC#GetSubscribedItems>`_
 
     **Signature differences from C++ API:**
@@ -956,33 +956,25 @@ Function Reference
     :param bool bSuspend:
     :SteamWorks: `SuspendDownloads <https://partner.steamgames.com/doc/api/ISteamUGC#SuspendDownloads>`_
 
-.. function:: UGC.StartPlaytimeTracking(unNumPublishedFileIDs, callback)
+.. function:: UGC.StartPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback)
 
     🤖 **Auto-generated binding**
 
+    :param uint64[] pvecPublishedFileID:
     :param int unNumPublishedFileIDs:
     :param function callback: CallResult callback receiving struct `StartPlaytimeTrackingResult_t` and a boolean
     :returns: (uint64) Return value
-    :returns: (uint64) Value for `pvecPublishedFileID`
     :SteamWorks: `StartPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvecPublishedFileID`` is returned as an additional return value
-
-.. function:: UGC.StopPlaytimeTracking(unNumPublishedFileIDs, callback)
+.. function:: UGC.StopPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback)
 
     🤖 **Auto-generated binding**
 
+    :param uint64[] pvecPublishedFileID:
     :param int unNumPublishedFileIDs:
     :param function callback: CallResult callback receiving struct `StopPlaytimeTrackingResult_t` and a boolean
     :returns: (uint64) Return value
-    :returns: (uint64) Value for `pvecPublishedFileID`
     :SteamWorks: `StopPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvecPublishedFileID`` is returned as an additional return value
 
 .. function:: UGC.StopPlaytimeTrackingForAllItems(callback)
 

@@ -142,11 +142,11 @@ function UserStats.GetLeaderboardDisplayType(hSteamLeaderboard) end
 function UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback) end
 
 ---@param hSteamLeaderboard uint64
----@param cUsers integer
 ---@param prgUsers uint64[]
+---@param cUsers integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
-function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, cUsers, prgUsers, callback) end
+function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback) end
 
 ---@param hSteamLeaderboardEntries uint64
 ---@param index integer
@@ -159,11 +159,11 @@ function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index
 ---@param hSteamLeaderboard uint64
 ---@param eLeaderboardUploadScoreMethod integer
 ---@param nScore integer
----@param cScoreDetailsCount integer
 ---@param pScoreDetails integer[]
+---@param cScoreDetailsCount integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
-function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, cScoreDetailsCount, pScoreDetails, callback) end
+function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback) end
 
 ---@param hSteamLeaderboard uint64
 ---@param hUGC uint64

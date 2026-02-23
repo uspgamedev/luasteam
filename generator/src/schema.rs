@@ -223,6 +223,13 @@ impl SteamApi {
                 "ISteamUserStats",
                 vec![("DownloadLeaderboardEntriesForUsers", vec!["prgUsers"])],
             ),
+            (
+                "ISteamUGC",
+                vec![
+                    ("StartPlaytimeTracking", vec!["pvecPublishedFileID"]),
+                    ("StopPlaytimeTracking", vec!["pvecPublishedFileID"]),
+                ],
+            ),
         ];
 
         for (i_name, methods) in data {
@@ -393,6 +400,22 @@ impl SteamApi {
             (
                 "ISteamInventory",
                 vec![("DeserializeResult", "pBuffer", "unBufferSize")],
+            ),
+            (
+                "ISteamUGC",
+                vec![
+                    ("GetSubscribedItems", "pvecPublishedFileID", "cMaxEntries"),
+                    (
+                        "StartPlaytimeTracking",
+                        "pvecPublishedFileID",
+                        "unNumPublishedFileIDs",
+                    ),
+                    (
+                        "StopPlaytimeTracking",
+                        "pvecPublishedFileID",
+                        "unNumPublishedFileIDs",
+                    ),
+                ],
             ),
         ];
         for (i_name, data) in to_mark_counters {

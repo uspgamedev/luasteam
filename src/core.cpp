@@ -1,5 +1,4 @@
 #include "core.hpp"
-#include "UGC.hpp"
 #include "auto/auto.hpp"
 #include "extra.hpp"
 #include "input.hpp"
@@ -22,7 +21,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_user(L);
         luasteam::init_UserStats_auto(L);
         luasteam::init_utils(L);
-        luasteam::init_UGC(L);
+        luasteam::init_UGC_auto(L);
         luasteam::init_extra(L);
         luasteam::init_Apps_auto(L);
         luasteam::init_input(L);
@@ -79,7 +78,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_input(L);
     luasteam::shutdown_Apps_auto(L);
     luasteam::shutdown_extra(L);
-    luasteam::shutdown_UGC(L);
+    luasteam::shutdown_UGC_auto(L);
     luasteam::shutdown_utils(L);
     luasteam::shutdown_user(L);
     luasteam::shutdown_UserStats_auto(L);
@@ -101,6 +100,7 @@ void add_core(lua_State *L) {
     add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
+    add_func(L, "newSteamNetworkingIdentity", luasteam_newSteamNetworkingIdentity);
 }
 
 } // namespace luasteam
