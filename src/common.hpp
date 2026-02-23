@@ -33,6 +33,8 @@ void *checkvoid_ptr(lua_State *L, int nParam);
 // Lua API: luasteam.newSteamNetworkingIdentity(), identity:ParseString(str), identity:ToString()
 void push_SteamNetworkingIdentity(lua_State *L, SteamNetworkingIdentity val);
 SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int nParam);
+// Returns a pointer directly into the userdata storage — avoids a copy for const pointer/reference params.
+SteamNetworkingIdentity *check_SteamNetworkingIdentity_ptr(lua_State *L, int nParam);
 
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);

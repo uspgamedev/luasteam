@@ -112,13 +112,15 @@ void push_SteamNetworkingIdentity(lua_State *L, SteamNetworkingIdentity val) {
     lua_setmetatable(L, -2);
 }
 
-SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int nParam) {
+SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int nParam) { return *check_SteamNetworkingIdentity_ptr(L, nParam); }
+
+SteamNetworkingIdentity *check_SteamNetworkingIdentity_ptr(lua_State *L, int nParam) {
     luaL_argcheck(L, lua_isuserdata(L, nParam), nParam, "must be SteamNetworkingIdentity userdata");
     lua_rawgeti(L, LUA_REGISTRYINDEX, steamNetworkingIdentityMetatable_ref);
     lua_getmetatable(L, nParam);
     luaL_argcheck(L, lua_rawequal(L, -2, -1), nParam, "must be SteamNetworkingIdentity userdata");
     lua_pop(L, 2);
-    return *reinterpret_cast<SteamNetworkingIdentity *>(lua_touserdata(L, nParam));
+    return reinterpret_cast<SteamNetworkingIdentity *>(lua_touserdata(L, nParam));
 }
 
 void add_func(lua_State *L, const char *name, lua_CFunction func) {

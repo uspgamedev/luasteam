@@ -24,12 +24,16 @@ static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize:
 const MANUAL_STRUCTS: [&str; 1] = [
     "SteamNetworkingIdentity", // Uses private fields; must use accessor API (ParseString/ToString etc.)
 ];
+// Subset of MANUAL_STRUCTS that also provide a check_{}_ptr function returning a pointer,
+// avoiding a copy when passing as const pointer/reference in method params.
+const MANUAL_STRUCTS_WITH_PTR: [&str; 1] = ["SteamNetworkingIdentity"];
 
 struct Generator {
     api: SteamApi,
     type_resolver: TypeResolver,
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
     added_structs: HashSet<String>,
+    added_structs_with_ptr: HashSet<String>,
     generated_callresults: HashSet<String>,
     doc_generator: DocGenerator,
     luals_generator: LuaLsGenerator,
@@ -72,6 +76,7 @@ impl Generator {
             type_resolver,
             interface_callbacks,
             added_structs: HashSet::new(),
+            added_structs_with_ptr: HashSet::new(),
             generated_callresults: HashSet::new(),
             doc_generator,
             luals_generator,
@@ -251,8 +256,11 @@ impl Generator {
                     st.name.clone(),
                     SkipReason::ManualBlocklist("has private fields; use accessor API".to_string()),
                 ));
-                // Still add to added_structs so generate_check/push special-cases can be resolved
+                // Still add to added_structs so generate_check/push normal path works
                 self.added_structs.insert(st.name.clone());
+                if MANUAL_STRUCTS_WITH_PTR.contains(&st.name.as_str()) {
+                    self.added_structs_with_ptr.insert(st.name.clone());
+                }
                 continue;
             }
             match self.generate_struct(st) {
@@ -395,12 +403,20 @@ impl Generator {
         h.line("void add_consts_auto(lua_State *L);");
         let mut structs_sorted: Vec<_> = self.added_structs.iter().collect();
         structs_sorted.sort();
-        for st in structs_sorted {
+        for st in &structs_sorted {
             if MANUAL_STRUCTS.contains(&st.as_str()) {
                 continue;
             }
             h.line(&format!("{} check_{}(lua_State *L, int index);", st, st));
             h.line(&format!("void push_{}(lua_State *L, {} val);", st, st));
+        }
+        let mut structs_with_ptr_sorted: Vec<_> = self.added_structs_with_ptr.iter().collect();
+        structs_with_ptr_sorted.sort();
+        for st in structs_with_ptr_sorted {
+            if MANUAL_STRUCTS.contains(&st.as_str()) {
+                continue; // declared in common.hpp
+            }
+            h.line(&format!("{} *check_{}_ptr(lua_State *L, int index);", st, st));
         }
         for name in interfaces {
             h.line(&format!("void register_{}_auto(lua_State *L);", name));
@@ -1277,53 +1293,9 @@ impl Generator {
                         pointer_params.push((param, false));
                     }
                 }
-                // TODO: This should not be a special case. The const pointer case, when no input array size is given, should do this.
-                // TODO: We should probably change check_SteamNetworkingIdentity to check_ptr_SteamNetworkingIdentity which returns a pointer, so things don't need to be copied. But then this will need to be dealt with in other places.
-                Pointer {
-                    ttype: "SteamNetworkingIdentity",
-                    is_const: true,
-                } => {
-                    // Optional input: nil → nullptr is valid for some calls (e.g. GetAuthSessionTicket).
-                    s.line(&format!(
-                        "SteamNetworkingIdentity {n}_val;",
-                        n = param.paramname
-                    ));
-                    s.line(&format!(
-                        "if (!lua_isnil(L, {idx})) {n}_val = luasteam::check_SteamNetworkingIdentity(L, {idx});",
-                        n = param.paramname,
-                        idx = lua_idx
-                    ));
-                    s.line(&format!(
-                        "const SteamNetworkingIdentity *{n} = lua_isnil(L, {idx}) ? nullptr : &{n}_val;",
-                        n = param.paramname,
-                        idx = lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(
-                        param.paramname.clone(),
-                        LType::Userdata("SteamNetworkingIdentity"),
-                    );
-                    lua_idx += 1;
-                }
-                Reference {
-                    ttype: "SteamNetworkingIdentity",
-                    is_const: true,
-                } => {
-                    s.line(&format!(
-                        "SteamNetworkingIdentity {n} = luasteam::check_SteamNetworkingIdentity(L, {idx});",
-                        n = param.paramname,
-                        idx = lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(
-                        param.paramname.clone(),
-                        LType::Userdata("SteamNetworkingIdentity"),
-                    );
-                    lua_idx += 1;
-                }
                 Pointer {
                     is_const: true,
-                    ttype: _,
+                    ttype,
                 } => {
                     if let Some(sz) = param.input_array_size_param() {
                         let p = method
@@ -1373,6 +1345,57 @@ impl Generator {
                                 sz
                             )));
                         }
+                    } else {
+                        // Non-array const pointer — treat as optional input (nil → nullptr).
+                        // If the type has a _ptr check function, use it to avoid a copy.
+                        if self.added_structs_with_ptr.contains(ttype) {
+                            s.line(&format!(
+                                "const {t} *{n} = lua_isnil(L, {idx}) ? nullptr : luasteam::check_{t}_ptr(L, {idx});",
+                                t = ttype, n = param.paramname, idx = lua_idx
+                            ));
+                            cpp_call_params.push(param.paramname.clone());
+                            sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                            lua_idx += 1;
+                        } else if self.added_structs.contains(ttype) {
+                            s.line(&format!("{t} {n}_val;", t = ttype, n = param.paramname));
+                            s.line(&format!(
+                                "if (!lua_isnil(L, {idx})) {n}_val = luasteam::check_{t}(L, {idx});",
+                                n = param.paramname, idx = lua_idx, t = ttype
+                            ));
+                            s.line(&format!(
+                                "const {t} *{n} = lua_isnil(L, {idx}) ? nullptr : &{n}_val;",
+                                t = ttype, n = param.paramname, idx = lua_idx
+                            ));
+                            cpp_call_params.push(param.paramname.clone());
+                            sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                            lua_idx += 1;
+                        } else {
+                            return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                        }
+                    }
+                }
+                CppType::Reference {
+                    ttype,
+                    is_const: true,
+                } => {
+                    // Const reference — treat as required input.
+                    // If the type has a _ptr check function, use it to avoid a copy.
+                    if self.added_structs_with_ptr.contains(ttype) {
+                        s.line(&format!(
+                            "const {t} &{n} = *luasteam::check_{t}_ptr(L, {idx});",
+                            t = ttype, n = param.paramname, idx = lua_idx
+                        ));
+                        cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                        lua_idx += 1;
+                    } else if self.added_structs.contains(ttype) {
+                        s.line(&format!(
+                            "{t} {n} = luasteam::check_{t}(L, {idx});",
+                            t = ttype, n = param.paramname, idx = lua_idx
+                        ));
+                        cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                        lua_idx += 1;
                     } else {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }

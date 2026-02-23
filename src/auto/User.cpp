@@ -577,9 +577,7 @@ EXTERN int luasteam_User_GetAuthSessionTicket(lua_State *L) {
 	int cbMaxTicket = luaL_checkint(L, 1);
 	uint32 pcbTicket = cbMaxTicket;
 	std::vector<unsigned char> pTicket(cbMaxTicket);
-	SteamNetworkingIdentity pSteamNetworkingIdentity_val;
-	if (!lua_isnil(L, 2)) pSteamNetworkingIdentity_val = luasteam::check_SteamNetworkingIdentity(L, 2);
-	const SteamNetworkingIdentity *pSteamNetworkingIdentity = lua_isnil(L, 2) ? nullptr : &pSteamNetworkingIdentity_val;
+	const SteamNetworkingIdentity *pSteamNetworkingIdentity = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 2);
 	HAuthTicket __ret = SteamUser()->GetAuthSessionTicket(pTicket.data(), cbMaxTicket, &pcbTicket, pSteamNetworkingIdentity);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pTicket.data()), pcbTicket);

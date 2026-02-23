@@ -21,7 +21,7 @@ pub enum LType {
         struct_t: String,
     }, // Represents a callback parameter for callresult methods
     /// Arbitrary userdata (e.g. SteamNetworkingIdentity)
-    Userdata(&'static str),
+    Userdata(String),
 }
 
 impl LType {
