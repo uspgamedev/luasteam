@@ -4,7 +4,6 @@
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
-#include "user.hpp"
 #include "utils.hpp"
 
 // ========================
@@ -19,7 +18,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_common(L);
         luasteam::init_structs_auto(L);
         luasteam::init_Friends_auto(L);
-        luasteam::init_user(L);
+        luasteam::init_User_auto(L);
         luasteam::init_UserStats_auto(L);
         luasteam::init_utils(L);
         luasteam::init_UGC_auto(L);
@@ -81,7 +80,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_extra(L);
     luasteam::shutdown_UGC_auto(L);
     luasteam::shutdown_utils(L);
-    luasteam::shutdown_user(L);
+    luasteam::shutdown_User_auto(L);
     luasteam::shutdown_UserStats_auto(L);
     luasteam::shutdown_Friends_auto(L);
     luasteam::shutdown_common(L);
