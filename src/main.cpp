@@ -6,7 +6,6 @@
 #include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
-#include "utils.hpp"
 
 // Creates and returns a table with all functions
 EXTERN int luaopen_luasteam(lua_State *L) {
@@ -15,7 +14,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_Friends_auto(L);
     luasteam::add_User_auto(L);
     luasteam::add_UserStats_auto(L);
-    luasteam::add_utils(L);
+    luasteam::add_Utils_auto(L);
     luasteam::add_UGC_auto(L);
     luasteam::add_extra(L);
     luasteam::add_Apps_auto(L);
