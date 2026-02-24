@@ -61,7 +61,10 @@ impl TypeResolver {
         type_map.insert("const char *".to_string(), "const char *".to_string());
         type_map.insert("double".to_string(), "double".to_string());
 
-        Self { type_map, opaque_handles }
+        Self {
+            type_map,
+            opaque_handles,
+        }
     }
 
     /// Returns the set of opaque handle type names (void* typedefs).

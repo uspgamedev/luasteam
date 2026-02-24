@@ -1,7 +1,6 @@
 #include "core.hpp"
 #include "auto/auto.hpp"
 #include "extra.hpp"
-#include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
 
@@ -24,7 +23,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_UGC_auto(L);
         luasteam::init_extra(L);
         luasteam::init_Apps_auto(L);
-        luasteam::init_input(L);
+        luasteam::init_Input_auto(L);
         // luasteam::init_networkingSockets(L);
         // luasteam::init_networkingUtils(L);
         luasteam::init_Matchmaking_auto(L);
@@ -75,7 +74,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_Matchmaking_auto(L);
     // luasteam::shutdown_networkingUtils(L);
     // luasteam::shutdown_networkingSockets(L);
-    luasteam::shutdown_input(L);
+    luasteam::shutdown_Input_auto(L);
     luasteam::shutdown_Apps_auto(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_UGC_auto(L);

@@ -13,7 +13,12 @@ impl LuaLsGenerator {
         Self
     }
 
-    pub fn write_index(&self, output_dir: &Path, interface_names: &[String], opaque_handles: &std::collections::HashSet<String>) {
+    pub fn write_index(
+        &self,
+        output_dir: &Path,
+        interface_names: &[String],
+        opaque_handles: &std::collections::HashSet<String>,
+    ) {
         let path = output_dir.join("luasteam.d.lua");
         let content = self.generate_index(interface_names, opaque_handles);
         fs::write(path, content).expect("Unable to write LuaLS index file");
@@ -39,7 +44,11 @@ impl LuaLsGenerator {
         fs::write(path, content).expect("Unable to write LuaLS interface file");
     }
 
-    fn generate_index(&self, interface_names: &[String], opaque_handles: &std::collections::HashSet<String>) -> String {
+    fn generate_index(
+        &self,
+        interface_names: &[String],
+        opaque_handles: &std::collections::HashSet<String>,
+    ) -> String {
         let mut cb = CodeBuilder::new();
 
         cb.line("---@alias uint64 userdata");
@@ -68,7 +77,11 @@ impl LuaLsGenerator {
             // Class definition with fields
             cb.line(&format!("---@class {}", st.name));
             for (fieldname, ltype) in st.readable_fields {
-                cb.line(&format!("---@field {} {}", fieldname, ltype.to_luals_string()));
+                cb.line(&format!(
+                    "---@field {} {}",
+                    fieldname,
+                    ltype.to_luals_string()
+                ));
             }
             cb.line(&format!("local {} = {{}}", st.name));
             cb.preceeding_blank_line();
@@ -76,13 +89,25 @@ impl LuaLsGenerator {
             // Methods on the class
             for (lua_name, sig) in st.method_signatures {
                 for param in &sig.params {
-                    cb.line(&format!("---@param {} {}", param.name, param.ltype.to_luals_string()));
+                    cb.line(&format!(
+                        "---@param {} {}",
+                        param.name,
+                        param.ltype.to_luals_string()
+                    ));
                 }
                 if let Some(ret) = &sig.return_type {
                     cb.line(&format!("---@return {}", ret.to_luals_string()));
                 }
-                let params = sig.params.iter().map(|p| p.name.as_str()).collect::<Vec<_>>().join(", ");
-                cb.line(&format!("function {}:{}({}) end", st.name, lua_name, params));
+                let params = sig
+                    .params
+                    .iter()
+                    .map(|p| p.name.as_str())
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                cb.line(&format!(
+                    "function {}:{}({}) end",
+                    st.name, lua_name, params
+                ));
                 cb.preceeding_blank_line();
             }
 
@@ -156,7 +181,11 @@ impl LuaLsGenerator {
         cb.preceeding_blank_line();
     }
 
-    pub fn write_callback_interfaces(&self, output_dir: &Path, interfaces: &[CallbackInterfaceDocInfo]) {
+    pub fn write_callback_interfaces(
+        &self,
+        output_dir: &Path,
+        interfaces: &[CallbackInterfaceDocInfo],
+    ) {
         if interfaces.is_empty() {
             return;
         }
@@ -167,10 +196,16 @@ impl LuaLsGenerator {
             let name = &iface.name;
             cb.line(&format!("---@class {}", name));
             for method in &iface.methods {
-                let params_str: Vec<String> = method.params.iter()
+                let params_str: Vec<String> = method
+                    .params
+                    .iter()
                     .map(|p| format!("{}: {}", p.name, p.ltype.to_luals_string()))
                     .collect();
-                cb.line(&format!("---@field {} fun({})", method.name, params_str.join(", ")));
+                cb.line(&format!(
+                    "---@field {} fun({})",
+                    method.name,
+                    params_str.join(", ")
+                ));
             }
             cb.line(&format!("local {} = {{}}", name));
             cb.preceeding_blank_line();

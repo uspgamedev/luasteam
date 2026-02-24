@@ -226,25 +226,35 @@ impl DocGenerator {
             if let LType::CallresultCallback { struct_t } = &param.ltype {
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
             } else if param_desc.is_empty() {
-                doc.push_str(&format!("    :param {} {}:\n", param.ltype.to_rst_link(&self.structs), param.name));
+                doc.push_str(&format!(
+                    "    :param {} {}:\n",
+                    param.ltype.to_rst_link(&self.structs),
+                    param.name
+                ));
             } else {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
-                    param.ltype.to_rst_link(&self.structs), param.name, param_desc
+                    param.ltype.to_rst_link(&self.structs),
+                    param.name,
+                    param_desc
                 ));
             }
         }
 
         // Return values from signature
         if let Some(ret_type) = &signature.return_type {
-            doc.push_str(&format!("    :returns: ({}) Return value\n", ret_type.to_rst_link(&self.structs)));
+            doc.push_str(&format!(
+                "    :returns: ({}) Return value\n",
+                ret_type.to_rst_link(&self.structs)
+            ));
         }
 
         // Output parameters become additional return values
         for output_param in &signature.output_params {
             doc.push_str(&format!(
                 "    :returns: ({}) Value for `{}`\n",
-                output_param.ltype.to_rst_link(&self.structs), output_param.name
+                output_param.ltype.to_rst_link(&self.structs),
+                output_param.name
             ));
         }
 
@@ -484,8 +494,7 @@ impl DocGenerator {
             // Methods
             if !st.method_signatures.is_empty() {
                 for (lua_name, sig) in st.method_signatures {
-                    let params: Vec<String> =
-                        sig.params.iter().map(|p| p.name.clone()).collect();
+                    let params: Vec<String> = sig.params.iter().map(|p| p.name.clone()).collect();
                     doc.push_str(&format!(
                         ".. function:: {}:{}({})\n\n",
                         st.name,
@@ -495,10 +504,17 @@ impl DocGenerator {
                     doc.push_str("    🤖 **Auto-generated binding**\n\n");
 
                     for param in &sig.params {
-                        doc.push_str(&format!("    :param {} {}:\n", param.ltype.to_rst_link(&self.structs), param.name));
+                        doc.push_str(&format!(
+                            "    :param {} {}:\n",
+                            param.ltype.to_rst_link(&self.structs),
+                            param.name
+                        ));
                     }
                     if let Some(ret) = &sig.return_type {
-                        doc.push_str(&format!("    :returns: ({})\n", ret.to_rst_link(&self.structs)));
+                        doc.push_str(&format!(
+                            "    :returns: ({})\n",
+                            ret.to_rst_link(&self.structs)
+                        ));
                     }
                     doc.push('\n');
                 }
@@ -508,12 +524,17 @@ impl DocGenerator {
         doc
     }
 
-    pub fn generate_callback_interfaces_doc(&self, interfaces: &[CallbackInterfaceDocInfo]) -> String {
+    pub fn generate_callback_interfaces_doc(
+        &self,
+        interfaces: &[CallbackInterfaceDocInfo],
+    ) -> String {
         let mut doc = String::new();
 
         doc.push_str("====================\nCallback Interfaces\n====================\n\n");
         doc.push_str(".. note::\n");
-        doc.push_str("   These are pure-virtual C++ interfaces that you implement in Lua by providing\n");
+        doc.push_str(
+            "   These are pure-virtual C++ interfaces that you implement in Lua by providing\n",
+        );
         doc.push_str("   a table of callback functions to the constructor.\n\n");
 
         for iface in interfaces {
@@ -524,16 +545,21 @@ impl DocGenerator {
             doc.push_str(&format!("{}\n{}\n{}\n\n", bar, name, bar));
 
             let param_names: Vec<&str> = iface.methods.iter().map(|m| m.name.as_str()).collect();
-            doc.push_str(&format!(
-                ".. function:: Steam.new{}(callbacks)\n\n",
-                name
-            ));
+            doc.push_str(&format!(".. function:: Steam.new{}(callbacks)\n\n", name));
             doc.push_str("    🤖 Constructor — creates a new callback interface userdata.\n\n");
             doc.push_str("    :param table callbacks: Table of callback functions:\n\n");
 
             for method in &iface.methods {
-                let params_str: Vec<String> = method.params.iter()
-                    .map(|p| format!("{}: {}", p.name, p.ltype.to_lua_doc_reference(&self.structs)))
+                let params_str: Vec<String> = method
+                    .params
+                    .iter()
+                    .map(|p| {
+                        format!(
+                            "{}: {}",
+                            p.name,
+                            p.ltype.to_lua_doc_reference(&self.structs)
+                        )
+                    })
                     .collect();
                 doc.push_str(&format!(
                     "        * **{}** ``function({})``\n",
@@ -542,7 +568,10 @@ impl DocGenerator {
                 ));
             }
             doc.push('\n');
-            doc.push_str(&format!("    :returns: ({}) New callback interface userdata.\n\n", name));
+            doc.push_str(&format!(
+                "    :returns: ({}) New callback interface userdata.\n\n",
+                name
+            ));
 
             let _ = param_names;
         }

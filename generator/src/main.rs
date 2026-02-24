@@ -12,10 +12,15 @@ mod type_resolver;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
-use doc_generator::{CallbackInterfaceDocInfo, CallbackMethodDocInfo, CallbackParamDocInfo, DocGenerator, StructDocInfo};
+use doc_generator::{
+    CallbackInterfaceDocInfo, CallbackMethodDocInfo, CallbackParamDocInfo, DocGenerator,
+    StructDocInfo,
+};
 use lua_type_info::{LType, LuaMethodSignature};
 use luals_generator::LuaLsGenerator;
-use schema::{CallbackStruct, Field, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
+use schema::{
+    CallbackStruct, Field, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct,
+};
 use type_resolver::TypeResolver;
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
@@ -34,7 +39,7 @@ pub struct StructGenOutput {
     pub shutdown_code: String,
     pub add_code: String,
     // For documentation
-    pub readable_fields: Vec<(String, LType)>,     // (fieldname, ltype)
+    pub readable_fields: Vec<(String, LType)>, // (fieldname, ltype)
     pub method_signatures: Vec<(String, LuaMethodSignature)>, // (lua_name, sig)
 }
 
@@ -385,7 +390,8 @@ impl Generator {
 
         // Populate added_callback_interfaces so generate_method can use them
         for iface in &callback_interfaces {
-            self.added_callback_interfaces.insert(iface.classname.clone());
+            self.added_callback_interfaces
+                .insert(iface.classname.clone());
         }
 
         let mut cpp = CodeBuilder::new();
@@ -415,7 +421,10 @@ impl Generator {
             cpp.line(&format!("~{}Impl() {{", name));
             cpp.indent_right();
             for method in &iface.methods {
-                cpp.line(&format!("luaL_unref(L, LUA_REGISTRYINDEX, ref_{});", method.methodname));
+                cpp.line(&format!(
+                    "luaL_unref(L, LUA_REGISTRYINDEX, ref_{});",
+                    method.methodname
+                ));
             }
             cpp.indent_left();
             cpp.line("}");
@@ -429,11 +438,18 @@ impl Generator {
                     .map(|p| format!("{} {}", p.paramtype, p.paramname))
                     .collect::<Vec<_>>()
                     .join(", ");
-                cpp.line(&format!("void {}({}) override {{", method.methodname, params_decl));
+                cpp.line(&format!(
+                    "void {}({}) override {{",
+                    method.methodname, params_decl
+                ));
                 cpp.indent_right();
-                cpp.line(&format!("lua_rawgeti(L, LUA_REGISTRYINDEX, ref_{});", method.methodname));
+                cpp.line(&format!(
+                    "lua_rawgeti(L, LUA_REGISTRYINDEX, ref_{});",
+                    method.methodname
+                ));
                 for param in &method.params {
-                    let (ok, code, _) = self.generate_push(&param.paramtype, &param.paramname, cpp.indent());
+                    let (ok, code, _) =
+                        self.generate_push(&param.paramtype, &param.paramname, cpp.indent());
                     if ok {
                         cpp.raw(&code);
                     } else {
@@ -453,14 +469,23 @@ impl Generator {
             cpp.line(&format!("static int lua_new{}(lua_State *L) {{", name));
             cpp.indent_right();
             cpp.line("luaL_checktype(L, 1, LUA_TTABLE);");
-            cpp.line(&format!("auto *impl = ({}Impl*)lua_newuserdata(L, sizeof({}Impl));", name, name));
+            cpp.line(&format!(
+                "auto *impl = ({}Impl*)lua_newuserdata(L, sizeof({}Impl));",
+                name, name
+            ));
             cpp.line(&format!("new (impl) {}Impl();", name));
             cpp.line("impl->L = L;");
             for method in &iface.methods {
                 cpp.line(&format!("lua_getfield(L, 1, \"{}\");", method.methodname));
-                cpp.line(&format!("impl->ref_{} = luaL_ref(L, LUA_REGISTRYINDEX);", method.methodname));
+                cpp.line(&format!(
+                    "impl->ref_{} = luaL_ref(L, LUA_REGISTRYINDEX);",
+                    method.methodname
+                ));
             }
-            cpp.line(&format!("lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);", name));
+            cpp.line(&format!(
+                "lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
+                name
+            ));
             cpp.line("lua_setmetatable(L, -2);");
             cpp.line("return 1;");
             cpp.indent_left();
@@ -470,7 +495,10 @@ impl Generator {
             // __gc
             cpp.line(&format!("static int {}_gc(lua_State *L) {{", name));
             cpp.indent_right();
-            cpp.line(&format!("auto *impl = ({}Impl*)luaL_checkudata(L, 1, \"{}\");", name, name));
+            cpp.line(&format!(
+                "auto *impl = ({}Impl*)luaL_checkudata(L, 1, \"{}\");",
+                name, name
+            ));
             cpp.line(&format!("impl->~{}Impl();", name));
             cpp.line("return 0;");
             cpp.indent_left();
@@ -485,9 +513,15 @@ impl Generator {
         // check_* functions
         for iface in &callback_interfaces {
             let name = &iface.classname;
-            cpp.line(&format!("{} *check_{}(lua_State *L, int idx) {{", name, name));
+            cpp.line(&format!(
+                "{} *check_{}(lua_State *L, int idx) {{",
+                name, name
+            ));
             cpp.indent_right();
-            cpp.line(&format!("return ({}Impl*)luaL_checkudata(L, idx, \"{}\");", name, name));
+            cpp.line(&format!(
+                "return ({}Impl*)luaL_checkudata(L, idx, \"{}\");",
+                name, name
+            ));
             cpp.indent_left();
             cpp.line("}");
             cpp.preceeding_blank_line();
@@ -500,7 +534,10 @@ impl Generator {
             let name = &iface.classname;
             cpp.line(&format!("luaL_newmetatable(L, \"{}\");", name));
             cpp.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
-            cpp.line(&format!("{0}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);", name));
+            cpp.line(&format!(
+                "{0}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
+                name
+            ));
         }
         cpp.indent_left();
         cpp.line("}");
@@ -510,7 +547,10 @@ impl Generator {
         cpp.indent_right();
         for iface in &callback_interfaces {
             let name = &iface.classname;
-            cpp.line(&format!("luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);", name));
+            cpp.line(&format!(
+                "luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
+                name
+            ));
             cpp.line(&format!("{}Metatable_ref = LUA_NOREF;", name));
         }
         cpp.indent_left();
@@ -544,7 +584,8 @@ impl Generator {
                             .params
                             .iter()
                             .map(|p| {
-                                let (_, _, ltype) = self.generate_push(&p.paramtype, &p.paramname, 0);
+                                let (_, _, ltype) =
+                                    self.generate_push(&p.paramtype, &p.paramname, 0);
                                 CallbackParamDocInfo {
                                     name: p.paramname.clone(),
                                     ltype,
@@ -564,12 +605,15 @@ impl Generator {
             })
             .collect();
 
-        let doc_content = self.doc_generator.generate_callback_interfaces_doc(&doc_infos);
+        let doc_content = self
+            .doc_generator
+            .generate_callback_interfaces_doc(&doc_infos);
         fs::write("../docs/auto/callback_interfaces.rst", doc_content)
             .expect("Unable to write callback_interfaces.rst");
 
         let luals_dir = Path::new("../luals");
-        self.luals_generator.write_callback_interfaces(luals_dir, &doc_infos);
+        self.luals_generator
+            .write_callback_interfaces(luals_dir, &doc_infos);
     }
 
     fn generate_struct_method(
@@ -624,7 +668,10 @@ impl Generator {
                     s.line(&format!("bool {} = lua_toboolean(L, {});", n, idx));
                     LType::Boolean
                 }
-                Normal("uint64") | Normal("unsigned long long") | Normal("CSteamID") | Normal("CGameID") => {
+                Normal("uint64")
+                | Normal("unsigned long long")
+                | Normal("CSteamID")
+                | Normal("CGameID") => {
                     s.line(&format!("{} {}(luasteam::checkuint64(L, {}));", t, n, idx));
                     LType::Uint64
                 }
@@ -636,7 +683,10 @@ impl Generator {
                         "char"
                     };
                     if buffer_elem_type == "char" {
-                        s.line(&format!("const char *{} = luaL_checkstring(L, {});", n, idx));
+                        s.line(&format!(
+                            "const char *{} = luaL_checkstring(L, {});",
+                            n, idx
+                        ));
                     } else {
                         s.line(&format!(
                             "const {t} *{n} = reinterpret_cast<const {t} *>(luaL_checkstring(L, {idx}));",
@@ -662,7 +712,10 @@ impl Generator {
                         return None;
                     }
                 }
-                Pointer { is_const: true, ttype } => {
+                Pointer {
+                    is_const: true,
+                    ttype,
+                } => {
                     if self.added_structs_with_ptr.contains(ttype) {
                         s.line(&format!(
                             "const {} *{} = luasteam::check_{}_ptr(L, {});",
@@ -679,7 +732,10 @@ impl Generator {
                     }
                     LType::Userdata(ttype.to_string())
                 }
-                Reference { is_const: true, ttype } => {
+                Reference {
+                    is_const: true,
+                    ttype,
+                } => {
                     if self.added_structs_with_ptr.contains(ttype) {
                         s.line(&format!(
                             "const {} &{} = *luasteam::check_{}_ptr(L, {});",
@@ -706,7 +762,11 @@ impl Generator {
         let call = if cpp_call_params.is_empty() {
             format!("self->{}()", method.methodname)
         } else {
-            format!("self->{}({})", method.methodname, cpp_call_params.join(", "))
+            format!(
+                "self->{}({})",
+                method.methodname,
+                cpp_call_params.join(", ")
+            )
         };
 
         let return_count;
@@ -716,7 +776,10 @@ impl Generator {
         } else {
             let resolved_ret = self.type_resolver.resolve_type(&method.returntype);
             match resolved_ret {
-                CppType::Pointer { ttype, is_const: true } if self.added_structs.contains(ttype) => {
+                CppType::Pointer {
+                    ttype,
+                    is_const: true,
+                } if self.added_structs.contains(ttype) => {
                     s.line(&format!("const {} *__ret = {};", ttype, call));
                     s.line("if (__ret != nullptr) {");
                     s.indent_right();
@@ -754,8 +817,7 @@ impl Generator {
         let name = &st.name;
 
         // Separate accessible vs private fields
-        let accessible_fields: Vec<&Field> =
-            st.fields.iter().filter(|f| !f.private).collect();
+        let accessible_fields: Vec<&Field> = st.fields.iter().filter(|f| !f.private).collect();
 
         // Generate method C functions
         let mut methods: Vec<(String, String)> = Vec::new(); // (lua_name, c_func_name)
@@ -783,7 +845,10 @@ impl Generator {
             // Special case: const char ** with string_count metadata
             if let Some(count_field) = &field.string_count {
                 let count_field = count_field.clone();
-                readable_field_types.push((field.fieldname.clone(), LType::Array(Box::new(LType::String))));
+                readable_field_types.push((
+                    field.fieldname.clone(),
+                    LType::Array(Box::new(LType::String)),
+                ));
                 string_array_fields.push((field, count_field));
                 continue;
             }
@@ -846,9 +911,15 @@ impl Generator {
         if has_readable {
             cpp.line("if (lua_type(L, 2) != LUA_TSTRING) { lua_pushnil(L); return 1; }");
             cpp.line("const char *key = lua_tostring(L, 2);");
-            cpp.line(&format!("{} *self = ({}*)lua_touserdata(L, 1);", name, name));
+            cpp.line(&format!(
+                "{} *self = ({}*)lua_touserdata(L, 1);",
+                name, name
+            ));
             for (field, push_code) in &readable_fields {
-                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.line(&format!(
+                    "if (strcmp(key, \"{}\") == 0) {{",
+                    field.fieldname
+                ));
                 cpp.indent_right();
                 cpp.raw(push_code);
                 cpp.line("return 1;");
@@ -856,12 +927,21 @@ impl Generator {
                 cpp.line("}");
             }
             for (field, count_field) in &string_array_fields {
-                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.line(&format!(
+                    "if (strcmp(key, \"{}\") == 0) {{",
+                    field.fieldname
+                ));
                 cpp.indent_right();
                 cpp.line("lua_newtable(L);");
-                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++) {{", count_field));
+                cpp.line(&format!(
+                    "for (int32 _i = 0; _i < self->{}; _i++) {{",
+                    count_field
+                ));
                 cpp.indent_right();
-                cpp.line(&format!("lua_pushstring(L, self->{}[_i]);", field.fieldname));
+                cpp.line(&format!(
+                    "lua_pushstring(L, self->{}[_i]);",
+                    field.fieldname
+                ));
                 cpp.line("lua_rawseti(L, -2, _i + 1);");
                 cpp.indent_left();
                 cpp.line("}");
@@ -882,9 +962,15 @@ impl Generator {
             cpp.indent_right();
             cpp.line("if (lua_type(L, 2) != LUA_TSTRING) { return 0; }");
             cpp.line("const char *key = lua_tostring(L, 2);");
-            cpp.line(&format!("{} *self = ({}*)lua_touserdata(L, 1);", name, name));
+            cpp.line(&format!(
+                "{} *self = ({}*)lua_touserdata(L, 1);",
+                name, name
+            ));
             for (field, check_code, _) in &writable_fields {
-                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.line(&format!(
+                    "if (strcmp(key, \"{}\") == 0) {{",
+                    field.fieldname
+                ));
                 cpp.indent_right();
                 cpp.raw(check_code);
                 cpp.line("return 0;");
@@ -892,12 +978,18 @@ impl Generator {
                 cpp.line("}");
             }
             for (field, count_field) in &string_array_fields {
-                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.line(&format!(
+                    "if (strcmp(key, \"{}\") == 0) {{",
+                    field.fieldname
+                ));
                 cpp.indent_right();
                 cpp.line("luaL_checktype(L, 3, LUA_TTABLE);");
                 cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
                 cpp.indent_right();
-                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++)", count_field));
+                cpp.line(&format!(
+                    "for (int32 _i = 0; _i < self->{}; _i++)",
+                    count_field
+                ));
                 cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
@@ -930,11 +1022,17 @@ impl Generator {
         if has_gc {
             cpp.line(&format!("static int {}_gc(lua_State *L) {{", name));
             cpp.indent_right();
-            cpp.line(&format!("{} *self = ({}*)lua_touserdata(L, 1);", name, name));
+            cpp.line(&format!(
+                "{} *self = ({}*)lua_touserdata(L, 1);",
+                name, name
+            ));
             for (field, count_field) in &string_array_fields {
                 cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
                 cpp.indent_right();
-                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++)", count_field));
+                cpp.line(&format!(
+                    "for (int32 _i = 0; _i < self->{}; _i++)",
+                    count_field
+                ));
                 cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
@@ -1005,7 +1103,10 @@ impl Generator {
         let mut ns = CodeBuilder::new();
 
         // push function
-        ns.line(&format!("void push_{}(lua_State *L, {} val) {{", name, name));
+        ns.line(&format!(
+            "void push_{}(lua_State *L, {} val) {{",
+            name, name
+        ));
         ns.indent_right();
         ns.line(&format!(
             "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}));",
@@ -1198,7 +1299,10 @@ impl Generator {
             if MANUAL_STRUCTS.contains(&st.as_str()) {
                 continue; // declared in common.hpp
             }
-            h.line(&format!("{} *check_{}_ptr(lua_State *L, int index);", st, st));
+            h.line(&format!(
+                "{} *check_{}_ptr(lua_State *L, int index);",
+                st, st
+            ));
         }
         for name in interfaces {
             h.line(&format!("void register_{}_auto(lua_State *L);", name));
@@ -1272,7 +1376,11 @@ impl Generator {
                             "{}{} = ({})lua_touserdata(L, {});",
                             type_prefix, value_accessor, type_name, lua_idx
                         ));
-                        (true, out.finish(), LType::LightUserdata(type_name.to_string()))
+                        (
+                            true,
+                            out.finish(),
+                            LType::LightUserdata(type_name.to_string()),
+                        )
                     } else if self.added_structs.contains(type_name) {
                         out.line(&format!(
                             "{}{} = luasteam::check_{}(L, {});",
@@ -1411,7 +1519,10 @@ impl Generator {
                             LType::LightUserdata(s.to_string()),
                         )
                     } else if self.added_structs.contains(s) {
-                        (format!("luasteam::push_{}(L, {});", s, value_accessor), LType::Userdata(s.to_string()))
+                        (
+                            format!("luasteam::push_{}(L, {});", s, value_accessor),
+                            LType::Userdata(s.to_string()),
+                        )
                     } else {
                         (
                             format!("// Skip unsupported type: {}", ftype),
@@ -1460,9 +1571,15 @@ impl Generator {
             ),
             CppType::Reference { ttype, .. } => {
                 if self.added_structs.contains(ttype) {
-                    (format!("luasteam::push_{}(L, {});", ttype, value_accessor), LType::Userdata(ttype.to_string()))
+                    (
+                        format!("luasteam::push_{}(L, {});", ttype, value_accessor),
+                        LType::Userdata(ttype.to_string()),
+                    )
                 } else {
-                    (format!("// Skip unsupported reference type: {}", ftype), LType::Integer)
+                    (
+                        format!("// Skip unsupported reference type: {}", ftype),
+                        LType::Integer,
+                    )
                 }
             }
             _ => (
@@ -1927,17 +2044,29 @@ impl Generator {
                                 let struct_name = struct_name.to_string();
                                 let sz = sz.clone();
                                 s.line(&format!("int {} = (int)lua_objlen(L, {});", sz, lua_idx));
-                                s.line(&format!("std::vector<{} *> {}_vec({});", struct_name, param.paramname, sz));
+                                s.line(&format!(
+                                    "std::vector<{} *> {}_vec({});",
+                                    struct_name, param.paramname, sz
+                                ));
                                 s.line(&format!("for (int _i = 0; _i < {}; _i++) {{", sz));
                                 s.indent_right();
                                 s.line(&format!("lua_rawgeti(L, {}, _i + 1);", lua_idx));
-                                s.line(&format!("{}_vec[_i] = luasteam::check_{}_ptr(L, -1);", param.paramname, struct_name));
+                                s.line(&format!(
+                                    "{}_vec[_i] = luasteam::check_{}_ptr(L, -1);",
+                                    param.paramname, struct_name
+                                ));
                                 s.line("lua_pop(L, 1);");
                                 s.indent_left();
                                 s.line("}");
-                                s.line(&format!("{} **{} = {}_vec.data();", struct_name, param.paramname, param.paramname));
+                                s.line(&format!(
+                                    "{} **{} = {}_vec.data();",
+                                    struct_name, param.paramname, param.paramname
+                                ));
                                 cpp_call_params.push(param.paramname.clone());
-                                sig.add_param(param.paramname.clone(), LType::Array(Box::new(LType::Userdata(struct_name))));
+                                sig.add_param(
+                                    param.paramname.clone(),
+                                    LType::Array(Box::new(LType::Userdata(struct_name))),
+                                );
                                 size_params_to_ignore.insert(sz);
                                 lua_idx += 1;
                                 i += 1;
@@ -2043,7 +2172,10 @@ impl Generator {
                         param.paramtype, param.paramname, lua_idx
                     ));
                     cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::LightUserdata(handle_name.to_string()));
+                    sig.add_param(
+                        param.paramname.clone(),
+                        LType::LightUserdata(handle_name.to_string()),
+                    );
                     lua_idx += 1;
                 }
                 Normal(_) => {
@@ -2216,7 +2348,10 @@ impl Generator {
                                 t = ttype, n = param.paramname, idx = lua_idx
                             ));
                             cpp_call_params.push(param.paramname.clone());
-                            sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                            sig.add_param(
+                                param.paramname.clone(),
+                                LType::Userdata(ttype.to_string()),
+                            );
                             lua_idx += 1;
                         } else if self.added_structs.contains(ttype) {
                             s.line(&format!("{t} {n}_val;", t = ttype, n = param.paramname));
@@ -2226,10 +2361,15 @@ impl Generator {
                             ));
                             s.line(&format!(
                                 "const {t} *{n} = lua_isnil(L, {idx}) ? nullptr : &{n}_val;",
-                                t = ttype, n = param.paramname, idx = lua_idx
+                                t = ttype,
+                                n = param.paramname,
+                                idx = lua_idx
                             ));
                             cpp_call_params.push(param.paramname.clone());
-                            sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                            sig.add_param(
+                                param.paramname.clone(),
+                                LType::Userdata(ttype.to_string()),
+                            );
                             lua_idx += 1;
                         } else {
                             return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
@@ -2245,7 +2385,9 @@ impl Generator {
                     if self.added_structs_with_ptr.contains(ttype) {
                         s.line(&format!(
                             "const {t} &{n} = *luasteam::check_{t}_ptr(L, {idx});",
-                            t = ttype, n = param.paramname, idx = lua_idx
+                            t = ttype,
+                            n = param.paramname,
+                            idx = lua_idx
                         ));
                         cpp_call_params.push(param.paramname.clone());
                         sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
@@ -2253,7 +2395,9 @@ impl Generator {
                     } else if self.added_structs.contains(ttype) {
                         s.line(&format!(
                             "{t} {n} = luasteam::check_{t}(L, {idx});",
-                            t = ttype, n = param.paramname, idx = lua_idx
+                            t = ttype,
+                            n = param.paramname,
+                            idx = lua_idx
                         ));
                         cpp_call_params.push(param.paramname.clone());
                         sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
@@ -2371,6 +2515,10 @@ impl Generator {
                         "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
                         "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
                         "SteamAPI_ISteamUGC_GetSubscribedItems",
+                        "SteamAPI_ISteamInput_GetConnectedControllers",
+                        "SteamAPI_ISteamInput_GetActiveActionSetLayers",
+                        "SteamAPI_ISteamInput_GetAnalogActionOrigins",
+                        "SteamAPI_ISteamInput_GetDigitalActionOrigins",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {

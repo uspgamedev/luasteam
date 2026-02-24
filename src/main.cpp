@@ -3,7 +3,6 @@
 #include "core.hpp"
 #include "extra.hpp"
 #include "gameServer.hpp"
-#include "input.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
 
@@ -18,7 +17,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_UGC_auto(L);
     luasteam::add_extra(L);
     luasteam::add_Apps_auto(L);
-    luasteam::add_input(L);
+    luasteam::add_Input_auto(L);
     // luasteam::add_networkingSockets(L);
     // luasteam::add_networkingUtils(L);
     luasteam::add_gameServer(L);
