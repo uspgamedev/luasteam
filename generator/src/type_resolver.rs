@@ -52,6 +52,7 @@ impl TypeResolver {
         type_map.insert("uint16".to_string(), "int".to_string());
         type_map.insert("short".to_string(), "int".to_string());
         type_map.insert("unsigned short".to_string(), "int".to_string());
+        type_map.insert("intptr_t".to_string(), "int".to_string());
         type_map.insert("uint64".to_string(), "uint64".to_string());
         type_map.insert("int64_t".to_string(), "uint64".to_string());
         type_map.insert("unsigned long long".to_string(), "uint64".to_string());

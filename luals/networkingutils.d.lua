@@ -12,6 +12,11 @@ function NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location
 ---@return integer
 function NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation) end
 
+---@param location SteamNetworkPingLocation_t
+---@param cchBufSize integer
+---@return string -- Value of: pszBuf
+function NetworkingUtils.ConvertPingLocationToString(location, cchBufSize) end
+
 ---@param flMaxAgeSeconds number
 ---@return boolean
 function NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds) end
@@ -90,6 +95,12 @@ function NetworkingUtils.GetConfigValueInfo(eValue) end
 ---@return integer
 function NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars) end
 
+---@param addr SteamNetworkingIPAddr
+---@param cbBuf integer
+---@param bWithPort boolean
+---@return string -- Value of: buf
+function NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort) end
+
 ---@param pszStr string
 ---@return boolean
 ---@return SteamNetworkingIPAddr -- Value of: pAddr
@@ -98,6 +109,11 @@ function NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr) end
 ---@param addr SteamNetworkingIPAddr
 ---@return integer
 function NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr) end
+
+---@param identity SteamNetworkingIdentity
+---@param cbBuf integer
+---@return string -- Value of: buf
+function NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf) end
 
 ---@param pszStr string
 ---@return boolean

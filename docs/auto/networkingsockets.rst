@@ -22,10 +22,12 @@ List of Functions
 * :func:`NetworkingSockets.SetConnectionUserData`
 * :func:`NetworkingSockets.GetConnectionUserData`
 * :func:`NetworkingSockets.SetConnectionName`
+* :func:`NetworkingSockets.GetConnectionName`
 * :func:`NetworkingSockets.SendMessageToConnection`
 * :func:`NetworkingSockets.FlushMessagesOnConnection`
 * :func:`NetworkingSockets.GetConnectionInfo`
 * :func:`NetworkingSockets.GetConnectionRealTimeStatus`
+* :func:`NetworkingSockets.GetDetailedConnectionStatus`
 * :func:`NetworkingSockets.GetListenSocketAddress`
 * :func:`NetworkingSockets.CreateSocketPair`
 * :func:`NetworkingSockets.GetIdentity`
@@ -146,6 +148,20 @@ Function Reference
     :param str pszName:
     :SteamWorks: `SetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionName>`_
 
+.. function:: NetworkingSockets.GetConnectionName(hPeer, nMaxLen)
+
+    🤖 **Auto-generated binding**
+
+    :param int hPeer:
+    :param int nMaxLen:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pszName`
+    :SteamWorks: `GetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionName>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pszName`` is returned as an additional return value
+
 .. function:: NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags)
 
     🤖 **Auto-generated binding**
@@ -198,6 +214,20 @@ Function Reference
 
     * Parameter ``pStatus`` is returned as an additional return value
     * Parameter ``pLanes`` is returned as an additional return value
+
+.. function:: NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf)
+
+    🤖 **Auto-generated binding**
+
+    :param int hConn:
+    :param int cbBuf:
+    :returns: (int) Return value
+    :returns: (str) Value for `pszBuf`
+    :SteamWorks: `GetDetailedConnectionStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetDetailedConnectionStatus>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pszBuf`` is returned as an additional return value
 
 .. function:: NetworkingSockets.GetListenSocketAddress(hSocket)
 
@@ -355,12 +385,6 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingSockets.getConnectionName
-
-    ✋ **Not implemented** - unsupported type: char *
-    
-    :SteamWorks: `GetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionName>`_
-
 .. function:: NetworkingSockets.sendMessages
 
     ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t *const *
@@ -372,12 +396,6 @@ Unimplemented Methods
     ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t **
     
     :SteamWorks: `ReceiveMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection>`_
-
-.. function:: NetworkingSockets.getDetailedConnectionStatus
-
-    ✋ **Not implemented** - unsupported type: char *
-    
-    :SteamWorks: `GetDetailedConnectionStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetDetailedConnectionStatus>`_
 
 .. function:: NetworkingSockets.configureConnectionLanes
 

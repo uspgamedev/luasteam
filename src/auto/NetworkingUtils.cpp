@@ -76,6 +76,19 @@ EXTERN int luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost(lua_State *L) 
 }
 
 // In C++:
+// void ConvertPingLocationToString(const SteamNetworkPingLocation_t & location, char * pszBuf, int cchBufSize);
+// In Lua:
+// pszBuf: str NetworkingUtils.ConvertPingLocationToString(location: SteamNetworkPingLocation_t, cchBufSize: int)
+EXTERN int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
+	const SteamNetworkPingLocation_t &location = *luasteam::check_SteamNetworkPingLocation_t_ptr(L, 1);
+	int cchBufSize = luaL_checkint(L, 2);
+	std::vector<char> pszBuf(cchBufSize);
+	SteamNetworkingUtils_SteamAPI()->ConvertPingLocationToString(location, pszBuf.data(), cchBufSize);
+	lua_pushstring(L, reinterpret_cast<const char*>(pszBuf.data()));
+	return 1;
+}
+
+// In C++:
 // bool CheckPingDataUpToDate(float flMaxAgeSeconds);
 // In Lua:
 // bool NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds: float)
@@ -271,6 +284,20 @@ EXTERN int luasteam_NetworkingUtils_IterateGenericEditableConfigValues(lua_State
 }
 
 // In C++:
+// void SteamNetworkingIPAddr_ToString(const SteamNetworkingIPAddr & addr, char * buf, uint32 cbBuf, bool bWithPort);
+// In Lua:
+// buf: str NetworkingUtils.SteamNetworkingIPAddr_ToString(addr: SteamNetworkingIPAddr, cbBuf: int, bWithPort: bool)
+EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ToString(lua_State *L) {
+	const SteamNetworkingIPAddr &addr = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
+	uint32 cbBuf = luaL_checkint(L, 2);
+	std::vector<char> buf(cbBuf);
+	bool bWithPort = lua_toboolean(L, 3);
+	SteamNetworkingUtils_SteamAPI()->SteamNetworkingIPAddr_ToString(addr, buf.data(), cbBuf, bWithPort);
+	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
+	return 1;
+}
+
+// In C++:
 // bool SteamNetworkingIPAddr_ParseString(SteamNetworkingIPAddr * pAddr, const char * pszStr);
 // In Lua:
 // (bool, pAddr: SteamNetworkingIPAddr) NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr: str)
@@ -295,6 +322,19 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(lua_Stat
 }
 
 // In C++:
+// void SteamNetworkingIdentity_ToString(const SteamNetworkingIdentity & identity, char * buf, uint32 cbBuf);
+// In Lua:
+// buf: str NetworkingUtils.SteamNetworkingIdentity_ToString(identity: SteamNetworkingIdentity, cbBuf: int)
+EXTERN int luasteam_NetworkingUtils_SteamNetworkingIdentity_ToString(lua_State *L) {
+	const SteamNetworkingIdentity &identity = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
+	uint32 cbBuf = luaL_checkint(L, 2);
+	std::vector<char> buf(cbBuf);
+	SteamNetworkingUtils_SteamAPI()->SteamNetworkingIdentity_ToString(identity, buf.data(), cbBuf);
+	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
+	return 1;
+}
+
+// In C++:
 // bool SteamNetworkingIdentity_ParseString(SteamNetworkingIdentity * pIdentity, const char * pszStr);
 // In Lua:
 // (bool, pIdentity: SteamNetworkingIdentity) NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr: str)
@@ -311,6 +351,7 @@ void register_NetworkingUtils_auto(lua_State *L) {
 	add_func(L, "InitRelayNetworkAccess", luasteam_NetworkingUtils_InitRelayNetworkAccess);
 	add_func(L, "EstimatePingTimeBetweenTwoLocations", luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations);
 	add_func(L, "EstimatePingTimeFromLocalHost", luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost);
+	add_func(L, "ConvertPingLocationToString", luasteam_NetworkingUtils_ConvertPingLocationToString);
 	add_func(L, "CheckPingDataUpToDate", luasteam_NetworkingUtils_CheckPingDataUpToDate);
 	add_func(L, "GetPingToDataCenter", luasteam_NetworkingUtils_GetPingToDataCenter);
 	add_func(L, "GetDirectPingToPOP", luasteam_NetworkingUtils_GetDirectPingToPOP);
@@ -327,13 +368,15 @@ void register_NetworkingUtils_auto(lua_State *L) {
 	add_func(L, "SetConnectionConfigValueString", luasteam_NetworkingUtils_SetConnectionConfigValueString);
 	add_func(L, "GetConfigValueInfo", luasteam_NetworkingUtils_GetConfigValueInfo);
 	add_func(L, "IterateGenericEditableConfigValues", luasteam_NetworkingUtils_IterateGenericEditableConfigValues);
+	add_func(L, "SteamNetworkingIPAddr_ToString", luasteam_NetworkingUtils_SteamNetworkingIPAddr_ToString);
 	add_func(L, "SteamNetworkingIPAddr_ParseString", luasteam_NetworkingUtils_SteamNetworkingIPAddr_ParseString);
 	add_func(L, "SteamNetworkingIPAddr_GetFakeIPType", luasteam_NetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType);
+	add_func(L, "SteamNetworkingIdentity_ToString", luasteam_NetworkingUtils_SteamNetworkingIdentity_ToString);
 	add_func(L, "SteamNetworkingIdentity_ParseString", luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString);
 }
 
 void add_NetworkingUtils_auto(lua_State *L) {
-	lua_createtable(L, 0, 22);
+	lua_createtable(L, 0, 25);
 	register_NetworkingUtils_auto(L);
 	lua_pushvalue(L, -1);
 	NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

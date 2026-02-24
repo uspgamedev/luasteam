@@ -15,6 +15,7 @@ List of Functions
 * :func:`NetworkingUtils.InitRelayNetworkAccess`
 * :func:`NetworkingUtils.EstimatePingTimeBetweenTwoLocations`
 * :func:`NetworkingUtils.EstimatePingTimeFromLocalHost`
+* :func:`NetworkingUtils.ConvertPingLocationToString`
 * :func:`NetworkingUtils.CheckPingDataUpToDate`
 * :func:`NetworkingUtils.GetPingToDataCenter`
 * :func:`NetworkingUtils.GetDirectPingToPOP`
@@ -31,8 +32,10 @@ List of Functions
 * :func:`NetworkingUtils.SetConnectionConfigValueString`
 * :func:`NetworkingUtils.GetConfigValueInfo`
 * :func:`NetworkingUtils.IterateGenericEditableConfigValues`
+* :func:`NetworkingUtils.SteamNetworkingIPAddr_ToString`
 * :func:`NetworkingUtils.SteamNetworkingIPAddr_ParseString`
 * :func:`NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType`
+* :func:`NetworkingUtils.SteamNetworkingIdentity_ToString`
 * :func:`NetworkingUtils.SteamNetworkingIdentity_ParseString`
 
 List of Callbacks
@@ -65,6 +68,19 @@ Function Reference
     :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` remoteLocation:
     :returns: (int) Return value
     :SteamWorks: `EstimatePingTimeFromLocalHost <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#EstimatePingTimeFromLocalHost>`_
+
+.. function:: NetworkingUtils.ConvertPingLocationToString(location, cchBufSize)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` location:
+    :param int cchBufSize:
+    :returns: (str) Value for `pszBuf`
+    :SteamWorks: `ConvertPingLocationToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ConvertPingLocationToString>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pszBuf`` is returned as an additional return value
 
 .. function:: NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds)
 
@@ -225,6 +241,20 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `IterateGenericEditableConfigValues <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#IterateGenericEditableConfigValues>`_
 
+.. function:: NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
+    :param int cbBuf:
+    :param bool bWithPort:
+    :returns: (str) Value for `buf`
+    :SteamWorks: `SteamNetworkingIPAddr_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ToString>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``buf`` is returned as an additional return value
+
 .. function:: NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr)
 
     🤖 **Auto-generated binding**
@@ -245,6 +275,19 @@ Function Reference
     :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
     :returns: (int) Return value
     :SteamWorks: `SteamNetworkingIPAddr_GetFakeIPType <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_GetFakeIPType>`_
+
+.. function:: NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identity:
+    :param int cbBuf:
+    :returns: (str) Value for `buf`
+    :SteamWorks: `SteamNetworkingIdentity_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ToString>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``buf`` is returned as an additional return value
 
 .. function:: NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr)
 
@@ -281,12 +324,6 @@ Unimplemented Methods
     
     :SteamWorks: `GetLocalPingLocation <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetLocalPingLocation>`_
 
-.. function:: NetworkingUtils.convertPingLocationToString
-
-    ✋ **Not implemented** - unsupported type: char *
-    
-    :SteamWorks: `ConvertPingLocationToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ConvertPingLocationToString>`_
-
 .. function:: NetworkingUtils.parsePingLocationString
 
     ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &
@@ -311,71 +348,23 @@ Unimplemented Methods
     
     :SteamWorks: `SetGlobalConfigValuePtr <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValuePtr>`_
 
-.. function:: NetworkingUtils.setGlobalCallbackSteamNetConnectionStatusChanged
-
-    ✋ **Not implemented** - unsupported type: FnSteamNetConnectionStatusChanged
-    
-    :SteamWorks: `SetGlobalCallback_SteamNetConnectionStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetConnectionStatusChanged>`_
-
-.. function:: NetworkingUtils.setGlobalCallbackSteamNetAuthenticationStatusChanged
-
-    ✋ **Not implemented** - unsupported type: FnSteamNetAuthenticationStatusChanged
-    
-    :SteamWorks: `SetGlobalCallback_SteamNetAuthenticationStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetAuthenticationStatusChanged>`_
-
-.. function:: NetworkingUtils.setGlobalCallbackSteamRelayNetworkStatusChanged
-
-    ✋ **Not implemented** - unsupported type: FnSteamRelayNetworkStatusChanged
-    
-    :SteamWorks: `SetGlobalCallback_SteamRelayNetworkStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamRelayNetworkStatusChanged>`_
-
-.. function:: NetworkingUtils.setGlobalCallbackFakeIPResult
-
-    ✋ **Not implemented** - unsupported type: FnSteamNetworkingFakeIPResult
-    
-    :SteamWorks: `SetGlobalCallback_FakeIPResult <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_FakeIPResult>`_
-
-.. function:: NetworkingUtils.setGlobalCallbackMessagesSessionRequest
-
-    ✋ **Not implemented** - unsupported type: FnSteamNetworkingMessagesSessionRequest
-    
-    :SteamWorks: `SetGlobalCallback_MessagesSessionRequest <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionRequest>`_
-
-.. function:: NetworkingUtils.setGlobalCallbackMessagesSessionFailed
-
-    ✋ **Not implemented** - unsupported type: FnSteamNetworkingMessagesSessionFailed
-    
-    :SteamWorks: `SetGlobalCallback_MessagesSessionFailed <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionFailed>`_
-
 .. function:: NetworkingUtils.setConfigValue
 
-    ✋ **Not implemented** - unsupported type: intptr_t
+    ✋ **Not implemented** - manual: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValue <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValue>`_
 
 .. function:: NetworkingUtils.setConfigValueStruct
 
-    ✋ **Not implemented** - unsupported type: intptr_t
+    ✋ **Not implemented** - manual: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValueStruct <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValueStruct>`_
 
 .. function:: NetworkingUtils.getConfigValue
 
-    ✋ **Not implemented** - unsupported type: intptr_t
+    ✋ **Not implemented** - unsupported type: void *
     
     :SteamWorks: `GetConfigValue <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetConfigValue>`_
-
-.. function:: NetworkingUtils.steamNetworkingIPAddrToString
-
-    ✋ **Not implemented** - unsupported type: char *
-    
-    :SteamWorks: `SteamNetworkingIPAddr_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ToString>`_
-
-.. function:: NetworkingUtils.steamNetworkingIdentityToString
-
-    ✋ **Not implemented** - unsupported type: char *
-    
-    :SteamWorks: `SteamNetworkingIdentity_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ToString>`_
 
 
 Callbacks

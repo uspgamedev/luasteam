@@ -3,7 +3,8 @@ use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SkipReason {
-    ManualBlocklist(String), // Detailed reason for manual blocklist
+    ManualBlocklist(String), // Blocked with no manual implementation
+    ManualImpl(String),      // Blocked because a manual C++ implementation exists
     UnsupportedType(String),
     NoAccessors,
     RequiresCustomCode,
@@ -14,11 +15,17 @@ impl SkipReason {
     pub fn description(&self) -> String {
         match self {
             SkipReason::ManualBlocklist(reason) => format!("manual: {}", reason),
+            SkipReason::ManualImpl(reason) => format!("manual impl: {}", reason),
             SkipReason::UnsupportedType(t) => format!("unsupported type: {}", t),
             SkipReason::NoAccessors => "no accessors".to_string(),
             SkipReason::RequiresCustomCode => "requires custom code".to_string(),
             SkipReason::Incomplete => "incomplete".to_string(),
         }
+    }
+
+    /// Returns true if this method has a manual implementation and should count as covered.
+    pub fn is_manual_impl(&self) -> bool {
+        matches!(self, SkipReason::ManualImpl(_))
     }
 }
 
@@ -40,8 +47,8 @@ pub struct Stats {
     pub skipped_methods: Vec<(String, SkipReason)>,
     pub skipped_structs: Vec<(String, SkipReason)>,
 
-    // Per-interface coverage: (total_methods, generated_methods)
-    pub interface_coverage: HashMap<String, (usize, usize)>,
+    // Per-interface coverage: (total_methods, auto_generated_methods, manual_impl_methods)
+    pub interface_coverage: HashMap<String, (usize, usize, usize)>,
 }
 
 impl Stats {
@@ -89,27 +96,29 @@ impl Stats {
 
             let mut interfaces: Vec<_> = self.interface_coverage.iter().collect();
             interfaces.sort_by_key(|(name, _)| *name); // Sort by interface name alphabetically
-            interfaces.sort_by(|(_, (a, b)), (_, (c, d))| {
-                let a = *a as f64;
-                let b = *b as f64;
-                let c = *c as f64;
-                let d = *d as f64;
-                (d / c).partial_cmp(&(b / a)).unwrap() // Sort by coverage percentage descending
+            interfaces.sort_by(|(_, (a, b, c)), (_, (d, e, f))| {
+                let cov_a = (*b + *c) as f64 / (*a as f64).max(1.0);
+                let cov_d = (*e + *f) as f64 / (*d as f64).max(1.0);
+                cov_d.partial_cmp(&cov_a).unwrap() // Sort by coverage percentage descending
             });
 
-            for (name, (total, generated)) in interfaces {
+            for (name, (total, auto_gen, manual)) in interfaces {
+                let total_covered = auto_gen + manual;
                 let percentage = if *total > 0 {
-                    (*generated as f64 / *total as f64) * 100.0
+                    (total_covered as f64 / *total as f64) * 100.0
                 } else {
                     0.0
                 };
                 let bar_width = 30;
-                let filled = ((percentage / 100.0) * bar_width as f64) as usize;
-                let bar: String = "█".repeat(filled) + &"░".repeat(bar_width - filled);
+                let auto_filled = ((*auto_gen as f64 / *total as f64).min(1.0) * bar_width as f64) as usize;
+                let manual_filled = ((total_covered as f64 / *total as f64).min(1.0) * bar_width as f64) as usize - auto_filled;
+                let empty = bar_width - auto_filled - manual_filled;
+                // █ = auto-generated, ▓ = manual impl, ░ = not covered
+                let bar: String = "█".repeat(auto_filled) + &"▓".repeat(manual_filled) + &"░".repeat(empty);
 
                 println!(
                     "  {:35} [{:3}/{:3}] {:5.1}% {}",
-                    name, generated, total, percentage, bar
+                    name, total_covered, total, percentage, bar
                 );
             }
         }
@@ -413,6 +422,21 @@ impl SteamApi {
                         "pvecPublishedFileID",
                         "unNumPublishedFileIDs",
                     ),
+                ],
+            ),
+            (
+                "ISteamNetworkingUtils",
+                vec![
+                    ("ConvertPingLocationToString", "pszBuf", "cchBufSize"),
+                    ("SteamNetworkingIPAddr_ToString", "buf", "cbBuf"),
+                    ("SteamNetworkingIdentity_ToString", "buf", "cbBuf"),
+                ],
+            ),
+            (
+                "ISteamNetworkingSockets",
+                vec![
+                    ("GetConnectionName", "pszName", "nMaxLen"),
+                    ("GetDetailedConnectionStatus", "pszBuf", "cbBuf"),
                 ],
             ),
         ];

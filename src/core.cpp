@@ -24,11 +24,11 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_extra(L);
         luasteam::init_Apps_auto(L);
         luasteam::init_Input_auto(L);
-        // luasteam::init_networkingSockets(L);
-        // luasteam::init_networkingUtils(L);
+        luasteam::init_networkingSockets(L);
+        luasteam::init_networkingUtils(L);
         luasteam::init_Matchmaking_auto(L);
         luasteam::init_MatchmakingServers_auto(L);
-        // luasteam::init_Networking_auto(L);
+        luasteam::init_Networking_auto(L);
         luasteam::init_Screenshots_auto(L);
         luasteam::init_Music_auto(L);
         // luasteam::init_HTTP_auto(L);
@@ -38,7 +38,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_Video_auto(L);
         luasteam::init_ParentalSettings_auto(L);
         luasteam::init_RemotePlay_auto(L);
-        // luasteam::init_NetworkingMessages_auto(L);
+        luasteam::init_NetworkingMessages_auto(L);
         luasteam::init_GameServerStats_auto(L);
         luasteam::init_Timeline_auto(L);
         luasteam::init_Parties_auto(L);
@@ -59,7 +59,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_Parties_auto(L);
     luasteam::shutdown_Timeline_auto(L);
     luasteam::shutdown_GameServerStats_auto(L);
-    // luasteam::shutdown_NetworkingMessages_auto(L);
+    luasteam::shutdown_NetworkingMessages_auto(L);
     luasteam::shutdown_RemotePlay_auto(L);
     luasteam::shutdown_ParentalSettings_auto(L);
     luasteam::shutdown_Video_auto(L);
@@ -69,11 +69,11 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     // luasteam::shutdown_HTTP_auto(L);
     luasteam::shutdown_Music_auto(L);
     luasteam::shutdown_Screenshots_auto(L);
-    // luasteam::shutdown_Networking_auto(L);
+    luasteam::shutdown_Networking_auto(L);
     luasteam::shutdown_MatchmakingServers_auto(L);
     luasteam::shutdown_Matchmaking_auto(L);
-    // luasteam::shutdown_networkingUtils(L);
-    // luasteam::shutdown_networkingSockets(L);
+    luasteam::shutdown_networkingUtils(L);
+    luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_Input_auto(L);
     luasteam::shutdown_Apps_auto(L);
     luasteam::shutdown_extra(L);

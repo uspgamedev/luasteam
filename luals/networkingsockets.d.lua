@@ -54,6 +54,12 @@ function NetworkingSockets.GetConnectionUserData(hPeer) end
 ---@param pszName string
 function NetworkingSockets.SetConnectionName(hPeer, pszName) end
 
+---@param hPeer integer
+---@param nMaxLen integer
+---@return boolean
+---@return string -- Value of: pszName
+function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
+
 ---@param hConn integer
 ---@param pData string
 ---@param cbData integer
@@ -77,6 +83,12 @@ function NetworkingSockets.GetConnectionInfo(hConn) end
 ---@return SteamNetConnectionRealTimeStatus_t -- Value of: pStatus
 ---@return SteamNetConnectionRealTimeLaneStatus_t -- Value of: pLanes
 function NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes) end
+
+---@param hConn integer
+---@param cbBuf integer
+---@return integer
+---@return string -- Value of: pszBuf
+function NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf) end
 
 ---@param hSocket integer
 ---@return boolean

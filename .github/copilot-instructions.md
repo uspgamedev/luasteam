@@ -60,8 +60,10 @@ luals/              LuaLS type definition files (.d.lua) — auto-generated
 **Clang-format:** 4-space indent, no column limit, `IndentPPDirectives: AfterHash`. Run clang-format before committing C++ changes.
 
 **Generator extension points:**
-- Missing array size metadata → add to `fix_missing_array_count` in `main.rs`.
+- Missing array/buffer size metadata → add to `fix_missing_array_count` in `schema.rs` (not `main.rs`). The same table handles both `char *` output buffers (sets `out_string_count`) and other pointer arrays (sets `out_array_count`) — the field is chosen automatically based on `paramtype == "char *"`.
 - New C++ type support → implement in `resolve_type`, `generate_check`, and `generate_push`.
 - New callback interface support → add to `generate_callback_interfaces` in `main.rs`; also update `doc_generator.rs` and `luals_generator.rs`.
+
+**Inspecting `steam_api.json`:** Use `jq` — e.g. `jq '.interfaces[] | select(.classname == "ISteamFoo") | .methods[] | select(.methodname == "Bar")' sdk/public/steam/steam_api.json`. Never use grep/Select-String on the JSON file.
 
 **Generator infinite loop pitfall:** In `generate_method`'s `while` loop (uses index `i`, not for-each), every `continue` **must** be preceded by `i += 1`. Missing it causes an infinite loop.

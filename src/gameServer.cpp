@@ -44,7 +44,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
     if (success) {
         luasteam::init_common(L);
         luasteam::init_extra(L);
-        luasteam::init_networkingSockets_server(L);
+        luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
         luasteam::init_GameServer_auto(L);
     } else {

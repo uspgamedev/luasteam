@@ -172,6 +172,27 @@ impl Generator {
             "SteamAPI_ISteamParties_CreateBeacon".to_string(),
             SkipReason::ManualBlocklist("requires custom implementation".to_string()),
         );
+        blocklist.insert(
+            "SteamAPI_ISteamNetworkingUtils_SetConfigValue".to_string(),
+            SkipReason::ManualBlocklist("Needs careful dealing with void*".to_string()),
+        );
+        blocklist.insert(
+            "SteamAPI_ISteamNetworkingUtils_SetConfigValueStruct".to_string(),
+            SkipReason::ManualBlocklist("Needs careful dealing with void*".to_string()),
+        );
+        for name in [
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged",
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged",
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged",
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult",
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest",
+            "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed",
+        ] {
+            blocklist.insert(
+                name.to_string(),
+                SkipReason::ManualImpl("Lua function trampoline in networkingUtils.cpp".to_string()),
+            );
+        }
 
         blocklist
     }
@@ -244,13 +265,24 @@ impl Generator {
                     stats.interfaces_generated += 1;
                 }
                 Err(reason) => {
-                    stats
-                        .skipped_interfaces
-                        .push((interface.classname.clone(), reason));
-                    // Track coverage for skipped interfaces too
-                    stats
-                        .interface_coverage
-                        .insert(interface.classname.clone(), (interface.methods.len(), 0));
+                    // Don't report callback interfaces as skipped — they are handled separately
+                    // by generate_callback_interfaces() above.
+                    if self.added_callback_interfaces.contains(&interface.classname) {
+                        // Show as fully covered in the coverage table
+                        let n = interface.methods.len();
+                        stats
+                            .interface_coverage
+                            .insert(interface.classname.clone(), (n, n, 0));
+                        stats.interfaces_generated += 1;
+                    } else {
+                        stats
+                            .skipped_interfaces
+                            .push((interface.classname.clone(), reason));
+                        // Track coverage for skipped interfaces too
+                        stats
+                            .interface_coverage
+                            .insert(interface.classname.clone(), (interface.methods.len(), 0, 0));
+                    }
                 }
             }
         }
@@ -1786,9 +1818,7 @@ impl Generator {
         if interface.accessors.is_empty() {
             return Err(SkipReason::NoAccessors);
         }
-        if
-            interface.classname == "ISteamHTTP"
-        {
+        if interface.classname == "ISteamHTTP" {
             return Err(SkipReason::RequiresCustomCode);
         }
         let accessor_name = &interface.accessors[0].name;
@@ -1832,15 +1862,23 @@ impl Generator {
         let mut method_signatures = Vec::new();
         let interface_methods_total = interface.methods.len();
         let mut interface_methods_generated = 0;
+        let mut interface_methods_manual = 0;
 
         stats.methods_total += interface.methods.len();
         for method in &interface.methods {
             let full_method_name = format!("{}::{}", interface.classname, method.methodname);
 
             if let Some(reason) = method_blocklist.get(&method.methodname_flat) {
-                stats
-                    .skipped_methods
-                    .push((full_method_name, reason.clone()));
+                if reason.is_manual_impl() {
+                    // Counts as implemented — manual C++ impl exists
+                    stats.methods_generated += 1;
+                    interface_methods_generated += 1;
+                    interface_methods_manual += 1;
+                } else {
+                    stats
+                        .skipped_methods
+                        .push((full_method_name, reason.clone()));
+                }
                 continue;
             }
 
@@ -1875,7 +1913,7 @@ impl Generator {
         // Track per-interface coverage
         stats.interface_coverage.insert(
             interface.classname.clone(),
-            (interface_methods_total, interface_methods_generated),
+            (interface_methods_total, interface_methods_generated - interface_methods_manual, interface_methods_manual),
         );
 
         self.luals_generator

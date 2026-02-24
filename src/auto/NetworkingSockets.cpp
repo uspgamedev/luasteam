@@ -209,6 +209,20 @@ EXTERN int luasteam_NetworkingSockets_SetConnectionName(lua_State *L) {
 }
 
 // In C++:
+// bool GetConnectionName(HSteamNetConnection hPeer, char * pszName, int nMaxLen);
+// In Lua:
+// (bool, pszName: str) NetworkingSockets.GetConnectionName(hPeer: int, nMaxLen: int)
+EXTERN int luasteam_NetworkingSockets_GetConnectionName(lua_State *L) {
+	HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+	int nMaxLen = luaL_checkint(L, 2);
+	std::vector<char> pszName(nMaxLen);
+	bool __ret = SteamNetworkingSockets_SteamAPI()->GetConnectionName(hPeer, pszName.data(), nMaxLen);
+	lua_pushboolean(L, __ret);
+	lua_pushstring(L, reinterpret_cast<const char*>(pszName.data()));
+	return 2;
+}
+
+// In C++:
 // EResult SendMessageToConnection(HSteamNetConnection hConn, const void * pData, uint32 cbData, int nSendFlags, int64 * pOutMessageNumber);
 // In Lua:
 // (int, pOutMessageNumber: uint64) NetworkingSockets.SendMessageToConnection(hConn: int, pData: str, cbData: int, nSendFlags: int)
@@ -262,6 +276,20 @@ EXTERN int luasteam_NetworkingSockets_GetConnectionRealTimeStatus(lua_State *L) 
 	luasteam::push_SteamNetConnectionRealTimeStatus_t(L, pStatus);
 	luasteam::push_SteamNetConnectionRealTimeLaneStatus_t(L, pLanes);
 	return 3;
+}
+
+// In C++:
+// int GetDetailedConnectionStatus(HSteamNetConnection hConn, char * pszBuf, int cbBuf);
+// In Lua:
+// (int, pszBuf: str) NetworkingSockets.GetDetailedConnectionStatus(hConn: int, cbBuf: int)
+EXTERN int luasteam_NetworkingSockets_GetDetailedConnectionStatus(lua_State *L) {
+	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+	int cbBuf = luaL_checkint(L, 2);
+	std::vector<char> pszBuf(cbBuf);
+	int __ret = SteamNetworkingSockets_SteamAPI()->GetDetailedConnectionStatus(hConn, pszBuf.data(), cbBuf);
+	lua_pushinteger(L, __ret);
+	lua_pushstring(L, reinterpret_cast<const char*>(pszBuf.data()));
+	return 2;
 }
 
 // In C++:
@@ -463,10 +491,12 @@ void register_NetworkingSockets_auto(lua_State *L) {
 	add_func(L, "SetConnectionUserData", luasteam_NetworkingSockets_SetConnectionUserData);
 	add_func(L, "GetConnectionUserData", luasteam_NetworkingSockets_GetConnectionUserData);
 	add_func(L, "SetConnectionName", luasteam_NetworkingSockets_SetConnectionName);
+	add_func(L, "GetConnectionName", luasteam_NetworkingSockets_GetConnectionName);
 	add_func(L, "SendMessageToConnection", luasteam_NetworkingSockets_SendMessageToConnection);
 	add_func(L, "FlushMessagesOnConnection", luasteam_NetworkingSockets_FlushMessagesOnConnection);
 	add_func(L, "GetConnectionInfo", luasteam_NetworkingSockets_GetConnectionInfo);
 	add_func(L, "GetConnectionRealTimeStatus", luasteam_NetworkingSockets_GetConnectionRealTimeStatus);
+	add_func(L, "GetDetailedConnectionStatus", luasteam_NetworkingSockets_GetDetailedConnectionStatus);
 	add_func(L, "GetListenSocketAddress", luasteam_NetworkingSockets_GetListenSocketAddress);
 	add_func(L, "CreateSocketPair", luasteam_NetworkingSockets_CreateSocketPair);
 	add_func(L, "GetIdentity", luasteam_NetworkingSockets_GetIdentity);
@@ -486,7 +516,7 @@ void register_NetworkingSockets_auto(lua_State *L) {
 }
 
 void add_NetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 30);
+	lua_createtable(L, 0, 32);
 	register_NetworkingSockets_auto(L);
 	lua_pushvalue(L, -1);
 	NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
