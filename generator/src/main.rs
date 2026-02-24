@@ -207,7 +207,13 @@ impl Generator {
 
         let luals_dir = Path::new("../luals");
         if luals_dir.exists() {
-            fs::remove_dir_all(luals_dir).expect("Unable to delete luals");
+            for entry in fs::read_dir(luals_dir).expect("Unable to read luals") {
+                let entry = entry.expect("Unable to read luals entry");
+                let path = entry.path();
+                if path.extension().and_then(|e| e.to_str()) == Some("lua") {
+                    fs::remove_file(&path).expect("Unable to delete luals file");
+                }
+            }
         }
         fs::create_dir_all(luals_dir).expect("Unable to create luals");
 

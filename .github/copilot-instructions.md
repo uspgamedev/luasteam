@@ -31,6 +31,7 @@ src/auto/           AUTO-GENERATED C++ — never edit manually
 src/*.cpp           Manual bindings for complex/unsupported cases
 mwe/                Minimal working example used as integration test
 docs/               Sphinx documentation
+luals/              LuaLS type definition files (.d.lua) — auto-generated
 ```
 
 **Data flow:** `sdk/steam_api.json` → `generator/src/main.rs` → `src/auto/*.cpp` → compiled into `luasteam.dll`/`luasteam.so`.
@@ -49,6 +50,8 @@ docs/               Sphinx documentation
 
 **Callbacks vs CallResults:** Persistent callbacks use `STEAM_CALLBACK` macro (stored in interface structs). One-shot async results use `CCallResult<CallResultListener<T>, T>` — the listener `delete this` after firing.
 
+**Callback interfaces (e.g. `ISteamMatchmakingServerListResponse`):** Pure-virtual C++ interfaces the user must implement are exposed as Lua userdata. The generator emits `src/auto/callback_interfaces.cpp` and `luals/callback_interfaces.d.lua`. Lua users construct them via `Steam.newISteam<Name>(table)` where the table keys are the method names. Callback fields are not validated at construction time — missing or non-function fields will only error when Steam fires the callback.
+
 **Adding a manual binding when the generator can't handle it:**
 1. Add the flat API method name to `manual_method_blocklist()` in `generator/src/main.rs`.
 2. Implement it in a `src/*.cpp` file.
@@ -59,3 +62,6 @@ docs/               Sphinx documentation
 **Generator extension points:**
 - Missing array size metadata → add to `fix_missing_array_count` in `main.rs`.
 - New C++ type support → implement in `resolve_type`, `generate_check`, and `generate_push`.
+- New callback interface support → add to `generate_callback_interfaces` in `main.rs`; also update `doc_generator.rs` and `luals_generator.rs`.
+
+**Generator infinite loop pitfall:** In `generate_method`'s `while` loop (uses index `i`, not for-each), every `continue` **must** be preceded by `i += 1`. Missing it causes an infinite loop.

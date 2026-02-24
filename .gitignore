@@ -152,3 +152,6 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/c++,lua,osx,linux,windows
+
+# Local environment overrides
+.env

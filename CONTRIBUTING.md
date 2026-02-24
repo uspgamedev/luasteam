@@ -57,6 +57,28 @@ Please help us keep the docs updated in `docs/`.
     *   **Windows:** `mingw32-make win64` (using MSYS2/MinGW)
     *   **macOS:** `make osx`
 
+## Testing
+
+### Integration test
+After building, run the integration test to verify the library loads correctly:
+*   **Linux:** `make test-linux64`
+*   **Windows:** `mingw32-make test-win64`
+*   **macOS:** `make test-osx`
+
+### LuaLS type-checking
+The `luals/` directory contains [LuaLS](https://github.com/LuaLS/lua-language-server) type definitions (`.d.lua`) for the entire API. To validate them:
+
+```sh
+make check-luals          # Linux / macOS
+mingw32-make check-luals  # Windows
+```
+
+This requires `lua-language-server` to be on your `PATH`. On Windows, if the binary is not on your PATH you can override it via a `.env` file in the repo root (gitignored):
+
+```
+LUA_LANGUAGE_SERVER=C:/path/to/lua-language-server.exe
+```
+
 ## Style Guide
 *   **Lua API:** 1:1 mapping to C++. If C++ is `ISteamUser::GetAuthSessionTicket`, Lua is `Steam.User.GetAuthSessionTicket`.
 *   **Parameters:** Match C++ order and types.

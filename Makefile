@@ -6,6 +6,9 @@ CPP_FLAGS=-Wno-invalid-offsetof -Wall $(STDLIB_VER)
 THIRD_PARTY=./third-party
 LUAJIT_PATH=./luajit
 STEAM_LIB=sdk/redistributable_bin
+LUA_LANGUAGE_SERVER=lua-language-server
+
+-include .env
 
 GNU_OUT=luasteam.so
 IPATHS=-I$(LUAJIT_PATH)/src
@@ -20,7 +23,7 @@ OSX_FLAGS=$(IPATHS) -mmacosx-version-min=$(OSX_MIN_VERSION)
 
 
 
-.PHONY: all osx linux32 linux64 win32 win64 clean test test-osx test-linux32 test-linux64 test-win32 test-win64 docs
+.PHONY: all osx linux32 linux64 win32 win64 clean test test-osx test-linux32 test-linux64 test-win32 test-win64 docs check-luals
 
 test:
 	@echo "choose platform: test-linux64 | test-linux32 | test-win32 | test-win64 | test-osx"
@@ -111,3 +114,6 @@ generate:
 
 docs:
 	$(MAKE) -C docs html
+
+check-luals:
+	$(LUA_LANGUAGE_SERVER) --check=luals --configpath=luals/.luarc.json --check_format=pretty --checklevel=Warning

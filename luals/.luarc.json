@@ -1,0 +1,4 @@
+{
+    "Lua.runtime.version": "Lua JIT",
+    "diagnostics.disable": ["missing-return"]
+}
