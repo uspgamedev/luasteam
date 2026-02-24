@@ -1,12 +1,12 @@
 #ifndef LUASTEAM_CORE
 #define LUASTEAM_CORE
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 
 // Adds functions SteamAPI_*
-void add_core(lua_State *L);
+void add_Core(lua_State *L);
 
 } // namespace luasteam
 

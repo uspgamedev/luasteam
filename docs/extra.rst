@@ -7,12 +7,12 @@ This module has some extra functions that are not in the SteamWorks API but may 
 List of Functions
 -----------------
 
-* :func:`extra.parseUint64`
+* :func:`extra.ParseUint64`
 
 Function Reference
 ------------------
 
-.. function:: extra.parseUint64 (str)
+.. function:: extra.ParseUint64 (str)
 
     :param string str: The string to convert to uint64.
     :returns: (`uint64`) The parsed number. 0 if the string was invalid.
@@ -28,5 +28,5 @@ Function Reference
     end
 
     local function readMyId()
-        return Steam.extra.parseUint64(readFile('my_id.txt'))
+        return Steam.Extra.ParseUint64(readFile('my_id.txt'))
     end

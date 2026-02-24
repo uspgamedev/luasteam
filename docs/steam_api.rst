@@ -4,15 +4,15 @@ SteamAPI Core Functions
 
 List of Functions
 -----------------
-* :func:`init`
-* :func:`shutdown`
-* :func:`runCallbacks`
+* :func:`Init`
+* :func:`Shutdown`
+* :func:`RunCallbacks`
 
 
 Function Reference
 ------------------
 
-.. function:: init()
+.. function:: Init()
 
     :returns: (`boolean`)
         **true** indicates that all required interfaces have been acquired and are accessible.
@@ -37,11 +37,11 @@ Function Reference
 
     local Steam = require 'luasteam'
 
-    if not Steam.init() then
+    if not Steam.Init() then
         error("Steam couldn't initialize")
     end
 
-.. function:: shutdown()
+.. function:: Shutdown()
 
     :returns: nothing
     :SteamWorks: `SteamAPI_Shutdown <https://partner.steamgames.com/doc/api/steam_api#SteamAPI_Shutdown>`_
@@ -55,10 +55,10 @@ Function Reference
 **Example**::
 
     function onMyGameClosing()
-        Steam.shutdown()
+        Steam.Shutdown()
     end
 
-.. function:: runCallbacks()
+.. function:: RunCallbacks()
 
     :returns: nothing
     :SteamWorks: `SteamAPI_RunCallbacks <https://partner.steamgames.com/doc/api/steam_api#SteamAPI_RunCallbacks>`_
@@ -67,10 +67,10 @@ Function Reference
 
     It's best to call this at >10Hz, the more time between calls, the more potential latency between receiving events or results from the Steamworks API. Most games call this once per render-frame. All registered listener functions will be invoked during this call, in the callers thread context.
 
-    :func:`runCallbacks` is safe to call from multiple threads simultaneously, but if you choose to do this, callback code could be executed on any thread. One alternative is to call :func:`runCallbacks` from the main thread only, and call :func:`releaseCurrentThreadMemory` **(missing)** regularly on other threads.
+    :func:`RunCallbacks` is safe to call from multiple threads simultaneously, but if you choose to do this, callback code could be executed on any thread. One alternative is to call :func:`RunCallbacks` from the main thread only, and call :func:`ReleaseCurrentThreadMemory` **(missing)** regularly on other threads.
 
 **Example**::
 
     function myGameLoop(dt)
-        Steam.runCallbacks()
+        Steam.RunCallbacks()
     end

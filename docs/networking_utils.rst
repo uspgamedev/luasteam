@@ -4,12 +4,12 @@ ISteamNetworkingUtils
 
 List of Functions
 -----------------
-* :func:`networkingUtils.initRelayNetworkAccess`
-* :func:`networkingUtils.getRelayNetworkStatus`
+* :func:`NetworkingUtils.InitRelayNetworkAccess`
+* :func:`NetworkingUtils.GetRelayNetworkStatus`
 
 Function Reference
 ------------------
-.. function:: networkingUtils.initRelayNetworkAccess()
+.. function:: NetworkingUtils.InitRelayNetworkAccess()
 
     :returns: nothing
     :SteamWorks: `InitRelayNetworkAccess <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#InitRelayNetworkAccess>`_
@@ -22,15 +22,15 @@ Function Reference
 
 **Example**::
 
-    Steam.networkingUtils.initRelayNetworkAccess()
+    Steam.NetworkingUtils.InitRelayNetworkAccess()
 
-.. function:: networkingUtils.getRelayNetworkStatus()
+.. function:: NetworkingUtils.GetRelayNetworkStatus()
 
-    :returns: (`int`) status. See the callback :func:`networkingSockets.onAuthenticationStatus` callback for a detailed description.
+    :returns: (`int`) status. See the callback :func:`NetworkingSockets.onAuthenticationStatus` callback for a detailed description.
     :SteamWorks: `GetRelayNetworkStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRelayNetworkStatus>`_
 
     Fetch current status of the relay network.
 
 **Example**::
 
-    local status = Steam.networkingUtils.getRelayNetworkStatus()
+    local status = Steam.NetworkingUtils.GetRelayNetworkStatus()

@@ -1,4 +1,4 @@
-#include "networkingSockets.hpp"
+#include "NetworkingSockets.hpp"
 #include "auto/auto.hpp"
 
 // ======================================
@@ -413,29 +413,29 @@ void add_constants(lua_State *L) {
 void add_networkingSockets(lua_State *L) {
     lua_createtable(L, 0, 20);
     // add_NetworkingSockets_auto(L);
-    add_func(L, "createListenSocketIP", luasteam_createListenSocketIP);
-    add_func(L, "createListenSocketP2P", luasteam_createListenSocketP2P);
-    add_func(L, "connectByIPAddress", luasteam_connectByIPAddress);
-    add_func(L, "connectP2P", luasteam_connectP2P);
-    add_func(L, "acceptConnection", luasteam_acceptConnection);
-    add_func(L, "closeConnection", luasteam_closeConnection);
-    add_func(L, "closeListenSocket", luasteam_closeListenSocket);
-    add_func(L, "sendMessageToConnection", luasteam_sendMessageToConnection);
-    add_func(L, "receiveMessagesOnConnection", luasteam_receiveMessagesOnConnection);
-    add_func(L, "initAuthentication", luasteam_initAuthentication);
-    add_func(L, "getAuthenticationStatus", luasteam_getAuthenticationStatus);
-    add_func(L, "getConnectionInfo", luasteam_getConnectionInfo);
-    add_func(L, "getIdentity", luasteam_getIdentity);
-    add_func(L, "createPollGroup", luasteam_createPollGroup);
-    add_func(L, "destroyPollGroup", luasteam_destroyPollGroup);
-    add_func(L, "setConnectionPollGroup", luasteam_setConnectionPollGroup);
-    add_func(L, "receiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
-    add_func(L, "flushMessagesOnConnection", luasteam_flushMessagesOnConnection);
-    add_func(L, "sendMessages", luasteam_sendMessages);
+    add_func(L, "CreateListenSocketIP", luasteam_createListenSocketIP);
+    add_func(L, "CreateListenSocketP2P", luasteam_createListenSocketP2P);
+    add_func(L, "ConnectByIPAddress", luasteam_connectByIPAddress);
+    add_func(L, "ConnectP2P", luasteam_connectP2P);
+    add_func(L, "AcceptConnection", luasteam_acceptConnection);
+    add_func(L, "CloseConnection", luasteam_closeConnection);
+    add_func(L, "CloseListenSocket", luasteam_closeListenSocket);
+    add_func(L, "SendMessageToConnection", luasteam_sendMessageToConnection);
+    add_func(L, "ReceiveMessagesOnConnection", luasteam_receiveMessagesOnConnection);
+    add_func(L, "InitAuthentication", luasteam_initAuthentication);
+    add_func(L, "GetAuthenticationStatus", luasteam_getAuthenticationStatus);
+    add_func(L, "GetConnectionInfo", luasteam_getConnectionInfo);
+    add_func(L, "GetIdentity", luasteam_getIdentity);
+    add_func(L, "CreatePollGroup", luasteam_createPollGroup);
+    add_func(L, "DestroyPollGroup", luasteam_destroyPollGroup);
+    add_func(L, "SetConnectionPollGroup", luasteam_setConnectionPollGroup);
+    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
+    add_func(L, "FlushMessagesOnConnection", luasteam_flushMessagesOnConnection);
+    add_func(L, "SendMessages", luasteam_sendMessages);
     add_constants(L);
     lua_pushvalue(L, -1);
     sockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "networkingSockets");
+    lua_setfield(L, -2, "NetworkingSockets");
 }
 
 void init_networkingSockets(lua_State *L) {

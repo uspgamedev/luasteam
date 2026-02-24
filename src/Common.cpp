@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "Common.hpp"
 #include <string>
 
 namespace {
@@ -67,7 +67,7 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
     lua_setfield(L, -2, name);
 }
 
-void init_common(lua_State *L) {
+void init_Common(lua_State *L) {
     global_lua_state = L;
     // uint64 metatable
     lua_createtable(L, 0, 2);
@@ -76,7 +76,7 @@ void init_common(lua_State *L) {
     uint64Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
-void shutdown_common(lua_State *L) {
+void shutdown_Common(lua_State *L) {
     global_lua_state = nullptr;
     luaL_unref(L, LUA_REGISTRYINDEX, uint64Metatable_ref);
     uint64Metatable_ref = LUA_NOREF;

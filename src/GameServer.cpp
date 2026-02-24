@@ -1,8 +1,8 @@
 
-#include "gameServer.hpp"
+#include "GameServer.hpp"
 #include "../sdk/public/steam/steam_gameserver.h"
+#include "Extra.hpp"
 #include "auto/auto.hpp"
-#include "extra.hpp"
 #include "networkingSockets.hpp"
 #include "networkingUtils.hpp"
 #include <sstream>
@@ -42,7 +42,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
     const char *version = (char *)luaL_checkstring(L, 5);
     bool success = SteamGameServer_Init(ip, usGamePort, usQueryPort, eServerMode, version);
     if (success) {
-        luasteam::init_common(L);
+        luasteam::init_Common(L);
         luasteam::init_extra(L);
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
@@ -69,7 +69,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
-    luasteam::shutdown_common(L);
+    luasteam::shutdown_Common(L);
     luasteam::shutdown_GameServer_auto(L);
     return 0;
 }
@@ -79,12 +79,12 @@ namespace luasteam {
 void add_gameServer(lua_State *L) {
     lua_createtable(L, 0, 6);
     register_GameServer_auto(L);
-    add_func(L, "init", luasteam_init_server);
-    add_func(L, "shutdown", luasteam_shutdown_server);
-    add_func(L, "runCallbacks", luasteam_runCallbacks_server);
+    add_func(L, "Init", luasteam_init_server);
+    add_func(L, "Shutdown", luasteam_shutdown_server);
+    add_func(L, "RunCallbacks", luasteam_runCallbacks_server);
     lua_pushvalue(L, -1);
     GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "gameServer");
+    lua_setfield(L, -2, "GameServer");
 }
 
 } // namespace luasteam

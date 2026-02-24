@@ -20,7 +20,6 @@ While using this documentation, you may also like to check the `SteamWorks API R
     Core Functions <steam_api>
     ISteamNetworkingSockets <networking_sockets>
     ISteamNetworkingUtils <networking_utils>
-    ISteamUGC <UGC>
     Extra <extra>
 
 .. toctree::

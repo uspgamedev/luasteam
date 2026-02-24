@@ -1,4 +1,4 @@
-#include "extra.hpp"
+#include "Extra.hpp"
 #include <cstdlib>
 
 // Manually implemented as a utility function to parse uint64 from a string
@@ -15,8 +15,8 @@ namespace luasteam {
 
 void add_extra(lua_State *L) {
     lua_createtable(L, 0, 1);
-    add_func(L, "parseUint64", luasteam_parseUint64);
-    lua_setfield(L, -2, "extra");
+    add_func(L, "ParseUint64", luasteam_parseUint64);
+    lua_setfield(L, -2, "Extra");
 }
 
 void init_extra(lua_State *L) {}

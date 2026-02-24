@@ -52,10 +52,10 @@ Doing this in luasteam should be as easy as::
 
     local Steam = require 'luasteam'
 
-    Steam.init()
+    Steam.Init()
     -- ...
     -- when game is closing
-    Steam.shutdown()
+    Steam.Shutdown()
 
 Check the `overview <https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown>`_ for more info on initialization and shutdown. When developing your game, remember to have Steam turned on and use a ``steam_appid.txt`` file.
 
@@ -159,7 +159,7 @@ Code in luasteam
 
 .. warning::
 
-    To use Callbacks and Call Results, you **must** constantly call ``Steam.runCallbacks()``, preferably in your game loop.
+    To use Callbacks and Call Results, you **must** constantly call ``Steam.RunCallbacks()``, preferably in your game loop.
 
 .. _64-bit-integers:
 
@@ -171,13 +171,13 @@ In this documentation, these use `uint64` types instead of `number`.
 
 Since Lua 5.1 does not support integers, and doubles (the default number type) can't hold a 64-bit integer with no error, we use userdata to keep such integers (even in Lua versions that support integers).
 
-They can only be compared for equality or converted to strings (using the `tostring` function), since doing any math on them doesn't make any sense. You can use :func:`extra.parseUint64` to parse them from strings.
+They can only be compared for equality or converted to strings (using the `tostring` function), since doing any math on them doesn't make any sense. You can use :func:`extra.ParseUint64` to parse them from strings.
 
 ::
 
     local original = Steam.User.GetSteamID()
     local str = tostring(original)
     print("Your id is " .. str)
-    local id = Steam.extra.parseUint64(str)
+    local id = Steam.Extra.ParseUint64(str)
     -- equality works, even though they are different userdata instances
     assert(id == original)
