@@ -1,4 +1,5 @@
 #include "auto.hpp"
+#include <cstdlib>
 #include <new>
 
 static int SteamIPAddress_tMetatable_ref = LUA_NOREF;
@@ -643,8 +644,12 @@ static int SteamParamStringArray_t_index(lua_State *L) {
 	if (lua_type(L, 2) != LUA_TSTRING) { lua_pushnil(L); return 1; }
 	const char *key = lua_tostring(L, 2);
 	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
-	if (strcmp(key, "m_nNumStrings") == 0) {
-		lua_pushinteger(L, self->m_nNumStrings);
+	if (strcmp(key, "m_ppStrings") == 0) {
+		lua_newtable(L);
+		for (int32 _i = 0; _i < self->m_nNumStrings; _i++) {
+			lua_pushstring(L, self->m_ppStrings[_i]);
+			lua_rawseti(L, -2, _i + 1);
+		}
 		return 1;
 	}
 	lua_pushnil(L);
@@ -655,11 +660,35 @@ static int SteamParamStringArray_t_newindex(lua_State *L) {
 	if (lua_type(L, 2) != LUA_TSTRING) { return 0; }
 	const char *key = lua_tostring(L, 2);
 	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
-	if (strcmp(key, "m_nNumStrings") == 0) {
-		self->m_nNumStrings = static_cast<int32>(luaL_checkint(L, 3));
+	if (strcmp(key, "m_ppStrings") == 0) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		if (self->m_ppStrings != nullptr) {
+			for (int32 _i = 0; _i < self->m_nNumStrings; _i++)
+			    free((void*)self->m_ppStrings[_i]);
+			delete[] self->m_ppStrings;
+		}
+		int32 _n = (int32)lua_objlen(L, 3);
+		const char **_arr = new const char*[_n];
+		for (int32 _i = 0; _i < _n; _i++) {
+			lua_rawgeti(L, 3, _i + 1);
+			_arr[_i] = strdup(luaL_checkstring(L, -1));
+			lua_pop(L, 1);
+		}
+		self->m_ppStrings = _arr;
+		self->m_nNumStrings = _n;
 		return 0;
 	}
 	return luaL_error(L, "SteamParamStringArray_t has no field '%%s'", key);
+}
+
+static int SteamParamStringArray_t_gc(lua_State *L) {
+	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
+	if (self->m_ppStrings != nullptr) {
+		for (int32 _i = 0; _i < self->m_nNumStrings; _i++)
+		    free((void*)self->m_ppStrings[_i]);
+		delete[] self->m_ppStrings;
+	}
+	return 0;
 }
 
 EXTERN int luasteam_newSteamParamStringArray_t(lua_State *L) {
@@ -667,9 +696,17 @@ EXTERN int luasteam_newSteamParamStringArray_t(lua_State *L) {
 	new (ptr) SteamParamStringArray_t();
 	if (!lua_isnoneornil(L, 1)) {
 		luaL_checktype(L, 1, LUA_TTABLE);
-		lua_getfield(L, 1, "m_nNumStrings");
-		if (!lua_isnil(L, -1)) {
-			ptr->m_nNumStrings = static_cast<int32>(luaL_checkint(L, -1));
+		lua_getfield(L, 1, "m_ppStrings");
+		if (lua_istable(L, -1)) {
+			int32 _n = (int32)lua_objlen(L, -1);
+			const char **_arr = new const char*[_n];
+			for (int32 _i = 0; _i < _n; _i++) {
+				lua_rawgeti(L, -1, _i + 1);
+				_arr[_i] = strdup(luaL_checkstring(L, -1));
+				lua_pop(L, 1);
+			}
+			ptr->m_ppStrings = _arr;
+			ptr->m_nNumStrings = _n;
 		}
 		lua_pop(L, 1);
 	}
@@ -3518,9 +3555,10 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__newindex", SteamPartyBeaconLocation_t_newindex);
 	SteamPartyBeaconLocation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	// SteamParamStringArray_t metatable
-	lua_createtable(L, 0, 2);
+	lua_createtable(L, 0, 3);
 	add_func(L, "__index", SteamParamStringArray_t_index);
 	add_func(L, "__newindex", SteamParamStringArray_t_newindex);
+	add_func(L, "__gc", SteamParamStringArray_t_gc);
 	SteamParamStringArray_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	// LeaderboardEntry_t metatable
 	lua_createtable(L, 0, 2);

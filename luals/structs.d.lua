@@ -107,7 +107,7 @@ local SteamPartyBeaconLocation_t = {}
 function Steam.newSteamPartyBeaconLocation_t(table) end
 
 ---@class SteamParamStringArray_t
----@field m_nNumStrings integer
+---@field m_ppStrings string[]
 local SteamParamStringArray_t = {}
 
 ---@param table table?

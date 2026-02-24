@@ -146,10 +146,10 @@ impl Generator {
             SkipReason::ManualBlocklist("out_array_count seems to be wrong".to_string()),
         );
 
-        // Weird API and no explanation or reference
+        // char** output semantics unclear (Steam sets internal pointer; lifetime is unknown)
         blocklist.insert(
             "SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(),
-            SkipReason::ManualBlocklist("weird API, no explanation or reference".to_string()),
+            SkipReason::ManualBlocklist("char** output semantics unclear".to_string()),
         );
 
         // Has function pointers, can't be implemented automatically
@@ -289,6 +289,7 @@ impl Generator {
 
         let mut cpp = CodeBuilder::new();
         cpp.line("#include \"auto.hpp\"");
+        cpp.line("#include <cstdlib>");
         cpp.line("#include <new>");
         cpp.preceeding_blank_line();
 
@@ -546,8 +547,18 @@ impl Generator {
         let mut readable_fields: Vec<(&Field, String)> = Vec::new();
         let mut readable_field_types: Vec<(String, LType)> = Vec::new();
         let mut writable_fields: Vec<(&Field, String, String)> = Vec::new();
+        // Fields with string_count: const char** arrays managed by Lua.
+        let mut string_array_fields: Vec<(&Field, String)> = Vec::new(); // (field, count_fieldname)
 
         for field in &accessible_fields {
+            // Special case: const char ** with string_count metadata
+            if let Some(count_field) = &field.string_count {
+                let count_field = count_field.clone();
+                readable_field_types.push((field.fieldname.clone(), LType::Array(Box::new(LType::String))));
+                string_array_fields.push((field, count_field));
+                continue;
+            }
+
             let (push_ok, push_code, ltype) =
                 self.generate_push(&field.fieldtype, &format!("self->{}", field.fieldname), 2);
             if push_ok {
@@ -577,8 +588,9 @@ impl Generator {
         }
 
         let has_methods = !methods.is_empty();
-        let has_readable = !readable_fields.is_empty();
-        let has_writable = !writable_fields.is_empty();
+        let has_readable = !readable_fields.is_empty() || !string_array_fields.is_empty();
+        let has_writable = !writable_fields.is_empty() || !string_array_fields.is_empty();
+        let has_gc = !string_array_fields.is_empty();
 
         // Build cpp_code: outside namespace
         let mut cpp = CodeBuilder::new();
@@ -614,6 +626,20 @@ impl Generator {
                 cpp.indent_left();
                 cpp.line("}");
             }
+            for (field, count_field) in &string_array_fields {
+                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.indent_right();
+                cpp.line("lua_newtable(L);");
+                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++) {{", count_field));
+                cpp.indent_right();
+                cpp.line(&format!("lua_pushstring(L, self->{}[_i]);", field.fieldname));
+                cpp.line("lua_rawseti(L, -2, _i + 1);");
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line("return 1;");
+                cpp.indent_left();
+                cpp.line("}");
+            }
         }
         cpp.line("lua_pushnil(L);");
         cpp.line("return 1;");
@@ -636,10 +662,56 @@ impl Generator {
                 cpp.indent_left();
                 cpp.line("}");
             }
+            for (field, count_field) in &string_array_fields {
+                cpp.line(&format!("if (strcmp(key, \"{}\") == 0) {{", field.fieldname));
+                cpp.indent_right();
+                cpp.line("luaL_checktype(L, 3, LUA_TTABLE);");
+                cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
+                cpp.indent_right();
+                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++)", count_field));
+                cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
+                cpp.line(&format!("delete[] self->{};", field.fieldname));
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line(&format!("int32 _n = (int32)lua_objlen(L, 3);"));
+                cpp.line("const char **_arr = new const char*[_n];");
+                cpp.line("for (int32 _i = 0; _i < _n; _i++) {");
+                cpp.indent_right();
+                cpp.line("lua_rawgeti(L, 3, _i + 1);");
+                cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
+                cpp.line("lua_pop(L, 1);");
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line(&format!("self->{} = _arr;", field.fieldname));
+                cpp.line(&format!("self->{} = _n;", count_field));
+                cpp.line("return 0;");
+                cpp.indent_left();
+                cpp.line("}");
+            }
             cpp.line(&format!(
                 "return luaL_error(L, \"{} has no field '%%s'\", key);",
                 name
             ));
+            cpp.indent_left();
+            cpp.line("}");
+            cpp.preceeding_blank_line();
+        }
+
+        // __gc function (only for structs with managed string arrays)
+        if has_gc {
+            cpp.line(&format!("static int {}_gc(lua_State *L) {{", name));
+            cpp.indent_right();
+            cpp.line(&format!("{} *self = ({}*)lua_touserdata(L, 1);", name, name));
+            for (field, count_field) in &string_array_fields {
+                cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
+                cpp.indent_right();
+                cpp.line(&format!("for (int32 _i = 0; _i < self->{}; _i++)", count_field));
+                cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
+                cpp.line(&format!("delete[] self->{};", field.fieldname));
+                cpp.indent_left();
+                cpp.line("}");
+            }
+            cpp.line("return 0;");
             cpp.indent_left();
             cpp.line("}");
             cpp.preceeding_blank_line();
@@ -662,6 +734,25 @@ impl Generator {
                 cpp.line("if (!lua_isnil(L, -1)) {");
                 cpp.indent_right();
                 cpp.raw(check_code_ctor);
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line("lua_pop(L, 1);");
+            }
+            for (field, count_field) in &string_array_fields {
+                cpp.line(&format!("lua_getfield(L, 1, \"{}\");", field.fieldname));
+                cpp.line("if (lua_istable(L, -1)) {");
+                cpp.indent_right();
+                cpp.line("int32 _n = (int32)lua_objlen(L, -1);");
+                cpp.line("const char **_arr = new const char*[_n];");
+                cpp.line("for (int32 _i = 0; _i < _n; _i++) {");
+                cpp.indent_right();
+                cpp.line("lua_rawgeti(L, -1, _i + 1);");
+                cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
+                cpp.line("lua_pop(L, 1);");
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line(&format!("ptr->{} = _arr;", field.fieldname));
+                cpp.line(&format!("ptr->{} = _n;", count_field));
                 cpp.indent_left();
                 cpp.line("}");
                 cpp.line("lua_pop(L, 1);");
@@ -739,7 +830,7 @@ impl Generator {
         // Build init_code (indent 1, for inside init_structs_auto)
         let mut init = CodeBuilder::with_indent(1);
         init.line(&format!("// {} metatable", name));
-        let table_size = methods.len() + 1 + has_writable as usize;
+        let table_size = methods.len() + 1 + has_writable as usize + has_gc as usize;
         init.line(&format!("lua_createtable(L, 0, {});", table_size));
         for (lua_name, c_func_name) in &methods {
             init.line(&format!("add_func(L, \"{}\", {});", lua_name, c_func_name));
@@ -747,6 +838,9 @@ impl Generator {
         init.line(&format!("add_func(L, \"__index\", {}_index);", name));
         if has_writable {
             init.line(&format!("add_func(L, \"__newindex\", {}_newindex);", name));
+        }
+        if has_gc {
+            init.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
         }
         init.line(&format!(
             "{}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
@@ -1555,6 +1649,45 @@ impl Generator {
             let resolved = self.type_resolver.resolve_type(&param.paramtype);
             use CppType::*;
             if resolved.is_double_pointer() {
+                // Case 1: char ** with out_string annotation — Steam sets *param to an internal string.
+                if param.out_string.is_some() {
+                    if let CppType::Pointer { ttype, .. } = &resolved
+                        && ttype.contains("char")
+                    {
+                        s.line(&format!("char *{} = nullptr;", param.paramname));
+                        cpp_call_params.push(format!("&{}", param.paramname));
+                        pointer_params.push((param, false));
+                        i += 1;
+                        continue;
+                    }
+                }
+                // Case 2: T** input array where T is an auto-generated struct with array_count.
+                if let Some(sz) = &param.array_count {
+                    if let CppType::Pointer { ttype, .. } = &resolved {
+                        if let Some(struct_name) = ttype.strip_suffix(" *") {
+                            if self.added_structs_with_ptr.contains(struct_name) {
+                                let struct_name = struct_name.to_string();
+                                let sz = sz.clone();
+                                s.line(&format!("int {} = (int)lua_objlen(L, {});", sz, lua_idx));
+                                s.line(&format!("std::vector<{} *> {}_vec({});", struct_name, param.paramname, sz));
+                                s.line(&format!("for (int _i = 0; _i < {}; _i++) {{", sz));
+                                s.indent_right();
+                                s.line(&format!("lua_rawgeti(L, {}, _i + 1);", lua_idx));
+                                s.line(&format!("{}_vec[_i] = luasteam::check_{}_ptr(L, -1);", param.paramname, struct_name));
+                                s.line("lua_pop(L, 1);");
+                                s.indent_left();
+                                s.line("}");
+                                s.line(&format!("{} **{} = {}_vec.data();", struct_name, param.paramname, param.paramname));
+                                cpp_call_params.push(param.paramname.clone());
+                                sig.add_param(param.paramname.clone(), LType::Array(Box::new(LType::Userdata(struct_name))));
+                                size_params_to_ignore.insert(sz);
+                                lua_idx += 1;
+                                i += 1;
+                                continue;
+                            }
+                        }
+                    }
+                }
                 return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
             }
 
@@ -2007,16 +2140,24 @@ impl Generator {
                     }
                 }
             } else {
-                let (ok, push, ltype) = self.generate_push(
-                    param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
-                    &param.paramname,
-                    1,
-                );
-                if !ok {
-                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                // char ** out_string: param holds a const char* set by Steam
+                if param.paramtype == "char **" {
+                    let mut out = CodeBuilder::with_indent(1);
+                    out.line(&format!("lua_pushstring(L, {});", param.paramname));
+                    s.raw(&out.finish());
+                    sig.add_output_param(param.paramname.clone(), LType::String);
+                } else {
+                    let (ok, push, ltype) = self.generate_push(
+                        param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
+                        &param.paramname,
+                        1,
+                    );
+                    if !ok {
+                        return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                    }
+                    s.raw(&push);
+                    sig.add_output_param(param.paramname.clone(), ltype);
                 }
-                s.raw(&push);
-                sig.add_output_param(param.paramname.clone(), ltype);
             }
         }
 

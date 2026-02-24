@@ -512,6 +512,13 @@ impl SteamApi {
                 .field_mut(field_name)
                 .private = true;
         }
+        // SteamParamStringArray_t::m_ppStrings is a const char** managed by Lua.
+        // m_nNumStrings is managed alongside it (set/freed atomically), so mark it private.
+        {
+            let st = self.struct_mut("SteamParamStringArray_t");
+            st.field_mut("m_ppStrings").string_count = Some("m_nNumStrings".to_string());
+            st.field_mut("m_nNumStrings").private = true;
+        }
     }
 }
 
@@ -536,6 +543,10 @@ pub struct Field {
     pub fieldtype: String,
     #[serde(default)]
     pub private: bool,
+    /// For `const char **` fields: names the sibling field that holds the count.
+    /// The generator will produce a string-array __index/__newindex/__gc for this field.
+    #[serde(default)]
+    pub string_count: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -631,6 +642,9 @@ pub struct Param {
     pub array_count: Option<String>,
     pub out_array_call: Option<String>,
     pub desc: Option<String>,
+    /// Present on `char **` output params: Steam sets `*param` to an internal string.
+    #[serde(default)]
+    pub out_string: Option<String>,
 }
 
 impl Param {

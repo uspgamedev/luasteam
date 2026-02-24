@@ -27,7 +27,7 @@ Unimplemented Methods
 
 .. function:: MatchmakingServers.requestInternetServerList
 
-    ✋ **Not implemented** - unsupported type: MatchMakingKeyValuePair_t **
+    ✋ **Not implemented** - unsupported type: HServerListRequest
     
     :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
 
@@ -39,25 +39,25 @@ Unimplemented Methods
 
 .. function:: MatchmakingServers.requestFriendsServerList
 
-    ✋ **Not implemented** - unsupported type: MatchMakingKeyValuePair_t **
+    ✋ **Not implemented** - unsupported type: HServerListRequest
     
     :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
 
 .. function:: MatchmakingServers.requestFavoritesServerList
 
-    ✋ **Not implemented** - unsupported type: MatchMakingKeyValuePair_t **
+    ✋ **Not implemented** - unsupported type: HServerListRequest
     
     :SteamWorks: `RequestFavoritesServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFavoritesServerList>`_
 
 .. function:: MatchmakingServers.requestHistoryServerList
 
-    ✋ **Not implemented** - unsupported type: MatchMakingKeyValuePair_t **
+    ✋ **Not implemented** - unsupported type: HServerListRequest
     
     :SteamWorks: `RequestHistoryServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestHistoryServerList>`_
 
 .. function:: MatchmakingServers.requestSpectatorServerList
 
-    ✋ **Not implemented** - unsupported type: MatchMakingKeyValuePair_t **
+    ✋ **Not implemented** - unsupported type: HServerListRequest
     
     :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_
 
