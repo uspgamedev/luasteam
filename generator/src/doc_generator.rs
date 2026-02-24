@@ -11,6 +11,24 @@ pub struct StructDocInfo<'a> {
     pub method_signatures: &'a [(String, LuaMethodSignature)],
 }
 
+/// Doc info for a single param in a callback interface method.
+pub struct CallbackParamDocInfo {
+    pub name: String,
+    pub ltype: LType,
+}
+
+/// Doc info for a method in a callback interface.
+pub struct CallbackMethodDocInfo {
+    pub name: String,
+    pub params: Vec<CallbackParamDocInfo>,
+}
+
+/// Doc info for a callback interface (user-implemented pure-virtual C++ interface).
+pub struct CallbackInterfaceDocInfo {
+    pub name: String,
+    pub methods: Vec<CallbackMethodDocInfo>,
+}
+
 #[derive(Debug, Deserialize, Default)]
 pub struct CustomDocs {
     #[serde(flatten)]
@@ -485,6 +503,48 @@ impl DocGenerator {
                     doc.push('\n');
                 }
             }
+        }
+
+        doc
+    }
+
+    pub fn generate_callback_interfaces_doc(&self, interfaces: &[CallbackInterfaceDocInfo]) -> String {
+        let mut doc = String::new();
+
+        doc.push_str("====================\nCallback Interfaces\n====================\n\n");
+        doc.push_str(".. note::\n");
+        doc.push_str("   These are pure-virtual C++ interfaces that you implement in Lua by providing\n");
+        doc.push_str("   a table of callback functions to the constructor.\n\n");
+
+        for iface in interfaces {
+            let name = &iface.name;
+            let bar = "-".repeat(name.len());
+            // Use struct- prefix so cross-references from interface docs work
+            doc.push_str(&format!(".. _struct-{}:\n\n", name));
+            doc.push_str(&format!("{}\n{}\n{}\n\n", bar, name, bar));
+
+            let param_names: Vec<&str> = iface.methods.iter().map(|m| m.name.as_str()).collect();
+            doc.push_str(&format!(
+                ".. function:: Steam.new{}(callbacks)\n\n",
+                name
+            ));
+            doc.push_str("    🤖 Constructor — creates a new callback interface userdata.\n\n");
+            doc.push_str("    :param table callbacks: Table of callback functions:\n\n");
+
+            for method in &iface.methods {
+                let params_str: Vec<String> = method.params.iter()
+                    .map(|p| format!("{}: {}", p.name, p.ltype.to_lua_doc_reference(&self.structs)))
+                    .collect();
+                doc.push_str(&format!(
+                    "        * **{}** ``function({})``\n",
+                    method.name,
+                    params_str.join(", ")
+                ));
+            }
+            doc.push('\n');
+            doc.push_str(&format!("    :returns: ({}) New callback interface userdata.\n\n", name));
+
+            let _ = param_names;
         }
 
         doc

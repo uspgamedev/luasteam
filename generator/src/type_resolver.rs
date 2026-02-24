@@ -1,10 +1,11 @@
 use crate::cpp_type::CppType;
 use crate::schema::{Enum, Typedef};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone)]
 pub struct TypeResolver {
     type_map: HashMap<String, String>,
+    opaque_handles: HashSet<String>,
 }
 
 impl TypeResolver {
@@ -15,10 +16,16 @@ impl TypeResolver {
         interface_enums: &[(String, Vec<Enum>)],
     ) -> Self {
         let mut type_map = HashMap::new();
+        let mut opaque_handles = HashSet::new();
 
-        // Add typedefs
+        // Add typedefs — void* typedefs become opaque handles (self-referential, break the chain)
         for td in typedefs {
-            type_map.insert(td.typedef.clone(), td.type_name.clone());
+            if td.type_name == "void *" {
+                type_map.insert(td.typedef.clone(), td.typedef.clone());
+                opaque_handles.insert(td.typedef.clone());
+            } else {
+                type_map.insert(td.typedef.clone(), td.type_name.clone());
+            }
         }
 
         // Add global enums
@@ -54,7 +61,12 @@ impl TypeResolver {
         type_map.insert("const char *".to_string(), "const char *".to_string());
         type_map.insert("double".to_string(), "double".to_string());
 
-        Self { type_map }
+        Self { type_map, opaque_handles }
+    }
+
+    /// Returns the set of opaque handle type names (void* typedefs).
+    pub fn opaque_handles(&self) -> &HashSet<String> {
+        &self.opaque_handles
     }
 
     /// Resolves a C++ type to its base type through the type_map.

@@ -22,6 +22,8 @@ pub enum LType {
     }, // Represents a callback parameter for callresult methods
     /// Arbitrary userdata (e.g. SteamNetworkingIdentity)
     Userdata(String),
+    /// Opaque pointer handle (e.g. HServerListRequest) — Lua lightuserdata
+    LightUserdata(String),
 }
 
 impl LType {
@@ -41,6 +43,7 @@ impl LType {
                 "fun(data: table?, io_fail: boolean)?".to_string()
             }
             LType::Userdata(name) => name.to_string(),
+            LType::LightUserdata(name) => name.to_string(),
         }
     }
 
@@ -70,6 +73,7 @@ impl LType {
             LType::Array(inner) => format!("{}[]", inner.to_lua_doc_reference(_structs)),
             LType::CallresultCallback { struct_t: _ } => "function".to_string(),
             LType::Userdata(name) => name.to_string(),
+            LType::LightUserdata(name) => name.to_string(),
         }
     }
 }

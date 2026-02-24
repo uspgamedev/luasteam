@@ -12,7 +12,7 @@ mod type_resolver;
 
 use code_builder::CodeBuilder;
 use cpp_type::CppType;
-use doc_generator::{DocGenerator, StructDocInfo};
+use doc_generator::{CallbackInterfaceDocInfo, CallbackMethodDocInfo, CallbackParamDocInfo, DocGenerator, StructDocInfo};
 use lua_type_info::{LType, LuaMethodSignature};
 use luals_generator::LuaLsGenerator;
 use schema::{CallbackStruct, Field, Interface, Method, Param, SkipReason, Stats, SteamApi, Struct};
@@ -44,6 +44,8 @@ struct Generator {
     interface_callbacks: HashMap<String, Vec<CallbackStruct>>,
     added_structs: HashSet<String>,
     added_structs_with_ptr: HashSet<String>,
+    added_callback_interfaces: HashSet<String>,
+    opaque_handles: HashSet<String>,
     generated_callresults: HashSet<String>,
     doc_generator: DocGenerator,
     luals_generator: LuaLsGenerator,
@@ -80,6 +82,7 @@ impl Generator {
 
         let doc_generator = DocGenerator::new().with_structs(api.structs.clone());
         let luals_generator = LuaLsGenerator::new();
+        let opaque_handles = type_resolver.opaque_handles().clone();
 
         Self {
             api,
@@ -87,6 +90,8 @@ impl Generator {
             interface_callbacks,
             added_structs: HashSet::new(),
             added_structs_with_ptr: HashSet::new(),
+            added_callback_interfaces: HashSet::new(),
+            opaque_handles,
             generated_callresults: HashSet::new(),
             doc_generator,
             luals_generator,
@@ -211,6 +216,11 @@ impl Generator {
         // Start with structs to populate added_structs
         self.generate_structs(&mut stats);
 
+        // Detect and generate callback interfaces (pure-virtual user-implemented interfaces)
+        // Must run after generate_structs (to know which struct types are available for param push)
+        // and before generate_interfaces (so added_callback_interfaces is populated for method params).
+        self.generate_callback_interfaces();
+
         let mut interface_names = Vec::new();
 
         let method_blocklist = self.manual_method_blocklist();
@@ -238,7 +248,7 @@ impl Generator {
         self.generate_enums(&mut stats);
         self.generate_auto_header(&interface_names);
         self.luals_generator
-            .write_index(&luals_dir, &interface_names);
+            .write_index(&luals_dir, &interface_names, &self.opaque_handles);
         stats.print_summary();
     }
 
@@ -349,6 +359,213 @@ impl Generator {
         self.luals_generator.write_structs(luals_dir, &doc_infos);
     }
 
+    fn generate_callback_interfaces(&mut self) {
+        let interfaces = self.api.interfaces.clone();
+
+        // Detect callback interfaces: no accessors and all methods return void.
+        // These are pure-virtual C++ interfaces the user must implement (e.g. ISteamMatchmakingServerListResponse).
+        let callback_interfaces: Vec<&Interface> = interfaces
+            .iter()
+            .filter(|iface| {
+                iface.accessors.is_empty()
+                    && !iface.methods.is_empty()
+                    && iface.methods.iter().all(|m| m.returntype == "void")
+            })
+            .collect();
+
+        if callback_interfaces.is_empty() {
+            return;
+        }
+
+        // Populate added_callback_interfaces so generate_method can use them
+        for iface in &callback_interfaces {
+            self.added_callback_interfaces.insert(iface.classname.clone());
+        }
+
+        let mut cpp = CodeBuilder::new();
+        cpp.line("#include \"auto.hpp\"");
+        cpp.line("#include <new>");
+        cpp.preceeding_blank_line();
+
+        // For each callback interface, generate outside namespace: Impl struct, metatable ref,
+        // constructor, and __gc.
+        for iface in &callback_interfaces {
+            let name = &iface.classname;
+
+            // Static metatable ref
+            cpp.line(&format!("static int {}Metatable_ref = LUA_NOREF;", name));
+            cpp.preceeding_blank_line();
+
+            // Impl struct
+            cpp.line(&format!("struct {}Impl : public {} {{", name, name));
+            cpp.indent_right();
+            cpp.line("lua_State *L;");
+            for method in &iface.methods {
+                cpp.line(&format!("int ref_{};", method.methodname));
+            }
+            cpp.preceeding_blank_line();
+
+            // Destructor
+            cpp.line(&format!("~{}Impl() {{", name));
+            cpp.indent_right();
+            for method in &iface.methods {
+                cpp.line(&format!("luaL_unref(L, LUA_REGISTRYINDEX, ref_{});", method.methodname));
+            }
+            cpp.indent_left();
+            cpp.line("}");
+            cpp.preceeding_blank_line();
+
+            // Method overrides
+            for method in &iface.methods {
+                let params_decl: String = method
+                    .params
+                    .iter()
+                    .map(|p| format!("{} {}", p.paramtype, p.paramname))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                cpp.line(&format!("void {}({}) override {{", method.methodname, params_decl));
+                cpp.indent_right();
+                cpp.line(&format!("lua_rawgeti(L, LUA_REGISTRYINDEX, ref_{});", method.methodname));
+                for param in &method.params {
+                    let (ok, code, _) = self.generate_push(&param.paramtype, &param.paramname, cpp.indent());
+                    if ok {
+                        cpp.raw(&code);
+                    } else {
+                        cpp.line("lua_pushnil(L); // unsupported param type");
+                    }
+                }
+                cpp.line(&format!("lua_call(L, {}, 0);", method.params.len()));
+                cpp.indent_left();
+                cpp.line("}");
+            }
+
+            cpp.indent_left();
+            cpp.line("};");
+            cpp.preceeding_blank_line();
+
+            // Constructor: newISteamFooResponse({MethodName = fn, ...})
+            cpp.line(&format!("static int lua_new{}(lua_State *L) {{", name));
+            cpp.indent_right();
+            cpp.line("luaL_checktype(L, 1, LUA_TTABLE);");
+            cpp.line(&format!("auto *impl = ({}Impl*)lua_newuserdata(L, sizeof({}Impl));", name, name));
+            cpp.line(&format!("new (impl) {}Impl();", name));
+            cpp.line("impl->L = L;");
+            for method in &iface.methods {
+                cpp.line(&format!("lua_getfield(L, 1, \"{}\");", method.methodname));
+                cpp.line(&format!("impl->ref_{} = luaL_ref(L, LUA_REGISTRYINDEX);", method.methodname));
+            }
+            cpp.line(&format!("lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);", name));
+            cpp.line("lua_setmetatable(L, -2);");
+            cpp.line("return 1;");
+            cpp.indent_left();
+            cpp.line("}");
+            cpp.preceeding_blank_line();
+
+            // __gc
+            cpp.line(&format!("static int {}_gc(lua_State *L) {{", name));
+            cpp.indent_right();
+            cpp.line(&format!("auto *impl = ({}Impl*)luaL_checkudata(L, 1, \"{}\");", name, name));
+            cpp.line(&format!("impl->~{}Impl();", name));
+            cpp.line("return 0;");
+            cpp.indent_left();
+            cpp.line("}");
+            cpp.preceeding_blank_line();
+        }
+
+        // Namespace
+        cpp.line("namespace luasteam {");
+        cpp.preceeding_blank_line();
+
+        // check_* functions
+        for iface in &callback_interfaces {
+            let name = &iface.classname;
+            cpp.line(&format!("{} *check_{}(lua_State *L, int idx) {{", name, name));
+            cpp.indent_right();
+            cpp.line(&format!("return ({}Impl*)luaL_checkudata(L, idx, \"{}\");", name, name));
+            cpp.indent_left();
+            cpp.line("}");
+            cpp.preceeding_blank_line();
+        }
+
+        // Lifecycle functions
+        cpp.line("void init_callback_interfaces_auto(lua_State *L) {");
+        cpp.indent_right();
+        for iface in &callback_interfaces {
+            let name = &iface.classname;
+            cpp.line(&format!("luaL_newmetatable(L, \"{}\");", name));
+            cpp.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
+            cpp.line(&format!("{0}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);", name));
+        }
+        cpp.indent_left();
+        cpp.line("}");
+        cpp.preceeding_blank_line();
+
+        cpp.line("void shutdown_callback_interfaces_auto(lua_State *L) {");
+        cpp.indent_right();
+        for iface in &callback_interfaces {
+            let name = &iface.classname;
+            cpp.line(&format!("luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);", name));
+            cpp.line(&format!("{}Metatable_ref = LUA_NOREF;", name));
+        }
+        cpp.indent_left();
+        cpp.line("}");
+        cpp.preceeding_blank_line();
+
+        cpp.line("void add_callback_interfaces_auto(lua_State *L) {");
+        cpp.indent_right();
+        for iface in &callback_interfaces {
+            let name = &iface.classname;
+            cpp.line(&format!("add_func(L, \"new{}\", lua_new{});", name, name));
+        }
+        cpp.indent_left();
+        cpp.line("}");
+        cpp.preceeding_blank_line();
+
+        cpp.line("} // namespace luasteam");
+
+        fs::write("../src/auto/callback_interfaces.cpp", cpp.finish())
+            .expect("Unable to write callback_interfaces.cpp");
+
+        // Collect doc info by resolving param types
+        let doc_infos: Vec<CallbackInterfaceDocInfo> = callback_interfaces
+            .iter()
+            .map(|iface| {
+                let methods = iface
+                    .methods
+                    .iter()
+                    .map(|method| {
+                        let params = method
+                            .params
+                            .iter()
+                            .map(|p| {
+                                let (_, _, ltype) = self.generate_push(&p.paramtype, &p.paramname, 0);
+                                CallbackParamDocInfo {
+                                    name: p.paramname.clone(),
+                                    ltype,
+                                }
+                            })
+                            .collect();
+                        CallbackMethodDocInfo {
+                            name: method.methodname.clone(),
+                            params,
+                        }
+                    })
+                    .collect();
+                CallbackInterfaceDocInfo {
+                    name: iface.classname.clone(),
+                    methods,
+                }
+            })
+            .collect();
+
+        let doc_content = self.doc_generator.generate_callback_interfaces_doc(&doc_infos);
+        fs::write("../docs/auto/callback_interfaces.rst", doc_content)
+            .expect("Unable to write callback_interfaces.rst");
+
+        let luals_dir = Path::new("../luals");
+        self.luals_generator.write_callback_interfaces(luals_dir, &doc_infos);
+    }
+
     fn generate_struct_method(
         &self,
         struct_name: &str,
@@ -423,7 +640,13 @@ impl Generator {
                     LType::String
                 }
                 Normal(type_name) => {
-                    if self.added_structs.contains(type_name) {
+                    if self.opaque_handles.contains(type_name) {
+                        s.line(&format!(
+                            "{} {} = ({})lua_touserdata(L, {});",
+                            type_name, n, type_name, idx
+                        ));
+                        LType::LightUserdata(type_name.to_string())
+                    } else if self.added_structs.contains(type_name) {
                         s.line(&format!(
                             "{} {} = luasteam::check_{}(L, {});",
                             type_name, n, type_name, idx
@@ -943,6 +1166,17 @@ impl Generator {
         h.line("void init_structs_auto(lua_State *L);");
         h.line("void shutdown_structs_auto(lua_State *L);");
         h.line("void add_structs_auto(lua_State *L);");
+        // Callback interface lifecycle + check functions
+        if !self.added_callback_interfaces.is_empty() {
+            h.line("void init_callback_interfaces_auto(lua_State *L);");
+            h.line("void shutdown_callback_interfaces_auto(lua_State *L);");
+            h.line("void add_callback_interfaces_auto(lua_State *L);");
+            let mut cb_sorted: Vec<_> = self.added_callback_interfaces.iter().collect();
+            cb_sorted.sort();
+            for name in cb_sorted {
+                h.line(&format!("{} *check_{}(lua_State *L, int idx);", name, name));
+            }
+        }
         let mut structs_sorted: Vec<_> = self.added_structs.iter().collect();
         structs_sorted.sort();
         for st in &structs_sorted {
@@ -1027,7 +1261,13 @@ impl Generator {
                     (true, out.finish(), LType::Uint64)
                 }
                 _ => {
-                    if self.added_structs.contains(type_name) {
+                    if self.opaque_handles.contains(type_name) {
+                        out.line(&format!(
+                            "{}{} = ({})lua_touserdata(L, {});",
+                            type_prefix, value_accessor, type_name, lua_idx
+                        ));
+                        (true, out.finish(), LType::LightUserdata(type_name.to_string()))
+                    } else if self.added_structs.contains(type_name) {
                         out.line(&format!(
                             "{}{} = luasteam::check_{}(L, {});",
                             type_prefix, value_accessor, type_name, lua_idx
@@ -1159,7 +1399,12 @@ impl Generator {
                     (push, LType::Uint64)
                 }
                 _ => {
-                    if self.added_structs.contains(s) {
+                    if self.opaque_handles.contains(s) {
+                        (
+                            format!("lua_pushlightuserdata(L, (void*){});", value_accessor),
+                            LType::LightUserdata(s.to_string()),
+                        )
+                    } else if self.added_structs.contains(s) {
                         (format!("luasteam::push_{}(L, {});", s, value_accessor), LType::Userdata(s.to_string()))
                     } else {
                         (
@@ -1207,6 +1452,13 @@ impl Generator {
                 format!("luasteam::pushvoid_ptr(L, {});", value_accessor),
                 LType::Table, // Wrong, should be something else
             ),
+            CppType::Reference { ttype, .. } => {
+                if self.added_structs.contains(ttype) {
+                    (format!("luasteam::push_{}(L, {});", ttype, value_accessor), LType::Userdata(ttype.to_string()))
+                } else {
+                    (format!("// Skip unsupported reference type: {}", ftype), LType::Integer)
+                }
+            }
             _ => (
                 format!("// Skip unsupported type: {}", ftype),
                 LType::Integer, // ignored
@@ -1779,6 +2031,15 @@ impl Generator {
                     sig.add_param(param.paramname.clone(), LType::Uint64);
                     lua_idx += 1;
                 }
+                Normal(handle_name) if self.opaque_handles.contains(handle_name) => {
+                    s.line(&format!(
+                        "{0} {1} = ({0})lua_touserdata(L, {2});",
+                        param.paramtype, param.paramname, lua_idx
+                    ));
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::LightUserdata(handle_name.to_string()));
+                    lua_idx += 1;
+                }
                 Normal(_) => {
                     // Skip methods with unknown types for now
                     return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
@@ -1790,6 +2051,20 @@ impl Generator {
                     ttype: _,
                     is_const: false,
                 } => {
+                    // Callback interfaces are input pointers, not output pointers
+                    if let Pointer { ttype, .. } = resolved
+                        && self.added_callback_interfaces.contains(ttype)
+                    {
+                        s.line(&format!(
+                            "{} *{} = luasteam::check_{}(L, {});",
+                            ttype, param.paramname, ttype, lua_idx
+                        ));
+                        cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                        lua_idx += 1;
+                        i += 1;
+                        continue;
+                    }
                     if let Some(size_param) = param.input_array_size_param() {
                         let p = method.params.iter().find(|p| p.paramname == size_param);
                         if let Some(p) = p {

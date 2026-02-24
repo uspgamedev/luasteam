@@ -9,10 +9,159 @@ ISteamMatchmakingServers
 List of Functions
 -----------------
 
+* :func:`MatchmakingServers.RequestInternetServerList`
+* :func:`MatchmakingServers.RequestLANServerList`
+* :func:`MatchmakingServers.RequestFriendsServerList`
+* :func:`MatchmakingServers.RequestFavoritesServerList`
+* :func:`MatchmakingServers.RequestHistoryServerList`
+* :func:`MatchmakingServers.RequestSpectatorServerList`
+* :func:`MatchmakingServers.ReleaseRequest`
+* :func:`MatchmakingServers.CancelQuery`
+* :func:`MatchmakingServers.RefreshQuery`
+* :func:`MatchmakingServers.IsRefreshing`
+* :func:`MatchmakingServers.GetServerCount`
+* :func:`MatchmakingServers.RefreshServer`
+* :func:`MatchmakingServers.PingServer`
+* :func:`MatchmakingServers.PlayerDetails`
+* :func:`MatchmakingServers.ServerRules`
 * :func:`MatchmakingServers.CancelServerQuery`
 
 Function Reference
 ------------------
+
+.. function:: MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
+
+.. function:: MatchmakingServers.RequestLANServerList(iApp, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
+
+.. function:: MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
+
+.. function:: MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestFavoritesServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFavoritesServerList>`_
+
+.. function:: MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestHistoryServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestHistoryServerList>`_
+
+.. function:: MatchmakingServers.RequestSpectatorServerList(iApp, ppchFilters, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int iApp:
+    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
+    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :returns: (HServerListRequest) Return value
+    :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_
+
+.. function:: MatchmakingServers.ReleaseRequest(hServerListRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hServerListRequest:
+    :SteamWorks: `ReleaseRequest <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ReleaseRequest>`_
+
+.. function:: MatchmakingServers.CancelQuery(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hRequest:
+    :SteamWorks: `CancelQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#CancelQuery>`_
+
+.. function:: MatchmakingServers.RefreshQuery(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hRequest:
+    :SteamWorks: `RefreshQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RefreshQuery>`_
+
+.. function:: MatchmakingServers.IsRefreshing(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hRequest:
+    :returns: (bool) Return value
+    :SteamWorks: `IsRefreshing <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#IsRefreshing>`_
+
+.. function:: MatchmakingServers.GetServerCount(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hRequest:
+    :returns: (int) Return value
+    :SteamWorks: `GetServerCount <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#GetServerCount>`_
+
+.. function:: MatchmakingServers.RefreshServer(hRequest, iServer)
+
+    🤖 **Auto-generated binding**
+
+    :param HServerListRequest hRequest:
+    :param int iServer:
+    :SteamWorks: `RefreshServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RefreshServer>`_
+
+.. function:: MatchmakingServers.PingServer(unIP, usPort, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int unIP:
+    :param int usPort:
+    :param :ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>` pRequestServersResponse:
+    :returns: (int) Return value
+    :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
+
+.. function:: MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int unIP:
+    :param int usPort:
+    :param :ref:`ISteamMatchmakingPlayersResponse <struct-ISteamMatchmakingPlayersResponse>` pRequestServersResponse:
+    :returns: (int) Return value
+    :SteamWorks: `PlayerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PlayerDetails>`_
+
+.. function:: MatchmakingServers.ServerRules(unIP, usPort, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int unIP:
+    :param int usPort:
+    :param :ref:`ISteamMatchmakingRulesResponse <struct-ISteamMatchmakingRulesResponse>` pRequestServersResponse:
+    :returns: (int) Return value
+    :SteamWorks: `ServerRules <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerRules>`_
 
 .. function:: MatchmakingServers.CancelServerQuery(hServerQuery)
 
@@ -25,99 +174,9 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: MatchmakingServers.requestInternetServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
-
-.. function:: MatchmakingServers.requestLANServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
-
-.. function:: MatchmakingServers.requestFriendsServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
-
-.. function:: MatchmakingServers.requestFavoritesServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestFavoritesServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFavoritesServerList>`_
-
-.. function:: MatchmakingServers.requestHistoryServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestHistoryServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestHistoryServerList>`_
-
-.. function:: MatchmakingServers.requestSpectatorServerList
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_
-
-.. function:: MatchmakingServers.releaseRequest
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `ReleaseRequest <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ReleaseRequest>`_
-
 .. function:: MatchmakingServers.getServerDetails
 
-    ✋ **Not implemented** - unsupported type: HServerListRequest
+    ✋ **Not implemented** - unsupported type: gameserveritem_t *
     
     :SteamWorks: `GetServerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#GetServerDetails>`_
-
-.. function:: MatchmakingServers.cancelQuery
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `CancelQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#CancelQuery>`_
-
-.. function:: MatchmakingServers.refreshQuery
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RefreshQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RefreshQuery>`_
-
-.. function:: MatchmakingServers.isRefreshing
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `IsRefreshing <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#IsRefreshing>`_
-
-.. function:: MatchmakingServers.getServerCount
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `GetServerCount <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#GetServerCount>`_
-
-.. function:: MatchmakingServers.refreshServer
-
-    ✋ **Not implemented** - unsupported type: HServerListRequest
-    
-    :SteamWorks: `RefreshServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RefreshServer>`_
-
-.. function:: MatchmakingServers.pingServer
-
-    ✋ **Not implemented** - unsupported type: ISteamMatchmakingPingResponse *
-    
-    :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
-
-.. function:: MatchmakingServers.playerDetails
-
-    ✋ **Not implemented** - unsupported type: ISteamMatchmakingPlayersResponse *
-    
-    :SteamWorks: `PlayerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PlayerDetails>`_
-
-.. function:: MatchmakingServers.serverRules
-
-    ✋ **Not implemented** - unsupported type: ISteamMatchmakingRulesResponse *
-    
-    :SteamWorks: `ServerRules <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerRules>`_
 

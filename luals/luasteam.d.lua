@@ -1,5 +1,6 @@
 ---@alias uint64 userdata
 ---@alias SteamAPICall_t userdata
+---@alias HServerListRequest userdata
 
 ---@class Steam
 Steam = {}

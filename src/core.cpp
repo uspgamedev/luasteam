@@ -16,6 +16,7 @@ EXTERN int luasteam_init(lua_State *L) {
     if (success) {
         luasteam::init_common(L);
         luasteam::init_structs_auto(L);
+        luasteam::init_callback_interfaces_auto(L);
         luasteam::init_Friends_auto(L);
         luasteam::init_User_auto(L);
         luasteam::init_UserStats_auto(L);
@@ -84,6 +85,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_Friends_auto(L);
     luasteam::shutdown_common(L);
     luasteam::shutdown_structs_auto(L);
+    luasteam::shutdown_callback_interfaces_auto(L);
     return 0;
 }
 
@@ -101,6 +103,7 @@ void add_core(lua_State *L) {
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
     add_structs_auto(L);
+    add_callback_interfaces_auto(L);
 }
 
 } // namespace luasteam
