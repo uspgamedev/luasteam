@@ -113,7 +113,7 @@ Callbacks
 
 .. function:: Screenshots.onScreenshotReady
 
-    Callback for `ScreenshotReady_t <https://partner.steamgames.com/doc/api/steam_api#ScreenshotReady_t>`_
+    Callback for `ScreenshotReady_t <https://partner.steamgames.com/doc/api/ISteamScreenshots#ScreenshotReady_t>`_
 
     **callback(data)** receives:
 
@@ -122,7 +122,7 @@ Callbacks
 
 .. function:: Screenshots.onScreenshotRequested
 
-    Callback for `ScreenshotRequested_t <https://partner.steamgames.com/doc/api/steam_api#ScreenshotRequested_t>`_
+    Callback for `ScreenshotRequested_t <https://partner.steamgames.com/doc/api/ISteamScreenshots#ScreenshotRequested_t>`_
 
     **callback(data)** receives:
 

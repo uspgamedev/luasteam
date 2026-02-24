@@ -177,7 +177,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :returns: (bool) Return value
-    :returns: (table) Value for `pFriendGameInfo`
+    :returns: (:ref:`FriendGameInfo_t <struct-FriendGameInfo_t>`) Value for `pFriendGameInfo`
     :SteamWorks: `GetFriendGamePlayed <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendGamePlayed>`_
 
     **Signature differences from C++ API:**
@@ -803,7 +803,7 @@ Callbacks
 
 .. function:: Friends.onPersonaStateChange
 
-    Callback for `PersonaStateChange_t <https://partner.steamgames.com/doc/api/steam_api#PersonaStateChange_t>`_
+    Callback for `PersonaStateChange_t <https://partner.steamgames.com/doc/api/ISteamFriends#PersonaStateChange_t>`_
 
     **callback(data)** receives:
 
@@ -812,7 +812,7 @@ Callbacks
 
 .. function:: Friends.onGameOverlayActivated
 
-    Callback for `GameOverlayActivated_t <https://partner.steamgames.com/doc/api/steam_api#GameOverlayActivated_t>`_
+    Callback for `GameOverlayActivated_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameOverlayActivated_t>`_
 
     **callback(data)** receives:
 
@@ -823,7 +823,7 @@ Callbacks
 
 .. function:: Friends.onGameServerChangeRequested
 
-    Callback for `GameServerChangeRequested_t <https://partner.steamgames.com/doc/api/steam_api#GameServerChangeRequested_t>`_
+    Callback for `GameServerChangeRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameServerChangeRequested_t>`_
 
     **callback(data)** receives:
 
@@ -832,7 +832,7 @@ Callbacks
 
 .. function:: Friends.onGameLobbyJoinRequested
 
-    Callback for `GameLobbyJoinRequested_t <https://partner.steamgames.com/doc/api/steam_api#GameLobbyJoinRequested_t>`_
+    Callback for `GameLobbyJoinRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameLobbyJoinRequested_t>`_
 
     **callback(data)** receives:
 
@@ -841,7 +841,7 @@ Callbacks
 
 .. function:: Friends.onAvatarImageLoaded
 
-    Callback for `AvatarImageLoaded_t <https://partner.steamgames.com/doc/api/steam_api#AvatarImageLoaded_t>`_
+    Callback for `AvatarImageLoaded_t <https://partner.steamgames.com/doc/api/ISteamFriends#AvatarImageLoaded_t>`_
 
     **callback(data)** receives:
 
@@ -852,7 +852,7 @@ Callbacks
 
 .. function:: Friends.onClanOfficerListResponse
 
-    Callback for `ClanOfficerListResponse_t <https://partner.steamgames.com/doc/api/steam_api#ClanOfficerListResponse_t>`_
+    Callback for `ClanOfficerListResponse_t <https://partner.steamgames.com/doc/api/ISteamFriends#ClanOfficerListResponse_t>`_
 
     **callback(data)** receives:
 
@@ -862,7 +862,7 @@ Callbacks
 
 .. function:: Friends.onFriendRichPresenceUpdate
 
-    Callback for `FriendRichPresenceUpdate_t <https://partner.steamgames.com/doc/api/steam_api#FriendRichPresenceUpdate_t>`_
+    Callback for `FriendRichPresenceUpdate_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendRichPresenceUpdate_t>`_
 
     **callback(data)** receives:
 
@@ -871,7 +871,7 @@ Callbacks
 
 .. function:: Friends.onGameRichPresenceJoinRequested
 
-    Callback for `GameRichPresenceJoinRequested_t <https://partner.steamgames.com/doc/api/steam_api#GameRichPresenceJoinRequested_t>`_
+    Callback for `GameRichPresenceJoinRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameRichPresenceJoinRequested_t>`_
 
     **callback(data)** receives:
 
@@ -880,7 +880,7 @@ Callbacks
 
 .. function:: Friends.onGameConnectedClanChatMsg
 
-    Callback for `GameConnectedClanChatMsg_t <https://partner.steamgames.com/doc/api/steam_api#GameConnectedClanChatMsg_t>`_
+    Callback for `GameConnectedClanChatMsg_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedClanChatMsg_t>`_
 
     **callback(data)** receives:
 
@@ -890,7 +890,7 @@ Callbacks
 
 .. function:: Friends.onGameConnectedChatJoin
 
-    Callback for `GameConnectedChatJoin_t <https://partner.steamgames.com/doc/api/steam_api#GameConnectedChatJoin_t>`_
+    Callback for `GameConnectedChatJoin_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedChatJoin_t>`_
 
     **callback(data)** receives:
 
@@ -899,7 +899,7 @@ Callbacks
 
 .. function:: Friends.onGameConnectedChatLeave
 
-    Callback for `GameConnectedChatLeave_t <https://partner.steamgames.com/doc/api/steam_api#GameConnectedChatLeave_t>`_
+    Callback for `GameConnectedChatLeave_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedChatLeave_t>`_
 
     **callback(data)** receives:
 
@@ -910,7 +910,7 @@ Callbacks
 
 .. function:: Friends.onDownloadClanActivityCountsResult
 
-    Callback for `DownloadClanActivityCountsResult_t <https://partner.steamgames.com/doc/api/steam_api#DownloadClanActivityCountsResult_t>`_
+    Callback for `DownloadClanActivityCountsResult_t <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCountsResult_t>`_
 
     **callback(data)** receives:
 
@@ -918,7 +918,7 @@ Callbacks
 
 .. function:: Friends.onJoinClanChatRoomCompletionResult
 
-    Callback for `JoinClanChatRoomCompletionResult_t <https://partner.steamgames.com/doc/api/steam_api#JoinClanChatRoomCompletionResult_t>`_
+    Callback for `JoinClanChatRoomCompletionResult_t <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoomCompletionResult_t>`_
 
     **callback(data)** receives:
 
@@ -927,7 +927,7 @@ Callbacks
 
 .. function:: Friends.onGameConnectedFriendChatMsg
 
-    Callback for `GameConnectedFriendChatMsg_t <https://partner.steamgames.com/doc/api/steam_api#GameConnectedFriendChatMsg_t>`_
+    Callback for `GameConnectedFriendChatMsg_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedFriendChatMsg_t>`_
 
     **callback(data)** receives:
 
@@ -936,7 +936,7 @@ Callbacks
 
 .. function:: Friends.onFriendsGetFollowerCount
 
-    Callback for `FriendsGetFollowerCount_t <https://partner.steamgames.com/doc/api/steam_api#FriendsGetFollowerCount_t>`_
+    Callback for `FriendsGetFollowerCount_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsGetFollowerCount_t>`_
 
     **callback(data)** receives:
 
@@ -946,7 +946,7 @@ Callbacks
 
 .. function:: Friends.onFriendsIsFollowing
 
-    Callback for `FriendsIsFollowing_t <https://partner.steamgames.com/doc/api/steam_api#FriendsIsFollowing_t>`_
+    Callback for `FriendsIsFollowing_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsIsFollowing_t>`_
 
     **callback(data)** receives:
 
@@ -956,7 +956,7 @@ Callbacks
 
 .. function:: Friends.onFriendsEnumerateFollowingList
 
-    Callback for `FriendsEnumerateFollowingList_t <https://partner.steamgames.com/doc/api/steam_api#FriendsEnumerateFollowingList_t>`_
+    Callback for `FriendsEnumerateFollowingList_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsEnumerateFollowingList_t>`_
 
     **callback(data)** receives:
 
@@ -967,14 +967,14 @@ Callbacks
 
 .. function:: Friends.onUnreadChatMessagesChanged
 
-    Callback for `UnreadChatMessagesChanged_t <https://partner.steamgames.com/doc/api/steam_api#UnreadChatMessagesChanged_t>`_
+    Callback for `UnreadChatMessagesChanged_t <https://partner.steamgames.com/doc/api/ISteamFriends#UnreadChatMessagesChanged_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Friends.onOverlayBrowserProtocolNavigation
 
-    Callback for `OverlayBrowserProtocolNavigation_t <https://partner.steamgames.com/doc/api/steam_api#OverlayBrowserProtocolNavigation_t>`_
+    Callback for `OverlayBrowserProtocolNavigation_t <https://partner.steamgames.com/doc/api/ISteamFriends#OverlayBrowserProtocolNavigation_t>`_
 
     **callback(data)** receives:
 
@@ -982,7 +982,7 @@ Callbacks
 
 .. function:: Friends.onEquippedProfileItemsChanged
 
-    Callback for `EquippedProfileItemsChanged_t <https://partner.steamgames.com/doc/api/steam_api#EquippedProfileItemsChanged_t>`_
+    Callback for `EquippedProfileItemsChanged_t <https://partner.steamgames.com/doc/api/ISteamFriends#EquippedProfileItemsChanged_t>`_
 
     **callback(data)** receives:
 
@@ -990,7 +990,7 @@ Callbacks
 
 .. function:: Friends.onEquippedProfileItems
 
-    Callback for `EquippedProfileItems_t <https://partner.steamgames.com/doc/api/steam_api#EquippedProfileItems_t>`_
+    Callback for `EquippedProfileItems_t <https://partner.steamgames.com/doc/api/ISteamFriends#EquippedProfileItems_t>`_
 
     **callback(data)** receives:
 

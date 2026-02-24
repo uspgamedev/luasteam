@@ -711,13 +711,13 @@ EXTERN int luasteam_Friends_GetFriendPersonaName(lua_State *L) {
 // In C++:
 // bool GetFriendGamePlayed(CSteamID steamIDFriend, FriendGameInfo_t * pFriendGameInfo);
 // In Lua:
-// (bool, pFriendGameInfo: table) Friends.GetFriendGamePlayed(steamIDFriend: uint64)
+// (bool, pFriendGameInfo: FriendGameInfo_t) Friends.GetFriendGamePlayed(steamIDFriend: uint64)
 EXTERN int luasteam_Friends_GetFriendGamePlayed(lua_State *L) {
 	CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
 	FriendGameInfo_t pFriendGameInfo;
 	bool __ret = SteamFriends()->GetFriendGamePlayed(steamIDFriend, &pFriendGameInfo);
 	lua_pushboolean(L, __ret);
-	push_FriendGameInfo_t(L, pFriendGameInfo);
+	luasteam::push_FriendGameInfo_t(L, pFriendGameInfo);
 	return 2;
 }
 

@@ -144,7 +144,7 @@ Callbacks
 
 .. function:: GameServerStats.onGSStatsReceived
 
-    Callback for `GSStatsReceived_t <https://partner.steamgames.com/doc/api/steam_api#GSStatsReceived_t>`_
+    Callback for `GSStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GSStatsReceived_t>`_
 
     **callback(data)** receives:
 
@@ -153,7 +153,7 @@ Callbacks
 
 .. function:: GameServerStats.onGSStatsStored
 
-    Callback for `GSStatsStored_t <https://partner.steamgames.com/doc/api/steam_api#GSStatsStored_t>`_
+    Callback for `GSStatsStored_t <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GSStatsStored_t>`_
 
     **callback(data)** receives:
 

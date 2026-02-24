@@ -202,7 +202,7 @@ Callbacks
 
 .. function:: Timeline.onSteamTimelineGamePhaseRecordingExists
 
-    Callback for `SteamTimelineGamePhaseRecordingExists_t <https://partner.steamgames.com/doc/api/steam_api#SteamTimelineGamePhaseRecordingExists_t>`_
+    Callback for `SteamTimelineGamePhaseRecordingExists_t <https://partner.steamgames.com/doc/api/ISteamTimeline#SteamTimelineGamePhaseRecordingExists_t>`_
 
     **callback(data)** receives:
 
@@ -214,7 +214,7 @@ Callbacks
 
 .. function:: Timeline.onSteamTimelineEventRecordingExists
 
-    Callback for `SteamTimelineEventRecordingExists_t <https://partner.steamgames.com/doc/api/steam_api#SteamTimelineEventRecordingExists_t>`_
+    Callback for `SteamTimelineEventRecordingExists_t <https://partner.steamgames.com/doc/api/ISteamTimeline#SteamTimelineEventRecordingExists_t>`_
 
     **callback(data)** receives:
 

@@ -30,6 +30,7 @@ List of Functions
 * :func:`UGC.GetQueryUGCContentDescriptors`
 * :func:`UGC.ReleaseQueryUGCRequest`
 * :func:`UGC.AddRequiredTag`
+* :func:`UGC.AddRequiredTagGroup`
 * :func:`UGC.AddExcludedTag`
 * :func:`UGC.SetReturnOnlyIDs`
 * :func:`UGC.SetReturnKeyValueTags`
@@ -57,6 +58,7 @@ List of Functions
 * :func:`UGC.SetItemUpdateLanguage`
 * :func:`UGC.SetItemMetadata`
 * :func:`UGC.SetItemVisibility`
+* :func:`UGC.SetItemTags`
 * :func:`UGC.SetItemContent`
 * :func:`UGC.SetItemPreview`
 * :func:`UGC.SetAllowLegacyUpload`
@@ -183,7 +185,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :returns: (bool) Return value
-    :returns: (table) Value for `pDetails`
+    :returns: (:ref:`SteamUGCDetails_t <struct-SteamUGCDetails_t>`) Value for `pDetails`
     :SteamWorks: `GetQueryUGCResult <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCResult>`_
 
     **Signature differences from C++ API:**
@@ -407,6 +409,15 @@ Function Reference
     :param str pTagName:
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTag>`_
+
+.. function:: UGC.AddRequiredTagGroup(handle, pTagGroups)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 handle:
+    :param :ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>` pTagGroups:
+    :returns: (bool) Return value
+    :SteamWorks: `AddRequiredTagGroup <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTagGroup>`_
 
 .. function:: UGC.AddExcludedTag(handle, pTagName)
 
@@ -655,6 +666,16 @@ Function Reference
     :param int eVisibility:
     :returns: (bool) Return value
     :SteamWorks: `SetItemVisibility <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemVisibility>`_
+
+.. function:: UGC.SetItemTags(updateHandle, pTags, bAllowAdminTags)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param :ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>` pTags:
+    :param bool bAllowAdminTags:
+    :returns: (bool) Return value
+    :SteamWorks: `SetItemTags <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTags>`_
 
 .. function:: UGC.SetItemContent(handle, pszContentFolder)
 
@@ -1113,25 +1134,13 @@ Unimplemented Methods
     
     :SteamWorks: `GetQueryUGCKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCKeyValueTag>`_
 
-.. function:: UGC.addRequiredTagGroup
-
-    ✋ **Not implemented** - unsupported type: const SteamParamStringArray_t *
-    
-    :SteamWorks: `AddRequiredTagGroup <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTagGroup>`_
-
-.. function:: UGC.setItemTags
-
-    ✋ **Not implemented** - unsupported type: const SteamParamStringArray_t *
-    
-    :SteamWorks: `SetItemTags <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTags>`_
-
 
 Callbacks
 ---------
 
 .. function:: UGC.onSteamUGCQueryCompleted
 
-    Callback for `SteamUGCQueryCompleted_t <https://partner.steamgames.com/doc/api/steam_api#SteamUGCQueryCompleted_t>`_
+    Callback for `SteamUGCQueryCompleted_t <https://partner.steamgames.com/doc/api/ISteamUGC#SteamUGCQueryCompleted_t>`_
 
     **callback(data)** receives:
 
@@ -1144,7 +1153,7 @@ Callbacks
 
 .. function:: UGC.onSteamUGCRequestUGCDetailsResult
 
-    Callback for `SteamUGCRequestUGCDetailsResult_t <https://partner.steamgames.com/doc/api/steam_api#SteamUGCRequestUGCDetailsResult_t>`_
+    Callback for `SteamUGCRequestUGCDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#SteamUGCRequestUGCDetailsResult_t>`_
 
     **callback(data)** receives:
 
@@ -1153,7 +1162,7 @@ Callbacks
 
 .. function:: UGC.onCreateItemResult
 
-    Callback for `CreateItemResult_t <https://partner.steamgames.com/doc/api/steam_api#CreateItemResult_t>`_
+    Callback for `CreateItemResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#CreateItemResult_t>`_
 
     **callback(data)** receives:
 
@@ -1163,7 +1172,7 @@ Callbacks
 
 .. function:: UGC.onSubmitItemUpdateResult
 
-    Callback for `SubmitItemUpdateResult_t <https://partner.steamgames.com/doc/api/steam_api#SubmitItemUpdateResult_t>`_
+    Callback for `SubmitItemUpdateResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#SubmitItemUpdateResult_t>`_
 
     **callback(data)** receives:
 
@@ -1173,7 +1182,7 @@ Callbacks
 
 .. function:: UGC.onItemInstalled
 
-    Callback for `ItemInstalled_t <https://partner.steamgames.com/doc/api/steam_api#ItemInstalled_t>`_
+    Callback for `ItemInstalled_t <https://partner.steamgames.com/doc/api/ISteamUGC#ItemInstalled_t>`_
 
     **callback(data)** receives:
 
@@ -1184,7 +1193,7 @@ Callbacks
 
 .. function:: UGC.onDownloadItemResult
 
-    Callback for `DownloadItemResult_t <https://partner.steamgames.com/doc/api/steam_api#DownloadItemResult_t>`_
+    Callback for `DownloadItemResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#DownloadItemResult_t>`_
 
     **callback(data)** receives:
 
@@ -1194,7 +1203,7 @@ Callbacks
 
 .. function:: UGC.onUserFavoriteItemsListChanged
 
-    Callback for `UserFavoriteItemsListChanged_t <https://partner.steamgames.com/doc/api/steam_api#UserFavoriteItemsListChanged_t>`_
+    Callback for `UserFavoriteItemsListChanged_t <https://partner.steamgames.com/doc/api/ISteamUGC#UserFavoriteItemsListChanged_t>`_
 
     **callback(data)** receives:
 
@@ -1204,7 +1213,7 @@ Callbacks
 
 .. function:: UGC.onSetUserItemVoteResult
 
-    Callback for `SetUserItemVoteResult_t <https://partner.steamgames.com/doc/api/steam_api#SetUserItemVoteResult_t>`_
+    Callback for `SetUserItemVoteResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#SetUserItemVoteResult_t>`_
 
     **callback(data)** receives:
 
@@ -1214,7 +1223,7 @@ Callbacks
 
 .. function:: UGC.onGetUserItemVoteResult
 
-    Callback for `GetUserItemVoteResult_t <https://partner.steamgames.com/doc/api/steam_api#GetUserItemVoteResult_t>`_
+    Callback for `GetUserItemVoteResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#GetUserItemVoteResult_t>`_
 
     **callback(data)** receives:
 
@@ -1226,7 +1235,7 @@ Callbacks
 
 .. function:: UGC.onStartPlaytimeTrackingResult
 
-    Callback for `StartPlaytimeTrackingResult_t <https://partner.steamgames.com/doc/api/steam_api#StartPlaytimeTrackingResult_t>`_
+    Callback for `StartPlaytimeTrackingResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTrackingResult_t>`_
 
     **callback(data)** receives:
 
@@ -1234,7 +1243,7 @@ Callbacks
 
 .. function:: UGC.onStopPlaytimeTrackingResult
 
-    Callback for `StopPlaytimeTrackingResult_t <https://partner.steamgames.com/doc/api/steam_api#StopPlaytimeTrackingResult_t>`_
+    Callback for `StopPlaytimeTrackingResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTrackingResult_t>`_
 
     **callback(data)** receives:
 
@@ -1242,7 +1251,7 @@ Callbacks
 
 .. function:: UGC.onAddUGCDependencyResult
 
-    Callback for `AddUGCDependencyResult_t <https://partner.steamgames.com/doc/api/steam_api#AddUGCDependencyResult_t>`_
+    Callback for `AddUGCDependencyResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#AddUGCDependencyResult_t>`_
 
     **callback(data)** receives:
 
@@ -1252,7 +1261,7 @@ Callbacks
 
 .. function:: UGC.onRemoveUGCDependencyResult
 
-    Callback for `RemoveUGCDependencyResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoveUGCDependencyResult_t>`_
+    Callback for `RemoveUGCDependencyResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveUGCDependencyResult_t>`_
 
     **callback(data)** receives:
 
@@ -1262,7 +1271,7 @@ Callbacks
 
 .. function:: UGC.onAddAppDependencyResult
 
-    Callback for `AddAppDependencyResult_t <https://partner.steamgames.com/doc/api/steam_api#AddAppDependencyResult_t>`_
+    Callback for `AddAppDependencyResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#AddAppDependencyResult_t>`_
 
     **callback(data)** receives:
 
@@ -1272,7 +1281,7 @@ Callbacks
 
 .. function:: UGC.onRemoveAppDependencyResult
 
-    Callback for `RemoveAppDependencyResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoveAppDependencyResult_t>`_
+    Callback for `RemoveAppDependencyResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveAppDependencyResult_t>`_
 
     **callback(data)** receives:
 
@@ -1282,7 +1291,7 @@ Callbacks
 
 .. function:: UGC.onGetAppDependenciesResult
 
-    Callback for `GetAppDependenciesResult_t <https://partner.steamgames.com/doc/api/steam_api#GetAppDependenciesResult_t>`_
+    Callback for `GetAppDependenciesResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#GetAppDependenciesResult_t>`_
 
     **callback(data)** receives:
 
@@ -1294,7 +1303,7 @@ Callbacks
 
 .. function:: UGC.onDeleteItemResult
 
-    Callback for `DeleteItemResult_t <https://partner.steamgames.com/doc/api/steam_api#DeleteItemResult_t>`_
+    Callback for `DeleteItemResult_t <https://partner.steamgames.com/doc/api/ISteamUGC#DeleteItemResult_t>`_
 
     **callback(data)** receives:
 
@@ -1303,7 +1312,7 @@ Callbacks
 
 .. function:: UGC.onUserSubscribedItemsListChanged
 
-    Callback for `UserSubscribedItemsListChanged_t <https://partner.steamgames.com/doc/api/steam_api#UserSubscribedItemsListChanged_t>`_
+    Callback for `UserSubscribedItemsListChanged_t <https://partner.steamgames.com/doc/api/ISteamUGC#UserSubscribedItemsListChanged_t>`_
 
     **callback(data)** receives:
 
@@ -1311,7 +1320,7 @@ Callbacks
 
 .. function:: UGC.onWorkshopEULAStatus
 
-    Callback for `WorkshopEULAStatus_t <https://partner.steamgames.com/doc/api/steam_api#WorkshopEULAStatus_t>`_
+    Callback for `WorkshopEULAStatus_t <https://partner.steamgames.com/doc/api/ISteamUGC#WorkshopEULAStatus_t>`_
 
     **callback(data)** receives:
 

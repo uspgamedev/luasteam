@@ -138,6 +138,18 @@ function RemoteStorage.GetCachedUGCCount() end
 ---@return uint64
 function RemoteStorage.GetCachedUGCHandle(iCachedContent) end
 
+---@param pchFile string
+---@param pchPreviewFile string
+---@param nConsumerAppId integer
+---@param pchTitle string
+---@param pchDescription string
+---@param eVisibility integer
+---@param eWorkshopFileType integer
+---@param callback fun(data: table?, io_fail: boolean)?
+---@return uint64
+---@return SteamParamStringArray_t -- Value of: pTags
+function RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback) end
+
 ---@param unPublishedFileId uint64
 ---@return uint64
 function RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId) end
@@ -166,6 +178,11 @@ function RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescripti
 ---@param eVisibility integer
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileVisibility(updateHandle, eVisibility) end
+
+---@param updateHandle uint64
+---@return boolean
+---@return SteamParamStringArray_t -- Value of: pTags
+function RemoteStorage.UpdatePublishedFileTags(updateHandle) end
 
 ---@param updateHandle uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
@@ -224,6 +241,27 @@ function RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, c
 ---@return uint64
 function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback) end
 
+---@param steamId uint64
+---@param unStartIndex integer
+---@param callback fun(data: table?, io_fail: boolean)?
+---@return uint64
+---@return SteamParamStringArray_t -- Value of: pRequiredTags
+---@return SteamParamStringArray_t -- Value of: pExcludedTags
+function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback) end
+
+---@param eVideoProvider integer
+---@param pchVideoAccount string
+---@param pchVideoIdentifier string
+---@param pchPreviewFile string
+---@param nConsumerAppId integer
+---@param pchTitle string
+---@param pchDescription string
+---@param eVisibility integer
+---@param callback fun(data: table?, io_fail: boolean)?
+---@return uint64
+---@return SteamParamStringArray_t -- Value of: pTags
+function RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback) end
+
 ---@param unPublishedFileId uint64
 ---@param eAction integer
 ---@param callback fun(data: table?, io_fail: boolean)?
@@ -235,6 +273,16 @@ function RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, ca
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex, callback) end
+
+---@param eEnumerationType integer
+---@param unStartIndex integer
+---@param unCount integer
+---@param unDays integer
+---@param callback fun(data: table?, io_fail: boolean)?
+---@return uint64
+---@return SteamParamStringArray_t -- Value of: pTags
+---@return SteamParamStringArray_t -- Value of: pUserTags
+function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback) end
 
 ---@param hContent uint64
 ---@param pchLocation string

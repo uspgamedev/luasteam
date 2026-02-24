@@ -151,12 +151,12 @@ EXTERN int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
 // In C++:
 // InputDigitalActionData_t GetDigitalActionData(ControllerHandle_t controllerHandle, ControllerDigitalActionHandle_t digitalActionHandle);
 // In Lua:
-// table Controller.GetDigitalActionData(controllerHandle: uint64, digitalActionHandle: uint64)
+// InputDigitalActionData_t Controller.GetDigitalActionData(controllerHandle: uint64, digitalActionHandle: uint64)
 EXTERN int luasteam_Controller_GetDigitalActionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 2));
 	InputDigitalActionData_t __ret = SteamController()->GetDigitalActionData(controllerHandle, digitalActionHandle);
-	push_InputDigitalActionData_t(L, __ret);
+	luasteam::push_InputDigitalActionData_t(L, __ret);
 	return 1;
 }
 
@@ -193,12 +193,12 @@ EXTERN int luasteam_Controller_GetAnalogActionHandle(lua_State *L) {
 // In C++:
 // InputAnalogActionData_t GetAnalogActionData(ControllerHandle_t controllerHandle, ControllerAnalogActionHandle_t analogActionHandle);
 // In Lua:
-// table Controller.GetAnalogActionData(controllerHandle: uint64, analogActionHandle: uint64)
+// InputAnalogActionData_t Controller.GetAnalogActionData(controllerHandle: uint64, analogActionHandle: uint64)
 EXTERN int luasteam_Controller_GetAnalogActionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	ControllerAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 2));
 	InputAnalogActionData_t __ret = SteamController()->GetAnalogActionData(controllerHandle, analogActionHandle);
-	push_InputAnalogActionData_t(L, __ret);
+	luasteam::push_InputAnalogActionData_t(L, __ret);
 	return 1;
 }
 
@@ -257,11 +257,11 @@ EXTERN int luasteam_Controller_StopAnalogActionMomentum(lua_State *L) {
 // In C++:
 // InputMotionData_t GetMotionData(ControllerHandle_t controllerHandle);
 // In Lua:
-// table Controller.GetMotionData(controllerHandle: uint64)
+// InputMotionData_t Controller.GetMotionData(controllerHandle: uint64)
 EXTERN int luasteam_Controller_GetMotionData(lua_State *L) {
 	ControllerHandle_t controllerHandle(luasteam::checkuint64(L, 1));
 	InputMotionData_t __ret = SteamController()->GetMotionData(controllerHandle);
-	push_InputMotionData_t(L, __ret);
+	luasteam::push_InputMotionData_t(L, __ret);
 	return 1;
 }
 

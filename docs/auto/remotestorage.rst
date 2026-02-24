@@ -38,12 +38,14 @@ List of Functions
 * :func:`RemoteStorage.UGCRead`
 * :func:`RemoteStorage.GetCachedUGCCount`
 * :func:`RemoteStorage.GetCachedUGCHandle`
+* :func:`RemoteStorage.PublishWorkshopFile`
 * :func:`RemoteStorage.CreatePublishedFileUpdateRequest`
 * :func:`RemoteStorage.UpdatePublishedFileFile`
 * :func:`RemoteStorage.UpdatePublishedFilePreviewFile`
 * :func:`RemoteStorage.UpdatePublishedFileTitle`
 * :func:`RemoteStorage.UpdatePublishedFileDescription`
 * :func:`RemoteStorage.UpdatePublishedFileVisibility`
+* :func:`RemoteStorage.UpdatePublishedFileTags`
 * :func:`RemoteStorage.CommitPublishedFileUpdate`
 * :func:`RemoteStorage.GetPublishedFileDetails`
 * :func:`RemoteStorage.DeletePublishedFile`
@@ -55,8 +57,11 @@ List of Functions
 * :func:`RemoteStorage.GetPublishedItemVoteDetails`
 * :func:`RemoteStorage.UpdateUserPublishedItemVote`
 * :func:`RemoteStorage.GetUserPublishedItemVoteDetails`
+* :func:`RemoteStorage.EnumerateUserSharedWorkshopFiles`
+* :func:`RemoteStorage.PublishVideo`
 * :func:`RemoteStorage.SetUserPublishedFileAction`
 * :func:`RemoteStorage.EnumeratePublishedFilesByUserAction`
+* :func:`RemoteStorage.EnumeratePublishedWorkshopFiles`
 * :func:`RemoteStorage.UGCDownloadToLocation`
 * :func:`RemoteStorage.GetLocalFileChangeCount`
 * :func:`RemoteStorage.GetLocalFileChange`
@@ -374,6 +379,26 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetCachedUGCHandle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCHandle>`_
 
+.. function:: RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pchPreviewFile:
+    :param int nConsumerAppId:
+    :param str pchTitle:
+    :param str pchDescription:
+    :param int eVisibility:
+    :param int eWorkshopFileType:
+    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is returned as an additional return value
+
 .. function:: RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId)
 
     🤖 **Auto-generated binding**
@@ -426,6 +451,19 @@ Function Reference
     :param int eVisibility:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFileVisibility <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileVisibility>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileTags(updateHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :returns: (bool) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `UpdatePublishedFileTags <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTags>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is returned as an additional return value
 
 .. function:: RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback)
 
@@ -528,6 +566,44 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetUserPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUserPublishedItemVoteDetails>`_
 
+.. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamId:
+    :param int unStartIndex:
+    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserPublishedFilesResult_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pRequiredTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pExcludedTags`
+    :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pRequiredTags`` is returned as an additional return value
+    * Parameter ``pExcludedTags`` is returned as an additional return value
+
+.. function:: RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int eVideoProvider:
+    :param str pchVideoAccount:
+    :param str pchVideoIdentifier:
+    :param str pchPreviewFile:
+    :param int nConsumerAppId:
+    :param str pchTitle:
+    :param str pchDescription:
+    :param int eVisibility:
+    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is returned as an additional return value
+
 .. function:: RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback)
 
     🤖 **Auto-generated binding**
@@ -547,6 +623,25 @@ Function Reference
     :param function callback: CallResult callback receiving struct `RemoteStorageEnumeratePublishedFilesByUserActionResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `EnumeratePublishedFilesByUserAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedFilesByUserAction>`_
+
+.. function:: RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int eEnumerationType:
+    :param int unStartIndex:
+    :param int unCount:
+    :param int unDays:
+    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateWorkshopFilesResult_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pUserTags`
+    :SteamWorks: `EnumeratePublishedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedWorkshopFiles>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is returned as an additional return value
+    * Parameter ``pUserTags`` is returned as an additional return value
 
 .. function:: RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback)
 
@@ -605,43 +700,13 @@ Unimplemented Methods
     
     :SteamWorks: `GetUGCDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDetails>`_
 
-.. function:: RemoteStorage.publishWorkshopFile
-
-    ✋ **Not implemented** - unsupported type: SteamParamStringArray_t *
-    
-    :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
-
-.. function:: RemoteStorage.updatePublishedFileTags
-
-    ✋ **Not implemented** - unsupported type: SteamParamStringArray_t *
-    
-    :SteamWorks: `UpdatePublishedFileTags <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTags>`_
-
-.. function:: RemoteStorage.enumerateUserSharedWorkshopFiles
-
-    ✋ **Not implemented** - unsupported type: SteamParamStringArray_t *
-    
-    :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
-
-.. function:: RemoteStorage.publishVideo
-
-    ✋ **Not implemented** - unsupported type: SteamParamStringArray_t *
-    
-    :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
-
-.. function:: RemoteStorage.enumeratePublishedWorkshopFiles
-
-    ✋ **Not implemented** - unsupported type: SteamParamStringArray_t *
-    
-    :SteamWorks: `EnumeratePublishedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedWorkshopFiles>`_
-
 
 Callbacks
 ---------
 
 .. function:: RemoteStorage.onRemoteStorageFileShareResult
 
-    Callback for `RemoteStorageFileShareResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageFileShareResult_t>`_
+    Callback for `RemoteStorageFileShareResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileShareResult_t>`_
 
     **callback(data)** receives:
 
@@ -651,7 +716,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishFileResult
 
-    Callback for `RemoteStoragePublishFileResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishFileResult_t>`_
+    Callback for `RemoteStoragePublishFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishFileResult_t>`_
 
     **callback(data)** receives:
 
@@ -661,7 +726,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageDeletePublishedFileResult
 
-    Callback for `RemoteStorageDeletePublishedFileResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageDeletePublishedFileResult_t>`_
+    Callback for `RemoteStorageDeletePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageDeletePublishedFileResult_t>`_
 
     **callback(data)** receives:
 
@@ -670,7 +735,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageEnumerateUserPublishedFilesResult
 
-    Callback for `RemoteStorageEnumerateUserPublishedFilesResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageEnumerateUserPublishedFilesResult_t>`_
+    Callback for `RemoteStorageEnumerateUserPublishedFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserPublishedFilesResult_t>`_
 
     **callback(data)** receives:
 
@@ -681,7 +746,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageSubscribePublishedFileResult
 
-    Callback for `RemoteStorageSubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageSubscribePublishedFileResult_t>`_
+    Callback for `RemoteStorageSubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageSubscribePublishedFileResult_t>`_
 
     **callback(data)** receives:
 
@@ -690,7 +755,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageEnumerateUserSubscribedFilesResult
 
-    Callback for `RemoteStorageEnumerateUserSubscribedFilesResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageEnumerateUserSubscribedFilesResult_t>`_
+    Callback for `RemoteStorageEnumerateUserSubscribedFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserSubscribedFilesResult_t>`_
 
     **callback(data)** receives:
 
@@ -702,7 +767,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageUnsubscribePublishedFileResult
 
-    Callback for `RemoteStorageUnsubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageUnsubscribePublishedFileResult_t>`_
+    Callback for `RemoteStorageUnsubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUnsubscribePublishedFileResult_t>`_
 
     **callback(data)** receives:
 
@@ -711,7 +776,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageUpdatePublishedFileResult
 
-    Callback for `RemoteStorageUpdatePublishedFileResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageUpdatePublishedFileResult_t>`_
+    Callback for `RemoteStorageUpdatePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUpdatePublishedFileResult_t>`_
 
     **callback(data)** receives:
 
@@ -721,7 +786,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageDownloadUGCResult
 
-    Callback for `RemoteStorageDownloadUGCResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageDownloadUGCResult_t>`_
+    Callback for `RemoteStorageDownloadUGCResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageDownloadUGCResult_t>`_
 
     **callback(data)** receives:
 
@@ -734,7 +799,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageGetPublishedFileDetailsResult
 
-    Callback for `RemoteStorageGetPublishedFileDetailsResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageGetPublishedFileDetailsResult_t>`_
+    Callback for `RemoteStorageGetPublishedFileDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageGetPublishedFileDetailsResult_t>`_
 
     **callback(data)** receives:
 
@@ -762,7 +827,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageEnumerateWorkshopFilesResult
 
-    Callback for `RemoteStorageEnumerateWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageEnumerateWorkshopFilesResult_t>`_
+    Callback for `RemoteStorageEnumerateWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateWorkshopFilesResult_t>`_
 
     **callback(data)** receives:
 
@@ -776,7 +841,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageGetPublishedItemVoteDetailsResult
 
-    Callback for `RemoteStorageGetPublishedItemVoteDetailsResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageGetPublishedItemVoteDetailsResult_t>`_
+    Callback for `RemoteStorageGetPublishedItemVoteDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageGetPublishedItemVoteDetailsResult_t>`_
 
     **callback(data)** receives:
 
@@ -789,7 +854,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishedFileSubscribed
 
-    Callback for `RemoteStoragePublishedFileSubscribed_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishedFileSubscribed_t>`_
+    Callback for `RemoteStoragePublishedFileSubscribed_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileSubscribed_t>`_
 
     **callback(data)** receives:
 
@@ -798,7 +863,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishedFileUnsubscribed
 
-    Callback for `RemoteStoragePublishedFileUnsubscribed_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishedFileUnsubscribed_t>`_
+    Callback for `RemoteStoragePublishedFileUnsubscribed_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileUnsubscribed_t>`_
 
     **callback(data)** receives:
 
@@ -807,7 +872,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishedFileDeleted
 
-    Callback for `RemoteStoragePublishedFileDeleted_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishedFileDeleted_t>`_
+    Callback for `RemoteStoragePublishedFileDeleted_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileDeleted_t>`_
 
     **callback(data)** receives:
 
@@ -816,7 +881,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageUpdateUserPublishedItemVoteResult
 
-    Callback for `RemoteStorageUpdateUserPublishedItemVoteResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageUpdateUserPublishedItemVoteResult_t>`_
+    Callback for `RemoteStorageUpdateUserPublishedItemVoteResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUpdateUserPublishedItemVoteResult_t>`_
 
     **callback(data)** receives:
 
@@ -825,7 +890,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageUserVoteDetails
 
-    Callback for `RemoteStorageUserVoteDetails_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageUserVoteDetails_t>`_
+    Callback for `RemoteStorageUserVoteDetails_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUserVoteDetails_t>`_
 
     **callback(data)** receives:
 
@@ -835,7 +900,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageEnumerateUserSharedWorkshopFilesResult
 
-    Callback for `RemoteStorageEnumerateUserSharedWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageEnumerateUserSharedWorkshopFilesResult_t>`_
+    Callback for `RemoteStorageEnumerateUserSharedWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserSharedWorkshopFilesResult_t>`_
 
     **callback(data)** receives:
 
@@ -846,7 +911,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageSetUserPublishedFileActionResult
 
-    Callback for `RemoteStorageSetUserPublishedFileActionResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageSetUserPublishedFileActionResult_t>`_
+    Callback for `RemoteStorageSetUserPublishedFileActionResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageSetUserPublishedFileActionResult_t>`_
 
     **callback(data)** receives:
 
@@ -856,7 +921,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageEnumeratePublishedFilesByUserActionResult
 
-    Callback for `RemoteStorageEnumeratePublishedFilesByUserActionResult_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageEnumeratePublishedFilesByUserActionResult_t>`_
+    Callback for `RemoteStorageEnumeratePublishedFilesByUserActionResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumeratePublishedFilesByUserActionResult_t>`_
 
     **callback(data)** receives:
 
@@ -869,7 +934,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishFileProgress
 
-    Callback for `RemoteStoragePublishFileProgress_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishFileProgress_t>`_
+    Callback for `RemoteStoragePublishFileProgress_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishFileProgress_t>`_
 
     **callback(data)** receives:
 
@@ -878,7 +943,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStoragePublishedFileUpdated
 
-    Callback for `RemoteStoragePublishedFileUpdated_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStoragePublishedFileUpdated_t>`_
+    Callback for `RemoteStoragePublishedFileUpdated_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileUpdated_t>`_
 
     **callback(data)** receives:
 
@@ -888,7 +953,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageFileWriteAsyncComplete
 
-    Callback for `RemoteStorageFileWriteAsyncComplete_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageFileWriteAsyncComplete_t>`_
+    Callback for `RemoteStorageFileWriteAsyncComplete_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileWriteAsyncComplete_t>`_
 
     **callback(data)** receives:
 
@@ -896,7 +961,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageFileReadAsyncComplete
 
-    Callback for `RemoteStorageFileReadAsyncComplete_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageFileReadAsyncComplete_t>`_
+    Callback for `RemoteStorageFileReadAsyncComplete_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileReadAsyncComplete_t>`_
 
     **callback(data)** receives:
 
@@ -907,7 +972,7 @@ Callbacks
 
 .. function:: RemoteStorage.onRemoteStorageLocalFileChange
 
-    Callback for `RemoteStorageLocalFileChange_t <https://partner.steamgames.com/doc/api/steam_api#RemoteStorageLocalFileChange_t>`_
+    Callback for `RemoteStorageLocalFileChange_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageLocalFileChange_t>`_
 
     **callback(data)** receives:
 

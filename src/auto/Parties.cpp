@@ -221,7 +221,7 @@ EXTERN int luasteam_Parties_GetBeaconByIndex(lua_State *L) {
 // In C++:
 // bool GetBeaconDetails(PartyBeaconID_t ulBeaconID, CSteamID * pSteamIDBeaconOwner, SteamPartyBeaconLocation_t * pLocation, char * pchMetadata, int cchMetadata);
 // In Lua:
-// (bool, pSteamIDBeaconOwner: uint64, pLocation: table, pchMetadata: str) Parties.GetBeaconDetails(ulBeaconID: uint64, cchMetadata: int)
+// (bool, pSteamIDBeaconOwner: uint64, pLocation: SteamPartyBeaconLocation_t, pchMetadata: str) Parties.GetBeaconDetails(ulBeaconID: uint64, cchMetadata: int)
 EXTERN int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	PartyBeaconID_t ulBeaconID(luasteam::checkuint64(L, 1));
 	CSteamID pSteamIDBeaconOwner;
@@ -231,7 +231,7 @@ EXTERN int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	bool __ret = SteamParties()->GetBeaconDetails(ulBeaconID, &pSteamIDBeaconOwner, &pLocation, pchMetadata.data(), cchMetadata);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pSteamIDBeaconOwner.ConvertToUint64());
-	push_SteamPartyBeaconLocation_t(L, pLocation);
+	luasteam::push_SteamPartyBeaconLocation_t(L, pLocation);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchMetadata.data()));
 	return 4;
 }
@@ -272,7 +272,7 @@ EXTERN int luasteam_Parties_GetNumAvailableBeaconLocations(lua_State *L) {
 // In C++:
 // bool GetAvailableBeaconLocations(SteamPartyBeaconLocation_t * pLocationList, uint32 uMaxNumLocations);
 // In Lua:
-// (bool, pLocationList: table[]) Parties.GetAvailableBeaconLocations(uMaxNumLocations: int)
+// (bool, pLocationList: SteamPartyBeaconLocation_t[]) Parties.GetAvailableBeaconLocations(uMaxNumLocations: int)
 EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 	uint32 uMaxNumLocations = luaL_checkint(L, 1);
 	std::vector<SteamPartyBeaconLocation_t> pLocationList(uMaxNumLocations);
@@ -280,7 +280,7 @@ EXTERN int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, uMaxNumLocations, 0);
 	for(decltype(uMaxNumLocations) i = 0; i < uMaxNumLocations; i++) {
-		push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
+		luasteam::push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
 		lua_rawseti(L, -2, i+1);
 	}
 	return 2;

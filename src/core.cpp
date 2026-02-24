@@ -17,6 +17,7 @@ EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
     if (success) {
         luasteam::init_common(L);
+        luasteam::init_structs_auto(L);
         luasteam::init_Friends_auto(L);
         luasteam::init_user(L);
         luasteam::init_UserStats_auto(L);
@@ -84,6 +85,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_UserStats_auto(L);
     luasteam::shutdown_Friends_auto(L);
     luasteam::shutdown_common(L);
+    luasteam::shutdown_structs_auto(L);
     return 0;
 }
 
@@ -100,7 +102,7 @@ void add_core(lua_State *L) {
     add_func(L, "init", luasteam_init);
     add_func(L, "shutdown", luasteam_shutdown);
     add_func(L, "runCallbacks", luasteam_runCallbacks);
-    add_func(L, "newSteamNetworkingIdentity", luasteam_newSteamNetworkingIdentity);
+    add_structs_auto(L);
 }
 
 } // namespace luasteam

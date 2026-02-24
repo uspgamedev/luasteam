@@ -74,7 +74,7 @@ Function Reference
     :param int resultHandle:
     :param int punOutItemsArraySize:
     :returns: (bool) Return value
-    :returns: (table[]) Value for `pOutItemsArray`
+    :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`[]) Value for `pOutItemsArray`
     :returns: (int) Value for `punOutItemsArraySize`
     :SteamWorks: `GetResultItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItems>`_
 
@@ -519,7 +519,7 @@ Callbacks
 
 .. function:: Inventory.onSteamInventoryResultReady
 
-    Callback for `SteamInventoryResultReady_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryResultReady_t>`_
+    Callback for `SteamInventoryResultReady_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryResultReady_t>`_
 
     **callback(data)** receives:
 
@@ -528,7 +528,7 @@ Callbacks
 
 .. function:: Inventory.onSteamInventoryFullUpdate
 
-    Callback for `SteamInventoryFullUpdate_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryFullUpdate_t>`_
+    Callback for `SteamInventoryFullUpdate_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryFullUpdate_t>`_
 
     **callback(data)** receives:
 
@@ -536,14 +536,14 @@ Callbacks
 
 .. function:: Inventory.onSteamInventoryDefinitionUpdate
 
-    Callback for `SteamInventoryDefinitionUpdate_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryDefinitionUpdate_t>`_
+    Callback for `SteamInventoryDefinitionUpdate_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryDefinitionUpdate_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Inventory.onSteamInventoryEligiblePromoItemDefIDs
 
-    Callback for `SteamInventoryEligiblePromoItemDefIDs_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryEligiblePromoItemDefIDs_t>`_
+    Callback for `SteamInventoryEligiblePromoItemDefIDs_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryEligiblePromoItemDefIDs_t>`_
 
     **callback(data)** receives:
 
@@ -554,7 +554,7 @@ Callbacks
 
 .. function:: Inventory.onSteamInventoryStartPurchaseResult
 
-    Callback for `SteamInventoryStartPurchaseResult_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryStartPurchaseResult_t>`_
+    Callback for `SteamInventoryStartPurchaseResult_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryStartPurchaseResult_t>`_
 
     **callback(data)** receives:
 
@@ -564,7 +564,7 @@ Callbacks
 
 .. function:: Inventory.onSteamInventoryRequestPricesResult
 
-    Callback for `SteamInventoryRequestPricesResult_t <https://partner.steamgames.com/doc/api/steam_api#SteamInventoryRequestPricesResult_t>`_
+    Callback for `SteamInventoryRequestPricesResult_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryRequestPricesResult_t>`_
 
     **callback(data)** receives:
 

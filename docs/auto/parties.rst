@@ -56,7 +56,7 @@ Function Reference
     :param int cchMetadata:
     :returns: (bool) Return value
     :returns: (uint64) Value for `pSteamIDBeaconOwner`
-    :returns: (table) Value for `pLocation`
+    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) Value for `pLocation`
     :returns: (str) Value for `pchMetadata`
     :SteamWorks: `GetBeaconDetails <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconDetails>`_
 
@@ -93,7 +93,7 @@ Function Reference
 
     :param int uMaxNumLocations:
     :returns: (bool) Return value
-    :returns: (table[]) Value for `pLocationList`
+    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`[]) Value for `pLocationList`
     :SteamWorks: `GetAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetAvailableBeaconLocations>`_
 
     **Signature differences from C++ API:**
@@ -156,7 +156,7 @@ Callbacks
 
 .. function:: Parties.onJoinPartyCallback
 
-    Callback for `JoinPartyCallback_t <https://partner.steamgames.com/doc/api/steam_api#JoinPartyCallback_t>`_
+    Callback for `JoinPartyCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#JoinPartyCallback_t>`_
 
     **callback(data)** receives:
 
@@ -167,7 +167,7 @@ Callbacks
 
 .. function:: Parties.onCreateBeaconCallback
 
-    Callback for `CreateBeaconCallback_t <https://partner.steamgames.com/doc/api/steam_api#CreateBeaconCallback_t>`_
+    Callback for `CreateBeaconCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeaconCallback_t>`_
 
     **callback(data)** receives:
 
@@ -176,7 +176,7 @@ Callbacks
 
 .. function:: Parties.onReservationNotificationCallback
 
-    Callback for `ReservationNotificationCallback_t <https://partner.steamgames.com/doc/api/steam_api#ReservationNotificationCallback_t>`_
+    Callback for `ReservationNotificationCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#ReservationNotificationCallback_t>`_
 
     **callback(data)** receives:
 
@@ -185,7 +185,7 @@ Callbacks
 
 .. function:: Parties.onChangeNumOpenSlotsCallback
 
-    Callback for `ChangeNumOpenSlotsCallback_t <https://partner.steamgames.com/doc/api/steam_api#ChangeNumOpenSlotsCallback_t>`_
+    Callback for `ChangeNumOpenSlotsCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlotsCallback_t>`_
 
     **callback(data)** receives:
 
@@ -193,14 +193,14 @@ Callbacks
 
 .. function:: Parties.onAvailableBeaconLocationsUpdated
 
-    Callback for `AvailableBeaconLocationsUpdated_t <https://partner.steamgames.com/doc/api/steam_api#AvailableBeaconLocationsUpdated_t>`_
+    Callback for `AvailableBeaconLocationsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#AvailableBeaconLocationsUpdated_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Parties.onActiveBeaconsUpdated
 
-    Callback for `ActiveBeaconsUpdated_t <https://partner.steamgames.com/doc/api/steam_api#ActiveBeaconsUpdated_t>`_
+    Callback for `ActiveBeaconsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#ActiveBeaconsUpdated_t>`_
 
     **callback(data)** receives:
 

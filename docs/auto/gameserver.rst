@@ -241,7 +241,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cbMaxTicket:
-    :param SteamNetworkingIdentity pSnid:
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSnid:
     :returns: (int) Return value
     :returns: (str) Value for `pTicket`
     :returns: (int) Value for `pcbTicket`
@@ -312,7 +312,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (table) Return value
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
     :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
 .. function:: GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort)
@@ -384,14 +384,14 @@ Callbacks
 
 .. function:: GameServer.onSteamServersConnected
 
-    Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamServersConnected_t>`_
+    Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServersConnected_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: GameServer.onSteamServerConnectFailure
 
-    Callback for `SteamServerConnectFailure_t <https://partner.steamgames.com/doc/api/steam_api#SteamServerConnectFailure_t>`_
+    Callback for `SteamServerConnectFailure_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServerConnectFailure_t>`_
 
     **callback(data)** receives:
 
@@ -400,7 +400,7 @@ Callbacks
 
 .. function:: GameServer.onSteamServersDisconnected
 
-    Callback for `SteamServersDisconnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamServersDisconnected_t>`_
+    Callback for `SteamServersDisconnected_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServersDisconnected_t>`_
 
     **callback(data)** receives:
 
@@ -408,7 +408,7 @@ Callbacks
 
 .. function:: GameServer.onValidateAuthTicketResponse
 
-    Callback for `ValidateAuthTicketResponse_t <https://partner.steamgames.com/doc/api/steam_api#ValidateAuthTicketResponse_t>`_
+    Callback for `ValidateAuthTicketResponse_t <https://partner.steamgames.com/doc/api/ISteamGameServer#ValidateAuthTicketResponse_t>`_
 
     **callback(data)** receives:
 
@@ -418,7 +418,7 @@ Callbacks
 
 .. function:: GameServer.onGSClientApprove
 
-    Callback for `GSClientApprove_t <https://partner.steamgames.com/doc/api/steam_api#GSClientApprove_t>`_
+    Callback for `GSClientApprove_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientApprove_t>`_
 
     **callback(data)** receives:
 
@@ -427,7 +427,7 @@ Callbacks
 
 .. function:: GameServer.onGSClientDeny
 
-    Callback for `GSClientDeny_t <https://partner.steamgames.com/doc/api/steam_api#GSClientDeny_t>`_
+    Callback for `GSClientDeny_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientDeny_t>`_
 
     **callback(data)** receives:
 
@@ -437,7 +437,7 @@ Callbacks
 
 .. function:: GameServer.onGSClientKick
 
-    Callback for `GSClientKick_t <https://partner.steamgames.com/doc/api/steam_api#GSClientKick_t>`_
+    Callback for `GSClientKick_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientKick_t>`_
 
     **callback(data)** receives:
 
@@ -446,7 +446,7 @@ Callbacks
 
 .. function:: GameServer.onGSClientAchievementStatus
 
-    Callback for `GSClientAchievementStatus_t <https://partner.steamgames.com/doc/api/steam_api#GSClientAchievementStatus_t>`_
+    Callback for `GSClientAchievementStatus_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientAchievementStatus_t>`_
 
     **callback(data)** receives:
 
@@ -456,7 +456,7 @@ Callbacks
 
 .. function:: GameServer.onGSPolicyResponse
 
-    Callback for `GSPolicyResponse_t <https://partner.steamgames.com/doc/api/steam_api#GSPolicyResponse_t>`_
+    Callback for `GSPolicyResponse_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSPolicyResponse_t>`_
 
     **callback(data)** receives:
 
@@ -464,7 +464,7 @@ Callbacks
 
 .. function:: GameServer.onGSGameplayStats
 
-    Callback for `GSGameplayStats_t <https://partner.steamgames.com/doc/api/steam_api#GSGameplayStats_t>`_
+    Callback for `GSGameplayStats_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSGameplayStats_t>`_
 
     **callback(data)** receives:
 
@@ -475,7 +475,7 @@ Callbacks
 
 .. function:: GameServer.onGSClientGroupStatus
 
-    Callback for `GSClientGroupStatus_t <https://partner.steamgames.com/doc/api/steam_api#GSClientGroupStatus_t>`_
+    Callback for `GSClientGroupStatus_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientGroupStatus_t>`_
 
     **callback(data)** receives:
 
@@ -486,7 +486,7 @@ Callbacks
 
 .. function:: GameServer.onGSReputation
 
-    Callback for `GSReputation_t <https://partner.steamgames.com/doc/api/steam_api#GSReputation_t>`_
+    Callback for `GSReputation_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSReputation_t>`_
 
     **callback(data)** receives:
 
@@ -500,7 +500,7 @@ Callbacks
 
 .. function:: GameServer.onAssociateWithClanResult
 
-    Callback for `AssociateWithClanResult_t <https://partner.steamgames.com/doc/api/steam_api#AssociateWithClanResult_t>`_
+    Callback for `AssociateWithClanResult_t <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClanResult_t>`_
 
     **callback(data)** receives:
 
@@ -508,7 +508,7 @@ Callbacks
 
 .. function:: GameServer.onComputeNewPlayerCompatibilityResult
 
-    Callback for `ComputeNewPlayerCompatibilityResult_t <https://partner.steamgames.com/doc/api/steam_api#ComputeNewPlayerCompatibilityResult_t>`_
+    Callback for `ComputeNewPlayerCompatibilityResult_t <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibilityResult_t>`_
 
     **callback(data)** receives:
 

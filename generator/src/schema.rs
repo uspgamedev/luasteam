@@ -8,7 +8,6 @@ pub enum SkipReason {
     NoAccessors,
     RequiresCustomCode,
     Incomplete,
-    PrivateField,
 }
 
 impl SkipReason {
@@ -19,7 +18,6 @@ impl SkipReason {
             SkipReason::NoAccessors => "no accessors".to_string(),
             SkipReason::RequiresCustomCode => "requires custom code".to_string(),
             SkipReason::Incomplete => "incomplete".to_string(),
-            SkipReason::PrivateField => "has private field".to_string(),
         }
     }
 }
@@ -506,6 +504,14 @@ impl SteamApi {
         self.struct_mut("SteamNetworkingConfigValue_t")
             .field_mut("m_int64")
             .fieldname = "m_val.m_int64".to_string();
+        // SteamNetworkingIdentity fields are internal; the C++ SDK comment says
+        // "Don't access this directly, use the accessors!". Mark them private so
+        // the auto-generator skips field access and only exposes the methods.
+        for field_name in ["m_eType", "m_cbSize", "m_szUnknownRawString"] {
+            self.struct_mut("SteamNetworkingIdentity")
+                .field_mut(field_name)
+                .private = true;
+        }
     }
 }
 

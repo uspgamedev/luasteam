@@ -1515,6 +1515,35 @@ EXTERN int luasteam_RemoteStorage_GetCachedUGCHandle(lua_State *L) {
 }
 
 // In C++:
+// SteamAPICall_t PublishWorkshopFile(const char * pchFile, const char * pchPreviewFile, AppId_t nConsumerAppId, const char * pchTitle, const char * pchDescription, ERemoteStoragePublishedFileVisibility eVisibility, SteamParamStringArray_t * pTags, EWorkshopFileType eWorkshopFileType);
+// In Lua:
+// (uint64, pTags: SteamParamStringArray_t) RemoteStorage.PublishWorkshopFile(pchFile: str, pchPreviewFile: str, nConsumerAppId: int, pchTitle: str, pchDescription: str, eVisibility: int, eWorkshopFileType: int, callback: function)
+EXTERN int luasteam_RemoteStorage_PublishWorkshopFile(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	const char *pchFile = luaL_checkstring(L, 1);
+	const char *pchPreviewFile = luaL_checkstring(L, 2);
+	AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 3));
+	const char *pchTitle = luaL_checkstring(L, 4);
+	const char *pchDescription = luaL_checkstring(L, 5);
+	ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 6));
+	SteamParamStringArray_t pTags;
+	EWorkshopFileType eWorkshopFileType = static_cast<EWorkshopFileType>(luaL_checkint(L, 7));
+	SteamAPICall_t __ret = SteamRemoteStorage()->PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, &pTags, eWorkshopFileType);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<RemoteStoragePublishFileProgress_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStoragePublishFileProgress_t>::Result);
+	}
+	luasteam::pushuint64(L, __ret);
+	luasteam::push_SteamParamStringArray_t(L, pTags);
+	return 2;
+}
+
+// In C++:
 // PublishedFileUpdateHandle_t CreatePublishedFileUpdateRequest(PublishedFileId_t unPublishedFileId);
 // In Lua:
 // uint64 RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId: uint64)
@@ -1583,6 +1612,19 @@ EXTERN int luasteam_RemoteStorage_UpdatePublishedFileVisibility(lua_State *L) {
 	bool __ret = SteamRemoteStorage()->UpdatePublishedFileVisibility(updateHandle, eVisibility);
 	lua_pushboolean(L, __ret);
 	return 1;
+}
+
+// In C++:
+// bool UpdatePublishedFileTags(PublishedFileUpdateHandle_t updateHandle, SteamParamStringArray_t * pTags);
+// In Lua:
+// (bool, pTags: SteamParamStringArray_t) RemoteStorage.UpdatePublishedFileTags(updateHandle: uint64)
+EXTERN int luasteam_RemoteStorage_UpdatePublishedFileTags(lua_State *L) {
+	PublishedFileUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
+	SteamParamStringArray_t pTags;
+	bool __ret = SteamRemoteStorage()->UpdatePublishedFileTags(updateHandle, &pTags);
+	lua_pushboolean(L, __ret);
+	luasteam::push_SteamParamStringArray_t(L, pTags);
+	return 2;
 }
 
 // In C++:
@@ -1810,6 +1852,62 @@ EXTERN int luasteam_RemoteStorage_GetUserPublishedItemVoteDetails(lua_State *L) 
 }
 
 // In C++:
+// SteamAPICall_t EnumerateUserSharedWorkshopFiles(CSteamID steamId, uint32 unStartIndex, SteamParamStringArray_t * pRequiredTags, SteamParamStringArray_t * pExcludedTags);
+// In Lua:
+// (uint64, pRequiredTags: SteamParamStringArray_t, pExcludedTags: SteamParamStringArray_t) RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId: uint64, unStartIndex: int, callback: function)
+EXTERN int luasteam_RemoteStorage_EnumerateUserSharedWorkshopFiles(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	CSteamID steamId(luasteam::checkuint64(L, 1));
+	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
+	SteamParamStringArray_t pRequiredTags;
+	SteamParamStringArray_t pExcludedTags;
+	SteamAPICall_t __ret = SteamRemoteStorage()->EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, &pRequiredTags, &pExcludedTags);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<RemoteStorageEnumerateUserPublishedFilesResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStorageEnumerateUserPublishedFilesResult_t>::Result);
+	}
+	luasteam::pushuint64(L, __ret);
+	luasteam::push_SteamParamStringArray_t(L, pRequiredTags);
+	luasteam::push_SteamParamStringArray_t(L, pExcludedTags);
+	return 3;
+}
+
+// In C++:
+// SteamAPICall_t PublishVideo(EWorkshopVideoProvider eVideoProvider, const char * pchVideoAccount, const char * pchVideoIdentifier, const char * pchPreviewFile, AppId_t nConsumerAppId, const char * pchTitle, const char * pchDescription, ERemoteStoragePublishedFileVisibility eVisibility, SteamParamStringArray_t * pTags);
+// In Lua:
+// (uint64, pTags: SteamParamStringArray_t) RemoteStorage.PublishVideo(eVideoProvider: int, pchVideoAccount: str, pchVideoIdentifier: str, pchPreviewFile: str, nConsumerAppId: int, pchTitle: str, pchDescription: str, eVisibility: int, callback: function)
+EXTERN int luasteam_RemoteStorage_PublishVideo(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	EWorkshopVideoProvider eVideoProvider = static_cast<EWorkshopVideoProvider>(luaL_checkint(L, 1));
+	const char *pchVideoAccount = luaL_checkstring(L, 2);
+	const char *pchVideoIdentifier = luaL_checkstring(L, 3);
+	const char *pchPreviewFile = luaL_checkstring(L, 4);
+	AppId_t nConsumerAppId = static_cast<AppId_t>(luaL_checkint(L, 5));
+	const char *pchTitle = luaL_checkstring(L, 6);
+	const char *pchDescription = luaL_checkstring(L, 7);
+	ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 8));
+	SteamParamStringArray_t pTags;
+	SteamAPICall_t __ret = SteamRemoteStorage()->PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, &pTags);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<RemoteStoragePublishFileProgress_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStoragePublishFileProgress_t>::Result);
+	}
+	luasteam::pushuint64(L, __ret);
+	luasteam::push_SteamParamStringArray_t(L, pTags);
+	return 2;
+}
+
+// In C++:
 // SteamAPICall_t SetUserPublishedFileAction(PublishedFileId_t unPublishedFileId, EWorkshopFileAction eAction);
 // In Lua:
 // uint64 RemoteStorage.SetUserPublishedFileAction(unPublishedFileId: uint64, eAction: int, callback: function)
@@ -1851,6 +1949,34 @@ EXTERN int luasteam_RemoteStorage_EnumeratePublishedFilesByUserAction(lua_State 
 	}
 	luasteam::pushuint64(L, __ret);
 	return 1;
+}
+
+// In C++:
+// SteamAPICall_t EnumeratePublishedWorkshopFiles(EWorkshopEnumerationType eEnumerationType, uint32 unStartIndex, uint32 unCount, uint32 unDays, SteamParamStringArray_t * pTags, SteamParamStringArray_t * pUserTags);
+// In Lua:
+// (uint64, pTags: SteamParamStringArray_t, pUserTags: SteamParamStringArray_t) RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType: int, unStartIndex: int, unCount: int, unDays: int, callback: function)
+EXTERN int luasteam_RemoteStorage_EnumeratePublishedWorkshopFiles(lua_State *L) {
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	EWorkshopEnumerationType eEnumerationType = static_cast<EWorkshopEnumerationType>(luaL_checkint(L, 1));
+	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
+	uint32 unCount = static_cast<uint32>(luaL_checkint(L, 3));
+	uint32 unDays = static_cast<uint32>(luaL_checkint(L, 4));
+	SteamParamStringArray_t pTags;
+	SteamParamStringArray_t pUserTags;
+	SteamAPICall_t __ret = SteamRemoteStorage()->EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, &pTags, &pUserTags);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<RemoteStorageEnumerateWorkshopFilesResult_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStorageEnumerateWorkshopFilesResult_t>::Result);
+	}
+	luasteam::pushuint64(L, __ret);
+	luasteam::push_SteamParamStringArray_t(L, pTags);
+	luasteam::push_SteamParamStringArray_t(L, pUserTags);
+	return 3;
 }
 
 // In C++:
@@ -1951,12 +2077,14 @@ void register_RemoteStorage_auto(lua_State *L) {
 	add_func(L, "UGCRead", luasteam_RemoteStorage_UGCRead);
 	add_func(L, "GetCachedUGCCount", luasteam_RemoteStorage_GetCachedUGCCount);
 	add_func(L, "GetCachedUGCHandle", luasteam_RemoteStorage_GetCachedUGCHandle);
+	add_func(L, "PublishWorkshopFile", luasteam_RemoteStorage_PublishWorkshopFile);
 	add_func(L, "CreatePublishedFileUpdateRequest", luasteam_RemoteStorage_CreatePublishedFileUpdateRequest);
 	add_func(L, "UpdatePublishedFileFile", luasteam_RemoteStorage_UpdatePublishedFileFile);
 	add_func(L, "UpdatePublishedFilePreviewFile", luasteam_RemoteStorage_UpdatePublishedFilePreviewFile);
 	add_func(L, "UpdatePublishedFileTitle", luasteam_RemoteStorage_UpdatePublishedFileTitle);
 	add_func(L, "UpdatePublishedFileDescription", luasteam_RemoteStorage_UpdatePublishedFileDescription);
 	add_func(L, "UpdatePublishedFileVisibility", luasteam_RemoteStorage_UpdatePublishedFileVisibility);
+	add_func(L, "UpdatePublishedFileTags", luasteam_RemoteStorage_UpdatePublishedFileTags);
 	add_func(L, "CommitPublishedFileUpdate", luasteam_RemoteStorage_CommitPublishedFileUpdate);
 	add_func(L, "GetPublishedFileDetails", luasteam_RemoteStorage_GetPublishedFileDetails);
 	add_func(L, "DeletePublishedFile", luasteam_RemoteStorage_DeletePublishedFile);
@@ -1968,8 +2096,11 @@ void register_RemoteStorage_auto(lua_State *L) {
 	add_func(L, "GetPublishedItemVoteDetails", luasteam_RemoteStorage_GetPublishedItemVoteDetails);
 	add_func(L, "UpdateUserPublishedItemVote", luasteam_RemoteStorage_UpdateUserPublishedItemVote);
 	add_func(L, "GetUserPublishedItemVoteDetails", luasteam_RemoteStorage_GetUserPublishedItemVoteDetails);
+	add_func(L, "EnumerateUserSharedWorkshopFiles", luasteam_RemoteStorage_EnumerateUserSharedWorkshopFiles);
+	add_func(L, "PublishVideo", luasteam_RemoteStorage_PublishVideo);
 	add_func(L, "SetUserPublishedFileAction", luasteam_RemoteStorage_SetUserPublishedFileAction);
 	add_func(L, "EnumeratePublishedFilesByUserAction", luasteam_RemoteStorage_EnumeratePublishedFilesByUserAction);
+	add_func(L, "EnumeratePublishedWorkshopFiles", luasteam_RemoteStorage_EnumeratePublishedWorkshopFiles);
 	add_func(L, "UGCDownloadToLocation", luasteam_RemoteStorage_UGCDownloadToLocation);
 	add_func(L, "GetLocalFileChangeCount", luasteam_RemoteStorage_GetLocalFileChangeCount);
 	add_func(L, "GetLocalFileChange", luasteam_RemoteStorage_GetLocalFileChange);
@@ -1978,7 +2109,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 }
 
 void add_RemoteStorage_auto(lua_State *L) {
-	lua_createtable(L, 0, 53);
+	lua_createtable(L, 0, 58);
 	register_RemoteStorage_auto(L);
 	lua_pushvalue(L, -1);
 	RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);

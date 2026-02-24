@@ -153,7 +153,7 @@ Function Reference
 
     :param uint64 controllerHandle:
     :param uint64 digitalActionHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamController#GetDigitalActionData>`_
 
 .. function:: Controller.GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle)
@@ -185,7 +185,7 @@ Function Reference
 
     :param uint64 controllerHandle:
     :param uint64 analogActionHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
     :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamController#GetAnalogActionData>`_
 
 .. function:: Controller.GetAnalogActionOrigins(controllerHandle, actionSetHandle, analogActionHandle)
@@ -232,7 +232,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 controllerHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
     :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamController#GetMotionData>`_
 
 .. function:: Controller.TriggerHapticPulse(controllerHandle, eTargetPad, usDurationMicroSec)

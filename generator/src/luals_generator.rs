@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use crate::code_builder::CodeBuilder;
+use crate::doc_generator::StructDocInfo;
 use crate::lua_type_info::LuaMethodSignature;
 use crate::schema::{CallbackStruct, Interface};
 
@@ -16,6 +17,12 @@ impl LuaLsGenerator {
         let path = output_dir.join("luasteam.d.lua");
         let content = self.generate_index(interface_names);
         fs::write(path, content).expect("Unable to write LuaLS index file");
+    }
+
+    pub fn write_structs(&self, output_dir: &Path, structs: &[StructDocInfo<'_>]) {
+        let path = output_dir.join("structs.d.lua");
+        let content = self.generate_structs(structs);
+        fs::write(path, content).expect("Unable to write LuaLS structs file");
     }
 
     pub fn write_interface(
@@ -44,6 +51,41 @@ impl LuaLsGenerator {
 
         for name in interface_names {
             cb.line(&format!("Steam.{} = {{}}", name));
+        }
+
+        cb.finish()
+    }
+
+    fn generate_structs(&self, structs: &[StructDocInfo<'_>]) -> String {
+        let mut cb = CodeBuilder::new();
+
+        for st in structs {
+            // Class definition with fields
+            cb.line(&format!("---@class {}", st.name));
+            for (fieldname, ltype) in st.readable_fields {
+                cb.line(&format!("---@field {} {}", fieldname, ltype.to_luals_string()));
+            }
+            cb.line(&format!("local {} = {{}}", st.name));
+            cb.preceeding_blank_line();
+
+            // Methods on the class
+            for (lua_name, sig) in st.method_signatures {
+                for param in &sig.params {
+                    cb.line(&format!("---@param {} {}", param.name, param.ltype.to_luals_string()));
+                }
+                if let Some(ret) = &sig.return_type {
+                    cb.line(&format!("---@return {}", ret.to_luals_string()));
+                }
+                let params = sig.params.iter().map(|p| p.name.as_str()).collect::<Vec<_>>().join(", ");
+                cb.line(&format!("function {}:{}({}) end", st.name, lua_name, params));
+                cb.preceeding_blank_line();
+            }
+
+            // Constructor on Steam global
+            cb.line(&format!("---@param table table?"));
+            cb.line(&format!("---@return {}", st.name));
+            cb.line(&format!("function Steam.new{}(table) end", st.name));
+            cb.preceeding_blank_line();
         }
 
         cb.finish()

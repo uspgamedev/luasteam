@@ -8,7 +8,7 @@ function Inventory.GetResultStatus(resultHandle) end
 ---@param resultHandle integer
 ---@param punOutItemsArraySize integer
 ---@return boolean
----@return table[] -- Value of: pOutItemsArray
+---@return SteamItemDetails_t[] -- Value of: pOutItemsArray
 ---@return integer -- Value of: punOutItemsArraySize
 function Inventory.GetResultItems(resultHandle, punOutItemsArraySize) end
 

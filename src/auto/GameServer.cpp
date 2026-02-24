@@ -730,10 +730,10 @@ EXTERN int luasteam_GameServer_GetServerReputation(lua_State *L) {
 // In C++:
 // SteamIPAddress_t GetPublicIP();
 // In Lua:
-// table GameServer.GetPublicIP()
+// SteamIPAddress_t GameServer.GetPublicIP()
 EXTERN int luasteam_GameServer_GetPublicIP(lua_State *L) {
 	SteamIPAddress_t __ret = SteamGameServer()->GetPublicIP();
-	push_SteamIPAddress_t(L, __ret);
+	luasteam::push_SteamIPAddress_t(L, __ret);
 	return 1;
 }
 

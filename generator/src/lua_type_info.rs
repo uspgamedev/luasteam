@@ -44,6 +44,16 @@ impl LType {
         }
     }
 
+    /// Returns the Lua documentation reference string as an RST link (for Sphinx docs).
+    /// Struct types become :ref: cross-references; other types are plain text.
+    pub fn to_rst_link(&self, structs: &[crate::schema::Struct]) -> String {
+        match self {
+            LType::Userdata(name) => format!(":ref:`{} <struct-{}>`", name, name),
+            LType::Array(inner) => format!("{}[]", inner.to_rst_link(structs)),
+            _ => self.to_lua_doc_reference(structs),
+        }
+    }
+
     /// Returns the Lua documentation reference string (for Sphinx docs)
     pub fn to_lua_doc_reference(&self, _structs: &[crate::schema::Struct]) -> String {
         match self {

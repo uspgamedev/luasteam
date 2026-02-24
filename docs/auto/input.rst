@@ -208,7 +208,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :param uint64 digitalActionHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionData>`_
 
 .. function:: Input.GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle)
@@ -248,7 +248,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :param uint64 analogActionHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
     :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionData>`_
 
 .. function:: Input.GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle)
@@ -322,7 +322,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (table) Return value
+    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
     :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamInput#GetMotionData>`_
 
 .. function:: Input.TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed)
@@ -507,7 +507,7 @@ Callbacks
 
 .. function:: Input.onSteamInputDeviceConnected
 
-    Callback for `SteamInputDeviceConnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamInputDeviceConnected_t>`_
+    Callback for `SteamInputDeviceConnected_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputDeviceConnected_t>`_
 
     **callback(data)** receives:
 
@@ -515,7 +515,7 @@ Callbacks
 
 .. function:: Input.onSteamInputDeviceDisconnected
 
-    Callback for `SteamInputDeviceDisconnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamInputDeviceDisconnected_t>`_
+    Callback for `SteamInputDeviceDisconnected_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputDeviceDisconnected_t>`_
 
     **callback(data)** receives:
 
@@ -523,7 +523,7 @@ Callbacks
 
 .. function:: Input.onSteamInputConfigurationLoaded
 
-    Callback for `SteamInputConfigurationLoaded_t <https://partner.steamgames.com/doc/api/steam_api#SteamInputConfigurationLoaded_t>`_
+    Callback for `SteamInputConfigurationLoaded_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputConfigurationLoaded_t>`_
 
     **callback(data)** receives:
 
@@ -537,7 +537,7 @@ Callbacks
 
 .. function:: Input.onSteamInputGamepadSlotChange
 
-    Callback for `SteamInputGamepadSlotChange_t <https://partner.steamgames.com/doc/api/steam_api#SteamInputGamepadSlotChange_t>`_
+    Callback for `SteamInputGamepadSlotChange_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputGamepadSlotChange_t>`_
 
     **callback(data)** receives:
 

@@ -447,7 +447,7 @@ Callbacks
 
 .. function:: Matchmaking.onFavoritesListChanged
 
-    Callback for `FavoritesListChanged_t <https://partner.steamgames.com/doc/api/steam_api#FavoritesListChanged_t>`_
+    Callback for `FavoritesListChanged_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#FavoritesListChanged_t>`_
 
     **callback(data)** receives:
 
@@ -461,7 +461,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyInvite
 
-    Callback for `LobbyInvite_t <https://partner.steamgames.com/doc/api/steam_api#LobbyInvite_t>`_
+    Callback for `LobbyInvite_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyInvite_t>`_
 
     **callback(data)** receives:
 
@@ -471,7 +471,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyEnter
 
-    Callback for `LobbyEnter_t <https://partner.steamgames.com/doc/api/steam_api#LobbyEnter_t>`_
+    Callback for `LobbyEnter_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyEnter_t>`_
 
     **callback(data)** receives:
 
@@ -482,7 +482,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyDataUpdate
 
-    Callback for `LobbyDataUpdate_t <https://partner.steamgames.com/doc/api/steam_api#LobbyDataUpdate_t>`_
+    Callback for `LobbyDataUpdate_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyDataUpdate_t>`_
 
     **callback(data)** receives:
 
@@ -492,7 +492,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyChatUpdate
 
-    Callback for `LobbyChatUpdate_t <https://partner.steamgames.com/doc/api/steam_api#LobbyChatUpdate_t>`_
+    Callback for `LobbyChatUpdate_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyChatUpdate_t>`_
 
     **callback(data)** receives:
 
@@ -503,7 +503,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyChatMsg
 
-    Callback for `LobbyChatMsg_t <https://partner.steamgames.com/doc/api/steam_api#LobbyChatMsg_t>`_
+    Callback for `LobbyChatMsg_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyChatMsg_t>`_
 
     **callback(data)** receives:
 
@@ -514,7 +514,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyGameCreated
 
-    Callback for `LobbyGameCreated_t <https://partner.steamgames.com/doc/api/steam_api#LobbyGameCreated_t>`_
+    Callback for `LobbyGameCreated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyGameCreated_t>`_
 
     **callback(data)** receives:
 
@@ -525,7 +525,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyMatchList
 
-    Callback for `LobbyMatchList_t <https://partner.steamgames.com/doc/api/steam_api#LobbyMatchList_t>`_
+    Callback for `LobbyMatchList_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyMatchList_t>`_
 
     **callback(data)** receives:
 
@@ -533,7 +533,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyKicked
 
-    Callback for `LobbyKicked_t <https://partner.steamgames.com/doc/api/steam_api#LobbyKicked_t>`_
+    Callback for `LobbyKicked_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyKicked_t>`_
 
     **callback(data)** receives:
 
@@ -543,7 +543,7 @@ Callbacks
 
 .. function:: Matchmaking.onLobbyCreated
 
-    Callback for `LobbyCreated_t <https://partner.steamgames.com/doc/api/steam_api#LobbyCreated_t>`_
+    Callback for `LobbyCreated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyCreated_t>`_
 
     **callback(data)** receives:
 
@@ -552,7 +552,7 @@ Callbacks
 
 .. function:: Matchmaking.onFavoritesListAccountsUpdated
 
-    Callback for `FavoritesListAccountsUpdated_t <https://partner.steamgames.com/doc/api/steam_api#FavoritesListAccountsUpdated_t>`_
+    Callback for `FavoritesListAccountsUpdated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#FavoritesListAccountsUpdated_t>`_
 
     **callback(data)** receives:
 

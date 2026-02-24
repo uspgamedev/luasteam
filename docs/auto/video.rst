@@ -73,7 +73,7 @@ Callbacks
 
 .. function:: Video.onGetVideoURLResult
 
-    Callback for `GetVideoURLResult_t <https://partner.steamgames.com/doc/api/steam_api#GetVideoURLResult_t>`_
+    Callback for `GetVideoURLResult_t <https://partner.steamgames.com/doc/api/ISteamVideo#GetVideoURLResult_t>`_
 
     **callback(data)** receives:
 
@@ -83,7 +83,7 @@ Callbacks
 
 .. function:: Video.onGetOPFSettingsResult
 
-    Callback for `GetOPFSettingsResult_t <https://partner.steamgames.com/doc/api/steam_api#GetOPFSettingsResult_t>`_
+    Callback for `GetOPFSettingsResult_t <https://partner.steamgames.com/doc/api/ISteamVideo#GetOPFSettingsResult_t>`_
 
     **callback(data)** receives:
 
@@ -92,7 +92,7 @@ Callbacks
 
 .. function:: Video.onBroadcastUploadStart
 
-    Callback for `BroadcastUploadStart_t <https://partner.steamgames.com/doc/api/steam_api#BroadcastUploadStart_t>`_
+    Callback for `BroadcastUploadStart_t <https://partner.steamgames.com/doc/api/ISteamVideo#BroadcastUploadStart_t>`_
 
     **callback(data)** receives:
 
@@ -100,7 +100,7 @@ Callbacks
 
 .. function:: Video.onBroadcastUploadStop
 
-    Callback for `BroadcastUploadStop_t <https://partner.steamgames.com/doc/api/steam_api#BroadcastUploadStop_t>`_
+    Callback for `BroadcastUploadStop_t <https://partner.steamgames.com/doc/api/ISteamVideo#BroadcastUploadStop_t>`_
 
     **callback(data)** receives:
 

@@ -291,12 +291,12 @@ EXTERN int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
 // In C++:
 // InputDigitalActionData_t GetDigitalActionData(InputHandle_t inputHandle, InputDigitalActionHandle_t digitalActionHandle);
 // In Lua:
-// table Input.GetDigitalActionData(inputHandle: uint64, digitalActionHandle: uint64)
+// InputDigitalActionData_t Input.GetDigitalActionData(inputHandle: uint64, digitalActionHandle: uint64)
 EXTERN int luasteam_Input_GetDigitalActionData(lua_State *L) {
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 2));
 	InputDigitalActionData_t __ret = SteamInput()->GetDigitalActionData(inputHandle, digitalActionHandle);
-	push_InputDigitalActionData_t(L, __ret);
+	luasteam::push_InputDigitalActionData_t(L, __ret);
 	return 1;
 }
 
@@ -344,12 +344,12 @@ EXTERN int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
 // In C++:
 // InputAnalogActionData_t GetAnalogActionData(InputHandle_t inputHandle, InputAnalogActionHandle_t analogActionHandle);
 // In Lua:
-// table Input.GetAnalogActionData(inputHandle: uint64, analogActionHandle: uint64)
+// InputAnalogActionData_t Input.GetAnalogActionData(inputHandle: uint64, analogActionHandle: uint64)
 EXTERN int luasteam_Input_GetAnalogActionData(lua_State *L) {
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 2));
 	InputAnalogActionData_t __ret = SteamInput()->GetAnalogActionData(inputHandle, analogActionHandle);
-	push_InputAnalogActionData_t(L, __ret);
+	luasteam::push_InputAnalogActionData_t(L, __ret);
 	return 1;
 }
 
@@ -444,11 +444,11 @@ EXTERN int luasteam_Input_StopAnalogActionMomentum(lua_State *L) {
 // In C++:
 // InputMotionData_t GetMotionData(InputHandle_t inputHandle);
 // In Lua:
-// table Input.GetMotionData(inputHandle: uint64)
+// InputMotionData_t Input.GetMotionData(inputHandle: uint64)
 EXTERN int luasteam_Input_GetMotionData(lua_State *L) {
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputMotionData_t __ret = SteamInput()->GetMotionData(inputHandle);
-	push_InputMotionData_t(L, __ret);
+	luasteam::push_InputMotionData_t(L, __ret);
 	return 1;
 }
 

@@ -106,7 +106,7 @@ function GameServer.GetGameplayStats() end
 ---@return uint64
 function GameServer.GetServerReputation(callback) end
 
----@return table
+---@return SteamIPAddress_t
 function GameServer.GetPublicIP() end
 
 ---@param pData string

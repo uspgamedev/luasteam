@@ -123,7 +123,7 @@ Function Reference
 
     :param int unMaxEvents:
     :returns: (int) Return value
-    :returns: (table[]) Value for `pInput`
+    :returns: (:ref:`RemotePlayInput_t <struct-RemotePlayInput_t>`[]) Value for `pInput`
     :SteamWorks: `GetInput <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetInput>`_
 
     **Signature differences from C++ API:**
@@ -174,7 +174,7 @@ Callbacks
 
 .. function:: RemotePlay.onSteamRemotePlaySessionConnected
 
-    Callback for `SteamRemotePlaySessionConnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamRemotePlaySessionConnected_t>`_
+    Callback for `SteamRemotePlaySessionConnected_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlaySessionConnected_t>`_
 
     **callback(data)** receives:
 
@@ -182,7 +182,7 @@ Callbacks
 
 .. function:: RemotePlay.onSteamRemotePlaySessionDisconnected
 
-    Callback for `SteamRemotePlaySessionDisconnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamRemotePlaySessionDisconnected_t>`_
+    Callback for `SteamRemotePlaySessionDisconnected_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlaySessionDisconnected_t>`_
 
     **callback(data)** receives:
 
@@ -190,7 +190,7 @@ Callbacks
 
 .. function:: RemotePlay.onSteamRemotePlayTogetherGuestInvite
 
-    Callback for `SteamRemotePlayTogetherGuestInvite_t <https://partner.steamgames.com/doc/api/steam_api#SteamRemotePlayTogetherGuestInvite_t>`_
+    Callback for `SteamRemotePlayTogetherGuestInvite_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlayTogetherGuestInvite_t>`_
 
     **callback(data)** receives:
 

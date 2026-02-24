@@ -63,7 +63,7 @@ function Input.GetDigitalActionHandle(pszActionName) end
 
 ---@param inputHandle uint64
 ---@param digitalActionHandle uint64
----@return table
+---@return InputDigitalActionData_t
 function Input.GetDigitalActionData(inputHandle, digitalActionHandle) end
 
 ---@param inputHandle uint64
@@ -83,7 +83,7 @@ function Input.GetAnalogActionHandle(pszActionName) end
 
 ---@param inputHandle uint64
 ---@param analogActionHandle uint64
----@return table
+---@return InputAnalogActionData_t
 function Input.GetAnalogActionData(inputHandle, analogActionHandle) end
 
 ---@param inputHandle uint64
@@ -121,7 +121,7 @@ function Input.GetStringForAnalogActionName(eActionHandle) end
 function Input.StopAnalogActionMomentum(inputHandle, eAction) end
 
 ---@param inputHandle uint64
----@return table
+---@return InputMotionData_t
 function Input.GetMotionData(inputHandle) end
 
 ---@param inputHandle uint64

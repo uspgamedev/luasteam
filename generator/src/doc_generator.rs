@@ -4,6 +4,13 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
 
+/// Minimal doc info for an auto-generated struct, passed from main.rs to the generators.
+pub struct StructDocInfo<'a> {
+    pub name: &'a str,
+    pub readable_fields: &'a [(String, LType)],
+    pub method_signatures: &'a [(String, LuaMethodSignature)],
+}
+
 #[derive(Debug, Deserialize, Default)]
 pub struct CustomDocs {
     #[serde(flatten)]
@@ -193,8 +200,6 @@ impl DocGenerator {
 
         // Parameters with types from signature
         for param in &signature.params {
-            let ltype = param.ltype.to_lua_doc_reference(&self.structs);
-
             let param_desc = custom_doc
                 .and_then(|cd| cd.param_descriptions.get(&param.name))
                 .map(|s| s.as_str())
@@ -203,27 +208,25 @@ impl DocGenerator {
             if let LType::CallresultCallback { struct_t } = &param.ltype {
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
             } else if param_desc.is_empty() {
-                doc.push_str(&format!("    :param {} {}:\n", ltype, param.name));
+                doc.push_str(&format!("    :param {} {}:\n", param.ltype.to_rst_link(&self.structs), param.name));
             } else {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
-                    ltype, param.name, param_desc
+                    param.ltype.to_rst_link(&self.structs), param.name, param_desc
                 ));
             }
         }
 
         // Return values from signature
         if let Some(ret_type) = &signature.return_type {
-            let lua_type = ret_type.to_lua_doc_reference(&self.structs);
-            doc.push_str(&format!("    :returns: ({}) Return value\n", lua_type));
+            doc.push_str(&format!("    :returns: ({}) Return value\n", ret_type.to_rst_link(&self.structs)));
         }
 
         // Output parameters become additional return values
         for output_param in &signature.output_params {
-            let lua_type = output_param.ltype.to_lua_doc_reference(&self.structs);
             doc.push_str(&format!(
                 "    :returns: ({}) Value for `{}`\n",
-                lua_type, output_param.name
+                output_param.ltype.to_rst_link(&self.structs), output_param.name
             ));
         }
 
@@ -287,8 +290,8 @@ impl DocGenerator {
             lua_namespace, callback_name
         ));
         doc.push_str(&format!(
-            "    Callback for `{} <https://partner.steamgames.com/doc/api/steam_api#{}>`_\n\n",
-            callback.name, callback.name
+            "    Callback for `{} <https://partner.steamgames.com/doc/api/ISteam{}#{}>`_\n\n",
+            callback.name, lua_namespace, callback.name
         ));
         doc.push_str("    **callback(data)** receives:\n\n");
 
@@ -423,5 +426,67 @@ impl DocGenerator {
         }
 
         result
+    }
+
+    pub fn generate_structs_doc(&self, structs: &[StructDocInfo<'_>]) -> String {
+        let mut doc = String::new();
+
+        doc.push_str("=======\nStructs\n=======\n\n");
+        doc.push_str(".. note::\n");
+        doc.push_str("   These structs are auto-generated as Lua userdata objects.\n");
+        doc.push_str("   Create them with the ``Steam.new<StructName>()`` constructor.\n\n");
+
+        for st in structs {
+            // Section header with RST label for cross-referencing
+            let bar = "-".repeat(st.name.len());
+            doc.push_str(&format!(".. _struct-{}:\n\n", st.name));
+            doc.push_str(&format!("{}\n{}\n{}\n\n", bar, st.name, bar));
+
+            // Constructor
+            doc.push_str(&format!(".. function:: Steam.new{}([table])\n\n", st.name));
+            doc.push_str("    🤖 Constructor — creates a new userdata instance.\n\n");
+            doc.push_str(&format!(
+                "    :param table table: *(optional)* Initial field values as a table.\n"
+            ));
+            doc.push_str(&format!(
+                "    :returns: ({}) New userdata instance.\n\n",
+                st.name
+            ));
+
+            // Fields
+            if !st.readable_fields.is_empty() {
+                doc.push_str("    **Fields** (readable and writable):\n\n");
+                for (fieldname, ltype) in st.readable_fields {
+                    let type_str = ltype.to_rst_link(&self.structs);
+                    doc.push_str(&format!("    * **{}** ({})\n", fieldname, type_str));
+                }
+                doc.push('\n');
+            }
+
+            // Methods
+            if !st.method_signatures.is_empty() {
+                for (lua_name, sig) in st.method_signatures {
+                    let params: Vec<String> =
+                        sig.params.iter().map(|p| p.name.clone()).collect();
+                    doc.push_str(&format!(
+                        ".. function:: {}:{}({})\n\n",
+                        st.name,
+                        lua_name,
+                        params.join(", ")
+                    ));
+                    doc.push_str("    🤖 **Auto-generated binding**\n\n");
+
+                    for param in &sig.params {
+                        doc.push_str(&format!("    :param {} {}:\n", param.ltype.to_rst_link(&self.structs), param.name));
+                    }
+                    if let Some(ret) = &sig.return_type {
+                        doc.push_str(&format!("    :returns: ({})\n", ret.to_rst_link(&self.structs)));
+                    }
+                    doc.push('\n');
+                }
+            }
+        }
+
+        doc
     }
 }

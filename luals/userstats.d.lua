@@ -152,7 +152,7 @@ function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUser
 ---@param index integer
 ---@param cDetailsMax integer
 ---@return boolean
----@return table -- Value of: pLeaderboardEntry
+---@return LeaderboardEntry_t -- Value of: pLeaderboardEntry
 ---@return integer[] -- Value of: pDetails
 function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, cDetailsMax) end
 

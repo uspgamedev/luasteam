@@ -29,13 +29,6 @@ uint64 assertuint64(lua_State *L, int index, const char *fmt, ...);
 void pushvoid_ptr(lua_State *L, void *v);
 void *checkvoid_ptr(lua_State *L, int nParam);
 
-// SteamNetworkingIdentity userdata — stores the struct value inside Lua userdata.
-// Lua API: luasteam.newSteamNetworkingIdentity(), identity:ParseString(str), identity:ToString()
-void push_SteamNetworkingIdentity(lua_State *L, SteamNetworkingIdentity val);
-SteamNetworkingIdentity check_SteamNetworkingIdentity(lua_State *L, int nParam);
-// Returns a pointer directly into the userdata storage — avoids a copy for const pointer/reference params.
-SteamNetworkingIdentity *check_SteamNetworkingIdentity_ptr(lua_State *L, int nParam);
-
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 
@@ -50,8 +43,5 @@ void init_common(lua_State *L);
 void shutdown_common(lua_State *L);
 
 } // namespace luasteam
-
-// luasteam.newSteamNetworkingIdentity() constructor — exposed for registration in luaopen_luasteam
-EXTERN int luasteam_newSteamNetworkingIdentity(lua_State *L);
 
 #endif // LUASTEAM_COMMON

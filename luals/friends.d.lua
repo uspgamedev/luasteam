@@ -30,7 +30,7 @@ function Friends.GetFriendPersonaName(steamIDFriend) end
 
 ---@param steamIDFriend uint64
 ---@return boolean
----@return table -- Value of: pFriendGameInfo
+---@return FriendGameInfo_t -- Value of: pFriendGameInfo
 function Friends.GetFriendGamePlayed(steamIDFriend) end
 
 ---@param steamIDFriend uint64

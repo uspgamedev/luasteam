@@ -366,7 +366,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_BrowserReady
 
-    Callback for `HTML_BrowserReady_t <https://partner.steamgames.com/doc/api/steam_api#HTML_BrowserReady_t>`_
+    Callback for `HTML_BrowserReady_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_BrowserReady_t>`_
 
     **callback(data)** receives:
 
@@ -374,7 +374,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_NeedsPaint
 
-    Callback for `HTML_NeedsPaint_t <https://partner.steamgames.com/doc/api/steam_api#HTML_NeedsPaint_t>`_
+    Callback for `HTML_NeedsPaint_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_NeedsPaint_t>`_
 
     **callback(data)** receives:
 
@@ -393,7 +393,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_StartRequest
 
-    Callback for `HTML_StartRequest_t <https://partner.steamgames.com/doc/api/steam_api#HTML_StartRequest_t>`_
+    Callback for `HTML_StartRequest_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_StartRequest_t>`_
 
     **callback(data)** receives:
 
@@ -405,7 +405,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_CloseBrowser
 
-    Callback for `HTML_CloseBrowser_t <https://partner.steamgames.com/doc/api/steam_api#HTML_CloseBrowser_t>`_
+    Callback for `HTML_CloseBrowser_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_CloseBrowser_t>`_
 
     **callback(data)** receives:
 
@@ -413,7 +413,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_URLChanged
 
-    Callback for `HTML_URLChanged_t <https://partner.steamgames.com/doc/api/steam_api#HTML_URLChanged_t>`_
+    Callback for `HTML_URLChanged_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_URLChanged_t>`_
 
     **callback(data)** receives:
 
@@ -426,7 +426,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_FinishedRequest
 
-    Callback for `HTML_FinishedRequest_t <https://partner.steamgames.com/doc/api/steam_api#HTML_FinishedRequest_t>`_
+    Callback for `HTML_FinishedRequest_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_FinishedRequest_t>`_
 
     **callback(data)** receives:
 
@@ -436,7 +436,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_OpenLinkInNewTab
 
-    Callback for `HTML_OpenLinkInNewTab_t <https://partner.steamgames.com/doc/api/steam_api#HTML_OpenLinkInNewTab_t>`_
+    Callback for `HTML_OpenLinkInNewTab_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_OpenLinkInNewTab_t>`_
 
     **callback(data)** receives:
 
@@ -445,7 +445,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_ChangedTitle
 
-    Callback for `HTML_ChangedTitle_t <https://partner.steamgames.com/doc/api/steam_api#HTML_ChangedTitle_t>`_
+    Callback for `HTML_ChangedTitle_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_ChangedTitle_t>`_
 
     **callback(data)** receives:
 
@@ -454,7 +454,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_SearchResults
 
-    Callback for `HTML_SearchResults_t <https://partner.steamgames.com/doc/api/steam_api#HTML_SearchResults_t>`_
+    Callback for `HTML_SearchResults_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_SearchResults_t>`_
 
     **callback(data)** receives:
 
@@ -464,7 +464,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_CanGoBackAndForward
 
-    Callback for `HTML_CanGoBackAndForward_t <https://partner.steamgames.com/doc/api/steam_api#HTML_CanGoBackAndForward_t>`_
+    Callback for `HTML_CanGoBackAndForward_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_CanGoBackAndForward_t>`_
 
     **callback(data)** receives:
 
@@ -474,7 +474,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_HorizontalScroll
 
-    Callback for `HTML_HorizontalScroll_t <https://partner.steamgames.com/doc/api/steam_api#HTML_HorizontalScroll_t>`_
+    Callback for `HTML_HorizontalScroll_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_HorizontalScroll_t>`_
 
     **callback(data)** receives:
 
@@ -487,7 +487,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_VerticalScroll
 
-    Callback for `HTML_VerticalScroll_t <https://partner.steamgames.com/doc/api/steam_api#HTML_VerticalScroll_t>`_
+    Callback for `HTML_VerticalScroll_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_VerticalScroll_t>`_
 
     **callback(data)** receives:
 
@@ -500,7 +500,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_LinkAtPosition
 
-    Callback for `HTML_LinkAtPosition_t <https://partner.steamgames.com/doc/api/steam_api#HTML_LinkAtPosition_t>`_
+    Callback for `HTML_LinkAtPosition_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_LinkAtPosition_t>`_
 
     **callback(data)** receives:
 
@@ -513,7 +513,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_JSAlert
 
-    Callback for `HTML_JSAlert_t <https://partner.steamgames.com/doc/api/steam_api#HTML_JSAlert_t>`_
+    Callback for `HTML_JSAlert_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_JSAlert_t>`_
 
     **callback(data)** receives:
 
@@ -522,7 +522,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_JSConfirm
 
-    Callback for `HTML_JSConfirm_t <https://partner.steamgames.com/doc/api/steam_api#HTML_JSConfirm_t>`_
+    Callback for `HTML_JSConfirm_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_JSConfirm_t>`_
 
     **callback(data)** receives:
 
@@ -531,7 +531,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_FileOpenDialog
 
-    Callback for `HTML_FileOpenDialog_t <https://partner.steamgames.com/doc/api/steam_api#HTML_FileOpenDialog_t>`_
+    Callback for `HTML_FileOpenDialog_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_FileOpenDialog_t>`_
 
     **callback(data)** receives:
 
@@ -541,7 +541,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_NewWindow
 
-    Callback for `HTML_NewWindow_t <https://partner.steamgames.com/doc/api/steam_api#HTML_NewWindow_t>`_
+    Callback for `HTML_NewWindow_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_NewWindow_t>`_
 
     **callback(data)** receives:
 
@@ -555,7 +555,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_SetCursor
 
-    Callback for `HTML_SetCursor_t <https://partner.steamgames.com/doc/api/steam_api#HTML_SetCursor_t>`_
+    Callback for `HTML_SetCursor_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_SetCursor_t>`_
 
     **callback(data)** receives:
 
@@ -564,7 +564,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_StatusText
 
-    Callback for `HTML_StatusText_t <https://partner.steamgames.com/doc/api/steam_api#HTML_StatusText_t>`_
+    Callback for `HTML_StatusText_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_StatusText_t>`_
 
     **callback(data)** receives:
 
@@ -573,7 +573,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_ShowToolTip
 
-    Callback for `HTML_ShowToolTip_t <https://partner.steamgames.com/doc/api/steam_api#HTML_ShowToolTip_t>`_
+    Callback for `HTML_ShowToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_ShowToolTip_t>`_
 
     **callback(data)** receives:
 
@@ -582,7 +582,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_UpdateToolTip
 
-    Callback for `HTML_UpdateToolTip_t <https://partner.steamgames.com/doc/api/steam_api#HTML_UpdateToolTip_t>`_
+    Callback for `HTML_UpdateToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_UpdateToolTip_t>`_
 
     **callback(data)** receives:
 
@@ -591,7 +591,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_HideToolTip
 
-    Callback for `HTML_HideToolTip_t <https://partner.steamgames.com/doc/api/steam_api#HTML_HideToolTip_t>`_
+    Callback for `HTML_HideToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_HideToolTip_t>`_
 
     **callback(data)** receives:
 
@@ -599,7 +599,7 @@ Callbacks
 
 .. function:: HTMLSurface.onHTML_BrowserRestarted
 
-    Callback for `HTML_BrowserRestarted_t <https://partner.steamgames.com/doc/api/steam_api#HTML_BrowserRestarted_t>`_
+    Callback for `HTML_BrowserRestarted_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_BrowserRestarted_t>`_
 
     **callback(data)** receives:
 

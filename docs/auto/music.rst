@@ -93,14 +93,14 @@ Callbacks
 
 .. function:: Music.onPlaybackStatusHasChanged
 
-    Callback for `PlaybackStatusHasChanged_t <https://partner.steamgames.com/doc/api/steam_api#PlaybackStatusHasChanged_t>`_
+    Callback for `PlaybackStatusHasChanged_t <https://partner.steamgames.com/doc/api/ISteamMusic#PlaybackStatusHasChanged_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Music.onVolumeHasChanged
 
-    Callback for `VolumeHasChanged_t <https://partner.steamgames.com/doc/api/steam_api#VolumeHasChanged_t>`_
+    Callback for `VolumeHasChanged_t <https://partner.steamgames.com/doc/api/ISteamMusic#VolumeHasChanged_t>`_
 
     **callback(data)** receives:
 

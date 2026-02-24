@@ -221,7 +221,7 @@ EXTERN int luasteam_Inventory_GetResultStatus(lua_State *L) {
 // In C++:
 // bool GetResultItems(SteamInventoryResult_t resultHandle, SteamItemDetails_t * pOutItemsArray, uint32 * punOutItemsArraySize);
 // In Lua:
-// (bool, pOutItemsArray: table[], punOutItemsArraySize: int) Inventory.GetResultItems(resultHandle: int, punOutItemsArraySize: int)
+// (bool, pOutItemsArray: SteamItemDetails_t[], punOutItemsArraySize: int) Inventory.GetResultItems(resultHandle: int, punOutItemsArraySize: int)
 EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
 	uint32 punOutItemsArraySize = luaL_checkint(L, 2);
@@ -230,7 +230,7 @@ EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punOutItemsArraySize, 0);
 	for(decltype(punOutItemsArraySize) i = 0; i < punOutItemsArraySize; i++) {
-		push_SteamItemDetails_t(L, pOutItemsArray[i]);
+		luasteam::push_SteamItemDetails_t(L, pOutItemsArray[i]);
 		lua_rawseti(L, -2, i+1);
 	}
 	lua_pushinteger(L, punOutItemsArraySize);

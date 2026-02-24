@@ -379,7 +379,7 @@ Function Reference
     :param int index:
     :param int cDetailsMax:
     :returns: (bool) Return value
-    :returns: (table) Value for `pLeaderboardEntry`
+    :returns: (:ref:`LeaderboardEntry_t <struct-LeaderboardEntry_t>`) Value for `pLeaderboardEntry`
     :returns: (int[]) Value for `pDetails`
     :SteamWorks: `GetDownloadedLeaderboardEntry <https://partner.steamgames.com/doc/api/ISteamUserStats#GetDownloadedLeaderboardEntry>`_
 
@@ -574,7 +574,7 @@ Callbacks
 
 .. function:: UserStats.onUserStatsReceived
 
-    Callback for `UserStatsReceived_t <https://partner.steamgames.com/doc/api/steam_api#UserStatsReceived_t>`_
+    Callback for `UserStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsReceived_t>`_
 
     **callback(data)** receives:
 
@@ -584,7 +584,7 @@ Callbacks
 
 .. function:: UserStats.onUserStatsStored
 
-    Callback for `UserStatsStored_t <https://partner.steamgames.com/doc/api/steam_api#UserStatsStored_t>`_
+    Callback for `UserStatsStored_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsStored_t>`_
 
     **callback(data)** receives:
 
@@ -593,7 +593,7 @@ Callbacks
 
 .. function:: UserStats.onUserAchievementStored
 
-    Callback for `UserAchievementStored_t <https://partner.steamgames.com/doc/api/steam_api#UserAchievementStored_t>`_
+    Callback for `UserAchievementStored_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserAchievementStored_t>`_
 
     **callback(data)** receives:
 
@@ -605,7 +605,7 @@ Callbacks
 
 .. function:: UserStats.onLeaderboardFindResult
 
-    Callback for `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/steam_api#LeaderboardFindResult_t>`_
+    Callback for `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardFindResult_t>`_
 
     **callback(data)** receives:
 
@@ -614,7 +614,7 @@ Callbacks
 
 .. function:: UserStats.onLeaderboardScoresDownloaded
 
-    Callback for `LeaderboardScoresDownloaded_t <https://partner.steamgames.com/doc/api/steam_api#LeaderboardScoresDownloaded_t>`_
+    Callback for `LeaderboardScoresDownloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardScoresDownloaded_t>`_
 
     **callback(data)** receives:
 
@@ -624,7 +624,7 @@ Callbacks
 
 .. function:: UserStats.onLeaderboardScoreUploaded
 
-    Callback for `LeaderboardScoreUploaded_t <https://partner.steamgames.com/doc/api/steam_api#LeaderboardScoreUploaded_t>`_
+    Callback for `LeaderboardScoreUploaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardScoreUploaded_t>`_
 
     **callback(data)** receives:
 
@@ -637,7 +637,7 @@ Callbacks
 
 .. function:: UserStats.onNumberOfCurrentPlayers
 
-    Callback for `NumberOfCurrentPlayers_t <https://partner.steamgames.com/doc/api/steam_api#NumberOfCurrentPlayers_t>`_
+    Callback for `NumberOfCurrentPlayers_t <https://partner.steamgames.com/doc/api/ISteamUserStats#NumberOfCurrentPlayers_t>`_
 
     **callback(data)** receives:
 
@@ -646,7 +646,7 @@ Callbacks
 
 .. function:: UserStats.onUserStatsUnloaded
 
-    Callback for `UserStatsUnloaded_t <https://partner.steamgames.com/doc/api/steam_api#UserStatsUnloaded_t>`_
+    Callback for `UserStatsUnloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsUnloaded_t>`_
 
     **callback(data)** receives:
 
@@ -654,7 +654,7 @@ Callbacks
 
 .. function:: UserStats.onUserAchievementIconFetched
 
-    Callback for `UserAchievementIconFetched_t <https://partner.steamgames.com/doc/api/steam_api#UserAchievementIconFetched_t>`_
+    Callback for `UserAchievementIconFetched_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserAchievementIconFetched_t>`_
 
     **callback(data)** receives:
 
@@ -665,7 +665,7 @@ Callbacks
 
 .. function:: UserStats.onGlobalAchievementPercentagesReady
 
-    Callback for `GlobalAchievementPercentagesReady_t <https://partner.steamgames.com/doc/api/steam_api#GlobalAchievementPercentagesReady_t>`_
+    Callback for `GlobalAchievementPercentagesReady_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GlobalAchievementPercentagesReady_t>`_
 
     **callback(data)** receives:
 
@@ -674,7 +674,7 @@ Callbacks
 
 .. function:: UserStats.onLeaderboardUGCSet
 
-    Callback for `LeaderboardUGCSet_t <https://partner.steamgames.com/doc/api/steam_api#LeaderboardUGCSet_t>`_
+    Callback for `LeaderboardUGCSet_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardUGCSet_t>`_
 
     **callback(data)** receives:
 
@@ -683,7 +683,7 @@ Callbacks
 
 .. function:: UserStats.onGlobalStatsReceived
 
-    Callback for `GlobalStatsReceived_t <https://partner.steamgames.com/doc/api/steam_api#GlobalStatsReceived_t>`_
+    Callback for `GlobalStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GlobalStatsReceived_t>`_
 
     **callback(data)** receives:
 
@@ -692,7 +692,7 @@ Callbacks
 
 .. function:: UserStats.onGSStatsUnloaded
 
-    Callback for `GSStatsUnloaded_t <https://partner.steamgames.com/doc/api/steam_api#GSStatsUnloaded_t>`_
+    Callback for `GSStatsUnloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GSStatsUnloaded_t>`_
 
     **callback(data)** receives:
 

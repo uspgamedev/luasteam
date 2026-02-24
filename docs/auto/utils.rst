@@ -391,14 +391,14 @@ Callbacks
 
 .. function:: Utils.onIPCountry
 
-    Callback for `IPCountry_t <https://partner.steamgames.com/doc/api/steam_api#IPCountry_t>`_
+    Callback for `IPCountry_t <https://partner.steamgames.com/doc/api/ISteamUtils#IPCountry_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Utils.onLowBatteryPower
 
-    Callback for `LowBatteryPower_t <https://partner.steamgames.com/doc/api/steam_api#LowBatteryPower_t>`_
+    Callback for `LowBatteryPower_t <https://partner.steamgames.com/doc/api/ISteamUtils#LowBatteryPower_t>`_
 
     **callback(data)** receives:
 
@@ -406,7 +406,7 @@ Callbacks
 
 .. function:: Utils.onSteamAPICallCompleted
 
-    Callback for `SteamAPICallCompleted_t <https://partner.steamgames.com/doc/api/steam_api#SteamAPICallCompleted_t>`_
+    Callback for `SteamAPICallCompleted_t <https://partner.steamgames.com/doc/api/ISteamUtils#SteamAPICallCompleted_t>`_
 
     **callback(data)** receives:
 
@@ -416,14 +416,14 @@ Callbacks
 
 .. function:: Utils.onSteamShutdown
 
-    Callback for `SteamShutdown_t <https://partner.steamgames.com/doc/api/steam_api#SteamShutdown_t>`_
+    Callback for `SteamShutdown_t <https://partner.steamgames.com/doc/api/ISteamUtils#SteamShutdown_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Utils.onCheckFileSignature
 
-    Callback for `CheckFileSignature_t <https://partner.steamgames.com/doc/api/steam_api#CheckFileSignature_t>`_
+    Callback for `CheckFileSignature_t <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature_t>`_
 
     **callback(data)** receives:
 
@@ -431,7 +431,7 @@ Callbacks
 
 .. function:: Utils.onGamepadTextInputDismissed
 
-    Callback for `GamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/steam_api#GamepadTextInputDismissed_t>`_
+    Callback for `GamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/ISteamUtils#GamepadTextInputDismissed_t>`_
 
     **callback(data)** receives:
 
@@ -441,21 +441,21 @@ Callbacks
 
 .. function:: Utils.onAppResumingFromSuspend
 
-    Callback for `AppResumingFromSuspend_t <https://partner.steamgames.com/doc/api/steam_api#AppResumingFromSuspend_t>`_
+    Callback for `AppResumingFromSuspend_t <https://partner.steamgames.com/doc/api/ISteamUtils#AppResumingFromSuspend_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Utils.onFloatingGamepadTextInputDismissed
 
-    Callback for `FloatingGamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/steam_api#FloatingGamepadTextInputDismissed_t>`_
+    Callback for `FloatingGamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/ISteamUtils#FloatingGamepadTextInputDismissed_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Utils.onFilterTextDictionaryChanged
 
-    Callback for `FilterTextDictionaryChanged_t <https://partner.steamgames.com/doc/api/steam_api#FilterTextDictionaryChanged_t>`_
+    Callback for `FilterTextDictionaryChanged_t <https://partner.steamgames.com/doc/api/ISteamUtils#FilterTextDictionaryChanged_t>`_
 
     **callback(data)** receives:
 

@@ -40,7 +40,7 @@ function RemotePlay.DisableRemotePlayTogetherDirectInput() end
 
 ---@param unMaxEvents integer
 ---@return integer
----@return table[] -- Value of: pInput
+---@return RemotePlayInput_t[] -- Value of: pInput
 function RemotePlay.GetInput(unMaxEvents) end
 
 ---@param unSessionID integer

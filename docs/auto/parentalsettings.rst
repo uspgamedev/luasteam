@@ -76,7 +76,7 @@ Callbacks
 
 .. function:: ParentalSettings.onSteamParentalSettingsChanged
 
-    Callback for `SteamParentalSettingsChanged_t <https://partner.steamgames.com/doc/api/steam_api#SteamParentalSettingsChanged_t>`_
+    Callback for `SteamParentalSettingsChanged_t <https://partner.steamgames.com/doc/api/ISteamParentalSettings#SteamParentalSettingsChanged_t>`_
 
     **callback(data)** receives:
 

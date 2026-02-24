@@ -32,7 +32,7 @@ function UGC.SendQueryUGCRequest(handle, callback) end
 ---@param handle uint64
 ---@param index integer
 ---@return boolean
----@return table -- Value of: pDetails
+---@return SteamUGCDetails_t -- Value of: pDetails
 function UGC.GetQueryUGCResult(handle, index) end
 
 ---@param handle uint64
@@ -144,6 +144,11 @@ function UGC.ReleaseQueryUGCRequest(handle) end
 ---@param pTagName string
 ---@return boolean
 function UGC.AddRequiredTag(handle, pTagName) end
+
+---@param handle uint64
+---@param pTagGroups SteamParamStringArray_t
+---@return boolean
+function UGC.AddRequiredTagGroup(handle, pTagGroups) end
 
 ---@param handle uint64
 ---@param pTagName string
@@ -284,6 +289,12 @@ function UGC.SetItemMetadata(handle, pchMetaData) end
 ---@param eVisibility integer
 ---@return boolean
 function UGC.SetItemVisibility(handle, eVisibility) end
+
+---@param updateHandle uint64
+---@param pTags SteamParamStringArray_t
+---@param bAllowAdminTags boolean
+---@return boolean
+function UGC.SetItemTags(updateHandle, pTags, bAllowAdminTags) end
 
 ---@param handle uint64
 ---@param pszContentFolder string

@@ -374,7 +374,7 @@ Callbacks
 
 .. function:: Apps.onDlcInstalled
 
-    Callback for `DlcInstalled_t <https://partner.steamgames.com/doc/api/steam_api#DlcInstalled_t>`_
+    Callback for `DlcInstalled_t <https://partner.steamgames.com/doc/api/ISteamApps#DlcInstalled_t>`_
 
     **callback(data)** receives:
 
@@ -382,14 +382,14 @@ Callbacks
 
 .. function:: Apps.onNewUrlLaunchParameters
 
-    Callback for `NewUrlLaunchParameters_t <https://partner.steamgames.com/doc/api/steam_api#NewUrlLaunchParameters_t>`_
+    Callback for `NewUrlLaunchParameters_t <https://partner.steamgames.com/doc/api/ISteamApps#NewUrlLaunchParameters_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: Apps.onAppProofOfPurchaseKeyResponse
 
-    Callback for `AppProofOfPurchaseKeyResponse_t <https://partner.steamgames.com/doc/api/steam_api#AppProofOfPurchaseKeyResponse_t>`_
+    Callback for `AppProofOfPurchaseKeyResponse_t <https://partner.steamgames.com/doc/api/ISteamApps#AppProofOfPurchaseKeyResponse_t>`_
 
     **callback(data)** receives:
 
@@ -400,7 +400,7 @@ Callbacks
 
 .. function:: Apps.onFileDetailsResult
 
-    Callback for `FileDetailsResult_t <https://partner.steamgames.com/doc/api/steam_api#FileDetailsResult_t>`_
+    Callback for `FileDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamApps#FileDetailsResult_t>`_
 
     **callback(data)** receives:
 
@@ -411,7 +411,7 @@ Callbacks
 
 .. function:: Apps.onTimedTrialStatus
 
-    Callback for `TimedTrialStatus_t <https://partner.steamgames.com/doc/api/steam_api#TimedTrialStatus_t>`_
+    Callback for `TimedTrialStatus_t <https://partner.steamgames.com/doc/api/ISteamApps#TimedTrialStatus_t>`_
 
     **callback(data)** receives:
 

@@ -893,7 +893,7 @@ EXTERN int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 // In C++:
 // bool GetDownloadedLeaderboardEntry(SteamLeaderboardEntries_t hSteamLeaderboardEntries, int index, LeaderboardEntry_t * pLeaderboardEntry, int32 * pDetails, int cDetailsMax);
 // In Lua:
-// (bool, pLeaderboardEntry: table, pDetails: int[]) UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries: uint64, index: int, cDetailsMax: int)
+// (bool, pLeaderboardEntry: LeaderboardEntry_t, pDetails: int[]) UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries: uint64, index: int, cDetailsMax: int)
 EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 	SteamLeaderboardEntries_t hSteamLeaderboardEntries(luasteam::checkuint64(L, 1));
 	int index = static_cast<int>(luaL_checkint(L, 2));
@@ -902,7 +902,7 @@ EXTERN int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 	std::vector<int32> pDetails(cDetailsMax);
 	bool __ret = SteamUserStats()->GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, &pLeaderboardEntry, pDetails.data(), cDetailsMax);
 	lua_pushboolean(L, __ret);
-	push_LeaderboardEntry_t(L, pLeaderboardEntry);
+	luasteam::push_LeaderboardEntry_t(L, pLeaderboardEntry);
 	lua_createtable(L, cDetailsMax, 0);
 	for(decltype(cDetailsMax) i = 0; i < cDetailsMax; i++) {
 		lua_pushinteger(L, pDetails[i]);

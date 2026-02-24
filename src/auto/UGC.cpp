@@ -63,7 +63,7 @@ void CallbackListener::OnSteamUGCRequestUGCDetailsResult(SteamUGCRequestUGCDetai
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 2);
-		push_SteamUGCDetails_t(L, data->m_details);
+		luasteam::push_SteamUGCDetails_t(L, data->m_details);
 		lua_setfield(L, -2, "m_details");
 		lua_pushboolean(L, data->m_bCachedData);
 		lua_setfield(L, -2, "m_bCachedData");
@@ -727,7 +727,7 @@ template <> void CallResultListener<SteamUGCRequestUGCDetailsResult_t>::Result(S
 		lua_pushnil(L);
 	} else {
 		lua_createtable(L, 0, 2);
-		push_SteamUGCDetails_t(L, data->m_details);
+		luasteam::push_SteamUGCDetails_t(L, data->m_details);
 		lua_setfield(L, -2, "m_details");
 		lua_pushboolean(L, data->m_bCachedData);
 		lua_setfield(L, -2, "m_bCachedData");
@@ -908,14 +908,14 @@ EXTERN int luasteam_UGC_SendQueryUGCRequest(lua_State *L) {
 // In C++:
 // bool GetQueryUGCResult(UGCQueryHandle_t handle, uint32 index, SteamUGCDetails_t * pDetails);
 // In Lua:
-// (bool, pDetails: table) UGC.GetQueryUGCResult(handle: uint64, index: int)
+// (bool, pDetails: SteamUGCDetails_t) UGC.GetQueryUGCResult(handle: uint64, index: int)
 EXTERN int luasteam_UGC_GetQueryUGCResult(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	SteamUGCDetails_t pDetails;
 	bool __ret = SteamUGC()->GetQueryUGCResult(handle, index, &pDetails);
 	lua_pushboolean(L, __ret);
-	push_SteamUGCDetails_t(L, pDetails);
+	luasteam::push_SteamUGCDetails_t(L, pDetails);
 	return 2;
 }
 
@@ -1151,6 +1151,18 @@ EXTERN int luasteam_UGC_AddRequiredTag(lua_State *L) {
 	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
 	const char *pTagName = luaL_checkstring(L, 2);
 	bool __ret = SteamUGC()->AddRequiredTag(handle, pTagName);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
+// bool AddRequiredTagGroup(UGCQueryHandle_t handle, const SteamParamStringArray_t * pTagGroups);
+// In Lua:
+// bool UGC.AddRequiredTagGroup(handle: uint64, pTagGroups: SteamParamStringArray_t)
+EXTERN int luasteam_UGC_AddRequiredTagGroup(lua_State *L) {
+	UGCQueryHandle_t handle(luasteam::checkuint64(L, 1));
+	const SteamParamStringArray_t *pTagGroups = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 2);
+	bool __ret = SteamUGC()->AddRequiredTagGroup(handle, pTagGroups);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -1498,6 +1510,19 @@ EXTERN int luasteam_UGC_SetItemVisibility(lua_State *L) {
 	UGCUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	ERemoteStoragePublishedFileVisibility eVisibility = static_cast<ERemoteStoragePublishedFileVisibility>(luaL_checkint(L, 2));
 	bool __ret = SteamUGC()->SetItemVisibility(handle, eVisibility);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
+// bool SetItemTags(UGCUpdateHandle_t updateHandle, const SteamParamStringArray_t * pTags, bool bAllowAdminTags);
+// In Lua:
+// bool UGC.SetItemTags(updateHandle: uint64, pTags: SteamParamStringArray_t, bAllowAdminTags: bool)
+EXTERN int luasteam_UGC_SetItemTags(lua_State *L) {
+	UGCUpdateHandle_t updateHandle(luasteam::checkuint64(L, 1));
+	const SteamParamStringArray_t *pTags = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 2);
+	bool bAllowAdminTags = lua_toboolean(L, 3);
+	bool __ret = SteamUGC()->SetItemTags(updateHandle, pTags, bAllowAdminTags);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2245,6 +2270,7 @@ void register_UGC_auto(lua_State *L) {
 	add_func(L, "GetQueryUGCContentDescriptors", luasteam_UGC_GetQueryUGCContentDescriptors);
 	add_func(L, "ReleaseQueryUGCRequest", luasteam_UGC_ReleaseQueryUGCRequest);
 	add_func(L, "AddRequiredTag", luasteam_UGC_AddRequiredTag);
+	add_func(L, "AddRequiredTagGroup", luasteam_UGC_AddRequiredTagGroup);
 	add_func(L, "AddExcludedTag", luasteam_UGC_AddExcludedTag);
 	add_func(L, "SetReturnOnlyIDs", luasteam_UGC_SetReturnOnlyIDs);
 	add_func(L, "SetReturnKeyValueTags", luasteam_UGC_SetReturnKeyValueTags);
@@ -2272,6 +2298,7 @@ void register_UGC_auto(lua_State *L) {
 	add_func(L, "SetItemUpdateLanguage", luasteam_UGC_SetItemUpdateLanguage);
 	add_func(L, "SetItemMetadata", luasteam_UGC_SetItemMetadata);
 	add_func(L, "SetItemVisibility", luasteam_UGC_SetItemVisibility);
+	add_func(L, "SetItemTags", luasteam_UGC_SetItemTags);
 	add_func(L, "SetItemContent", luasteam_UGC_SetItemContent);
 	add_func(L, "SetItemPreview", luasteam_UGC_SetItemPreview);
 	add_func(L, "SetAllowLegacyUpload", luasteam_UGC_SetAllowLegacyUpload);
@@ -2319,7 +2346,7 @@ void register_UGC_auto(lua_State *L) {
 }
 
 void add_UGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 92);
+	lua_createtable(L, 0, 94);
 	register_UGC_auto(L);
 	lua_pushvalue(L, -1);
 	UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);

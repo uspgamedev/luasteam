@@ -12,7 +12,7 @@ function Parties.GetBeaconByIndex(unIndex) end
 ---@param cchMetadata integer
 ---@return boolean
 ---@return uint64 -- Value of: pSteamIDBeaconOwner
----@return table -- Value of: pLocation
+---@return SteamPartyBeaconLocation_t -- Value of: pLocation
 ---@return string -- Value of: pchMetadata
 function Parties.GetBeaconDetails(ulBeaconID, cchMetadata) end
 
@@ -27,7 +27,7 @@ function Parties.GetNumAvailableBeaconLocations() end
 
 ---@param uMaxNumLocations integer
 ---@return boolean
----@return table[] -- Value of: pLocationList
+---@return SteamPartyBeaconLocation_t[] -- Value of: pLocationList
 function Parties.GetAvailableBeaconLocations(uMaxNumLocations) end
 
 ---@param ulBeacon uint64

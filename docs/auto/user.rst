@@ -177,7 +177,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cbMaxTicket:
-    :param SteamNetworkingIdentity pSteamNetworkingIdentity:
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSteamNetworkingIdentity:
     :returns: (int) Return value
     :returns: (str) Value for `pTicket`
     :returns: (int) Value for `pcbTicket`
@@ -353,14 +353,14 @@ Callbacks
 
 .. function:: User.onSteamServersConnected
 
-    Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamServersConnected_t>`_
+    Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/ISteamUser#SteamServersConnected_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: User.onSteamServerConnectFailure
 
-    Callback for `SteamServerConnectFailure_t <https://partner.steamgames.com/doc/api/steam_api#SteamServerConnectFailure_t>`_
+    Callback for `SteamServerConnectFailure_t <https://partner.steamgames.com/doc/api/ISteamUser#SteamServerConnectFailure_t>`_
 
     **callback(data)** receives:
 
@@ -369,7 +369,7 @@ Callbacks
 
 .. function:: User.onSteamServersDisconnected
 
-    Callback for `SteamServersDisconnected_t <https://partner.steamgames.com/doc/api/steam_api#SteamServersDisconnected_t>`_
+    Callback for `SteamServersDisconnected_t <https://partner.steamgames.com/doc/api/ISteamUser#SteamServersDisconnected_t>`_
 
     **callback(data)** receives:
 
@@ -377,7 +377,7 @@ Callbacks
 
 .. function:: User.onClientGameServerDeny
 
-    Callback for `ClientGameServerDeny_t <https://partner.steamgames.com/doc/api/steam_api#ClientGameServerDeny_t>`_
+    Callback for `ClientGameServerDeny_t <https://partner.steamgames.com/doc/api/ISteamUser#ClientGameServerDeny_t>`_
 
     **callback(data)** receives:
 
@@ -389,7 +389,7 @@ Callbacks
 
 .. function:: User.onIPCFailure
 
-    Callback for `IPCFailure_t <https://partner.steamgames.com/doc/api/steam_api#IPCFailure_t>`_
+    Callback for `IPCFailure_t <https://partner.steamgames.com/doc/api/ISteamUser#IPCFailure_t>`_
 
     **callback(data)** receives:
 
@@ -397,14 +397,14 @@ Callbacks
 
 .. function:: User.onLicensesUpdated
 
-    Callback for `LicensesUpdated_t <https://partner.steamgames.com/doc/api/steam_api#LicensesUpdated_t>`_
+    Callback for `LicensesUpdated_t <https://partner.steamgames.com/doc/api/ISteamUser#LicensesUpdated_t>`_
 
     **callback(data)** receives:
 
 
 .. function:: User.onValidateAuthTicketResponse
 
-    Callback for `ValidateAuthTicketResponse_t <https://partner.steamgames.com/doc/api/steam_api#ValidateAuthTicketResponse_t>`_
+    Callback for `ValidateAuthTicketResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#ValidateAuthTicketResponse_t>`_
 
     **callback(data)** receives:
 
@@ -414,7 +414,7 @@ Callbacks
 
 .. function:: User.onMicroTxnAuthorizationResponse
 
-    Callback for `MicroTxnAuthorizationResponse_t <https://partner.steamgames.com/doc/api/steam_api#MicroTxnAuthorizationResponse_t>`_
+    Callback for `MicroTxnAuthorizationResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#MicroTxnAuthorizationResponse_t>`_
 
     **callback(data)** receives:
 
@@ -424,7 +424,7 @@ Callbacks
 
 .. function:: User.onEncryptedAppTicketResponse
 
-    Callback for `EncryptedAppTicketResponse_t <https://partner.steamgames.com/doc/api/steam_api#EncryptedAppTicketResponse_t>`_
+    Callback for `EncryptedAppTicketResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#EncryptedAppTicketResponse_t>`_
 
     **callback(data)** receives:
 
@@ -432,7 +432,7 @@ Callbacks
 
 .. function:: User.onGetAuthSessionTicketResponse
 
-    Callback for `GetAuthSessionTicketResponse_t <https://partner.steamgames.com/doc/api/steam_api#GetAuthSessionTicketResponse_t>`_
+    Callback for `GetAuthSessionTicketResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicketResponse_t>`_
 
     **callback(data)** receives:
 
@@ -441,7 +441,7 @@ Callbacks
 
 .. function:: User.onGameWebCallback
 
-    Callback for `GameWebCallback_t <https://partner.steamgames.com/doc/api/steam_api#GameWebCallback_t>`_
+    Callback for `GameWebCallback_t <https://partner.steamgames.com/doc/api/ISteamUser#GameWebCallback_t>`_
 
     **callback(data)** receives:
 
@@ -449,7 +449,7 @@ Callbacks
 
 .. function:: User.onStoreAuthURLResponse
 
-    Callback for `StoreAuthURLResponse_t <https://partner.steamgames.com/doc/api/steam_api#StoreAuthURLResponse_t>`_
+    Callback for `StoreAuthURLResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#StoreAuthURLResponse_t>`_
 
     **callback(data)** receives:
 
@@ -457,7 +457,7 @@ Callbacks
 
 .. function:: User.onMarketEligibilityResponse
 
-    Callback for `MarketEligibilityResponse_t <https://partner.steamgames.com/doc/api/steam_api#MarketEligibilityResponse_t>`_
+    Callback for `MarketEligibilityResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#MarketEligibilityResponse_t>`_
 
     **callback(data)** receives:
 
@@ -469,7 +469,7 @@ Callbacks
 
 .. function:: User.onDurationControl
 
-    Callback for `DurationControl_t <https://partner.steamgames.com/doc/api/steam_api#DurationControl_t>`_
+    Callback for `DurationControl_t <https://partner.steamgames.com/doc/api/ISteamUser#DurationControl_t>`_
 
     **callback(data)** receives:
 
@@ -484,7 +484,7 @@ Callbacks
 
 .. function:: User.onGetTicketForWebApiResponse
 
-    Callback for `GetTicketForWebApiResponse_t <https://partner.steamgames.com/doc/api/steam_api#GetTicketForWebApiResponse_t>`_
+    Callback for `GetTicketForWebApiResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#GetTicketForWebApiResponse_t>`_
 
     **callback(data)** receives:
 
@@ -495,7 +495,7 @@ Callbacks
 
 .. function:: User.onGSPolicyResponse
 
-    Callback for `GSPolicyResponse_t <https://partner.steamgames.com/doc/api/steam_api#GSPolicyResponse_t>`_
+    Callback for `GSPolicyResponse_t <https://partner.steamgames.com/doc/api/ISteamUser#GSPolicyResponse_t>`_
 
     **callback(data)** receives:
 

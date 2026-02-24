@@ -181,7 +181,7 @@ EXTERN int luasteam_RemotePlay_DisableRemotePlayTogetherDirectInput(lua_State *L
 // In C++:
 // uint32 GetInput(RemotePlayInput_t * pInput, uint32 unMaxEvents);
 // In Lua:
-// (int, pInput: table[]) RemotePlay.GetInput(unMaxEvents: int)
+// (int, pInput: RemotePlayInput_t[]) RemotePlay.GetInput(unMaxEvents: int)
 EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 	uint32 unMaxEvents = luaL_checkint(L, 1);
 	std::vector<RemotePlayInput_t> pInput(unMaxEvents);
@@ -189,7 +189,7 @@ EXTERN int luasteam_RemotePlay_GetInput(lua_State *L) {
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
-		push_RemotePlayInput_t(L, pInput[i]);
+		luasteam::push_RemotePlayInput_t(L, pInput[i]);
 		lua_rawseti(L, -2, i+1);
 	}
 	return 2;
