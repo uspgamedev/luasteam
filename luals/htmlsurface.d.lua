@@ -48,6 +48,18 @@ function HTMLSurface.AddHeader(unBrowserHandle, pchKey, pchValue) end
 function HTMLSurface.ExecuteJavascript(unBrowserHandle, pchScript) end
 
 ---@param unBrowserHandle integer
+---@param eMouseButton integer
+function HTMLSurface.MouseUp(unBrowserHandle, eMouseButton) end
+
+---@param unBrowserHandle integer
+---@param eMouseButton integer
+function HTMLSurface.MouseDown(unBrowserHandle, eMouseButton) end
+
+---@param unBrowserHandle integer
+---@param eMouseButton integer
+function HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton) end
+
+---@param unBrowserHandle integer
 ---@param x integer
 ---@param y integer
 function HTMLSurface.MouseMove(unBrowserHandle, x, y) end
@@ -55,6 +67,22 @@ function HTMLSurface.MouseMove(unBrowserHandle, x, y) end
 ---@param unBrowserHandle integer
 ---@param nDelta integer
 function HTMLSurface.MouseWheel(unBrowserHandle, nDelta) end
+
+---@param unBrowserHandle integer
+---@param nNativeKeyCode integer
+---@param eHTMLKeyModifiers integer
+---@param bIsSystemKey boolean
+function HTMLSurface.KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey) end
+
+---@param unBrowserHandle integer
+---@param nNativeKeyCode integer
+---@param eHTMLKeyModifiers integer
+function HTMLSurface.KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers) end
+
+---@param unBrowserHandle integer
+---@param cUnicodeChar integer
+---@param eHTMLKeyModifiers integer
+function HTMLSurface.KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers) end
 
 ---@param unBrowserHandle integer
 ---@param nAbsolutePixelScroll integer

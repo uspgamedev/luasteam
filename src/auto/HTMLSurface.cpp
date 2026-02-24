@@ -686,6 +686,39 @@ EXTERN int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
 }
 
 // In C++:
+// void MouseUp(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+// In Lua:
+// HTMLSurface.MouseUp(unBrowserHandle: int, eMouseButton: int)
+EXTERN int luasteam_HTMLSurface_MouseUp(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+	SteamHTMLSurface()->MouseUp(unBrowserHandle, eMouseButton);
+	return 0;
+}
+
+// In C++:
+// void MouseDown(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+// In Lua:
+// HTMLSurface.MouseDown(unBrowserHandle: int, eMouseButton: int)
+EXTERN int luasteam_HTMLSurface_MouseDown(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+	SteamHTMLSurface()->MouseDown(unBrowserHandle, eMouseButton);
+	return 0;
+}
+
+// In C++:
+// void MouseDoubleClick(HHTMLBrowser unBrowserHandle, ISteamHTMLSurface::EHTMLMouseButton eMouseButton);
+// In Lua:
+// HTMLSurface.MouseDoubleClick(unBrowserHandle: int, eMouseButton: int)
+EXTERN int luasteam_HTMLSurface_MouseDoubleClick(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
+	SteamHTMLSurface()->MouseDoubleClick(unBrowserHandle, eMouseButton);
+	return 0;
+}
+
+// In C++:
 // void MouseMove(HHTMLBrowser unBrowserHandle, int x, int y);
 // In Lua:
 // HTMLSurface.MouseMove(unBrowserHandle: int, x: int, y: int)
@@ -705,6 +738,43 @@ EXTERN int luasteam_HTMLSurface_MouseWheel(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int32 nDelta = static_cast<int32>(luaL_checkint(L, 2));
 	SteamHTMLSurface()->MouseWheel(unBrowserHandle, nDelta);
+	return 0;
+}
+
+// In C++:
+// void KeyDown(HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers, bool bIsSystemKey);
+// In Lua:
+// HTMLSurface.KeyDown(unBrowserHandle: int, nNativeKeyCode: int, eHTMLKeyModifiers: int, bIsSystemKey: bool)
+EXTERN int luasteam_HTMLSurface_KeyDown(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
+	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+	bool bIsSystemKey = lua_toboolean(L, 4);
+	SteamHTMLSurface()->KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey);
+	return 0;
+}
+
+// In C++:
+// void KeyUp(HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers);
+// In Lua:
+// HTMLSurface.KeyUp(unBrowserHandle: int, nNativeKeyCode: int, eHTMLKeyModifiers: int)
+EXTERN int luasteam_HTMLSurface_KeyUp(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
+	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+	SteamHTMLSurface()->KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers);
+	return 0;
+}
+
+// In C++:
+// void KeyChar(HHTMLBrowser unBrowserHandle, uint32 cUnicodeChar, ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers);
+// In Lua:
+// HTMLSurface.KeyChar(unBrowserHandle: int, cUnicodeChar: int, eHTMLKeyModifiers: int)
+EXTERN int luasteam_HTMLSurface_KeyChar(lua_State *L) {
+	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
+	uint32 cUnicodeChar = static_cast<uint32>(luaL_checkint(L, 2));
+	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
+	SteamHTMLSurface()->KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers);
 	return 0;
 }
 
@@ -902,8 +972,14 @@ void register_HTMLSurface_auto(lua_State *L) {
 	add_func(L, "GoForward", luasteam_HTMLSurface_GoForward);
 	add_func(L, "AddHeader", luasteam_HTMLSurface_AddHeader);
 	add_func(L, "ExecuteJavascript", luasteam_HTMLSurface_ExecuteJavascript);
+	add_func(L, "MouseUp", luasteam_HTMLSurface_MouseUp);
+	add_func(L, "MouseDown", luasteam_HTMLSurface_MouseDown);
+	add_func(L, "MouseDoubleClick", luasteam_HTMLSurface_MouseDoubleClick);
 	add_func(L, "MouseMove", luasteam_HTMLSurface_MouseMove);
 	add_func(L, "MouseWheel", luasteam_HTMLSurface_MouseWheel);
+	add_func(L, "KeyDown", luasteam_HTMLSurface_KeyDown);
+	add_func(L, "KeyUp", luasteam_HTMLSurface_KeyUp);
+	add_func(L, "KeyChar", luasteam_HTMLSurface_KeyChar);
 	add_func(L, "SetHorizontalScroll", luasteam_HTMLSurface_SetHorizontalScroll);
 	add_func(L, "SetVerticalScroll", luasteam_HTMLSurface_SetVerticalScroll);
 	add_func(L, "SetKeyFocus", luasteam_HTMLSurface_SetKeyFocus);
@@ -923,7 +999,7 @@ void register_HTMLSurface_auto(lua_State *L) {
 }
 
 void add_HTMLSurface_auto(lua_State *L) {
-	lua_createtable(L, 0, 81);
+	lua_createtable(L, 0, 87);
 	register_HTMLSurface_auto(L);
 	lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Left);
 	lua_setfield(L, -2, "eHTMLMouseButton_Left");

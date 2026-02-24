@@ -21,8 +21,14 @@ List of Functions
 * :func:`HTMLSurface.GoForward`
 * :func:`HTMLSurface.AddHeader`
 * :func:`HTMLSurface.ExecuteJavascript`
+* :func:`HTMLSurface.MouseUp`
+* :func:`HTMLSurface.MouseDown`
+* :func:`HTMLSurface.MouseDoubleClick`
 * :func:`HTMLSurface.MouseMove`
 * :func:`HTMLSurface.MouseWheel`
+* :func:`HTMLSurface.KeyDown`
+* :func:`HTMLSurface.KeyUp`
+* :func:`HTMLSurface.KeyChar`
 * :func:`HTMLSurface.SetHorizontalScroll`
 * :func:`HTMLSurface.SetVerticalScroll`
 * :func:`HTMLSurface.SetKeyFocus`
@@ -164,6 +170,30 @@ Function Reference
     :param str pchScript:
     :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
 
+.. function:: HTMLSurface.MouseUp(unBrowserHandle, eMouseButton)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int eMouseButton:
+    :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
+
+.. function:: HTMLSurface.MouseDown(unBrowserHandle, eMouseButton)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int eMouseButton:
+    :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
+
+.. function:: HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int eMouseButton:
+    :SteamWorks: `MouseDoubleClick <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDoubleClick>`_
+
 .. function:: HTMLSurface.MouseMove(unBrowserHandle, x, y)
 
     🤖 **Auto-generated binding**
@@ -180,6 +210,34 @@ Function Reference
     :param int unBrowserHandle:
     :param int nDelta:
     :SteamWorks: `MouseWheel <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseWheel>`_
+
+.. function:: HTMLSurface.KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int nNativeKeyCode:
+    :param int eHTMLKeyModifiers:
+    :param bool bIsSystemKey:
+    :SteamWorks: `KeyDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyDown>`_
+
+.. function:: HTMLSurface.KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int nNativeKeyCode:
+    :param int eHTMLKeyModifiers:
+    :SteamWorks: `KeyUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyUp>`_
+
+.. function:: HTMLSurface.KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int cUnicodeChar:
+    :param int eHTMLKeyModifiers:
+    :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
 
 .. function:: HTMLSurface.SetHorizontalScroll(unBrowserHandle, nAbsolutePixelScroll)
 
@@ -317,42 +375,6 @@ Function Reference
 
 Unimplemented Methods
 ---------------------
-
-.. function:: HTMLSurface.mouseUp
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLMouseButton
-    
-    :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
-
-.. function:: HTMLSurface.mouseDown
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLMouseButton
-    
-    :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
-
-.. function:: HTMLSurface.mouseDoubleClick
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLMouseButton
-    
-    :SteamWorks: `MouseDoubleClick <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDoubleClick>`_
-
-.. function:: HTMLSurface.keyDown
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLKeyModifiers
-    
-    :SteamWorks: `KeyDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyDown>`_
-
-.. function:: HTMLSurface.keyUp
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLKeyModifiers
-    
-    :SteamWorks: `KeyUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyUp>`_
-
-.. function:: HTMLSurface.keyChar
-
-    ✋ **Not implemented** - unsupported type: ISteamHTMLSurface::EHTMLKeyModifiers
-    
-    :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
 
 .. function:: HTMLSurface.fileLoadDialogResponse
 

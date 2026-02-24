@@ -570,14 +570,14 @@ impl Struct {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Enum {
     pub enumname: String,
+    #[serde(default)]
+    pub fqname: String,
     pub values: Vec<EnumValue>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct EnumValue {
     pub name: String,
-    #[serde(default)]
-    pub fqname: String,
     pub value: String,
 }
 

@@ -1786,8 +1786,8 @@ impl Generator {
         if interface.accessors.is_empty() {
             return Err(SkipReason::NoAccessors);
         }
-        if interface.classname.starts_with("ISteamNetworking")
-            || interface.classname == "ISteamHTTP"
+        if
+            interface.classname == "ISteamHTTP"
         {
             return Err(SkipReason::RequiresCustomCode);
         }

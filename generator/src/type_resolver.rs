@@ -31,16 +31,15 @@ impl TypeResolver {
         // Add global enums
         for enm in enums {
             type_map.insert(enm.enumname.clone(), "int".to_string());
+            assert!(enm.fqname.is_empty());
         }
 
         // Add interface enums
         for (_, enums) in interface_enums {
             for enm in enums {
                 type_map.insert(enm.enumname.clone(), "int".to_string());
-                for value in &enm.values {
-                    if !value.fqname.is_empty() {
-                        type_map.insert(value.fqname.clone(), "int".to_string());
-                    }
+                if !enm.fqname.is_empty() {
+                    type_map.insert(enm.fqname.clone(), "int".to_string());
                 }
             }
         }
