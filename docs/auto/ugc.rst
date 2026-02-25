@@ -1124,13 +1124,13 @@ Unimplemented Methods
 
 .. function:: UGC.createQueryAllUGCRequest
 
-    ✋ **Not implemented** - manual: cursor method is not used
+    ✋ **Not implemented** - blocklist: cursor method is not used
     
     :SteamWorks: `CreateQueryAllUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequest>`_
 
 .. function:: UGC.getQueryUGCKeyValueTag
 
-    ✋ **Not implemented** - manual: unused, not even in API Reference
+    ✋ **Not implemented** - blocklist: unused, not even in API Reference
     
     :SteamWorks: `GetQueryUGCKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCKeyValueTag>`_
 

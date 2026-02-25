@@ -339,6 +339,34 @@ static int luasteam_NetworkingSockets_CreateSocketPair_user(lua_State *L) { retu
 static int luasteam_NetworkingSockets_CreateSocketPair_gs(lua_State *L) { return luasteam_NetworkingSockets_CreateSocketPair(L, SteamGameServerNetworkingSockets_SteamAPI()); }
 
 // In C++:
+// EResult ConfigureConnectionLanes(HSteamNetConnection hConn, int nNumLanes, const int * pLanePriorities, const uint16 * pLaneWeights);
+// In Lua:
+// int NetworkingSockets.ConfigureConnectionLanes(hConn: int, nNumLanes: int, pLanePriorities: int[], pLaneWeights: int[])
+static int luasteam_NetworkingSockets_ConfigureConnectionLanes(lua_State *L, ISteamNetworkingSockets *iface) {
+	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
+	int nNumLanes = static_cast<int>(luaL_checkint(L, 2));
+	luaL_checktype(L, 3, LUA_TTABLE);
+	std::vector<int> pLanePriorities(nNumLanes);
+	for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
+		lua_rawgeti(L, 3, i+1);
+		pLanePriorities[i] = static_cast<int>(luaL_checkint(L, -1));
+		lua_pop(L, 1);
+	}
+	luaL_checktype(L, 3, LUA_TTABLE);
+	std::vector<uint16> pLaneWeights(nNumLanes);
+	for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
+		lua_rawgeti(L, 3, i+1);
+		pLaneWeights[i] = static_cast<uint16>(luaL_checkint(L, -1));
+		lua_pop(L, 1);
+	}
+	EResult __ret = iface->ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities.data(), pLaneWeights.data());
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+static int luasteam_NetworkingSockets_ConfigureConnectionLanes_user(lua_State *L) { return luasteam_NetworkingSockets_ConfigureConnectionLanes(L, SteamNetworkingSockets_SteamAPI()); }
+static int luasteam_NetworkingSockets_ConfigureConnectionLanes_gs(lua_State *L) { return luasteam_NetworkingSockets_ConfigureConnectionLanes(L, SteamGameServerNetworkingSockets_SteamAPI()); }
+
+// In C++:
 // bool GetIdentity(SteamNetworkingIdentity * pIdentity);
 // In Lua:
 // (bool, pIdentity: SteamNetworkingIdentity) NetworkingSockets.GetIdentity()
@@ -571,6 +599,7 @@ void register_NetworkingSockets_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetDetailedConnectionStatus", is_gs ? luasteam_NetworkingSockets_GetDetailedConnectionStatus_gs : luasteam_NetworkingSockets_GetDetailedConnectionStatus_user);
 	add_func(L, "GetListenSocketAddress", is_gs ? luasteam_NetworkingSockets_GetListenSocketAddress_gs : luasteam_NetworkingSockets_GetListenSocketAddress_user);
 	add_func(L, "CreateSocketPair", is_gs ? luasteam_NetworkingSockets_CreateSocketPair_gs : luasteam_NetworkingSockets_CreateSocketPair_user);
+	add_func(L, "ConfigureConnectionLanes", is_gs ? luasteam_NetworkingSockets_ConfigureConnectionLanes_gs : luasteam_NetworkingSockets_ConfigureConnectionLanes_user);
 	add_func(L, "GetIdentity", is_gs ? luasteam_NetworkingSockets_GetIdentity_gs : luasteam_NetworkingSockets_GetIdentity_user);
 	add_func(L, "InitAuthentication", is_gs ? luasteam_NetworkingSockets_InitAuthentication_gs : luasteam_NetworkingSockets_InitAuthentication_user);
 	add_func(L, "GetAuthenticationStatus", is_gs ? luasteam_NetworkingSockets_GetAuthenticationStatus_gs : luasteam_NetworkingSockets_GetAuthenticationStatus_user);
@@ -590,7 +619,7 @@ void register_NetworkingSockets_auto(lua_State *L, bool is_gs) {
 }
 
 void add_NetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 34);
+	lua_createtable(L, 0, 35);
 	register_NetworkingSockets_auto(L, false);
 	lua_pushvalue(L, -1);
 	NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -659,7 +688,7 @@ void shutdown_GameServerNetworkingSockets_auto(lua_State *L) {
 }
 
 void add_GameServerNetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 34);
+	lua_createtable(L, 0, 35);
 	register_NetworkingSockets_auto(L, true);
 	lua_pushvalue(L, -1);
 	GameServerNetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);

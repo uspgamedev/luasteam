@@ -242,6 +242,23 @@ impl Generator {
             ),
         );
 
+        for m in self
+            .api
+            .interfaces
+            .iter()
+            .find(|i| i.classname == "ISteamClient")
+            .unwrap()
+            .methods
+            .iter()
+        {
+            if m.methodname.starts_with("GetISteam") {
+                blocklist.insert(
+                    format!("SteamAPI_ISteamClient_{}", m.methodname),
+                    SkipReason::ManualBlocklist("Custom acessors are not supported".to_string()),
+                );
+            }
+        }
+
         blocklist
     }
 
@@ -304,17 +321,21 @@ impl Generator {
         let mut interface_names = Vec::new();
         let mut gs_names: Vec<String> = Vec::new();
         let mut dual_accessor_names: std::collections::HashSet<String> = Default::default();
+        // Maps interface name → table item count (methods + enums for user, methods-only for gs)
+        let mut interface_counts: HashMap<String, usize> = Default::default();
 
         let method_blocklist = self.manual_method_blocklist();
 
         let interfaces = self.api.interfaces.clone();
         for interface in &interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats, &luals_dir) {
-                Ok((name, gs_name_opt)) => {
+                Ok((name, gs_name_opt, user_count, gs_count)) => {
                     if let Some(gs_name) = gs_name_opt {
+                        interface_counts.insert(gs_name.clone(), gs_count);
                         gs_names.push(gs_name);
                         dual_accessor_names.insert(name.clone());
                     }
+                    interface_counts.insert(name.clone(), user_count);
                     interface_names.push(name);
                     stats.interfaces_generated += 1;
                 }
@@ -346,7 +367,12 @@ impl Generator {
 
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
-        self.generate_auto_header(&interface_names, &gs_names, &dual_accessor_names);
+        self.generate_auto_header(
+            &interface_names,
+            &gs_names,
+            &dual_accessor_names,
+            &interface_counts,
+        );
         self.luals_generator
             .write_index(&luals_dir, &interface_names, &self.opaque_handles);
         stats.print_summary();
@@ -1361,6 +1387,7 @@ impl Generator {
         interfaces: &[String],
         gs_names: &[String],
         dual_accessor_names: &std::collections::HashSet<String>,
+        interface_counts: &HashMap<String, usize>,
     ) {
         let mut h = CodeBuilder::new();
         h.line("#ifndef LUASTEAM_AUTO_HPP");
@@ -1420,12 +1447,21 @@ impl Generator {
             h.line(&format!("void init_{}_auto(lua_State *L);", name));
             h.line(&format!("void shutdown_{}_auto(lua_State *L);", name));
             h.line(&format!("extern int {}_ref;", name));
+            if let Some(&count) = interface_counts.get(name) {
+                h.line(&format!("static constexpr int {}_count = {};", name, count));
+            }
         }
         for gs_name in gs_names {
             h.line(&format!("void add_{}_auto(lua_State *L);", gs_name));
             h.line(&format!("void init_{}_auto(lua_State *L);", gs_name));
             h.line(&format!("void shutdown_{}_auto(lua_State *L);", gs_name));
             h.line(&format!("extern int {}_ref;", gs_name));
+            if let Some(&count) = interface_counts.get(gs_name) {
+                h.line(&format!(
+                    "static constexpr int {}_count = {};",
+                    gs_name, count
+                ));
+            }
         }
         h.preceeding_blank_line();
         h.line("} // namespace luasteam");
@@ -1958,7 +1994,7 @@ impl Generator {
         method_blocklist: &HashMap<String, SkipReason>,
         stats: &mut Stats,
         luals_dir: &Path,
-    ) -> Result<(String, Option<String>), SkipReason> {
+    ) -> Result<(String, Option<String>, usize, usize), SkipReason> {
         // Keep counters per file
         COUNTER.store(0, std::sync::atomic::Ordering::SeqCst);
         let mut cpp = CodeBuilder::new();
@@ -2211,7 +2247,12 @@ impl Generator {
         let doc_path = format!("../docs/auto/{}.rst", name.to_lowercase());
         fs::write(doc_path, doc_content).expect("Unable to write doc file");
 
-        Ok((name.to_owned(), gs_name_opt))
+        Ok((
+            name.to_owned(),
+            gs_name_opt,
+            generated_methods.len() + interface_enum_values_count,
+            generated_methods.len(),
+        ))
     }
 
     fn push_array(
@@ -2600,23 +2641,32 @@ impl Generator {
                         if ok {
                             sig.add_param(param.paramname.clone(), ltype);
                             if !size.is_empty() && !size_params_to_ignore.contains(size) {
-                                let p = method
+                                let p_idx = method
                                     .params
                                     .iter()
-                                    .find(|p| p.paramname == size)
+                                    .position(|p| p.paramname == size)
                                     .expect("Size param not found");
-                                size_params_to_ignore.insert(size.to_string());
-                                lua_idx += 1;
-                                s.line(&format!(
-                                    "{} {} = luaL_checkint(L, {});",
-                                    p.paramtype
-                                        .strip_suffix(" *")
-                                        .unwrap_or(p.paramtype.as_str()),
-                                    size,
-                                    lua_idx
-                                ));
-                                sig.add_param(size.to_string(), LType::Integer);
-                                lua_idx += 1;
+                                let p = &method.params[p_idx];
+                                if p_idx > i {
+                                    size_params_to_ignore.insert(size.to_string());
+                                    lua_idx += 1;
+                                    s.line(&format!(
+                                        "{} {} = luaL_checkint(L, {});",
+                                        p.paramtype
+                                            .strip_suffix(" *")
+                                            .unwrap_or(p.paramtype.as_str()),
+                                        size,
+                                        lua_idx
+                                    ));
+                                    sig.add_param(size.to_string(), LType::Integer);
+                                    lua_idx += 1;
+                                } else {
+                                    assert!(
+                                        !p.paramtype.ends_with(" *"),
+                                        "Size param {} should not be a pointer",
+                                        size
+                                    );
+                                }
                             }
 
                             s.raw(&code);
@@ -2702,12 +2752,20 @@ impl Generator {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
                 }
-                CppType::Reference { .. } => {
+                CppType::Reference {
+                    ttype: _,
+                    is_const: false,
+                } => {
                     return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                 }
             }
             i += 1;
         }
+        assert!(
+            size_params_to_ignore.is_empty(),
+            "Some size parameters were not used: {:?}",
+            size_params_to_ignore
+        );
 
         let call = format!(
             "iface->{}({})",

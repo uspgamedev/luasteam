@@ -90,21 +90,6 @@ static int luasteam_Client_SetLocalIPBinding_user(lua_State *L) { return luastea
 static int luasteam_Client_SetLocalIPBinding_gs(lua_State *L) { return luasteam_Client_SetLocalIPBinding(L, SteamGameServerClient()); }
 
 // In C++:
-// void * GetISteamGenericInterface(HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char * pchVersion);
-// In Lua:
-// str Client.GetISteamGenericInterface(hSteamUser: int, hSteamPipe: int, pchVersion: str)
-static int luasteam_Client_GetISteamGenericInterface(lua_State *L, ISteamClient *iface) {
-	HSteamUser hSteamUser = static_cast<HSteamUser>(luaL_checkint(L, 1));
-	HSteamPipe hSteamPipe = static_cast<HSteamPipe>(luaL_checkint(L, 2));
-	const char *pchVersion = luaL_checkstring(L, 3);
-	void * __ret = iface->GetISteamGenericInterface(hSteamUser, hSteamPipe, pchVersion);
-	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
-	return 1;
-}
-static int luasteam_Client_GetISteamGenericInterface_user(lua_State *L) { return luasteam_Client_GetISteamGenericInterface(L, SteamClient()); }
-static int luasteam_Client_GetISteamGenericInterface_gs(lua_State *L) { return luasteam_Client_GetISteamGenericInterface(L, SteamGameServerClient()); }
-
-// In C++:
 // uint32 GetIPCCallCount();
 // In Lua:
 // int Client.GetIPCCallCount()
@@ -135,13 +120,12 @@ void register_Client_auto(lua_State *L, bool is_gs) {
 	add_func(L, "CreateLocalUser", is_gs ? luasteam_Client_CreateLocalUser_gs : luasteam_Client_CreateLocalUser_user);
 	add_func(L, "ReleaseUser", is_gs ? luasteam_Client_ReleaseUser_gs : luasteam_Client_ReleaseUser_user);
 	add_func(L, "SetLocalIPBinding", is_gs ? luasteam_Client_SetLocalIPBinding_gs : luasteam_Client_SetLocalIPBinding_user);
-	add_func(L, "GetISteamGenericInterface", is_gs ? luasteam_Client_GetISteamGenericInterface_gs : luasteam_Client_GetISteamGenericInterface_user);
 	add_func(L, "GetIPCCallCount", is_gs ? luasteam_Client_GetIPCCallCount_gs : luasteam_Client_GetIPCCallCount_user);
 	add_func(L, "BShutdownIfAllPipesClosed", is_gs ? luasteam_Client_BShutdownIfAllPipesClosed_gs : luasteam_Client_BShutdownIfAllPipesClosed_user);
 }
 
 void add_Client_auto(lua_State *L) {
-	lua_createtable(L, 0, 9);
+	lua_createtable(L, 0, 8);
 	register_Client_auto(L, false);
 	lua_pushvalue(L, -1);
 	Client_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -157,7 +141,7 @@ void shutdown_GameServerClient_auto(lua_State *L) {
 }
 
 void add_GameServerClient_auto(lua_State *L) {
-	lua_createtable(L, 0, 9);
+	lua_createtable(L, 0, 8);
 	register_Client_auto(L, true);
 	lua_pushvalue(L, -1);
 	GameServerClient_ref = luaL_ref(L, LUA_REGISTRYINDEX);

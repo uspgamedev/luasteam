@@ -103,6 +103,13 @@ function NetworkingSockets.GetListenSocketAddress(hSocket) end
 ---@return integer -- Value of: pOutConnection2
 function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2) end
 
+---@param hConn integer
+---@param nNumLanes integer
+---@param pLanePriorities integer[]
+---@param pLaneWeights integer[]
+---@return integer
+function NetworkingSockets.ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities, pLaneWeights) end
+
 ---@return boolean
 ---@return SteamNetworkingIdentity -- Value of: pIdentity
 function NetworkingSockets.GetIdentity() end

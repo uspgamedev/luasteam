@@ -156,7 +156,7 @@ Unimplemented Methods
 
 .. function:: Parties.createBeacon
 
-    ✋ **Not implemented** - manual: requires custom implementation
+    ✋ **Not implemented** - blocklist: requires custom implementation
     
     :SteamWorks: `CreateBeacon <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeacon>`_
 

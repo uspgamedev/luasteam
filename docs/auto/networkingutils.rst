@@ -351,13 +351,13 @@ Unimplemented Methods
 
 .. function:: NetworkingUtils.setConfigValue
 
-    ✋ **Not implemented** - manual: Needs careful dealing with void*
+    ✋ **Not implemented** - blocklist: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValue <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValue>`_
 
 .. function:: NetworkingUtils.setConfigValueStruct
 
-    ✋ **Not implemented** - manual: Needs careful dealing with void*
+    ✋ **Not implemented** - blocklist: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValueStruct <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValueStruct>`_
 

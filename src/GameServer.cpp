@@ -89,7 +89,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
 namespace luasteam {
 
 void add_gameServer(lua_State *L) {
-    lua_createtable(L, 0, 6);
+    lua_createtable(L, 0, luasteam::GameServer_count + 3);
     register_GameServer_auto(L);
     add_func(L, "Init", luasteam_init_server);
     add_func(L, "Shutdown", luasteam_shutdown_server);

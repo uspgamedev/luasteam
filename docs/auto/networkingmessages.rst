@@ -82,7 +82,7 @@ Unimplemented Methods
 
 .. function:: NetworkingMessages.receiveMessagesOnChannel
 
-    ✋ **Not implemented** - manual: SteamNetworkingMessage_t out-array; not yet implemented
+    ✋ **Not implemented** - blocklist: SteamNetworkingMessage_t out-array; not yet implemented
     
     :SteamWorks: `ReceiveMessagesOnChannel <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#ReceiveMessagesOnChannel>`_
 

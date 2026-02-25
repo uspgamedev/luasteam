@@ -25,12 +25,6 @@ function Client.ReleaseUser(hSteamPipe, hUser) end
 ---@param usPort integer
 function Client.SetLocalIPBinding(unIP, usPort) end
 
----@param hSteamUser integer
----@param hSteamPipe integer
----@param pchVersion string
----@return string
-function Client.GetISteamGenericInterface(hSteamUser, hSteamPipe, pchVersion) end
-
 ---@return integer
 function Client.GetIPCCallCount() end
 

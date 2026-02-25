@@ -696,7 +696,7 @@ Unimplemented Methods
 
 .. function:: RemoteStorage.getUGCDetails
 
-    ✋ **Not implemented** - manual: char** output semantics unclear
+    ✋ **Not implemented** - blocklist: char** output semantics unclear
     
     :SteamWorks: `GetUGCDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDetails>`_
 

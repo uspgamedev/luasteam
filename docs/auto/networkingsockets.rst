@@ -30,6 +30,7 @@ List of Functions
 * :func:`NetworkingSockets.GetDetailedConnectionStatus`
 * :func:`NetworkingSockets.GetListenSocketAddress`
 * :func:`NetworkingSockets.CreateSocketPair`
+* :func:`NetworkingSockets.ConfigureConnectionLanes`
 * :func:`NetworkingSockets.GetIdentity`
 * :func:`NetworkingSockets.InitAuthentication`
 * :func:`NetworkingSockets.GetAuthenticationStatus`
@@ -261,6 +262,17 @@ Function Reference
     * Parameter ``pOutConnection1`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pOutConnection2`` is no longer a paramer, and is instead an additional return value
 
+.. function:: NetworkingSockets.ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities, pLaneWeights)
+
+    🤖 **Auto-generated binding**
+
+    :param int hConn:
+    :param int nNumLanes:
+    :param int[] pLanePriorities:
+    :param int[] pLaneWeights:
+    :returns: (int) Return value
+    :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
+
 .. function:: NetworkingSockets.GetIdentity()
 
     🤖 **Auto-generated binding**
@@ -410,12 +422,6 @@ Function Reference
 
 Unimplemented Methods
 ---------------------
-
-.. function:: NetworkingSockets.configureConnectionLanes
-
-    ✋ **Not implemented** - unsupported type: const int *
-    
-    :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
 
 .. function:: NetworkingSockets.receivedRelayAuthTicket
 

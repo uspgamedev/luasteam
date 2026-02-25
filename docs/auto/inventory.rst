@@ -503,13 +503,13 @@ Unimplemented Methods
 
 .. function:: Inventory.serializeResult
 
-    ✋ **Not implemented** - manual: Uses nullptr as input, we don't support it
+    ✋ **Not implemented** - blocklist: Uses nullptr as input, we don't support it
     
     :SteamWorks: `SerializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#SerializeResult>`_
 
 .. function:: Inventory.getItemsWithPrices
 
-    ✋ **Not implemented** - manual: out_array_count seems to be wrong
+    ✋ **Not implemented** - blocklist: out_array_count seems to be wrong
     
     :SteamWorks: `GetItemsWithPrices <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsWithPrices>`_
 

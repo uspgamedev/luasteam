@@ -65,7 +65,7 @@ EXTERN int luasteam_networkingUtils_AllocateMessage(lua_State *L) {
 namespace luasteam {
 
 void add_networkingUtils(lua_State *L) {
-    lua_createtable(L, 0, 32);
+    lua_createtable(L, 0, luasteam::NetworkingUtils_count + 7);
     lua_pushvalue(L, -1);
     NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     register_NetworkingUtils_auto(L);

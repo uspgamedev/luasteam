@@ -13,7 +13,7 @@ pub enum SkipReason {
 impl SkipReason {
     pub fn description(&self) -> String {
         match self {
-            SkipReason::ManualBlocklist(reason) => format!("manual: {}", reason),
+            SkipReason::ManualBlocklist(reason) => format!("blocklist: {}", reason),
             SkipReason::ManualImpl(reason) => format!("manual impl: {}", reason),
             SkipReason::UnsupportedType(t) => format!("unsupported type: {}", t),
             SkipReason::NoAccessors => "no accessors".to_string(),
@@ -398,6 +398,8 @@ impl SteamApi {
                     ("ReceivedRelayAuthTicket", "pvTicket", "cbTicket"),
                     ("ReceivedP2PCustomSignal", "pMsg", "cbMsg"),
                     ("SetCertificate", "pCertificate", "cbCertificate"),
+                    ("ConfigureConnectionLanes", "pLanePriorities", "nNumLanes"),
+                    ("ConfigureConnectionLanes", "pLaneWeights", "nNumLanes"),
                 ],
             ),
             (
