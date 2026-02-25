@@ -149,9 +149,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAppID`` is returned as an additional return value
-    * Parameter ``pbAvailable`` is returned as an additional return value
-    * Parameter ``pchName`` is returned as an additional return value
+    * Parameter ``pAppID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbAvailable`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.InstallDLC(nAppID)
 
@@ -185,7 +185,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is returned as an additional return value
+    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.MarkContentCorrupt(bMissingFilesOnly)
 
@@ -207,7 +207,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDepots`` is returned as an additional return value
+    * Parameter ``pvecDepots`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.GetAppInstallDir(appID, cchFolderBufferSize)
 
@@ -221,7 +221,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchFolder`` is returned as an additional return value
+    * Parameter ``pchFolder`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.BIsAppInstalled(appID)
 
@@ -258,8 +258,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is returned as an additional return value
-    * Parameter ``punBytesTotal`` is returned as an additional return value
+    * Parameter ``punBytesDownloaded`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.GetAppBuildId()
 
@@ -294,7 +294,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszCommandLine`` is returned as an additional return value
+    * Parameter ``pszCommandLine`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.BIsSubscribedFromFamilySharing()
 
@@ -314,8 +314,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSecondsAllowed`` is returned as an additional return value
-    * Parameter ``punSecondsPlayed`` is returned as an additional return value
+    * Parameter ``punSecondsAllowed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punSecondsPlayed`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.SetDlcContext(nAppID)
 
@@ -336,8 +336,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAvailable`` is returned as an additional return value
-    * Parameter ``pnPrivate`` is returned as an additional return value
+    * Parameter ``pnAvailable`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnPrivate`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription)
 
@@ -355,10 +355,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punFlags`` is returned as an additional return value
-    * Parameter ``punBuildID`` is returned as an additional return value
-    * Parameter ``pchBetaName`` is returned as an additional return value
-    * Parameter ``pchDescription`` is returned as an additional return value
+    * Parameter ``punFlags`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBuildID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchBetaName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchDescription`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Apps.SetActiveBeta(pchBetaName)
 

@@ -31,7 +31,7 @@ void CallbackListener::OnSteamServersConnected(SteamServersConnected_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_SteamServersConnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -45,11 +45,7 @@ void CallbackListener::OnSteamServerConnectFailure(SteamServerConnectFailure_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushboolean(L, data->m_bStillRetrying);
-		lua_setfield(L, -2, "m_bStillRetrying");
+		luasteam::push_SteamServerConnectFailure_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -63,9 +59,7 @@ void CallbackListener::OnSteamServersDisconnected(SteamServersDisconnected_t *da
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_SteamServersDisconnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -79,13 +73,7 @@ void CallbackListener::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamID");
-		lua_pushinteger(L, data->m_eAuthSessionResponse);
-		lua_setfield(L, -2, "m_eAuthSessionResponse");
-		luasteam::pushuint64(L, data->m_OwnerSteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_OwnerSteamID");
+		luasteam::push_ValidateAuthTicketResponse_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -99,11 +87,7 @@ void CallbackListener::OnGSClientApprove(GSClientApprove_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamID");
-		luasteam::pushuint64(L, data->m_OwnerSteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_OwnerSteamID");
+		luasteam::push_GSClientApprove_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -117,13 +101,7 @@ void CallbackListener::OnGSClientDeny(GSClientDeny_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamID");
-		lua_pushinteger(L, data->m_eDenyReason);
-		lua_setfield(L, -2, "m_eDenyReason");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchOptionalText), 128);
-		lua_setfield(L, -2, "m_rgchOptionalText");
+		luasteam::push_GSClientDeny_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -137,11 +115,7 @@ void CallbackListener::OnGSClientKick(GSClientKick_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		luasteam::pushuint64(L, data->m_SteamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamID");
-		lua_pushinteger(L, data->m_eDenyReason);
-		lua_setfield(L, -2, "m_eDenyReason");
+		luasteam::push_GSClientKick_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -155,13 +129,7 @@ void CallbackListener::OnGSClientAchievementStatus(GSClientAchievementStatus_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		luasteam::pushuint64(L, data->m_SteamID);
-		lua_setfield(L, -2, "m_SteamID");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_pchAchievement), 128);
-		lua_setfield(L, -2, "m_pchAchievement");
-		lua_pushboolean(L, data->m_bUnlocked);
-		lua_setfield(L, -2, "m_bUnlocked");
+		luasteam::push_GSClientAchievementStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -175,9 +143,7 @@ void CallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_bSecure);
-		lua_setfield(L, -2, "m_bSecure");
+		luasteam::push_GSPolicyResponse_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -191,15 +157,7 @@ void CallbackListener::OnGSGameplayStats(GSGameplayStats_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_nRank);
-		lua_setfield(L, -2, "m_nRank");
-		lua_pushinteger(L, data->m_unTotalConnects);
-		lua_setfield(L, -2, "m_unTotalConnects");
-		lua_pushinteger(L, data->m_unTotalMinutesPlayed);
-		lua_setfield(L, -2, "m_unTotalMinutesPlayed");
+		luasteam::push_GSGameplayStats_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -213,15 +171,7 @@ void CallbackListener::OnGSClientGroupStatus(GSClientGroupStatus_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		luasteam::pushuint64(L, data->m_SteamIDUser.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamIDUser");
-		luasteam::pushuint64(L, data->m_SteamIDGroup.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamIDGroup");
-		lua_pushboolean(L, data->m_bMember);
-		lua_setfield(L, -2, "m_bMember");
-		lua_pushboolean(L, data->m_bOfficer);
-		lua_setfield(L, -2, "m_bOfficer");
+		luasteam::push_GSClientGroupStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -235,21 +185,7 @@ void CallbackListener::OnGSReputation(GSReputation_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 7);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_unReputationScore);
-		lua_setfield(L, -2, "m_unReputationScore");
-		lua_pushboolean(L, data->m_bBanned);
-		lua_setfield(L, -2, "m_bBanned");
-		lua_pushinteger(L, data->m_unBannedIP);
-		lua_setfield(L, -2, "m_unBannedIP");
-		lua_pushinteger(L, data->m_usBannedPort);
-		lua_setfield(L, -2, "m_usBannedPort");
-		luasteam::pushuint64(L, data->m_ulBannedGameID);
-		lua_setfield(L, -2, "m_ulBannedGameID");
-		lua_pushinteger(L, data->m_unBanExpires);
-		lua_setfield(L, -2, "m_unBanExpires");
+		luasteam::push_GSReputation_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -263,9 +199,7 @@ void CallbackListener::OnAssociateWithClanResult(AssociateWithClanResult_t *data
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_AssociateWithClanResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -279,17 +213,7 @@ void CallbackListener::OnComputeNewPlayerCompatibilityResult(ComputeNewPlayerCom
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_cPlayersThatDontLikeCandidate);
-		lua_setfield(L, -2, "m_cPlayersThatDontLikeCandidate");
-		lua_pushinteger(L, data->m_cPlayersThatCandidateDoesntLike);
-		lua_setfield(L, -2, "m_cPlayersThatCandidateDoesntLike");
-		lua_pushinteger(L, data->m_cClanPlayersThatDontLikeCandidate);
-		lua_setfield(L, -2, "m_cClanPlayersThatDontLikeCandidate");
-		luasteam::pushuint64(L, data->m_SteamIDCandidate.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamIDCandidate");
+		luasteam::push_ComputeNewPlayerCompatibilityResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

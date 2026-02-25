@@ -103,7 +103,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is returned as an additional return value
+    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.SendHTTPRequestAndStreamResponse(hRequest)
 
@@ -116,7 +116,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is returned as an additional return value
+    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.DeferHTTPRequest(hRequest)
 
@@ -146,7 +146,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unResponseHeaderSize`` is returned as an additional return value
+    * Parameter ``unResponseHeaderSize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize)
 
@@ -161,7 +161,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pHeaderValueBuffer`` is returned as an additional return value
+    * Parameter ``pHeaderValueBuffer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseBodySize(hRequest)
 
@@ -174,7 +174,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unBodySize`` is returned as an additional return value
+    * Parameter ``unBodySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize)
 
@@ -188,7 +188,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is returned as an additional return value
+    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPStreamingResponseBodyData(hRequest, cOffset, unBufferSize)
 
@@ -203,7 +203,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is returned as an additional return value
+    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.ReleaseHTTPRequest(hRequest)
 
@@ -224,7 +224,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercentOut`` is returned as an additional return value
+    * Parameter ``pflPercentOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, unBodyLen)
 
@@ -239,7 +239,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubBody`` is returned as an additional return value
+    * Parameter ``pubBody`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.CreateCookieContainer(bAllowResponsesToModify)
 
@@ -315,7 +315,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbWasTimedOut`` is returned as an additional return value
+    * Parameter ``pbWasTimedOut`` is no longer a paramer, and is instead an additional return value
 
 
 Callbacks

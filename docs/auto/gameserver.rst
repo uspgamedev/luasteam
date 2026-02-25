@@ -249,8 +249,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is returned as an additional return value
-    * Parameter ``pcbTicket`` is returned as an additional return value
+    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
 
 .. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
 
@@ -339,9 +339,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOut`` is returned as an additional return value
-    * Parameter ``pNetAdr`` is returned as an additional return value
-    * Parameter ``pPort`` is returned as an additional return value
+    * Parameter ``pOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pNetAdr`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pPort`` is no longer a paramer, and is instead an additional return value
 
 .. function:: GameServer.AssociateWithClan(steamIDClan, callback)
 

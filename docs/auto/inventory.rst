@@ -80,8 +80,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutItemsArray`` is returned as an additional return value
-    * Parameter ``punOutItemsArraySize`` is returned as an additional return value
+    * Parameter ``pOutItemsArray`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punOutItemsArraySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, punValueBufferSizeOut)
 
@@ -98,8 +98,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is returned as an additional return value
-    * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
+    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GetResultTimestamp(resultHandle)
 
@@ -135,7 +135,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
 
@@ -149,7 +149,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.DeserializeResult(pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE)
 
@@ -164,7 +164,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutResultHandle`` is returned as an additional return value
+    * Parameter ``pOutResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
 
@@ -179,7 +179,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GrantPromoItems()
 
@@ -191,7 +191,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.AddPromoItem(itemDef)
 
@@ -204,7 +204,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.AddPromoItems(pArrayItemDefs, unArrayLength)
 
@@ -218,7 +218,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.ConsumeItem(itemConsume, unQuantity)
 
@@ -232,7 +232,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
 
@@ -250,7 +250,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest)
 
@@ -265,7 +265,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.SendItemDropHeartbeat()
 
@@ -284,7 +284,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
 
@@ -303,7 +303,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.LoadItemDefinitions()
 
@@ -324,8 +324,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is returned as an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
+    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punValueBufferSizeOut)
 
@@ -341,8 +341,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is returned as an additional return value
-    * Parameter ``punValueBufferSizeOut`` is returned as an additional return value
+    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback)
 
@@ -366,8 +366,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is returned as an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is returned as an additional return value
+    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
 
@@ -407,8 +407,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCurrentPrice`` is returned as an additional return value
-    * Parameter ``pBasePrice`` is returned as an additional return value
+    * Parameter ``pCurrentPrice`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pBasePrice`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.StartUpdateProperties()
 
@@ -482,7 +482,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.InspectItem(pchItemToken)
 
@@ -495,7 +495,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is returned as an additional return value
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods

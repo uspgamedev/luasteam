@@ -277,7 +277,7 @@ impl DocGenerator {
             doc.push_str("    **Signature differences from C++ API:**\n\n");
             for output_param in &signature.output_params {
                 doc.push_str(&format!(
-                    "    * Parameter ``{}`` is returned as an additional return value\n",
+                    "    * Parameter ``{}`` is no longer a paramer, and is instead an additional return value\n",
                     output_param.name
                 ));
             }

@@ -23,11 +23,7 @@ void CallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_handle);
-		lua_setfield(L, -2, "m_handle");
-		lua_pushinteger(L, data->m_result);
-		lua_setfield(L, -2, "m_result");
+		luasteam::push_SteamInventoryResultReady_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -41,9 +37,7 @@ void CallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *da
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_handle);
-		lua_setfield(L, -2, "m_handle");
+		luasteam::push_SteamInventoryFullUpdate_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -57,7 +51,7 @@ void CallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinition
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_SteamInventoryDefinitionUpdate_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -71,15 +65,7 @@ void CallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEli
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_result);
-		lua_setfield(L, -2, "m_result");
-		luasteam::pushuint64(L, data->m_steamID.ConvertToUint64());
-		lua_setfield(L, -2, "m_steamID");
-		lua_pushinteger(L, data->m_numEligiblePromoItemDefs);
-		lua_setfield(L, -2, "m_numEligiblePromoItemDefs");
-		lua_pushboolean(L, data->m_bCachedData);
-		lua_setfield(L, -2, "m_bCachedData");
+		luasteam::push_SteamInventoryEligiblePromoItemDefIDs_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -93,13 +79,7 @@ void CallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPu
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_result);
-		lua_setfield(L, -2, "m_result");
-		luasteam::pushuint64(L, data->m_ulOrderID);
-		lua_setfield(L, -2, "m_ulOrderID");
-		luasteam::pushuint64(L, data->m_ulTransID);
-		lua_setfield(L, -2, "m_ulTransID");
+		luasteam::push_SteamInventoryStartPurchaseResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -113,11 +93,7 @@ void CallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequest
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_result);
-		lua_setfield(L, -2, "m_result");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency), 4);
-		lua_setfield(L, -2, "m_rgchCurrency");
+		luasteam::push_SteamInventoryRequestPricesResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

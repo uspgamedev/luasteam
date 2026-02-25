@@ -20,13 +20,7 @@ void CallbackListener::OnSteamNetConnectionStatusChangedCallback(SteamNetConnect
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_hConn);
-		lua_setfield(L, -2, "m_hConn");
-		luasteam::push_SteamNetConnectionInfo_t(L, data->m_info);
-		lua_setfield(L, -2, "m_info");
-		lua_pushinteger(L, data->m_eOldState);
-		lua_setfield(L, -2, "m_eOldState");
+		luasteam::push_SteamNetConnectionStatusChangedCallback_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -40,11 +34,7 @@ void CallbackListener::OnSteamNetAuthenticationStatus(SteamNetAuthenticationStat
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eAvail);
-		lua_setfield(L, -2, "m_eAvail");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_debugMsg), 256);
-		lua_setfield(L, -2, "m_debugMsg");
+		luasteam::push_SteamNetAuthenticationStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -58,19 +48,7 @@ void CallbackListener::OnSteamNetworkingFakeIPResult(SteamNetworkingFakeIPResult
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::push_SteamNetworkingIdentity(L, data->m_identity);
-		lua_setfield(L, -2, "m_identity");
-		lua_pushinteger(L, data->m_unIP);
-		lua_setfield(L, -2, "m_unIP");
-		lua_createtable(L, 8, 0);
-		for(decltype(8) i = 0; i < 8; i++) {
-			lua_pushinteger(L, data->m_unPorts[i]);
-			lua_rawseti(L, -2, i+1);
-		}
-		lua_setfield(L, -2, "m_unPorts");
+		luasteam::push_SteamNetworkingFakeIPResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -345,6 +323,18 @@ EXTERN int luasteam_NetworkingSockets_InitAuthentication(lua_State *L) {
 }
 
 // In C++:
+// ESteamNetworkingAvailability GetAuthenticationStatus(SteamNetAuthenticationStatus_t * pDetails);
+// In Lua:
+// (int, pDetails: SteamNetAuthenticationStatus_t) NetworkingSockets.GetAuthenticationStatus()
+EXTERN int luasteam_NetworkingSockets_GetAuthenticationStatus(lua_State *L) {
+	SteamNetAuthenticationStatus_t pDetails;
+	ESteamNetworkingAvailability __ret = SteamNetworkingSockets_SteamAPI()->GetAuthenticationStatus(&pDetails);
+	lua_pushinteger(L, __ret);
+	luasteam::push_SteamNetAuthenticationStatus_t(L, pDetails);
+	return 2;
+}
+
+// In C++:
 // HSteamNetPollGroup CreatePollGroup();
 // In Lua:
 // int NetworkingSockets.CreatePollGroup()
@@ -455,6 +445,18 @@ EXTERN int luasteam_NetworkingSockets_BeginAsyncRequestFakeIP(lua_State *L) {
 }
 
 // In C++:
+// void GetFakeIP(int idxFirstPort, SteamNetworkingFakeIPResult_t * pInfo);
+// In Lua:
+// pInfo: SteamNetworkingFakeIPResult_t NetworkingSockets.GetFakeIP(idxFirstPort: int)
+EXTERN int luasteam_NetworkingSockets_GetFakeIP(lua_State *L) {
+	int idxFirstPort = static_cast<int>(luaL_checkint(L, 1));
+	SteamNetworkingFakeIPResult_t pInfo;
+	SteamNetworkingSockets_SteamAPI()->GetFakeIP(idxFirstPort, &pInfo);
+	luasteam::push_SteamNetworkingFakeIPResult_t(L, pInfo);
+	return 1;
+}
+
+// In C++:
 // HSteamListenSocket CreateListenSocketP2PFakeIP(int idxFakePort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
 // int NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
@@ -501,6 +503,7 @@ void register_NetworkingSockets_auto(lua_State *L) {
 	add_func(L, "CreateSocketPair", luasteam_NetworkingSockets_CreateSocketPair);
 	add_func(L, "GetIdentity", luasteam_NetworkingSockets_GetIdentity);
 	add_func(L, "InitAuthentication", luasteam_NetworkingSockets_InitAuthentication);
+	add_func(L, "GetAuthenticationStatus", luasteam_NetworkingSockets_GetAuthenticationStatus);
 	add_func(L, "CreatePollGroup", luasteam_NetworkingSockets_CreatePollGroup);
 	add_func(L, "DestroyPollGroup", luasteam_NetworkingSockets_DestroyPollGroup);
 	add_func(L, "SetConnectionPollGroup", luasteam_NetworkingSockets_SetConnectionPollGroup);
@@ -511,12 +514,13 @@ void register_NetworkingSockets_auto(lua_State *L) {
 	add_func(L, "ResetIdentity", luasteam_NetworkingSockets_ResetIdentity);
 	add_func(L, "RunCallbacks", luasteam_NetworkingSockets_RunCallbacks);
 	add_func(L, "BeginAsyncRequestFakeIP", luasteam_NetworkingSockets_BeginAsyncRequestFakeIP);
+	add_func(L, "GetFakeIP", luasteam_NetworkingSockets_GetFakeIP);
 	add_func(L, "CreateListenSocketP2PFakeIP", luasteam_NetworkingSockets_CreateListenSocketP2PFakeIP);
 	add_func(L, "GetRemoteFakeIPForConnection", luasteam_NetworkingSockets_GetRemoteFakeIPForConnection);
 }
 
 void add_NetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 32);
+	lua_createtable(L, 0, 34);
 	register_NetworkingSockets_auto(L);
 	lua_pushvalue(L, -1);
 	NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);

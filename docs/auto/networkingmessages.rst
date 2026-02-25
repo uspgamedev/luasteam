@@ -73,8 +73,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pConnectionInfo`` is returned as an additional return value
-    * Parameter ``pQuickStatus`` is returned as an additional return value
+    * Parameter ``pConnectionInfo`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pQuickStatus`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods

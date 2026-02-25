@@ -77,7 +77,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``handlesOut`` is returned as an additional return value
+    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Controller.GetActionSetHandle(pszActionSetName)
 
@@ -137,7 +137,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``handlesOut`` is returned as an additional return value
+    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Controller.GetDigitalActionHandle(pszActionName)
 
@@ -169,7 +169,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``originsOut`` is returned as an additional return value
+    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Controller.GetAnalogActionHandle(pszActionName)
 
@@ -201,7 +201,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``originsOut`` is returned as an additional return value
+    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Controller.GetGlyphForActionOrigin(eOrigin)
 
@@ -354,6 +354,6 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pMajor`` is returned as an additional return value
-    * Parameter ``pMinor`` is returned as an additional return value
+    * Parameter ``pMajor`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pMinor`` is no longer a paramer, and is instead an additional return value
 

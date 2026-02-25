@@ -167,7 +167,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is returned as an additional return value
+    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.SendQueryUGCRequest(handle, callback)
 
@@ -190,7 +190,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is returned as an additional return value
+    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCNumTags(handle, index)
 
@@ -215,7 +215,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is returned as an additional return value
+    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCTagDisplayName(handle, index, indexTag, cchValueSize)
 
@@ -231,7 +231,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is returned as an additional return value
+    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCPreviewURL(handle, index, cchURLSize)
 
@@ -246,7 +246,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURL`` is returned as an additional return value
+    * Parameter ``pchURL`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCMetadata(handle, index, cchMetadatasize)
 
@@ -261,7 +261,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchMetadata`` is returned as an additional return value
+    * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCChildren(handle, index, cMaxEntries)
 
@@ -276,7 +276,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is returned as an additional return value
+    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCStatistic(handle, index, eStatType)
 
@@ -291,7 +291,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pStatValue`` is returned as an additional return value
+    * Parameter ``pStatValue`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCNumAdditionalPreviews(handle, index)
 
@@ -319,9 +319,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURLOrVideoID`` is returned as an additional return value
-    * Parameter ``pchOriginalFileName`` is returned as an additional return value
-    * Parameter ``pPreviewType`` is returned as an additional return value
+    * Parameter ``pchURLOrVideoID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchOriginalFileName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pPreviewType`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCNumKeyValueTags(handle, index)
 
@@ -348,8 +348,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is returned as an additional return value
-    * Parameter ``pchValue`` is returned as an additional return value
+    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetNumSupportedGameVersions(handle, index)
 
@@ -375,8 +375,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchGameBranchMin`` is returned as an additional return value
-    * Parameter ``pchGameBranchMax`` is returned as an additional return value
+    * Parameter ``pchGameBranchMin`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchGameBranchMax`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCContentDescriptors(handle, index, cMaxEntries)
 
@@ -391,7 +391,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is returned as an additional return value
+    * Parameter ``pvecDescriptors`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.ReleaseQueryUGCRequest(handle)
 
@@ -829,8 +829,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesProcessed`` is returned as an additional return value
-    * Parameter ``punBytesTotal`` is returned as an additional return value
+    * Parameter ``punBytesProcessed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.SetUserItemVote(nPublishedFileID, bVoteUp, callback)
 
@@ -909,7 +909,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is returned as an additional return value
+    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetItemState(nPublishedFileID)
 
@@ -933,9 +933,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSizeOnDisk`` is returned as an additional return value
-    * Parameter ``pchFolder`` is returned as an additional return value
-    * Parameter ``punTimeStamp`` is returned as an additional return value
+    * Parameter ``punSizeOnDisk`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchFolder`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punTimeStamp`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.GetItemDownloadInfo(nPublishedFileID)
 
@@ -949,8 +949,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is returned as an additional return value
-    * Parameter ``punBytesTotal`` is returned as an additional return value
+    * Parameter ``punBytesDownloaded`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.DownloadItem(nPublishedFileID, bHighPriority)
 
@@ -1089,7 +1089,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is returned as an additional return value
+    * Parameter ``pvecDescriptors`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.SetItemsDisabledLocally(unNumPublishedFileIDs, bDisabledLocally)
 
@@ -1103,7 +1103,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileIDs`` is returned as an additional return value
+    * Parameter ``pvecPublishedFileIDs`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.SetSubscriptionsLoadOrder(unNumPublishedFileIDs)
 
@@ -1116,7 +1116,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileIDs`` is returned as an additional return value
+    * Parameter ``pvecPublishedFileIDs`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods

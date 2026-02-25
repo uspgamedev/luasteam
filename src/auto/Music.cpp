@@ -19,7 +19,7 @@ void CallbackListener::OnPlaybackStatusHasChanged(PlaybackStatusHasChanged_t *da
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_PlaybackStatusHasChanged_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -33,9 +33,7 @@ void CallbackListener::OnVolumeHasChanged(VolumeHasChanged_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushnumber(L, data->m_flNewVolume);
-		lua_setfield(L, -2, "m_flNewVolume");
+		luasteam::push_VolumeHasChanged_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

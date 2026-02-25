@@ -18,17 +18,7 @@ void CallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushinteger(L, data->m_eAvail);
-		lua_setfield(L, -2, "m_eAvail");
-		lua_pushinteger(L, data->m_bPingMeasurementInProgress);
-		lua_setfield(L, -2, "m_bPingMeasurementInProgress");
-		lua_pushinteger(L, data->m_eAvailNetworkConfig);
-		lua_setfield(L, -2, "m_eAvailNetworkConfig");
-		lua_pushinteger(L, data->m_eAvailAnyRelay);
-		lua_setfield(L, -2, "m_eAvailAnyRelay");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_debugMsg), 256);
-		lua_setfield(L, -2, "m_debugMsg");
+		luasteam::push_SteamRelayNetworkStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -50,6 +40,18 @@ void shutdown_NetworkingUtils_auto(lua_State *L) {
 EXTERN int luasteam_NetworkingUtils_InitRelayNetworkAccess(lua_State *L) {
 	SteamNetworkingUtils_SteamAPI()->InitRelayNetworkAccess();
 	return 0;
+}
+
+// In C++:
+// ESteamNetworkingAvailability GetRelayNetworkStatus(SteamRelayNetworkStatus_t * pDetails);
+// In Lua:
+// (int, pDetails: SteamRelayNetworkStatus_t) NetworkingUtils.GetRelayNetworkStatus()
+EXTERN int luasteam_NetworkingUtils_GetRelayNetworkStatus(lua_State *L) {
+	SteamRelayNetworkStatus_t pDetails;
+	ESteamNetworkingAvailability __ret = SteamNetworkingUtils_SteamAPI()->GetRelayNetworkStatus(&pDetails);
+	lua_pushinteger(L, __ret);
+	luasteam::push_SteamRelayNetworkStatus_t(L, pDetails);
+	return 2;
 }
 
 // In C++:
@@ -349,6 +351,7 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString(lua_Stat
 
 void register_NetworkingUtils_auto(lua_State *L) {
 	add_func(L, "InitRelayNetworkAccess", luasteam_NetworkingUtils_InitRelayNetworkAccess);
+	add_func(L, "GetRelayNetworkStatus", luasteam_NetworkingUtils_GetRelayNetworkStatus);
 	add_func(L, "EstimatePingTimeBetweenTwoLocations", luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations);
 	add_func(L, "EstimatePingTimeFromLocalHost", luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost);
 	add_func(L, "ConvertPingLocationToString", luasteam_NetworkingUtils_ConvertPingLocationToString);
@@ -376,7 +379,7 @@ void register_NetworkingUtils_auto(lua_State *L) {
 }
 
 void add_NetworkingUtils_auto(lua_State *L) {
-	lua_createtable(L, 0, 25);
+	lua_createtable(L, 0, 26);
 	register_NetworkingUtils_auto(L);
 	lua_pushvalue(L, -1);
 	NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);

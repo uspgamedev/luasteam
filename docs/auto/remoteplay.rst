@@ -86,8 +86,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnResolutionX`` is returned as an additional return value
-    * Parameter ``pnResolutionY`` is returned as an additional return value
+    * Parameter ``pnResolutionX`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnResolutionY`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemotePlay.ShowRemotePlayTogetherUI()
 
@@ -128,7 +128,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pInput`` is returned as an additional return value
+    * Parameter ``pInput`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemotePlay.SetMouseVisibility(unSessionID, bVisible)
 

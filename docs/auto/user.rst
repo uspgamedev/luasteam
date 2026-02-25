@@ -105,7 +105,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is returned as an additional return value
+    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.StartVoiceRecording()
 
@@ -129,7 +129,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcbCompressed`` is returned as an additional return value
+    * Parameter ``pcbCompressed`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.GetVoice(bWantCompressed, cbDestBufferSize)
 
@@ -144,8 +144,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is returned as an additional return value
-    * Parameter ``nBytesWritten`` is returned as an additional return value
+    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate)
 
@@ -162,8 +162,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is returned as an additional return value
-    * Parameter ``nBytesWritten`` is returned as an additional return value
+    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.GetVoiceOptimalSampleRate()
 
@@ -185,8 +185,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is returned as an additional return value
-    * Parameter ``pcbTicket`` is returned as an additional return value
+    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.GetAuthTicketForWebApi(pchIdentity)
 
@@ -267,8 +267,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is returned as an additional return value
-    * Parameter ``pcbTicket`` is returned as an additional return value
+    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
 
 .. function:: User.GetGameBadgeLevel(nSeries, bFoil)
 

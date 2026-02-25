@@ -182,7 +182,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pFriendGameInfo`` is returned as an additional return value
+    * Parameter ``pFriendGameInfo`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName)
 
@@ -251,7 +251,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutSteamIDMembers`` is returned as an additional return value
+    * Parameter ``pOutSteamIDMembers`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.HasFriend(steamIDFriend, iFriendFlags)
 
@@ -306,9 +306,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnOnline`` is returned as an additional return value
-    * Parameter ``pnInGame`` is returned as an additional return value
-    * Parameter ``pnChatting`` is returned as an additional return value
+    * Parameter ``pnOnline`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnInGame`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnChatting`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.DownloadClanActivityCounts(cClansToRequest, callback)
 
@@ -322,7 +322,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``psteamIDClans`` is returned as an additional return value
+    * Parameter ``psteamIDClans`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.GetFriendCountFromSource(steamIDSource)
 
@@ -616,9 +616,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``prgchText`` is returned as an additional return value
-    * Parameter ``peChatEntryType`` is returned as an additional return value
-    * Parameter ``psteamidChatter`` is returned as an additional return value
+    * Parameter ``prgchText`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``psteamidChatter`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.IsClanChatAdmin(steamIDClanChat, steamIDUser)
 
@@ -684,8 +684,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is returned as an additional return value
-    * Parameter ``peChatEntryType`` is returned as an additional return value
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Friends.GetFollowerCount(steamID, callback)
 

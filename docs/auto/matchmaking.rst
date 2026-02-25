@@ -89,12 +89,12 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAppID`` is returned as an additional return value
-    * Parameter ``pnIP`` is returned as an additional return value
-    * Parameter ``pnConnPort`` is returned as an additional return value
-    * Parameter ``pnQueryPort`` is returned as an additional return value
-    * Parameter ``punFlags`` is returned as an additional return value
-    * Parameter ``pRTime32LastPlayedOnServer`` is returned as an additional return value
+    * Parameter ``pnAppID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnIP`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnConnPort`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnQueryPort`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punFlags`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pRTime32LastPlayedOnServer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer)
 
@@ -285,8 +285,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is returned as an additional return value
-    * Parameter ``pchValue`` is returned as an additional return value
+    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Matchmaking.DeleteLobbyData(steamIDLobby, pchKey)
 
@@ -341,9 +341,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDUser`` is returned as an additional return value
-    * Parameter ``pvData`` is returned as an additional return value
-    * Parameter ``peChatEntryType`` is returned as an additional return value
+    * Parameter ``pSteamIDUser`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Matchmaking.RequestLobbyData(steamIDLobby)
 
@@ -376,9 +376,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punGameServerIP`` is returned as an additional return value
-    * Parameter ``punGameServerPort`` is returned as an additional return value
-    * Parameter ``psteamIDGameServer`` is returned as an additional return value
+    * Parameter ``punGameServerIP`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punGameServerPort`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``psteamIDGameServer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Matchmaking.SetLobbyMemberLimit(steamIDLobby, cMaxMembers)
 

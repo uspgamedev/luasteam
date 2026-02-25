@@ -21,9 +21,7 @@ void CallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		luasteam::pushuint64(L, data->m_ulConnectedDeviceHandle);
-		lua_setfield(L, -2, "m_ulConnectedDeviceHandle");
+		luasteam::push_SteamInputDeviceConnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -37,9 +35,7 @@ void CallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnect
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		luasteam::pushuint64(L, data->m_ulDisconnectedDeviceHandle);
-		lua_setfield(L, -2, "m_ulDisconnectedDeviceHandle");
+		luasteam::push_SteamInputDeviceDisconnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -53,21 +49,7 @@ void CallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLo
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 7);
-		lua_pushinteger(L, data->m_unAppID);
-		lua_setfield(L, -2, "m_unAppID");
-		luasteam::pushuint64(L, data->m_ulDeviceHandle);
-		lua_setfield(L, -2, "m_ulDeviceHandle");
-		luasteam::pushuint64(L, data->m_ulMappingCreator.ConvertToUint64());
-		lua_setfield(L, -2, "m_ulMappingCreator");
-		lua_pushinteger(L, data->m_unMajorRevision);
-		lua_setfield(L, -2, "m_unMajorRevision");
-		lua_pushinteger(L, data->m_unMinorRevision);
-		lua_setfield(L, -2, "m_unMinorRevision");
-		lua_pushboolean(L, data->m_bUsesSteamInputAPI);
-		lua_setfield(L, -2, "m_bUsesSteamInputAPI");
-		lua_pushboolean(L, data->m_bUsesGamepadAPI);
-		lua_setfield(L, -2, "m_bUsesGamepadAPI");
+		luasteam::push_SteamInputConfigurationLoaded_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -81,17 +63,7 @@ void CallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushinteger(L, data->m_unAppID);
-		lua_setfield(L, -2, "m_unAppID");
-		luasteam::pushuint64(L, data->m_ulDeviceHandle);
-		lua_setfield(L, -2, "m_ulDeviceHandle");
-		lua_pushinteger(L, data->m_eDeviceType);
-		lua_setfield(L, -2, "m_eDeviceType");
-		lua_pushinteger(L, data->m_nOldGamepadSlot);
-		lua_setfield(L, -2, "m_nOldGamepadSlot");
-		lua_pushinteger(L, data->m_nNewGamepadSlot);
-		lua_setfield(L, -2, "m_nNewGamepadSlot");
+		luasteam::push_SteamInputGamepadSlotChange_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

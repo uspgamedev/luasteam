@@ -32,6 +32,7 @@ List of Functions
 * :func:`NetworkingSockets.CreateSocketPair`
 * :func:`NetworkingSockets.GetIdentity`
 * :func:`NetworkingSockets.InitAuthentication`
+* :func:`NetworkingSockets.GetAuthenticationStatus`
 * :func:`NetworkingSockets.CreatePollGroup`
 * :func:`NetworkingSockets.DestroyPollGroup`
 * :func:`NetworkingSockets.SetConnectionPollGroup`
@@ -42,6 +43,7 @@ List of Functions
 * :func:`NetworkingSockets.ResetIdentity`
 * :func:`NetworkingSockets.RunCallbacks`
 * :func:`NetworkingSockets.BeginAsyncRequestFakeIP`
+* :func:`NetworkingSockets.GetFakeIP`
 * :func:`NetworkingSockets.CreateListenSocketP2PFakeIP`
 * :func:`NetworkingSockets.GetRemoteFakeIPForConnection`
 
@@ -160,7 +162,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszName`` is returned as an additional return value
+    * Parameter ``pszName`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags)
 
@@ -176,7 +178,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutMessageNumber`` is returned as an additional return value
+    * Parameter ``pOutMessageNumber`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.FlushMessagesOnConnection(hConn)
 
@@ -197,7 +199,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pInfo`` is returned as an additional return value
+    * Parameter ``pInfo`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes)
 
@@ -212,8 +214,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pStatus`` is returned as an additional return value
-    * Parameter ``pLanes`` is returned as an additional return value
+    * Parameter ``pStatus`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pLanes`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf)
 
@@ -227,7 +229,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszBuf`` is returned as an additional return value
+    * Parameter ``pszBuf`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.GetListenSocketAddress(hSocket)
 
@@ -240,7 +242,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``address`` is returned as an additional return value
+    * Parameter ``address`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2)
 
@@ -256,8 +258,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutConnection1`` is returned as an additional return value
-    * Parameter ``pOutConnection2`` is returned as an additional return value
+    * Parameter ``pOutConnection1`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutConnection2`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.GetIdentity()
 
@@ -269,7 +271,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pIdentity`` is returned as an additional return value
+    * Parameter ``pIdentity`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.InitAuthentication()
 
@@ -277,6 +279,18 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `InitAuthentication <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#InitAuthentication>`_
+
+.. function:: NetworkingSockets.GetAuthenticationStatus()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :returns: (:ref:`SteamNetAuthenticationStatus_t <struct-SteamNetAuthenticationStatus_t>`) Value for `pDetails`
+    :SteamWorks: `GetAuthenticationStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetAuthenticationStatus>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingSockets.CreatePollGroup()
 
@@ -358,6 +372,18 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BeginAsyncRequestFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#BeginAsyncRequestFakeIP>`_
 
+.. function:: NetworkingSockets.GetFakeIP(idxFirstPort)
+
+    🤖 **Auto-generated binding**
+
+    :param int idxFirstPort:
+    :returns: (:ref:`SteamNetworkingFakeIPResult_t <struct-SteamNetworkingFakeIPResult_t>`) Value for `pInfo`
+    :SteamWorks: `GetFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetFakeIP>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pInfo`` is no longer a paramer, and is instead an additional return value
+
 .. function:: NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort, nOptions, pOptions)
 
     🤖 **Auto-generated binding**
@@ -379,7 +405,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutAddr`` is returned as an additional return value
+    * Parameter ``pOutAddr`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods
@@ -402,12 +428,6 @@ Unimplemented Methods
     ✋ **Not implemented** - unsupported type: const int *
     
     :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
-
-.. function:: NetworkingSockets.getAuthenticationStatus
-
-    ✋ **Not implemented** - unsupported type: SteamNetAuthenticationStatus_t *
-    
-    :SteamWorks: `GetAuthenticationStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetAuthenticationStatus>`_
 
 .. function:: NetworkingSockets.receiveMessagesOnPollGroup
 
@@ -462,12 +482,6 @@ Unimplemented Methods
     ✋ **Not implemented** - unsupported type: SteamNetworkingErrMsg &
     
     :SteamWorks: `SetCertificate <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetCertificate>`_
-
-.. function:: NetworkingSockets.getFakeIP
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkingFakeIPResult_t *
-    
-    :SteamWorks: `GetFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetFakeIP>`_
 
 .. function:: NetworkingSockets.createFakeUDPPort
 

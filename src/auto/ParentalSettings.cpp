@@ -18,7 +18,7 @@ void CallbackListener::OnSteamParentalSettingsChanged(SteamParentalSettingsChang
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_SteamParentalSettingsChanged_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

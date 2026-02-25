@@ -111,6 +111,10 @@ function NetworkingSockets.GetIdentity() end
 function NetworkingSockets.InitAuthentication() end
 
 ---@return integer
+---@return SteamNetAuthenticationStatus_t -- Value of: pDetails
+function NetworkingSockets.GetAuthenticationStatus() end
+
+---@return integer
 function NetworkingSockets.CreatePollGroup() end
 
 ---@param hPollGroup integer
@@ -149,6 +153,10 @@ function NetworkingSockets.RunCallbacks() end
 ---@param nNumPorts integer
 ---@return boolean
 function NetworkingSockets.BeginAsyncRequestFakeIP(nNumPorts) end
+
+---@param idxFirstPort integer
+---@return SteamNetworkingFakeIPResult_t -- Value of: pInfo
+function NetworkingSockets.GetFakeIP(idxFirstPort) end
 
 ---@param idxFakePort integer
 ---@param nOptions integer

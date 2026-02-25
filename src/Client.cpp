@@ -8,7 +8,8 @@ namespace {
 static int warning_hook_ref = LUA_NOREF;
 
 void S_CALLTYPE warning_trampoline(int nSeverity, const char *pchDebugText) {
-    if (warning_hook_ref == LUA_NOREF) return;
+    if (warning_hook_ref == LUA_NOREF)
+        return;
     lua_State *L = luasteam::global_lua_state;
     lua_rawgeti(L, LUA_REGISTRYINDEX, warning_hook_ref);
     lua_pushinteger(L, nSeverity);

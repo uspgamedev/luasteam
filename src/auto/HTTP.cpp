@@ -20,17 +20,7 @@ void CallbackListener::OnHTTPRequestCompleted(HTTPRequestCompleted_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushinteger(L, data->m_hRequest);
-		lua_setfield(L, -2, "m_hRequest");
-		luasteam::pushuint64(L, data->m_ulContextValue);
-		lua_setfield(L, -2, "m_ulContextValue");
-		lua_pushboolean(L, data->m_bRequestSuccessful);
-		lua_setfield(L, -2, "m_bRequestSuccessful");
-		lua_pushinteger(L, data->m_eStatusCode);
-		lua_setfield(L, -2, "m_eStatusCode");
-		lua_pushinteger(L, data->m_unBodySize);
-		lua_setfield(L, -2, "m_unBodySize");
+		luasteam::push_HTTPRequestCompleted_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -44,11 +34,7 @@ void CallbackListener::OnHTTPRequestHeadersReceived(HTTPRequestHeadersReceived_t
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_hRequest);
-		lua_setfield(L, -2, "m_hRequest");
-		luasteam::pushuint64(L, data->m_ulContextValue);
-		lua_setfield(L, -2, "m_ulContextValue");
+		luasteam::push_HTTPRequestHeadersReceived_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -62,15 +48,7 @@ void CallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataReceived_t *data
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_hRequest);
-		lua_setfield(L, -2, "m_hRequest");
-		luasteam::pushuint64(L, data->m_ulContextValue);
-		lua_setfield(L, -2, "m_ulContextValue");
-		lua_pushinteger(L, data->m_cOffset);
-		lua_setfield(L, -2, "m_cOffset");
-		lua_pushinteger(L, data->m_cBytesReceived);
-		lua_setfield(L, -2, "m_cBytesReceived");
+		luasteam::push_HTTPRequestDataReceived_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

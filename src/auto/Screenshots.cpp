@@ -19,11 +19,7 @@ void CallbackListener::OnScreenshotReady(ScreenshotReady_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_hLocal);
-		lua_setfield(L, -2, "m_hLocal");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_ScreenshotReady_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -37,7 +33,7 @@ void CallbackListener::OnScreenshotRequested(ScreenshotRequested_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_ScreenshotRequested_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

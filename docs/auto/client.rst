@@ -56,7 +56,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``phSteamPipe`` is returned as an additional return value
+    * Parameter ``phSteamPipe`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Client.ReleaseUser(hSteamPipe, hUser)
 

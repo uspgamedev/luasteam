@@ -165,7 +165,9 @@ impl Generator {
         // Has function pointers — manual implementation in Client.cpp shared with Utils
         blocklist.insert(
             "SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(),
-            SkipReason::ManualImpl("delegates to Client.SetWarningMessageHook trampoline".to_string()),
+            SkipReason::ManualImpl(
+                "delegates to Client.SetWarningMessageHook trampoline".to_string(),
+            ),
         );
 
         // Manually implemented in Core.cpp as a Lua function trampoline
@@ -205,7 +207,7 @@ impl Generator {
                 ),
             );
         }
-        
+
         blocklist
     }
 
@@ -316,11 +318,24 @@ impl Generator {
             "SteamDatagramGameCoordinatorServerLogin",
             "SteamNetworkingMessage_t", // has protected destructor and function-pointer fields; not user-constructible
         ];
-        stats.structs_total = self.api.structs.len();
+        stats.structs_total = self.api.structs.len() + self.api.callback_structs.len();
         let mut outputs: Vec<StructGenOutput> = Vec::new();
 
+        // Build a combined list: regular structs first, then callback_structs (converted to Struct)
         let structs = self.api.structs.clone();
-        for st in &structs {
+        let callback_structs_as_structs: Vec<Struct> = self
+            .api
+            .callback_structs
+            .iter()
+            .map(|cb| Struct {
+                name: cb.name.clone(),
+                fields: cb.fields.clone(),
+                methods: vec![],
+            })
+            .collect();
+        let all_structs = structs.iter().chain(callback_structs_as_structs.iter());
+
+        for st in all_structs {
             if incomplete_structs.contains(&st.name.as_str()) {
                 stats
                     .skipped_structs
@@ -1363,6 +1378,8 @@ impl Generator {
         h.preceeding_blank_line();
         h.line("#endif // LUASTEAM_AUTO_HPP");
         fs::write("../src/auto/auto.hpp", h.finish()).expect("Unable to write auto.hpp");
+        fs::write("../src/auto/.clang-format", "DisableFormat: true\n")
+            .expect("Unable to write .clang-format");
     }
 
     fn to_lua_callback_name(struct_name: &str) -> String {
@@ -1715,16 +1732,20 @@ impl Generator {
             s.indent_left();
             s.line("} else {");
             s.indent_right();
-            s.line(&format!("lua_createtable(L, 0, {});", cb.fields.len()));
-            for field in &cb.fields {
-                let (ok, push, _) = self.generate_push(
-                    &field.fieldtype,
-                    &format!("data->{}", field.fieldname),
-                    s.indent(),
-                );
-                s.raw(&push);
-                if ok {
-                    s.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
+            if self.added_structs.contains(&cb.name) {
+                s.line(&format!("luasteam::push_{}(L, *data);", cb.name));
+            } else {
+                s.line(&format!("lua_createtable(L, 0, {});", cb.fields.len()));
+                for field in &cb.fields {
+                    let (ok, push, _) = self.generate_push(
+                        &field.fieldtype,
+                        &format!("data->{}", field.fieldname),
+                        s.indent(),
+                    );
+                    s.raw(&push);
+                    if ok {
+                        s.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
+                    }
                 }
             }
             s.line("lua_call(L, 1, 0);");

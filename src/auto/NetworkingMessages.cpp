@@ -19,9 +19,7 @@ void CallbackListener::OnSteamNetworkingMessagesSessionRequest(SteamNetworkingMe
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		luasteam::push_SteamNetworkingIdentity(L, data->m_identityRemote);
-		lua_setfield(L, -2, "m_identityRemote");
+		luasteam::push_SteamNetworkingMessagesSessionRequest_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -35,9 +33,7 @@ void CallbackListener::OnSteamNetworkingMessagesSessionFailed(SteamNetworkingMes
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		luasteam::push_SteamNetConnectionInfo_t(L, data->m_info);
-		lua_setfield(L, -2, "m_info");
+		luasteam::push_SteamNetworkingMessagesSessionFailed_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

@@ -19,11 +19,7 @@ void CallbackListener::OnGSStatsReceived(GSStatsReceived_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-		lua_setfield(L, -2, "m_steamIDUser");
+		luasteam::push_GSStatsReceived_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -37,11 +33,7 @@ void CallbackListener::OnGSStatsStored(GSStatsStored_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_steamIDUser.ConvertToUint64());
-		lua_setfield(L, -2, "m_steamIDUser");
+		luasteam::push_GSStatsStored_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

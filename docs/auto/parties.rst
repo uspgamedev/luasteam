@@ -63,9 +63,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDBeaconOwner`` is returned as an additional return value
-    * Parameter ``pLocation`` is returned as an additional return value
-    * Parameter ``pchMetadata`` is returned as an additional return value
+    * Parameter ``pSteamIDBeaconOwner`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pLocation`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Parties.JoinParty(ulBeaconID, callback)
 
@@ -86,7 +86,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``puNumLocations`` is returned as an additional return value
+    * Parameter ``puNumLocations`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Parties.GetAvailableBeaconLocations(uMaxNumLocations)
 
@@ -99,7 +99,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pLocationList`` is returned as an additional return value
+    * Parameter ``pLocationList`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Parties.OnReservationCompleted(ulBeacon, steamIDUser)
 
@@ -148,7 +148,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchDataStringOut`` is returned as an additional return value
+    * Parameter ``pchDataStringOut`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods

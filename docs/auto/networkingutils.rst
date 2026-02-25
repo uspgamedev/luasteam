@@ -13,6 +13,7 @@ List of Functions
 -----------------
 
 * :func:`NetworkingUtils.InitRelayNetworkAccess`
+* :func:`NetworkingUtils.GetRelayNetworkStatus`
 * :func:`NetworkingUtils.EstimatePingTimeBetweenTwoLocations`
 * :func:`NetworkingUtils.EstimatePingTimeFromLocalHost`
 * :func:`NetworkingUtils.ConvertPingLocationToString`
@@ -52,6 +53,18 @@ Function Reference
 
     :SteamWorks: `InitRelayNetworkAccess <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#InitRelayNetworkAccess>`_
 
+.. function:: NetworkingUtils.GetRelayNetworkStatus()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :returns: (:ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`) Value for `pDetails`
+    :SteamWorks: `GetRelayNetworkStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRelayNetworkStatus>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
+
 .. function:: NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location2)
 
     🤖 **Auto-generated binding**
@@ -80,7 +93,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszBuf`` is returned as an additional return value
+    * Parameter ``pszBuf`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds)
 
@@ -101,7 +114,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pViaRelayPoP`` is returned as an additional return value
+    * Parameter ``pViaRelayPoP`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.GetDirectPingToPOP(popID)
 
@@ -129,7 +142,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``list`` is returned as an additional return value
+    * Parameter ``list`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.IsFakeIPv4(nIPv4)
 
@@ -158,7 +171,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutRealIdentity`` is returned as an additional return value
+    * Parameter ``pOutRealIdentity`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.SetGlobalConfigValueInt32(eValue, val)
 
@@ -229,8 +242,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutDataType`` is returned as an additional return value
-    * Parameter ``pOutScope`` is returned as an additional return value
+    * Parameter ``pOutDataType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutScope`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars)
 
@@ -253,7 +266,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is returned as an additional return value
+    * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr)
 
@@ -266,7 +279,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAddr`` is returned as an additional return value
+    * Parameter ``pAddr`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr)
 
@@ -287,7 +300,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is returned as an additional return value
+    * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
 
 .. function:: NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr)
 
@@ -300,7 +313,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pIdentity`` is returned as an additional return value
+    * Parameter ``pIdentity`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods
@@ -311,12 +324,6 @@ Unimplemented Methods
     ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t *
     
     :SteamWorks: `AllocateMessage <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#AllocateMessage>`_
-
-.. function:: NetworkingUtils.getRelayNetworkStatus
-
-    ✋ **Not implemented** - unsupported type: SteamRelayNetworkStatus_t *
-    
-    :SteamWorks: `GetRelayNetworkStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRelayNetworkStatus>`_
 
 .. function:: NetworkingUtils.getLocalPingLocation
 

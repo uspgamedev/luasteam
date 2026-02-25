@@ -3,6 +3,10 @@ local NetworkingUtils = {}
 
 function NetworkingUtils.InitRelayNetworkAccess() end
 
+---@return integer
+---@return SteamRelayNetworkStatus_t -- Value of: pDetails
+function NetworkingUtils.GetRelayNetworkStatus() end
+
 ---@param location1 SteamNetworkPingLocation_t
 ---@param location2 SteamNetworkPingLocation_t
 ---@return integer

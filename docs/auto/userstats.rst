@@ -85,7 +85,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetStatFloat(pchName)
 
@@ -98,7 +98,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.SetStatInt32(pchName, nData)
 
@@ -139,7 +139,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is returned as an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.SetAchievement(pchName)
 
@@ -169,8 +169,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is returned as an additional return value
-    * Parameter ``punUnlockTime`` is returned as an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.StoreStats()
 
@@ -242,7 +242,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetUserStatFloat(steamIDUser, pchName)
 
@@ -256,7 +256,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetUserAchievement(steamIDUser, pchName)
 
@@ -270,7 +270,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is returned as an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName)
 
@@ -285,8 +285,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is returned as an additional return value
-    * Parameter ``punUnlockTime`` is returned as an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.ResetAllStats(bAchievementsToo)
 
@@ -385,8 +385,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pLeaderboardEntry`` is returned as an additional return value
-    * Parameter ``pDetails`` is returned as an additional return value
+    * Parameter ``pLeaderboardEntry`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback)
 
@@ -440,9 +440,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is returned as an additional return value
-    * Parameter ``pflPercent`` is returned as an additional return value
-    * Parameter ``pbAchieved`` is returned as an additional return value
+    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetNextMostAchievedAchievementInfo(iIteratorPrevious, unNameBufLen)
 
@@ -458,9 +458,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is returned as an additional return value
-    * Parameter ``pflPercent`` is returned as an additional return value
-    * Parameter ``pbAchieved`` is returned as an additional return value
+    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetAchievementAchievedPercent(pchName)
 
@@ -473,7 +473,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercent`` is returned as an additional return value
+    * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.RequestGlobalStats(nHistoryDays, callback)
 
@@ -495,7 +495,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetGlobalStatDouble(pchStatName)
 
@@ -508,7 +508,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData)
 
@@ -522,7 +522,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData)
 
@@ -536,7 +536,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetAchievementProgressLimitsInt32(pchName)
 
@@ -550,8 +550,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnMinProgress`` is returned as an additional return value
-    * Parameter ``pnMaxProgress`` is returned as an additional return value
+    * Parameter ``pnMinProgress`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnMaxProgress`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UserStats.GetAchievementProgressLimitsFloat(pchName)
 
@@ -565,8 +565,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pfMinProgress`` is returned as an additional return value
-    * Parameter ``pfMaxProgress`` is returned as an additional return value
+    * Parameter ``pfMinProgress`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pfMaxProgress`` is no longer a paramer, and is instead an additional return value
 
 
 Callbacks

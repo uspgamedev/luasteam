@@ -109,8 +109,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnWidth`` is returned as an additional return value
-    * Parameter ``pnHeight`` is returned as an additional return value
+    * Parameter ``pnWidth`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnHeight`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetImageRGBA(iImage, nDestBufferSize)
 
@@ -124,7 +124,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is returned as an additional return value
+    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetCurrentBatteryPower()
 
@@ -158,7 +158,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbFailed`` is returned as an additional return value
+    * Parameter ``pbFailed`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetAPICallFailureReason(hSteamAPICall)
 
@@ -182,8 +182,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallback`` is returned as an additional return value
-    * Parameter ``pbFailed`` is returned as an additional return value
+    * Parameter ``pCallback`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbFailed`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetIPCCallCount()
 
@@ -245,7 +245,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchText`` is returned as an additional return value
+    * Parameter ``pchText`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetSteamUILanguage()
 
@@ -325,7 +325,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchOutFilteredText`` is returned as an additional return value
+    * Parameter ``pchOutFilteredText`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Utils.GetIPv6ConnectivityState(eProtocol)
 

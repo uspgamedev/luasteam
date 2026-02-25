@@ -23,15 +23,7 @@ void CallbackListener::OnJoinPartyCallback(JoinPartyCallback_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_ulBeaconID);
-		lua_setfield(L, -2, "m_ulBeaconID");
-		luasteam::pushuint64(L, data->m_SteamIDBeaconOwner.ConvertToUint64());
-		lua_setfield(L, -2, "m_SteamIDBeaconOwner");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchConnectString), 256);
-		lua_setfield(L, -2, "m_rgchConnectString");
+		luasteam::push_JoinPartyCallback_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -45,11 +37,7 @@ void CallbackListener::OnCreateBeaconCallback(CreateBeaconCallback_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_ulBeaconID);
-		lua_setfield(L, -2, "m_ulBeaconID");
+		luasteam::push_CreateBeaconCallback_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -63,11 +51,7 @@ void CallbackListener::OnReservationNotificationCallback(ReservationNotification
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		luasteam::pushuint64(L, data->m_ulBeaconID);
-		lua_setfield(L, -2, "m_ulBeaconID");
-		luasteam::pushuint64(L, data->m_steamIDJoiner.ConvertToUint64());
-		lua_setfield(L, -2, "m_steamIDJoiner");
+		luasteam::push_ReservationNotificationCallback_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -81,9 +65,7 @@ void CallbackListener::OnChangeNumOpenSlotsCallback(ChangeNumOpenSlotsCallback_t
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_ChangeNumOpenSlotsCallback_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -97,7 +79,7 @@ void CallbackListener::OnAvailableBeaconLocationsUpdated(AvailableBeaconLocation
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_AvailableBeaconLocationsUpdated_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -111,7 +93,7 @@ void CallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_ActiveBeaconsUpdated_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

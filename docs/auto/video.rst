@@ -42,7 +42,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnNumViewers`` is returned as an additional return value
+    * Parameter ``pnNumViewers`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Video.GetOPFSettings(unVideoAppID)
 
@@ -64,8 +64,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is returned as an additional return value
-    * Parameter ``pnBufferSize`` is returned as an additional return value
+    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnBufferSize`` is no longer a paramer, and is instead an additional return value
 
 
 Callbacks

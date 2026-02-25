@@ -20,9 +20,7 @@ void CallbackListener::OnSteamRemotePlaySessionConnected(SteamRemotePlaySessionC
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_unSessionID);
-		lua_setfield(L, -2, "m_unSessionID");
+		luasteam::push_SteamRemotePlaySessionConnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -36,9 +34,7 @@ void CallbackListener::OnSteamRemotePlaySessionDisconnected(SteamRemotePlaySessi
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_unSessionID);
-		lua_setfield(L, -2, "m_unSessionID");
+		luasteam::push_SteamRemotePlaySessionDisconnected_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -52,9 +48,7 @@ void CallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemotePlayToget
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szConnectURL), 1024);
-		lua_setfield(L, -2, "m_szConnectURL");
+		luasteam::push_SteamRemotePlayTogetherGuestInvite_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

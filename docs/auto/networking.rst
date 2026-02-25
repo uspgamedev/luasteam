@@ -68,7 +68,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.ReadP2PPacket(cubDest, nChannel)
 
@@ -84,9 +84,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is returned as an additional return value
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
-    * Parameter ``psteamIDRemote`` is returned as an additional return value
+    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``psteamIDRemote`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.AcceptP2PSessionWithUser(steamIDRemote)
 
@@ -124,7 +124,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pConnectionState`` is returned as an additional return value
+    * Parameter ``pConnectionState`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.AllowP2PPacketRelay(bAllow)
 
@@ -206,7 +206,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.RetrieveDataFromSocket(hSocket, cubDest)
 
@@ -221,8 +221,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is returned as an additional return value
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
+    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.IsDataAvailable(hListenSocket)
 
@@ -236,8 +236,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
-    * Parameter ``phSocket`` is returned as an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``phSocket`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.RetrieveData(hListenSocket, cubDest)
 
@@ -253,9 +253,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is returned as an additional return value
-    * Parameter ``pcubMsgSize`` is returned as an additional return value
-    * Parameter ``phSocket`` is returned as an additional return value
+    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``phSocket`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.GetSocketInfo(hSocket)
 
@@ -271,10 +271,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDRemote`` is returned as an additional return value
-    * Parameter ``peSocketStatus`` is returned as an additional return value
-    * Parameter ``punIPRemote`` is returned as an additional return value
-    * Parameter ``punPortRemote`` is returned as an additional return value
+    * Parameter ``pSteamIDRemote`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peSocketStatus`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punIPRemote`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punPortRemote`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.GetListenSocketInfo(hListenSocket)
 
@@ -288,8 +288,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnIP`` is returned as an additional return value
-    * Parameter ``pnPort`` is returned as an additional return value
+    * Parameter ``pnIP`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnPort`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Networking.GetSocketConnectionType(hSocket)
 

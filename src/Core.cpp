@@ -1,5 +1,5 @@
-#include "Client.hpp"
 #include "Core.hpp"
+#include "Client.hpp"
 #include "Extra.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"

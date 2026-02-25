@@ -553,10 +553,10 @@ impl SteamApi {
             p.out_array_count = Some(out_name.to_owned());
         }
     }
-    
+
     fn fix_steam_client(&mut self) {
         let client = self.interface_mut("ISteamClient");
-        // Steam client does have this accessor, not sure why it's missing from the JSON. 
+        // Steam client does have this accessor, not sure why it's missing from the JSON.
         assert!(client.accessors.is_empty());
         client.accessors.push(Accessor {
             kind: "user".to_string(),

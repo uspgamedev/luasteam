@@ -120,3 +120,4 @@ check-luals:
 
 fmt:
 	cd generator && cargo fmt
+	$(CLANG_FORMAT) -i src/*.cpp src/*.hpp

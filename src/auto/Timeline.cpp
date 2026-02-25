@@ -19,17 +19,7 @@ void CallbackListener::OnSteamTimelineGamePhaseRecordingExists(SteamTimelineGame
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchPhaseID), 64);
-		lua_setfield(L, -2, "m_rgchPhaseID");
-		luasteam::pushuint64(L, data->m_ulRecordingMS);
-		lua_setfield(L, -2, "m_ulRecordingMS");
-		luasteam::pushuint64(L, data->m_ulLongestClipMS);
-		lua_setfield(L, -2, "m_ulLongestClipMS");
-		lua_pushinteger(L, data->m_unClipCount);
-		lua_setfield(L, -2, "m_unClipCount");
-		lua_pushinteger(L, data->m_unScreenshotCount);
-		lua_setfield(L, -2, "m_unScreenshotCount");
+		luasteam::push_SteamTimelineGamePhaseRecordingExists_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -43,11 +33,7 @@ void CallbackListener::OnSteamTimelineEventRecordingExists(SteamTimelineEventRec
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		luasteam::pushuint64(L, data->m_ulEventID);
-		lua_setfield(L, -2, "m_ulEventID");
-		lua_pushboolean(L, data->m_bRecordingExists);
-		lua_setfield(L, -2, "m_bRecordingExists");
+		luasteam::push_SteamTimelineEventRecordingExists_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

@@ -22,9 +22,7 @@ void CallbackListener::OnDlcInstalled(DlcInstalled_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
+		luasteam::push_DlcInstalled_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -38,7 +36,7 @@ void CallbackListener::OnNewUrlLaunchParameters(NewUrlLaunchParameters_t *data) 
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 0);
+		luasteam::push_NewUrlLaunchParameters_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -52,15 +50,7 @@ void CallbackListener::OnAppProofOfPurchaseKeyResponse(AppProofOfPurchaseKeyResp
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
-		lua_pushinteger(L, data->m_cchKeyLength);
-		lua_setfield(L, -2, "m_cchKeyLength");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchKey), 240);
-		lua_setfield(L, -2, "m_rgchKey");
+		luasteam::push_AppProofOfPurchaseKeyResponse_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -74,15 +64,7 @@ void CallbackListener::OnFileDetailsResult(FileDetailsResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_ulFileSize);
-		lua_setfield(L, -2, "m_ulFileSize");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_FileSHA), 20);
-		lua_setfield(L, -2, "m_FileSHA");
-		lua_pushinteger(L, data->m_unFlags);
-		lua_setfield(L, -2, "m_unFlags");
+		luasteam::push_FileDetailsResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -96,15 +78,7 @@ void CallbackListener::OnTimedTrialStatus(TimedTrialStatus_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_unAppID);
-		lua_setfield(L, -2, "m_unAppID");
-		lua_pushboolean(L, data->m_bIsOffline);
-		lua_setfield(L, -2, "m_bIsOffline");
-		lua_pushinteger(L, data->m_unSecondsAllowed);
-		lua_setfield(L, -2, "m_unSecondsAllowed");
-		lua_pushinteger(L, data->m_unSecondsPlayed);
-		lua_setfield(L, -2, "m_unSecondsPlayed");
+		luasteam::push_TimedTrialStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}

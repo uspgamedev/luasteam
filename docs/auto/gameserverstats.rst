@@ -50,7 +50,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: GameServerStats.GetUserStatFloat(steamIDUser, pchName)
 
@@ -64,7 +64,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is returned as an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: GameServerStats.GetUserAchievement(steamIDUser, pchName)
 
@@ -78,7 +78,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is returned as an additional return value
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
 .. function:: GameServerStats.SetUserStatInt32(steamIDUser, pchName, nData)
 

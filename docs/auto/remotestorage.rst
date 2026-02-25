@@ -122,7 +122,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is returned as an additional return value
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback)
 
@@ -158,7 +158,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvBuffer`` is returned as an additional return value
+    * Parameter ``pvBuffer`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.FileForget(pchFile)
 
@@ -286,7 +286,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnFileSizeInBytes`` is returned as an additional return value
+    * Parameter ``pnFileSizeInBytes`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.GetQuota()
 
@@ -299,8 +299,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnTotalBytes`` is returned as an additional return value
-    * Parameter ``puAvailableBytes`` is returned as an additional return value
+    * Parameter ``pnTotalBytes`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``puAvailableBytes`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.IsCloudEnabledForAccount()
 
@@ -345,8 +345,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnBytesDownloaded`` is returned as an additional return value
-    * Parameter ``pnBytesExpected`` is returned as an additional return value
+    * Parameter ``pnBytesDownloaded`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnBytesExpected`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction)
 
@@ -362,7 +362,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is returned as an additional return value
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.GetCachedUGCCount()
 
@@ -397,7 +397,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is returned as an additional return value
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId)
 
@@ -463,7 +463,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is returned as an additional return value
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback)
 
@@ -580,8 +580,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pRequiredTags`` is returned as an additional return value
-    * Parameter ``pExcludedTags`` is returned as an additional return value
+    * Parameter ``pRequiredTags`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pExcludedTags`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback)
 
@@ -602,7 +602,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is returned as an additional return value
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback)
 
@@ -640,8 +640,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is returned as an additional return value
-    * Parameter ``pUserTags`` is returned as an additional return value
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pUserTags`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback)
 
@@ -673,8 +673,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pEChangeType`` is returned as an additional return value
-    * Parameter ``pEFilePathType`` is returned as an additional return value
+    * Parameter ``pEChangeType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pEFilePathType`` is no longer a paramer, and is instead an additional return value
 
 .. function:: RemoteStorage.BeginFileWriteBatch()
 

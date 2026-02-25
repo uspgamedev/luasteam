@@ -36,19 +36,7 @@ void CallbackListener::OnSteamUGCQueryCompleted(SteamUGCQueryCompleted_t *data) 
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 6);
-		luasteam::pushuint64(L, data->m_handle);
-		lua_setfield(L, -2, "m_handle");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_unNumResultsReturned);
-		lua_setfield(L, -2, "m_unNumResultsReturned");
-		lua_pushinteger(L, data->m_unTotalMatchingResults);
-		lua_setfield(L, -2, "m_unTotalMatchingResults");
-		lua_pushboolean(L, data->m_bCachedData);
-		lua_setfield(L, -2, "m_bCachedData");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor), 256);
-		lua_setfield(L, -2, "m_rgchNextCursor");
+		luasteam::push_SteamUGCQueryCompleted_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -62,11 +50,7 @@ void CallbackListener::OnSteamUGCRequestUGCDetailsResult(SteamUGCRequestUGCDetai
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		luasteam::push_SteamUGCDetails_t(L, data->m_details);
-		lua_setfield(L, -2, "m_details");
-		lua_pushboolean(L, data->m_bCachedData);
-		lua_setfield(L, -2, "m_bCachedData");
+		luasteam::push_SteamUGCRequestUGCDetailsResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -80,13 +64,7 @@ void CallbackListener::OnCreateItemResult(CreateItemResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushboolean(L, data->m_bUserNeedsToAcceptWorkshopLegalAgreement);
-		lua_setfield(L, -2, "m_bUserNeedsToAcceptWorkshopLegalAgreement");
+		luasteam::push_CreateItemResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -100,13 +78,7 @@ void CallbackListener::OnSubmitItemUpdateResult(SubmitItemUpdateResult_t *data) 
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushboolean(L, data->m_bUserNeedsToAcceptWorkshopLegalAgreement);
-		lua_setfield(L, -2, "m_bUserNeedsToAcceptWorkshopLegalAgreement");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
+		luasteam::push_SubmitItemUpdateResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -120,15 +92,7 @@ void CallbackListener::OnItemInstalled(ItemInstalled_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 4);
-		lua_pushinteger(L, data->m_unAppID);
-		lua_setfield(L, -2, "m_unAppID");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		luasteam::pushuint64(L, data->m_hLegacyContent);
-		lua_setfield(L, -2, "m_hLegacyContent");
-		luasteam::pushuint64(L, data->m_unManifestID);
-		lua_setfield(L, -2, "m_unManifestID");
+		luasteam::push_ItemInstalled_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -142,13 +106,7 @@ void CallbackListener::OnDownloadItemResult(DownloadItemResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_unAppID);
-		lua_setfield(L, -2, "m_unAppID");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_DownloadItemResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -162,13 +120,7 @@ void CallbackListener::OnUserFavoriteItemsListChanged(UserFavoriteItemsListChang
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushboolean(L, data->m_bWasAddRequest);
-		lua_setfield(L, -2, "m_bWasAddRequest");
+		luasteam::push_UserFavoriteItemsListChanged_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -182,13 +134,7 @@ void CallbackListener::OnSetUserItemVoteResult(SetUserItemVoteResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushboolean(L, data->m_bVoteUp);
-		lua_setfield(L, -2, "m_bVoteUp");
+		luasteam::push_SetUserItemVoteResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -202,17 +148,7 @@ void CallbackListener::OnGetUserItemVoteResult(GetUserItemVoteResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushboolean(L, data->m_bVotedUp);
-		lua_setfield(L, -2, "m_bVotedUp");
-		lua_pushboolean(L, data->m_bVotedDown);
-		lua_setfield(L, -2, "m_bVotedDown");
-		lua_pushboolean(L, data->m_bVoteSkipped);
-		lua_setfield(L, -2, "m_bVoteSkipped");
+		luasteam::push_GetUserItemVoteResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -226,9 +162,7 @@ void CallbackListener::OnStartPlaytimeTrackingResult(StartPlaytimeTrackingResult
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_StartPlaytimeTrackingResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -242,9 +176,7 @@ void CallbackListener::OnStopPlaytimeTrackingResult(StopPlaytimeTrackingResult_t
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
+		luasteam::push_StopPlaytimeTrackingResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -258,13 +190,7 @@ void CallbackListener::OnAddUGCDependencyResult(AddUGCDependencyResult_t *data) 
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		luasteam::pushuint64(L, data->m_nChildPublishedFileId);
-		lua_setfield(L, -2, "m_nChildPublishedFileId");
+		luasteam::push_AddUGCDependencyResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -278,13 +204,7 @@ void CallbackListener::OnRemoveUGCDependencyResult(RemoveUGCDependencyResult_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		luasteam::pushuint64(L, data->m_nChildPublishedFileId);
-		lua_setfield(L, -2, "m_nChildPublishedFileId");
+		luasteam::push_RemoveUGCDependencyResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -298,13 +218,7 @@ void CallbackListener::OnAddAppDependencyResult(AddAppDependencyResult_t *data) 
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
+		luasteam::push_AddAppDependencyResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -318,13 +232,7 @@ void CallbackListener::OnRemoveAppDependencyResult(RemoveAppDependencyResult_t *
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 3);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
+		luasteam::push_RemoveAppDependencyResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -338,21 +246,7 @@ void CallbackListener::OnGetAppDependenciesResult(GetAppDependenciesResult_t *da
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 5);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
-		lua_createtable(L, 32, 0);
-		for(decltype(32) i = 0; i < 32; i++) {
-			lua_pushinteger(L, data->m_rgAppIDs[i]);
-			lua_rawseti(L, -2, i+1);
-		}
-		lua_setfield(L, -2, "m_rgAppIDs");
-		lua_pushinteger(L, data->m_nNumAppDependencies);
-		lua_setfield(L, -2, "m_nNumAppDependencies");
-		lua_pushinteger(L, data->m_nTotalNumAppDependencies);
-		lua_setfield(L, -2, "m_nTotalNumAppDependencies");
+		luasteam::push_GetAppDependenciesResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -366,11 +260,7 @@ void CallbackListener::OnDeleteItemResult(DeleteItemResult_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 2);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		luasteam::pushuint64(L, data->m_nPublishedFileId);
-		lua_setfield(L, -2, "m_nPublishedFileId");
+		luasteam::push_DeleteItemResult_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -384,9 +274,7 @@ void CallbackListener::OnUserSubscribedItemsListChanged(UserSubscribedItemsListC
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 1);
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
+		luasteam::push_UserSubscribedItemsListChanged_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
@@ -400,19 +288,7 @@ void CallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *data) {
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 2);
 	} else {
-		lua_createtable(L, 0, 6);
-		lua_pushinteger(L, data->m_eResult);
-		lua_setfield(L, -2, "m_eResult");
-		lua_pushinteger(L, data->m_nAppID);
-		lua_setfield(L, -2, "m_nAppID");
-		lua_pushinteger(L, data->m_unVersion);
-		lua_setfield(L, -2, "m_unVersion");
-		lua_pushinteger(L, data->m_rtAction);
-		lua_setfield(L, -2, "m_rtAction");
-		lua_pushboolean(L, data->m_bAccepted);
-		lua_setfield(L, -2, "m_bAccepted");
-		lua_pushboolean(L, data->m_bNeedsAction);
-		lua_setfield(L, -2, "m_bNeedsAction");
+		luasteam::push_WorkshopEULAStatus_t(L, *data);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
 	}
