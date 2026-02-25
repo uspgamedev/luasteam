@@ -71,7 +71,7 @@ void VideoCallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
 VideoCallbackListener *Video_listener = nullptr;
 } // namespace
 
-void init_Video_auto(lua_State *L) { Video_listener = new VideoCallbackListener(); }
+void init_Video_auto(lua_State *L) { if (Video_listener != nullptr) return; Video_listener = new VideoCallbackListener(); }
 void shutdown_Video_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Video_ref);
 	Video_ref = LUA_NOREF;

@@ -41,7 +41,7 @@ void ScreenshotsCallbackListener::OnScreenshotRequested(ScreenshotRequested_t *d
 ScreenshotsCallbackListener *Screenshots_listener = nullptr;
 } // namespace
 
-void init_Screenshots_auto(lua_State *L) { Screenshots_listener = new ScreenshotsCallbackListener(); }
+void init_Screenshots_auto(lua_State *L) { if (Screenshots_listener != nullptr) return; Screenshots_listener = new ScreenshotsCallbackListener(); }
 void shutdown_Screenshots_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Screenshots_ref);
 	Screenshots_ref = LUA_NOREF;
@@ -54,11 +54,14 @@ void shutdown_Screenshots_auto(lua_State *L) {
 // int Screenshots.WriteScreenshot(pubRGB: str, cubRGB: int, nWidth: int, nHeight: int)
 static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	auto *iface = SteamScreenshots();
-	char *pubRGB = const_cast<char*>(luaL_checkstring(L, 1));
-	uint32 cubRGB = static_cast<uint32>(luaL_checkint(L, 2));
+	uint32 cubRGB = luaL_checkint(L, 2);
+	const char *_tmp92 = luaL_checkstring(L, 1);
+	if (strlen(_tmp92) >= cubRGB) luaL_error(L, "String too long");
+	std::vector<char> pubRGB(cubRGB);
+	memcpy(pubRGB.data(), _tmp92, sizeof(pubRGB));
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
-	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight);
+	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB.data(), cubRGB, nWidth, nHeight);
 	lua_pushinteger(L, __ret);
 	return 1;
 }

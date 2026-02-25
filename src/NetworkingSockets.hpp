@@ -6,9 +6,8 @@
 namespace luasteam {
 
 // Adds functions from ISteamNetworkingSockets
-void add_networkingSockets(lua_State *L);
-void init_networkingSockets(lua_State *L);
-void shutdown_networkingSockets(lua_State *L);
+void add_NetworkingSockets(lua_State *L);
+void add_GameServerNetworkingSockets(lua_State *L);
 } // namespace luasteam
 
 #endif // LUASTEAM_NETWORKINGSOCKETS

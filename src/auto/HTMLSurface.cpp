@@ -356,7 +356,7 @@ void HTMLSurfaceCallbackListener::OnHTML_BrowserRestarted(HTML_BrowserRestarted_
 HTMLSurfaceCallbackListener *HTMLSurface_listener = nullptr;
 } // namespace
 
-void init_HTMLSurface_auto(lua_State *L) { HTMLSurface_listener = new HTMLSurfaceCallbackListener(); }
+void init_HTMLSurface_auto(lua_State *L) { if (HTMLSurface_listener != nullptr) return; HTMLSurface_listener = new HTMLSurfaceCallbackListener(); }
 void shutdown_HTMLSurface_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, HTMLSurface_ref);
 	HTMLSurface_ref = LUA_NOREF;

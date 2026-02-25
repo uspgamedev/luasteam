@@ -26,7 +26,7 @@ void ParentalSettingsCallbackListener::OnSteamParentalSettingsChanged(SteamParen
 ParentalSettingsCallbackListener *ParentalSettings_listener = nullptr;
 } // namespace
 
-void init_ParentalSettings_auto(lua_State *L) { ParentalSettings_listener = new ParentalSettingsCallbackListener(); }
+void init_ParentalSettings_auto(lua_State *L) { if (ParentalSettings_listener != nullptr) return; ParentalSettings_listener = new ParentalSettingsCallbackListener(); }
 void shutdown_ParentalSettings_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, ParentalSettings_ref);
 	ParentalSettings_ref = LUA_NOREF;

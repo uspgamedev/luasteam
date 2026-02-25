@@ -57,7 +57,7 @@ void HTTPCallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataReceived_t *
 HTTPCallbackListener *HTTP_listener = nullptr;
 } // namespace
 
-void init_HTTP_auto(lua_State *L) { HTTP_listener = new HTTPCallbackListener(); }
+void init_HTTP_auto(lua_State *L) { if (HTTP_listener != nullptr) return; HTTP_listener = new HTTPCallbackListener(); }
 void shutdown_HTTP_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, HTTP_ref);
 	HTTP_ref = LUA_NOREF;
@@ -546,7 +546,7 @@ void GameServerHTTPCallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataRe
 GameServerHTTPCallbackListener *GameServerHTTP_listener = nullptr;
 } // namespace
 
-void init_GameServerHTTP_auto(lua_State *L) { GameServerHTTP_listener = new GameServerHTTPCallbackListener(); }
+void init_GameServerHTTP_auto(lua_State *L) { if (GameServerHTTP_listener != nullptr) return; GameServerHTTP_listener = new GameServerHTTPCallbackListener(); }
 void shutdown_GameServerHTTP_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerHTTP_ref);
 	GameServerHTTP_ref = LUA_NOREF;

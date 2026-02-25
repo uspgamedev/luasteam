@@ -147,7 +147,7 @@ void UtilsCallbackListener::OnFilterTextDictionaryChanged(FilterTextDictionaryCh
 UtilsCallbackListener *Utils_listener = nullptr;
 } // namespace
 
-void init_Utils_auto(lua_State *L) { Utils_listener = new UtilsCallbackListener(); }
+void init_Utils_auto(lua_State *L) { if (Utils_listener != nullptr) return; Utils_listener = new UtilsCallbackListener(); }
 void shutdown_Utils_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Utils_ref);
 	Utils_ref = LUA_NOREF;
@@ -886,7 +886,7 @@ void GameServerUtilsCallbackListener::OnFilterTextDictionaryChanged(FilterTextDi
 GameServerUtilsCallbackListener *GameServerUtils_listener = nullptr;
 } // namespace
 
-void init_GameServerUtils_auto(lua_State *L) { GameServerUtils_listener = new GameServerUtilsCallbackListener(); }
+void init_GameServerUtils_auto(lua_State *L) { if (GameServerUtils_listener != nullptr) return; GameServerUtils_listener = new GameServerUtilsCallbackListener(); }
 void shutdown_GameServerUtils_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerUtils_ref);
 	GameServerUtils_ref = LUA_NOREF;

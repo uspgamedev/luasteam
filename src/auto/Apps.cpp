@@ -86,7 +86,7 @@ void AppsCallbackListener::OnTimedTrialStatus(TimedTrialStatus_t *data) {
 AppsCallbackListener *Apps_listener = nullptr;
 } // namespace
 
-void init_Apps_auto(lua_State *L) { Apps_listener = new AppsCallbackListener(); }
+void init_Apps_auto(lua_State *L) { if (Apps_listener != nullptr) return; Apps_listener = new AppsCallbackListener(); }
 void shutdown_Apps_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Apps_ref);
 	Apps_ref = LUA_NOREF;

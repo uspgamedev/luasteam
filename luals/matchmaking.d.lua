@@ -134,12 +134,6 @@ function Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey) end
 function Matchmaking.SetLobbyMemberData(steamIDLobby, pchKey, pchValue) end
 
 ---@param steamIDLobby uint64
----@param pvMsgBody string
----@param cubMsgBody integer
----@return boolean
-function Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody) end
-
----@param steamIDLobby uint64
 ---@param iChatID integer
 ---@param cubData integer
 ---@return integer

@@ -1496,10 +1496,10 @@ impl Generator {
                     ));
 
                     if create_var {
-                        out.line(&format!("char {}[{}];", value_accessor, size));
+                        out.line(&format!("std::vector<char> {}({});", value_accessor, size));
                     }
                     out.line(&format!(
-                        "memcpy({}, {}, sizeof({}));",
+                        "memcpy({}.data(), {}, sizeof({}));",
                         value_accessor, var, value_accessor
                     ));
                     (true, out.finish(), LType::String)
@@ -1781,8 +1781,8 @@ impl Generator {
         s.line("} // namespace");
         s.preceeding_blank_line();
         s.line(&format!(
-            "void init_{}_auto(lua_State *L) {{ {}_listener = new {}(); }}",
-            name_lower, name_lower, class_name
+            "void init_{}_auto(lua_State *L) {{ if ({}_listener != nullptr) return; {}_listener = new {}(); }}",
+            name_lower, name_lower, name_lower, class_name
         ));
         s.line(&format!(
             "void shutdown_{}_auto(lua_State *L) {{",
@@ -1873,9 +1873,8 @@ impl Generator {
             return Err(SkipReason::NoAccessors);
         }
         let accessor_name = &interface.accessors[0].name;
-        const GS_SKIP: &[&str] = &["ISteamNetworkingSockets"];
         let is_dual_accessor =
-            interface.accessors.len() >= 2 && !GS_SKIP.contains(&interface.classname.as_str());
+            interface.accessors.len() >= 2;
 
         cpp.line("#include \"auto.hpp\"");
         cpp.preceeding_blank_line();
@@ -2275,7 +2274,7 @@ impl Generator {
                     sig.add_param(param.paramname.clone(), LType::Boolean);
                     lua_idx += 1;
                 }
-                _ if resolved.is_buffer() && resolved.is_const() => {
+                Pointer{ttype: "char", is_const: true} => { // TODO: should this support void*?
                     if (method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
                         && param.paramname == "pDataToInclude")
                         || (method.methodname_flat == "SteamAPI_ISteamScreenshots_WriteScreenshot"

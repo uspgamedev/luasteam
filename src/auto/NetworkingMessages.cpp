@@ -42,27 +42,11 @@ void NetworkingMessagesCallbackListener::OnSteamNetworkingMessagesSessionFailed(
 NetworkingMessagesCallbackListener *NetworkingMessages_listener = nullptr;
 } // namespace
 
-void init_NetworkingMessages_auto(lua_State *L) { NetworkingMessages_listener = new NetworkingMessagesCallbackListener(); }
+void init_NetworkingMessages_auto(lua_State *L) { if (NetworkingMessages_listener != nullptr) return; NetworkingMessages_listener = new NetworkingMessagesCallbackListener(); }
 void shutdown_NetworkingMessages_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingMessages_ref);
 	NetworkingMessages_ref = LUA_NOREF;
 	delete NetworkingMessages_listener; NetworkingMessages_listener = nullptr;
-}
-
-// In C++:
-// EResult SendMessageToUser(const SteamNetworkingIdentity & identityRemote, const void * pubData, uint32 cubData, int nSendFlags, int nRemoteChannel);
-// In Lua:
-// int NetworkingMessages.SendMessageToUser(identityRemote: SteamNetworkingIdentity, pubData: str, cubData: int, nSendFlags: int, nRemoteChannel: int)
-static int luasteam_NetworkingMessages_SendMessageToUser(lua_State *L) {
-	auto *iface = ((NetworkingMessagesAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
-	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char *pubData = luaL_checkstring(L, 2);
-	uint32 cubData = static_cast<uint32>(luaL_checkint(L, 3));
-	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
-	int nRemoteChannel = static_cast<int>(luaL_checkint(L, 5));
-	EResult __ret = iface->SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel);
-	lua_pushinteger(L, __ret);
-	return 1;
 }
 
 // In C++:
@@ -120,9 +104,6 @@ static int luasteam_NetworkingMessages_GetSessionConnectionInfo(lua_State *L) {
 
 void register_NetworkingMessages_auto(lua_State *L, NetworkingMessagesAccessor accessor) {
 	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_NetworkingMessages_SendMessageToUser, 1);
-	lua_setfield(L, -2, "SendMessageToUser");
-	lua_pushlightuserdata(L, (void*)accessor);
 	lua_pushcclosure(L, luasteam_NetworkingMessages_AcceptSessionWithUser, 1);
 	lua_setfield(L, -2, "AcceptSessionWithUser");
 	lua_pushlightuserdata(L, (void*)accessor);
@@ -137,7 +118,7 @@ void register_NetworkingMessages_auto(lua_State *L, NetworkingMessagesAccessor a
 }
 
 void add_NetworkingMessages_auto(lua_State *L) {
-	lua_createtable(L, 0, 5);
+	lua_createtable(L, 0, 4);
 	register_NetworkingMessages_auto(L, &SteamNetworkingMessages_SteamAPI);
 	lua_pushvalue(L, -1);
 	NetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -183,7 +164,7 @@ void GameServerNetworkingMessagesCallbackListener::OnSteamNetworkingMessagesSess
 GameServerNetworkingMessagesCallbackListener *GameServerNetworkingMessages_listener = nullptr;
 } // namespace
 
-void init_GameServerNetworkingMessages_auto(lua_State *L) { GameServerNetworkingMessages_listener = new GameServerNetworkingMessagesCallbackListener(); }
+void init_GameServerNetworkingMessages_auto(lua_State *L) { if (GameServerNetworkingMessages_listener != nullptr) return; GameServerNetworkingMessages_listener = new GameServerNetworkingMessagesCallbackListener(); }
 void shutdown_GameServerNetworkingMessages_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerNetworkingMessages_ref);
 	GameServerNetworkingMessages_ref = LUA_NOREF;
@@ -191,7 +172,7 @@ void shutdown_GameServerNetworkingMessages_auto(lua_State *L) {
 }
 
 void add_GameServerNetworkingMessages_auto(lua_State *L) {
-	lua_createtable(L, 0, 5);
+	lua_createtable(L, 0, 4);
 	register_NetworkingMessages_auto(L, &SteamGameServerNetworkingMessages_SteamAPI);
 	lua_pushvalue(L, -1);
 	GameServerNetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);

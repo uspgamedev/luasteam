@@ -41,7 +41,7 @@ void GameServerStatsCallbackListener::OnGSStatsStored(GSStatsStored_t *data) {
 GameServerStatsCallbackListener *GameServerStats_listener = nullptr;
 } // namespace
 
-void init_GameServerStats_auto(lua_State *L) { GameServerStats_listener = new GameServerStatsCallbackListener(); }
+void init_GameServerStats_auto(lua_State *L) { if (GameServerStats_listener != nullptr) return; GameServerStats_listener = new GameServerStatsCallbackListener(); }
 void shutdown_GameServerStats_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerStats_ref);
 	GameServerStats_ref = LUA_NOREF;

@@ -41,7 +41,7 @@ void MusicCallbackListener::OnVolumeHasChanged(VolumeHasChanged_t *data) {
 MusicCallbackListener *Music_listener = nullptr;
 } // namespace
 
-void init_Music_auto(lua_State *L) { Music_listener = new MusicCallbackListener(); }
+void init_Music_auto(lua_State *L) { if (Music_listener != nullptr) return; Music_listener = new MusicCallbackListener(); }
 void shutdown_Music_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Music_ref);
 	Music_ref = LUA_NOREF;

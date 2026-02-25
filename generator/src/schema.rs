@@ -316,6 +316,10 @@ impl SteamApi {
     }
 
     fn fix_missing_array_count(&mut self) {
+        // it has a name but is wrong
+        let param = self.interface_mut("ISteamInventory").method_mut("DeserializeResult").param_mut("pBuffer");
+        assert!(param.array_count == Some("punOutBufferSize".to_string()));
+        param.array_count = Some("unBufferSize".to_string());
         let to_mark_counters = [
             (
                 "ISteamUser",
@@ -412,7 +416,7 @@ impl SteamApi {
             ),
             (
                 "ISteamInventory",
-                vec![("DeserializeResult", "pBuffer", "unBufferSize")],
+                vec![],
             ),
             (
                 "ISteamUGC",
@@ -450,6 +454,7 @@ impl SteamApi {
                 vec![
                     ("GetConnectionName", "pszName", "nMaxLen"),
                     ("GetDetailedConnectionStatus", "pszBuf", "cbBuf"),
+                    ("SendMessageToConnection", "pData", "cbData"),
                 ],
             ),
         ];
@@ -473,6 +478,7 @@ impl SteamApi {
                 assert!(p.paramtype.ends_with(" *"));
                 assert!(p.out_string_count.is_none());
                 assert!(p.out_array_count.is_none());
+                assert!(p.array_count.is_none());
                 let field = if p.paramtype == "char *" {
                     &mut p.out_string_count
                 } else {

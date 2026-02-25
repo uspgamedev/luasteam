@@ -221,7 +221,7 @@ void GameServerCallbackListener::OnComputeNewPlayerCompatibilityResult(ComputeNe
 GameServerCallbackListener *GameServer_listener = nullptr;
 } // namespace
 
-void init_GameServer_auto(lua_State *L) { GameServer_listener = new GameServerCallbackListener(); }
+void init_GameServer_auto(lua_State *L) { if (GameServer_listener != nullptr) return; GameServer_listener = new GameServerCallbackListener(); }
 void shutdown_GameServer_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServer_ref);
 	GameServer_ref = LUA_NOREF;
@@ -591,20 +591,6 @@ static int luasteam_GameServer_GetAuthSessionTicket(lua_State *L) {
 }
 
 // In C++:
-// EBeginAuthSessionResult BeginAuthSession(const void * pAuthTicket, int cbAuthTicket, CSteamID steamID);
-// In Lua:
-// int GameServer.BeginAuthSession(pAuthTicket: str, cbAuthTicket: int, steamID: uint64)
-static int luasteam_GameServer_BeginAuthSession(lua_State *L) {
-	auto *iface = SteamGameServer();
-	const char *pAuthTicket = luaL_checkstring(L, 1);
-	int cbAuthTicket = static_cast<int>(luaL_checkint(L, 2));
-	CSteamID steamID(luasteam::checkuint64(L, 3));
-	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
-	lua_pushinteger(L, __ret);
-	return 1;
-}
-
-// In C++:
 // void EndAuthSession(CSteamID steamID);
 // In Lua:
 // GameServer.EndAuthSession(steamID: uint64)
@@ -691,21 +677,6 @@ static int luasteam_GameServer_GetPublicIP(lua_State *L) {
 	auto *iface = SteamGameServer();
 	SteamIPAddress_t __ret = iface->GetPublicIP();
 	luasteam::push_SteamIPAddress_t(L, __ret);
-	return 1;
-}
-
-// In C++:
-// bool HandleIncomingPacket(const void * pData, int cbData, uint32 srcIP, uint16 srcPort);
-// In Lua:
-// bool GameServer.HandleIncomingPacket(pData: str, cbData: int, srcIP: int, srcPort: int)
-static int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
-	auto *iface = SteamGameServer();
-	const char *pData = luaL_checkstring(L, 1);
-	int cbData = static_cast<int>(luaL_checkint(L, 2));
-	uint32 srcIP = static_cast<uint32>(luaL_checkint(L, 3));
-	uint16 srcPort = static_cast<uint16>(luaL_checkint(L, 4));
-	bool __ret = iface->HandleIncomingPacket(pData, cbData, srcIP, srcPort);
-	lua_pushboolean(L, __ret);
 	return 1;
 }
 
@@ -822,7 +793,6 @@ void register_GameServer_auto(lua_State *L) {
 	add_func(L, "SetRegion", luasteam_GameServer_SetRegion);
 	add_func(L, "SetAdvertiseServerActive", luasteam_GameServer_SetAdvertiseServerActive);
 	add_func(L, "GetAuthSessionTicket", luasteam_GameServer_GetAuthSessionTicket);
-	add_func(L, "BeginAuthSession", luasteam_GameServer_BeginAuthSession);
 	add_func(L, "EndAuthSession", luasteam_GameServer_EndAuthSession);
 	add_func(L, "CancelAuthTicket", luasteam_GameServer_CancelAuthTicket);
 	add_func(L, "UserHasLicenseForApp", luasteam_GameServer_UserHasLicenseForApp);
@@ -830,7 +800,6 @@ void register_GameServer_auto(lua_State *L) {
 	add_func(L, "GetGameplayStats", luasteam_GameServer_GetGameplayStats);
 	add_func(L, "GetServerReputation", luasteam_GameServer_GetServerReputation);
 	add_func(L, "GetPublicIP", luasteam_GameServer_GetPublicIP);
-	add_func(L, "HandleIncomingPacket", luasteam_GameServer_HandleIncomingPacket);
 	add_func(L, "GetNextOutgoingPacket", luasteam_GameServer_GetNextOutgoingPacket);
 	add_func(L, "AssociateWithClan", luasteam_GameServer_AssociateWithClan);
 	add_func(L, "ComputeNewPlayerCompatibility", luasteam_GameServer_ComputeNewPlayerCompatibility);
@@ -839,7 +808,7 @@ void register_GameServer_auto(lua_State *L) {
 }
 
 void add_GameServer_auto(lua_State *L) {
-	lua_createtable(L, 0, 39);
+	lua_createtable(L, 0, 37);
 	register_GameServer_auto(L);
 	lua_pushvalue(L, -1);
 	GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);

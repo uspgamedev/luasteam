@@ -57,7 +57,7 @@ void NetworkingCallbackListener::OnSocketStatusCallback(SocketStatusCallback_t *
 NetworkingCallbackListener *Networking_listener = nullptr;
 } // namespace
 
-void init_Networking_auto(lua_State *L) { Networking_listener = new NetworkingCallbackListener(); }
+void init_Networking_auto(lua_State *L) { if (Networking_listener != nullptr) return; Networking_listener = new NetworkingCallbackListener(); }
 void shutdown_Networking_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Networking_ref);
 	Networking_ref = LUA_NOREF;
@@ -71,11 +71,14 @@ void shutdown_Networking_auto(lua_State *L) {
 static int luasteam_Networking_SendP2PPacket(lua_State *L) {
 	auto *iface = ((NetworkingAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
-	const char *pubData = luaL_checkstring(L, 2);
-	uint32 cubData = static_cast<uint32>(luaL_checkint(L, 3));
+	uint32 cubData = luaL_checkint(L, 3);
+	const char *_tmp90 = luaL_checkstring(L, 2);
+	if (strlen(_tmp90) >= cubData) luaL_error(L, "String too long");
+	std::vector<char> pubData(cubData);
+	memcpy(pubData.data(), _tmp90, sizeof(pubData));
 	EP2PSend eP2PSendType = static_cast<EP2PSend>(luaL_checkint(L, 4));
 	int nChannel = static_cast<int>(luaL_checkint(L, 5));
-	bool __ret = iface->SendP2PPacket(steamIDRemote, pubData, cubData, eP2PSendType, nChannel);
+	bool __ret = iface->SendP2PPacket(steamIDRemote, pubData.data(), cubData, eP2PSendType, nChannel);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -253,10 +256,13 @@ static int luasteam_Networking_DestroyListenSocket(lua_State *L) {
 static int luasteam_Networking_SendDataOnSocket(lua_State *L) {
 	auto *iface = ((NetworkingAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
-	char *pubData = const_cast<char*>(luaL_checkstring(L, 2));
-	uint32 cubData = static_cast<uint32>(luaL_checkint(L, 3));
+	uint32 cubData = luaL_checkint(L, 3);
+	const char *_tmp91 = luaL_checkstring(L, 2);
+	if (strlen(_tmp91) >= cubData) luaL_error(L, "String too long");
+	std::vector<char> pubData(cubData);
+	memcpy(pubData.data(), _tmp91, sizeof(pubData));
 	bool bReliable = lua_toboolean(L, 4);
-	bool __ret = iface->SendDataOnSocket(hSocket, pubData, cubData, bReliable);
+	bool __ret = iface->SendDataOnSocket(hSocket, pubData.data(), cubData, bReliable);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -518,7 +524,7 @@ void GameServerNetworkingCallbackListener::OnSocketStatusCallback(SocketStatusCa
 GameServerNetworkingCallbackListener *GameServerNetworking_listener = nullptr;
 } // namespace
 
-void init_GameServerNetworking_auto(lua_State *L) { GameServerNetworking_listener = new GameServerNetworkingCallbackListener(); }
+void init_GameServerNetworking_auto(lua_State *L) { if (GameServerNetworking_listener != nullptr) return; GameServerNetworking_listener = new GameServerNetworkingCallbackListener(); }
 void shutdown_GameServerNetworking_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerNetworking_ref);
 	GameServerNetworking_ref = LUA_NOREF;

@@ -297,7 +297,7 @@ void UGCCallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *data) {
 UGCCallbackListener *UGC_listener = nullptr;
 } // namespace
 
-void init_UGC_auto(lua_State *L) { UGC_listener = new UGCCallbackListener(); }
+void init_UGC_auto(lua_State *L) { if (UGC_listener != nullptr) return; UGC_listener = new UGCCallbackListener(); }
 void shutdown_UGC_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, UGC_ref);
 	UGC_ref = LUA_NOREF;
@@ -2806,7 +2806,7 @@ void GameServerUGCCallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *d
 GameServerUGCCallbackListener *GameServerUGC_listener = nullptr;
 } // namespace
 
-void init_GameServerUGC_auto(lua_State *L) { GameServerUGC_listener = new GameServerUGCCallbackListener(); }
+void init_GameServerUGC_auto(lua_State *L) { if (GameServerUGC_listener != nullptr) return; GameServerUGC_listener = new GameServerUGCCallbackListener(); }
 void shutdown_GameServerUGC_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerUGC_ref);
 	GameServerUGC_ref = LUA_NOREF;

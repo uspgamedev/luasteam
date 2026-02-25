@@ -71,7 +71,7 @@ void InputCallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotC
 InputCallbackListener *Input_listener = nullptr;
 } // namespace
 
-void init_Input_auto(lua_State *L) { Input_listener = new InputCallbackListener(); }
+void init_Input_auto(lua_State *L) { if (Input_listener != nullptr) return; Input_listener = new InputCallbackListener(); }
 void shutdown_Input_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Input_ref);
 	Input_ref = LUA_NOREF;

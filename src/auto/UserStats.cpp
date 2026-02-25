@@ -206,7 +206,7 @@ void UserStatsCallbackListener::OnGSStatsUnloaded(GSStatsUnloaded_t *data) {
 UserStatsCallbackListener *UserStats_listener = nullptr;
 } // namespace
 
-void init_UserStats_auto(lua_State *L) { UserStats_listener = new UserStatsCallbackListener(); }
+void init_UserStats_auto(lua_State *L) { if (UserStats_listener != nullptr) return; UserStats_listener = new UserStatsCallbackListener(); }
 void shutdown_UserStats_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, UserStats_ref);
 	UserStats_ref = LUA_NOREF;

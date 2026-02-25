@@ -41,7 +41,7 @@ void TimelineCallbackListener::OnSteamTimelineEventRecordingExists(SteamTimeline
 TimelineCallbackListener *Timeline_listener = nullptr;
 } // namespace
 
-void init_Timeline_auto(lua_State *L) { Timeline_listener = new TimelineCallbackListener(); }
+void init_Timeline_auto(lua_State *L) { if (Timeline_listener != nullptr) return; Timeline_listener = new TimelineCallbackListener(); }
 void shutdown_Timeline_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Timeline_ref);
 	Timeline_ref = LUA_NOREF;

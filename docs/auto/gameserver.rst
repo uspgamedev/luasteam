@@ -34,7 +34,6 @@ List of Functions
 * :func:`GameServer.SetRegion`
 * :func:`GameServer.SetAdvertiseServerActive`
 * :func:`GameServer.GetAuthSessionTicket`
-* :func:`GameServer.BeginAuthSession`
 * :func:`GameServer.EndAuthSession`
 * :func:`GameServer.CancelAuthTicket`
 * :func:`GameServer.UserHasLicenseForApp`
@@ -42,7 +41,6 @@ List of Functions
 * :func:`GameServer.GetGameplayStats`
 * :func:`GameServer.GetServerReputation`
 * :func:`GameServer.GetPublicIP`
-* :func:`GameServer.HandleIncomingPacket`
 * :func:`GameServer.GetNextOutgoingPacket`
 * :func:`GameServer.AssociateWithClan`
 * :func:`GameServer.ComputeNewPlayerCompatibility`
@@ -252,16 +250,6 @@ Function Reference
     * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
 
-.. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
-
-    🤖 **Auto-generated binding**
-
-    :param str pAuthTicket:
-    :param int cbAuthTicket:
-    :param uint64 steamID:
-    :returns: (int) Return value
-    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
-
 .. function:: GameServer.EndAuthSession(steamID)
 
     🤖 **Auto-generated binding**
@@ -315,17 +303,6 @@ Function Reference
     :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
     :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
-.. function:: GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort)
-
-    🤖 **Auto-generated binding**
-
-    :param str pData:
-    :param int cbData:
-    :param int srcIP:
-    :param int srcPort:
-    :returns: (bool) Return value
-    :SteamWorks: `HandleIncomingPacket <https://partner.steamgames.com/doc/api/ISteamGameServer#HandleIncomingPacket>`_
-
 .. function:: GameServer.GetNextOutgoingPacket(cbMaxOut)
 
     🤖 **Auto-generated binding**
@@ -377,6 +354,22 @@ Function Reference
     :param int uScore:
     :returns: (bool) Return value
     :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
+
+
+Unimplemented Methods
+---------------------
+
+.. function:: GameServer.beginAuthSession
+
+    ✋ **Not implemented** - unsupported type: const void *
+    
+    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
+
+.. function:: GameServer.handleIncomingPacket
+
+    ✋ **Not implemented** - unsupported type: const void *
+    
+    :SteamWorks: `HandleIncomingPacket <https://partner.steamgames.com/doc/api/ISteamGameServer#HandleIncomingPacket>`_
 
 
 Callbacks

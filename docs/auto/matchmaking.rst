@@ -35,7 +35,6 @@ List of Functions
 * :func:`Matchmaking.DeleteLobbyData`
 * :func:`Matchmaking.GetLobbyMemberData`
 * :func:`Matchmaking.SetLobbyMemberData`
-* :func:`Matchmaking.SendLobbyChatMsg`
 * :func:`Matchmaking.GetLobbyChatEntry`
 * :func:`Matchmaking.RequestLobbyData`
 * :func:`Matchmaking.SetLobbyGameServer`
@@ -316,16 +315,6 @@ Function Reference
     :param str pchValue:
     :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
 
-.. function:: Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pvMsgBody:
-    :param int cubMsgBody:
-    :returns: (bool) Return value
-    :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
-
 .. function:: Matchmaking.GetLobbyChatEntry(steamIDLobby, iChatID, cubData)
 
     🤖 **Auto-generated binding**
@@ -440,6 +429,16 @@ Function Reference
     :param uint64 steamIDLobbyDependent:
     :returns: (bool) Return value
     :SteamWorks: `SetLinkedLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLinkedLobby>`_
+
+
+Unimplemented Methods
+---------------------
+
+.. function:: Matchmaking.sendLobbyChatMsg
+
+    ✋ **Not implemented** - unsupported type: const void *
+    
+    :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
 
 
 Callbacks

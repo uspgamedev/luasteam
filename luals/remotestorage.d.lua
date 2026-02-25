@@ -2,23 +2,10 @@
 local RemoteStorage = {}
 
 ---@param pchFile string
----@param pvData string
----@param cubData integer
----@return boolean
-function RemoteStorage.FileWrite(pchFile, pvData, cubData) end
-
----@param pchFile string
 ---@param cubDataToRead integer
 ---@return integer
 ---@return string -- Value of: pvData
 function RemoteStorage.FileRead(pchFile, cubDataToRead) end
-
----@param pchFile string
----@param pvData string
----@param cubData integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
-function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 
 ---@param pchFile string
 ---@param nOffset integer
@@ -54,12 +41,6 @@ function RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform) end
 ---@param pchFile string
 ---@return uint64
 function RemoteStorage.FileWriteStreamOpen(pchFile) end
-
----@param writeHandle uint64
----@param pvData string
----@param cubData integer
----@return boolean
-function RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData) end
 
 ---@param writeHandle uint64
 ---@return boolean

@@ -251,7 +251,7 @@ void UserCallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
 UserCallbackListener *User_listener = nullptr;
 } // namespace
 
-void init_User_auto(lua_State *L) { User_listener = new UserCallbackListener(); }
+void init_User_auto(lua_State *L) { if (User_listener != nullptr) return; User_listener = new UserCallbackListener(); }
 void shutdown_User_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, User_ref);
 	User_ref = LUA_NOREF;
@@ -475,25 +475,6 @@ static int luasteam_User_GetVoice(lua_State *L) {
 }
 
 // In C++:
-// EVoiceResult DecompressVoice(const void * pCompressed, uint32 cbCompressed, void * pDestBuffer, uint32 cbDestBufferSize, uint32 * nBytesWritten, uint32 nDesiredSampleRate);
-// In Lua:
-// (int, pDestBuffer: str, nBytesWritten: int) User.DecompressVoice(pCompressed: str, cbCompressed: int, cbDestBufferSize: int, nDesiredSampleRate: int)
-static int luasteam_User_DecompressVoice(lua_State *L) {
-	auto *iface = SteamUser();
-	const char *pCompressed = luaL_checkstring(L, 1);
-	uint32 cbCompressed = static_cast<uint32>(luaL_checkint(L, 2));
-	uint32 cbDestBufferSize = luaL_checkint(L, 3);
-	uint32 nBytesWritten = cbDestBufferSize;
-	std::vector<unsigned char> pDestBuffer(cbDestBufferSize);
-	uint32 nDesiredSampleRate = static_cast<uint32>(luaL_checkint(L, 4));
-	EVoiceResult __ret = iface->DecompressVoice(pCompressed, cbCompressed, pDestBuffer.data(), cbDestBufferSize, &nBytesWritten, nDesiredSampleRate);
-	lua_pushinteger(L, __ret);
-	lua_pushlstring(L, reinterpret_cast<const char*>(pDestBuffer.data()), nBytesWritten);
-	lua_pushinteger(L, nBytesWritten);
-	return 3;
-}
-
-// In C++:
 // uint32 GetVoiceOptimalSampleRate();
 // In Lua:
 // int User.GetVoiceOptimalSampleRate()
@@ -529,20 +510,6 @@ static int luasteam_User_GetAuthTicketForWebApi(lua_State *L) {
 	auto *iface = SteamUser();
 	const char *pchIdentity = luaL_checkstring(L, 1);
 	HAuthTicket __ret = iface->GetAuthTicketForWebApi(pchIdentity);
-	lua_pushinteger(L, __ret);
-	return 1;
-}
-
-// In C++:
-// EBeginAuthSessionResult BeginAuthSession(const void * pAuthTicket, int cbAuthTicket, CSteamID steamID);
-// In Lua:
-// int User.BeginAuthSession(pAuthTicket: str, cbAuthTicket: int, steamID: uint64)
-static int luasteam_User_BeginAuthSession(lua_State *L) {
-	auto *iface = SteamUser();
-	const char *pAuthTicket = luaL_checkstring(L, 1);
-	int cbAuthTicket = static_cast<int>(luaL_checkint(L, 2));
-	CSteamID steamID(luasteam::checkuint64(L, 3));
-	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -604,29 +571,6 @@ static int luasteam_User_AdvertiseGame(lua_State *L) {
 	uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 3));
 	iface->AdvertiseGame(steamIDGameServer, unIPServer, usPortServer);
 	return 0;
-}
-
-// In C++:
-// SteamAPICall_t RequestEncryptedAppTicket(const void * pDataToInclude, int cbDataToInclude);
-// In Lua:
-// uint64 User.RequestEncryptedAppTicket(pDataToInclude: str, cbDataToInclude: int, callback: function)
-static int luasteam_User_RequestEncryptedAppTicket(lua_State *L) {
-	auto *iface = SteamUser();
-	int callback_ref = LUA_NOREF;
-	if (lua_isfunction(L, lua_gettop(L))) {
-		lua_pushvalue(L, lua_gettop(L));
-		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-	}
-	char *pDataToInclude = const_cast<char*>(luaL_checkstring(L, 1));
-	int cbDataToInclude = static_cast<int>(luaL_checkint(L, 2));
-	SteamAPICall_t __ret = iface->RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude);
-	if (callback_ref != LUA_NOREF) {
-		auto *listener = new luasteam::CallResultListener<EncryptedAppTicketResponse_t>();
-		listener->callback_ref = callback_ref;
-		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<EncryptedAppTicketResponse_t>::Result);
-	}
-	luasteam::pushuint64(L, __ret);
-	return 1;
 }
 
 // In C++:
@@ -799,17 +743,14 @@ void register_User_auto(lua_State *L) {
 	add_func(L, "StopVoiceRecording", luasteam_User_StopVoiceRecording);
 	add_func(L, "GetAvailableVoice", luasteam_User_GetAvailableVoice);
 	add_func(L, "GetVoice", luasteam_User_GetVoice);
-	add_func(L, "DecompressVoice", luasteam_User_DecompressVoice);
 	add_func(L, "GetVoiceOptimalSampleRate", luasteam_User_GetVoiceOptimalSampleRate);
 	add_func(L, "GetAuthSessionTicket", luasteam_User_GetAuthSessionTicket);
 	add_func(L, "GetAuthTicketForWebApi", luasteam_User_GetAuthTicketForWebApi);
-	add_func(L, "BeginAuthSession", luasteam_User_BeginAuthSession);
 	add_func(L, "EndAuthSession", luasteam_User_EndAuthSession);
 	add_func(L, "CancelAuthTicket", luasteam_User_CancelAuthTicket);
 	add_func(L, "UserHasLicenseForApp", luasteam_User_UserHasLicenseForApp);
 	add_func(L, "BIsBehindNAT", luasteam_User_BIsBehindNAT);
 	add_func(L, "AdvertiseGame", luasteam_User_AdvertiseGame);
-	add_func(L, "RequestEncryptedAppTicket", luasteam_User_RequestEncryptedAppTicket);
 	add_func(L, "GetEncryptedAppTicket", luasteam_User_GetEncryptedAppTicket);
 	add_func(L, "GetGameBadgeLevel", luasteam_User_GetGameBadgeLevel);
 	add_func(L, "GetPlayerSteamLevel", luasteam_User_GetPlayerSteamLevel);
@@ -824,7 +765,7 @@ void register_User_auto(lua_State *L) {
 }
 
 void add_User_auto(lua_State *L) {
-	lua_createtable(L, 0, 31);
+	lua_createtable(L, 0, 28);
 	register_User_auto(L);
 	lua_pushvalue(L, -1);
 	User_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -43,8 +43,7 @@ EXTERN int luasteam_init_server(lua_State *L) {
     bool success = SteamGameServer_Init(ip, usGamePort, usQueryPort, eServerMode, version);
     if (success) {
         luasteam::init_Common(L);
-        luasteam::init_extra(L);
-        luasteam::init_networkingSockets(L);
+        luasteam::init_GameServerNetworkingSockets_auto(L);
         luasteam::init_networkingUtils(L);
         luasteam::init_GameServer_auto(L);
         luasteam::init_GameServerUtils_auto(L);
@@ -82,8 +81,7 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     luasteam::shutdown_GameServerUtils_auto(L);
     luasteam::shutdown_GameServer_auto(L);
     luasteam::shutdown_networkingUtils(L);
-    luasteam::shutdown_networkingSockets(L);
-    luasteam::shutdown_extra(L);
+    luasteam::shutdown_GameServerNetworkingSockets_auto(L);
     luasteam::shutdown_Common(L);
     return 0;
 }

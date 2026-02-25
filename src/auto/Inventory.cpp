@@ -102,7 +102,7 @@ void InventoryCallbackListener::OnSteamInventoryRequestPricesResult(SteamInvento
 InventoryCallbackListener *Inventory_listener = nullptr;
 } // namespace
 
-void init_Inventory_auto(lua_State *L) { Inventory_listener = new InventoryCallbackListener(); }
+void init_Inventory_auto(lua_State *L) { if (Inventory_listener != nullptr) return; Inventory_listener = new InventoryCallbackListener(); }
 void shutdown_Inventory_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Inventory_ref);
 	Inventory_ref = LUA_NOREF;
@@ -311,10 +311,13 @@ static int luasteam_Inventory_GetItemsByID(lua_State *L) {
 static int luasteam_Inventory_DeserializeResult(lua_State *L) {
 	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pOutResultHandle;
-	const char *pBuffer = luaL_checkstring(L, 1);
-	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 2));
+	uint32 unBufferSize = luaL_checkint(L, 2);
+	const char *_tmp93 = luaL_checkstring(L, 1);
+	if (strlen(_tmp93) >= unBufferSize) luaL_error(L, "String too long");
+	std::vector<char> pBuffer(unBufferSize);
+	memcpy(pBuffer.data(), _tmp93, sizeof(pBuffer));
 	bool bRESERVED_MUST_BE_FALSE = lua_toboolean(L, 3);
-	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE);
+	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer.data(), unBufferSize, bRESERVED_MUST_BE_FALSE);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pOutResultHandle);
 	return 2;
@@ -1042,7 +1045,7 @@ void GameServerInventoryCallbackListener::OnSteamInventoryRequestPricesResult(St
 GameServerInventoryCallbackListener *GameServerInventory_listener = nullptr;
 } // namespace
 
-void init_GameServerInventory_auto(lua_State *L) { GameServerInventory_listener = new GameServerInventoryCallbackListener(); }
+void init_GameServerInventory_auto(lua_State *L) { if (GameServerInventory_listener != nullptr) return; GameServerInventory_listener = new GameServerInventoryCallbackListener(); }
 void shutdown_GameServerInventory_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerInventory_ref);
 	GameServerInventory_ref = LUA_NOREF;

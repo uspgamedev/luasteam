@@ -801,7 +801,7 @@ void add_NetworkingMessages_auto(lua_State *L);
 void init_NetworkingMessages_auto(lua_State *L);
 void shutdown_NetworkingMessages_auto(lua_State *L);
 extern int NetworkingMessages_ref;
-void register_NetworkingSockets_auto(lua_State *L);
+void register_NetworkingSockets_auto(lua_State *L, ISteamNetworkingSockets *(*)());
 void add_NetworkingSockets_auto(lua_State *L);
 void init_NetworkingSockets_auto(lua_State *L);
 void shutdown_NetworkingSockets_auto(lua_State *L);
@@ -849,6 +849,10 @@ void add_GameServerNetworkingMessages_auto(lua_State *L);
 void init_GameServerNetworkingMessages_auto(lua_State *L);
 void shutdown_GameServerNetworkingMessages_auto(lua_State *L);
 extern int GameServerNetworkingMessages_ref;
+void add_GameServerNetworkingSockets_auto(lua_State *L);
+void init_GameServerNetworkingSockets_auto(lua_State *L);
+void shutdown_GameServerNetworkingSockets_auto(lua_State *L);
+extern int GameServerNetworkingSockets_ref;
 
 } // namespace luasteam
 

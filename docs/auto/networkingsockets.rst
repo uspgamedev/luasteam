@@ -437,7 +437,7 @@ Unimplemented Methods
 
 .. function:: NetworkingSockets.receivedRelayAuthTicket
 
-    ✋ **Not implemented** - unsupported type: SteamDatagramRelayAuthTicket *
+    ✋ **Not implemented** - unsupported type: const void *
     
     :SteamWorks: `ReceivedRelayAuthTicket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceivedRelayAuthTicket>`_
 
@@ -467,7 +467,7 @@ Unimplemented Methods
 
 .. function:: NetworkingSockets.receivedP2PCustomSignal
 
-    ✋ **Not implemented** - unsupported type: ISteamNetworkingSignalingRecvContext *
+    ✋ **Not implemented** - unsupported type: const void *
     
     :SteamWorks: `ReceivedP2PCustomSignal <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceivedP2PCustomSignal>`_
 
@@ -479,7 +479,7 @@ Unimplemented Methods
 
 .. function:: NetworkingSockets.setCertificate
 
-    ✋ **Not implemented** - unsupported type: SteamNetworkingErrMsg &
+    ✋ **Not implemented** - unsupported type: const void *
     
     :SteamWorks: `SetCertificate <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetCertificate>`_
 

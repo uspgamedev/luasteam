@@ -326,7 +326,7 @@ void FriendsCallbackListener::OnEquippedProfileItems(EquippedProfileItems_t *dat
 FriendsCallbackListener *Friends_listener = nullptr;
 } // namespace
 
-void init_Friends_auto(lua_State *L) { Friends_listener = new FriendsCallbackListener(); }
+void init_Friends_auto(lua_State *L) { if (Friends_listener != nullptr) return; Friends_listener = new FriendsCallbackListener(); }
 void shutdown_Friends_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Friends_ref);
 	Friends_ref = LUA_NOREF;

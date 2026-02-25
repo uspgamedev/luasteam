@@ -176,7 +176,7 @@ void MatchmakingCallbackListener::OnFavoritesListAccountsUpdated(FavoritesListAc
 MatchmakingCallbackListener *Matchmaking_listener = nullptr;
 } // namespace
 
-void init_Matchmaking_auto(lua_State *L) { Matchmaking_listener = new MatchmakingCallbackListener(); }
+void init_Matchmaking_auto(lua_State *L) { if (Matchmaking_listener != nullptr) return; Matchmaking_listener = new MatchmakingCallbackListener(); }
 void shutdown_Matchmaking_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Matchmaking_ref);
 	Matchmaking_ref = LUA_NOREF;
@@ -630,20 +630,6 @@ static int luasteam_Matchmaking_SetLobbyMemberData(lua_State *L) {
 }
 
 // In C++:
-// bool SendLobbyChatMsg(CSteamID steamIDLobby, const void * pvMsgBody, int cubMsgBody);
-// In Lua:
-// bool Matchmaking.SendLobbyChatMsg(steamIDLobby: uint64, pvMsgBody: str, cubMsgBody: int)
-static int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
-	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
-	const char *pvMsgBody = luaL_checkstring(L, 2);
-	int cubMsgBody = static_cast<int>(luaL_checkint(L, 3));
-	bool __ret = iface->SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody);
-	lua_pushboolean(L, __ret);
-	return 1;
-}
-
-// In C++:
 // int GetLobbyChatEntry(CSteamID steamIDLobby, int iChatID, CSteamID * pSteamIDUser, void * pvData, int cubData, EChatEntryType * peChatEntryType);
 // In Lua:
 // (int, pSteamIDUser: uint64, pvData: str, peChatEntryType: int) Matchmaking.GetLobbyChatEntry(steamIDLobby: uint64, iChatID: int, cubData: int)
@@ -823,7 +809,6 @@ void register_Matchmaking_auto(lua_State *L) {
 	add_func(L, "DeleteLobbyData", luasteam_Matchmaking_DeleteLobbyData);
 	add_func(L, "GetLobbyMemberData", luasteam_Matchmaking_GetLobbyMemberData);
 	add_func(L, "SetLobbyMemberData", luasteam_Matchmaking_SetLobbyMemberData);
-	add_func(L, "SendLobbyChatMsg", luasteam_Matchmaking_SendLobbyChatMsg);
 	add_func(L, "GetLobbyChatEntry", luasteam_Matchmaking_GetLobbyChatEntry);
 	add_func(L, "RequestLobbyData", luasteam_Matchmaking_RequestLobbyData);
 	add_func(L, "SetLobbyGameServer", luasteam_Matchmaking_SetLobbyGameServer);
@@ -838,7 +823,7 @@ void register_Matchmaking_auto(lua_State *L) {
 }
 
 void add_Matchmaking_auto(lua_State *L) {
-	lua_createtable(L, 0, 38);
+	lua_createtable(L, 0, 37);
 	register_Matchmaking_auto(L);
 	lua_pushvalue(L, -1);
 	Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

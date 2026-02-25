@@ -35,15 +35,6 @@ function User.GetAvailableVoice() end
 ---@return integer -- Value of: nBytesWritten
 function User.GetVoice(bWantCompressed, cbDestBufferSize) end
 
----@param pCompressed string
----@param cbCompressed integer
----@param cbDestBufferSize integer
----@param nDesiredSampleRate integer
----@return integer
----@return string -- Value of: pDestBuffer
----@return integer -- Value of: nBytesWritten
-function User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate) end
-
 ---@return integer
 function User.GetVoiceOptimalSampleRate() end
 
@@ -57,12 +48,6 @@ function User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity) end
 ---@param pchIdentity string
 ---@return integer
 function User.GetAuthTicketForWebApi(pchIdentity) end
-
----@param pAuthTicket string
----@param cbAuthTicket integer
----@param steamID uint64
----@return integer
-function User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 
 ---@param steamID uint64
 function User.EndAuthSession(steamID) end
@@ -82,12 +67,6 @@ function User.BIsBehindNAT() end
 ---@param unIPServer integer
 ---@param usPortServer integer
 function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end
-
----@param pDataToInclude string
----@param cbDataToInclude integer
----@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
-function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback) end
 
 ---@param cbMaxTicket integer
 ---@return boolean

@@ -26,7 +26,7 @@ void NetworkingUtilsCallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetwor
 NetworkingUtilsCallbackListener *NetworkingUtils_listener = nullptr;
 } // namespace
 
-void init_NetworkingUtils_auto(lua_State *L) { NetworkingUtils_listener = new NetworkingUtilsCallbackListener(); }
+void init_NetworkingUtils_auto(lua_State *L) { if (NetworkingUtils_listener != nullptr) return; NetworkingUtils_listener = new NetworkingUtilsCallbackListener(); }
 void shutdown_NetworkingUtils_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingUtils_ref);
 	NetworkingUtils_ref = LUA_NOREF;

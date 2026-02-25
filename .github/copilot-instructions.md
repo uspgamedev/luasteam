@@ -57,7 +57,7 @@ luals/              LuaLS type definition files (.d.lua) — auto-generated
 2. Implement it in a `src/*.cpp` file.
 3. Register it in the relevant `add_*` function.
 
-**Clang-format:** 4-space indent, no column limit, `IndentPPDirectives: AfterHash`. Run clang-format before committing C++ changes.
+**Clang-format:** 4-space indent, no column limit, `IndentPPDirectives: AfterHash`. Run clang-format after modifying manual C++ files.
 
 **Generator extension points:**
 - Missing array/buffer size metadata → add to `fix_missing_array_count` in `schema.rs` (not `main.rs`). The same table handles both `char *` output buffers (sets `out_string_count`) and other pointer arrays (sets `out_array_count`) — the field is chosen automatically based on `paramtype == "char *"`.

@@ -101,7 +101,7 @@ void PartiesCallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *dat
 PartiesCallbackListener *Parties_listener = nullptr;
 } // namespace
 
-void init_Parties_auto(lua_State *L) { Parties_listener = new PartiesCallbackListener(); }
+void init_Parties_auto(lua_State *L) { if (Parties_listener != nullptr) return; Parties_listener = new PartiesCallbackListener(); }
 void shutdown_Parties_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Parties_ref);
 	Parties_ref = LUA_NOREF;
