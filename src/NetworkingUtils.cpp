@@ -1,4 +1,5 @@
 #include "NetworkingUtils.hpp"
+#include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
 
 // ======================================
@@ -52,6 +53,15 @@ DEFINE_SET_GLOBAL_CALLBACK(luasteam_NetworkingUtils_SetGlobalCallback_MessagesSe
 
 DEFINE_SET_GLOBAL_CALLBACK(luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionFailed, FnSteamNetworkingMessagesSessionFailed, SteamNetworkingMessagesSessionFailed_t, SetGlobalCallback_MessagesSessionFailed, cb_MessagesSessionFailed_ref)
 
+// SteamNetworkingUtils::AllocateMessage — create an outbound message with a pre-allocated buffer.
+// Returns: SteamNetworkingMessage_t userdata. Set m_conn, m_nFlags, m_pData before passing to SendMessages.
+EXTERN int luasteam_networkingUtils_AllocateMessage(lua_State *L) {
+    int cbAllocateBuffer = (int)luaL_checkinteger(L, 1);
+    SteamNetworkingMessage_t *msg = SteamNetworkingUtils_SteamAPI()->AllocateMessage(cbAllocateBuffer);
+    luasteam::push_SteamNetworkingMessage_t(L, msg);
+    return 1;
+}
+
 namespace luasteam {
 
 void add_networkingUtils(lua_State *L) {
@@ -65,6 +75,7 @@ void add_networkingUtils(lua_State *L) {
     add_func(L, "SetGlobalCallback_FakeIPResult", luasteam_NetworkingUtils_SetGlobalCallback_FakeIPResult);
     add_func(L, "SetGlobalCallback_MessagesSessionRequest", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionRequest);
     add_func(L, "SetGlobalCallback_MessagesSessionFailed", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionFailed);
+    add_func(L, "AllocateMessage", luasteam_networkingUtils_AllocateMessage);
     lua_setfield(L, -2, "NetworkingUtils");
 }
 

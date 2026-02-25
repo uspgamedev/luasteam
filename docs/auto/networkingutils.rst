@@ -319,12 +319,6 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingUtils.allocateMessage
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t *
-    
-    :SteamWorks: `AllocateMessage <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#AllocateMessage>`_
-
 .. function:: NetworkingUtils.getLocalPingLocation
 
     ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &

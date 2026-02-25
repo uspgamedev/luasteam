@@ -411,29 +411,11 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingSockets.sendMessages
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t *const *
-    
-    :SteamWorks: `SendMessages <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages>`_
-
-.. function:: NetworkingSockets.receiveMessagesOnConnection
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t **
-    
-    :SteamWorks: `ReceiveMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection>`_
-
 .. function:: NetworkingSockets.configureConnectionLanes
 
     ✋ **Not implemented** - unsupported type: const int *
     
     :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
-
-.. function:: NetworkingSockets.receiveMessagesOnPollGroup
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkingMessage_t **
-    
-    :SteamWorks: `ReceiveMessagesOnPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup>`_
 
 .. function:: NetworkingSockets.receivedRelayAuthTicket
 

@@ -223,7 +223,7 @@ static int luasteam_NetworkingSockets_SendMessageToConnection(lua_State *L) {
 	const char *_tmp94 = luaL_checkstring(L, 2);
 	if (strlen(_tmp94) >= cbData) luaL_error(L, "String too long");
 	std::vector<char> pData(cbData);
-	memcpy(pData.data(), _tmp94, sizeof(pData));
+	memcpy(pData.data(), _tmp94, cbData);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int64 pOutMessageNumber;
 	EResult __ret = iface->SendMessageToConnection(hConn, pData.data(), cbData, nSendFlags, &pOutMessageNumber);

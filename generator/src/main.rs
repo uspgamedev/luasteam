@@ -25,8 +25,12 @@ use type_resolver::TypeResolver;
 
 static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 //
-// Structs with custom manual implementations — skip auto-generation
-const MANUAL_STRUCTS: [&str; 0] = [];
+// Structs with custom manual implementations — skip auto-generation but register push/check.
+// Format: (name, reason_for_manual_impl)
+const MANUAL_STRUCTS: [(&str, &str); 1] = [(
+    "SteamNetworkingMessage_t",
+    "manually implemented in SteamNetworkingMessage.cpp; not in steam_api.json; pointer-based push/check",
+)];
 // Subset of MANUAL_STRUCTS that also provide a check_{}_ptr function returning a pointer,
 // avoiding a copy when passing as const pointer/reference in method params.
 const MANUAL_STRUCTS_WITH_PTR: [&str; 0] = [];
@@ -208,6 +212,36 @@ impl Generator {
             );
         }
 
+        // SteamNetworkingMessage_t is manually implemented (not in steam_api.json, pointer-based)
+        for (name, reason) in [
+            (
+                "SteamAPI_ISteamNetworkingUtils_AllocateMessage",
+                "SteamNetworkingMessage_t binding in NetworkingUtils.cpp",
+            ),
+            (
+                "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnConnection",
+                "SteamNetworkingMessage_t out-array in NetworkingSockets.cpp",
+            ),
+            (
+                "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnPollGroup",
+                "SteamNetworkingMessage_t out-array in NetworkingSockets.cpp",
+            ),
+            (
+                "SteamAPI_ISteamNetworkingSockets_SendMessages",
+                "SteamNetworkingMessage_t input-array in NetworkingSockets.cpp",
+            ),
+        ] {
+            blocklist.insert(name.to_string(), SkipReason::ManualImpl(reason.to_string()));
+        }
+
+        // Not yet implemented — blocked until SteamNetworkingMessage_t out-array in NetworkingMessages
+        blocklist.insert(
+            "SteamAPI_ISteamNetworkingMessages_ReceiveMessagesOnChannel".to_string(),
+            SkipReason::ManualBlocklist(
+                "SteamNetworkingMessage_t out-array; not yet implemented".to_string(),
+            ),
+        );
+
         blocklist
     }
 
@@ -322,7 +356,6 @@ impl Generator {
         let incomplete_structs = [
             "SteamDatagramHostedAddress",
             "SteamDatagramGameCoordinatorServerLogin",
-            "SteamNetworkingMessage_t", // has protected destructor and function-pointer fields; not user-constructible
         ];
         stats.structs_total = self.api.structs.len() + self.api.callback_structs.len();
         let mut outputs: Vec<StructGenOutput> = Vec::new();
@@ -348,11 +381,8 @@ impl Generator {
                     .push((st.name.clone(), SkipReason::Incomplete));
                 continue;
             }
-            if MANUAL_STRUCTS.contains(&st.name.as_str()) {
-                stats.skipped_structs.push((
-                    st.name.clone(),
-                    SkipReason::ManualBlocklist("has private fields; use accessor API".to_string()),
-                ));
+            if MANUAL_STRUCTS.iter().any(|(n, _)| *n == st.name.as_str()) {
+                stats.structs_manual += 1;
                 // Still add to added_structs so generate_check/push normal path works
                 self.added_structs.insert(st.name.clone());
                 if MANUAL_STRUCTS_WITH_PTR.contains(&st.name.as_str()) {
@@ -1355,7 +1385,7 @@ impl Generator {
         let mut structs_sorted: Vec<_> = self.added_structs.iter().collect();
         structs_sorted.sort();
         for st in &structs_sorted {
-            if MANUAL_STRUCTS.contains(&st.as_str()) {
+            if MANUAL_STRUCTS.iter().any(|(n, _)| *n == st.as_str()) {
                 continue;
             }
             h.line(&format!("{} check_{}(lua_State *L, int index);", st, st));
@@ -1364,7 +1394,7 @@ impl Generator {
         let mut structs_with_ptr_sorted: Vec<_> = self.added_structs_with_ptr.iter().collect();
         structs_with_ptr_sorted.sort();
         for st in structs_with_ptr_sorted {
-            if MANUAL_STRUCTS.contains(&st.as_str()) {
+            if MANUAL_STRUCTS.iter().any(|(n, _)| *n == st.as_str()) {
                 continue; // declared in common.hpp
             }
             h.line(&format!(
@@ -1497,11 +1527,17 @@ impl Generator {
 
                     if create_var {
                         out.line(&format!("std::vector<char> {}({});", value_accessor, size));
+                        out.line(&format!(
+                            "memcpy({}.data(), {}, {});",
+                            value_accessor, var, size
+                        ));
+                    } else {
+                        // value_accessor is a plain C array (char[N]) — no .data() needed
+                        out.line(&format!(
+                            "memcpy({}, {}, sizeof({}));",
+                            value_accessor, var, value_accessor
+                        ));
                     }
-                    out.line(&format!(
-                        "memcpy({}.data(), {}, sizeof({}));",
-                        value_accessor, var, value_accessor
-                    ));
                     (true, out.finish(), LType::String)
                 } else {
                     out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
@@ -1928,6 +1964,7 @@ impl Generator {
                 if reason.is_manual_impl() {
                     // Counts as implemented — manual C++ impl exists
                     stats.methods_generated += 1;
+                    stats.methods_manual += 1;
                     interface_methods_generated += 1;
                     interface_methods_manual += 1;
                 } else {

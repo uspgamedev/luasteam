@@ -315,7 +315,7 @@ static int luasteam_Inventory_DeserializeResult(lua_State *L) {
 	const char *_tmp93 = luaL_checkstring(L, 1);
 	if (strlen(_tmp93) >= unBufferSize) luaL_error(L, "String too long");
 	std::vector<char> pBuffer(unBufferSize);
-	memcpy(pBuffer.data(), _tmp93, sizeof(pBuffer));
+	memcpy(pBuffer.data(), _tmp93, unBufferSize);
 	bool bRESERVED_MUST_BE_FALSE = lua_toboolean(L, 3);
 	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer.data(), unBufferSize, bRESERVED_MUST_BE_FALSE);
 	lua_pushboolean(L, __ret);

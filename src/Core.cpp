@@ -3,6 +3,7 @@
 #include "Extra.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"
+#include "SteamNetworkingMessage.hpp"
 #include "Utils.hpp"
 #include "auto/auto.hpp"
 
@@ -18,6 +19,7 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_Common(L);
         luasteam::init_Client(L);
         luasteam::init_structs_auto(L);
+        luasteam::init_SteamNetworkingMessage_t(L);
         luasteam::init_callback_interfaces_auto(L);
         luasteam::init_Friends_auto(L);
         luasteam::init_User_auto(L);
@@ -86,6 +88,7 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_Client(L);
     luasteam::shutdown_Common(L);
     luasteam::shutdown_structs_auto(L);
+    luasteam::shutdown_SteamNetworkingMessage_t(L);
     luasteam::shutdown_callback_interfaces_auto(L);
     return 0;
 }

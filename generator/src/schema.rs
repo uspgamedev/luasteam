@@ -33,12 +33,14 @@ pub struct Stats {
     pub interfaces_generated: usize,
     pub methods_total: usize,
     pub methods_generated: usize,
+    pub methods_manual: usize,
     pub enum_values_total: usize,
     pub enum_values_generated: usize,
     pub consts_total: usize,
     pub const_generated: usize,
     pub structs_total: usize,
     pub structs_generated: usize,
+    pub structs_manual: usize,
 
     // Track skipped items with reasons
     pub skipped_interfaces: Vec<(String, SkipReason)>,
@@ -62,9 +64,10 @@ impl Stats {
             self.interfaces_total - self.interfaces_generated
         );
         println!(
-            "Methods:     {} total, {} generated, {} skipped",
+            "Methods:     {} total, {} generated, {} manual, {} skipped",
             self.methods_total,
-            self.methods_generated,
+            self.methods_generated - self.methods_manual,
+            self.methods_manual,
             self.methods_total - self.methods_generated
         );
         println!(
@@ -80,10 +83,11 @@ impl Stats {
             self.consts_total - self.const_generated
         );
         println!(
-            "Structs:     {} total, {} generated, {} skipped",
+            "Structs:     {} total, {} generated, {} manual, {} skipped",
             self.structs_total,
             self.structs_generated,
-            self.structs_total - self.structs_generated
+            self.structs_manual,
+            self.structs_total - self.structs_generated - self.structs_manual
         );
 
         // Print per-interface coverage
@@ -166,12 +170,17 @@ impl Stats {
             }
         }
 
-        // Print skipped structs
-        if !self.skipped_structs.is_empty() {
+        // Print skipped structs (exclude ManualImpl — those are covered)
+        let truly_skipped_structs: Vec<_> = self
+            .skipped_structs
+            .iter()
+            .filter(|(_, r)| !r.is_manual_impl())
+            .collect();
+        if !truly_skipped_structs.is_empty() {
             println!("\n┌─────────────────────────────────────────────────────────────┐");
-            println!("│ Skipped Structs ({})", self.skipped_structs.len());
+            println!("│ Skipped Structs ({})", truly_skipped_structs.len());
             println!("└─────────────────────────────────────────────────────────────┘");
-            for (name, reason) in &self.skipped_structs {
+            for (name, reason) in &truly_skipped_structs {
                 println!("  • {} — {}", name, reason.description());
             }
         }

@@ -1,126 +1,101 @@
 #include "NetworkingSockets.hpp"
+#include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
 
 // ======================================
 // ======= SteamNetworkingSockets =======
 // ======================================
-// This interface is manually implemented because it's a complex API with many custom structs,
-// pointers, and callback-heavy logic that doesn't map easily to the current auto-generator.
+// The methods are manually implemented because they use SteamNetworkingMessage_t, which is manually implemented and different from all other structs in the codebase.
 
-typedef ISteamNetworkingSockets *(*SteamNetworkingSocketsLib)();
-SteamNetworkingSocketsLib steamNetworkingSocketsLib;
-
-// TODO: see what to do
-// ReceiveMessagesOnConnection( HSteamNetConnection hConn, SteamNetworkingMessage_t **ppOutMessages, int nMaxMessages )
-EXTERN int luasteam_receiveMessagesOnConnection(lua_State *L) {
+// In C++:
+// int ReceiveMessagesOnConnection( HSteamNetConnection hConn, SteamNetworkingMessage_t **ppOutMessages, int nMaxMessages )
+// In Lua:
+// (int, ppOutMessages: SteamNetworkingMessage_t[]) NetworkingSockets.ReceiveMessagesOnConnection(hConn: int, nMaxMessages: int)
+int luasteam_ReceiveMessagesOnConnection(lua_State *L, ISteamNetworkingSockets *iface) {
     HSteamNetConnection hConn = luaL_checkinteger(L, 1);
+    int nMaxMessages = luaL_checkinteger(L, 2);
 
-    SteamNetworkingMessage_t *msgs[32];
-    int numMessages = steamNetworkingSocketsLib()->ReceiveMessagesOnConnection(hConn, msgs, 32);
+    std::vector<SteamNetworkingMessage_t *> msgs(nMaxMessages);
+    int numMessages = iface->ReceiveMessagesOnConnection(hConn, msgs.data(), nMaxMessages);
 
     lua_pushinteger(L, numMessages);
-    if (numMessages >= 0) {
-        lua_createtable(L, 0, numMessages);
-        for (int i = 0; i < numMessages; i++) {
-            SteamNetworkingMessage_t *message = msgs[i];
-            uint32 messageSize = message->GetSize();
-            if (messageSize > 0) {
-                lua_pushlstring(L, (char *)message->GetData(), messageSize);
-            } else {
-                lua_pushstring(L, "");
-            }
-            lua_rawseti(L, -2, i + 1);
-            message->Release();
-        }
-        return 2;
+    lua_createtable(L, numMessages, 0);
+    for (int i = 0; i < numMessages; i++) {
+        luasteam::push_SteamNetworkingMessage_t(L, msgs[i]);
+        lua_rawseti(L, -2, i + 1);
     }
-    return 1;
+    return 2;
 }
 
+EXTERN int luasteam_ReceiveMessagesOnConnection_user(lua_State *L) { return luasteam_ReceiveMessagesOnConnection(L, SteamNetworkingSockets()); }
+EXTERN int luasteam_ReceiveMessagesOnConnection_gameserver(lua_State *L) { return luasteam_ReceiveMessagesOnConnection(L, SteamGameServerNetworkingSockets()); }
+
+// In C++:
 // int ReceiveMessagesOnPollGroup( HSteamNetPollGroup hPollGroup, SteamNetworkingMessage_t **ppOutMessages, int nMaxMessages )
-EXTERN int luasteam_receiveMessagesOnPollGroup(lua_State *L) {
+// In Lua:
+// (int, ppOutMessages: SteamNetworkingMessage_t[]) NetworkingSockets.ReceiveMessagesOnPollGroup(hPollGroup: int, nMaxMessages: int)
+int luasteam_ReceiveMessagesOnPollGroup(lua_State *L, ISteamNetworkingSockets *iface) {
     HSteamNetPollGroup hPollGroup = luaL_checkinteger(L, 1);
+    int nMaxMessages = luaL_checkinteger(L, 2);
 
-    SteamNetworkingMessage_t *msgs[32];
-    int numMessages = steamNetworkingSocketsLib()->ReceiveMessagesOnPollGroup(hPollGroup, msgs, 32);
+    std::vector<SteamNetworkingMessage_t *> msgs(nMaxMessages);
+    int numMessages = iface->ReceiveMessagesOnPollGroup(hPollGroup, msgs.data(), nMaxMessages);
 
     lua_pushinteger(L, numMessages);
-    if (numMessages >= 0) {
-        lua_createtable(L, 0, numMessages);
-        for (int i = 0; i < numMessages; i++) {
-            SteamNetworkingMessage_t *message = msgs[i];
-            uint32 messageSize = message->GetSize();
-
-            lua_createtable(L, 0, 2);
-            if (messageSize > 0) {
-                lua_pushlstring(L, (char *)message->GetData(), messageSize);
-            } else {
-                lua_pushstring(L, "");
-            }
-            lua_setfield(L, -2, "msg");
-            lua_pushinteger(L, message->m_conn);
-            lua_setfield(L, -2, "conn");
-            lua_rawseti(L, -2, i + 1);
-            message->Release();
-        }
-        return 2;
+    lua_createtable(L, numMessages, 0);
+    for (int i = 0; i < numMessages; i++) {
+        luasteam::push_SteamNetworkingMessage_t(L, msgs[i]);
+        lua_rawseti(L, -2, i + 1);
     }
-    return 1;
+    return 2;
 }
 
+EXTERN int luasteam_ReceiveMessagesOnPollGroup_user(lua_State *L) { return luasteam_ReceiveMessagesOnPollGroup(L, SteamNetworkingSockets()); }
+EXTERN int luasteam_ReceiveMessagesOnPollGroup_gameserver(lua_State *L) { return luasteam_ReceiveMessagesOnPollGroup(L, SteamGameServerNetworkingSockets()); }
+
+// In C++:
 // void SendMessages( int nMessages, SteamNetworkingMessage_t *const *pMessages, int64 *pOutMessageNumberOrResult )
-EXTERN int luasteam_sendMessages(lua_State *L) {
+// In Lua:
+// int[] NetworkingSockets.SendMessages(nMessages: int, pMessages: SteamNetworkingMessage_t[])
+int luasteam_SendMessages(lua_State *L, ISteamNetworkingSockets *iface) {
     int nMessages = luaL_checkinteger(L, 1);
-    int64 *pOutMessageNumberOrResult = new int64[nMessages];
-    SteamNetworkingMessage_t **pMessages = new SteamNetworkingMessage_t *[nMessages];
+    luaL_checktype(L, 2, LUA_TTABLE);
+    std::vector<int64> pOutMessageNumberOrResult(nMessages);
+    std::vector<SteamNetworkingMessage_t *> pMessages(nMessages);
     for (int i = 0; i < nMessages; i++) {
         lua_rawgeti(L, 2, i + 1);
-
-        lua_getfield(L, -1, "conn");
-        HSteamNetConnection hConn = luaL_checkinteger(L, -1);
-        lua_pop(L, 1);
-
-        lua_getfield(L, -1, "flag");
-        int sendType = luaL_checkinteger(L, -1);
-        lua_pop(L, 1);
-
-        lua_getfield(L, -1, "msg");
-        size_t len = 0;
-        const char *msg = lua_tolstring(L, -1, &len);
-
-        pMessages[i] = SteamNetworkingUtils()->AllocateMessage(len);
-        memcpy(pMessages[i]->m_pData, msg, len);
-        pMessages[i]->m_conn = hConn;
-        pMessages[i]->m_nFlags = sendType;
+        pMessages[i] = luasteam::check_SteamNetworkingMessage_t(L, -1);
         lua_pop(L, 1);
     }
-    steamNetworkingSocketsLib()->SendMessages(nMessages, pMessages, pOutMessageNumberOrResult);
-    lua_createtable(L, 0, nMessages);
+    iface->SendMessages(nMessages, pMessages.data(), pOutMessageNumberOrResult.data());
+    lua_createtable(L, nMessages, 0);
     for (int i = 0; i < nMessages; i++) {
-        lua_pushboolean(L, pOutMessageNumberOrResult[i] > 0);
+        lua_pushinteger(L, pOutMessageNumberOrResult[i]);
         lua_rawseti(L, -2, i + 1);
     }
     return 1;
 }
+
+EXTERN int luasteam_SendMessages_user(lua_State *L) { return luasteam_SendMessages(L, SteamNetworkingSockets()); }
+EXTERN int luasteam_SendMessages_gameserver(lua_State *L) { return luasteam_SendMessages(L, SteamGameServerNetworkingSockets()); }
 
 namespace luasteam {
 
 void add_NetworkingSockets(lua_State *L) {
     lua_createtable(L, 0, 20);
     register_NetworkingSockets_auto(L, &SteamNetworkingSockets);
-    add_func(L, "ReceiveMessagesOnConnection", luasteam_receiveMessagesOnConnection);
-    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
-    add_func(L, "SendMessages", luasteam_sendMessages);
+    add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_user);
+    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_user);
+    add_func(L, "SendMessages", luasteam_SendMessages_user);
     lua_setfield(L, -2, "NetworkingSockets");
 }
 
 void add_GameServerNetworkingSockets(lua_State *L) {
     lua_createtable(L, 0, 20);
     register_NetworkingSockets_auto(L, &SteamGameServerNetworkingSockets);
-    // TODO: fix these to use Gameserver
-    add_func(L, "ReceiveMessagesOnConnection", luasteam_receiveMessagesOnConnection);
-    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_receiveMessagesOnPollGroup);
-    add_func(L, "SendMessages", luasteam_sendMessages);
+    add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_gameserver);
+    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_gameserver);
+    add_func(L, "SendMessages", luasteam_SendMessages_gameserver);
     lua_setfield(L, -2, "NetworkingSockets");
 }
 

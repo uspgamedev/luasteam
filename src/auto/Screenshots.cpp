@@ -58,7 +58,7 @@ static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	const char *_tmp92 = luaL_checkstring(L, 1);
 	if (strlen(_tmp92) >= cubRGB) luaL_error(L, "String too long");
 	std::vector<char> pubRGB(cubRGB);
-	memcpy(pubRGB.data(), _tmp92, sizeof(pubRGB));
+	memcpy(pubRGB.data(), _tmp92, cubRGB);
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
 	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB.data(), cubRGB, nWidth, nHeight);
