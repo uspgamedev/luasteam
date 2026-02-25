@@ -13,7 +13,7 @@ EXTERN int luasteam_parseUint64(lua_State *L) {
 
 namespace luasteam {
 
-void add_extra(lua_State *L) {
+void add_Extra(lua_State *L) {
     lua_createtable(L, 0, 1);
     add_func(L, "ParseUint64", luasteam_parseUint64);
     lua_setfield(L, -2, "Extra");

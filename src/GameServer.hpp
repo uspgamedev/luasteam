@@ -6,7 +6,7 @@
 namespace luasteam {
 
 // Adds functions SteamAPI_*
-void add_gameServer(lua_State *L);
+void add_GameServer(lua_State *L);
 
 } // namespace luasteam
 

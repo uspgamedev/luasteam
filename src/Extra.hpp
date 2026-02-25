@@ -6,7 +6,7 @@
 namespace luasteam {
 
 // Adds extra functions
-void add_extra(lua_State *L);
+void add_Extra(lua_State *L);
 
 void init_extra(lua_State *L);
 void shutdown_extra(lua_State *L);
