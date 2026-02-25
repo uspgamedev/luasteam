@@ -563,6 +563,11 @@ impl SteamApi {
             name: "SteamClient".to_string(),
             name_flat: "unknown".to_string(),
         });
+        client.accessors.push(Accessor {
+            kind: "gameserver".to_string(),
+            name: "SteamGameServerClient".to_string(),
+            name_flat: "unknown".to_string(),
+        });
     }
 
     pub fn apply_fixes(&mut self) {

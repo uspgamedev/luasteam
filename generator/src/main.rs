@@ -268,13 +268,19 @@ impl Generator {
         self.generate_callback_interfaces();
 
         let mut interface_names = Vec::new();
+        let mut gs_names: Vec<String> = Vec::new();
+        let mut dual_accessor_names: std::collections::HashSet<String> = Default::default();
 
         let method_blocklist = self.manual_method_blocklist();
 
         let interfaces = self.api.interfaces.clone();
         for interface in &interfaces {
             match self.generate_interface(interface, &method_blocklist, &mut stats, &luals_dir) {
-                Ok(name) => {
+                Ok((name, gs_name_opt)) => {
+                    if let Some(gs_name) = gs_name_opt {
+                        gs_names.push(gs_name);
+                        dual_accessor_names.insert(name.clone());
+                    }
                     interface_names.push(name);
                     stats.interfaces_generated += 1;
                 }
@@ -306,7 +312,7 @@ impl Generator {
 
         self.generate_consts(&mut stats);
         self.generate_enums(&mut stats);
-        self.generate_auto_header(&interface_names);
+        self.generate_auto_header(&interface_names, &gs_names, &dual_accessor_names);
         self.luals_generator
             .write_index(&luals_dir, &interface_names, &self.opaque_handles);
         stats.print_summary();
@@ -1320,7 +1326,7 @@ impl Generator {
         fs::write("../src/auto/enums.cpp", cpp.finish()).expect("Unable to write enums.cpp");
     }
 
-    fn generate_auto_header(&self, interfaces: &[String]) {
+    fn generate_auto_header(&self, interfaces: &[String], gs_names: &[String], dual_accessor_names: &std::collections::HashSet<String>) {
         let mut h = CodeBuilder::new();
         h.line("#ifndef LUASTEAM_AUTO_HPP");
         h.line("#define LUASTEAM_AUTO_HPP");
@@ -1367,11 +1373,21 @@ impl Generator {
             ));
         }
         for name in interfaces {
-            h.line(&format!("void register_{}_auto(lua_State *L);", name));
+            if dual_accessor_names.contains(name) {
+                h.line(&format!("void register_{}_auto(lua_State *L, ISteam{} *(*)());", name, name));
+            } else {
+                h.line(&format!("void register_{}_auto(lua_State *L);", name));
+            }
             h.line(&format!("void add_{}_auto(lua_State *L);", name));
             h.line(&format!("void init_{}_auto(lua_State *L);", name));
             h.line(&format!("void shutdown_{}_auto(lua_State *L);", name));
             h.line(&format!("extern int {}_ref;", name));
+        }
+        for gs_name in gs_names {
+            h.line(&format!("void add_{}_auto(lua_State *L);", gs_name));
+            h.line(&format!("void init_{}_auto(lua_State *L);", gs_name));
+            h.line(&format!("void shutdown_{}_auto(lua_State *L);", gs_name));
+            h.line(&format!("extern int {}_ref;", gs_name));
         }
         h.preceeding_blank_line();
         h.line("} // namespace luasteam");
@@ -1662,8 +1678,10 @@ impl Generator {
         name_lower: &str,
         classname: &str,
         callbacks: &[CallbackStruct],
+        is_gameserver_pipe: bool,
     ) -> String {
         let mut s = CodeBuilder::new();
+        let class_name = format!("{}CallbackListener", name_lower);
         if callbacks.is_empty() {
             s.line(&format!("void init_{}_auto(lua_State *L) {{}}", name_lower));
             s.line(&format!(
@@ -1682,10 +1700,10 @@ impl Generator {
         }
 
         s.line("namespace {");
-        s.line("class CallbackListener {");
+        s.line(&format!("class {} {{", class_name));
         s.line("private:");
         s.indent_right();
-        let is_gameserver = classname == "ISteamGameServer" || classname == "ISteamGameServerStats";
+        let is_gameserver = is_gameserver_pipe || classname == "ISteamGameServer" || classname == "ISteamGameServerStats";
         let macro_name = if is_gameserver {
             "STEAM_GAMESERVER_CALLBACK"
         } else {
@@ -1699,8 +1717,8 @@ impl Generator {
             }
             cpp_func_name = format!("On{}", cpp_func_name);
             s.line(&format!(
-                "{}(CallbackListener, {}, {});",
-                macro_name, cpp_func_name, cb.name
+                "{}({}, {}, {});",
+                macro_name, class_name, cpp_func_name, cb.name
             ));
         }
         s.indent_left();
@@ -1714,8 +1732,8 @@ impl Generator {
             }
             cpp_func_name = format!("On{}", cpp_func_name);
             s.line(&format!(
-                "void CallbackListener::{}({} *data) {{",
-                cpp_func_name, cb.name
+                "void {}::{}({} *data) {{",
+                class_name, cpp_func_name, cb.name
             ));
             s.indent_right();
             s.line("if (data == nullptr) return;");
@@ -1757,14 +1775,14 @@ impl Generator {
         }
 
         s.line(&format!(
-            "CallbackListener *{}_listener = nullptr;",
-            name_lower
+            "{} *{}_listener = nullptr;",
+            class_name, name_lower
         ));
         s.line("} // namespace");
         s.preceeding_blank_line();
         s.line(&format!(
-            "void init_{}_auto(lua_State *L) {{ {}_listener = new CallbackListener(); }}",
-            name_lower, name_lower
+            "void init_{}_auto(lua_State *L) {{ {}_listener = new {}(); }}",
+            name_lower, name_lower, class_name
         ));
         s.line(&format!(
             "void shutdown_{}_auto(lua_State *L) {{",
@@ -1848,19 +1866,25 @@ impl Generator {
         method_blocklist: &HashMap<String, SkipReason>,
         stats: &mut Stats,
         luals_dir: &Path,
-    ) -> Result<String, SkipReason> {
+    ) -> Result<(String, Option<String>), SkipReason> {
         let mut cpp = CodeBuilder::new();
         let name = &interface.classname["ISteam".len()..];
         if interface.accessors.is_empty() {
             return Err(SkipReason::NoAccessors);
         }
         let accessor_name = &interface.accessors[0].name;
+        const GS_SKIP: &[&str] = &["ISteamNetworkingSockets"];
+        let is_dual_accessor =
+            interface.accessors.len() >= 2 && !GS_SKIP.contains(&interface.classname.as_str());
 
         cpp.line("#include \"auto.hpp\"");
         cpp.preceeding_blank_line();
         cpp.line("namespace luasteam {");
         cpp.preceeding_blank_line();
         cpp.line(&format!("int {}_ref = LUA_NOREF;", name));
+        if is_dual_accessor {
+            cpp.line(&format!("typedef ISteam{} *(*{}Accessor)();", name, name));
+        }
         cpp.preceeding_blank_line();
 
         let callbacks = self
@@ -1868,7 +1892,7 @@ impl Generator {
             .get(&interface.classname)
             .map(|v| v.as_slice())
             .unwrap_or(&[]);
-        cpp.raw(&self.generate_callback_listener(name, &interface.classname, callbacks));
+        cpp.raw(&self.generate_callback_listener(name, &interface.classname, callbacks, false));
         cpp.preceeding_blank_line();
 
         let mut callresults = HashSet::new();
@@ -1915,7 +1939,7 @@ impl Generator {
                 continue;
             }
 
-            match self.generate_method(name, method, accessor_name) {
+            match self.generate_method(name, method, if is_dual_accessor { None } else { Some(accessor_name) }) {
                 Ok((lua_method_name, generated, signature)) => {
                     let params_str = method
                         .params
@@ -1957,11 +1981,22 @@ impl Generator {
             .write_interface(luals_dir, interface, &method_signatures, callbacks);
 
         // Generate register_..._auto function
-        cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
-        cpp.indent_right();
-        for (_, lua_name) in &generated_methods {
-            let c_name = format!("luasteam_{}_{}", name, lua_name);
-            cpp.line(&format!("add_func(L, \"{}\", {});", lua_name, c_name));
+        if is_dual_accessor {
+            cpp.line(&format!("void register_{}_auto(lua_State *L, {}Accessor accessor) {{", name, name));
+            cpp.indent_right();
+            for (_, lua_name) in &generated_methods {
+                let c_name = format!("luasteam_{}_{}", name, lua_name);
+                cpp.line("lua_pushlightuserdata(L, (void*)accessor);");
+                cpp.line(&format!("lua_pushcclosure(L, {}, 1);", c_name));
+                cpp.line(&format!("lua_setfield(L, -2, \"{}\");", lua_name));
+            }
+        } else {
+            cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
+            cpp.indent_right();
+            for (_, lua_name) in &generated_methods {
+                let c_name = format!("luasteam_{}_{}", name, lua_name);
+                cpp.line(&format!("add_func(L, \"{}\", {});", lua_name, c_name));
+            }
         }
         cpp.indent_left();
         cpp.line("}");
@@ -1976,7 +2011,11 @@ impl Generator {
             "lua_createtable(L, 0, {});",
             generated_methods.len() + interface_enum_values_count
         ));
-        cpp.line(&format!("register_{}_auto(L);", name));
+        cpp.line(&format!(
+            "register_{}_auto({});",
+            name,
+            if is_dual_accessor { format!("L, &{}", accessor_name) } else { "L".to_string() }
+        ));
         for enm in &interface.enums {
             for val in &enm.values {
                 cpp.line(&format!(
@@ -1992,6 +2031,31 @@ impl Generator {
         cpp.indent_left();
         cpp.line("}");
         cpp.preceeding_blank_line();
+        let mut gs_name_opt: Option<String> = None;
+        {
+            if is_dual_accessor {
+                let gs_accessor_name = &interface.accessors[1].name;
+                let gs_name = Self::gs_module_name(gs_accessor_name);
+                gs_name_opt = Some(gs_name.clone());
+
+                cpp.line(&format!("int {}_ref = LUA_NOREF;", gs_name));
+                cpp.preceeding_blank_line();
+
+                cpp.raw(&self.generate_callback_listener(&gs_name, &interface.classname, callbacks, true));
+                cpp.preceeding_blank_line();
+
+                cpp.line(&format!("void add_{}_auto(lua_State *L) {{", gs_name));
+                cpp.indent_right();
+                cpp.line(&format!("lua_createtable(L, 0, {});", generated_methods.len()));
+                cpp.line(&format!("register_{}_auto(L, &{});", name, gs_accessor_name));
+                cpp.line("lua_pushvalue(L, -1);");
+                cpp.line(&format!("{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);", gs_name));
+                cpp.line(&format!("lua_setfield(L, -2, \"{}\");", gs_name));
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.preceeding_blank_line();
+            }
+        }
         cpp.line("} // namespace luasteam");
 
         let path = format!("../src/auto/{}.cpp", name);
@@ -2017,7 +2081,7 @@ impl Generator {
         let doc_path = format!("../docs/auto/{}.rst", name.to_lowercase());
         fs::write(doc_path, doc_content).expect("Unable to write doc file");
 
-        Ok(name.to_owned())
+        Ok((name.to_owned(), gs_name_opt))
     }
 
     fn push_array(
@@ -2057,7 +2121,7 @@ impl Generator {
         &self,
         interface: &str,
         method: &Method,
-        accessor_name: &str,
+        direct_accessor: Option<&str>,
     ) -> Result<(String, String, LuaMethodSignature), SkipReason> {
         // Tricky ones to support:
         // GetItemDefinitionProperty - has a pointer that must have a value and returns another
@@ -2067,12 +2131,15 @@ impl Generator {
         // GetImageRGBA - uint8* should be a byte buffer, probably
         let mut s = CodeBuilder::new();
 
-        let interface_getter = format!("{}()", accessor_name);
-
         let lua_method_name = Self::lua_method_public_name(method);
         let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
-        s.line(&format!("EXTERN int {}(lua_State *L) {{", c_method_name));
+        s.line(&format!("static int {}(lua_State *L) {{", c_method_name));
         s.indent_right();
+        if let Some(accessor) = direct_accessor {
+            s.line(&format!("auto *iface = {}();", accessor));
+        } else {
+            s.line(&format!("auto *iface = (({}Accessor)lua_touserdata(L, lua_upvalueindex(1)))();", interface));
+        }
 
         if method.callresult.is_some() {
             s.line("int callback_ref = LUA_NOREF;");
@@ -2503,8 +2570,7 @@ impl Generator {
         }
 
         let call = format!(
-            "{}->{}({})",
-            interface_getter,
+            "iface->{}({})",
             method.methodname,
             cpp_call_params.join(", ")
         );
@@ -2687,6 +2753,12 @@ impl Generator {
         s.line("}");
 
         Ok((lua_method_name, s.finish(), sig))
+    }
+
+    fn gs_module_name(accessor_name: &str) -> String {
+        let s = accessor_name.strip_prefix("Steam").unwrap_or(accessor_name);
+        let s = s.strip_suffix("_SteamAPI").unwrap_or(s);
+        s.to_string()
     }
 }
 

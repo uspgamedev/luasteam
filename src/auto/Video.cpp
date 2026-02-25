@@ -5,14 +5,14 @@ namespace luasteam {
 int Video_ref = LUA_NOREF;
 
 namespace {
-class CallbackListener {
+class VideoCallbackListener {
 private:
-	STEAM_CALLBACK(CallbackListener, OnGetVideoURLResult, GetVideoURLResult_t);
-	STEAM_CALLBACK(CallbackListener, OnGetOPFSettingsResult, GetOPFSettingsResult_t);
-	STEAM_CALLBACK(CallbackListener, OnBroadcastUploadStart, BroadcastUploadStart_t);
-	STEAM_CALLBACK(CallbackListener, OnBroadcastUploadStop, BroadcastUploadStop_t);
+	STEAM_CALLBACK(VideoCallbackListener, OnGetVideoURLResult, GetVideoURLResult_t);
+	STEAM_CALLBACK(VideoCallbackListener, OnGetOPFSettingsResult, GetOPFSettingsResult_t);
+	STEAM_CALLBACK(VideoCallbackListener, OnBroadcastUploadStart, BroadcastUploadStart_t);
+	STEAM_CALLBACK(VideoCallbackListener, OnBroadcastUploadStop, BroadcastUploadStop_t);
 };
-void CallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
+void VideoCallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -26,7 +26,7 @@ void CallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnGetOPFSettingsResult(GetOPFSettingsResult_t *data) {
+void VideoCallbackListener::OnGetOPFSettingsResult(GetOPFSettingsResult_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -40,7 +40,7 @@ void CallbackListener::OnGetOPFSettingsResult(GetOPFSettingsResult_t *data) {
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnBroadcastUploadStart(BroadcastUploadStart_t *data) {
+void VideoCallbackListener::OnBroadcastUploadStart(BroadcastUploadStart_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -54,7 +54,7 @@ void CallbackListener::OnBroadcastUploadStart(BroadcastUploadStart_t *data) {
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
+void VideoCallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -68,10 +68,10 @@ void CallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
 		lua_pop(L, 1);
 	}
 }
-CallbackListener *Video_listener = nullptr;
+VideoCallbackListener *Video_listener = nullptr;
 } // namespace
 
-void init_Video_auto(lua_State *L) { Video_listener = new CallbackListener(); }
+void init_Video_auto(lua_State *L) { Video_listener = new VideoCallbackListener(); }
 void shutdown_Video_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Video_ref);
 	Video_ref = LUA_NOREF;
@@ -82,9 +82,10 @@ void shutdown_Video_auto(lua_State *L) {
 // void GetVideoURL(AppId_t unVideoAppID);
 // In Lua:
 // Video.GetVideoURL(unVideoAppID: int)
-EXTERN int luasteam_Video_GetVideoURL(lua_State *L) {
+static int luasteam_Video_GetVideoURL(lua_State *L) {
+	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-	SteamVideo()->GetVideoURL(unVideoAppID);
+	iface->GetVideoURL(unVideoAppID);
 	return 0;
 }
 
@@ -92,9 +93,10 @@ EXTERN int luasteam_Video_GetVideoURL(lua_State *L) {
 // bool IsBroadcasting(int * pnNumViewers);
 // In Lua:
 // (bool, pnNumViewers: int) Video.IsBroadcasting()
-EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
+static int luasteam_Video_IsBroadcasting(lua_State *L) {
+	auto *iface = SteamVideo();
 	int pnNumViewers;
-	bool __ret = SteamVideo()->IsBroadcasting(&pnNumViewers);
+	bool __ret = iface->IsBroadcasting(&pnNumViewers);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pnNumViewers);
 	return 2;
@@ -104,9 +106,10 @@ EXTERN int luasteam_Video_IsBroadcasting(lua_State *L) {
 // void GetOPFSettings(AppId_t unVideoAppID);
 // In Lua:
 // Video.GetOPFSettings(unVideoAppID: int)
-EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
+static int luasteam_Video_GetOPFSettings(lua_State *L) {
+	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-	SteamVideo()->GetOPFSettings(unVideoAppID);
+	iface->GetOPFSettings(unVideoAppID);
 	return 0;
 }
 
@@ -114,11 +117,12 @@ EXTERN int luasteam_Video_GetOPFSettings(lua_State *L) {
 // bool GetOPFStringForApp(AppId_t unVideoAppID, char * pchBuffer, int32 * pnBufferSize);
 // In Lua:
 // (bool, pchBuffer: str, pnBufferSize: int) Video.GetOPFStringForApp(unVideoAppID: int, pnBufferSize: int)
-EXTERN int luasteam_Video_GetOPFStringForApp(lua_State *L) {
+static int luasteam_Video_GetOPFStringForApp(lua_State *L) {
+	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	int32 pnBufferSize = luaL_checkint(L, 2);
 	std::vector<char> pchBuffer(pnBufferSize);
-	bool __ret = SteamVideo()->GetOPFStringForApp(unVideoAppID, pchBuffer.data(), &pnBufferSize);
+	bool __ret = iface->GetOPFStringForApp(unVideoAppID, pchBuffer.data(), &pnBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
 	lua_pushinteger(L, pnBufferSize);

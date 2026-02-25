@@ -5,14 +5,14 @@ namespace luasteam {
 int Input_ref = LUA_NOREF;
 
 namespace {
-class CallbackListener {
+class InputCallbackListener {
 private:
-	STEAM_CALLBACK(CallbackListener, OnSteamInputDeviceConnected, SteamInputDeviceConnected_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInputDeviceDisconnected, SteamInputDeviceDisconnected_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInputConfigurationLoaded, SteamInputConfigurationLoaded_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInputGamepadSlotChange, SteamInputGamepadSlotChange_t);
+	STEAM_CALLBACK(InputCallbackListener, OnSteamInputDeviceConnected, SteamInputDeviceConnected_t);
+	STEAM_CALLBACK(InputCallbackListener, OnSteamInputDeviceDisconnected, SteamInputDeviceDisconnected_t);
+	STEAM_CALLBACK(InputCallbackListener, OnSteamInputConfigurationLoaded, SteamInputConfigurationLoaded_t);
+	STEAM_CALLBACK(InputCallbackListener, OnSteamInputGamepadSlotChange, SteamInputGamepadSlotChange_t);
 };
-void CallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *data) {
+void InputCallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -26,7 +26,7 @@ void CallbackListener::OnSteamInputDeviceConnected(SteamInputDeviceConnected_t *
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnected_t *data) {
+void InputCallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnected_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -40,7 +40,7 @@ void CallbackListener::OnSteamInputDeviceDisconnected(SteamInputDeviceDisconnect
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLoaded_t *data) {
+void InputCallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLoaded_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -54,7 +54,7 @@ void CallbackListener::OnSteamInputConfigurationLoaded(SteamInputConfigurationLo
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange_t *data) {
+void InputCallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -68,10 +68,10 @@ void CallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotChange
 		lua_pop(L, 1);
 	}
 }
-CallbackListener *Input_listener = nullptr;
+InputCallbackListener *Input_listener = nullptr;
 } // namespace
 
-void init_Input_auto(lua_State *L) { Input_listener = new CallbackListener(); }
+void init_Input_auto(lua_State *L) { Input_listener = new InputCallbackListener(); }
 void shutdown_Input_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Input_ref);
 	Input_ref = LUA_NOREF;
@@ -82,9 +82,10 @@ void shutdown_Input_auto(lua_State *L) {
 // bool Init(bool bExplicitlyCallRunFrame);
 // In Lua:
 // bool Input.Init(bExplicitlyCallRunFrame: bool)
-EXTERN int luasteam_Input_Init(lua_State *L) {
+static int luasteam_Input_Init(lua_State *L) {
+	auto *iface = SteamInput();
 	bool bExplicitlyCallRunFrame = lua_toboolean(L, 1);
-	bool __ret = SteamInput()->Init(bExplicitlyCallRunFrame);
+	bool __ret = iface->Init(bExplicitlyCallRunFrame);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -93,8 +94,9 @@ EXTERN int luasteam_Input_Init(lua_State *L) {
 // bool Shutdown();
 // In Lua:
 // bool Input.Shutdown()
-EXTERN int luasteam_Input_Shutdown(lua_State *L) {
-	bool __ret = SteamInput()->Shutdown();
+static int luasteam_Input_Shutdown(lua_State *L) {
+	auto *iface = SteamInput();
+	bool __ret = iface->Shutdown();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -103,9 +105,10 @@ EXTERN int luasteam_Input_Shutdown(lua_State *L) {
 // bool SetInputActionManifestFilePath(const char * pchInputActionManifestAbsolutePath);
 // In Lua:
 // bool Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath: str)
-EXTERN int luasteam_Input_SetInputActionManifestFilePath(lua_State *L) {
+static int luasteam_Input_SetInputActionManifestFilePath(lua_State *L) {
+	auto *iface = SteamInput();
 	const char *pchInputActionManifestAbsolutePath = luaL_checkstring(L, 1);
-	bool __ret = SteamInput()->SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath);
+	bool __ret = iface->SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -114,9 +117,10 @@ EXTERN int luasteam_Input_SetInputActionManifestFilePath(lua_State *L) {
 // void RunFrame(bool bReservedValue);
 // In Lua:
 // Input.RunFrame(bReservedValue: bool)
-EXTERN int luasteam_Input_RunFrame(lua_State *L) {
+static int luasteam_Input_RunFrame(lua_State *L) {
+	auto *iface = SteamInput();
 	bool bReservedValue = lua_toboolean(L, 1);
-	SteamInput()->RunFrame(bReservedValue);
+	iface->RunFrame(bReservedValue);
 	return 0;
 }
 
@@ -124,10 +128,11 @@ EXTERN int luasteam_Input_RunFrame(lua_State *L) {
 // bool BWaitForData(bool bWaitForever, uint32 unTimeout);
 // In Lua:
 // bool Input.BWaitForData(bWaitForever: bool, unTimeout: int)
-EXTERN int luasteam_Input_BWaitForData(lua_State *L) {
+static int luasteam_Input_BWaitForData(lua_State *L) {
+	auto *iface = SteamInput();
 	bool bWaitForever = lua_toboolean(L, 1);
 	uint32 unTimeout = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = SteamInput()->BWaitForData(bWaitForever, unTimeout);
+	bool __ret = iface->BWaitForData(bWaitForever, unTimeout);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -136,8 +141,9 @@ EXTERN int luasteam_Input_BWaitForData(lua_State *L) {
 // bool BNewDataAvailable();
 // In Lua:
 // bool Input.BNewDataAvailable()
-EXTERN int luasteam_Input_BNewDataAvailable(lua_State *L) {
-	bool __ret = SteamInput()->BNewDataAvailable();
+static int luasteam_Input_BNewDataAvailable(lua_State *L) {
+	auto *iface = SteamInput();
+	bool __ret = iface->BNewDataAvailable();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -146,9 +152,10 @@ EXTERN int luasteam_Input_BNewDataAvailable(lua_State *L) {
 // int GetConnectedControllers(InputHandle_t * handlesOut);
 // In Lua:
 // (int, handlesOut: uint64[]) Input.GetConnectedControllers()
-EXTERN int luasteam_Input_GetConnectedControllers(lua_State *L) {
+static int luasteam_Input_GetConnectedControllers(lua_State *L) {
+	auto *iface = SteamInput();
 	std::vector<InputHandle_t> handlesOut(STEAM_INPUT_MAX_COUNT);
-	int __ret = SteamInput()->GetConnectedControllers(handlesOut.data());
+	int __ret = iface->GetConnectedControllers(handlesOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -162,8 +169,9 @@ EXTERN int luasteam_Input_GetConnectedControllers(lua_State *L) {
 // void EnableDeviceCallbacks();
 // In Lua:
 // Input.EnableDeviceCallbacks()
-EXTERN int luasteam_Input_EnableDeviceCallbacks(lua_State *L) {
-	SteamInput()->EnableDeviceCallbacks();
+static int luasteam_Input_EnableDeviceCallbacks(lua_State *L) {
+	auto *iface = SteamInput();
+	iface->EnableDeviceCallbacks();
 	return 0;
 }
 
@@ -171,9 +179,10 @@ EXTERN int luasteam_Input_EnableDeviceCallbacks(lua_State *L) {
 // InputActionSetHandle_t GetActionSetHandle(const char * pszActionSetName);
 // In Lua:
 // uint64 Input.GetActionSetHandle(pszActionSetName: str)
-EXTERN int luasteam_Input_GetActionSetHandle(lua_State *L) {
+static int luasteam_Input_GetActionSetHandle(lua_State *L) {
+	auto *iface = SteamInput();
 	const char *pszActionSetName = luaL_checkstring(L, 1);
-	InputActionSetHandle_t __ret = SteamInput()->GetActionSetHandle(pszActionSetName);
+	InputActionSetHandle_t __ret = iface->GetActionSetHandle(pszActionSetName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -182,10 +191,11 @@ EXTERN int luasteam_Input_GetActionSetHandle(lua_State *L) {
 // void ActivateActionSet(InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle);
 // In Lua:
 // Input.ActivateActionSet(inputHandle: uint64, actionSetHandle: uint64)
-EXTERN int luasteam_Input_ActivateActionSet(lua_State *L) {
+static int luasteam_Input_ActivateActionSet(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
-	SteamInput()->ActivateActionSet(inputHandle, actionSetHandle);
+	iface->ActivateActionSet(inputHandle, actionSetHandle);
 	return 0;
 }
 
@@ -193,9 +203,10 @@ EXTERN int luasteam_Input_ActivateActionSet(lua_State *L) {
 // InputActionSetHandle_t GetCurrentActionSet(InputHandle_t inputHandle);
 // In Lua:
 // uint64 Input.GetCurrentActionSet(inputHandle: uint64)
-EXTERN int luasteam_Input_GetCurrentActionSet(lua_State *L) {
+static int luasteam_Input_GetCurrentActionSet(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	InputActionSetHandle_t __ret = SteamInput()->GetCurrentActionSet(inputHandle);
+	InputActionSetHandle_t __ret = iface->GetCurrentActionSet(inputHandle);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -204,10 +215,11 @@ EXTERN int luasteam_Input_GetCurrentActionSet(lua_State *L) {
 // void ActivateActionSetLayer(InputHandle_t inputHandle, InputActionSetHandle_t actionSetLayerHandle);
 // In Lua:
 // Input.ActivateActionSetLayer(inputHandle: uint64, actionSetLayerHandle: uint64)
-EXTERN int luasteam_Input_ActivateActionSetLayer(lua_State *L) {
+static int luasteam_Input_ActivateActionSetLayer(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputActionSetHandle_t actionSetLayerHandle(luasteam::checkuint64(L, 2));
-	SteamInput()->ActivateActionSetLayer(inputHandle, actionSetLayerHandle);
+	iface->ActivateActionSetLayer(inputHandle, actionSetLayerHandle);
 	return 0;
 }
 
@@ -215,10 +227,11 @@ EXTERN int luasteam_Input_ActivateActionSetLayer(lua_State *L) {
 // void DeactivateActionSetLayer(InputHandle_t inputHandle, InputActionSetHandle_t actionSetLayerHandle);
 // In Lua:
 // Input.DeactivateActionSetLayer(inputHandle: uint64, actionSetLayerHandle: uint64)
-EXTERN int luasteam_Input_DeactivateActionSetLayer(lua_State *L) {
+static int luasteam_Input_DeactivateActionSetLayer(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputActionSetHandle_t actionSetLayerHandle(luasteam::checkuint64(L, 2));
-	SteamInput()->DeactivateActionSetLayer(inputHandle, actionSetLayerHandle);
+	iface->DeactivateActionSetLayer(inputHandle, actionSetLayerHandle);
 	return 0;
 }
 
@@ -226,9 +239,10 @@ EXTERN int luasteam_Input_DeactivateActionSetLayer(lua_State *L) {
 // void DeactivateAllActionSetLayers(InputHandle_t inputHandle);
 // In Lua:
 // Input.DeactivateAllActionSetLayers(inputHandle: uint64)
-EXTERN int luasteam_Input_DeactivateAllActionSetLayers(lua_State *L) {
+static int luasteam_Input_DeactivateAllActionSetLayers(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	SteamInput()->DeactivateAllActionSetLayers(inputHandle);
+	iface->DeactivateAllActionSetLayers(inputHandle);
 	return 0;
 }
 
@@ -236,10 +250,11 @@ EXTERN int luasteam_Input_DeactivateAllActionSetLayers(lua_State *L) {
 // int GetActiveActionSetLayers(InputHandle_t inputHandle, InputActionSetHandle_t * handlesOut);
 // In Lua:
 // (int, handlesOut: uint64[]) Input.GetActiveActionSetLayers(inputHandle: uint64)
-EXTERN int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
+static int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	std::vector<InputActionSetHandle_t> handlesOut(STEAM_INPUT_MAX_ACTIVE_LAYERS);
-	int __ret = SteamInput()->GetActiveActionSetLayers(inputHandle, handlesOut.data());
+	int __ret = iface->GetActiveActionSetLayers(inputHandle, handlesOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -253,9 +268,10 @@ EXTERN int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
 // InputDigitalActionHandle_t GetDigitalActionHandle(const char * pszActionName);
 // In Lua:
 // uint64 Input.GetDigitalActionHandle(pszActionName: str)
-EXTERN int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
+static int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
+	auto *iface = SteamInput();
 	const char *pszActionName = luaL_checkstring(L, 1);
-	InputDigitalActionHandle_t __ret = SteamInput()->GetDigitalActionHandle(pszActionName);
+	InputDigitalActionHandle_t __ret = iface->GetDigitalActionHandle(pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -264,10 +280,11 @@ EXTERN int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
 // InputDigitalActionData_t GetDigitalActionData(InputHandle_t inputHandle, InputDigitalActionHandle_t digitalActionHandle);
 // In Lua:
 // InputDigitalActionData_t Input.GetDigitalActionData(inputHandle: uint64, digitalActionHandle: uint64)
-EXTERN int luasteam_Input_GetDigitalActionData(lua_State *L) {
+static int luasteam_Input_GetDigitalActionData(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 2));
-	InputDigitalActionData_t __ret = SteamInput()->GetDigitalActionData(inputHandle, digitalActionHandle);
+	InputDigitalActionData_t __ret = iface->GetDigitalActionData(inputHandle, digitalActionHandle);
 	luasteam::push_InputDigitalActionData_t(L, __ret);
 	return 1;
 }
@@ -276,12 +293,13 @@ EXTERN int luasteam_Input_GetDigitalActionData(lua_State *L) {
 // int GetDigitalActionOrigins(InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle, InputDigitalActionHandle_t digitalActionHandle, EInputActionOrigin * originsOut);
 // In Lua:
 // (int, originsOut: int[]) Input.GetDigitalActionOrigins(inputHandle: uint64, actionSetHandle: uint64, digitalActionHandle: uint64)
-EXTERN int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
+static int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
 	InputDigitalActionHandle_t digitalActionHandle(luasteam::checkuint64(L, 3));
 	std::vector<EInputActionOrigin> originsOut(STEAM_INPUT_MAX_ORIGINS);
-	int __ret = SteamInput()->GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle, originsOut.data());
+	int __ret = iface->GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle, originsOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -295,9 +313,10 @@ EXTERN int luasteam_Input_GetDigitalActionOrigins(lua_State *L) {
 // const char * GetStringForDigitalActionName(InputDigitalActionHandle_t eActionHandle);
 // In Lua:
 // str Input.GetStringForDigitalActionName(eActionHandle: uint64)
-EXTERN int luasteam_Input_GetStringForDigitalActionName(lua_State *L) {
+static int luasteam_Input_GetStringForDigitalActionName(lua_State *L) {
+	auto *iface = SteamInput();
 	InputDigitalActionHandle_t eActionHandle(luasteam::checkuint64(L, 1));
-	const char * __ret = SteamInput()->GetStringForDigitalActionName(eActionHandle);
+	const char * __ret = iface->GetStringForDigitalActionName(eActionHandle);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -306,9 +325,10 @@ EXTERN int luasteam_Input_GetStringForDigitalActionName(lua_State *L) {
 // InputAnalogActionHandle_t GetAnalogActionHandle(const char * pszActionName);
 // In Lua:
 // uint64 Input.GetAnalogActionHandle(pszActionName: str)
-EXTERN int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
+static int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
+	auto *iface = SteamInput();
 	const char *pszActionName = luaL_checkstring(L, 1);
-	InputAnalogActionHandle_t __ret = SteamInput()->GetAnalogActionHandle(pszActionName);
+	InputAnalogActionHandle_t __ret = iface->GetAnalogActionHandle(pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -317,10 +337,11 @@ EXTERN int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
 // InputAnalogActionData_t GetAnalogActionData(InputHandle_t inputHandle, InputAnalogActionHandle_t analogActionHandle);
 // In Lua:
 // InputAnalogActionData_t Input.GetAnalogActionData(inputHandle: uint64, analogActionHandle: uint64)
-EXTERN int luasteam_Input_GetAnalogActionData(lua_State *L) {
+static int luasteam_Input_GetAnalogActionData(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 2));
-	InputAnalogActionData_t __ret = SteamInput()->GetAnalogActionData(inputHandle, analogActionHandle);
+	InputAnalogActionData_t __ret = iface->GetAnalogActionData(inputHandle, analogActionHandle);
 	luasteam::push_InputAnalogActionData_t(L, __ret);
 	return 1;
 }
@@ -329,12 +350,13 @@ EXTERN int luasteam_Input_GetAnalogActionData(lua_State *L) {
 // int GetAnalogActionOrigins(InputHandle_t inputHandle, InputActionSetHandle_t actionSetHandle, InputAnalogActionHandle_t analogActionHandle, EInputActionOrigin * originsOut);
 // In Lua:
 // (int, originsOut: int[]) Input.GetAnalogActionOrigins(inputHandle: uint64, actionSetHandle: uint64, analogActionHandle: uint64)
-EXTERN int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
+static int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputActionSetHandle_t actionSetHandle(luasteam::checkuint64(L, 2));
 	InputAnalogActionHandle_t analogActionHandle(luasteam::checkuint64(L, 3));
 	std::vector<EInputActionOrigin> originsOut(STEAM_INPUT_MAX_ORIGINS);
-	int __ret = SteamInput()->GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle, originsOut.data());
+	int __ret = iface->GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle, originsOut.data());
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -348,11 +370,12 @@ EXTERN int luasteam_Input_GetAnalogActionOrigins(lua_State *L) {
 // const char * GetGlyphPNGForActionOrigin(EInputActionOrigin eOrigin, ESteamInputGlyphSize eSize, uint32 unFlags);
 // In Lua:
 // str Input.GetGlyphPNGForActionOrigin(eOrigin: int, eSize: int, unFlags: int)
-EXTERN int luasteam_Input_GetGlyphPNGForActionOrigin(lua_State *L) {
+static int luasteam_Input_GetGlyphPNGForActionOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	EInputActionOrigin eOrigin = static_cast<EInputActionOrigin>(luaL_checkint(L, 1));
 	ESteamInputGlyphSize eSize = static_cast<ESteamInputGlyphSize>(luaL_checkint(L, 2));
 	uint32 unFlags = static_cast<uint32>(luaL_checkint(L, 3));
-	const char * __ret = SteamInput()->GetGlyphPNGForActionOrigin(eOrigin, eSize, unFlags);
+	const char * __ret = iface->GetGlyphPNGForActionOrigin(eOrigin, eSize, unFlags);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -361,10 +384,11 @@ EXTERN int luasteam_Input_GetGlyphPNGForActionOrigin(lua_State *L) {
 // const char * GetGlyphSVGForActionOrigin(EInputActionOrigin eOrigin, uint32 unFlags);
 // In Lua:
 // str Input.GetGlyphSVGForActionOrigin(eOrigin: int, unFlags: int)
-EXTERN int luasteam_Input_GetGlyphSVGForActionOrigin(lua_State *L) {
+static int luasteam_Input_GetGlyphSVGForActionOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	EInputActionOrigin eOrigin = static_cast<EInputActionOrigin>(luaL_checkint(L, 1));
 	uint32 unFlags = static_cast<uint32>(luaL_checkint(L, 2));
-	const char * __ret = SteamInput()->GetGlyphSVGForActionOrigin(eOrigin, unFlags);
+	const char * __ret = iface->GetGlyphSVGForActionOrigin(eOrigin, unFlags);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -373,9 +397,10 @@ EXTERN int luasteam_Input_GetGlyphSVGForActionOrigin(lua_State *L) {
 // const char * GetGlyphForActionOrigin_Legacy(EInputActionOrigin eOrigin);
 // In Lua:
 // str Input.GetGlyphForActionOrigin_Legacy(eOrigin: int)
-EXTERN int luasteam_Input_GetGlyphForActionOrigin_Legacy(lua_State *L) {
+static int luasteam_Input_GetGlyphForActionOrigin_Legacy(lua_State *L) {
+	auto *iface = SteamInput();
 	EInputActionOrigin eOrigin = static_cast<EInputActionOrigin>(luaL_checkint(L, 1));
-	const char * __ret = SteamInput()->GetGlyphForActionOrigin_Legacy(eOrigin);
+	const char * __ret = iface->GetGlyphForActionOrigin_Legacy(eOrigin);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -384,9 +409,10 @@ EXTERN int luasteam_Input_GetGlyphForActionOrigin_Legacy(lua_State *L) {
 // const char * GetStringForActionOrigin(EInputActionOrigin eOrigin);
 // In Lua:
 // str Input.GetStringForActionOrigin(eOrigin: int)
-EXTERN int luasteam_Input_GetStringForActionOrigin(lua_State *L) {
+static int luasteam_Input_GetStringForActionOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	EInputActionOrigin eOrigin = static_cast<EInputActionOrigin>(luaL_checkint(L, 1));
-	const char * __ret = SteamInput()->GetStringForActionOrigin(eOrigin);
+	const char * __ret = iface->GetStringForActionOrigin(eOrigin);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -395,9 +421,10 @@ EXTERN int luasteam_Input_GetStringForActionOrigin(lua_State *L) {
 // const char * GetStringForAnalogActionName(InputAnalogActionHandle_t eActionHandle);
 // In Lua:
 // str Input.GetStringForAnalogActionName(eActionHandle: uint64)
-EXTERN int luasteam_Input_GetStringForAnalogActionName(lua_State *L) {
+static int luasteam_Input_GetStringForAnalogActionName(lua_State *L) {
+	auto *iface = SteamInput();
 	InputAnalogActionHandle_t eActionHandle(luasteam::checkuint64(L, 1));
-	const char * __ret = SteamInput()->GetStringForAnalogActionName(eActionHandle);
+	const char * __ret = iface->GetStringForAnalogActionName(eActionHandle);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -406,10 +433,11 @@ EXTERN int luasteam_Input_GetStringForAnalogActionName(lua_State *L) {
 // void StopAnalogActionMomentum(InputHandle_t inputHandle, InputAnalogActionHandle_t eAction);
 // In Lua:
 // Input.StopAnalogActionMomentum(inputHandle: uint64, eAction: uint64)
-EXTERN int luasteam_Input_StopAnalogActionMomentum(lua_State *L) {
+static int luasteam_Input_StopAnalogActionMomentum(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	InputAnalogActionHandle_t eAction(luasteam::checkuint64(L, 2));
-	SteamInput()->StopAnalogActionMomentum(inputHandle, eAction);
+	iface->StopAnalogActionMomentum(inputHandle, eAction);
 	return 0;
 }
 
@@ -417,9 +445,10 @@ EXTERN int luasteam_Input_StopAnalogActionMomentum(lua_State *L) {
 // InputMotionData_t GetMotionData(InputHandle_t inputHandle);
 // In Lua:
 // InputMotionData_t Input.GetMotionData(inputHandle: uint64)
-EXTERN int luasteam_Input_GetMotionData(lua_State *L) {
+static int luasteam_Input_GetMotionData(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	InputMotionData_t __ret = SteamInput()->GetMotionData(inputHandle);
+	InputMotionData_t __ret = iface->GetMotionData(inputHandle);
 	luasteam::push_InputMotionData_t(L, __ret);
 	return 1;
 }
@@ -428,11 +457,12 @@ EXTERN int luasteam_Input_GetMotionData(lua_State *L) {
 // void TriggerVibration(InputHandle_t inputHandle, unsigned short usLeftSpeed, unsigned short usRightSpeed);
 // In Lua:
 // Input.TriggerVibration(inputHandle: uint64, usLeftSpeed: int, usRightSpeed: int)
-EXTERN int luasteam_Input_TriggerVibration(lua_State *L) {
+static int luasteam_Input_TriggerVibration(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	unsigned short usLeftSpeed = static_cast<unsigned short>(luaL_checkint(L, 2));
 	unsigned short usRightSpeed = static_cast<unsigned short>(luaL_checkint(L, 3));
-	SteamInput()->TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed);
+	iface->TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed);
 	return 0;
 }
 
@@ -440,13 +470,14 @@ EXTERN int luasteam_Input_TriggerVibration(lua_State *L) {
 // void TriggerVibrationExtended(InputHandle_t inputHandle, unsigned short usLeftSpeed, unsigned short usRightSpeed, unsigned short usLeftTriggerSpeed, unsigned short usRightTriggerSpeed);
 // In Lua:
 // Input.TriggerVibrationExtended(inputHandle: uint64, usLeftSpeed: int, usRightSpeed: int, usLeftTriggerSpeed: int, usRightTriggerSpeed: int)
-EXTERN int luasteam_Input_TriggerVibrationExtended(lua_State *L) {
+static int luasteam_Input_TriggerVibrationExtended(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	unsigned short usLeftSpeed = static_cast<unsigned short>(luaL_checkint(L, 2));
 	unsigned short usRightSpeed = static_cast<unsigned short>(luaL_checkint(L, 3));
 	unsigned short usLeftTriggerSpeed = static_cast<unsigned short>(luaL_checkint(L, 4));
 	unsigned short usRightTriggerSpeed = static_cast<unsigned short>(luaL_checkint(L, 5));
-	SteamInput()->TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed);
+	iface->TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed);
 	return 0;
 }
 
@@ -454,14 +485,15 @@ EXTERN int luasteam_Input_TriggerVibrationExtended(lua_State *L) {
 // void TriggerSimpleHapticEvent(InputHandle_t inputHandle, EControllerHapticLocation eHapticLocation, uint8 nIntensity, char nGainDB, uint8 nOtherIntensity, char nOtherGainDB);
 // In Lua:
 // Input.TriggerSimpleHapticEvent(inputHandle: uint64, eHapticLocation: int, nIntensity: int, nGainDB: str, nOtherIntensity: int, nOtherGainDB: str)
-EXTERN int luasteam_Input_TriggerSimpleHapticEvent(lua_State *L) {
+static int luasteam_Input_TriggerSimpleHapticEvent(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	EControllerHapticLocation eHapticLocation = static_cast<EControllerHapticLocation>(luaL_checkint(L, 2));
 	uint8 nIntensity = static_cast<uint8>(luaL_checkint(L, 3));
 	char nGainDB = luaL_checkstring(L, 4)[0];
 	uint8 nOtherIntensity = static_cast<uint8>(luaL_checkint(L, 5));
 	char nOtherGainDB = luaL_checkstring(L, 6)[0];
-	SteamInput()->TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB);
+	iface->TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB);
 	return 0;
 }
 
@@ -469,13 +501,14 @@ EXTERN int luasteam_Input_TriggerSimpleHapticEvent(lua_State *L) {
 // void SetLEDColor(InputHandle_t inputHandle, uint8 nColorR, uint8 nColorG, uint8 nColorB, unsigned int nFlags);
 // In Lua:
 // Input.SetLEDColor(inputHandle: uint64, nColorR: int, nColorG: int, nColorB: int, nFlags: int)
-EXTERN int luasteam_Input_SetLEDColor(lua_State *L) {
+static int luasteam_Input_SetLEDColor(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	uint8 nColorR = static_cast<uint8>(luaL_checkint(L, 2));
 	uint8 nColorG = static_cast<uint8>(luaL_checkint(L, 3));
 	uint8 nColorB = static_cast<uint8>(luaL_checkint(L, 4));
 	unsigned int nFlags = static_cast<unsigned int>(luaL_checkint(L, 5));
-	SteamInput()->SetLEDColor(inputHandle, nColorR, nColorG, nColorB, nFlags);
+	iface->SetLEDColor(inputHandle, nColorR, nColorG, nColorB, nFlags);
 	return 0;
 }
 
@@ -483,11 +516,12 @@ EXTERN int luasteam_Input_SetLEDColor(lua_State *L) {
 // void Legacy_TriggerHapticPulse(InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec);
 // In Lua:
 // Input.Legacy_TriggerHapticPulse(inputHandle: uint64, eTargetPad: int, usDurationMicroSec: int)
-EXTERN int luasteam_Input_Legacy_TriggerHapticPulse(lua_State *L) {
+static int luasteam_Input_Legacy_TriggerHapticPulse(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkint(L, 2));
 	unsigned short usDurationMicroSec = static_cast<unsigned short>(luaL_checkint(L, 3));
-	SteamInput()->Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
+	iface->Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec);
 	return 0;
 }
 
@@ -495,14 +529,15 @@ EXTERN int luasteam_Input_Legacy_TriggerHapticPulse(lua_State *L) {
 // void Legacy_TriggerRepeatedHapticPulse(InputHandle_t inputHandle, ESteamControllerPad eTargetPad, unsigned short usDurationMicroSec, unsigned short usOffMicroSec, unsigned short unRepeat, unsigned int nFlags);
 // In Lua:
 // Input.Legacy_TriggerRepeatedHapticPulse(inputHandle: uint64, eTargetPad: int, usDurationMicroSec: int, usOffMicroSec: int, unRepeat: int, nFlags: int)
-EXTERN int luasteam_Input_Legacy_TriggerRepeatedHapticPulse(lua_State *L) {
+static int luasteam_Input_Legacy_TriggerRepeatedHapticPulse(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	ESteamControllerPad eTargetPad = static_cast<ESteamControllerPad>(luaL_checkint(L, 2));
 	unsigned short usDurationMicroSec = static_cast<unsigned short>(luaL_checkint(L, 3));
 	unsigned short usOffMicroSec = static_cast<unsigned short>(luaL_checkint(L, 4));
 	unsigned short unRepeat = static_cast<unsigned short>(luaL_checkint(L, 5));
 	unsigned int nFlags = static_cast<unsigned int>(luaL_checkint(L, 6));
-	SteamInput()->Legacy_TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags);
+	iface->Legacy_TriggerRepeatedHapticPulse(inputHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags);
 	return 0;
 }
 
@@ -510,9 +545,10 @@ EXTERN int luasteam_Input_Legacy_TriggerRepeatedHapticPulse(lua_State *L) {
 // bool ShowBindingPanel(InputHandle_t inputHandle);
 // In Lua:
 // bool Input.ShowBindingPanel(inputHandle: uint64)
-EXTERN int luasteam_Input_ShowBindingPanel(lua_State *L) {
+static int luasteam_Input_ShowBindingPanel(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	bool __ret = SteamInput()->ShowBindingPanel(inputHandle);
+	bool __ret = iface->ShowBindingPanel(inputHandle);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -521,9 +557,10 @@ EXTERN int luasteam_Input_ShowBindingPanel(lua_State *L) {
 // ESteamInputType GetInputTypeForHandle(InputHandle_t inputHandle);
 // In Lua:
 // int Input.GetInputTypeForHandle(inputHandle: uint64)
-EXTERN int luasteam_Input_GetInputTypeForHandle(lua_State *L) {
+static int luasteam_Input_GetInputTypeForHandle(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	ESteamInputType __ret = SteamInput()->GetInputTypeForHandle(inputHandle);
+	ESteamInputType __ret = iface->GetInputTypeForHandle(inputHandle);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -532,9 +569,10 @@ EXTERN int luasteam_Input_GetInputTypeForHandle(lua_State *L) {
 // InputHandle_t GetControllerForGamepadIndex(int nIndex);
 // In Lua:
 // uint64 Input.GetControllerForGamepadIndex(nIndex: int)
-EXTERN int luasteam_Input_GetControllerForGamepadIndex(lua_State *L) {
+static int luasteam_Input_GetControllerForGamepadIndex(lua_State *L) {
+	auto *iface = SteamInput();
 	int nIndex = static_cast<int>(luaL_checkint(L, 1));
-	InputHandle_t __ret = SteamInput()->GetControllerForGamepadIndex(nIndex);
+	InputHandle_t __ret = iface->GetControllerForGamepadIndex(nIndex);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -543,9 +581,10 @@ EXTERN int luasteam_Input_GetControllerForGamepadIndex(lua_State *L) {
 // int GetGamepadIndexForController(InputHandle_t ulinputHandle);
 // In Lua:
 // int Input.GetGamepadIndexForController(ulinputHandle: uint64)
-EXTERN int luasteam_Input_GetGamepadIndexForController(lua_State *L) {
+static int luasteam_Input_GetGamepadIndexForController(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t ulinputHandle(luasteam::checkuint64(L, 1));
-	int __ret = SteamInput()->GetGamepadIndexForController(ulinputHandle);
+	int __ret = iface->GetGamepadIndexForController(ulinputHandle);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -554,9 +593,10 @@ EXTERN int luasteam_Input_GetGamepadIndexForController(lua_State *L) {
 // const char * GetStringForXboxOrigin(EXboxOrigin eOrigin);
 // In Lua:
 // str Input.GetStringForXboxOrigin(eOrigin: int)
-EXTERN int luasteam_Input_GetStringForXboxOrigin(lua_State *L) {
+static int luasteam_Input_GetStringForXboxOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 1));
-	const char * __ret = SteamInput()->GetStringForXboxOrigin(eOrigin);
+	const char * __ret = iface->GetStringForXboxOrigin(eOrigin);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -565,9 +605,10 @@ EXTERN int luasteam_Input_GetStringForXboxOrigin(lua_State *L) {
 // const char * GetGlyphForXboxOrigin(EXboxOrigin eOrigin);
 // In Lua:
 // str Input.GetGlyphForXboxOrigin(eOrigin: int)
-EXTERN int luasteam_Input_GetGlyphForXboxOrigin(lua_State *L) {
+static int luasteam_Input_GetGlyphForXboxOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 1));
-	const char * __ret = SteamInput()->GetGlyphForXboxOrigin(eOrigin);
+	const char * __ret = iface->GetGlyphForXboxOrigin(eOrigin);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -576,10 +617,11 @@ EXTERN int luasteam_Input_GetGlyphForXboxOrigin(lua_State *L) {
 // EInputActionOrigin GetActionOriginFromXboxOrigin(InputHandle_t inputHandle, EXboxOrigin eOrigin);
 // In Lua:
 // int Input.GetActionOriginFromXboxOrigin(inputHandle: uint64, eOrigin: int)
-EXTERN int luasteam_Input_GetActionOriginFromXboxOrigin(lua_State *L) {
+static int luasteam_Input_GetActionOriginFromXboxOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	EXboxOrigin eOrigin = static_cast<EXboxOrigin>(luaL_checkint(L, 2));
-	EInputActionOrigin __ret = SteamInput()->GetActionOriginFromXboxOrigin(inputHandle, eOrigin);
+	EInputActionOrigin __ret = iface->GetActionOriginFromXboxOrigin(inputHandle, eOrigin);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -588,10 +630,11 @@ EXTERN int luasteam_Input_GetActionOriginFromXboxOrigin(lua_State *L) {
 // EInputActionOrigin TranslateActionOrigin(ESteamInputType eDestinationInputType, EInputActionOrigin eSourceOrigin);
 // In Lua:
 // int Input.TranslateActionOrigin(eDestinationInputType: int, eSourceOrigin: int)
-EXTERN int luasteam_Input_TranslateActionOrigin(lua_State *L) {
+static int luasteam_Input_TranslateActionOrigin(lua_State *L) {
+	auto *iface = SteamInput();
 	ESteamInputType eDestinationInputType = static_cast<ESteamInputType>(luaL_checkint(L, 1));
 	EInputActionOrigin eSourceOrigin = static_cast<EInputActionOrigin>(luaL_checkint(L, 2));
-	EInputActionOrigin __ret = SteamInput()->TranslateActionOrigin(eDestinationInputType, eSourceOrigin);
+	EInputActionOrigin __ret = iface->TranslateActionOrigin(eDestinationInputType, eSourceOrigin);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -600,11 +643,12 @@ EXTERN int luasteam_Input_TranslateActionOrigin(lua_State *L) {
 // bool GetDeviceBindingRevision(InputHandle_t inputHandle, int * pMajor, int * pMinor);
 // In Lua:
 // (bool, pMajor: int, pMinor: int) Input.GetDeviceBindingRevision(inputHandle: uint64)
-EXTERN int luasteam_Input_GetDeviceBindingRevision(lua_State *L) {
+static int luasteam_Input_GetDeviceBindingRevision(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
 	int pMajor;
 	int pMinor;
-	bool __ret = SteamInput()->GetDeviceBindingRevision(inputHandle, &pMajor, &pMinor);
+	bool __ret = iface->GetDeviceBindingRevision(inputHandle, &pMajor, &pMinor);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pMajor);
 	lua_pushinteger(L, pMinor);
@@ -615,9 +659,10 @@ EXTERN int luasteam_Input_GetDeviceBindingRevision(lua_State *L) {
 // uint32 GetRemotePlaySessionID(InputHandle_t inputHandle);
 // In Lua:
 // int Input.GetRemotePlaySessionID(inputHandle: uint64)
-EXTERN int luasteam_Input_GetRemotePlaySessionID(lua_State *L) {
+static int luasteam_Input_GetRemotePlaySessionID(lua_State *L) {
+	auto *iface = SteamInput();
 	InputHandle_t inputHandle(luasteam::checkuint64(L, 1));
-	uint32 __ret = SteamInput()->GetRemotePlaySessionID(inputHandle);
+	uint32 __ret = iface->GetRemotePlaySessionID(inputHandle);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -626,8 +671,9 @@ EXTERN int luasteam_Input_GetRemotePlaySessionID(lua_State *L) {
 // uint16 GetSessionInputConfigurationSettings();
 // In Lua:
 // int Input.GetSessionInputConfigurationSettings()
-EXTERN int luasteam_Input_GetSessionInputConfigurationSettings(lua_State *L) {
-	uint16 __ret = SteamInput()->GetSessionInputConfigurationSettings();
+static int luasteam_Input_GetSessionInputConfigurationSettings(lua_State *L) {
+	auto *iface = SteamInput();
+	uint16 __ret = iface->GetSessionInputConfigurationSettings();
 	lua_pushinteger(L, __ret);
 	return 1;
 }

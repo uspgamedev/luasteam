@@ -3,18 +3,19 @@
 namespace luasteam {
 
 int Inventory_ref = LUA_NOREF;
+typedef ISteamInventory *(*InventoryAccessor)();
 
 namespace {
-class CallbackListener {
+class InventoryCallbackListener {
 private:
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryResultReady, SteamInventoryResultReady_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryFullUpdate, SteamInventoryFullUpdate_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryDefinitionUpdate, SteamInventoryDefinitionUpdate_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryEligiblePromoItemDefIDs, SteamInventoryEligiblePromoItemDefIDs_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryStartPurchaseResult, SteamInventoryStartPurchaseResult_t);
-	STEAM_CALLBACK(CallbackListener, OnSteamInventoryRequestPricesResult, SteamInventoryRequestPricesResult_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryResultReady, SteamInventoryResultReady_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryFullUpdate, SteamInventoryFullUpdate_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryDefinitionUpdate, SteamInventoryDefinitionUpdate_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryEligiblePromoItemDefIDs, SteamInventoryEligiblePromoItemDefIDs_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryStartPurchaseResult, SteamInventoryStartPurchaseResult_t);
+	STEAM_CALLBACK(InventoryCallbackListener, OnSteamInventoryRequestPricesResult, SteamInventoryRequestPricesResult_t);
 };
-void CallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *data) {
+void InventoryCallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -28,7 +29,7 @@ void CallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *data) {
+void InventoryCallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -42,7 +43,7 @@ void CallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *da
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinitionUpdate_t *data) {
+void InventoryCallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinitionUpdate_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -56,7 +57,7 @@ void CallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinition
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEligiblePromoItemDefIDs_t *data) {
+void InventoryCallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEligiblePromoItemDefIDs_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -70,7 +71,7 @@ void CallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEli
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPurchaseResult_t *data) {
+void InventoryCallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPurchaseResult_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -84,7 +85,7 @@ void CallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPu
 		lua_pop(L, 1);
 	}
 }
-void CallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequestPricesResult_t *data) {
+void InventoryCallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequestPricesResult_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -98,10 +99,10 @@ void CallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequest
 		lua_pop(L, 1);
 	}
 }
-CallbackListener *Inventory_listener = nullptr;
+InventoryCallbackListener *Inventory_listener = nullptr;
 } // namespace
 
-void init_Inventory_auto(lua_State *L) { Inventory_listener = new CallbackListener(); }
+void init_Inventory_auto(lua_State *L) { Inventory_listener = new InventoryCallbackListener(); }
 void shutdown_Inventory_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Inventory_ref);
 	Inventory_ref = LUA_NOREF;
@@ -187,9 +188,10 @@ template <> void CallResultListener<SteamInventoryStartPurchaseResult_t>::Result
 // EResult GetResultStatus(SteamInventoryResult_t resultHandle);
 // In Lua:
 // int Inventory.GetResultStatus(resultHandle: int)
-EXTERN int luasteam_Inventory_GetResultStatus(lua_State *L) {
+static int luasteam_Inventory_GetResultStatus(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
-	EResult __ret = SteamInventory()->GetResultStatus(resultHandle);
+	EResult __ret = iface->GetResultStatus(resultHandle);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -198,11 +200,12 @@ EXTERN int luasteam_Inventory_GetResultStatus(lua_State *L) {
 // bool GetResultItems(SteamInventoryResult_t resultHandle, SteamItemDetails_t * pOutItemsArray, uint32 * punOutItemsArraySize);
 // In Lua:
 // (bool, pOutItemsArray: SteamItemDetails_t[], punOutItemsArraySize: int) Inventory.GetResultItems(resultHandle: int, punOutItemsArraySize: int)
-EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
+static int luasteam_Inventory_GetResultItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
 	uint32 punOutItemsArraySize = luaL_checkint(L, 2);
 	std::vector<SteamItemDetails_t> pOutItemsArray(punOutItemsArraySize);
-	bool __ret = SteamInventory()->GetResultItems(resultHandle, pOutItemsArray.data(), &punOutItemsArraySize);
+	bool __ret = iface->GetResultItems(resultHandle, pOutItemsArray.data(), &punOutItemsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punOutItemsArraySize, 0);
 	for(decltype(punOutItemsArraySize) i = 0; i < punOutItemsArraySize; i++) {
@@ -217,13 +220,14 @@ EXTERN int luasteam_Inventory_GetResultItems(lua_State *L) {
 // bool GetResultItemProperty(SteamInventoryResult_t resultHandle, uint32 unItemIndex, const char * pchPropertyName, char * pchValueBuffer, uint32 * punValueBufferSizeOut);
 // In Lua:
 // (bool, pchValueBuffer: str, punValueBufferSizeOut: int) Inventory.GetResultItemProperty(resultHandle: int, unItemIndex: int, pchPropertyName: str, punValueBufferSizeOut: int)
-EXTERN int luasteam_Inventory_GetResultItemProperty(lua_State *L) {
+static int luasteam_Inventory_GetResultItemProperty(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
 	uint32 unItemIndex = static_cast<uint32>(luaL_checkint(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	uint32 punValueBufferSizeOut = luaL_checkint(L, 4);
 	std::vector<char> pchValueBuffer(punValueBufferSizeOut);
-	bool __ret = SteamInventory()->GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, pchValueBuffer.data(), &punValueBufferSizeOut);
+	bool __ret = iface->GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, pchValueBuffer.data(), &punValueBufferSizeOut);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValueBuffer.data()));
 	lua_pushinteger(L, punValueBufferSizeOut);
@@ -234,9 +238,10 @@ EXTERN int luasteam_Inventory_GetResultItemProperty(lua_State *L) {
 // uint32 GetResultTimestamp(SteamInventoryResult_t resultHandle);
 // In Lua:
 // int Inventory.GetResultTimestamp(resultHandle: int)
-EXTERN int luasteam_Inventory_GetResultTimestamp(lua_State *L) {
+static int luasteam_Inventory_GetResultTimestamp(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
-	uint32 __ret = SteamInventory()->GetResultTimestamp(resultHandle);
+	uint32 __ret = iface->GetResultTimestamp(resultHandle);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -245,10 +250,11 @@ EXTERN int luasteam_Inventory_GetResultTimestamp(lua_State *L) {
 // bool CheckResultSteamID(SteamInventoryResult_t resultHandle, CSteamID steamIDExpected);
 // In Lua:
 // bool Inventory.CheckResultSteamID(resultHandle: int, steamIDExpected: uint64)
-EXTERN int luasteam_Inventory_CheckResultSteamID(lua_State *L) {
+static int luasteam_Inventory_CheckResultSteamID(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
 	CSteamID steamIDExpected(luasteam::checkuint64(L, 2));
-	bool __ret = SteamInventory()->CheckResultSteamID(resultHandle, steamIDExpected);
+	bool __ret = iface->CheckResultSteamID(resultHandle, steamIDExpected);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -257,9 +263,10 @@ EXTERN int luasteam_Inventory_CheckResultSteamID(lua_State *L) {
 // void DestroyResult(SteamInventoryResult_t resultHandle);
 // In Lua:
 // Inventory.DestroyResult(resultHandle: int)
-EXTERN int luasteam_Inventory_DestroyResult(lua_State *L) {
+static int luasteam_Inventory_DestroyResult(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
-	SteamInventory()->DestroyResult(resultHandle);
+	iface->DestroyResult(resultHandle);
 	return 0;
 }
 
@@ -267,9 +274,10 @@ EXTERN int luasteam_Inventory_DestroyResult(lua_State *L) {
 // bool GetAllItems(SteamInventoryResult_t * pResultHandle);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.GetAllItems()
-EXTERN int luasteam_Inventory_GetAllItems(lua_State *L) {
+static int luasteam_Inventory_GetAllItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
-	bool __ret = SteamInventory()->GetAllItems(&pResultHandle);
+	bool __ret = iface->GetAllItems(&pResultHandle);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -279,7 +287,8 @@ EXTERN int luasteam_Inventory_GetAllItems(lua_State *L) {
 // bool GetItemsByID(SteamInventoryResult_t * pResultHandle, const SteamItemInstanceID_t * pInstanceIDs, uint32 unCountInstanceIDs);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.GetItemsByID(pInstanceIDs: uint64[], unCountInstanceIDs: int)
-EXTERN int luasteam_Inventory_GetItemsByID(lua_State *L) {
+static int luasteam_Inventory_GetItemsByID(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	uint32 unCountInstanceIDs = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
@@ -289,7 +298,7 @@ EXTERN int luasteam_Inventory_GetItemsByID(lua_State *L) {
 		pInstanceIDs[i] = luasteam::checkuint64(L, -1);
 		lua_pop(L, 1);
 	}
-	bool __ret = SteamInventory()->GetItemsByID(&pResultHandle, pInstanceIDs.data(), unCountInstanceIDs);
+	bool __ret = iface->GetItemsByID(&pResultHandle, pInstanceIDs.data(), unCountInstanceIDs);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -299,12 +308,13 @@ EXTERN int luasteam_Inventory_GetItemsByID(lua_State *L) {
 // bool DeserializeResult(SteamInventoryResult_t * pOutResultHandle, const void * pBuffer, uint32 unBufferSize, bool bRESERVED_MUST_BE_FALSE);
 // In Lua:
 // (bool, pOutResultHandle: int) Inventory.DeserializeResult(pBuffer: str, unBufferSize: int, bRESERVED_MUST_BE_FALSE: bool)
-EXTERN int luasteam_Inventory_DeserializeResult(lua_State *L) {
+static int luasteam_Inventory_DeserializeResult(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pOutResultHandle;
 	const char *pBuffer = luaL_checkstring(L, 1);
 	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 2));
 	bool bRESERVED_MUST_BE_FALSE = lua_toboolean(L, 3);
-	bool __ret = SteamInventory()->DeserializeResult(&pOutResultHandle, pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE);
+	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pOutResultHandle);
 	return 2;
@@ -314,7 +324,8 @@ EXTERN int luasteam_Inventory_DeserializeResult(lua_State *L) {
 // bool GenerateItems(SteamInventoryResult_t * pResultHandle, const SteamItemDef_t * pArrayItemDefs, const uint32 * punArrayQuantity, uint32 unArrayLength);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.GenerateItems(pArrayItemDefs: int[], unArrayLength: int, punArrayQuantity: int[])
-EXTERN int luasteam_Inventory_GenerateItems(lua_State *L) {
+static int luasteam_Inventory_GenerateItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
@@ -331,7 +342,7 @@ EXTERN int luasteam_Inventory_GenerateItems(lua_State *L) {
 		punArrayQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	bool __ret = SteamInventory()->GenerateItems(&pResultHandle, pArrayItemDefs.data(), punArrayQuantity.data(), unArrayLength);
+	bool __ret = iface->GenerateItems(&pResultHandle, pArrayItemDefs.data(), punArrayQuantity.data(), unArrayLength);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -341,9 +352,10 @@ EXTERN int luasteam_Inventory_GenerateItems(lua_State *L) {
 // bool GrantPromoItems(SteamInventoryResult_t * pResultHandle);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.GrantPromoItems()
-EXTERN int luasteam_Inventory_GrantPromoItems(lua_State *L) {
+static int luasteam_Inventory_GrantPromoItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
-	bool __ret = SteamInventory()->GrantPromoItems(&pResultHandle);
+	bool __ret = iface->GrantPromoItems(&pResultHandle);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -353,10 +365,11 @@ EXTERN int luasteam_Inventory_GrantPromoItems(lua_State *L) {
 // bool AddPromoItem(SteamInventoryResult_t * pResultHandle, SteamItemDef_t itemDef);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.AddPromoItem(itemDef: int)
-EXTERN int luasteam_Inventory_AddPromoItem(lua_State *L) {
+static int luasteam_Inventory_AddPromoItem(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	SteamItemDef_t itemDef = static_cast<SteamItemDef_t>(luaL_checkint(L, 1));
-	bool __ret = SteamInventory()->AddPromoItem(&pResultHandle, itemDef);
+	bool __ret = iface->AddPromoItem(&pResultHandle, itemDef);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -366,7 +379,8 @@ EXTERN int luasteam_Inventory_AddPromoItem(lua_State *L) {
 // bool AddPromoItems(SteamInventoryResult_t * pResultHandle, const SteamItemDef_t * pArrayItemDefs, uint32 unArrayLength);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.AddPromoItems(pArrayItemDefs: int[], unArrayLength: int)
-EXTERN int luasteam_Inventory_AddPromoItems(lua_State *L) {
+static int luasteam_Inventory_AddPromoItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	uint32 unArrayLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
@@ -376,7 +390,7 @@ EXTERN int luasteam_Inventory_AddPromoItems(lua_State *L) {
 		pArrayItemDefs[i] = static_cast<SteamItemDef_t>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	bool __ret = SteamInventory()->AddPromoItems(&pResultHandle, pArrayItemDefs.data(), unArrayLength);
+	bool __ret = iface->AddPromoItems(&pResultHandle, pArrayItemDefs.data(), unArrayLength);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -386,11 +400,12 @@ EXTERN int luasteam_Inventory_AddPromoItems(lua_State *L) {
 // bool ConsumeItem(SteamInventoryResult_t * pResultHandle, SteamItemInstanceID_t itemConsume, uint32 unQuantity);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.ConsumeItem(itemConsume: uint64, unQuantity: int)
-EXTERN int luasteam_Inventory_ConsumeItem(lua_State *L) {
+static int luasteam_Inventory_ConsumeItem(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	SteamItemInstanceID_t itemConsume(luasteam::checkuint64(L, 1));
 	uint32 unQuantity = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = SteamInventory()->ConsumeItem(&pResultHandle, itemConsume, unQuantity);
+	bool __ret = iface->ConsumeItem(&pResultHandle, itemConsume, unQuantity);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -400,7 +415,8 @@ EXTERN int luasteam_Inventory_ConsumeItem(lua_State *L) {
 // bool ExchangeItems(SteamInventoryResult_t * pResultHandle, const SteamItemDef_t * pArrayGenerate, const uint32 * punArrayGenerateQuantity, uint32 unArrayGenerateLength, const SteamItemInstanceID_t * pArrayDestroy, const uint32 * punArrayDestroyQuantity, uint32 unArrayDestroyLength);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.ExchangeItems(pArrayGenerate: int[], unArrayGenerateLength: int, punArrayGenerateQuantity: int[], pArrayDestroy: uint64[], unArrayDestroyLength: int, punArrayDestroyQuantity: int[])
-EXTERN int luasteam_Inventory_ExchangeItems(lua_State *L) {
+static int luasteam_Inventory_ExchangeItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	uint32 unArrayGenerateLength = luaL_checkint(L, 2);
 	luaL_checktype(L, 1, LUA_TTABLE);
@@ -432,7 +448,7 @@ EXTERN int luasteam_Inventory_ExchangeItems(lua_State *L) {
 		punArrayDestroyQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	bool __ret = SteamInventory()->ExchangeItems(&pResultHandle, pArrayGenerate.data(), punArrayGenerateQuantity.data(), unArrayGenerateLength, pArrayDestroy.data(), punArrayDestroyQuantity.data(), unArrayDestroyLength);
+	bool __ret = iface->ExchangeItems(&pResultHandle, pArrayGenerate.data(), punArrayGenerateQuantity.data(), unArrayGenerateLength, pArrayDestroy.data(), punArrayDestroyQuantity.data(), unArrayDestroyLength);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -442,12 +458,13 @@ EXTERN int luasteam_Inventory_ExchangeItems(lua_State *L) {
 // bool TransferItemQuantity(SteamInventoryResult_t * pResultHandle, SteamItemInstanceID_t itemIdSource, uint32 unQuantity, SteamItemInstanceID_t itemIdDest);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.TransferItemQuantity(itemIdSource: uint64, unQuantity: int, itemIdDest: uint64)
-EXTERN int luasteam_Inventory_TransferItemQuantity(lua_State *L) {
+static int luasteam_Inventory_TransferItemQuantity(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	SteamItemInstanceID_t itemIdSource(luasteam::checkuint64(L, 1));
 	uint32 unQuantity = static_cast<uint32>(luaL_checkint(L, 2));
 	SteamItemInstanceID_t itemIdDest(luasteam::checkuint64(L, 3));
-	bool __ret = SteamInventory()->TransferItemQuantity(&pResultHandle, itemIdSource, unQuantity, itemIdDest);
+	bool __ret = iface->TransferItemQuantity(&pResultHandle, itemIdSource, unQuantity, itemIdDest);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -457,8 +474,9 @@ EXTERN int luasteam_Inventory_TransferItemQuantity(lua_State *L) {
 // void SendItemDropHeartbeat();
 // In Lua:
 // Inventory.SendItemDropHeartbeat()
-EXTERN int luasteam_Inventory_SendItemDropHeartbeat(lua_State *L) {
-	SteamInventory()->SendItemDropHeartbeat();
+static int luasteam_Inventory_SendItemDropHeartbeat(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+	iface->SendItemDropHeartbeat();
 	return 0;
 }
 
@@ -466,10 +484,11 @@ EXTERN int luasteam_Inventory_SendItemDropHeartbeat(lua_State *L) {
 // bool TriggerItemDrop(SteamInventoryResult_t * pResultHandle, SteamItemDef_t dropListDefinition);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.TriggerItemDrop(dropListDefinition: int)
-EXTERN int luasteam_Inventory_TriggerItemDrop(lua_State *L) {
+static int luasteam_Inventory_TriggerItemDrop(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	SteamItemDef_t dropListDefinition = static_cast<SteamItemDef_t>(luaL_checkint(L, 1));
-	bool __ret = SteamInventory()->TriggerItemDrop(&pResultHandle, dropListDefinition);
+	bool __ret = iface->TriggerItemDrop(&pResultHandle, dropListDefinition);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -479,7 +498,8 @@ EXTERN int luasteam_Inventory_TriggerItemDrop(lua_State *L) {
 // bool TradeItems(SteamInventoryResult_t * pResultHandle, CSteamID steamIDTradePartner, const SteamItemInstanceID_t * pArrayGive, const uint32 * pArrayGiveQuantity, uint32 nArrayGiveLength, const SteamItemInstanceID_t * pArrayGet, const uint32 * pArrayGetQuantity, uint32 nArrayGetLength);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.TradeItems(steamIDTradePartner: uint64, pArrayGive: uint64[], nArrayGiveLength: int, pArrayGiveQuantity: int[], pArrayGet: uint64[], nArrayGetLength: int, pArrayGetQuantity: int[])
-EXTERN int luasteam_Inventory_TradeItems(lua_State *L) {
+static int luasteam_Inventory_TradeItems(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	CSteamID steamIDTradePartner(luasteam::checkuint64(L, 1));
 	uint32 nArrayGiveLength = luaL_checkint(L, 3);
@@ -512,7 +532,7 @@ EXTERN int luasteam_Inventory_TradeItems(lua_State *L) {
 		pArrayGetQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	bool __ret = SteamInventory()->TradeItems(&pResultHandle, steamIDTradePartner, pArrayGive.data(), pArrayGiveQuantity.data(), nArrayGiveLength, pArrayGet.data(), pArrayGetQuantity.data(), nArrayGetLength);
+	bool __ret = iface->TradeItems(&pResultHandle, steamIDTradePartner, pArrayGive.data(), pArrayGiveQuantity.data(), nArrayGiveLength, pArrayGet.data(), pArrayGetQuantity.data(), nArrayGetLength);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -522,8 +542,9 @@ EXTERN int luasteam_Inventory_TradeItems(lua_State *L) {
 // bool LoadItemDefinitions();
 // In Lua:
 // bool Inventory.LoadItemDefinitions()
-EXTERN int luasteam_Inventory_LoadItemDefinitions(lua_State *L) {
-	bool __ret = SteamInventory()->LoadItemDefinitions();
+static int luasteam_Inventory_LoadItemDefinitions(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+	bool __ret = iface->LoadItemDefinitions();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -532,10 +553,11 @@ EXTERN int luasteam_Inventory_LoadItemDefinitions(lua_State *L) {
 // bool GetItemDefinitionIDs(SteamItemDef_t * pItemDefIDs, uint32 * punItemDefIDsArraySize);
 // In Lua:
 // (bool, pItemDefIDs: int[], punItemDefIDsArraySize: int) Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize: int)
-EXTERN int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
+static int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	uint32 punItemDefIDsArraySize = luaL_checkint(L, 1);
 	std::vector<SteamItemDef_t> pItemDefIDs(punItemDefIDsArraySize);
-	bool __ret = SteamInventory()->GetItemDefinitionIDs(pItemDefIDs.data(), &punItemDefIDsArraySize);
+	bool __ret = iface->GetItemDefinitionIDs(pItemDefIDs.data(), &punItemDefIDsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punItemDefIDsArraySize, 0);
 	for(decltype(punItemDefIDsArraySize) i = 0; i < punItemDefIDsArraySize; i++) {
@@ -550,12 +572,13 @@ EXTERN int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L) {
 // bool GetItemDefinitionProperty(SteamItemDef_t iDefinition, const char * pchPropertyName, char * pchValueBuffer, uint32 * punValueBufferSizeOut);
 // In Lua:
 // (bool, pchValueBuffer: str, punValueBufferSizeOut: int) Inventory.GetItemDefinitionProperty(iDefinition: int, pchPropertyName: str, punValueBufferSizeOut: int)
-EXTERN int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
+static int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamItemDef_t iDefinition = static_cast<SteamItemDef_t>(luaL_checkint(L, 1));
 	const char *pchPropertyName = luaL_checkstring(L, 2);
 	uint32 punValueBufferSizeOut = luaL_checkint(L, 3);
 	std::vector<char> pchValueBuffer(punValueBufferSizeOut);
-	bool __ret = SteamInventory()->GetItemDefinitionProperty(iDefinition, pchPropertyName, pchValueBuffer.data(), &punValueBufferSizeOut);
+	bool __ret = iface->GetItemDefinitionProperty(iDefinition, pchPropertyName, pchValueBuffer.data(), &punValueBufferSizeOut);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValueBuffer.data()));
 	lua_pushinteger(L, punValueBufferSizeOut);
@@ -566,14 +589,15 @@ EXTERN int luasteam_Inventory_GetItemDefinitionProperty(lua_State *L) {
 // SteamAPICall_t RequestEligiblePromoItemDefinitionsIDs(CSteamID steamID);
 // In Lua:
 // uint64 Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID: uint64, callback: function)
-EXTERN int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *L) {
+static int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	CSteamID steamID(luasteam::checkuint64(L, 1));
-	SteamAPICall_t __ret = SteamInventory()->RequestEligiblePromoItemDefinitionsIDs(steamID);
+	SteamAPICall_t __ret = iface->RequestEligiblePromoItemDefinitionsIDs(steamID);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SteamInventoryEligiblePromoItemDefIDs_t>();
 		listener->callback_ref = callback_ref;
@@ -587,11 +611,12 @@ EXTERN int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *
 // bool GetEligiblePromoItemDefinitionIDs(CSteamID steamID, SteamItemDef_t * pItemDefIDs, uint32 * punItemDefIDsArraySize);
 // In Lua:
 // (bool, pItemDefIDs: int[], punItemDefIDsArraySize: int) Inventory.GetEligiblePromoItemDefinitionIDs(steamID: uint64, punItemDefIDsArraySize: int)
-EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
+static int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	CSteamID steamID(luasteam::checkuint64(L, 1));
 	uint32 punItemDefIDsArraySize = luaL_checkint(L, 2);
 	std::vector<SteamItemDef_t> pItemDefIDs(punItemDefIDsArraySize);
-	bool __ret = SteamInventory()->GetEligiblePromoItemDefinitionIDs(steamID, pItemDefIDs.data(), &punItemDefIDsArraySize);
+	bool __ret = iface->GetEligiblePromoItemDefinitionIDs(steamID, pItemDefIDs.data(), &punItemDefIDsArraySize);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, punItemDefIDsArraySize, 0);
 	for(decltype(punItemDefIDsArraySize) i = 0; i < punItemDefIDsArraySize; i++) {
@@ -606,7 +631,8 @@ EXTERN int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L) {
 // SteamAPICall_t StartPurchase(const SteamItemDef_t * pArrayItemDefs, const uint32 * punArrayQuantity, uint32 unArrayLength);
 // In Lua:
 // uint64 Inventory.StartPurchase(pArrayItemDefs: int[], unArrayLength: int, punArrayQuantity: int[], callback: function)
-EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
+static int luasteam_Inventory_StartPurchase(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
@@ -627,7 +653,7 @@ EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
 		punArrayQuantity[i] = static_cast<uint32>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	SteamAPICall_t __ret = SteamInventory()->StartPurchase(pArrayItemDefs.data(), punArrayQuantity.data(), unArrayLength);
+	SteamAPICall_t __ret = iface->StartPurchase(pArrayItemDefs.data(), punArrayQuantity.data(), unArrayLength);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SteamInventoryStartPurchaseResult_t>();
 		listener->callback_ref = callback_ref;
@@ -641,13 +667,14 @@ EXTERN int luasteam_Inventory_StartPurchase(lua_State *L) {
 // SteamAPICall_t RequestPrices();
 // In Lua:
 // uint64 Inventory.RequestPrices(callback: function)
-EXTERN int luasteam_Inventory_RequestPrices(lua_State *L) {
+static int luasteam_Inventory_RequestPrices(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamAPICall_t __ret = SteamInventory()->RequestPrices();
+	SteamAPICall_t __ret = iface->RequestPrices();
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SteamInventoryRequestPricesResult_t>();
 		listener->callback_ref = callback_ref;
@@ -661,8 +688,9 @@ EXTERN int luasteam_Inventory_RequestPrices(lua_State *L) {
 // uint32 GetNumItemsWithPrices();
 // In Lua:
 // int Inventory.GetNumItemsWithPrices()
-EXTERN int luasteam_Inventory_GetNumItemsWithPrices(lua_State *L) {
-	uint32 __ret = SteamInventory()->GetNumItemsWithPrices();
+static int luasteam_Inventory_GetNumItemsWithPrices(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+	uint32 __ret = iface->GetNumItemsWithPrices();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -671,11 +699,12 @@ EXTERN int luasteam_Inventory_GetNumItemsWithPrices(lua_State *L) {
 // bool GetItemPrice(SteamItemDef_t iDefinition, uint64 * pCurrentPrice, uint64 * pBasePrice);
 // In Lua:
 // (bool, pCurrentPrice: uint64, pBasePrice: uint64) Inventory.GetItemPrice(iDefinition: int)
-EXTERN int luasteam_Inventory_GetItemPrice(lua_State *L) {
+static int luasteam_Inventory_GetItemPrice(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamItemDef_t iDefinition = static_cast<SteamItemDef_t>(luaL_checkint(L, 1));
 	uint64 pCurrentPrice;
 	uint64 pBasePrice;
-	bool __ret = SteamInventory()->GetItemPrice(iDefinition, &pCurrentPrice, &pBasePrice);
+	bool __ret = iface->GetItemPrice(iDefinition, &pCurrentPrice, &pBasePrice);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pCurrentPrice);
 	luasteam::pushuint64(L, pBasePrice);
@@ -686,8 +715,9 @@ EXTERN int luasteam_Inventory_GetItemPrice(lua_State *L) {
 // SteamInventoryUpdateHandle_t StartUpdateProperties();
 // In Lua:
 // uint64 Inventory.StartUpdateProperties()
-EXTERN int luasteam_Inventory_StartUpdateProperties(lua_State *L) {
-	SteamInventoryUpdateHandle_t __ret = SteamInventory()->StartUpdateProperties();
+static int luasteam_Inventory_StartUpdateProperties(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+	SteamInventoryUpdateHandle_t __ret = iface->StartUpdateProperties();
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -696,11 +726,12 @@ EXTERN int luasteam_Inventory_StartUpdateProperties(lua_State *L) {
 // bool RemoveProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName);
 // In Lua:
 // bool Inventory.RemoveProperty(handle: uint64, nItemID: uint64, pchPropertyName: str)
-EXTERN int luasteam_Inventory_RemoveProperty(lua_State *L) {
+static int luasteam_Inventory_RemoveProperty(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
-	bool __ret = SteamInventory()->RemoveProperty(handle, nItemID, pchPropertyName);
+	bool __ret = iface->RemoveProperty(handle, nItemID, pchPropertyName);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -709,12 +740,13 @@ EXTERN int luasteam_Inventory_RemoveProperty(lua_State *L) {
 // bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, const char * pchPropertyValue);
 // In Lua:
 // bool Inventory.SetPropertyString(handle: uint64, nItemID: uint64, pchPropertyName: str, pchPropertyValue: str)
-EXTERN int luasteam_Inventory_SetPropertyString(lua_State *L) {
+static int luasteam_Inventory_SetPropertyString(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	const char *pchPropertyValue = luaL_checkstring(L, 4);
-	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, pchPropertyValue);
+	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, pchPropertyValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -723,12 +755,13 @@ EXTERN int luasteam_Inventory_SetPropertyString(lua_State *L) {
 // bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, bool bValue);
 // In Lua:
 // bool Inventory.SetPropertyBool(handle: uint64, nItemID: uint64, pchPropertyName: str, bValue: bool)
-EXTERN int luasteam_Inventory_SetPropertyBool(lua_State *L) {
+static int luasteam_Inventory_SetPropertyBool(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	bool bValue = lua_toboolean(L, 4);
-	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, bValue);
+	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, bValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -737,12 +770,13 @@ EXTERN int luasteam_Inventory_SetPropertyBool(lua_State *L) {
 // bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, int64 nValue);
 // In Lua:
 // bool Inventory.SetPropertyInt64(handle: uint64, nItemID: uint64, pchPropertyName: str, nValue: uint64)
-EXTERN int luasteam_Inventory_SetPropertyInt64(lua_State *L) {
+static int luasteam_Inventory_SetPropertyInt64(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	int64 nValue(luasteam::checkuint64(L, 4));
-	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, nValue);
+	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, nValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -751,12 +785,13 @@ EXTERN int luasteam_Inventory_SetPropertyInt64(lua_State *L) {
 // bool SetProperty(SteamInventoryUpdateHandle_t handle, SteamItemInstanceID_t nItemID, const char * pchPropertyName, float flValue);
 // In Lua:
 // bool Inventory.SetPropertyFloat(handle: uint64, nItemID: uint64, pchPropertyName: str, flValue: float)
-EXTERN int luasteam_Inventory_SetPropertyFloat(lua_State *L) {
+static int luasteam_Inventory_SetPropertyFloat(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	float flValue = luaL_checknumber(L, 4);
-	bool __ret = SteamInventory()->SetProperty(handle, nItemID, pchPropertyName, flValue);
+	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, flValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -765,10 +800,11 @@ EXTERN int luasteam_Inventory_SetPropertyFloat(lua_State *L) {
 // bool SubmitUpdateProperties(SteamInventoryUpdateHandle_t handle, SteamInventoryResult_t * pResultHandle);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.SubmitUpdateProperties(handle: uint64)
-EXTERN int luasteam_Inventory_SubmitUpdateProperties(lua_State *L) {
+static int luasteam_Inventory_SubmitUpdateProperties(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
 	SteamInventoryResult_t pResultHandle;
-	bool __ret = SteamInventory()->SubmitUpdateProperties(handle, &pResultHandle);
+	bool __ret = iface->SubmitUpdateProperties(handle, &pResultHandle);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
@@ -778,60 +814,247 @@ EXTERN int luasteam_Inventory_SubmitUpdateProperties(lua_State *L) {
 // bool InspectItem(SteamInventoryResult_t * pResultHandle, const char * pchItemToken);
 // In Lua:
 // (bool, pResultHandle: int) Inventory.InspectItem(pchItemToken: str)
-EXTERN int luasteam_Inventory_InspectItem(lua_State *L) {
+static int luasteam_Inventory_InspectItem(lua_State *L) {
+	auto *iface = ((InventoryAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
 	SteamInventoryResult_t pResultHandle;
 	const char *pchItemToken = luaL_checkstring(L, 1);
-	bool __ret = SteamInventory()->InspectItem(&pResultHandle, pchItemToken);
+	bool __ret = iface->InspectItem(&pResultHandle, pchItemToken);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
 	return 2;
 }
 
-void register_Inventory_auto(lua_State *L) {
-	add_func(L, "GetResultStatus", luasteam_Inventory_GetResultStatus);
-	add_func(L, "GetResultItems", luasteam_Inventory_GetResultItems);
-	add_func(L, "GetResultItemProperty", luasteam_Inventory_GetResultItemProperty);
-	add_func(L, "GetResultTimestamp", luasteam_Inventory_GetResultTimestamp);
-	add_func(L, "CheckResultSteamID", luasteam_Inventory_CheckResultSteamID);
-	add_func(L, "DestroyResult", luasteam_Inventory_DestroyResult);
-	add_func(L, "GetAllItems", luasteam_Inventory_GetAllItems);
-	add_func(L, "GetItemsByID", luasteam_Inventory_GetItemsByID);
-	add_func(L, "DeserializeResult", luasteam_Inventory_DeserializeResult);
-	add_func(L, "GenerateItems", luasteam_Inventory_GenerateItems);
-	add_func(L, "GrantPromoItems", luasteam_Inventory_GrantPromoItems);
-	add_func(L, "AddPromoItem", luasteam_Inventory_AddPromoItem);
-	add_func(L, "AddPromoItems", luasteam_Inventory_AddPromoItems);
-	add_func(L, "ConsumeItem", luasteam_Inventory_ConsumeItem);
-	add_func(L, "ExchangeItems", luasteam_Inventory_ExchangeItems);
-	add_func(L, "TransferItemQuantity", luasteam_Inventory_TransferItemQuantity);
-	add_func(L, "SendItemDropHeartbeat", luasteam_Inventory_SendItemDropHeartbeat);
-	add_func(L, "TriggerItemDrop", luasteam_Inventory_TriggerItemDrop);
-	add_func(L, "TradeItems", luasteam_Inventory_TradeItems);
-	add_func(L, "LoadItemDefinitions", luasteam_Inventory_LoadItemDefinitions);
-	add_func(L, "GetItemDefinitionIDs", luasteam_Inventory_GetItemDefinitionIDs);
-	add_func(L, "GetItemDefinitionProperty", luasteam_Inventory_GetItemDefinitionProperty);
-	add_func(L, "RequestEligiblePromoItemDefinitionsIDs", luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs);
-	add_func(L, "GetEligiblePromoItemDefinitionIDs", luasteam_Inventory_GetEligiblePromoItemDefinitionIDs);
-	add_func(L, "StartPurchase", luasteam_Inventory_StartPurchase);
-	add_func(L, "RequestPrices", luasteam_Inventory_RequestPrices);
-	add_func(L, "GetNumItemsWithPrices", luasteam_Inventory_GetNumItemsWithPrices);
-	add_func(L, "GetItemPrice", luasteam_Inventory_GetItemPrice);
-	add_func(L, "StartUpdateProperties", luasteam_Inventory_StartUpdateProperties);
-	add_func(L, "RemoveProperty", luasteam_Inventory_RemoveProperty);
-	add_func(L, "SetPropertyString", luasteam_Inventory_SetPropertyString);
-	add_func(L, "SetPropertyBool", luasteam_Inventory_SetPropertyBool);
-	add_func(L, "SetPropertyInt64", luasteam_Inventory_SetPropertyInt64);
-	add_func(L, "SetPropertyFloat", luasteam_Inventory_SetPropertyFloat);
-	add_func(L, "SubmitUpdateProperties", luasteam_Inventory_SubmitUpdateProperties);
-	add_func(L, "InspectItem", luasteam_Inventory_InspectItem);
+void register_Inventory_auto(lua_State *L, InventoryAccessor accessor) {
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetResultStatus, 1);
+	lua_setfield(L, -2, "GetResultStatus");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetResultItems, 1);
+	lua_setfield(L, -2, "GetResultItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetResultItemProperty, 1);
+	lua_setfield(L, -2, "GetResultItemProperty");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetResultTimestamp, 1);
+	lua_setfield(L, -2, "GetResultTimestamp");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_CheckResultSteamID, 1);
+	lua_setfield(L, -2, "CheckResultSteamID");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_DestroyResult, 1);
+	lua_setfield(L, -2, "DestroyResult");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetAllItems, 1);
+	lua_setfield(L, -2, "GetAllItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetItemsByID, 1);
+	lua_setfield(L, -2, "GetItemsByID");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_DeserializeResult, 1);
+	lua_setfield(L, -2, "DeserializeResult");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GenerateItems, 1);
+	lua_setfield(L, -2, "GenerateItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GrantPromoItems, 1);
+	lua_setfield(L, -2, "GrantPromoItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_AddPromoItem, 1);
+	lua_setfield(L, -2, "AddPromoItem");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_AddPromoItems, 1);
+	lua_setfield(L, -2, "AddPromoItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_ConsumeItem, 1);
+	lua_setfield(L, -2, "ConsumeItem");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_ExchangeItems, 1);
+	lua_setfield(L, -2, "ExchangeItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_TransferItemQuantity, 1);
+	lua_setfield(L, -2, "TransferItemQuantity");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SendItemDropHeartbeat, 1);
+	lua_setfield(L, -2, "SendItemDropHeartbeat");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_TriggerItemDrop, 1);
+	lua_setfield(L, -2, "TriggerItemDrop");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_TradeItems, 1);
+	lua_setfield(L, -2, "TradeItems");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_LoadItemDefinitions, 1);
+	lua_setfield(L, -2, "LoadItemDefinitions");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetItemDefinitionIDs, 1);
+	lua_setfield(L, -2, "GetItemDefinitionIDs");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetItemDefinitionProperty, 1);
+	lua_setfield(L, -2, "GetItemDefinitionProperty");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs, 1);
+	lua_setfield(L, -2, "RequestEligiblePromoItemDefinitionsIDs");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetEligiblePromoItemDefinitionIDs, 1);
+	lua_setfield(L, -2, "GetEligiblePromoItemDefinitionIDs");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_StartPurchase, 1);
+	lua_setfield(L, -2, "StartPurchase");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_RequestPrices, 1);
+	lua_setfield(L, -2, "RequestPrices");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetNumItemsWithPrices, 1);
+	lua_setfield(L, -2, "GetNumItemsWithPrices");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_GetItemPrice, 1);
+	lua_setfield(L, -2, "GetItemPrice");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_StartUpdateProperties, 1);
+	lua_setfield(L, -2, "StartUpdateProperties");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_RemoveProperty, 1);
+	lua_setfield(L, -2, "RemoveProperty");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SetPropertyString, 1);
+	lua_setfield(L, -2, "SetPropertyString");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SetPropertyBool, 1);
+	lua_setfield(L, -2, "SetPropertyBool");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SetPropertyInt64, 1);
+	lua_setfield(L, -2, "SetPropertyInt64");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SetPropertyFloat, 1);
+	lua_setfield(L, -2, "SetPropertyFloat");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_SubmitUpdateProperties, 1);
+	lua_setfield(L, -2, "SubmitUpdateProperties");
+	lua_pushlightuserdata(L, (void*)accessor);
+	lua_pushcclosure(L, luasteam_Inventory_InspectItem, 1);
+	lua_setfield(L, -2, "InspectItem");
 }
 
 void add_Inventory_auto(lua_State *L) {
 	lua_createtable(L, 0, 36);
-	register_Inventory_auto(L);
+	register_Inventory_auto(L, &SteamInventory);
 	lua_pushvalue(L, -1);
 	Inventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Inventory");
+}
+
+int GameServerInventory_ref = LUA_NOREF;
+
+namespace {
+class GameServerInventoryCallbackListener {
+private:
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryResultReady, SteamInventoryResultReady_t);
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryFullUpdate, SteamInventoryFullUpdate_t);
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryDefinitionUpdate, SteamInventoryDefinitionUpdate_t);
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryEligiblePromoItemDefIDs, SteamInventoryEligiblePromoItemDefIDs_t);
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryStartPurchaseResult, SteamInventoryStartPurchaseResult_t);
+	STEAM_GAMESERVER_CALLBACK(GameServerInventoryCallbackListener, OnSteamInventoryRequestPricesResult, SteamInventoryRequestPricesResult_t);
+};
+void GameServerInventoryCallbackListener::OnSteamInventoryResultReady(SteamInventoryResultReady_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryResultReady");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryResultReady_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+void GameServerInventoryCallbackListener::OnSteamInventoryFullUpdate(SteamInventoryFullUpdate_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryFullUpdate");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryFullUpdate_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+void GameServerInventoryCallbackListener::OnSteamInventoryDefinitionUpdate(SteamInventoryDefinitionUpdate_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryDefinitionUpdate");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryDefinitionUpdate_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+void GameServerInventoryCallbackListener::OnSteamInventoryEligiblePromoItemDefIDs(SteamInventoryEligiblePromoItemDefIDs_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryEligiblePromoItemDefIDs");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryEligiblePromoItemDefIDs_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+void GameServerInventoryCallbackListener::OnSteamInventoryStartPurchaseResult(SteamInventoryStartPurchaseResult_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryStartPurchaseResult");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryStartPurchaseResult_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+void GameServerInventoryCallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequestPricesResult_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::GameServerInventory_ref);
+	lua_getfield(L, -1, "OnSteamInventoryRequestPricesResult");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamInventoryRequestPricesResult_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
+GameServerInventoryCallbackListener *GameServerInventory_listener = nullptr;
+} // namespace
+
+void init_GameServerInventory_auto(lua_State *L) { GameServerInventory_listener = new GameServerInventoryCallbackListener(); }
+void shutdown_GameServerInventory_auto(lua_State *L) {
+	luaL_unref(L, LUA_REGISTRYINDEX, GameServerInventory_ref);
+	GameServerInventory_ref = LUA_NOREF;
+	delete GameServerInventory_listener; GameServerInventory_listener = nullptr;
+}
+
+void add_GameServerInventory_auto(lua_State *L) {
+	lua_createtable(L, 0, 36);
+	register_Inventory_auto(L, &SteamGameServerInventory);
+	lua_pushvalue(L, -1);
+	GameServerInventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	lua_setfield(L, -2, "GameServerInventory");
 }
 
 } // namespace luasteam

@@ -5,11 +5,11 @@ namespace luasteam {
 int NetworkingUtils_ref = LUA_NOREF;
 
 namespace {
-class CallbackListener {
+class NetworkingUtilsCallbackListener {
 private:
-	STEAM_CALLBACK(CallbackListener, OnSteamRelayNetworkStatus, SteamRelayNetworkStatus_t);
+	STEAM_CALLBACK(NetworkingUtilsCallbackListener, OnSteamRelayNetworkStatus, SteamRelayNetworkStatus_t);
 };
-void CallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data) {
+void NetworkingUtilsCallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data) {
 	if (data == nullptr) return;
 	lua_State *L = luasteam::global_lua_state;
 	if (!lua_checkstack(L, 4)) return;
@@ -23,10 +23,10 @@ void CallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data
 		lua_pop(L, 1);
 	}
 }
-CallbackListener *NetworkingUtils_listener = nullptr;
+NetworkingUtilsCallbackListener *NetworkingUtils_listener = nullptr;
 } // namespace
 
-void init_NetworkingUtils_auto(lua_State *L) { NetworkingUtils_listener = new CallbackListener(); }
+void init_NetworkingUtils_auto(lua_State *L) { NetworkingUtils_listener = new NetworkingUtilsCallbackListener(); }
 void shutdown_NetworkingUtils_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingUtils_ref);
 	NetworkingUtils_ref = LUA_NOREF;
@@ -37,8 +37,9 @@ void shutdown_NetworkingUtils_auto(lua_State *L) {
 // void InitRelayNetworkAccess();
 // In Lua:
 // NetworkingUtils.InitRelayNetworkAccess()
-EXTERN int luasteam_NetworkingUtils_InitRelayNetworkAccess(lua_State *L) {
-	SteamNetworkingUtils_SteamAPI()->InitRelayNetworkAccess();
+static int luasteam_NetworkingUtils_InitRelayNetworkAccess(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
+	iface->InitRelayNetworkAccess();
 	return 0;
 }
 
@@ -46,9 +47,10 @@ EXTERN int luasteam_NetworkingUtils_InitRelayNetworkAccess(lua_State *L) {
 // ESteamNetworkingAvailability GetRelayNetworkStatus(SteamRelayNetworkStatus_t * pDetails);
 // In Lua:
 // (int, pDetails: SteamRelayNetworkStatus_t) NetworkingUtils.GetRelayNetworkStatus()
-EXTERN int luasteam_NetworkingUtils_GetRelayNetworkStatus(lua_State *L) {
+static int luasteam_NetworkingUtils_GetRelayNetworkStatus(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamRelayNetworkStatus_t pDetails;
-	ESteamNetworkingAvailability __ret = SteamNetworkingUtils_SteamAPI()->GetRelayNetworkStatus(&pDetails);
+	ESteamNetworkingAvailability __ret = iface->GetRelayNetworkStatus(&pDetails);
 	lua_pushinteger(L, __ret);
 	luasteam::push_SteamRelayNetworkStatus_t(L, pDetails);
 	return 2;
@@ -58,10 +60,11 @@ EXTERN int luasteam_NetworkingUtils_GetRelayNetworkStatus(lua_State *L) {
 // int EstimatePingTimeBetweenTwoLocations(const SteamNetworkPingLocation_t & location1, const SteamNetworkPingLocation_t & location2);
 // In Lua:
 // int NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1: SteamNetworkPingLocation_t, location2: SteamNetworkPingLocation_t)
-EXTERN int luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations(lua_State *L) {
+static int luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkPingLocation_t &location1 = *luasteam::check_SteamNetworkPingLocation_t_ptr(L, 1);
 	const SteamNetworkPingLocation_t &location2 = *luasteam::check_SteamNetworkPingLocation_t_ptr(L, 2);
-	int __ret = SteamNetworkingUtils_SteamAPI()->EstimatePingTimeBetweenTwoLocations(location1, location2);
+	int __ret = iface->EstimatePingTimeBetweenTwoLocations(location1, location2);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -70,9 +73,10 @@ EXTERN int luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations(lua_Stat
 // int EstimatePingTimeFromLocalHost(const SteamNetworkPingLocation_t & remoteLocation);
 // In Lua:
 // int NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation: SteamNetworkPingLocation_t)
-EXTERN int luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost(lua_State *L) {
+static int luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkPingLocation_t &remoteLocation = *luasteam::check_SteamNetworkPingLocation_t_ptr(L, 1);
-	int __ret = SteamNetworkingUtils_SteamAPI()->EstimatePingTimeFromLocalHost(remoteLocation);
+	int __ret = iface->EstimatePingTimeFromLocalHost(remoteLocation);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -81,11 +85,12 @@ EXTERN int luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost(lua_State *L) 
 // void ConvertPingLocationToString(const SteamNetworkPingLocation_t & location, char * pszBuf, int cchBufSize);
 // In Lua:
 // pszBuf: str NetworkingUtils.ConvertPingLocationToString(location: SteamNetworkPingLocation_t, cchBufSize: int)
-EXTERN int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
+static int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkPingLocation_t &location = *luasteam::check_SteamNetworkPingLocation_t_ptr(L, 1);
 	int cchBufSize = luaL_checkint(L, 2);
 	std::vector<char> pszBuf(cchBufSize);
-	SteamNetworkingUtils_SteamAPI()->ConvertPingLocationToString(location, pszBuf.data(), cchBufSize);
+	iface->ConvertPingLocationToString(location, pszBuf.data(), cchBufSize);
 	lua_pushstring(L, reinterpret_cast<const char*>(pszBuf.data()));
 	return 1;
 }
@@ -94,9 +99,10 @@ EXTERN int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
 // bool CheckPingDataUpToDate(float flMaxAgeSeconds);
 // In Lua:
 // bool NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds: float)
-EXTERN int luasteam_NetworkingUtils_CheckPingDataUpToDate(lua_State *L) {
+static int luasteam_NetworkingUtils_CheckPingDataUpToDate(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	float flMaxAgeSeconds = luaL_checknumber(L, 1);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->CheckPingDataUpToDate(flMaxAgeSeconds);
+	bool __ret = iface->CheckPingDataUpToDate(flMaxAgeSeconds);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -105,10 +111,11 @@ EXTERN int luasteam_NetworkingUtils_CheckPingDataUpToDate(lua_State *L) {
 // int GetPingToDataCenter(SteamNetworkingPOPID popID, SteamNetworkingPOPID * pViaRelayPoP);
 // In Lua:
 // (int, pViaRelayPoP: int) NetworkingUtils.GetPingToDataCenter(popID: int)
-EXTERN int luasteam_NetworkingUtils_GetPingToDataCenter(lua_State *L) {
+static int luasteam_NetworkingUtils_GetPingToDataCenter(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamNetworkingPOPID popID = static_cast<SteamNetworkingPOPID>(luaL_checkint(L, 1));
 	SteamNetworkingPOPID pViaRelayPoP;
-	int __ret = SteamNetworkingUtils_SteamAPI()->GetPingToDataCenter(popID, &pViaRelayPoP);
+	int __ret = iface->GetPingToDataCenter(popID, &pViaRelayPoP);
 	lua_pushinteger(L, __ret);
 	lua_pushinteger(L, pViaRelayPoP);
 	return 2;
@@ -118,9 +125,10 @@ EXTERN int luasteam_NetworkingUtils_GetPingToDataCenter(lua_State *L) {
 // int GetDirectPingToPOP(SteamNetworkingPOPID popID);
 // In Lua:
 // int NetworkingUtils.GetDirectPingToPOP(popID: int)
-EXTERN int luasteam_NetworkingUtils_GetDirectPingToPOP(lua_State *L) {
+static int luasteam_NetworkingUtils_GetDirectPingToPOP(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamNetworkingPOPID popID = static_cast<SteamNetworkingPOPID>(luaL_checkint(L, 1));
-	int __ret = SteamNetworkingUtils_SteamAPI()->GetDirectPingToPOP(popID);
+	int __ret = iface->GetDirectPingToPOP(popID);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -129,8 +137,9 @@ EXTERN int luasteam_NetworkingUtils_GetDirectPingToPOP(lua_State *L) {
 // int GetPOPCount();
 // In Lua:
 // int NetworkingUtils.GetPOPCount()
-EXTERN int luasteam_NetworkingUtils_GetPOPCount(lua_State *L) {
-	int __ret = SteamNetworkingUtils_SteamAPI()->GetPOPCount();
+static int luasteam_NetworkingUtils_GetPOPCount(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
+	int __ret = iface->GetPOPCount();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -139,10 +148,11 @@ EXTERN int luasteam_NetworkingUtils_GetPOPCount(lua_State *L) {
 // int GetPOPList(SteamNetworkingPOPID * list, int nListSz);
 // In Lua:
 // (int, list: int) NetworkingUtils.GetPOPList(nListSz: int)
-EXTERN int luasteam_NetworkingUtils_GetPOPList(lua_State *L) {
+static int luasteam_NetworkingUtils_GetPOPList(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamNetworkingPOPID list;
 	int nListSz = static_cast<int>(luaL_checkint(L, 1));
-	int __ret = SteamNetworkingUtils_SteamAPI()->GetPOPList(&list, nListSz);
+	int __ret = iface->GetPOPList(&list, nListSz);
 	lua_pushinteger(L, __ret);
 	lua_pushinteger(L, list);
 	return 2;
@@ -152,9 +162,10 @@ EXTERN int luasteam_NetworkingUtils_GetPOPList(lua_State *L) {
 // bool IsFakeIPv4(uint32 nIPv4);
 // In Lua:
 // bool NetworkingUtils.IsFakeIPv4(nIPv4: int)
-EXTERN int luasteam_NetworkingUtils_IsFakeIPv4(lua_State *L) {
+static int luasteam_NetworkingUtils_IsFakeIPv4(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	uint32 nIPv4 = static_cast<uint32>(luaL_checkint(L, 1));
-	bool __ret = SteamNetworkingUtils_SteamAPI()->IsFakeIPv4(nIPv4);
+	bool __ret = iface->IsFakeIPv4(nIPv4);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -163,9 +174,10 @@ EXTERN int luasteam_NetworkingUtils_IsFakeIPv4(lua_State *L) {
 // ESteamNetworkingFakeIPType GetIPv4FakeIPType(uint32 nIPv4);
 // In Lua:
 // int NetworkingUtils.GetIPv4FakeIPType(nIPv4: int)
-EXTERN int luasteam_NetworkingUtils_GetIPv4FakeIPType(lua_State *L) {
+static int luasteam_NetworkingUtils_GetIPv4FakeIPType(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	uint32 nIPv4 = static_cast<uint32>(luaL_checkint(L, 1));
-	ESteamNetworkingFakeIPType __ret = SteamNetworkingUtils_SteamAPI()->GetIPv4FakeIPType(nIPv4);
+	ESteamNetworkingFakeIPType __ret = iface->GetIPv4FakeIPType(nIPv4);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -174,10 +186,11 @@ EXTERN int luasteam_NetworkingUtils_GetIPv4FakeIPType(lua_State *L) {
 // EResult GetRealIdentityForFakeIP(const SteamNetworkingIPAddr & fakeIP, SteamNetworkingIdentity * pOutRealIdentity);
 // In Lua:
 // (int, pOutRealIdentity: SteamNetworkingIdentity) NetworkingUtils.GetRealIdentityForFakeIP(fakeIP: SteamNetworkingIPAddr)
-EXTERN int luasteam_NetworkingUtils_GetRealIdentityForFakeIP(lua_State *L) {
+static int luasteam_NetworkingUtils_GetRealIdentityForFakeIP(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkingIPAddr &fakeIP = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	SteamNetworkingIdentity pOutRealIdentity;
-	EResult __ret = SteamNetworkingUtils_SteamAPI()->GetRealIdentityForFakeIP(fakeIP, &pOutRealIdentity);
+	EResult __ret = iface->GetRealIdentityForFakeIP(fakeIP, &pOutRealIdentity);
 	lua_pushinteger(L, __ret);
 	luasteam::push_SteamNetworkingIdentity(L, pOutRealIdentity);
 	return 2;
@@ -187,10 +200,11 @@ EXTERN int luasteam_NetworkingUtils_GetRealIdentityForFakeIP(lua_State *L) {
 // bool SetGlobalConfigValueInt32(ESteamNetworkingConfigValue eValue, int32 val);
 // In Lua:
 // bool NetworkingUtils.SetGlobalConfigValueInt32(eValue: int, val: int)
-EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueInt32(lua_State *L) {
+static int luasteam_NetworkingUtils_SetGlobalConfigValueInt32(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
 	int32 val = static_cast<int32>(luaL_checkint(L, 2));
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetGlobalConfigValueInt32(eValue, val);
+	bool __ret = iface->SetGlobalConfigValueInt32(eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -199,10 +213,11 @@ EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueInt32(lua_State *L) {
 // bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue eValue, float val);
 // In Lua:
 // bool NetworkingUtils.SetGlobalConfigValueFloat(eValue: int, val: float)
-EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueFloat(lua_State *L) {
+static int luasteam_NetworkingUtils_SetGlobalConfigValueFloat(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
 	float val = luaL_checknumber(L, 2);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetGlobalConfigValueFloat(eValue, val);
+	bool __ret = iface->SetGlobalConfigValueFloat(eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -211,10 +226,11 @@ EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueFloat(lua_State *L) {
 // bool SetGlobalConfigValueString(ESteamNetworkingConfigValue eValue, const char * val);
 // In Lua:
 // bool NetworkingUtils.SetGlobalConfigValueString(eValue: int, val: str)
-EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueString(lua_State *L) {
+static int luasteam_NetworkingUtils_SetGlobalConfigValueString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
 	const char *val = luaL_checkstring(L, 2);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetGlobalConfigValueString(eValue, val);
+	bool __ret = iface->SetGlobalConfigValueString(eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -223,11 +239,12 @@ EXTERN int luasteam_NetworkingUtils_SetGlobalConfigValueString(lua_State *L) {
 // bool SetConnectionConfigValueInt32(HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, int32 val);
 // In Lua:
 // bool NetworkingUtils.SetConnectionConfigValueInt32(hConn: int, eValue: int, val: int)
-EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueInt32(lua_State *L) {
+static int luasteam_NetworkingUtils_SetConnectionConfigValueInt32(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	int32 val = static_cast<int32>(luaL_checkint(L, 3));
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetConnectionConfigValueInt32(hConn, eValue, val);
+	bool __ret = iface->SetConnectionConfigValueInt32(hConn, eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -236,11 +253,12 @@ EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueInt32(lua_State *L) 
 // bool SetConnectionConfigValueFloat(HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, float val);
 // In Lua:
 // bool NetworkingUtils.SetConnectionConfigValueFloat(hConn: int, eValue: int, val: float)
-EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueFloat(lua_State *L) {
+static int luasteam_NetworkingUtils_SetConnectionConfigValueFloat(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	float val = luaL_checknumber(L, 3);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetConnectionConfigValueFloat(hConn, eValue, val);
+	bool __ret = iface->SetConnectionConfigValueFloat(hConn, eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -249,11 +267,12 @@ EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueFloat(lua_State *L) 
 // bool SetConnectionConfigValueString(HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, const char * val);
 // In Lua:
 // bool NetworkingUtils.SetConnectionConfigValueString(hConn: int, eValue: int, val: str)
-EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueString(lua_State *L) {
+static int luasteam_NetworkingUtils_SetConnectionConfigValueString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	const char *val = luaL_checkstring(L, 3);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SetConnectionConfigValueString(hConn, eValue, val);
+	bool __ret = iface->SetConnectionConfigValueString(hConn, eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -262,11 +281,12 @@ EXTERN int luasteam_NetworkingUtils_SetConnectionConfigValueString(lua_State *L)
 // const char * GetConfigValueInfo(ESteamNetworkingConfigValue eValue, ESteamNetworkingConfigDataType * pOutDataType, ESteamNetworkingConfigScope * pOutScope);
 // In Lua:
 // (str, pOutDataType: int, pOutScope: int) NetworkingUtils.GetConfigValueInfo(eValue: int)
-EXTERN int luasteam_NetworkingUtils_GetConfigValueInfo(lua_State *L) {
+static int luasteam_NetworkingUtils_GetConfigValueInfo(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
 	ESteamNetworkingConfigDataType pOutDataType;
 	ESteamNetworkingConfigScope pOutScope;
-	const char * __ret = SteamNetworkingUtils_SteamAPI()->GetConfigValueInfo(eValue, &pOutDataType, &pOutScope);
+	const char * __ret = iface->GetConfigValueInfo(eValue, &pOutDataType, &pOutScope);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	lua_pushinteger(L, pOutDataType);
 	lua_pushinteger(L, pOutScope);
@@ -277,10 +297,11 @@ EXTERN int luasteam_NetworkingUtils_GetConfigValueInfo(lua_State *L) {
 // ESteamNetworkingConfigValue IterateGenericEditableConfigValues(ESteamNetworkingConfigValue eCurrent, bool bEnumerateDevVars);
 // In Lua:
 // int NetworkingUtils.IterateGenericEditableConfigValues(eCurrent: int, bEnumerateDevVars: bool)
-EXTERN int luasteam_NetworkingUtils_IterateGenericEditableConfigValues(lua_State *L) {
+static int luasteam_NetworkingUtils_IterateGenericEditableConfigValues(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eCurrent = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
 	bool bEnumerateDevVars = lua_toboolean(L, 2);
-	ESteamNetworkingConfigValue __ret = SteamNetworkingUtils_SteamAPI()->IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars);
+	ESteamNetworkingConfigValue __ret = iface->IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -289,12 +310,13 @@ EXTERN int luasteam_NetworkingUtils_IterateGenericEditableConfigValues(lua_State
 // void SteamNetworkingIPAddr_ToString(const SteamNetworkingIPAddr & addr, char * buf, uint32 cbBuf, bool bWithPort);
 // In Lua:
 // buf: str NetworkingUtils.SteamNetworkingIPAddr_ToString(addr: SteamNetworkingIPAddr, cbBuf: int, bWithPort: bool)
-EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ToString(lua_State *L) {
+static int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ToString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkingIPAddr &addr = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	uint32 cbBuf = luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
 	bool bWithPort = lua_toboolean(L, 3);
-	SteamNetworkingUtils_SteamAPI()->SteamNetworkingIPAddr_ToString(addr, buf.data(), cbBuf, bWithPort);
+	iface->SteamNetworkingIPAddr_ToString(addr, buf.data(), cbBuf, bWithPort);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
@@ -303,10 +325,11 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ToString(lua_State *L)
 // bool SteamNetworkingIPAddr_ParseString(SteamNetworkingIPAddr * pAddr, const char * pszStr);
 // In Lua:
 // (bool, pAddr: SteamNetworkingIPAddr) NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr: str)
-EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ParseString(lua_State *L) {
+static int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ParseString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamNetworkingIPAddr pAddr;
 	const char *pszStr = luaL_checkstring(L, 1);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SteamNetworkingIPAddr_ParseString(&pAddr, pszStr);
+	bool __ret = iface->SteamNetworkingIPAddr_ParseString(&pAddr, pszStr);
 	lua_pushboolean(L, __ret);
 	luasteam::push_SteamNetworkingIPAddr(L, pAddr);
 	return 2;
@@ -316,9 +339,10 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_ParseString(lua_State 
 // ESteamNetworkingFakeIPType SteamNetworkingIPAddr_GetFakeIPType(const SteamNetworkingIPAddr & addr);
 // In Lua:
 // int NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr: SteamNetworkingIPAddr)
-EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(lua_State *L) {
+static int luasteam_NetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkingIPAddr &addr = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	ESteamNetworkingFakeIPType __ret = SteamNetworkingUtils_SteamAPI()->SteamNetworkingIPAddr_GetFakeIPType(addr);
+	ESteamNetworkingFakeIPType __ret = iface->SteamNetworkingIPAddr_GetFakeIPType(addr);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -327,11 +351,12 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(lua_Stat
 // void SteamNetworkingIdentity_ToString(const SteamNetworkingIdentity & identity, char * buf, uint32 cbBuf);
 // In Lua:
 // buf: str NetworkingUtils.SteamNetworkingIdentity_ToString(identity: SteamNetworkingIdentity, cbBuf: int)
-EXTERN int luasteam_NetworkingUtils_SteamNetworkingIdentity_ToString(lua_State *L) {
+static int luasteam_NetworkingUtils_SteamNetworkingIdentity_ToString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	const SteamNetworkingIdentity &identity = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint32 cbBuf = luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
-	SteamNetworkingUtils_SteamAPI()->SteamNetworkingIdentity_ToString(identity, buf.data(), cbBuf);
+	iface->SteamNetworkingIdentity_ToString(identity, buf.data(), cbBuf);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
@@ -340,10 +365,11 @@ EXTERN int luasteam_NetworkingUtils_SteamNetworkingIdentity_ToString(lua_State *
 // bool SteamNetworkingIdentity_ParseString(SteamNetworkingIdentity * pIdentity, const char * pszStr);
 // In Lua:
 // (bool, pIdentity: SteamNetworkingIdentity) NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr: str)
-EXTERN int luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString(lua_State *L) {
+static int luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
 	SteamNetworkingIdentity pIdentity;
 	const char *pszStr = luaL_checkstring(L, 1);
-	bool __ret = SteamNetworkingUtils_SteamAPI()->SteamNetworkingIdentity_ParseString(&pIdentity, pszStr);
+	bool __ret = iface->SteamNetworkingIdentity_ParseString(&pIdentity, pszStr);
 	lua_pushboolean(L, __ret);
 	luasteam::push_SteamNetworkingIdentity(L, pIdentity);
 	return 2;
