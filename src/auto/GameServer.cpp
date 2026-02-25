@@ -597,9 +597,9 @@ static int luasteam_GameServer_GetAuthSessionTicket(lua_State *L) {
 static int luasteam_GameServer_BeginAuthSession(lua_State *L) {
 	auto *iface = SteamGameServer();
 	int cbAuthTicket = luaL_checkint(L, 2);
-	size_t _len__tmp106;
-	const char *_tmp106 = luaL_checklstring(L, 1, &_len__tmp106);
-	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp106);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
+	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp0);
 	CSteamID steamID(luasteam::checkuint64(L, 3));
 	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
 	lua_pushinteger(L, __ret);
@@ -703,9 +703,9 @@ static int luasteam_GameServer_GetPublicIP(lua_State *L) {
 static int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
 	auto *iface = SteamGameServer();
 	int cbData = luaL_checkint(L, 2);
-	size_t _len__tmp107;
-	const char *_tmp107 = luaL_checklstring(L, 1, &_len__tmp107);
-	const void *pData = reinterpret_cast<const void *>(_tmp107);
+	size_t _len__tmp1;
+	const char *_tmp1 = luaL_checklstring(L, 1, &_len__tmp1);
+	const void *pData = reinterpret_cast<const void *>(_tmp1);
 	uint32 srcIP = static_cast<uint32>(luaL_checkint(L, 3));
 	uint16 srcPort = static_cast<uint16>(luaL_checkint(L, 4));
 	bool __ret = iface->HandleIncomingPacket(pData, cbData, srcIP, srcPort);

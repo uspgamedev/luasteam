@@ -52,6 +52,15 @@ function RemotePlay.SetMouseVisibility(unSessionID, bVisible) end
 ---@param flNormalizedY number
 function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) end
 
+---@param nWidth integer
+---@param nHeight integer
+---@param nHotX integer
+---@param nHotY integer
+---@param pBGRA string
+---@param nPitch integer
+---@return integer
+function RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch) end
+
 ---@param unSessionID integer
 ---@param unCursorID integer
 function RemotePlay.SetMouseCursor(unSessionID, unCursorID) end

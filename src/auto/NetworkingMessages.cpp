@@ -55,9 +55,9 @@ void shutdown_NetworkingMessages_auto(lua_State *L) {
 static int luasteam_NetworkingMessages_SendMessageToUser(lua_State *L, ISteamNetworkingMessages *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp101;
-	const char *_tmp101 = luaL_checklstring(L, 2, &_len__tmp101);
-	const void *pubData = reinterpret_cast<const void *>(_tmp101);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const void *pubData = reinterpret_cast<const void *>(_tmp0);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int nRemoteChannel = static_cast<int>(luaL_checkint(L, 5));
 	EResult __ret = iface->SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel);

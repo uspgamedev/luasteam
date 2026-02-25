@@ -226,6 +226,25 @@ static int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
 }
 
 // In C++:
+// RemotePlayCursorID_t CreateMouseCursor(int nWidth, int nHeight, int nHotX, int nHotY, const void * pBGRA, int nPitch);
+// In Lua:
+// int RemotePlay.CreateMouseCursor(nWidth: int, nHeight: int, nHotX: int, nHotY: int, pBGRA: str, nPitch: int)
+static int luasteam_RemotePlay_CreateMouseCursor(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	int nWidth = static_cast<int>(luaL_checkint(L, 1));
+	int nHeight = static_cast<int>(luaL_checkint(L, 2));
+	int nHotX = static_cast<int>(luaL_checkint(L, 3));
+	int nHotY = static_cast<int>(luaL_checkint(L, 4));
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 5, &_len__tmp0);
+	const void *pBGRA = reinterpret_cast<const void *>(_tmp0);
+	int nPitch = static_cast<int>(luaL_checkint(L, 5));
+	RemotePlayCursorID_t __ret = iface->CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
 // void SetMouseCursor(RemotePlaySessionID_t unSessionID, RemotePlayCursorID_t unCursorID);
 // In Lua:
 // RemotePlay.SetMouseCursor(unSessionID: int, unCursorID: int)
@@ -251,11 +270,12 @@ void register_RemotePlay_auto(lua_State *L) {
 	add_func(L, "GetInput", luasteam_RemotePlay_GetInput);
 	add_func(L, "SetMouseVisibility", luasteam_RemotePlay_SetMouseVisibility);
 	add_func(L, "SetMousePosition", luasteam_RemotePlay_SetMousePosition);
+	add_func(L, "CreateMouseCursor", luasteam_RemotePlay_CreateMouseCursor);
 	add_func(L, "SetMouseCursor", luasteam_RemotePlay_SetMouseCursor);
 }
 
 void add_RemotePlay_auto(lua_State *L) {
-	lua_createtable(L, 0, 14);
+	lua_createtable(L, 0, 15);
 	register_RemotePlay_auto(L);
 	lua_pushvalue(L, -1);
 	RemotePlay_ref = luaL_ref(L, LUA_REGISTRYINDEX);

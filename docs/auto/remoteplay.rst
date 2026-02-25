@@ -22,6 +22,7 @@ List of Functions
 * :func:`RemotePlay.GetInput`
 * :func:`RemotePlay.SetMouseVisibility`
 * :func:`RemotePlay.SetMousePosition`
+* :func:`RemotePlay.CreateMouseCursor`
 * :func:`RemotePlay.SetMouseCursor`
 
 List of Callbacks
@@ -146,6 +147,19 @@ Function Reference
     :param float flNormalizedY:
     :SteamWorks: `SetMousePosition <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SetMousePosition>`_
 
+.. function:: RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch)
+
+    🤖 **Auto-generated binding**
+
+    :param int nWidth:
+    :param int nHeight:
+    :param int nHotX:
+    :param int nHotY:
+    :param str pBGRA:
+    :param int nPitch:
+    :returns: (int) Return value
+    :SteamWorks: `CreateMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#CreateMouseCursor>`_
+
 .. function:: RemotePlay.SetMouseCursor(unSessionID, unCursorID)
 
     🤖 **Auto-generated binding**
@@ -153,16 +167,6 @@ Function Reference
     :param int unSessionID:
     :param int unCursorID:
     :SteamWorks: `SetMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SetMouseCursor>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: RemotePlay.createMouseCursor
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `CreateMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#CreateMouseCursor>`_
 
 
 Callbacks

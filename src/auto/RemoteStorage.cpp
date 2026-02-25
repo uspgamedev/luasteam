@@ -910,9 +910,9 @@ static int luasteam_RemoteStorage_FileWrite(lua_State *L) {
 	auto *iface = SteamRemoteStorage();
 	const char *pchFile = luaL_checkstring(L, 1);
 	int32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp94;
-	const char *_tmp94 = luaL_checklstring(L, 2, &_len__tmp94);
-	const void *pvData = reinterpret_cast<const void *>(_tmp94);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const void *pvData = reinterpret_cast<const void *>(_tmp0);
 	bool __ret = iface->FileWrite(pchFile, pvData, cubData);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -946,9 +946,9 @@ static int luasteam_RemoteStorage_FileWriteAsync(lua_State *L) {
 	}
 	const char *pchFile = luaL_checkstring(L, 1);
 	uint32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp95;
-	const char *_tmp95 = luaL_checklstring(L, 2, &_len__tmp95);
-	const void *pvData = reinterpret_cast<const void *>(_tmp95);
+	size_t _len__tmp1;
+	const char *_tmp1 = luaL_checklstring(L, 2, &_len__tmp1);
+	const void *pvData = reinterpret_cast<const void *>(_tmp1);
 	SteamAPICall_t __ret = iface->FileWriteAsync(pchFile, pvData, cubData);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<RemoteStorageFileWriteAsyncComplete_t>();
@@ -1077,9 +1077,9 @@ static int luasteam_RemoteStorage_FileWriteStreamWriteChunk(lua_State *L) {
 	auto *iface = SteamRemoteStorage();
 	UGCFileWriteStreamHandle_t writeHandle(luasteam::checkuint64(L, 1));
 	int32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp96;
-	const char *_tmp96 = luaL_checklstring(L, 2, &_len__tmp96);
-	const void *pvData = reinterpret_cast<const void *>(_tmp96);
+	size_t _len__tmp2;
+	const char *_tmp2 = luaL_checklstring(L, 2, &_len__tmp2);
+	const void *pvData = reinterpret_cast<const void *>(_tmp2);
 	bool __ret = iface->FileWriteStreamWriteChunk(writeHandle, pvData, cubData);
 	lua_pushboolean(L, __ret);
 	return 1;

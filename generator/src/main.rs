@@ -1578,10 +1578,7 @@ impl Generator {
                 // `const T*` and `T*` method signatures (some Steam APIs lack const).
                 if ttype == "char" {
                     assert!(!non_const_exception);
-                    out.line(&format!(
-                        "const char *{} = {};",
-                        value_accessor, var
-                    ));
+                    out.line(&format!("const char *{} = {};", value_accessor, var));
                 } else {
                     if non_const_exception {
                         out.line(&format!(
@@ -1611,6 +1608,7 @@ impl Generator {
             }
             (true, out.finish(), LType::String)
         } else {
+            assert!(!size.is_empty());
             out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
             if create_var {
                 out.line(&format!(
@@ -1961,6 +1959,8 @@ impl Generator {
         stats: &mut Stats,
         luals_dir: &Path,
     ) -> Result<(String, Option<String>), SkipReason> {
+        // Keep counters per file
+        COUNTER.store(0, std::sync::atomic::Ordering::SeqCst);
         let mut cpp = CodeBuilder::new();
         let name = &interface.classname["ISteam".len()..];
         if interface.accessors.is_empty() {
@@ -2571,12 +2571,7 @@ impl Generator {
                     is_const: true,
                     ttype,
                 } => {
-                    if let Some(sz) = param.input_array_size_param() {
-                        let p = method
-                            .params
-                            .iter()
-                            .find(|p| p.paramname == sz)
-                            .expect("Size param not found");
+                    if let Some(size) = param.input_array_size_param() {
                         let lua_idx_str = lua_idx.to_string();
                         let out = CodeBuilder::with_indent(s.indent());
                         let (ok, code, ltype) = self.generate_array_check(
@@ -2591,7 +2586,7 @@ impl Generator {
                             &param.paramname,
                             &lua_idx_str,
                             out,
-                            sz,
+                            size,
                             (method.methodname_flat
                                 == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
                                 && param.paramname == "pDataToInclude")
@@ -2604,18 +2599,23 @@ impl Generator {
                         );
                         if ok {
                             sig.add_param(param.paramname.clone(), ltype);
-                            if !size_params_to_ignore.contains(sz) {
-                                size_params_to_ignore.insert(sz.to_string());
+                            if !size.is_empty() && !size_params_to_ignore.contains(size) {
+                                let p = method
+                                    .params
+                                    .iter()
+                                    .find(|p| p.paramname == size)
+                                    .expect("Size param not found");
+                                size_params_to_ignore.insert(size.to_string());
                                 lua_idx += 1;
                                 s.line(&format!(
                                     "{} {} = luaL_checkint(L, {});",
                                     p.paramtype
                                         .strip_suffix(" *")
                                         .unwrap_or(p.paramtype.as_str()),
-                                    sz,
+                                    size,
                                     lua_idx
                                 ));
-                                sig.add_param(sz.to_string(), LType::Integer);
+                                sig.add_param(size.to_string(), LType::Integer);
                                 lua_idx += 1;
                             }
 
@@ -2632,7 +2632,7 @@ impl Generator {
                         } else {
                             return Err(SkipReason::UnsupportedType(format!(
                                 "size param {} not found",
-                                sz
+                                size
                             )));
                         }
                     } else {

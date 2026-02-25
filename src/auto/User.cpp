@@ -481,9 +481,9 @@ static int luasteam_User_GetVoice(lua_State *L) {
 static int luasteam_User_DecompressVoice(lua_State *L) {
 	auto *iface = SteamUser();
 	uint32 cbCompressed = luaL_checkint(L, 2);
-	size_t _len__tmp90;
-	const char *_tmp90 = luaL_checklstring(L, 1, &_len__tmp90);
-	const void *pCompressed = reinterpret_cast<const void *>(_tmp90);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
+	const void *pCompressed = reinterpret_cast<const void *>(_tmp0);
 	uint32 cbDestBufferSize = luaL_checkint(L, 3);
 	uint32 nBytesWritten = cbDestBufferSize;
 	std::vector<unsigned char> pDestBuffer(cbDestBufferSize);
@@ -542,9 +542,9 @@ static int luasteam_User_GetAuthTicketForWebApi(lua_State *L) {
 static int luasteam_User_BeginAuthSession(lua_State *L) {
 	auto *iface = SteamUser();
 	int cbAuthTicket = luaL_checkint(L, 2);
-	size_t _len__tmp91;
-	const char *_tmp91 = luaL_checklstring(L, 1, &_len__tmp91);
-	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp91);
+	size_t _len__tmp1;
+	const char *_tmp1 = luaL_checklstring(L, 1, &_len__tmp1);
+	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp1);
 	CSteamID steamID(luasteam::checkuint64(L, 3));
 	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
 	lua_pushinteger(L, __ret);
@@ -622,9 +622,9 @@ static int luasteam_User_RequestEncryptedAppTicket(lua_State *L) {
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	int cbDataToInclude = luaL_checkint(L, 2);
-	size_t _len__tmp92;
-	const char *_tmp92 = luaL_checklstring(L, 1, &_len__tmp92);
-	void *pDataToInclude = const_cast<void *>(reinterpret_cast<const void *>(_tmp92));
+	size_t _len__tmp2;
+	const char *_tmp2 = luaL_checklstring(L, 1, &_len__tmp2);
+	void *pDataToInclude = const_cast<void *>(reinterpret_cast<const void *>(_tmp2));
 	SteamAPICall_t __ret = iface->RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<EncryptedAppTicketResponse_t>();

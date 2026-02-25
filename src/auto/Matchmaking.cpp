@@ -637,9 +637,9 @@ static int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
 	auto *iface = SteamMatchmaking();
 	CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
 	int cubMsgBody = luaL_checkint(L, 3);
-	size_t _len__tmp93;
-	const char *_tmp93 = luaL_checklstring(L, 2, &_len__tmp93);
-	const void *pvMsgBody = reinterpret_cast<const void *>(_tmp93);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const void *pvMsgBody = reinterpret_cast<const void *>(_tmp0);
 	bool __ret = iface->SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody);
 	lua_pushboolean(L, __ret);
 	return 1;

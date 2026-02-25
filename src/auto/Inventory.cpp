@@ -318,9 +318,9 @@ static int luasteam_Inventory_GetItemsByID_gs(lua_State *L) { return luasteam_In
 static int luasteam_Inventory_DeserializeResult(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t pOutResultHandle;
 	uint32 unBufferSize = luaL_checkint(L, 2);
-	size_t _len__tmp100;
-	const char *_tmp100 = luaL_checklstring(L, 1, &_len__tmp100);
-	const void *pBuffer = reinterpret_cast<const void *>(_tmp100);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
+	const void *pBuffer = reinterpret_cast<const void *>(_tmp0);
 	bool bRESERVED_MUST_BE_FALSE = lua_toboolean(L, 3);
 	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE);
 	lua_pushboolean(L, __ret);

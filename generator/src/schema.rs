@@ -410,7 +410,11 @@ impl SteamApi {
             ),
             (
                 "ISteamRemotePlay",
-                vec![("GetInput", "pInput", "unMaxEvents")],
+                vec![
+                    ("GetInput", "pInput", "unMaxEvents"),
+                    // The size is not given explicitly, but instead is calculated from other arguments. Anyhow, it's all input, so it Just Works.
+                    ("CreateMouseCursor", "pBGRA", ""),
+                ],
             ),
             (
                 "ISteamRemoteStorage",
@@ -518,10 +522,12 @@ impl SteamApi {
                     &mut p.out_array_count
                 };
                 *field = Some(count_name.to_string());
-                assert!(
-                    m.params.iter().any(|p| p.paramname == count_name),
-                    "Count parameter not found"
-                );
+                if !count_name.is_empty() {
+                    assert!(
+                        m.params.iter().any(|p| p.paramname == count_name),
+                        "Count parameter not found"
+                    );
+                }
             }
         }
         for (interface_name, method_name, param_name, in_name, out_name) in [

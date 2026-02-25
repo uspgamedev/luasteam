@@ -229,9 +229,9 @@ static int luasteam_NetworkingSockets_GetConnectionName_gs(lua_State *L) { retur
 static int luasteam_NetworkingSockets_SendMessageToConnection(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	uint32 cbData = luaL_checkint(L, 3);
-	size_t _len__tmp102;
-	const char *_tmp102 = luaL_checklstring(L, 2, &_len__tmp102);
-	const void *pData = reinterpret_cast<const void *>(_tmp102);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const void *pData = reinterpret_cast<const void *>(_tmp0);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int64 pOutMessageNumber;
 	EResult __ret = iface->SendMessageToConnection(hConn, pData, cbData, nSendFlags, &pOutMessageNumber);

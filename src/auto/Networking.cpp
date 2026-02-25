@@ -70,9 +70,9 @@ void shutdown_Networking_auto(lua_State *L) {
 static int luasteam_Networking_SendP2PPacket(lua_State *L, ISteamNetworking *iface) {
 	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
 	uint32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp97;
-	const char *_tmp97 = luaL_checklstring(L, 2, &_len__tmp97);
-	const void *pubData = reinterpret_cast<const void *>(_tmp97);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const void *pubData = reinterpret_cast<const void *>(_tmp0);
 	EP2PSend eP2PSendType = static_cast<EP2PSend>(luaL_checkint(L, 4));
 	int nChannel = static_cast<int>(luaL_checkint(L, 5));
 	bool __ret = iface->SendP2PPacket(steamIDRemote, pubData, cubData, eP2PSendType, nChannel);
@@ -267,9 +267,9 @@ static int luasteam_Networking_DestroyListenSocket_gs(lua_State *L) { return lua
 static int luasteam_Networking_SendDataOnSocket(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
 	uint32 cubData = luaL_checkint(L, 3);
-	size_t _len__tmp98;
-	const char *_tmp98 = luaL_checklstring(L, 2, &_len__tmp98);
-	void *pubData = const_cast<void *>(reinterpret_cast<const void *>(_tmp98));
+	size_t _len__tmp1;
+	const char *_tmp1 = luaL_checklstring(L, 2, &_len__tmp1);
+	void *pubData = const_cast<void *>(reinterpret_cast<const void *>(_tmp1));
 	bool bReliable = lua_toboolean(L, 4);
 	bool __ret = iface->SendDataOnSocket(hSocket, pubData, cubData, bReliable);
 	lua_pushboolean(L, __ret);
