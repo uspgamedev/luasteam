@@ -326,18 +326,13 @@ impl SteamApi {
 
     fn fix_missing_array_count(&mut self) {
         // it has a name but is wrong
-        let param = self.interface_mut("ISteamInventory").method_mut("DeserializeResult").param_mut("pBuffer");
+        let param = self
+            .interface_mut("ISteamInventory")
+            .method_mut("DeserializeResult")
+            .param_mut("pBuffer");
         assert!(param.array_count == Some("punOutBufferSize".to_string()));
         param.array_count = Some("unBufferSize".to_string());
         let to_mark_counters = [
-            (
-                "ISteamUser",
-                vec![("GetUserDataFolder", "pchBuffer", "cubBuffer")],
-            ),
-            (
-                "ISteamRemotePlay",
-                vec![("GetInput", "pInput", "unMaxEvents")],
-            ),
             (
                 "ISteamApps",
                 vec![
@@ -348,6 +343,101 @@ impl SteamApi {
                     ("BGetDLCDataByIndex", "pchName", "cchNameBufferSize"),
                     ("GetBetaInfo", "pchBetaName", "cchBetaName"),
                     ("GetBetaInfo", "pchDescription", "cchDescription"),
+                ],
+            ),
+            (
+                "ISteamFriends",
+                vec![
+                    ("GetClanChatMessage", "prgchText", "cchTextMax"),
+                    ("GetFriendMessage", "pvData", "cubData"),
+                ],
+            ),
+            (
+                "ISteamGameServer",
+                vec![
+                    ("GetNextOutgoingPacket", "pOut", "cbMaxOut"),
+                    ("BeginAuthSession", "pAuthTicket", "cbAuthTicket"),
+                    ("HandleIncomingPacket", "pData", "cbData"),
+                ],
+            ),
+            ("ISteamInventory", vec![]),
+            (
+                "ISteamMatchmaking",
+                vec![
+                    ("GetLobbyDataByIndex", "pchKey", "cchKeyBufferSize"),
+                    ("GetLobbyDataByIndex", "pchValue", "cchValueBufferSize"),
+                    ("GetLobbyChatEntry", "pvData", "cubData"),
+                    ("SendLobbyChatMsg", "pvMsgBody", "cubMsgBody"),
+                ],
+            ),
+            (
+                "ISteamNetworking",
+                vec![
+                    ("SendDataOnSocket", "pubData", "cubData"),
+                    ("SendP2PPacket", "pubData", "cubData"),
+                ],
+            ),
+            (
+                "ISteamNetworkingUtils",
+                vec![
+                    ("ConvertPingLocationToString", "pszBuf", "cchBufSize"),
+                    ("SteamNetworkingIPAddr_ToString", "buf", "cbBuf"),
+                    ("SteamNetworkingIdentity_ToString", "buf", "cbBuf"),
+                ],
+            ),
+            (
+                "ISteamNetworkingMessages",
+                vec![("SendMessageToUser", "pubData", "cubData")],
+            ),
+            (
+                "ISteamNetworkingSockets",
+                vec![
+                    ("GetConnectionName", "pszName", "nMaxLen"),
+                    ("GetDetailedConnectionStatus", "pszBuf", "cbBuf"),
+                    ("SendMessageToConnection", "pData", "cbData"),
+                    ("ReceivedRelayAuthTicket", "pvTicket", "cbTicket"),
+                    ("ReceivedP2PCustomSignal", "pMsg", "cbMsg"),
+                    ("SetCertificate", "pCertificate", "cbCertificate"),
+                ],
+            ),
+            (
+                "ISteamParties",
+                vec![(
+                    "GetAvailableBeaconLocations",
+                    "pLocationList",
+                    "uMaxNumLocations",
+                )],
+            ),
+            (
+                "ISteamRemotePlay",
+                vec![("GetInput", "pInput", "unMaxEvents")],
+            ),
+            (
+                "ISteamRemoteStorage",
+                vec![
+                    ("FileRead", "pvData", "cubDataToRead"),
+                    ("FileReadAsyncComplete", "pvBuffer", "cubToRead"),
+                    ("FileWrite", "pvData", "cubData"),
+                    ("FileWriteAsync", "pvData", "cubData"),
+                    ("FileWriteStreamWriteChunk", "pvData", "cubData"),
+                    ("UGCRead", "pvData", "cubDataToRead"),
+                ],
+            ),
+            (
+                "ISteamScreenshots",
+                vec![("WriteScreenshot", "pubRGB", "cubRGB")],
+            ),
+            (
+                "ISteamUser",
+                vec![
+                    ("GetUserDataFolder", "pchBuffer", "cubBuffer"),
+                    ("BeginAuthSession", "pAuthTicket", "cbAuthTicket"),
+                    ("DecompressVoice", "pCompressed", "cbCompressed"),
+                    (
+                        "RequestEncryptedAppTicket",
+                        "pDataToInclude",
+                        "cbDataToInclude",
+                    ),
                 ],
             ),
             (
@@ -368,22 +458,6 @@ impl SteamApi {
                 ],
             ),
             (
-                "ISteamParties",
-                vec![(
-                    "GetAvailableBeaconLocations",
-                    "pLocationList",
-                    "uMaxNumLocations",
-                )],
-            ),
-            (
-                "ISteamMatchmaking",
-                vec![
-                    ("GetLobbyDataByIndex", "pchKey", "cchKeyBufferSize"),
-                    ("GetLobbyDataByIndex", "pchValue", "cchValueBufferSize"),
-                    ("GetLobbyChatEntry", "pvData", "cubData"),
-                ],
-            ),
-            (
                 "ISteamUtils",
                 vec![
                     (
@@ -395,37 +469,6 @@ impl SteamApi {
                     ("GetImageRGBA", "pubDest", "nDestBufferSize"),
                     ("GetAPICallResult", "pCallback", "cubCallback"),
                 ],
-            ),
-            (
-                "ISteamRemoteStorage",
-                vec![
-                    ("FileRead", "pvData", "cubDataToRead"),
-                    ("FileReadAsyncComplete", "pvBuffer", "cubToRead"),
-                    ("UGCRead", "pvData", "cubDataToRead"),
-                ],
-            ),
-            (
-                "ISteamScreenshots",
-                vec![("WriteScreenshot", "pubRGB", "cubRGB")],
-            ),
-            (
-                "ISteamFriends",
-                vec![
-                    ("GetClanChatMessage", "prgchText", "cchTextMax"),
-                    ("GetFriendMessage", "pvData", "cubData"),
-                ],
-            ),
-            (
-                "ISteamGameServer",
-                vec![("GetNextOutgoingPacket", "pOut", "cbMaxOut")],
-            ),
-            (
-                "ISteamVideo",
-                vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
-            ),
-            (
-                "ISteamInventory",
-                vec![],
             ),
             (
                 "ISteamUGC",
@@ -444,35 +487,8 @@ impl SteamApi {
                 ],
             ),
             (
-                "ISteamNetworking",
-                vec![
-                    ("SendDataOnSocket", "pubData", "cubData"),
-                    ("SendP2PPacket", "pubData", "cubData"),
-                ],
-            ),
-            (
-                "ISteamNetworkingUtils",
-                vec![
-                    ("ConvertPingLocationToString", "pszBuf", "cchBufSize"),
-                    ("SteamNetworkingIPAddr_ToString", "buf", "cbBuf"),
-                    ("SteamNetworkingIdentity_ToString", "buf", "cbBuf"),
-                ],
-            ),
-            (
-                "ISteamNetworkingMessages",
-                vec![
-                    ("SendMessageToUser", "pubData", "cubData"),
-                ],
-            ),
-            (
-                "ISteamNetworkingSockets",
-                vec![
-                    ("GetConnectionName", "pszName", "nMaxLen"),
-                    ("GetDetailedConnectionStatus", "pszBuf", "cbBuf"),
-                    ("SendMessageToConnection", "pData", "cbData"),
-                    ("ReceivedRelayAuthTicket", "pvTicket", "cbTicket"),
-                    ("ReceivedP2PCustomSignal", "pMsg", "cbMsg"),
-                ],
+                "ISteamVideo",
+                vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
             ),
         ];
         for (i_name, data) in to_mark_counters {

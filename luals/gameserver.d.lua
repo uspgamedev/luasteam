@@ -78,6 +78,12 @@ function GameServer.SetAdvertiseServerActive(bActive) end
 ---@return integer -- Value of: pcbTicket
 function GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid) end
 
+---@param pAuthTicket string
+---@param cbAuthTicket integer
+---@param steamID uint64
+---@return integer
+function GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
+
 ---@param steamID uint64
 function GameServer.EndAuthSession(steamID) end
 
@@ -102,6 +108,13 @@ function GameServer.GetServerReputation(callback) end
 
 ---@return SteamIPAddress_t
 function GameServer.GetPublicIP() end
+
+---@param pData string
+---@param cbData integer
+---@param srcIP integer
+---@param srcPort integer
+---@return boolean
+function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 
 ---@param cbMaxOut integer
 ---@return integer

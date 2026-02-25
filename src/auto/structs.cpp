@@ -36,9 +36,10 @@ static int SteamIPAddress_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamIPAddress_t *self = (SteamIPAddress_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgubIPv6") == 0) {
-		const char *_tmp0 = luaL_checkstring(L, 3);
-		if (strlen(_tmp0) >= 16) luaL_error(L, "String too long");
-		memcpy(self->m_rgubIPv6, _tmp0, sizeof(self->m_rgubIPv6));
+		size_t _len__tmp0;
+		const char *_tmp0 = luaL_checklstring(L, 3, &_len__tmp0);
+		if (_len__tmp0 > sizeof(self->m_rgubIPv6)) luaL_error(L, "String too long");
+		memcpy(self->m_rgubIPv6, _tmp0, std::min(_len__tmp0 + 1, sizeof(self->m_rgubIPv6)));
 		return 0;
 	}
 	if (strcmp(key, "m_eType") == 0) {
@@ -55,9 +56,10 @@ EXTERN int luasteam_newSteamIPAddress_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_rgubIPv6");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp1 = luaL_checkstring(L, -1);
-			if (strlen(_tmp1) >= 16) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgubIPv6, _tmp1, sizeof(ptr->m_rgubIPv6));
+			size_t _len__tmp1;
+			const char *_tmp1 = luaL_checklstring(L, -1, &_len__tmp1);
+			if (_len__tmp1 > sizeof(ptr->m_rgubIPv6)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgubIPv6, _tmp1, std::min(_len__tmp1 + 1, sizeof(ptr->m_rgubIPv6)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_eType");
@@ -187,15 +189,17 @@ static int MatchMakingKeyValuePair_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	MatchMakingKeyValuePair_t *self = (MatchMakingKeyValuePair_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szKey") == 0) {
-		const char *_tmp2 = luaL_checkstring(L, 3);
-		if (strlen(_tmp2) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_szKey, _tmp2, sizeof(self->m_szKey));
+		size_t _len__tmp2;
+		const char *_tmp2 = luaL_checklstring(L, 3, &_len__tmp2);
+		if (_len__tmp2 > sizeof(self->m_szKey)) luaL_error(L, "String too long");
+		memcpy(self->m_szKey, _tmp2, std::min(_len__tmp2 + 1, sizeof(self->m_szKey)));
 		return 0;
 	}
 	if (strcmp(key, "m_szValue") == 0) {
-		const char *_tmp4 = luaL_checkstring(L, 3);
-		if (strlen(_tmp4) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_szValue, _tmp4, sizeof(self->m_szValue));
+		size_t _len__tmp4;
+		const char *_tmp4 = luaL_checklstring(L, 3, &_len__tmp4);
+		if (_len__tmp4 > sizeof(self->m_szValue)) luaL_error(L, "String too long");
+		memcpy(self->m_szValue, _tmp4, std::min(_len__tmp4 + 1, sizeof(self->m_szValue)));
 		return 0;
 	}
 	return luaL_error(L, "MatchMakingKeyValuePair_t has no field '%%s'", key);
@@ -208,16 +212,18 @@ EXTERN int luasteam_newMatchMakingKeyValuePair_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_szKey");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp3 = luaL_checkstring(L, -1);
-			if (strlen(_tmp3) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_szKey, _tmp3, sizeof(ptr->m_szKey));
+			size_t _len__tmp3;
+			const char *_tmp3 = luaL_checklstring(L, -1, &_len__tmp3);
+			if (_len__tmp3 > sizeof(ptr->m_szKey)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szKey, _tmp3, std::min(_len__tmp3 + 1, sizeof(ptr->m_szKey)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szValue");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp5 = luaL_checkstring(L, -1);
-			if (strlen(_tmp5) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_szValue, _tmp5, sizeof(ptr->m_szValue));
+			size_t _len__tmp5;
+			const char *_tmp5 = luaL_checklstring(L, -1, &_len__tmp5);
+			if (_len__tmp5 > sizeof(ptr->m_szValue)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szValue, _tmp5, std::min(_len__tmp5 + 1, sizeof(ptr->m_szValue)));
 		}
 		lua_pop(L, 1);
 	}
@@ -418,21 +424,24 @@ static int gameserveritem_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_szGameDir") == 0) {
-		const char *_tmp6 = luaL_checkstring(L, 3);
-		if (strlen(_tmp6) >= 32) luaL_error(L, "String too long");
-		memcpy(self->m_szGameDir, _tmp6, sizeof(self->m_szGameDir));
+		size_t _len__tmp6;
+		const char *_tmp6 = luaL_checklstring(L, 3, &_len__tmp6);
+		if (_len__tmp6 > sizeof(self->m_szGameDir)) luaL_error(L, "String too long");
+		memcpy(self->m_szGameDir, _tmp6, std::min(_len__tmp6 + 1, sizeof(self->m_szGameDir)));
 		return 0;
 	}
 	if (strcmp(key, "m_szMap") == 0) {
-		const char *_tmp8 = luaL_checkstring(L, 3);
-		if (strlen(_tmp8) >= 32) luaL_error(L, "String too long");
-		memcpy(self->m_szMap, _tmp8, sizeof(self->m_szMap));
+		size_t _len__tmp8;
+		const char *_tmp8 = luaL_checklstring(L, 3, &_len__tmp8);
+		if (_len__tmp8 > sizeof(self->m_szMap)) luaL_error(L, "String too long");
+		memcpy(self->m_szMap, _tmp8, std::min(_len__tmp8 + 1, sizeof(self->m_szMap)));
 		return 0;
 	}
 	if (strcmp(key, "m_szGameDescription") == 0) {
-		const char *_tmp10 = luaL_checkstring(L, 3);
-		if (strlen(_tmp10) >= 64) luaL_error(L, "String too long");
-		memcpy(self->m_szGameDescription, _tmp10, sizeof(self->m_szGameDescription));
+		size_t _len__tmp10;
+		const char *_tmp10 = luaL_checklstring(L, 3, &_len__tmp10);
+		if (_len__tmp10 > sizeof(self->m_szGameDescription)) luaL_error(L, "String too long");
+		memcpy(self->m_szGameDescription, _tmp10, std::min(_len__tmp10 + 1, sizeof(self->m_szGameDescription)));
 		return 0;
 	}
 	if (strcmp(key, "m_nAppID") == 0) {
@@ -468,9 +477,10 @@ static int gameserveritem_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_szGameTags") == 0) {
-		const char *_tmp12 = luaL_checkstring(L, 3);
-		if (strlen(_tmp12) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_szGameTags, _tmp12, sizeof(self->m_szGameTags));
+		size_t _len__tmp12;
+		const char *_tmp12 = luaL_checklstring(L, 3, &_len__tmp12);
+		if (_len__tmp12 > sizeof(self->m_szGameTags)) luaL_error(L, "String too long");
+		memcpy(self->m_szGameTags, _tmp12, std::min(_len__tmp12 + 1, sizeof(self->m_szGameTags)));
 		return 0;
 	}
 	if (strcmp(key, "m_steamID") == 0) {
@@ -507,23 +517,26 @@ EXTERN int luasteam_newgameserveritem_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szGameDir");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp7 = luaL_checkstring(L, -1);
-			if (strlen(_tmp7) >= 32) luaL_error(L, "String too long");
-			memcpy(ptr->m_szGameDir, _tmp7, sizeof(ptr->m_szGameDir));
+			size_t _len__tmp7;
+			const char *_tmp7 = luaL_checklstring(L, -1, &_len__tmp7);
+			if (_len__tmp7 > sizeof(ptr->m_szGameDir)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szGameDir, _tmp7, std::min(_len__tmp7 + 1, sizeof(ptr->m_szGameDir)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szMap");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp9 = luaL_checkstring(L, -1);
-			if (strlen(_tmp9) >= 32) luaL_error(L, "String too long");
-			memcpy(ptr->m_szMap, _tmp9, sizeof(ptr->m_szMap));
+			size_t _len__tmp9;
+			const char *_tmp9 = luaL_checklstring(L, -1, &_len__tmp9);
+			if (_len__tmp9 > sizeof(ptr->m_szMap)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szMap, _tmp9, std::min(_len__tmp9 + 1, sizeof(ptr->m_szMap)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szGameDescription");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp11 = luaL_checkstring(L, -1);
-			if (strlen(_tmp11) >= 64) luaL_error(L, "String too long");
-			memcpy(ptr->m_szGameDescription, _tmp11, sizeof(ptr->m_szGameDescription));
+			size_t _len__tmp11;
+			const char *_tmp11 = luaL_checklstring(L, -1, &_len__tmp11);
+			if (_len__tmp11 > sizeof(ptr->m_szGameDescription)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szGameDescription, _tmp11, std::min(_len__tmp11 + 1, sizeof(ptr->m_szGameDescription)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_nAppID");
@@ -568,9 +581,10 @@ EXTERN int luasteam_newgameserveritem_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szGameTags");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp13 = luaL_checkstring(L, -1);
-			if (strlen(_tmp13) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_szGameTags, _tmp13, sizeof(ptr->m_szGameTags));
+			size_t _len__tmp13;
+			const char *_tmp13 = luaL_checklstring(L, -1, &_len__tmp13);
+			if (_len__tmp13 > sizeof(ptr->m_szGameTags)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szGameTags, _tmp13, std::min(_len__tmp13 + 1, sizeof(ptr->m_szGameTags)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_steamID");
@@ -1429,15 +1443,17 @@ static int SteamUGCDetails_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchTitle") == 0) {
-		const char *_tmp14 = luaL_checkstring(L, 3);
-		if (strlen(_tmp14) >= 129) luaL_error(L, "String too long");
-		memcpy(self->m_rgchTitle, _tmp14, sizeof(self->m_rgchTitle));
+		size_t _len__tmp14;
+		const char *_tmp14 = luaL_checklstring(L, 3, &_len__tmp14);
+		if (_len__tmp14 > sizeof(self->m_rgchTitle)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchTitle, _tmp14, std::min(_len__tmp14 + 1, sizeof(self->m_rgchTitle)));
 		return 0;
 	}
 	if (strcmp(key, "m_rgchDescription") == 0) {
-		const char *_tmp16 = luaL_checkstring(L, 3);
-		if (strlen(_tmp16) >= 8000) luaL_error(L, "String too long");
-		memcpy(self->m_rgchDescription, _tmp16, sizeof(self->m_rgchDescription));
+		size_t _len__tmp16;
+		const char *_tmp16 = luaL_checklstring(L, 3, &_len__tmp16);
+		if (_len__tmp16 > sizeof(self->m_rgchDescription)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchDescription, _tmp16, std::min(_len__tmp16 + 1, sizeof(self->m_rgchDescription)));
 		return 0;
 	}
 	if (strcmp(key, "m_ulSteamIDOwner") == 0) {
@@ -1473,9 +1489,10 @@ static int SteamUGCDetails_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchTags") == 0) {
-		const char *_tmp18 = luaL_checkstring(L, 3);
-		if (strlen(_tmp18) >= 1025) luaL_error(L, "String too long");
-		memcpy(self->m_rgchTags, _tmp18, sizeof(self->m_rgchTags));
+		size_t _len__tmp18;
+		const char *_tmp18 = luaL_checklstring(L, 3, &_len__tmp18);
+		if (_len__tmp18 > sizeof(self->m_rgchTags)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchTags, _tmp18, std::min(_len__tmp18 + 1, sizeof(self->m_rgchTags)));
 		return 0;
 	}
 	if (strcmp(key, "m_hFile") == 0) {
@@ -1487,9 +1504,10 @@ static int SteamUGCDetails_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		const char *_tmp20 = luaL_checkstring(L, 3);
-		if (strlen(_tmp20) >= 260) luaL_error(L, "String too long");
-		memcpy(self->m_pchFileName, _tmp20, sizeof(self->m_pchFileName));
+		size_t _len__tmp20;
+		const char *_tmp20 = luaL_checklstring(L, 3, &_len__tmp20);
+		if (_len__tmp20 > sizeof(self->m_pchFileName)) luaL_error(L, "String too long");
+		memcpy(self->m_pchFileName, _tmp20, std::min(_len__tmp20 + 1, sizeof(self->m_pchFileName)));
 		return 0;
 	}
 	if (strcmp(key, "m_nFileSize") == 0) {
@@ -1501,9 +1519,10 @@ static int SteamUGCDetails_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		const char *_tmp22 = luaL_checkstring(L, 3);
-		if (strlen(_tmp22) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchURL, _tmp22, sizeof(self->m_rgchURL));
+		size_t _len__tmp22;
+		const char *_tmp22 = luaL_checklstring(L, 3, &_len__tmp22);
+		if (_len__tmp22 > sizeof(self->m_rgchURL)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchURL, _tmp22, std::min(_len__tmp22 + 1, sizeof(self->m_rgchURL)));
 		return 0;
 	}
 	if (strcmp(key, "m_unVotesUp") == 0) {
@@ -1561,16 +1580,18 @@ EXTERN int luasteam_newSteamUGCDetails_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchTitle");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp15 = luaL_checkstring(L, -1);
-			if (strlen(_tmp15) >= 129) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchTitle, _tmp15, sizeof(ptr->m_rgchTitle));
+			size_t _len__tmp15;
+			const char *_tmp15 = luaL_checklstring(L, -1, &_len__tmp15);
+			if (_len__tmp15 > sizeof(ptr->m_rgchTitle)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchTitle, _tmp15, std::min(_len__tmp15 + 1, sizeof(ptr->m_rgchTitle)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchDescription");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp17 = luaL_checkstring(L, -1);
-			if (strlen(_tmp17) >= 8000) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchDescription, _tmp17, sizeof(ptr->m_rgchDescription));
+			size_t _len__tmp17;
+			const char *_tmp17 = luaL_checklstring(L, -1, &_len__tmp17);
+			if (_len__tmp17 > sizeof(ptr->m_rgchDescription)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchDescription, _tmp17, std::min(_len__tmp17 + 1, sizeof(ptr->m_rgchDescription)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_ulSteamIDOwner");
@@ -1615,9 +1636,10 @@ EXTERN int luasteam_newSteamUGCDetails_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchTags");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp19 = luaL_checkstring(L, -1);
-			if (strlen(_tmp19) >= 1025) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchTags, _tmp19, sizeof(ptr->m_rgchTags));
+			size_t _len__tmp19;
+			const char *_tmp19 = luaL_checklstring(L, -1, &_len__tmp19);
+			if (_len__tmp19 > sizeof(ptr->m_rgchTags)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchTags, _tmp19, std::min(_len__tmp19 + 1, sizeof(ptr->m_rgchTags)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_hFile");
@@ -1632,9 +1654,10 @@ EXTERN int luasteam_newSteamUGCDetails_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_pchFileName");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp21 = luaL_checkstring(L, -1);
-			if (strlen(_tmp21) >= 260) luaL_error(L, "String too long");
-			memcpy(ptr->m_pchFileName, _tmp21, sizeof(ptr->m_pchFileName));
+			size_t _len__tmp21;
+			const char *_tmp21 = luaL_checklstring(L, -1, &_len__tmp21);
+			if (_len__tmp21 > sizeof(ptr->m_pchFileName)) luaL_error(L, "String too long");
+			memcpy(ptr->m_pchFileName, _tmp21, std::min(_len__tmp21 + 1, sizeof(ptr->m_pchFileName)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_nFileSize");
@@ -1649,9 +1672,10 @@ EXTERN int luasteam_newSteamUGCDetails_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp23 = luaL_checkstring(L, -1);
-			if (strlen(_tmp23) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchURL, _tmp23, sizeof(ptr->m_rgchURL));
+			size_t _len__tmp23;
+			const char *_tmp23 = luaL_checklstring(L, -1, &_len__tmp23);
+			if (_len__tmp23 > sizeof(ptr->m_rgchURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchURL, _tmp23, std::min(_len__tmp23 + 1, sizeof(ptr->m_rgchURL)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_unVotesUp");
@@ -2014,9 +2038,10 @@ static int RemotePlayInput_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "padding") == 0) {
-		const char *_tmp24 = luaL_checkstring(L, 3);
-		if (strlen(_tmp24) >= 56) luaL_error(L, "String too long");
-		memcpy(self->padding, _tmp24, sizeof(self->padding));
+		size_t _len__tmp24;
+		const char *_tmp24 = luaL_checklstring(L, 3, &_len__tmp24);
+		if (_len__tmp24 > sizeof(self->padding)) luaL_error(L, "String too long");
+		memcpy(self->padding, _tmp24, std::min(_len__tmp24 + 1, sizeof(self->padding)));
 		return 0;
 	}
 	return luaL_error(L, "RemotePlayInput_t has no field '%%s'", key);
@@ -2039,9 +2064,10 @@ EXTERN int luasteam_newRemotePlayInput_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "padding");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp25 = luaL_checkstring(L, -1);
-			if (strlen(_tmp25) >= 56) luaL_error(L, "String too long");
-			memcpy(ptr->padding, _tmp25, sizeof(ptr->padding));
+			size_t _len__tmp25;
+			const char *_tmp25 = luaL_checklstring(L, -1, &_len__tmp25);
+			if (_len__tmp25 > sizeof(ptr->padding)) luaL_error(L, "String too long");
+			memcpy(ptr->padding, _tmp25, std::min(_len__tmp25 + 1, sizeof(ptr->padding)));
 		}
 		lua_pop(L, 1);
 	}
@@ -2146,9 +2172,10 @@ static int SteamNetworkingIPAddr_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamNetworkingIPAddr *self = (SteamNetworkingIPAddr*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_ipv6") == 0) {
-		const char *_tmp26 = luaL_checkstring(L, 3);
-		if (strlen(_tmp26) >= 16) luaL_error(L, "String too long");
-		memcpy(self->m_ipv6, _tmp26, sizeof(self->m_ipv6));
+		size_t _len__tmp26;
+		const char *_tmp26 = luaL_checklstring(L, 3, &_len__tmp26);
+		if (_len__tmp26 > sizeof(self->m_ipv6)) luaL_error(L, "String too long");
+		memcpy(self->m_ipv6, _tmp26, std::min(_len__tmp26 + 1, sizeof(self->m_ipv6)));
 		return 0;
 	}
 	if (strcmp(key, "m_port") == 0) {
@@ -2165,9 +2192,10 @@ EXTERN int luasteam_newSteamNetworkingIPAddr(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_ipv6");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp27 = luaL_checkstring(L, -1);
-			if (strlen(_tmp27) >= 16) luaL_error(L, "String too long");
-			memcpy(ptr->m_ipv6, _tmp27, sizeof(ptr->m_ipv6));
+			size_t _len__tmp27;
+			const char *_tmp27 = luaL_checklstring(L, -1, &_len__tmp27);
+			if (_len__tmp27 > sizeof(ptr->m_ipv6)) luaL_error(L, "String too long");
+			memcpy(ptr->m_ipv6, _tmp27, std::min(_len__tmp27 + 1, sizeof(ptr->m_ipv6)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_port");
@@ -2448,15 +2476,17 @@ static int SteamNetConnectionInfo_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_szEndDebug") == 0) {
-		const char *_tmp28 = luaL_checkstring(L, 3);
-		if (strlen(_tmp28) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_szEndDebug, _tmp28, sizeof(self->m_szEndDebug));
+		size_t _len__tmp28;
+		const char *_tmp28 = luaL_checklstring(L, 3, &_len__tmp28);
+		if (_len__tmp28 > sizeof(self->m_szEndDebug)) luaL_error(L, "String too long");
+		memcpy(self->m_szEndDebug, _tmp28, std::min(_len__tmp28 + 1, sizeof(self->m_szEndDebug)));
 		return 0;
 	}
 	if (strcmp(key, "m_szConnectionDescription") == 0) {
-		const char *_tmp30 = luaL_checkstring(L, 3);
-		if (strlen(_tmp30) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_szConnectionDescription, _tmp30, sizeof(self->m_szConnectionDescription));
+		size_t _len__tmp30;
+		const char *_tmp30 = luaL_checklstring(L, 3, &_len__tmp30);
+		if (_len__tmp30 > sizeof(self->m_szConnectionDescription)) luaL_error(L, "String too long");
+		memcpy(self->m_szConnectionDescription, _tmp30, std::min(_len__tmp30 + 1, sizeof(self->m_szConnectionDescription)));
 		return 0;
 	}
 	if (strcmp(key, "m_nFlags") == 0) {
@@ -2527,16 +2557,18 @@ EXTERN int luasteam_newSteamNetConnectionInfo_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szEndDebug");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp29 = luaL_checkstring(L, -1);
-			if (strlen(_tmp29) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_szEndDebug, _tmp29, sizeof(ptr->m_szEndDebug));
+			size_t _len__tmp29;
+			const char *_tmp29 = luaL_checklstring(L, -1, &_len__tmp29);
+			if (_len__tmp29 > sizeof(ptr->m_szEndDebug)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szEndDebug, _tmp29, std::min(_len__tmp29 + 1, sizeof(ptr->m_szEndDebug)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_szConnectionDescription");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp31 = luaL_checkstring(L, -1);
-			if (strlen(_tmp31) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_szConnectionDescription, _tmp31, sizeof(ptr->m_szConnectionDescription));
+			size_t _len__tmp31;
+			const char *_tmp31 = luaL_checklstring(L, -1, &_len__tmp31);
+			if (_len__tmp31 > sizeof(ptr->m_szConnectionDescription)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szConnectionDescription, _tmp31, std::min(_len__tmp31 + 1, sizeof(ptr->m_szConnectionDescription)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_nFlags");
@@ -2897,9 +2929,10 @@ static int SteamNetworkPingLocation_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamNetworkPingLocation_t *self = (SteamNetworkPingLocation_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_data") == 0) {
-		const char *_tmp32 = luaL_checkstring(L, 3);
-		if (strlen(_tmp32) >= 512) luaL_error(L, "String too long");
-		memcpy(self->m_data, _tmp32, sizeof(self->m_data));
+		size_t _len__tmp32;
+		const char *_tmp32 = luaL_checklstring(L, 3, &_len__tmp32);
+		if (_len__tmp32 > sizeof(self->m_data)) luaL_error(L, "String too long");
+		memcpy(self->m_data, _tmp32, std::min(_len__tmp32 + 1, sizeof(self->m_data)));
 		return 0;
 	}
 	return luaL_error(L, "SteamNetworkPingLocation_t has no field '%%s'", key);
@@ -2912,9 +2945,10 @@ EXTERN int luasteam_newSteamNetworkPingLocation_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_data");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp33 = luaL_checkstring(L, -1);
-			if (strlen(_tmp33) >= 512) luaL_error(L, "String too long");
-			memcpy(ptr->m_data, _tmp33, sizeof(ptr->m_data));
+			size_t _len__tmp33;
+			const char *_tmp33 = luaL_checklstring(L, -1, &_len__tmp33);
+			if (_len__tmp33 > sizeof(ptr->m_data)) luaL_error(L, "String too long");
+			memcpy(ptr->m_data, _tmp33, std::min(_len__tmp33 + 1, sizeof(ptr->m_data)));
 		}
 		lua_pop(L, 1);
 	}
@@ -3523,9 +3557,10 @@ static int GameWebCallback_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	GameWebCallback_t *self = (GameWebCallback_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szURL") == 0) {
-		const char *_tmp34 = luaL_checkstring(L, 3);
-		if (strlen(_tmp34) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_szURL, _tmp34, sizeof(self->m_szURL));
+		size_t _len__tmp34;
+		const char *_tmp34 = luaL_checklstring(L, 3, &_len__tmp34);
+		if (_len__tmp34 > sizeof(self->m_szURL)) luaL_error(L, "String too long");
+		memcpy(self->m_szURL, _tmp34, std::min(_len__tmp34 + 1, sizeof(self->m_szURL)));
 		return 0;
 	}
 	return luaL_error(L, "GameWebCallback_t has no field '%%s'", key);
@@ -3538,9 +3573,10 @@ EXTERN int luasteam_newGameWebCallback_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_szURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp35 = luaL_checkstring(L, -1);
-			if (strlen(_tmp35) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_szURL, _tmp35, sizeof(ptr->m_szURL));
+			size_t _len__tmp35;
+			const char *_tmp35 = luaL_checklstring(L, -1, &_len__tmp35);
+			if (_len__tmp35 > sizeof(ptr->m_szURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szURL, _tmp35, std::min(_len__tmp35 + 1, sizeof(ptr->m_szURL)));
 		}
 		lua_pop(L, 1);
 	}
@@ -3568,9 +3604,10 @@ static int StoreAuthURLResponse_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	StoreAuthURLResponse_t *self = (StoreAuthURLResponse_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szURL") == 0) {
-		const char *_tmp36 = luaL_checkstring(L, 3);
-		if (strlen(_tmp36) >= 512) luaL_error(L, "String too long");
-		memcpy(self->m_szURL, _tmp36, sizeof(self->m_szURL));
+		size_t _len__tmp36;
+		const char *_tmp36 = luaL_checklstring(L, 3, &_len__tmp36);
+		if (_len__tmp36 > sizeof(self->m_szURL)) luaL_error(L, "String too long");
+		memcpy(self->m_szURL, _tmp36, std::min(_len__tmp36 + 1, sizeof(self->m_szURL)));
 		return 0;
 	}
 	return luaL_error(L, "StoreAuthURLResponse_t has no field '%%s'", key);
@@ -3583,9 +3620,10 @@ EXTERN int luasteam_newStoreAuthURLResponse_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_szURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp37 = luaL_checkstring(L, -1);
-			if (strlen(_tmp37) >= 512) luaL_error(L, "String too long");
-			memcpy(ptr->m_szURL, _tmp37, sizeof(ptr->m_szURL));
+			size_t _len__tmp37;
+			const char *_tmp37 = luaL_checklstring(L, -1, &_len__tmp37);
+			if (_len__tmp37 > sizeof(ptr->m_szURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szURL, _tmp37, std::min(_len__tmp37 + 1, sizeof(ptr->m_szURL)));
 		}
 		lua_pop(L, 1);
 	}
@@ -3862,9 +3900,10 @@ static int GetTicketForWebApiResponse_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgubTicket") == 0) {
-		const char *_tmp38 = luaL_checkstring(L, 3);
-		if (strlen(_tmp38) >= 2560) luaL_error(L, "String too long");
-		memcpy(self->m_rgubTicket, _tmp38, sizeof(self->m_rgubTicket));
+		size_t _len__tmp38;
+		const char *_tmp38 = luaL_checklstring(L, 3, &_len__tmp38);
+		if (_len__tmp38 > sizeof(self->m_rgubTicket)) luaL_error(L, "String too long");
+		memcpy(self->m_rgubTicket, _tmp38, std::min(_len__tmp38 + 1, sizeof(self->m_rgubTicket)));
 		return 0;
 	}
 	return luaL_error(L, "GetTicketForWebApiResponse_t has no field '%%s'", key);
@@ -3892,9 +3931,10 @@ EXTERN int luasteam_newGetTicketForWebApiResponse_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgubTicket");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp39 = luaL_checkstring(L, -1);
-			if (strlen(_tmp39) >= 2560) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgubTicket, _tmp39, sizeof(ptr->m_rgubTicket));
+			size_t _len__tmp39;
+			const char *_tmp39 = luaL_checklstring(L, -1, &_len__tmp39);
+			if (_len__tmp39 > sizeof(ptr->m_rgubTicket)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgubTicket, _tmp39, std::min(_len__tmp39 + 1, sizeof(ptr->m_rgubTicket)));
 		}
 		lua_pop(L, 1);
 	}
@@ -4060,15 +4100,17 @@ static int GameServerChangeRequested_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	GameServerChangeRequested_t *self = (GameServerChangeRequested_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgchServer") == 0) {
-		const char *_tmp40 = luaL_checkstring(L, 3);
-		if (strlen(_tmp40) >= 64) luaL_error(L, "String too long");
-		memcpy(self->m_rgchServer, _tmp40, sizeof(self->m_rgchServer));
+		size_t _len__tmp40;
+		const char *_tmp40 = luaL_checklstring(L, 3, &_len__tmp40);
+		if (_len__tmp40 > sizeof(self->m_rgchServer)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchServer, _tmp40, std::min(_len__tmp40 + 1, sizeof(self->m_rgchServer)));
 		return 0;
 	}
 	if (strcmp(key, "m_rgchPassword") == 0) {
-		const char *_tmp42 = luaL_checkstring(L, 3);
-		if (strlen(_tmp42) >= 64) luaL_error(L, "String too long");
-		memcpy(self->m_rgchPassword, _tmp42, sizeof(self->m_rgchPassword));
+		size_t _len__tmp42;
+		const char *_tmp42 = luaL_checklstring(L, 3, &_len__tmp42);
+		if (_len__tmp42 > sizeof(self->m_rgchPassword)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchPassword, _tmp42, std::min(_len__tmp42 + 1, sizeof(self->m_rgchPassword)));
 		return 0;
 	}
 	return luaL_error(L, "GameServerChangeRequested_t has no field '%%s'", key);
@@ -4081,16 +4123,18 @@ EXTERN int luasteam_newGameServerChangeRequested_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_rgchServer");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp41 = luaL_checkstring(L, -1);
-			if (strlen(_tmp41) >= 64) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchServer, _tmp41, sizeof(ptr->m_rgchServer));
+			size_t _len__tmp41;
+			const char *_tmp41 = luaL_checklstring(L, -1, &_len__tmp41);
+			if (_len__tmp41 > sizeof(ptr->m_rgchServer)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchServer, _tmp41, std::min(_len__tmp41 + 1, sizeof(ptr->m_rgchServer)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchPassword");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp43 = luaL_checkstring(L, -1);
-			if (strlen(_tmp43) >= 64) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchPassword, _tmp43, sizeof(ptr->m_rgchPassword));
+			size_t _len__tmp43;
+			const char *_tmp43 = luaL_checklstring(L, -1, &_len__tmp43);
+			if (_len__tmp43 > sizeof(ptr->m_rgchPassword)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchPassword, _tmp43, std::min(_len__tmp43 + 1, sizeof(ptr->m_rgchPassword)));
 		}
 		lua_pop(L, 1);
 	}
@@ -4381,9 +4425,10 @@ static int GameRichPresenceJoinRequested_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchConnect") == 0) {
-		const char *_tmp44 = luaL_checkstring(L, 3);
-		if (strlen(_tmp44) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchConnect, _tmp44, sizeof(self->m_rgchConnect));
+		size_t _len__tmp44;
+		const char *_tmp44 = luaL_checklstring(L, 3, &_len__tmp44);
+		if (_len__tmp44 > sizeof(self->m_rgchConnect)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchConnect, _tmp44, std::min(_len__tmp44 + 1, sizeof(self->m_rgchConnect)));
 		return 0;
 	}
 	return luaL_error(L, "GameRichPresenceJoinRequested_t has no field '%%s'", key);
@@ -4401,9 +4446,10 @@ EXTERN int luasteam_newGameRichPresenceJoinRequested_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchConnect");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp45 = luaL_checkstring(L, -1);
-			if (strlen(_tmp45) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchConnect, _tmp45, sizeof(ptr->m_rgchConnect));
+			size_t _len__tmp45;
+			const char *_tmp45 = luaL_checklstring(L, -1, &_len__tmp45);
+			if (_len__tmp45 > sizeof(ptr->m_rgchConnect)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchConnect, _tmp45, std::min(_len__tmp45 + 1, sizeof(ptr->m_rgchConnect)));
 		}
 		lua_pop(L, 1);
 	}
@@ -5024,9 +5070,10 @@ static int OverlayBrowserProtocolNavigation_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	OverlayBrowserProtocolNavigation_t *self = (OverlayBrowserProtocolNavigation_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "rgchURI") == 0) {
-		const char *_tmp46 = luaL_checkstring(L, 3);
-		if (strlen(_tmp46) >= 1024) luaL_error(L, "String too long");
-		memcpy(self->rgchURI, _tmp46, sizeof(self->rgchURI));
+		size_t _len__tmp46;
+		const char *_tmp46 = luaL_checklstring(L, 3, &_len__tmp46);
+		if (_len__tmp46 > sizeof(self->rgchURI)) luaL_error(L, "String too long");
+		memcpy(self->rgchURI, _tmp46, std::min(_len__tmp46 + 1, sizeof(self->rgchURI)));
 		return 0;
 	}
 	return luaL_error(L, "OverlayBrowserProtocolNavigation_t has no field '%%s'", key);
@@ -5039,9 +5086,10 @@ EXTERN int luasteam_newOverlayBrowserProtocolNavigation_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "rgchURI");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp47 = luaL_checkstring(L, -1);
-			if (strlen(_tmp47) >= 1024) luaL_error(L, "String too long");
-			memcpy(ptr->rgchURI, _tmp47, sizeof(ptr->rgchURI));
+			size_t _len__tmp47;
+			const char *_tmp47 = luaL_checklstring(L, -1, &_len__tmp47);
+			if (_len__tmp47 > sizeof(ptr->rgchURI)) luaL_error(L, "String too long");
+			memcpy(ptr->rgchURI, _tmp47, std::min(_len__tmp47 + 1, sizeof(ptr->rgchURI)));
 		}
 		lua_pop(L, 1);
 	}
@@ -6359,9 +6407,10 @@ static int JoinPartyCallback_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchConnectString") == 0) {
-		const char *_tmp48 = luaL_checkstring(L, 3);
-		if (strlen(_tmp48) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchConnectString, _tmp48, sizeof(self->m_rgchConnectString));
+		size_t _len__tmp48;
+		const char *_tmp48 = luaL_checklstring(L, 3, &_len__tmp48);
+		if (_len__tmp48 > sizeof(self->m_rgchConnectString)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchConnectString, _tmp48, std::min(_len__tmp48 + 1, sizeof(self->m_rgchConnectString)));
 		return 0;
 	}
 	return luaL_error(L, "JoinPartyCallback_t has no field '%%s'", key);
@@ -6389,9 +6438,10 @@ EXTERN int luasteam_newJoinPartyCallback_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchConnectString");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp49 = luaL_checkstring(L, -1);
-			if (strlen(_tmp49) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchConnectString, _tmp49, sizeof(ptr->m_rgchConnectString));
+			size_t _len__tmp49;
+			const char *_tmp49 = luaL_checklstring(L, -1, &_len__tmp49);
+			if (_len__tmp49 > sizeof(ptr->m_rgchConnectString)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchConnectString, _tmp49, std::min(_len__tmp49 + 1, sizeof(ptr->m_rgchConnectString)));
 		}
 		lua_pop(L, 1);
 	}
@@ -6614,9 +6664,10 @@ static int RemoteStorageFileShareResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchFilename") == 0) {
-		const char *_tmp50 = luaL_checkstring(L, 3);
-		if (strlen(_tmp50) >= 260) luaL_error(L, "String too long");
-		memcpy(self->m_rgchFilename, _tmp50, sizeof(self->m_rgchFilename));
+		size_t _len__tmp50;
+		const char *_tmp50 = luaL_checklstring(L, 3, &_len__tmp50);
+		if (_len__tmp50 > sizeof(self->m_rgchFilename)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchFilename, _tmp50, std::min(_len__tmp50 + 1, sizeof(self->m_rgchFilename)));
 		return 0;
 	}
 	return luaL_error(L, "RemoteStorageFileShareResult_t has no field '%%s'", key);
@@ -6639,9 +6690,10 @@ EXTERN int luasteam_newRemoteStorageFileShareResult_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchFilename");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp51 = luaL_checkstring(L, -1);
-			if (strlen(_tmp51) >= 260) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchFilename, _tmp51, sizeof(ptr->m_rgchFilename));
+			size_t _len__tmp51;
+			const char *_tmp51 = luaL_checklstring(L, -1, &_len__tmp51);
+			if (_len__tmp51 > sizeof(ptr->m_rgchFilename)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchFilename, _tmp51, std::min(_len__tmp51 + 1, sizeof(ptr->m_rgchFilename)));
 		}
 		lua_pop(L, 1);
 	}
@@ -7216,9 +7268,10 @@ static int RemoteStorageDownloadUGCResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		const char *_tmp52 = luaL_checkstring(L, 3);
-		if (strlen(_tmp52) >= 260) luaL_error(L, "String too long");
-		memcpy(self->m_pchFileName, _tmp52, sizeof(self->m_pchFileName));
+		size_t _len__tmp52;
+		const char *_tmp52 = luaL_checklstring(L, 3, &_len__tmp52);
+		if (_len__tmp52 > sizeof(self->m_pchFileName)) luaL_error(L, "String too long");
+		memcpy(self->m_pchFileName, _tmp52, std::min(_len__tmp52 + 1, sizeof(self->m_pchFileName)));
 		return 0;
 	}
 	if (strcmp(key, "m_ulSteamIDOwner") == 0) {
@@ -7255,9 +7308,10 @@ EXTERN int luasteam_newRemoteStorageDownloadUGCResult_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_pchFileName");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp53 = luaL_checkstring(L, -1);
-			if (strlen(_tmp53) >= 260) luaL_error(L, "String too long");
-			memcpy(ptr->m_pchFileName, _tmp53, sizeof(ptr->m_pchFileName));
+			size_t _len__tmp53;
+			const char *_tmp53 = luaL_checklstring(L, -1, &_len__tmp53);
+			if (_len__tmp53 > sizeof(ptr->m_pchFileName)) luaL_error(L, "String too long");
+			memcpy(ptr->m_pchFileName, _tmp53, std::min(_len__tmp53 + 1, sizeof(ptr->m_pchFileName)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_ulSteamIDOwner");
@@ -7386,15 +7440,17 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchTitle") == 0) {
-		const char *_tmp54 = luaL_checkstring(L, 3);
-		if (strlen(_tmp54) >= 129) luaL_error(L, "String too long");
-		memcpy(self->m_rgchTitle, _tmp54, sizeof(self->m_rgchTitle));
+		size_t _len__tmp54;
+		const char *_tmp54 = luaL_checklstring(L, 3, &_len__tmp54);
+		if (_len__tmp54 > sizeof(self->m_rgchTitle)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchTitle, _tmp54, std::min(_len__tmp54 + 1, sizeof(self->m_rgchTitle)));
 		return 0;
 	}
 	if (strcmp(key, "m_rgchDescription") == 0) {
-		const char *_tmp56 = luaL_checkstring(L, 3);
-		if (strlen(_tmp56) >= 8000) luaL_error(L, "String too long");
-		memcpy(self->m_rgchDescription, _tmp56, sizeof(self->m_rgchDescription));
+		size_t _len__tmp56;
+		const char *_tmp56 = luaL_checklstring(L, 3, &_len__tmp56);
+		if (_len__tmp56 > sizeof(self->m_rgchDescription)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchDescription, _tmp56, std::min(_len__tmp56 + 1, sizeof(self->m_rgchDescription)));
 		return 0;
 	}
 	if (strcmp(key, "m_hFile") == 0) {
@@ -7426,9 +7482,10 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchTags") == 0) {
-		const char *_tmp58 = luaL_checkstring(L, 3);
-		if (strlen(_tmp58) >= 1025) luaL_error(L, "String too long");
-		memcpy(self->m_rgchTags, _tmp58, sizeof(self->m_rgchTags));
+		size_t _len__tmp58;
+		const char *_tmp58 = luaL_checklstring(L, 3, &_len__tmp58);
+		if (_len__tmp58 > sizeof(self->m_rgchTags)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchTags, _tmp58, std::min(_len__tmp58 + 1, sizeof(self->m_rgchTags)));
 		return 0;
 	}
 	if (strcmp(key, "m_bTagsTruncated") == 0) {
@@ -7436,9 +7493,10 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		const char *_tmp60 = luaL_checkstring(L, 3);
-		if (strlen(_tmp60) >= 260) luaL_error(L, "String too long");
-		memcpy(self->m_pchFileName, _tmp60, sizeof(self->m_pchFileName));
+		size_t _len__tmp60;
+		const char *_tmp60 = luaL_checklstring(L, 3, &_len__tmp60);
+		if (_len__tmp60 > sizeof(self->m_pchFileName)) luaL_error(L, "String too long");
+		memcpy(self->m_pchFileName, _tmp60, std::min(_len__tmp60 + 1, sizeof(self->m_pchFileName)));
 		return 0;
 	}
 	if (strcmp(key, "m_nFileSize") == 0) {
@@ -7450,9 +7508,10 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		const char *_tmp62 = luaL_checkstring(L, 3);
-		if (strlen(_tmp62) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchURL, _tmp62, sizeof(self->m_rgchURL));
+		size_t _len__tmp62;
+		const char *_tmp62 = luaL_checklstring(L, 3, &_len__tmp62);
+		if (_len__tmp62 > sizeof(self->m_rgchURL)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchURL, _tmp62, std::min(_len__tmp62 + 1, sizeof(self->m_rgchURL)));
 		return 0;
 	}
 	if (strcmp(key, "m_eFileType") == 0) {
@@ -7493,16 +7552,18 @@ EXTERN int luasteam_newRemoteStorageGetPublishedFileDetailsResult_t(lua_State *L
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchTitle");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp55 = luaL_checkstring(L, -1);
-			if (strlen(_tmp55) >= 129) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchTitle, _tmp55, sizeof(ptr->m_rgchTitle));
+			size_t _len__tmp55;
+			const char *_tmp55 = luaL_checklstring(L, -1, &_len__tmp55);
+			if (_len__tmp55 > sizeof(ptr->m_rgchTitle)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchTitle, _tmp55, std::min(_len__tmp55 + 1, sizeof(ptr->m_rgchTitle)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchDescription");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp57 = luaL_checkstring(L, -1);
-			if (strlen(_tmp57) >= 8000) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchDescription, _tmp57, sizeof(ptr->m_rgchDescription));
+			size_t _len__tmp57;
+			const char *_tmp57 = luaL_checklstring(L, -1, &_len__tmp57);
+			if (_len__tmp57 > sizeof(ptr->m_rgchDescription)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchDescription, _tmp57, std::min(_len__tmp57 + 1, sizeof(ptr->m_rgchDescription)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_hFile");
@@ -7542,9 +7603,10 @@ EXTERN int luasteam_newRemoteStorageGetPublishedFileDetailsResult_t(lua_State *L
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchTags");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp59 = luaL_checkstring(L, -1);
-			if (strlen(_tmp59) >= 1025) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchTags, _tmp59, sizeof(ptr->m_rgchTags));
+			size_t _len__tmp59;
+			const char *_tmp59 = luaL_checklstring(L, -1, &_len__tmp59);
+			if (_len__tmp59 > sizeof(ptr->m_rgchTags)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchTags, _tmp59, std::min(_len__tmp59 + 1, sizeof(ptr->m_rgchTags)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_bTagsTruncated");
@@ -7554,9 +7616,10 @@ EXTERN int luasteam_newRemoteStorageGetPublishedFileDetailsResult_t(lua_State *L
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_pchFileName");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp61 = luaL_checkstring(L, -1);
-			if (strlen(_tmp61) >= 260) luaL_error(L, "String too long");
-			memcpy(ptr->m_pchFileName, _tmp61, sizeof(ptr->m_pchFileName));
+			size_t _len__tmp61;
+			const char *_tmp61 = luaL_checklstring(L, -1, &_len__tmp61);
+			if (_len__tmp61 > sizeof(ptr->m_pchFileName)) luaL_error(L, "String too long");
+			memcpy(ptr->m_pchFileName, _tmp61, std::min(_len__tmp61 + 1, sizeof(ptr->m_pchFileName)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_nFileSize");
@@ -7571,9 +7634,10 @@ EXTERN int luasteam_newRemoteStorageGetPublishedFileDetailsResult_t(lua_State *L
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp63 = luaL_checkstring(L, -1);
-			if (strlen(_tmp63) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchURL, _tmp63, sizeof(ptr->m_rgchURL));
+			size_t _len__tmp63;
+			const char *_tmp63 = luaL_checklstring(L, -1, &_len__tmp63);
+			if (_len__tmp63 > sizeof(ptr->m_rgchURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchURL, _tmp63, std::min(_len__tmp63 + 1, sizeof(ptr->m_rgchURL)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_eFileType");
@@ -8844,9 +8908,10 @@ static int UserAchievementStored_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchAchievementName") == 0) {
-		const char *_tmp64 = luaL_checkstring(L, 3);
-		if (strlen(_tmp64) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_rgchAchievementName, _tmp64, sizeof(self->m_rgchAchievementName));
+		size_t _len__tmp64;
+		const char *_tmp64 = luaL_checklstring(L, 3, &_len__tmp64);
+		if (_len__tmp64 > sizeof(self->m_rgchAchievementName)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchAchievementName, _tmp64, std::min(_len__tmp64 + 1, sizeof(self->m_rgchAchievementName)));
 		return 0;
 	}
 	if (strcmp(key, "m_nCurProgress") == 0) {
@@ -8877,9 +8942,10 @@ EXTERN int luasteam_newUserAchievementStored_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchAchievementName");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp65 = luaL_checkstring(L, -1);
-			if (strlen(_tmp65) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchAchievementName, _tmp65, sizeof(ptr->m_rgchAchievementName));
+			size_t _len__tmp65;
+			const char *_tmp65 = luaL_checklstring(L, -1, &_len__tmp65);
+			if (_len__tmp65 > sizeof(ptr->m_rgchAchievementName)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchAchievementName, _tmp65, std::min(_len__tmp65 + 1, sizeof(ptr->m_rgchAchievementName)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_nCurProgress");
@@ -9255,9 +9321,10 @@ static int UserAchievementIconFetched_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchAchievementName") == 0) {
-		const char *_tmp66 = luaL_checkstring(L, 3);
-		if (strlen(_tmp66) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_rgchAchievementName, _tmp66, sizeof(self->m_rgchAchievementName));
+		size_t _len__tmp66;
+		const char *_tmp66 = luaL_checklstring(L, 3, &_len__tmp66);
+		if (_len__tmp66 > sizeof(self->m_rgchAchievementName)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchAchievementName, _tmp66, std::min(_len__tmp66 + 1, sizeof(self->m_rgchAchievementName)));
 		return 0;
 	}
 	if (strcmp(key, "m_bAchieved") == 0) {
@@ -9283,9 +9350,10 @@ EXTERN int luasteam_newUserAchievementIconFetched_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchAchievementName");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp67 = luaL_checkstring(L, -1);
-			if (strlen(_tmp67) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchAchievementName, _tmp67, sizeof(ptr->m_rgchAchievementName));
+			size_t _len__tmp67;
+			const char *_tmp67 = luaL_checklstring(L, -1, &_len__tmp67);
+			if (_len__tmp67 > sizeof(ptr->m_rgchAchievementName)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchAchievementName, _tmp67, std::min(_len__tmp67 + 1, sizeof(ptr->m_rgchAchievementName)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_bAchieved");
@@ -9565,9 +9633,10 @@ static int AppProofOfPurchaseKeyResponse_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchKey") == 0) {
-		const char *_tmp68 = luaL_checkstring(L, 3);
-		if (strlen(_tmp68) >= 240) luaL_error(L, "String too long");
-		memcpy(self->m_rgchKey, _tmp68, sizeof(self->m_rgchKey));
+		size_t _len__tmp68;
+		const char *_tmp68 = luaL_checklstring(L, 3, &_len__tmp68);
+		if (_len__tmp68 > sizeof(self->m_rgchKey)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchKey, _tmp68, std::min(_len__tmp68 + 1, sizeof(self->m_rgchKey)));
 		return 0;
 	}
 	return luaL_error(L, "AppProofOfPurchaseKeyResponse_t has no field '%%s'", key);
@@ -9595,9 +9664,10 @@ EXTERN int luasteam_newAppProofOfPurchaseKeyResponse_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchKey");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp69 = luaL_checkstring(L, -1);
-			if (strlen(_tmp69) >= 240) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchKey, _tmp69, sizeof(ptr->m_rgchKey));
+			size_t _len__tmp69;
+			const char *_tmp69 = luaL_checklstring(L, -1, &_len__tmp69);
+			if (_len__tmp69 > sizeof(ptr->m_rgchKey)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchKey, _tmp69, std::min(_len__tmp69 + 1, sizeof(ptr->m_rgchKey)));
 		}
 		lua_pop(L, 1);
 	}
@@ -9645,9 +9715,10 @@ static int FileDetailsResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_FileSHA") == 0) {
-		const char *_tmp70 = luaL_checkstring(L, 3);
-		if (strlen(_tmp70) >= 20) luaL_error(L, "String too long");
-		memcpy(self->m_FileSHA, _tmp70, sizeof(self->m_FileSHA));
+		size_t _len__tmp70;
+		const char *_tmp70 = luaL_checklstring(L, 3, &_len__tmp70);
+		if (_len__tmp70 > sizeof(self->m_FileSHA)) luaL_error(L, "String too long");
+		memcpy(self->m_FileSHA, _tmp70, std::min(_len__tmp70 + 1, sizeof(self->m_FileSHA)));
 		return 0;
 	}
 	if (strcmp(key, "m_unFlags") == 0) {
@@ -9674,9 +9745,10 @@ EXTERN int luasteam_newFileDetailsResult_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_FileSHA");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp71 = luaL_checkstring(L, -1);
-			if (strlen(_tmp71) >= 20) luaL_error(L, "String too long");
-			memcpy(ptr->m_FileSHA, _tmp71, sizeof(ptr->m_FileSHA));
+			size_t _len__tmp71;
+			const char *_tmp71 = luaL_checklstring(L, -1, &_len__tmp71);
+			if (_len__tmp71 > sizeof(ptr->m_FileSHA)) luaL_error(L, "String too long");
+			memcpy(ptr->m_FileSHA, _tmp71, std::min(_len__tmp71 + 1, sizeof(ptr->m_FileSHA)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_unFlags");
@@ -10650,9 +10722,10 @@ static int SteamUGCQueryCompleted_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchNextCursor") == 0) {
-		const char *_tmp72 = luaL_checkstring(L, 3);
-		if (strlen(_tmp72) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchNextCursor, _tmp72, sizeof(self->m_rgchNextCursor));
+		size_t _len__tmp72;
+		const char *_tmp72 = luaL_checklstring(L, 3, &_len__tmp72);
+		if (_len__tmp72 > sizeof(self->m_rgchNextCursor)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchNextCursor, _tmp72, std::min(_len__tmp72 + 1, sizeof(self->m_rgchNextCursor)));
 		return 0;
 	}
 	return luaL_error(L, "SteamUGCQueryCompleted_t has no field '%%s'", key);
@@ -10690,9 +10763,10 @@ EXTERN int luasteam_newSteamUGCQueryCompleted_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchNextCursor");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp73 = luaL_checkstring(L, -1);
-			if (strlen(_tmp73) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchNextCursor, _tmp73, sizeof(ptr->m_rgchNextCursor));
+			size_t _len__tmp73;
+			const char *_tmp73 = luaL_checklstring(L, -1, &_len__tmp73);
+			if (_len__tmp73 > sizeof(ptr->m_rgchNextCursor)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchNextCursor, _tmp73, std::min(_len__tmp73 + 1, sizeof(ptr->m_rgchNextCursor)));
 		}
 		lua_pop(L, 1);
 	}
@@ -13722,9 +13796,10 @@ static int SteamInventoryRequestPricesResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchCurrency") == 0) {
-		const char *_tmp74 = luaL_checkstring(L, 3);
-		if (strlen(_tmp74) >= 4) luaL_error(L, "String too long");
-		memcpy(self->m_rgchCurrency, _tmp74, sizeof(self->m_rgchCurrency));
+		size_t _len__tmp74;
+		const char *_tmp74 = luaL_checklstring(L, 3, &_len__tmp74);
+		if (_len__tmp74 > sizeof(self->m_rgchCurrency)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchCurrency, _tmp74, std::min(_len__tmp74 + 1, sizeof(self->m_rgchCurrency)));
 		return 0;
 	}
 	return luaL_error(L, "SteamInventoryRequestPricesResult_t has no field '%%s'", key);
@@ -13742,9 +13817,10 @@ EXTERN int luasteam_newSteamInventoryRequestPricesResult_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchCurrency");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp75 = luaL_checkstring(L, -1);
-			if (strlen(_tmp75) >= 4) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchCurrency, _tmp75, sizeof(ptr->m_rgchCurrency));
+			size_t _len__tmp75;
+			const char *_tmp75 = luaL_checklstring(L, -1, &_len__tmp75);
+			if (_len__tmp75 > sizeof(ptr->m_rgchCurrency)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchCurrency, _tmp75, std::min(_len__tmp75 + 1, sizeof(ptr->m_rgchCurrency)));
 		}
 		lua_pop(L, 1);
 	}
@@ -13788,9 +13864,10 @@ static int SteamTimelineGamePhaseRecordingExists_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamTimelineGamePhaseRecordingExists_t *self = (SteamTimelineGamePhaseRecordingExists_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgchPhaseID") == 0) {
-		const char *_tmp76 = luaL_checkstring(L, 3);
-		if (strlen(_tmp76) >= 64) luaL_error(L, "String too long");
-		memcpy(self->m_rgchPhaseID, _tmp76, sizeof(self->m_rgchPhaseID));
+		size_t _len__tmp76;
+		const char *_tmp76 = luaL_checklstring(L, 3, &_len__tmp76);
+		if (_len__tmp76 > sizeof(self->m_rgchPhaseID)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchPhaseID, _tmp76, std::min(_len__tmp76 + 1, sizeof(self->m_rgchPhaseID)));
 		return 0;
 	}
 	if (strcmp(key, "m_ulRecordingMS") == 0) {
@@ -13819,9 +13896,10 @@ EXTERN int luasteam_newSteamTimelineGamePhaseRecordingExists_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_rgchPhaseID");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp77 = luaL_checkstring(L, -1);
-			if (strlen(_tmp77) >= 64) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchPhaseID, _tmp77, sizeof(ptr->m_rgchPhaseID));
+			size_t _len__tmp77;
+			const char *_tmp77 = luaL_checklstring(L, -1, &_len__tmp77);
+			if (_len__tmp77 > sizeof(ptr->m_rgchPhaseID)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchPhaseID, _tmp77, std::min(_len__tmp77 + 1, sizeof(ptr->m_rgchPhaseID)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_ulRecordingMS");
@@ -13939,9 +14017,10 @@ static int GetVideoURLResult_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		const char *_tmp78 = luaL_checkstring(L, 3);
-		if (strlen(_tmp78) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_rgchURL, _tmp78, sizeof(self->m_rgchURL));
+		size_t _len__tmp78;
+		const char *_tmp78 = luaL_checklstring(L, 3, &_len__tmp78);
+		if (_len__tmp78 > sizeof(self->m_rgchURL)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchURL, _tmp78, std::min(_len__tmp78 + 1, sizeof(self->m_rgchURL)));
 		return 0;
 	}
 	return luaL_error(L, "GetVideoURLResult_t has no field '%%s'", key);
@@ -13964,9 +14043,10 @@ EXTERN int luasteam_newGetVideoURLResult_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp79 = luaL_checkstring(L, -1);
-			if (strlen(_tmp79) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchURL, _tmp79, sizeof(ptr->m_rgchURL));
+			size_t _len__tmp79;
+			const char *_tmp79 = luaL_checklstring(L, -1, &_len__tmp79);
+			if (_len__tmp79 > sizeof(ptr->m_rgchURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchURL, _tmp79, std::min(_len__tmp79 + 1, sizeof(ptr->m_rgchURL)));
 		}
 		lua_pop(L, 1);
 	}
@@ -14227,9 +14307,10 @@ static int SteamRemotePlayTogetherGuestInvite_t_newindex(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamRemotePlayTogetherGuestInvite_t *self = (SteamRemotePlayTogetherGuestInvite_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szConnectURL") == 0) {
-		const char *_tmp80 = luaL_checkstring(L, 3);
-		if (strlen(_tmp80) >= 1024) luaL_error(L, "String too long");
-		memcpy(self->m_szConnectURL, _tmp80, sizeof(self->m_szConnectURL));
+		size_t _len__tmp80;
+		const char *_tmp80 = luaL_checklstring(L, 3, &_len__tmp80);
+		if (_len__tmp80 > sizeof(self->m_szConnectURL)) luaL_error(L, "String too long");
+		memcpy(self->m_szConnectURL, _tmp80, std::min(_len__tmp80 + 1, sizeof(self->m_szConnectURL)));
 		return 0;
 	}
 	return luaL_error(L, "SteamRemotePlayTogetherGuestInvite_t has no field '%%s'", key);
@@ -14242,9 +14323,10 @@ EXTERN int luasteam_newSteamRemotePlayTogetherGuestInvite_t(lua_State *L) {
 		luaL_checktype(L, 1, LUA_TTABLE);
 		lua_getfield(L, 1, "m_szConnectURL");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp81 = luaL_checkstring(L, -1);
-			if (strlen(_tmp81) >= 1024) luaL_error(L, "String too long");
-			memcpy(ptr->m_szConnectURL, _tmp81, sizeof(ptr->m_szConnectURL));
+			size_t _len__tmp81;
+			const char *_tmp81 = luaL_checklstring(L, -1, &_len__tmp81);
+			if (_len__tmp81 > sizeof(ptr->m_szConnectURL)) luaL_error(L, "String too long");
+			memcpy(ptr->m_szConnectURL, _tmp81, std::min(_len__tmp81 + 1, sizeof(ptr->m_szConnectURL)));
 		}
 		lua_pop(L, 1);
 	}
@@ -14429,9 +14511,10 @@ static int SteamNetAuthenticationStatus_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_debugMsg") == 0) {
-		const char *_tmp82 = luaL_checkstring(L, 3);
-		if (strlen(_tmp82) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_debugMsg, _tmp82, sizeof(self->m_debugMsg));
+		size_t _len__tmp82;
+		const char *_tmp82 = luaL_checklstring(L, 3, &_len__tmp82);
+		if (_len__tmp82 > sizeof(self->m_debugMsg)) luaL_error(L, "String too long");
+		memcpy(self->m_debugMsg, _tmp82, std::min(_len__tmp82 + 1, sizeof(self->m_debugMsg)));
 		return 0;
 	}
 	return luaL_error(L, "SteamNetAuthenticationStatus_t has no field '%%s'", key);
@@ -14449,9 +14532,10 @@ EXTERN int luasteam_newSteamNetAuthenticationStatus_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_debugMsg");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp83 = luaL_checkstring(L, -1);
-			if (strlen(_tmp83) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_debugMsg, _tmp83, sizeof(ptr->m_debugMsg));
+			size_t _len__tmp83;
+			const char *_tmp83 = luaL_checklstring(L, -1, &_len__tmp83);
+			if (_len__tmp83 > sizeof(ptr->m_debugMsg)) luaL_error(L, "String too long");
+			memcpy(ptr->m_debugMsg, _tmp83, std::min(_len__tmp83 + 1, sizeof(ptr->m_debugMsg)));
 		}
 		lua_pop(L, 1);
 	}
@@ -14511,9 +14595,10 @@ static int SteamRelayNetworkStatus_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_debugMsg") == 0) {
-		const char *_tmp84 = luaL_checkstring(L, 3);
-		if (strlen(_tmp84) >= 256) luaL_error(L, "String too long");
-		memcpy(self->m_debugMsg, _tmp84, sizeof(self->m_debugMsg));
+		size_t _len__tmp84;
+		const char *_tmp84 = luaL_checklstring(L, 3, &_len__tmp84);
+		if (_len__tmp84 > sizeof(self->m_debugMsg)) luaL_error(L, "String too long");
+		memcpy(self->m_debugMsg, _tmp84, std::min(_len__tmp84 + 1, sizeof(self->m_debugMsg)));
 		return 0;
 	}
 	return luaL_error(L, "SteamRelayNetworkStatus_t has no field '%%s'", key);
@@ -14546,9 +14631,10 @@ EXTERN int luasteam_newSteamRelayNetworkStatus_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_debugMsg");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp85 = luaL_checkstring(L, -1);
-			if (strlen(_tmp85) >= 256) luaL_error(L, "String too long");
-			memcpy(ptr->m_debugMsg, _tmp85, sizeof(ptr->m_debugMsg));
+			size_t _len__tmp85;
+			const char *_tmp85 = luaL_checklstring(L, -1, &_len__tmp85);
+			if (_len__tmp85 > sizeof(ptr->m_debugMsg)) luaL_error(L, "String too long");
+			memcpy(ptr->m_debugMsg, _tmp85, std::min(_len__tmp85 + 1, sizeof(ptr->m_debugMsg)));
 		}
 		lua_pop(L, 1);
 	}
@@ -14646,9 +14732,10 @@ static int GSClientDeny_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_rgchOptionalText") == 0) {
-		const char *_tmp86 = luaL_checkstring(L, 3);
-		if (strlen(_tmp86) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_rgchOptionalText, _tmp86, sizeof(self->m_rgchOptionalText));
+		size_t _len__tmp86;
+		const char *_tmp86 = luaL_checklstring(L, 3, &_len__tmp86);
+		if (_len__tmp86 > sizeof(self->m_rgchOptionalText)) luaL_error(L, "String too long");
+		memcpy(self->m_rgchOptionalText, _tmp86, std::min(_len__tmp86 + 1, sizeof(self->m_rgchOptionalText)));
 		return 0;
 	}
 	return luaL_error(L, "GSClientDeny_t has no field '%%s'", key);
@@ -14671,9 +14758,10 @@ EXTERN int luasteam_newGSClientDeny_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_rgchOptionalText");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp87 = luaL_checkstring(L, -1);
-			if (strlen(_tmp87) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_rgchOptionalText, _tmp87, sizeof(ptr->m_rgchOptionalText));
+			size_t _len__tmp87;
+			const char *_tmp87 = luaL_checklstring(L, -1, &_len__tmp87);
+			if (_len__tmp87 > sizeof(ptr->m_rgchOptionalText)) luaL_error(L, "String too long");
+			memcpy(ptr->m_rgchOptionalText, _tmp87, std::min(_len__tmp87 + 1, sizeof(ptr->m_rgchOptionalText)));
 		}
 		lua_pop(L, 1);
 	}
@@ -14767,9 +14855,10 @@ static int GSClientAchievementStatus_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "m_pchAchievement") == 0) {
-		const char *_tmp88 = luaL_checkstring(L, 3);
-		if (strlen(_tmp88) >= 128) luaL_error(L, "String too long");
-		memcpy(self->m_pchAchievement, _tmp88, sizeof(self->m_pchAchievement));
+		size_t _len__tmp88;
+		const char *_tmp88 = luaL_checklstring(L, 3, &_len__tmp88);
+		if (_len__tmp88 > sizeof(self->m_pchAchievement)) luaL_error(L, "String too long");
+		memcpy(self->m_pchAchievement, _tmp88, std::min(_len__tmp88 + 1, sizeof(self->m_pchAchievement)));
 		return 0;
 	}
 	if (strcmp(key, "m_bUnlocked") == 0) {
@@ -14791,9 +14880,10 @@ EXTERN int luasteam_newGSClientAchievementStatus_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_pchAchievement");
 		if (!lua_isnil(L, -1)) {
-			const char *_tmp89 = luaL_checkstring(L, -1);
-			if (strlen(_tmp89) >= 128) luaL_error(L, "String too long");
-			memcpy(ptr->m_pchAchievement, _tmp89, sizeof(ptr->m_pchAchievement));
+			size_t _len__tmp89;
+			const char *_tmp89 = luaL_checklstring(L, -1, &_len__tmp89);
+			if (_len__tmp89 > sizeof(ptr->m_pchAchievement)) luaL_error(L, "String too long");
+			memcpy(ptr->m_pchAchievement, _tmp89, std::min(_len__tmp89 + 1, sizeof(ptr->m_pchAchievement)));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_bUnlocked");

@@ -1356,7 +1356,12 @@ impl Generator {
         fs::write("../src/auto/enums.cpp", cpp.finish()).expect("Unable to write enums.cpp");
     }
 
-    fn generate_auto_header(&self, interfaces: &[String], gs_names: &[String], dual_accessor_names: &std::collections::HashSet<String>) {
+    fn generate_auto_header(
+        &self,
+        interfaces: &[String],
+        gs_names: &[String],
+        dual_accessor_names: &std::collections::HashSet<String>,
+    ) {
         let mut h = CodeBuilder::new();
         h.line("#ifndef LUASTEAM_AUTO_HPP");
         h.line("#define LUASTEAM_AUTO_HPP");
@@ -1404,7 +1409,10 @@ impl Generator {
         }
         for name in interfaces {
             if dual_accessor_names.contains(name) {
-                h.line(&format!("void register_{}_auto(lua_State *L, bool is_gs);", name));
+                h.line(&format!(
+                    "void register_{}_auto(lua_State *L, bool is_gs);",
+                    name
+                ));
             } else {
                 h.line(&format!("void register_{}_auto(lua_State *L);", name));
             }
@@ -1510,72 +1518,16 @@ impl Generator {
                 ttype,
                 size,
                 is_const: _,
-            } => {
-                if resolved.is_buffer() {
-                    let var = format!(
-                        "_tmp{}",
-                        COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
-                    );
-                    out.line(&format!(
-                        "const char *{} = luaL_checkstring(L, {});",
-                        var, lua_idx
-                    ));
-                    out.line(&format!(
-                        "if (strlen({}) >= {}) luaL_error(L, \"String too long\");",
-                        var, size
-                    ));
-
-                    if create_var {
-                        out.line(&format!("std::vector<char> {}({});", value_accessor, size));
-                        out.line(&format!(
-                            "memcpy({}.data(), {}, {});",
-                            value_accessor, var, size
-                        ));
-                    } else {
-                        // value_accessor is a plain C array (char[N]) — no .data() needed
-                        out.line(&format!(
-                            "memcpy({}, {}, sizeof({}));",
-                            value_accessor, var, value_accessor
-                        ));
-                    }
-                    (true, out.finish(), LType::String)
-                } else {
-                    out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
-                    if create_var {
-                        out.line(&format!(
-                            "std::vector<{}> {}({});",
-                            ttype, value_accessor, size
-                        ));
-                    }
-                    out.line(&format!(
-                        "for(decltype({}) i = 0; i < {}; i++) {{",
-                        size, size
-                    ));
-                    out.indent_right();
-                    out.line(&format!("lua_rawgeti(L, {lua_idx}, i+1);"));
-                    let (ok, check, elem_ltype) = self.generate_check(
-                        ttype,
-                        self.type_resolver.resolve_type(ttype),
-                        false,
-                        &format!("{}[i]", value_accessor),
-                        "-1",
-                        out.indent(),
-                    );
-                    if ok {
-                        out.raw(&check);
-                        out.line("lua_pop(L, 1);");
-                        out.indent_left();
-                        out.line("}");
-                        (true, out.finish(), LType::Array(Box::new(elem_ltype)))
-                    } else {
-                        out.line(&format!(
-                            "// Unsupported check array type: {} [{}]",
-                            ttype, size
-                        ));
-                        (false, out.finish(), LType::Integer)
-                    }
-                }
-            }
+            } => self.generate_array_check(
+                ttype,
+                resolved.is_buffer(),
+                create_var,
+                value_accessor,
+                lua_idx,
+                out,
+                size,
+                false,
+            ),
             CppType::Pointer {
                 ttype: "void",
                 is_const: false,
@@ -1588,6 +1540,110 @@ impl Generator {
             }
             _ => {
                 out.line(&format!("// Unsupported check type: {:?}", resolved));
+                (false, out.finish(), LType::Integer)
+            }
+        }
+    }
+
+    fn generate_array_check(
+        &self,
+        ttype: &str,
+        is_buffer: bool,
+        create_var: bool,
+        value_accessor: &str,
+        lua_idx: &str,
+        mut out: CodeBuilder,
+        size: &str,
+        non_const_exception: bool,
+    ) -> (bool, String, LType) {
+        if is_buffer {
+            let var = format!(
+                "_tmp{}",
+                COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
+            );
+            let len_var = format!("_len_{}", var);
+            out.line(&format!("size_t {};", len_var));
+            out.line(&format!(
+                "const char *{} = luaL_checklstring(L, {}, &{});",
+                var, lua_idx, len_var
+            ));
+
+            if create_var {
+                // Method input buffer: use lua_tolstring for the actual byte length.
+                // This avoids reading past the end of the Lua string (which memcpy would
+                // do if cubData > actual string length) and handles binary data (embedded
+                // nulls that strlen would miss). The pointer is passed directly to Steam —
+                // no copy needed since Lua keeps strings alive on the stack.
+                // We use const_cast to a non-const pointer so this works for both
+                // `const T*` and `T*` method signatures (some Steam APIs lack const).
+                if ttype == "char" {
+                    assert!(!non_const_exception);
+                    out.line(&format!(
+                        "const char *{} = {};",
+                        value_accessor, var
+                    ));
+                } else {
+                    if non_const_exception {
+                        out.line(&format!(
+                            "{t} *{n} = const_cast<{t} *>(reinterpret_cast<const {t} *>({v}));",
+                            t = ttype,
+                            n = value_accessor,
+                            v = var
+                        ));
+                    } else {
+                        out.line(&format!(
+                            "const {t} *{n} = reinterpret_cast<const {t} *>({v});",
+                            t = ttype,
+                            n = value_accessor,
+                            v = var
+                        ));
+                    }
+                }
+            } else {
+                out.line(&format!(
+                    "if ({} > sizeof({})) luaL_error(L, \"String too long\");",
+                    len_var, value_accessor
+                ));
+                out.line(&format!(
+                    "memcpy({}, {}, std::min({} + 1, sizeof({})));",
+                    value_accessor, var, len_var, value_accessor
+                ));
+            }
+            (true, out.finish(), LType::String)
+        } else {
+            out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
+            if create_var {
+                out.line(&format!(
+                    "std::vector<{}> {}({});",
+                    ttype, value_accessor, size
+                ));
+            }
+            out.line(&format!(
+                "for(decltype({}) i = 0; i < {}; i++) {{",
+                size, size
+            ));
+            out.indent_right();
+            out.line(&format!("lua_rawgeti(L, {lua_idx}, i+1);"));
+            let (ok, check, elem_ltype) = self.generate_check(
+                ttype,
+                self.type_resolver.resolve_type(ttype),
+                false,
+                &format!("{}[i]", value_accessor),
+                "-1",
+                out.indent(),
+            );
+            if ok {
+                out.raw(&check);
+                out.line("lua_pop(L, 1);");
+                out.indent_left();
+                out.line("}");
+                (true, out.finish(), LType::Array(Box::new(elem_ltype)))
+            } else {
+                println!("Unsupported array element type: {} [{}]", ttype, size);
+                out.line(&format!(
+                    "// Unsupported check array type: {} [{}]",
+                    ttype, size
+                ));
                 (false, out.finish(), LType::Integer)
             }
         }
@@ -1739,7 +1795,9 @@ impl Generator {
         s.line(&format!("class {} {{", class_name));
         s.line("private:");
         s.indent_right();
-        let is_gameserver = is_gameserver_pipe || classname == "ISteamGameServer" || classname == "ISteamGameServerStats";
+        let is_gameserver = is_gameserver_pipe
+            || classname == "ISteamGameServer"
+            || classname == "ISteamGameServerStats";
         let macro_name = if is_gameserver {
             "STEAM_GAMESERVER_CALLBACK"
         } else {
@@ -1909,8 +1967,7 @@ impl Generator {
             return Err(SkipReason::NoAccessors);
         }
         let accessor_name = &interface.accessors[0].name;
-        let is_dual_accessor =
-            interface.accessors.len() >= 2;
+        let is_dual_accessor = interface.accessors.len() >= 2;
 
         cpp.line("#include \"auto.hpp\"");
         cpp.preceeding_blank_line();
@@ -1972,7 +2029,15 @@ impl Generator {
                 continue;
             }
 
-            match self.generate_method(name, method, if is_dual_accessor { None } else { Some(accessor_name) }) {
+            match self.generate_method(
+                name,
+                method,
+                if is_dual_accessor {
+                    None
+                } else {
+                    Some(accessor_name)
+                },
+            ) {
                 Ok((lua_method_name, generated, signature)) => {
                     let params_str = method
                         .params
@@ -2064,7 +2129,11 @@ impl Generator {
         cpp.line(&format!(
             "register_{}_auto({});",
             name,
-            if is_dual_accessor { "L, false".to_string() } else { "L".to_string() }
+            if is_dual_accessor {
+                "L, false".to_string()
+            } else {
+                "L".to_string()
+            }
         ));
         for enm in &interface.enums {
             for val in &enm.values {
@@ -2091,15 +2160,26 @@ impl Generator {
                 cpp.line(&format!("int {}_ref = LUA_NOREF;", gs_name));
                 cpp.preceeding_blank_line();
 
-                cpp.raw(&self.generate_callback_listener(&gs_name, &interface.classname, callbacks, true));
+                cpp.raw(&self.generate_callback_listener(
+                    &gs_name,
+                    &interface.classname,
+                    callbacks,
+                    true,
+                ));
                 cpp.preceeding_blank_line();
 
                 cpp.line(&format!("void add_{}_auto(lua_State *L) {{", gs_name));
                 cpp.indent_right();
-                cpp.line(&format!("lua_createtable(L, 0, {});", generated_methods.len()));
+                cpp.line(&format!(
+                    "lua_createtable(L, 0, {});",
+                    generated_methods.len()
+                ));
                 cpp.line(&format!("register_{}_auto(L, true);", name));
                 cpp.line("lua_pushvalue(L, -1);");
-                cpp.line(&format!("{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);", gs_name));
+                cpp.line(&format!(
+                    "{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
+                    gs_name
+                ));
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", gs_name));
                 cpp.indent_left();
                 cpp.line("}");
@@ -2189,7 +2269,10 @@ impl Generator {
             s.line(&format!("auto *iface = {}();", accessor));
         } else {
             // Dual-accessor: base function takes iface directly; wrappers added below
-            s.line(&format!("static int {}(lua_State *L, ISteam{} *iface) {{", c_method_name, interface));
+            s.line(&format!(
+                "static int {}(lua_State *L, ISteam{} *iface) {{",
+                c_method_name, interface
+            ));
             s.indent_right();
         }
 
@@ -2327,25 +2410,14 @@ impl Generator {
                     sig.add_param(param.paramname.clone(), LType::Boolean);
                     lua_idx += 1;
                 }
-                Pointer{ttype: "char", is_const: true} => { // TODO: should this support void*?
-                    if (method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
-                        && param.paramname == "pDataToInclude")
-                        || (method.methodname_flat == "SteamAPI_ISteamScreenshots_WriteScreenshot"
-                            && param.paramname == "pubRGB")
-                        || (method.methodname_flat == "SteamAPI_ISteamNetworking_SendDataOnSocket"
-                            && param.paramname == "pubData")
-                    {
-                        // Special case, it is missing the const
-                        s.line(&format!(
-                            "char *{} = const_cast<char*>(luaL_checkstring(L, {}));",
-                            param.paramname, lua_idx
-                        ));
-                    } else {
-                        s.line(&format!(
-                            "const char *{} = luaL_checkstring(L, {});",
-                            param.paramname, lua_idx
-                        ));
-                    }
+                Pointer {
+                    ttype: "char",
+                    is_const: true,
+                } => {
+                    s.line(&format!(
+                        "const char *{} = luaL_checkstring(L, {});",
+                        param.paramname, lua_idx
+                    ));
                     cpp_call_params.push(param.paramname.clone());
                     sig.add_param(param.paramname.clone(), LType::String);
                     lua_idx += 1;
@@ -2506,21 +2578,29 @@ impl Generator {
                             .find(|p| p.paramname == sz)
                             .expect("Size param not found");
                         let lua_idx_str = lua_idx.to_string();
-                        let (ok, code, ltype) = self.generate_check(
-                            &param.paramtype,
-                            CppType::Array {
-                                ttype: param
-                                    .paramtype
-                                    .strip_suffix(" *")
-                                    .and_then(|p| p.strip_prefix("const "))
-                                    .expect("Malformed pointer type"),
-                                size: sz,
-                                is_const: true,
-                            },
+                        let out = CodeBuilder::with_indent(s.indent());
+                        let (ok, code, ltype) = self.generate_array_check(
+                            param
+                                .paramtype
+                                .strip_prefix("const ")
+                                .unwrap()
+                                .strip_suffix(" *")
+                                .unwrap(),
+                            resolved.is_buffer(),
                             true,
                             &param.paramname,
                             &lua_idx_str,
-                            1,
+                            out,
+                            sz,
+                            (method.methodname_flat
+                                == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
+                                && param.paramname == "pDataToInclude")
+                                || (method.methodname_flat
+                                    == "SteamAPI_ISteamScreenshots_WriteScreenshot"
+                                    && param.paramname == "pubRGB")
+                                || (method.methodname_flat
+                                    == "SteamAPI_ISteamNetworking_SendDataOnSocket"
+                                    && param.paramname == "pubData"),
                         );
                         if ok {
                             sig.add_param(param.paramname.clone(), ltype);
@@ -2540,7 +2620,15 @@ impl Generator {
                             }
 
                             s.raw(&code);
-                            cpp_call_params.push(format!("{}.data()", param.paramname));
+                            // Buffer types (void*, char*, uint8*, etc.) are now declared as
+                            // a typed const pointer directly — no .data() needed.
+                            let is_buf =
+                                ["void", "char", "uint8", "unsigned char"].contains(&ttype);
+                            if is_buf {
+                                cpp_call_params.push(param.paramname.clone());
+                            } else {
+                                cpp_call_params.push(format!("{}.data()", param.paramname));
+                            }
                         } else {
                             return Err(SkipReason::UnsupportedType(format!(
                                 "size param {} not found",

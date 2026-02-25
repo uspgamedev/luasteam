@@ -903,6 +903,22 @@ template <> void CallResultListener<RemoteStorageUpdateUserPublishedItemVoteResu
 }
 
 // In C++:
+// bool FileWrite(const char * pchFile, const void * pvData, int32 cubData);
+// In Lua:
+// bool RemoteStorage.FileWrite(pchFile: str, pvData: str, cubData: int)
+static int luasteam_RemoteStorage_FileWrite(lua_State *L) {
+	auto *iface = SteamRemoteStorage();
+	const char *pchFile = luaL_checkstring(L, 1);
+	int32 cubData = luaL_checkint(L, 3);
+	size_t _len__tmp94;
+	const char *_tmp94 = luaL_checklstring(L, 2, &_len__tmp94);
+	const void *pvData = reinterpret_cast<const void *>(_tmp94);
+	bool __ret = iface->FileWrite(pchFile, pvData, cubData);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
 // int32 FileRead(const char * pchFile, void * pvData, int32 cubDataToRead);
 // In Lua:
 // (int, pvData: str) RemoteStorage.FileRead(pchFile: str, cubDataToRead: int)
@@ -915,6 +931,32 @@ static int luasteam_RemoteStorage_FileRead(lua_State *L) {
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
 	return 2;
+}
+
+// In C++:
+// SteamAPICall_t FileWriteAsync(const char * pchFile, const void * pvData, uint32 cubData);
+// In Lua:
+// uint64 RemoteStorage.FileWriteAsync(pchFile: str, pvData: str, cubData: int, callback: function)
+static int luasteam_RemoteStorage_FileWriteAsync(lua_State *L) {
+	auto *iface = SteamRemoteStorage();
+	int callback_ref = LUA_NOREF;
+	if (lua_isfunction(L, lua_gettop(L))) {
+		lua_pushvalue(L, lua_gettop(L));
+		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
+	const char *pchFile = luaL_checkstring(L, 1);
+	uint32 cubData = luaL_checkint(L, 3);
+	size_t _len__tmp95;
+	const char *_tmp95 = luaL_checklstring(L, 2, &_len__tmp95);
+	const void *pvData = reinterpret_cast<const void *>(_tmp95);
+	SteamAPICall_t __ret = iface->FileWriteAsync(pchFile, pvData, cubData);
+	if (callback_ref != LUA_NOREF) {
+		auto *listener = new luasteam::CallResultListener<RemoteStorageFileWriteAsyncComplete_t>();
+		listener->callback_ref = callback_ref;
+		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStorageFileWriteAsyncComplete_t>::Result);
+	}
+	luasteam::pushuint64(L, __ret);
+	return 1;
 }
 
 // In C++:
@@ -1024,6 +1066,22 @@ static int luasteam_RemoteStorage_FileWriteStreamOpen(lua_State *L) {
 	const char *pchFile = luaL_checkstring(L, 1);
 	UGCFileWriteStreamHandle_t __ret = iface->FileWriteStreamOpen(pchFile);
 	luasteam::pushuint64(L, __ret);
+	return 1;
+}
+
+// In C++:
+// bool FileWriteStreamWriteChunk(UGCFileWriteStreamHandle_t writeHandle, const void * pvData, int32 cubData);
+// In Lua:
+// bool RemoteStorage.FileWriteStreamWriteChunk(writeHandle: uint64, pvData: str, cubData: int)
+static int luasteam_RemoteStorage_FileWriteStreamWriteChunk(lua_State *L) {
+	auto *iface = SteamRemoteStorage();
+	UGCFileWriteStreamHandle_t writeHandle(luasteam::checkuint64(L, 1));
+	int32 cubData = luaL_checkint(L, 3);
+	size_t _len__tmp96;
+	const char *_tmp96 = luaL_checklstring(L, 2, &_len__tmp96);
+	const void *pvData = reinterpret_cast<const void *>(_tmp96);
+	bool __ret = iface->FileWriteStreamWriteChunk(writeHandle, pvData, cubData);
+	lua_pushboolean(L, __ret);
 	return 1;
 }
 
@@ -1826,7 +1884,9 @@ static int luasteam_RemoteStorage_EndFileWriteBatch(lua_State *L) {
 }
 
 void register_RemoteStorage_auto(lua_State *L) {
+	add_func(L, "FileWrite", luasteam_RemoteStorage_FileWrite);
 	add_func(L, "FileRead", luasteam_RemoteStorage_FileRead);
+	add_func(L, "FileWriteAsync", luasteam_RemoteStorage_FileWriteAsync);
 	add_func(L, "FileReadAsync", luasteam_RemoteStorage_FileReadAsync);
 	add_func(L, "FileReadAsyncComplete", luasteam_RemoteStorage_FileReadAsyncComplete);
 	add_func(L, "FileForget", luasteam_RemoteStorage_FileForget);
@@ -1834,6 +1894,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 	add_func(L, "FileShare", luasteam_RemoteStorage_FileShare);
 	add_func(L, "SetSyncPlatforms", luasteam_RemoteStorage_SetSyncPlatforms);
 	add_func(L, "FileWriteStreamOpen", luasteam_RemoteStorage_FileWriteStreamOpen);
+	add_func(L, "FileWriteStreamWriteChunk", luasteam_RemoteStorage_FileWriteStreamWriteChunk);
 	add_func(L, "FileWriteStreamClose", luasteam_RemoteStorage_FileWriteStreamClose);
 	add_func(L, "FileWriteStreamCancel", luasteam_RemoteStorage_FileWriteStreamCancel);
 	add_func(L, "FileExists", luasteam_RemoteStorage_FileExists);
@@ -1884,7 +1945,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 }
 
 void add_RemoteStorage_auto(lua_State *L) {
-	lua_createtable(L, 0, 55);
+	lua_createtable(L, 0, 58);
 	register_RemoteStorage_auto(L);
 	lua_pushvalue(L, -1);
 	RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);

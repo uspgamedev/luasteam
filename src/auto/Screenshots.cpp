@@ -55,13 +55,12 @@ void shutdown_Screenshots_auto(lua_State *L) {
 static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	uint32 cubRGB = luaL_checkint(L, 2);
-	const char *_tmp92 = luaL_checkstring(L, 1);
-	if (strlen(_tmp92) >= cubRGB) luaL_error(L, "String too long");
-	std::vector<char> pubRGB(cubRGB);
-	memcpy(pubRGB.data(), _tmp92, cubRGB);
+	size_t _len__tmp99;
+	const char *_tmp99 = luaL_checklstring(L, 1, &_len__tmp99);
+	void *pubRGB = const_cast<void *>(reinterpret_cast<const void *>(_tmp99));
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
-	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB.data(), cubRGB, nWidth, nHeight);
+	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight);
 	lua_pushinteger(L, __ret);
 	return 1;
 }

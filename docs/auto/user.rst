@@ -18,14 +18,17 @@ List of Functions
 * :func:`User.StopVoiceRecording`
 * :func:`User.GetAvailableVoice`
 * :func:`User.GetVoice`
+* :func:`User.DecompressVoice`
 * :func:`User.GetVoiceOptimalSampleRate`
 * :func:`User.GetAuthSessionTicket`
 * :func:`User.GetAuthTicketForWebApi`
+* :func:`User.BeginAuthSession`
 * :func:`User.EndAuthSession`
 * :func:`User.CancelAuthTicket`
 * :func:`User.UserHasLicenseForApp`
 * :func:`User.BIsBehindNAT`
 * :func:`User.AdvertiseGame`
+* :func:`User.RequestEncryptedAppTicket`
 * :func:`User.GetEncryptedAppTicket`
 * :func:`User.GetGameBadgeLevel`
 * :func:`User.GetPlayerSteamLevel`
@@ -144,6 +147,24 @@ Function Reference
     * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
 
+.. function:: User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate)
+
+    🤖 **Auto-generated binding**
+
+    :param str pCompressed:
+    :param int cbCompressed:
+    :param int cbDestBufferSize:
+    :param int nDesiredSampleRate:
+    :returns: (int) Return value
+    :returns: (str) Value for `pDestBuffer`
+    :returns: (int) Value for `nBytesWritten`
+    :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
+
 .. function:: User.GetVoiceOptimalSampleRate()
 
     🤖 **Auto-generated binding**
@@ -174,6 +195,16 @@ Function Reference
     :param str pchIdentity:
     :returns: (int) Return value
     :SteamWorks: `GetAuthTicketForWebApi <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthTicketForWebApi>`_
+
+.. function:: User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
+
+    🤖 **Auto-generated binding**
+
+    :param str pAuthTicket:
+    :param int cbAuthTicket:
+    :param uint64 steamID:
+    :returns: (int) Return value
+    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
 
 .. function:: User.EndAuthSession(steamID)
 
@@ -213,6 +244,16 @@ Function Reference
     :param int unIPServer:
     :param int usPortServer:
     :SteamWorks: `AdvertiseGame <https://partner.steamgames.com/doc/api/ISteamUser#AdvertiseGame>`_
+
+.. function:: User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pDataToInclude:
+    :param int cbDataToInclude:
+    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
 .. function:: User.GetEncryptedAppTicket(cbMaxTicket)
 
@@ -305,28 +346,6 @@ Function Reference
     :param int eNewState:
     :returns: (bool) Return value
     :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: User.decompressVoice
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
-
-.. function:: User.beginAuthSession
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
-
-.. function:: User.requestEncryptedAppTicket
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
 
 Callbacks

@@ -55,13 +55,12 @@ void shutdown_NetworkingMessages_auto(lua_State *L) {
 static int luasteam_NetworkingMessages_SendMessageToUser(lua_State *L, ISteamNetworkingMessages *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint32 cubData = luaL_checkint(L, 3);
-	const char *_tmp94 = luaL_checkstring(L, 2);
-	if (strlen(_tmp94) >= cubData) luaL_error(L, "String too long");
-	std::vector<char> pubData(cubData);
-	memcpy(pubData.data(), _tmp94, cubData);
+	size_t _len__tmp101;
+	const char *_tmp101 = luaL_checklstring(L, 2, &_len__tmp101);
+	const void *pubData = reinterpret_cast<const void *>(_tmp101);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int nRemoteChannel = static_cast<int>(luaL_checkint(L, 5));
-	EResult __ret = iface->SendMessageToUser(identityRemote, pubData.data(), cubData, nSendFlags, nRemoteChannel);
+	EResult __ret = iface->SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel);
 	lua_pushinteger(L, __ret);
 	return 1;
 }

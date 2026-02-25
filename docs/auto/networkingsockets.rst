@@ -461,7 +461,7 @@ Unimplemented Methods
 
 .. function:: NetworkingSockets.setCertificate
 
-    ✋ **Not implemented** - unsupported type: const void *
+    ✋ **Not implemented** - unsupported type: SteamNetworkingErrMsg &
     
     :SteamWorks: `SetCertificate <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetCertificate>`_
 

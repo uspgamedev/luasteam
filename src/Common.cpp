@@ -68,7 +68,8 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
 }
 
 void init_Common(lua_State *L) {
-    if (global_lua_state != nullptr) return;
+    if (global_lua_state != nullptr)
+        return;
     global_lua_state = L;
     // uint64 metatable
     lua_createtable(L, 0, 2);

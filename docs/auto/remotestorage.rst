@@ -9,7 +9,9 @@ ISteamRemoteStorage
 List of Functions
 -----------------
 
+* :func:`RemoteStorage.FileWrite`
 * :func:`RemoteStorage.FileRead`
+* :func:`RemoteStorage.FileWriteAsync`
 * :func:`RemoteStorage.FileReadAsync`
 * :func:`RemoteStorage.FileReadAsyncComplete`
 * :func:`RemoteStorage.FileForget`
@@ -17,6 +19,7 @@ List of Functions
 * :func:`RemoteStorage.FileShare`
 * :func:`RemoteStorage.SetSyncPlatforms`
 * :func:`RemoteStorage.FileWriteStreamOpen`
+* :func:`RemoteStorage.FileWriteStreamWriteChunk`
 * :func:`RemoteStorage.FileWriteStreamClose`
 * :func:`RemoteStorage.FileWriteStreamCancel`
 * :func:`RemoteStorage.FileExists`
@@ -97,6 +100,16 @@ List of Callbacks
 Function Reference
 ------------------
 
+.. function:: RemoteStorage.FileWrite(pchFile, pvData, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pvData:
+    :param int cubData:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
+
 .. function:: RemoteStorage.FileRead(pchFile, cubDataToRead)
 
     🤖 **Auto-generated binding**
@@ -110,6 +123,17 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pvData:
+    :param int cubData:
+    :param function callback: CallResult callback receiving struct `RemoteStorageFileWriteAsyncComplete_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
 
 .. function:: RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback)
 
@@ -177,6 +201,16 @@ Function Reference
     :param str pchFile:
     :returns: (uint64) Return value
     :SteamWorks: `FileWriteStreamOpen <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamOpen>`_
+
+.. function:: RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 writeHandle:
+    :param str pvData:
+    :param int cubData:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
 
 .. function:: RemoteStorage.FileWriteStreamClose(writeHandle)
 
@@ -659,24 +693,6 @@ Function Reference
 
 Unimplemented Methods
 ---------------------
-
-.. function:: RemoteStorage.fileWrite
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
-
-.. function:: RemoteStorage.fileWriteAsync
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
-
-.. function:: RemoteStorage.fileWriteStreamWriteChunk
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
 
 .. function:: RemoteStorage.getUGCDetails
 

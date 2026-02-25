@@ -318,12 +318,11 @@ static int luasteam_Inventory_GetItemsByID_gs(lua_State *L) { return luasteam_In
 static int luasteam_Inventory_DeserializeResult(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t pOutResultHandle;
 	uint32 unBufferSize = luaL_checkint(L, 2);
-	const char *_tmp93 = luaL_checkstring(L, 1);
-	if (strlen(_tmp93) >= unBufferSize) luaL_error(L, "String too long");
-	std::vector<char> pBuffer(unBufferSize);
-	memcpy(pBuffer.data(), _tmp93, unBufferSize);
+	size_t _len__tmp100;
+	const char *_tmp100 = luaL_checklstring(L, 1, &_len__tmp100);
+	const void *pBuffer = reinterpret_cast<const void *>(_tmp100);
 	bool bRESERVED_MUST_BE_FALSE = lua_toboolean(L, 3);
-	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer.data(), unBufferSize, bRESERVED_MUST_BE_FALSE);
+	bool __ret = iface->DeserializeResult(&pOutResultHandle, pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pOutResultHandle);
 	return 2;

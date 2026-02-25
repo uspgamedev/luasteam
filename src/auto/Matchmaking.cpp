@@ -630,6 +630,22 @@ static int luasteam_Matchmaking_SetLobbyMemberData(lua_State *L) {
 }
 
 // In C++:
+// bool SendLobbyChatMsg(CSteamID steamIDLobby, const void * pvMsgBody, int cubMsgBody);
+// In Lua:
+// bool Matchmaking.SendLobbyChatMsg(steamIDLobby: uint64, pvMsgBody: str, cubMsgBody: int)
+static int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
+	auto *iface = SteamMatchmaking();
+	CSteamID steamIDLobby(luasteam::checkuint64(L, 1));
+	int cubMsgBody = luaL_checkint(L, 3);
+	size_t _len__tmp93;
+	const char *_tmp93 = luaL_checklstring(L, 2, &_len__tmp93);
+	const void *pvMsgBody = reinterpret_cast<const void *>(_tmp93);
+	bool __ret = iface->SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
 // int GetLobbyChatEntry(CSteamID steamIDLobby, int iChatID, CSteamID * pSteamIDUser, void * pvData, int cubData, EChatEntryType * peChatEntryType);
 // In Lua:
 // (int, pSteamIDUser: uint64, pvData: str, peChatEntryType: int) Matchmaking.GetLobbyChatEntry(steamIDLobby: uint64, iChatID: int, cubData: int)
@@ -809,6 +825,7 @@ void register_Matchmaking_auto(lua_State *L) {
 	add_func(L, "DeleteLobbyData", luasteam_Matchmaking_DeleteLobbyData);
 	add_func(L, "GetLobbyMemberData", luasteam_Matchmaking_GetLobbyMemberData);
 	add_func(L, "SetLobbyMemberData", luasteam_Matchmaking_SetLobbyMemberData);
+	add_func(L, "SendLobbyChatMsg", luasteam_Matchmaking_SendLobbyChatMsg);
 	add_func(L, "GetLobbyChatEntry", luasteam_Matchmaking_GetLobbyChatEntry);
 	add_func(L, "RequestLobbyData", luasteam_Matchmaking_RequestLobbyData);
 	add_func(L, "SetLobbyGameServer", luasteam_Matchmaking_SetLobbyGameServer);
@@ -823,7 +840,7 @@ void register_Matchmaking_auto(lua_State *L) {
 }
 
 void add_Matchmaking_auto(lua_State *L) {
-	lua_createtable(L, 0, 37);
+	lua_createtable(L, 0, 38);
 	register_Matchmaking_auto(L);
 	lua_pushvalue(L, -1);
 	Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

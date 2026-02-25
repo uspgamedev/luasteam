@@ -229,13 +229,12 @@ static int luasteam_NetworkingSockets_GetConnectionName_gs(lua_State *L) { retur
 static int luasteam_NetworkingSockets_SendMessageToConnection(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	uint32 cbData = luaL_checkint(L, 3);
-	const char *_tmp95 = luaL_checkstring(L, 2);
-	if (strlen(_tmp95) >= cbData) luaL_error(L, "String too long");
-	std::vector<char> pData(cbData);
-	memcpy(pData.data(), _tmp95, cbData);
+	size_t _len__tmp102;
+	const char *_tmp102 = luaL_checklstring(L, 2, &_len__tmp102);
+	const void *pData = reinterpret_cast<const void *>(_tmp102);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int64 pOutMessageNumber;
-	EResult __ret = iface->SendMessageToConnection(hConn, pData.data(), cbData, nSendFlags, &pOutMessageNumber);
+	EResult __ret = iface->SendMessageToConnection(hConn, pData, cbData, nSendFlags, &pOutMessageNumber);
 	lua_pushinteger(L, __ret);
 	luasteam::pushuint64(L, pOutMessageNumber);
 	return 2;
