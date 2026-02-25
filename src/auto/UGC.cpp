@@ -47,7 +47,7 @@ void CallbackListener::OnSteamUGCQueryCompleted(SteamUGCQueryCompleted_t *data) 
 		lua_setfield(L, -2, "m_unTotalMatchingResults");
 		lua_pushboolean(L, data->m_bCachedData);
 		lua_setfield(L, -2, "m_bCachedData");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor), 256);
 		lua_setfield(L, -2, "m_rgchNextCursor");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -706,7 +706,7 @@ template <> void CallResultListener<SteamUGCQueryCompleted_t>::Result(SteamUGCQu
 		lua_setfield(L, -2, "m_unTotalMatchingResults");
 		lua_pushboolean(L, data->m_bCachedData);
 		lua_setfield(L, -2, "m_bCachedData");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor), 256);
 		lua_setfield(L, -2, "m_rgchNextCursor");
 	}
 	lua_pushboolean(L, io_fail);

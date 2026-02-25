@@ -43,7 +43,7 @@ void CallbackListener::OnSteamNetAuthenticationStatus(SteamNetAuthenticationStat
 		lua_createtable(L, 0, 2);
 		lua_pushinteger(L, data->m_eAvail);
 		lua_setfield(L, -2, "m_eAvail");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_debugMsg));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_debugMsg), 256);
 		lua_setfield(L, -2, "m_debugMsg");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);

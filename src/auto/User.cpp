@@ -210,7 +210,7 @@ void CallbackListener::OnGameWebCallback(GameWebCallback_t *data) {
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_szURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szURL), 256);
 		lua_setfield(L, -2, "m_szURL");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -226,7 +226,7 @@ void CallbackListener::OnStoreAuthURLResponse(StoreAuthURLResponse_t *data) {
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_szURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szURL), 512);
 		lua_setfield(L, -2, "m_szURL");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -302,7 +302,7 @@ void CallbackListener::OnGetTicketForWebApiResponse(GetTicketForWebApiResponse_t
 		lua_setfield(L, -2, "m_eResult");
 		lua_pushinteger(L, data->m_cubTicket);
 		lua_setfield(L, -2, "m_cubTicket");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgubTicket));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgubTicket), 2560);
 		lua_setfield(L, -2, "m_rgubTicket");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -432,7 +432,7 @@ template <> void CallResultListener<StoreAuthURLResponse_t>::Result(StoreAuthURL
 		lua_pushnil(L);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_szURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szURL), 512);
 		lua_setfield(L, -2, "m_szURL");
 	}
 	lua_pushboolean(L, io_fail);

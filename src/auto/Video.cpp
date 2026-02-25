@@ -26,7 +26,7 @@ void CallbackListener::OnGetVideoURLResult(GetVideoURLResult_t *data) {
 		lua_setfield(L, -2, "m_eResult");
 		lua_pushinteger(L, data->m_unVideoAppID);
 		lua_setfield(L, -2, "m_unVideoAppID");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchURL), 256);
 		lua_setfield(L, -2, "m_rgchURL");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);

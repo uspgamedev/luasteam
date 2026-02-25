@@ -27,7 +27,7 @@ void CallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetworkStatus_t *data
 		lua_setfield(L, -2, "m_eAvailNetworkConfig");
 		lua_pushinteger(L, data->m_eAvailAnyRelay);
 		lua_setfield(L, -2, "m_eAvailAnyRelay");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_debugMsg));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_debugMsg), 256);
 		lua_setfield(L, -2, "m_debugMsg");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);

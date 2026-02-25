@@ -79,9 +79,9 @@ void CallbackListener::OnGameServerChangeRequested(GameServerChangeRequested_t *
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 2);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchServer));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchServer), 64);
 		lua_setfield(L, -2, "m_rgchServer");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchPassword));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchPassword), 64);
 		lua_setfield(L, -2, "m_rgchPassword");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -177,7 +177,7 @@ void CallbackListener::OnGameRichPresenceJoinRequested(GameRichPresenceJoinReque
 		lua_createtable(L, 0, 2);
 		luasteam::pushuint64(L, data->m_steamIDFriend.ConvertToUint64());
 		lua_setfield(L, -2, "m_steamIDFriend");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchConnect));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchConnect), 256);
 		lua_setfield(L, -2, "m_rgchConnect");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -385,7 +385,7 @@ void CallbackListener::OnOverlayBrowserProtocolNavigation(OverlayBrowserProtocol
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->rgchURI));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->rgchURI), 1024);
 		lua_setfield(L, -2, "rgchURI");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);

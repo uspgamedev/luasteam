@@ -53,7 +53,7 @@ void CallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemotePlayToget
 		lua_pop(L, 2);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_szConnectURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szConnectURL), 1024);
 		lua_setfield(L, -2, "m_szConnectURL");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);

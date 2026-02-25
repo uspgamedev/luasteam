@@ -503,7 +503,7 @@ Unimplemented Methods
 
 .. function:: Inventory.serializeResult
 
-    ✋ **Not implemented** - unsupported type: void *
+    ✋ **Not implemented** - manual: Uses nullptr as input, we don't support it
     
     :SteamWorks: `SerializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#SerializeResult>`_
 

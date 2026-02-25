@@ -59,7 +59,7 @@ void CallbackListener::OnAppProofOfPurchaseKeyResponse(AppProofOfPurchaseKeyResp
 		lua_setfield(L, -2, "m_nAppID");
 		lua_pushinteger(L, data->m_cchKeyLength);
 		lua_setfield(L, -2, "m_cchKeyLength");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchKey));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchKey), 240);
 		lua_setfield(L, -2, "m_rgchKey");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -79,7 +79,7 @@ void CallbackListener::OnFileDetailsResult(FileDetailsResult_t *data) {
 		lua_setfield(L, -2, "m_eResult");
 		luasteam::pushuint64(L, data->m_ulFileSize);
 		lua_setfield(L, -2, "m_ulFileSize");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_FileSHA));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_FileSHA), 20);
 		lua_setfield(L, -2, "m_FileSHA");
 		lua_pushinteger(L, data->m_unFlags);
 		lua_setfield(L, -2, "m_unFlags");
@@ -136,7 +136,7 @@ template <> void CallResultListener<FileDetailsResult_t>::Result(FileDetailsResu
 		lua_setfield(L, -2, "m_eResult");
 		luasteam::pushuint64(L, data->m_ulFileSize);
 		lua_setfield(L, -2, "m_ulFileSize");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_FileSHA));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_FileSHA), 20);
 		lua_setfield(L, -2, "m_FileSHA");
 		lua_pushinteger(L, data->m_unFlags);
 		lua_setfield(L, -2, "m_unFlags");

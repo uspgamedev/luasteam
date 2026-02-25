@@ -106,6 +106,24 @@ EXTERN int luasteam_Networking_IsP2PPacketAvailable(lua_State *L) {
 }
 
 // In C++:
+// bool ReadP2PPacket(void * pubDest, uint32 cubDest, uint32 * pcubMsgSize, CSteamID * psteamIDRemote, int nChannel);
+// In Lua:
+// (bool, pubDest: str, pcubMsgSize: int, psteamIDRemote: uint64) Networking.ReadP2PPacket(cubDest: int, nChannel: int)
+EXTERN int luasteam_Networking_ReadP2PPacket(lua_State *L) {
+	uint32 cubDest = luaL_checkint(L, 1);
+	uint32 pcubMsgSize = cubDest;
+	std::vector<unsigned char> pubDest(cubDest);
+	CSteamID psteamIDRemote;
+	int nChannel = static_cast<int>(luaL_checkint(L, 2));
+	bool __ret = SteamNetworking()->ReadP2PPacket(pubDest.data(), cubDest, &pcubMsgSize, &psteamIDRemote, nChannel);
+	lua_pushboolean(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
+	lua_pushinteger(L, pcubMsgSize);
+	luasteam::pushuint64(L, psteamIDRemote.ConvertToUint64());
+	return 4;
+}
+
+// In C++:
 // bool AcceptP2PSessionWithUser(CSteamID steamIDRemote);
 // In Lua:
 // bool Networking.AcceptP2PSessionWithUser(steamIDRemote: uint64)
@@ -202,6 +220,20 @@ EXTERN int luasteam_Networking_DestroyListenSocket(lua_State *L) {
 }
 
 // In C++:
+// bool SendDataOnSocket(SNetSocket_t hSocket, const void * pubData, uint32 cubData, bool bReliable);
+// In Lua:
+// bool Networking.SendDataOnSocket(hSocket: int, pubData: str, cubData: int, bReliable: bool)
+EXTERN int luasteam_Networking_SendDataOnSocket(lua_State *L) {
+	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
+	char *pubData = const_cast<char*>(luaL_checkstring(L, 2));
+	uint32 cubData = static_cast<uint32>(luaL_checkint(L, 3));
+	bool bReliable = lua_toboolean(L, 4);
+	bool __ret = SteamNetworking()->SendDataOnSocket(hSocket, pubData, cubData, bReliable);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
 // bool IsDataAvailableOnSocket(SNetSocket_t hSocket, uint32 * pcubMsgSize);
 // In Lua:
 // (bool, pcubMsgSize: int) Networking.IsDataAvailableOnSocket(hSocket: int)
@@ -212,6 +244,22 @@ EXTERN int luasteam_Networking_IsDataAvailableOnSocket(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pcubMsgSize);
 	return 2;
+}
+
+// In C++:
+// bool RetrieveDataFromSocket(SNetSocket_t hSocket, void * pubDest, uint32 cubDest, uint32 * pcubMsgSize);
+// In Lua:
+// (bool, pubDest: str, pcubMsgSize: int) Networking.RetrieveDataFromSocket(hSocket: int, cubDest: int)
+EXTERN int luasteam_Networking_RetrieveDataFromSocket(lua_State *L) {
+	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
+	uint32 cubDest = luaL_checkint(L, 2);
+	uint32 pcubMsgSize = cubDest;
+	std::vector<unsigned char> pubDest(cubDest);
+	bool __ret = SteamNetworking()->RetrieveDataFromSocket(hSocket, pubDest.data(), cubDest, &pcubMsgSize);
+	lua_pushboolean(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
+	lua_pushinteger(L, pcubMsgSize);
+	return 3;
 }
 
 // In C++:
@@ -227,6 +275,24 @@ EXTERN int luasteam_Networking_IsDataAvailable(lua_State *L) {
 	lua_pushinteger(L, pcubMsgSize);
 	lua_pushinteger(L, phSocket);
 	return 3;
+}
+
+// In C++:
+// bool RetrieveData(SNetListenSocket_t hListenSocket, void * pubDest, uint32 cubDest, uint32 * pcubMsgSize, SNetSocket_t * phSocket);
+// In Lua:
+// (bool, pubDest: str, pcubMsgSize: int, phSocket: int) Networking.RetrieveData(hListenSocket: int, cubDest: int)
+EXTERN int luasteam_Networking_RetrieveData(lua_State *L) {
+	SNetListenSocket_t hListenSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
+	uint32 cubDest = luaL_checkint(L, 2);
+	uint32 pcubMsgSize = cubDest;
+	std::vector<unsigned char> pubDest(cubDest);
+	SNetSocket_t phSocket;
+	bool __ret = SteamNetworking()->RetrieveData(hListenSocket, pubDest.data(), cubDest, &pcubMsgSize, &phSocket);
+	lua_pushboolean(L, __ret);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
+	lua_pushinteger(L, pcubMsgSize);
+	lua_pushinteger(L, phSocket);
+	return 4;
 }
 
 // In C++:
@@ -288,6 +354,7 @@ EXTERN int luasteam_Networking_GetMaxPacketSize(lua_State *L) {
 void register_Networking_auto(lua_State *L) {
 	add_func(L, "SendP2PPacket", luasteam_Networking_SendP2PPacket);
 	add_func(L, "IsP2PPacketAvailable", luasteam_Networking_IsP2PPacketAvailable);
+	add_func(L, "ReadP2PPacket", luasteam_Networking_ReadP2PPacket);
 	add_func(L, "AcceptP2PSessionWithUser", luasteam_Networking_AcceptP2PSessionWithUser);
 	add_func(L, "CloseP2PSessionWithUser", luasteam_Networking_CloseP2PSessionWithUser);
 	add_func(L, "CloseP2PChannelWithUser", luasteam_Networking_CloseP2PChannelWithUser);
@@ -296,8 +363,11 @@ void register_Networking_auto(lua_State *L) {
 	add_func(L, "CreateP2PConnectionSocket", luasteam_Networking_CreateP2PConnectionSocket);
 	add_func(L, "DestroySocket", luasteam_Networking_DestroySocket);
 	add_func(L, "DestroyListenSocket", luasteam_Networking_DestroyListenSocket);
+	add_func(L, "SendDataOnSocket", luasteam_Networking_SendDataOnSocket);
 	add_func(L, "IsDataAvailableOnSocket", luasteam_Networking_IsDataAvailableOnSocket);
+	add_func(L, "RetrieveDataFromSocket", luasteam_Networking_RetrieveDataFromSocket);
 	add_func(L, "IsDataAvailable", luasteam_Networking_IsDataAvailable);
+	add_func(L, "RetrieveData", luasteam_Networking_RetrieveData);
 	add_func(L, "GetSocketInfo", luasteam_Networking_GetSocketInfo);
 	add_func(L, "GetListenSocketInfo", luasteam_Networking_GetListenSocketInfo);
 	add_func(L, "GetSocketConnectionType", luasteam_Networking_GetSocketConnectionType);
@@ -305,7 +375,7 @@ void register_Networking_auto(lua_State *L) {
 }
 
 void add_Networking_auto(lua_State *L) {
-	lua_createtable(L, 0, 16);
+	lua_createtable(L, 0, 20);
 	register_Networking_auto(L);
 	lua_pushvalue(L, -1);
 	Networking_ref = luaL_ref(L, LUA_REGISTRYINDEX);

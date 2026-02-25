@@ -14,6 +14,7 @@ List of Functions
 
 * :func:`Networking.SendP2PPacket`
 * :func:`Networking.IsP2PPacketAvailable`
+* :func:`Networking.ReadP2PPacket`
 * :func:`Networking.AcceptP2PSessionWithUser`
 * :func:`Networking.CloseP2PSessionWithUser`
 * :func:`Networking.CloseP2PChannelWithUser`
@@ -22,8 +23,11 @@ List of Functions
 * :func:`Networking.CreateP2PConnectionSocket`
 * :func:`Networking.DestroySocket`
 * :func:`Networking.DestroyListenSocket`
+* :func:`Networking.SendDataOnSocket`
 * :func:`Networking.IsDataAvailableOnSocket`
+* :func:`Networking.RetrieveDataFromSocket`
 * :func:`Networking.IsDataAvailable`
+* :func:`Networking.RetrieveData`
 * :func:`Networking.GetSocketInfo`
 * :func:`Networking.GetListenSocketInfo`
 * :func:`Networking.GetSocketConnectionType`
@@ -63,6 +67,24 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pcubMsgSize`` is returned as an additional return value
+
+.. function:: Networking.ReadP2PPacket(cubDest, nChannel)
+
+    🤖 **Auto-generated binding**
+
+    :param int cubDest:
+    :param int nChannel:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pubDest`
+    :returns: (int) Value for `pcubMsgSize`
+    :returns: (uint64) Value for `psteamIDRemote`
+    :SteamWorks: `ReadP2PPacket <https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pubDest`` is returned as an additional return value
+    * Parameter ``pcubMsgSize`` is returned as an additional return value
+    * Parameter ``psteamIDRemote`` is returned as an additional return value
 
 .. function:: Networking.AcceptP2PSessionWithUser(steamIDRemote)
 
@@ -139,6 +161,17 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `DestroyListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#DestroyListenSocket>`_
 
+.. function:: Networking.SendDataOnSocket(hSocket, pubData, cubData, bReliable)
+
+    🤖 **Auto-generated binding**
+
+    :param int hSocket:
+    :param str pubData:
+    :param int cubData:
+    :param bool bReliable:
+    :returns: (bool) Return value
+    :SteamWorks: `SendDataOnSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#SendDataOnSocket>`_
+
 .. function:: Networking.IsDataAvailableOnSocket(hSocket)
 
     🤖 **Auto-generated binding**
@@ -150,6 +183,22 @@ Function Reference
 
     **Signature differences from C++ API:**
 
+    * Parameter ``pcubMsgSize`` is returned as an additional return value
+
+.. function:: Networking.RetrieveDataFromSocket(hSocket, cubDest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hSocket:
+    :param int cubDest:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pubDest`
+    :returns: (int) Value for `pcubMsgSize`
+    :SteamWorks: `RetrieveDataFromSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveDataFromSocket>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pubDest`` is returned as an additional return value
     * Parameter ``pcubMsgSize`` is returned as an additional return value
 
 .. function:: Networking.IsDataAvailable(hListenSocket)
@@ -164,6 +213,24 @@ Function Reference
 
     **Signature differences from C++ API:**
 
+    * Parameter ``pcubMsgSize`` is returned as an additional return value
+    * Parameter ``phSocket`` is returned as an additional return value
+
+.. function:: Networking.RetrieveData(hListenSocket, cubDest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hListenSocket:
+    :param int cubDest:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pubDest`
+    :returns: (int) Value for `pcubMsgSize`
+    :returns: (int) Value for `phSocket`
+    :SteamWorks: `RetrieveData <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveData>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pubDest`` is returned as an additional return value
     * Parameter ``pcubMsgSize`` is returned as an additional return value
     * Parameter ``phSocket`` is returned as an additional return value
 
@@ -221,12 +288,6 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: Networking.readP2PPacket
-
-    ✋ **Not implemented** - unsupported type: void *
-    
-    :SteamWorks: `ReadP2PPacket <https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket>`_
-
 .. function:: Networking.createListenSocket
 
     ✋ **Not implemented** - unsupported type: SteamIPAddress_t
@@ -238,24 +299,6 @@ Unimplemented Methods
     ✋ **Not implemented** - unsupported type: SteamIPAddress_t
     
     :SteamWorks: `CreateConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateConnectionSocket>`_
-
-.. function:: Networking.sendDataOnSocket
-
-    ✋ **Not implemented** - unsupported type: void *
-    
-    :SteamWorks: `SendDataOnSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#SendDataOnSocket>`_
-
-.. function:: Networking.retrieveDataFromSocket
-
-    ✋ **Not implemented** - unsupported type: void *
-    
-    :SteamWorks: `RetrieveDataFromSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveDataFromSocket>`_
-
-.. function:: Networking.retrieveData
-
-    ✋ **Not implemented** - unsupported type: void *
-    
-    :SteamWorks: `RetrieveData <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveData>`_
 
 
 Callbacks

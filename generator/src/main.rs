@@ -180,6 +180,10 @@ impl Generator {
             "SteamAPI_ISteamNetworkingUtils_SetConfigValueStruct".to_string(),
             SkipReason::ManualBlocklist("Needs careful dealing with void*".to_string()),
         );
+        blocklist.insert(
+            "SteamAPI_ISteamInventory_SerializeResult".to_string(),
+            SkipReason::ManualBlocklist("Uses nullptr as input, we don't support it".to_string()),
+        );
         for name in [
             "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged",
             "SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged",
@@ -1563,13 +1567,6 @@ impl Generator {
                     }
                 }
             },
-            _ if resolved.is_buffer() => (
-                format!(
-                    "lua_pushstring(L, reinterpret_cast<const char*>({}));",
-                    value_accessor
-                ),
-                LType::String,
-            ),
             CppType::Array {
                 ttype,
                 size,
@@ -1594,6 +1591,13 @@ impl Generator {
                     )
                 }
             }
+            _ if resolved.is_buffer() => (
+                format!(
+                    "lua_pushstring(L, reinterpret_cast<const char*>({}));",
+                    value_accessor
+                ),
+                LType::String,
+            ),
             CppType::Pointer {
                 ttype: "void",
                 is_const: false,
@@ -2175,7 +2179,7 @@ impl Generator {
                     if (method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
                         && param.paramname == "pDataToInclude")
                         || (method.methodname_flat == "SteamAPI_ISteamScreenshots_WriteScreenshot"
-                            && param.paramname == "pubRGB")
+                            && param.paramname == "pubRGB") || (method.methodname_flat == "SteamAPI_ISteamNetworking_SendDataOnSocket" && param.paramname == "pubData") 
                     {
                         // Special case, it is missing the const
                         s.line(&format!(

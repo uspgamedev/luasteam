@@ -20,7 +20,7 @@ static int SteamIPAddress_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamIPAddress_t *self = (SteamIPAddress_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgubIPv6") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_rgubIPv6));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgubIPv6), 16);
 		return 1;
 	}
 	if (strcmp(key, "m_eType") == 0) {
@@ -171,11 +171,11 @@ static int MatchMakingKeyValuePair_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	MatchMakingKeyValuePair_t *self = (MatchMakingKeyValuePair_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szKey") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szKey));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szKey), 256);
 		return 1;
 	}
 	if (strcmp(key, "m_szValue") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szValue));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szValue), 256);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -342,15 +342,15 @@ static int gameserveritem_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szGameDir") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szGameDir));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameDir), 32);
 		return 1;
 	}
 	if (strcmp(key, "m_szMap") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szMap));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szMap), 32);
 		return 1;
 	}
 	if (strcmp(key, "m_szGameDescription") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szGameDescription));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameDescription), 64);
 		return 1;
 	}
 	if (strcmp(key, "m_nAppID") == 0) {
@@ -386,7 +386,7 @@ static int gameserveritem_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szGameTags") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szGameTags));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameTags), 128);
 		return 1;
 	}
 	if (strcmp(key, "m_steamID") == 0) {
@@ -1313,11 +1313,11 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTitle") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_rgchTitle));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTitle), 129);
 		return 1;
 	}
 	if (strcmp(key, "m_rgchDescription") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_rgchDescription));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchDescription), 8000);
 		return 1;
 	}
 	if (strcmp(key, "m_ulSteamIDOwner") == 0) {
@@ -1353,7 +1353,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTags") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_rgchTags));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTags), 1025);
 		return 1;
 	}
 	if (strcmp(key, "m_hFile") == 0) {
@@ -1365,7 +1365,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_pchFileName));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_pchFileName), 260);
 		return 1;
 	}
 	if (strcmp(key, "m_nFileSize") == 0) {
@@ -1377,7 +1377,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_rgchURL));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchURL), 256);
 		return 1;
 	}
 	if (strcmp(key, "m_unVotesUp") == 0) {
@@ -1994,7 +1994,7 @@ static int RemotePlayInput_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "padding") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->padding));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->padding), 56);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -2130,7 +2130,7 @@ static int SteamNetworkingIPAddr_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamNetworkingIPAddr *self = (SteamNetworkingIPAddr*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_ipv6") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_ipv6));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_ipv6), 16);
 		return 1;
 	}
 	if (strcmp(key, "m_port") == 0) {
@@ -2384,11 +2384,11 @@ static int SteamNetConnectionInfo_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szEndDebug") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szEndDebug));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szEndDebug), 128);
 		return 1;
 	}
 	if (strcmp(key, "m_szConnectionDescription") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_szConnectionDescription));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szConnectionDescription), 128);
 		return 1;
 	}
 	if (strcmp(key, "m_nFlags") == 0) {
@@ -2885,7 +2885,7 @@ static int SteamNetworkPingLocation_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamNetworkPingLocation_t *self = (SteamNetworkPingLocation_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_data") == 0) {
-		lua_pushstring(L, reinterpret_cast<const char*>(self->m_data));
+		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_data), 512);
 		return 1;
 	}
 	lua_pushnil(L);

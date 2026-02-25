@@ -30,7 +30,7 @@ void CallbackListener::OnJoinPartyCallback(JoinPartyCallback_t *data) {
 		lua_setfield(L, -2, "m_ulBeaconID");
 		luasteam::pushuint64(L, data->m_SteamIDBeaconOwner.ConvertToUint64());
 		lua_setfield(L, -2, "m_SteamIDBeaconOwner");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchConnectString));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchConnectString), 256);
 		lua_setfield(L, -2, "m_rgchConnectString");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -189,7 +189,7 @@ template <> void CallResultListener<JoinPartyCallback_t>::Result(JoinPartyCallba
 		lua_setfield(L, -2, "m_ulBeaconID");
 		luasteam::pushuint64(L, data->m_SteamIDBeaconOwner.ConvertToUint64());
 		lua_setfield(L, -2, "m_SteamIDBeaconOwner");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchConnectString));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchConnectString), 256);
 		lua_setfield(L, -2, "m_rgchConnectString");
 	}
 	lua_pushboolean(L, io_fail);

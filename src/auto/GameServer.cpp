@@ -122,7 +122,7 @@ void CallbackListener::OnGSClientDeny(GSClientDeny_t *data) {
 		lua_setfield(L, -2, "m_SteamID");
 		lua_pushinteger(L, data->m_eDenyReason);
 		lua_setfield(L, -2, "m_eDenyReason");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchOptionalText));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchOptionalText), 128);
 		lua_setfield(L, -2, "m_rgchOptionalText");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -158,7 +158,7 @@ void CallbackListener::OnGSClientAchievementStatus(GSClientAchievementStatus_t *
 		lua_createtable(L, 0, 3);
 		luasteam::pushuint64(L, data->m_SteamID);
 		lua_setfield(L, -2, "m_SteamID");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_pchAchievement));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_pchAchievement), 128);
 		lua_setfield(L, -2, "m_pchAchievement");
 		lua_pushboolean(L, data->m_bUnlocked);
 		lua_setfield(L, -2, "m_bUnlocked");

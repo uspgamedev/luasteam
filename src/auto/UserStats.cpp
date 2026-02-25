@@ -73,7 +73,7 @@ void CallbackListener::OnUserAchievementStored(UserAchievementStored_t *data) {
 		lua_setfield(L, -2, "m_nGameID");
 		lua_pushboolean(L, data->m_bGroupAchievement);
 		lua_setfield(L, -2, "m_bGroupAchievement");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchAchievementName));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchAchievementName), 128);
 		lua_setfield(L, -2, "m_rgchAchievementName");
 		lua_pushinteger(L, data->m_nCurProgress);
 		lua_setfield(L, -2, "m_nCurProgress");
@@ -193,7 +193,7 @@ void CallbackListener::OnUserAchievementIconFetched(UserAchievementIconFetched_t
 		lua_createtable(L, 0, 4);
 		luasteam::pushuint64(L, data->m_nGameID.ToUint64());
 		lua_setfield(L, -2, "m_nGameID");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchAchievementName));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchAchievementName), 128);
 		lua_setfield(L, -2, "m_rgchAchievementName");
 		lua_pushboolean(L, data->m_bAchieved);
 		lua_setfield(L, -2, "m_bAchieved");

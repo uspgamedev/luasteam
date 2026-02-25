@@ -237,6 +237,10 @@ impl SteamApi {
                     ("StopPlaytimeTracking", vec!["pvecPublishedFileID"]),
                 ],
             ),
+            (
+                "ISteamNetworking",
+                vec![("SendDataOnSocket", vec!["pubData"])],
+            )
         ];
 
         for (i_name, methods) in data {
@@ -425,6 +429,13 @@ impl SteamApi {
                 ],
             ),
             (
+                "ISteamNetworking",
+                vec![
+                    ("SendDataOnSocket", "pubData", "cubData"),
+                    ("SendP2PPacket", "pubData", "cubData"),
+                ],
+            ),
+            (
                 "ISteamNetworkingUtils",
                 vec![
                     ("ConvertPingLocationToString", "pszBuf", "cchBufSize"),
@@ -508,6 +519,9 @@ impl SteamApi {
                 "cbMaxTicket",
                 "pcbTicket",
             ),
+            ("ISteamNetworking", "ReadP2PPacket", "pubDest", "cubDest", "pcubMsgSize"),
+            ("ISteamNetworking", "RetrieveData", "pubDest", "cubDest", "pcubMsgSize"),
+            ("ISteamNetworking", "RetrieveDataFromSocket", "pubDest", "cubDest", "pcubMsgSize"),
         ] {
             let p = self
                 .interface_mut(interface_name)
@@ -662,7 +676,9 @@ pub struct Param {
     pub paramname: String,
     pub paramtype: String,
     pub out_string_count: Option<String>,
+    #[serde(alias="out_buffer_count")]
     pub out_array_count: Option<String>,
+    #[serde(alias="buffer_count")]
     pub array_count: Option<String>,
     pub out_array_call: Option<String>,
     pub desc: Option<String>,

@@ -14,6 +14,14 @@ function Networking.SendP2PPacket(steamIDRemote, pubData, cubData, eP2PSendType,
 ---@return integer -- Value of: pcubMsgSize
 function Networking.IsP2PPacketAvailable(nChannel) end
 
+---@param cubDest integer
+---@param nChannel integer
+---@return boolean
+---@return string -- Value of: pubDest
+---@return integer -- Value of: pcubMsgSize
+---@return uint64 -- Value of: psteamIDRemote
+function Networking.ReadP2PPacket(cubDest, nChannel) end
+
 ---@param steamIDRemote uint64
 ---@return boolean
 function Networking.AcceptP2PSessionWithUser(steamIDRemote) end
@@ -54,15 +62,37 @@ function Networking.DestroySocket(hSocket, bNotifyRemoteEnd) end
 function Networking.DestroyListenSocket(hSocket, bNotifyRemoteEnd) end
 
 ---@param hSocket integer
+---@param pubData string
+---@param cubData integer
+---@param bReliable boolean
+---@return boolean
+function Networking.SendDataOnSocket(hSocket, pubData, cubData, bReliable) end
+
+---@param hSocket integer
 ---@return boolean
 ---@return integer -- Value of: pcubMsgSize
 function Networking.IsDataAvailableOnSocket(hSocket) end
+
+---@param hSocket integer
+---@param cubDest integer
+---@return boolean
+---@return string -- Value of: pubDest
+---@return integer -- Value of: pcubMsgSize
+function Networking.RetrieveDataFromSocket(hSocket, cubDest) end
 
 ---@param hListenSocket integer
 ---@return boolean
 ---@return integer -- Value of: pcubMsgSize
 ---@return integer -- Value of: phSocket
 function Networking.IsDataAvailable(hListenSocket) end
+
+---@param hListenSocket integer
+---@param cubDest integer
+---@return boolean
+---@return string -- Value of: pubDest
+---@return integer -- Value of: pcubMsgSize
+---@return integer -- Value of: phSocket
+function Networking.RetrieveData(hListenSocket, cubDest) end
 
 ---@param hSocket integer
 ---@return boolean

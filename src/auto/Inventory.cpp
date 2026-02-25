@@ -116,7 +116,7 @@ void CallbackListener::OnSteamInventoryRequestPricesResult(SteamInventoryRequest
 		lua_createtable(L, 0, 2);
 		lua_pushinteger(L, data->m_result);
 		lua_setfield(L, -2, "m_result");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency), 4);
 		lua_setfield(L, -2, "m_rgchCurrency");
 		lua_call(L, 1, 0);
 		lua_pop(L, 1);
@@ -174,7 +174,7 @@ template <> void CallResultListener<SteamInventoryRequestPricesResult_t>::Result
 		lua_createtable(L, 0, 2);
 		lua_pushinteger(L, data->m_result);
 		lua_setfield(L, -2, "m_result");
-		lua_pushstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency));
+		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency), 4);
 		lua_setfield(L, -2, "m_rgchCurrency");
 	}
 	lua_pushboolean(L, io_fail);
