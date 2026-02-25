@@ -1,7 +1,9 @@
+#include "Client.hpp"
 #include "Core.hpp"
 #include "Extra.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"
+#include "Utils.hpp"
 #include "auto/auto.hpp"
 
 // ========================
@@ -14,12 +16,13 @@ EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
     if (success) {
         luasteam::init_Common(L);
+        luasteam::init_Client(L);
         luasteam::init_structs_auto(L);
         luasteam::init_callback_interfaces_auto(L);
         luasteam::init_Friends_auto(L);
         luasteam::init_User_auto(L);
         luasteam::init_UserStats_auto(L);
-        luasteam::init_Utils_auto(L);
+        luasteam::init_Utils(L);
         luasteam::init_UGC_auto(L);
         luasteam::init_extra(L);
         luasteam::init_Apps_auto(L);
@@ -78,10 +81,11 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_Apps_auto(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_UGC_auto(L);
-    luasteam::shutdown_Utils_auto(L);
+    luasteam::shutdown_Utils(L);
     luasteam::shutdown_User_auto(L);
     luasteam::shutdown_UserStats_auto(L);
     luasteam::shutdown_Friends_auto(L);
+    luasteam::shutdown_Client(L);
     luasteam::shutdown_Common(L);
     luasteam::shutdown_structs_auto(L);
     luasteam::shutdown_callback_interfaces_auto(L);

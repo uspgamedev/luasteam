@@ -162,10 +162,16 @@ impl Generator {
             SkipReason::ManualBlocklist("char** output semantics unclear".to_string()),
         );
 
-        // Has function pointers, can't be implemented automatically
+        // Has function pointers — manual implementation in Client.cpp shared with Utils
         blocklist.insert(
             "SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(),
-            SkipReason::ManualBlocklist("has function pointers".to_string()),
+            SkipReason::ManualImpl("delegates to Client.SetWarningMessageHook trampoline".to_string()),
+        );
+
+        // Manually implemented in Core.cpp as a Lua function trampoline
+        blocklist.insert(
+            "SteamAPI_ISteamClient_SetWarningMessageHook".to_string(),
+            SkipReason::ManualImpl("Lua function trampoline in Core.cpp".to_string()),
         );
 
         blocklist.insert(
@@ -199,7 +205,7 @@ impl Generator {
                 ),
             );
         }
-
+        
         blocklist
     }
 

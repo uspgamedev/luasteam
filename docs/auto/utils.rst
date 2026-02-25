@@ -376,16 +376,6 @@ Function Reference
     :SteamWorks: `DismissGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#DismissGamepadTextInput>`_
 
 
-Unimplemented Methods
----------------------
-
-.. function:: Utils.setWarningMessageHook
-
-    ✋ **Not implemented** - manual: has function pointers
-    
-    :SteamWorks: `SetWarningMessageHook <https://partner.steamgames.com/doc/api/ISteamUtils#SetWarningMessageHook>`_
-
-
 Callbacks
 ---------
 

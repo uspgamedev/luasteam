@@ -1,19 +1,22 @@
+#include "Client.hpp"
 #include "Common.hpp"
 #include "Core.hpp"
 #include "Extra.hpp"
 #include "GameServer.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"
+#include "Utils.hpp"
 #include "auto/auto.hpp"
 
 // Creates and returns a table with all functions
 EXTERN int luaopen_luasteam(lua_State *L) {
     lua_createtable(L, 0, 35);
     luasteam::add_Core(L);
+    luasteam::add_Client(L);
     luasteam::add_Friends_auto(L);
     luasteam::add_User_auto(L);
     luasteam::add_UserStats_auto(L);
-    luasteam::add_Utils_auto(L);
+    luasteam::add_Utils(L);
     luasteam::add_UGC_auto(L);
     luasteam::add_extra(L);
     luasteam::add_Apps_auto(L);

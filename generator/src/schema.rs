@@ -553,6 +553,17 @@ impl SteamApi {
             p.out_array_count = Some(out_name.to_owned());
         }
     }
+    
+    fn fix_steam_client(&mut self) {
+        let client = self.interface_mut("ISteamClient");
+        // Steam client does have this accessor, not sure why it's missing from the JSON. 
+        assert!(client.accessors.is_empty());
+        client.accessors.push(Accessor {
+            kind: "user".to_string(),
+            name: "SteamClient".to_string(),
+            name_flat: "unknown".to_string(),
+        });
+    }
 
     pub fn apply_fixes(&mut self) {
         self.fix_deprecated();
@@ -570,6 +581,7 @@ impl SteamApi {
                 .field_mut(field_name)
                 .private = true;
         }
+        // TODO: change this, it shouldn't be managed automatically
         // SteamParamStringArray_t::m_ppStrings is a const char** managed by Lua.
         // m_nNumStrings is managed alongside it (set/freed atomically), so mark it private.
         {
@@ -577,6 +589,7 @@ impl SteamApi {
             st.field_mut("m_ppStrings").string_count = Some("m_nNumStrings".to_string());
             st.field_mut("m_nNumStrings").private = true;
         }
+        self.fix_steam_client();
     }
 }
 

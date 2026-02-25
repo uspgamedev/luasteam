@@ -5,6 +5,7 @@
 ---@class Steam
 Steam = {}
 
+Steam.Client = {}
 Steam.User = {}
 Steam.Friends = {}
 Steam.Utils = {}

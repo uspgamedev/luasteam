@@ -96,6 +96,11 @@ SteamPartyBeaconLocation_t *check_SteamPartyBeaconLocation_t_ptr(lua_State *L, i
 SteamUGCDetails_t *check_SteamUGCDetails_t_ptr(lua_State *L, int index);
 gameserveritem_t *check_gameserveritem_t_ptr(lua_State *L, int index);
 servernetadr_t *check_servernetadr_t_ptr(lua_State *L, int index);
+void register_Client_auto(lua_State *L);
+void add_Client_auto(lua_State *L);
+void init_Client_auto(lua_State *L);
+void shutdown_Client_auto(lua_State *L);
+extern int Client_ref;
 void register_User_auto(lua_State *L);
 void add_User_auto(lua_State *L);
 void init_User_auto(lua_State *L);
