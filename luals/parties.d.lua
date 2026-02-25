@@ -48,4 +48,11 @@ function Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback) end
 ---@return boolean
 function Parties.DestroyBeacon(ulBeacon) end
 
+---@param BeaconLocation SteamPartyBeaconLocation_t
+---@param eData integer
+---@param cchDataStringOut integer
+---@return boolean
+---@return string -- Value of: pchDataStringOut
+function Parties.GetBeaconLocationData(BeaconLocation, eData, cchDataStringOut) end
+
 Steam.Parties = Parties

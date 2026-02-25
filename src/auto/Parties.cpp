@@ -341,6 +341,21 @@ EXTERN int luasteam_Parties_DestroyBeacon(lua_State *L) {
 	return 1;
 }
 
+// In C++:
+// bool GetBeaconLocationData(SteamPartyBeaconLocation_t BeaconLocation, ESteamPartyBeaconLocationData eData, char * pchDataStringOut, int cchDataStringOut);
+// In Lua:
+// (bool, pchDataStringOut: str) Parties.GetBeaconLocationData(BeaconLocation: SteamPartyBeaconLocation_t, eData: int, cchDataStringOut: int)
+EXTERN int luasteam_Parties_GetBeaconLocationData(lua_State *L) {
+	SteamPartyBeaconLocation_t BeaconLocation = luasteam::check_SteamPartyBeaconLocation_t(L, 1);
+	ESteamPartyBeaconLocationData eData = static_cast<ESteamPartyBeaconLocationData>(luaL_checkint(L, 2));
+	int cchDataStringOut = luaL_checkint(L, 3);
+	std::vector<char> pchDataStringOut(cchDataStringOut);
+	bool __ret = SteamParties()->GetBeaconLocationData(BeaconLocation, eData, pchDataStringOut.data(), cchDataStringOut);
+	lua_pushboolean(L, __ret);
+	lua_pushstring(L, reinterpret_cast<const char*>(pchDataStringOut.data()));
+	return 2;
+}
+
 void register_Parties_auto(lua_State *L) {
 	add_func(L, "GetNumActiveBeacons", luasteam_Parties_GetNumActiveBeacons);
 	add_func(L, "GetBeaconByIndex", luasteam_Parties_GetBeaconByIndex);
@@ -352,10 +367,11 @@ void register_Parties_auto(lua_State *L) {
 	add_func(L, "CancelReservation", luasteam_Parties_CancelReservation);
 	add_func(L, "ChangeNumOpenSlots", luasteam_Parties_ChangeNumOpenSlots);
 	add_func(L, "DestroyBeacon", luasteam_Parties_DestroyBeacon);
+	add_func(L, "GetBeaconLocationData", luasteam_Parties_GetBeaconLocationData);
 }
 
 void add_Parties_auto(lua_State *L) {
-	lua_createtable(L, 0, 10);
+	lua_createtable(L, 0, 11);
 	register_Parties_auto(L);
 	lua_pushvalue(L, -1);
 	Parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);

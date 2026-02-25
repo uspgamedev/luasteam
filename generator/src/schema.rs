@@ -7,7 +7,6 @@ pub enum SkipReason {
     ManualImpl(String),      // Blocked because a manual C++ implementation exists
     UnsupportedType(String),
     NoAccessors,
-    RequiresCustomCode,
     Incomplete,
 }
 
@@ -18,7 +17,6 @@ impl SkipReason {
             SkipReason::ManualImpl(reason) => format!("manual impl: {}", reason),
             SkipReason::UnsupportedType(t) => format!("unsupported type: {}", t),
             SkipReason::NoAccessors => "no accessors".to_string(),
-            SkipReason::RequiresCustomCode => "requires custom code".to_string(),
             SkipReason::Incomplete => "incomplete".to_string(),
         }
     }
@@ -110,11 +108,15 @@ impl Stats {
                     0.0
                 };
                 let bar_width = 30;
-                let auto_filled = ((*auto_gen as f64 / *total as f64).min(1.0) * bar_width as f64) as usize;
-                let manual_filled = ((total_covered as f64 / *total as f64).min(1.0) * bar_width as f64) as usize - auto_filled;
+                let auto_filled =
+                    ((*auto_gen as f64 / *total as f64).min(1.0) * bar_width as f64) as usize;
+                let manual_filled = ((total_covered as f64 / *total as f64).min(1.0)
+                    * bar_width as f64) as usize
+                    - auto_filled;
                 let empty = bar_width - auto_filled - manual_filled;
                 // █ = auto-generated, ▓ = manual impl, ░ = not covered
-                let bar: String = "█".repeat(auto_filled) + &"▓".repeat(manual_filled) + &"░".repeat(empty);
+                let bar: String =
+                    "█".repeat(auto_filled) + &"▓".repeat(manual_filled) + &"░".repeat(empty);
 
                 println!(
                     "  {:35} [{:3}/{:3}] {:5.1}% {}",
@@ -240,7 +242,7 @@ impl SteamApi {
             (
                 "ISteamNetworking",
                 vec![("SendDataOnSocket", vec!["pubData"])],
-            )
+            ),
         ];
 
         for (i_name, methods) in data {
@@ -519,9 +521,27 @@ impl SteamApi {
                 "cbMaxTicket",
                 "pcbTicket",
             ),
-            ("ISteamNetworking", "ReadP2PPacket", "pubDest", "cubDest", "pcubMsgSize"),
-            ("ISteamNetworking", "RetrieveData", "pubDest", "cubDest", "pcubMsgSize"),
-            ("ISteamNetworking", "RetrieveDataFromSocket", "pubDest", "cubDest", "pcubMsgSize"),
+            (
+                "ISteamNetworking",
+                "ReadP2PPacket",
+                "pubDest",
+                "cubDest",
+                "pcubMsgSize",
+            ),
+            (
+                "ISteamNetworking",
+                "RetrieveData",
+                "pubDest",
+                "cubDest",
+                "pcubMsgSize",
+            ),
+            (
+                "ISteamNetworking",
+                "RetrieveDataFromSocket",
+                "pubDest",
+                "cubDest",
+                "pcubMsgSize",
+            ),
         ] {
             let p = self
                 .interface_mut(interface_name)
@@ -676,9 +696,9 @@ pub struct Param {
     pub paramname: String,
     pub paramtype: String,
     pub out_string_count: Option<String>,
-    #[serde(alias="out_buffer_count")]
+    #[serde(alias = "out_buffer_count")]
     pub out_array_count: Option<String>,
-    #[serde(alias="buffer_count")]
+    #[serde(alias = "buffer_count")]
     pub array_count: Option<String>,
     pub out_array_call: Option<String>,
     pub desc: Option<String>,

@@ -20,7 +20,9 @@ List of Functions
 * :func:`Networking.CloseP2PChannelWithUser`
 * :func:`Networking.GetP2PSessionState`
 * :func:`Networking.AllowP2PPacketRelay`
+* :func:`Networking.CreateListenSocket`
 * :func:`Networking.CreateP2PConnectionSocket`
+* :func:`Networking.CreateConnectionSocket`
 * :func:`Networking.DestroySocket`
 * :func:`Networking.DestroyListenSocket`
 * :func:`Networking.SendDataOnSocket`
@@ -132,6 +134,17 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `AllowP2PPacketRelay <https://partner.steamgames.com/doc/api/ISteamNetworking#AllowP2PPacketRelay>`_
 
+.. function:: Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay)
+
+    🤖 **Auto-generated binding**
+
+    :param int nVirtualP2PPort:
+    :param :ref:`SteamIPAddress_t <struct-SteamIPAddress_t>` nIP:
+    :param int nPort:
+    :param bool bAllowUseOfPacketRelay:
+    :returns: (int) Return value
+    :SteamWorks: `CreateListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateListenSocket>`_
+
 .. function:: Networking.CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay)
 
     🤖 **Auto-generated binding**
@@ -142,6 +155,16 @@ Function Reference
     :param bool bAllowUseOfPacketRelay:
     :returns: (int) Return value
     :SteamWorks: `CreateP2PConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateP2PConnectionSocket>`_
+
+.. function:: Networking.CreateConnectionSocket(nIP, nPort, nTimeoutSec)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamIPAddress_t <struct-SteamIPAddress_t>` nIP:
+    :param int nPort:
+    :param int nTimeoutSec:
+    :returns: (int) Return value
+    :SteamWorks: `CreateConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateConnectionSocket>`_
 
 .. function:: Networking.DestroySocket(hSocket, bNotifyRemoteEnd)
 
@@ -283,22 +306,6 @@ Function Reference
     :param int hSocket:
     :returns: (int) Return value
     :SteamWorks: `GetMaxPacketSize <https://partner.steamgames.com/doc/api/ISteamNetworking#GetMaxPacketSize>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: Networking.createListenSocket
-
-    ✋ **Not implemented** - unsupported type: SteamIPAddress_t
-    
-    :SteamWorks: `CreateListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateListenSocket>`_
-
-.. function:: Networking.createConnectionSocket
-
-    ✋ **Not implemented** - unsupported type: SteamIPAddress_t
-    
-    :SteamWorks: `CreateConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateConnectionSocket>`_
 
 
 Callbacks

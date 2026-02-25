@@ -17,6 +17,7 @@ Steam.Apps = {}
 Steam.Networking = {}
 Steam.Screenshots = {}
 Steam.Music = {}
+Steam.HTTP = {}
 Steam.Input = {}
 Steam.Controller = {}
 Steam.UGC = {}

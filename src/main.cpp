@@ -26,10 +26,10 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_Networking_auto(L);
     luasteam::add_Screenshots_auto(L);
     luasteam::add_Music_auto(L);
-    // luasteam::add_HTTP_auto(L);
+    luasteam::add_HTTP_auto(L);
     luasteam::add_Controller_auto(L);
     luasteam::add_HTMLSurface_auto(L);
-    // luasteam::add_Inventory_auto(L);
+    luasteam::add_Inventory_auto(L);
     luasteam::add_Video_auto(L);
     luasteam::add_ParentalSettings_auto(L);
     luasteam::add_RemotePlay_auto(L);

@@ -19,6 +19,7 @@ List of Functions
 * :func:`Parties.CancelReservation`
 * :func:`Parties.ChangeNumOpenSlots`
 * :func:`Parties.DestroyBeacon`
+* :func:`Parties.GetBeaconLocationData`
 
 List of Callbacks
 -----------------
@@ -134,6 +135,21 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `DestroyBeacon <https://partner.steamgames.com/doc/api/ISteamParties#DestroyBeacon>`_
 
+.. function:: Parties.GetBeaconLocationData(BeaconLocation, eData, cchDataStringOut)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>` BeaconLocation:
+    :param int eData:
+    :param int cchDataStringOut:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pchDataStringOut`
+    :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pchDataStringOut`` is returned as an additional return value
+
 
 Unimplemented Methods
 ---------------------
@@ -143,12 +159,6 @@ Unimplemented Methods
     ✋ **Not implemented** - manual: requires custom implementation
     
     :SteamWorks: `CreateBeacon <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeacon>`_
-
-.. function:: Parties.getBeaconLocationData
-
-    ✋ **Not implemented** - unsupported type: SteamPartyBeaconLocation_t
-    
-    :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_
 
 
 Callbacks

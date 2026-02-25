@@ -194,7 +194,9 @@ impl Generator {
         ] {
             blocklist.insert(
                 name.to_string(),
-                SkipReason::ManualImpl("Lua function trampoline in networkingUtils.cpp".to_string()),
+                SkipReason::ManualImpl(
+                    "Lua function trampoline in networkingUtils.cpp".to_string(),
+                ),
             );
         }
 
@@ -271,7 +273,10 @@ impl Generator {
                 Err(reason) => {
                     // Don't report callback interfaces as skipped — they are handled separately
                     // by generate_callback_interfaces() above.
-                    if self.added_callback_interfaces.contains(&interface.classname) {
+                    if self
+                        .added_callback_interfaces
+                        .contains(&interface.classname)
+                    {
                         // Show as fully covered in the coverage table
                         let n = interface.methods.len();
                         stats
@@ -1822,9 +1827,6 @@ impl Generator {
         if interface.accessors.is_empty() {
             return Err(SkipReason::NoAccessors);
         }
-        if interface.classname == "ISteamHTTP" {
-            return Err(SkipReason::RequiresCustomCode);
-        }
         let accessor_name = &interface.accessors[0].name;
 
         cpp.line("#include \"auto.hpp\"");
@@ -1917,7 +1919,11 @@ impl Generator {
         // Track per-interface coverage
         stats.interface_coverage.insert(
             interface.classname.clone(),
-            (interface_methods_total, interface_methods_generated - interface_methods_manual, interface_methods_manual),
+            (
+                interface_methods_total,
+                interface_methods_generated - interface_methods_manual,
+                interface_methods_manual,
+            ),
         );
 
         self.luals_generator
@@ -2179,7 +2185,9 @@ impl Generator {
                     if (method.methodname_flat == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
                         && param.paramname == "pDataToInclude")
                         || (method.methodname_flat == "SteamAPI_ISteamScreenshots_WriteScreenshot"
-                            && param.paramname == "pubRGB") || (method.methodname_flat == "SteamAPI_ISteamNetworking_SendDataOnSocket" && param.paramname == "pubData") 
+                            && param.paramname == "pubRGB")
+                        || (method.methodname_flat == "SteamAPI_ISteamNetworking_SendDataOnSocket"
+                            && param.paramname == "pubData")
                     {
                         // Special case, it is missing the const
                         s.line(&format!(
@@ -2217,6 +2225,18 @@ impl Generator {
                     sig.add_param(
                         param.paramname.clone(),
                         LType::LightUserdata(handle_name.to_string()),
+                    );
+                    lua_idx += 1;
+                }
+                Normal(struct_name) if self.added_structs.contains(struct_name) => {
+                    s.line(&format!(
+                        "{} {} = luasteam::check_{}(L, {});",
+                        param.paramtype, param.paramname, struct_name, lua_idx
+                    ));
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(
+                        param.paramname.clone(),
+                        LType::Userdata(struct_name.to_string()),
                     );
                     lua_idx += 1;
                 }

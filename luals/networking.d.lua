@@ -44,12 +44,25 @@ function Networking.GetP2PSessionState(steamIDRemote) end
 ---@return boolean
 function Networking.AllowP2PPacketRelay(bAllow) end
 
+---@param nVirtualP2PPort integer
+---@param nIP SteamIPAddress_t
+---@param nPort integer
+---@param bAllowUseOfPacketRelay boolean
+---@return integer
+function Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay) end
+
 ---@param steamIDTarget uint64
 ---@param nVirtualPort integer
 ---@param nTimeoutSec integer
 ---@param bAllowUseOfPacketRelay boolean
 ---@return integer
 function Networking.CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay) end
+
+---@param nIP SteamIPAddress_t
+---@param nPort integer
+---@param nTimeoutSec integer
+---@return integer
+function Networking.CreateConnectionSocket(nIP, nPort, nTimeoutSec) end
 
 ---@param hSocket integer
 ---@param bNotifyRemoteEnd boolean

@@ -31,10 +31,10 @@ EXTERN int luasteam_init(lua_State *L) {
         luasteam::init_Networking_auto(L);
         luasteam::init_Screenshots_auto(L);
         luasteam::init_Music_auto(L);
-        // luasteam::init_HTTP_auto(L);
+        luasteam::init_HTTP_auto(L);
         luasteam::init_Controller_auto(L);
         luasteam::init_HTMLSurface_auto(L);
-        // luasteam::init_Inventory_auto(L);
+        luasteam::init_Inventory_auto(L);
         luasteam::init_Video_auto(L);
         luasteam::init_ParentalSettings_auto(L);
         luasteam::init_RemotePlay_auto(L);
@@ -63,10 +63,10 @@ EXTERN int luasteam_shutdown(lua_State *L) {
     luasteam::shutdown_RemotePlay_auto(L);
     luasteam::shutdown_ParentalSettings_auto(L);
     luasteam::shutdown_Video_auto(L);
-    // luasteam::shutdown_Inventory_auto(L);
+    luasteam::shutdown_Inventory_auto(L);
     luasteam::shutdown_HTMLSurface_auto(L);
     luasteam::shutdown_Controller_auto(L);
-    // luasteam::shutdown_HTTP_auto(L);
+    luasteam::shutdown_HTTP_auto(L);
     luasteam::shutdown_Music_auto(L);
     luasteam::shutdown_Screenshots_auto(L);
     luasteam::shutdown_Networking_auto(L);

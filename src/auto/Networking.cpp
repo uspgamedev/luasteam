@@ -182,6 +182,20 @@ EXTERN int luasteam_Networking_AllowP2PPacketRelay(lua_State *L) {
 }
 
 // In C++:
+// SNetListenSocket_t CreateListenSocket(int nVirtualP2PPort, SteamIPAddress_t nIP, uint16 nPort, bool bAllowUseOfPacketRelay);
+// In Lua:
+// int Networking.CreateListenSocket(nVirtualP2PPort: int, nIP: SteamIPAddress_t, nPort: int, bAllowUseOfPacketRelay: bool)
+EXTERN int luasteam_Networking_CreateListenSocket(lua_State *L) {
+	int nVirtualP2PPort = static_cast<int>(luaL_checkint(L, 1));
+	SteamIPAddress_t nIP = luasteam::check_SteamIPAddress_t(L, 2);
+	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
+	bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);
+	SNetListenSocket_t __ret = SteamNetworking()->CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
 // SNetSocket_t CreateP2PConnectionSocket(CSteamID steamIDTarget, int nVirtualPort, int nTimeoutSec, bool bAllowUseOfPacketRelay);
 // In Lua:
 // int Networking.CreateP2PConnectionSocket(steamIDTarget: uint64, nVirtualPort: int, nTimeoutSec: int, bAllowUseOfPacketRelay: bool)
@@ -191,6 +205,19 @@ EXTERN int luasteam_Networking_CreateP2PConnectionSocket(lua_State *L) {
 	int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
 	bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);
 	SNetSocket_t __ret = SteamNetworking()->CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
+// SNetSocket_t CreateConnectionSocket(SteamIPAddress_t nIP, uint16 nPort, int nTimeoutSec);
+// In Lua:
+// int Networking.CreateConnectionSocket(nIP: SteamIPAddress_t, nPort: int, nTimeoutSec: int)
+EXTERN int luasteam_Networking_CreateConnectionSocket(lua_State *L) {
+	SteamIPAddress_t nIP = luasteam::check_SteamIPAddress_t(L, 1);
+	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 2));
+	int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
+	SNetSocket_t __ret = SteamNetworking()->CreateConnectionSocket(nIP, nPort, nTimeoutSec);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -360,7 +387,9 @@ void register_Networking_auto(lua_State *L) {
 	add_func(L, "CloseP2PChannelWithUser", luasteam_Networking_CloseP2PChannelWithUser);
 	add_func(L, "GetP2PSessionState", luasteam_Networking_GetP2PSessionState);
 	add_func(L, "AllowP2PPacketRelay", luasteam_Networking_AllowP2PPacketRelay);
+	add_func(L, "CreateListenSocket", luasteam_Networking_CreateListenSocket);
 	add_func(L, "CreateP2PConnectionSocket", luasteam_Networking_CreateP2PConnectionSocket);
+	add_func(L, "CreateConnectionSocket", luasteam_Networking_CreateConnectionSocket);
 	add_func(L, "DestroySocket", luasteam_Networking_DestroySocket);
 	add_func(L, "DestroyListenSocket", luasteam_Networking_DestroyListenSocket);
 	add_func(L, "SendDataOnSocket", luasteam_Networking_SendDataOnSocket);
@@ -375,7 +404,7 @@ void register_Networking_auto(lua_State *L) {
 }
 
 void add_Networking_auto(lua_State *L) {
-	lua_createtable(L, 0, 20);
+	lua_createtable(L, 0, 22);
 	register_Networking_auto(L);
 	lua_pushvalue(L, -1);
 	Networking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
