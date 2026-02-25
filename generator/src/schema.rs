@@ -459,11 +459,19 @@ impl SteamApi {
                 ],
             ),
             (
+                "ISteamNetworkingMessages",
+                vec![
+                    ("SendMessageToUser", "pubData", "cubData"),
+                ],
+            ),
+            (
                 "ISteamNetworkingSockets",
                 vec![
                     ("GetConnectionName", "pszName", "nMaxLen"),
                     ("GetDetailedConnectionStatus", "pszBuf", "cbBuf"),
                     ("SendMessageToConnection", "pData", "cbData"),
+                    ("ReceivedRelayAuthTicket", "pvTicket", "cbTicket"),
+                    ("ReceivedP2PCustomSignal", "pMsg", "cbMsg"),
                 ],
             ),
         ];

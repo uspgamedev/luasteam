@@ -9,6 +9,7 @@ ISteamNetworkingMessages
 List of Functions
 -----------------
 
+* :func:`NetworkingMessages.SendMessageToUser`
 * :func:`NetworkingMessages.AcceptSessionWithUser`
 * :func:`NetworkingMessages.CloseSessionWithUser`
 * :func:`NetworkingMessages.CloseChannelWithUser`
@@ -22,6 +23,18 @@ List of Callbacks
 
 Function Reference
 ------------------
+
+.. function:: NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param str pubData:
+    :param int cubData:
+    :param int nSendFlags:
+    :param int nRemoteChannel:
+    :returns: (int) Return value
+    :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
 
 .. function:: NetworkingMessages.AcceptSessionWithUser(identityRemote)
 
@@ -66,12 +79,6 @@ Function Reference
 
 Unimplemented Methods
 ---------------------
-
-.. function:: NetworkingMessages.sendMessageToUser
-
-    ✋ **Not implemented** - unsupported type: const void *
-    
-    :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
 
 .. function:: NetworkingMessages.receiveMessagesOnChannel
 

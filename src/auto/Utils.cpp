@@ -3,7 +3,6 @@
 namespace luasteam {
 
 int Utils_ref = LUA_NOREF;
-typedef ISteamUtils *(*UtilsAccessor)();
 
 namespace {
 class UtilsCallbackListener {
@@ -179,63 +178,67 @@ template <> void CallResultListener<CheckFileSignature_t>::Result(CheckFileSigna
 // uint32 GetSecondsSinceAppActive();
 // In Lua:
 // int Utils.GetSecondsSinceAppActive()
-static int luasteam_Utils_GetSecondsSinceAppActive(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetSecondsSinceAppActive(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetSecondsSinceAppActive();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetSecondsSinceAppActive_user(lua_State *L) { return luasteam_Utils_GetSecondsSinceAppActive(L, SteamUtils()); }
+static int luasteam_Utils_GetSecondsSinceAppActive_gs(lua_State *L) { return luasteam_Utils_GetSecondsSinceAppActive(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint32 GetSecondsSinceComputerActive();
 // In Lua:
 // int Utils.GetSecondsSinceComputerActive()
-static int luasteam_Utils_GetSecondsSinceComputerActive(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetSecondsSinceComputerActive(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetSecondsSinceComputerActive();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetSecondsSinceComputerActive_user(lua_State *L) { return luasteam_Utils_GetSecondsSinceComputerActive(L, SteamUtils()); }
+static int luasteam_Utils_GetSecondsSinceComputerActive_gs(lua_State *L) { return luasteam_Utils_GetSecondsSinceComputerActive(L, SteamGameServerUtils()); }
 
 // In C++:
 // EUniverse GetConnectedUniverse();
 // In Lua:
 // int Utils.GetConnectedUniverse()
-static int luasteam_Utils_GetConnectedUniverse(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetConnectedUniverse(lua_State *L, ISteamUtils *iface) {
 	EUniverse __ret = iface->GetConnectedUniverse();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetConnectedUniverse_user(lua_State *L) { return luasteam_Utils_GetConnectedUniverse(L, SteamUtils()); }
+static int luasteam_Utils_GetConnectedUniverse_gs(lua_State *L) { return luasteam_Utils_GetConnectedUniverse(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint32 GetServerRealTime();
 // In Lua:
 // int Utils.GetServerRealTime()
-static int luasteam_Utils_GetServerRealTime(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetServerRealTime(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetServerRealTime();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetServerRealTime_user(lua_State *L) { return luasteam_Utils_GetServerRealTime(L, SteamUtils()); }
+static int luasteam_Utils_GetServerRealTime_gs(lua_State *L) { return luasteam_Utils_GetServerRealTime(L, SteamGameServerUtils()); }
 
 // In C++:
 // const char * GetIPCountry();
 // In Lua:
 // str Utils.GetIPCountry()
-static int luasteam_Utils_GetIPCountry(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetIPCountry(lua_State *L, ISteamUtils *iface) {
 	const char * __ret = iface->GetIPCountry();
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
+static int luasteam_Utils_GetIPCountry_user(lua_State *L) { return luasteam_Utils_GetIPCountry(L, SteamUtils()); }
+static int luasteam_Utils_GetIPCountry_gs(lua_State *L) { return luasteam_Utils_GetIPCountry(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool GetImageSize(int iImage, uint32 * pnWidth, uint32 * pnHeight);
 // In Lua:
 // (bool, pnWidth: int, pnHeight: int) Utils.GetImageSize(iImage: int)
-static int luasteam_Utils_GetImageSize(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetImageSize(lua_State *L, ISteamUtils *iface) {
 	int iImage = static_cast<int>(luaL_checkint(L, 1));
 	uint32 pnWidth;
 	uint32 pnHeight;
@@ -245,13 +248,14 @@ static int luasteam_Utils_GetImageSize(lua_State *L) {
 	lua_pushinteger(L, pnHeight);
 	return 3;
 }
+static int luasteam_Utils_GetImageSize_user(lua_State *L) { return luasteam_Utils_GetImageSize(L, SteamUtils()); }
+static int luasteam_Utils_GetImageSize_gs(lua_State *L) { return luasteam_Utils_GetImageSize(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool GetImageRGBA(int iImage, uint8 * pubDest, int nDestBufferSize);
 // In Lua:
 // (bool, pubDest: str) Utils.GetImageRGBA(iImage: int, nDestBufferSize: int)
-static int luasteam_Utils_GetImageRGBA(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetImageRGBA(lua_State *L, ISteamUtils *iface) {
 	int iImage = static_cast<int>(luaL_checkint(L, 1));
 	int nDestBufferSize = luaL_checkint(L, 2);
 	std::vector<uint8> pubDest(nDestBufferSize);
@@ -260,46 +264,50 @@ static int luasteam_Utils_GetImageRGBA(lua_State *L) {
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), nDestBufferSize);
 	return 2;
 }
+static int luasteam_Utils_GetImageRGBA_user(lua_State *L) { return luasteam_Utils_GetImageRGBA(L, SteamUtils()); }
+static int luasteam_Utils_GetImageRGBA_gs(lua_State *L) { return luasteam_Utils_GetImageRGBA(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint8 GetCurrentBatteryPower();
 // In Lua:
 // int Utils.GetCurrentBatteryPower()
-static int luasteam_Utils_GetCurrentBatteryPower(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetCurrentBatteryPower(lua_State *L, ISteamUtils *iface) {
 	uint8 __ret = iface->GetCurrentBatteryPower();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetCurrentBatteryPower_user(lua_State *L) { return luasteam_Utils_GetCurrentBatteryPower(L, SteamUtils()); }
+static int luasteam_Utils_GetCurrentBatteryPower_gs(lua_State *L) { return luasteam_Utils_GetCurrentBatteryPower(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint32 GetAppID();
 // In Lua:
 // int Utils.GetAppID()
-static int luasteam_Utils_GetAppID(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetAppID(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetAppID();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetAppID_user(lua_State *L) { return luasteam_Utils_GetAppID(L, SteamUtils()); }
+static int luasteam_Utils_GetAppID_gs(lua_State *L) { return luasteam_Utils_GetAppID(L, SteamGameServerUtils()); }
 
 // In C++:
 // void SetOverlayNotificationPosition(ENotificationPosition eNotificationPosition);
 // In Lua:
 // Utils.SetOverlayNotificationPosition(eNotificationPosition: int)
-static int luasteam_Utils_SetOverlayNotificationPosition(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_SetOverlayNotificationPosition(lua_State *L, ISteamUtils *iface) {
 	ENotificationPosition eNotificationPosition = static_cast<ENotificationPosition>(luaL_checkint(L, 1));
 	iface->SetOverlayNotificationPosition(eNotificationPosition);
 	return 0;
 }
+static int luasteam_Utils_SetOverlayNotificationPosition_user(lua_State *L) { return luasteam_Utils_SetOverlayNotificationPosition(L, SteamUtils()); }
+static int luasteam_Utils_SetOverlayNotificationPosition_gs(lua_State *L) { return luasteam_Utils_SetOverlayNotificationPosition(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsAPICallCompleted(SteamAPICall_t hSteamAPICall, bool * pbFailed);
 // In Lua:
 // (bool, pbFailed: bool) Utils.IsAPICallCompleted(hSteamAPICall: uint64)
-static int luasteam_Utils_IsAPICallCompleted(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsAPICallCompleted(lua_State *L, ISteamUtils *iface) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	bool pbFailed;
 	bool __ret = iface->IsAPICallCompleted(hSteamAPICall, &pbFailed);
@@ -307,25 +315,27 @@ static int luasteam_Utils_IsAPICallCompleted(lua_State *L) {
 	lua_pushboolean(L, pbFailed);
 	return 2;
 }
+static int luasteam_Utils_IsAPICallCompleted_user(lua_State *L) { return luasteam_Utils_IsAPICallCompleted(L, SteamUtils()); }
+static int luasteam_Utils_IsAPICallCompleted_gs(lua_State *L) { return luasteam_Utils_IsAPICallCompleted(L, SteamGameServerUtils()); }
 
 // In C++:
 // ESteamAPICallFailure GetAPICallFailureReason(SteamAPICall_t hSteamAPICall);
 // In Lua:
 // int Utils.GetAPICallFailureReason(hSteamAPICall: uint64)
-static int luasteam_Utils_GetAPICallFailureReason(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetAPICallFailureReason(lua_State *L, ISteamUtils *iface) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	ESteamAPICallFailure __ret = iface->GetAPICallFailureReason(hSteamAPICall);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetAPICallFailureReason_user(lua_State *L) { return luasteam_Utils_GetAPICallFailureReason(L, SteamUtils()); }
+static int luasteam_Utils_GetAPICallFailureReason_gs(lua_State *L) { return luasteam_Utils_GetAPICallFailureReason(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool GetAPICallResult(SteamAPICall_t hSteamAPICall, void * pCallback, int cubCallback, int iCallbackExpected, bool * pbFailed);
 // In Lua:
 // (bool, pCallback: str, pbFailed: bool) Utils.GetAPICallResult(hSteamAPICall: uint64, cubCallback: int, iCallbackExpected: int)
-static int luasteam_Utils_GetAPICallResult(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetAPICallResult(lua_State *L, ISteamUtils *iface) {
 	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
 	int cubCallback = luaL_checkint(L, 2);
 	std::vector<unsigned char> pCallback(cubCallback);
@@ -337,46 +347,50 @@ static int luasteam_Utils_GetAPICallResult(lua_State *L) {
 	lua_pushboolean(L, pbFailed);
 	return 3;
 }
+static int luasteam_Utils_GetAPICallResult_user(lua_State *L) { return luasteam_Utils_GetAPICallResult(L, SteamUtils()); }
+static int luasteam_Utils_GetAPICallResult_gs(lua_State *L) { return luasteam_Utils_GetAPICallResult(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint32 GetIPCCallCount();
 // In Lua:
 // int Utils.GetIPCCallCount()
-static int luasteam_Utils_GetIPCCallCount(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetIPCCallCount(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetIPCCallCount();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetIPCCallCount_user(lua_State *L) { return luasteam_Utils_GetIPCCallCount(L, SteamUtils()); }
+static int luasteam_Utils_GetIPCCallCount_gs(lua_State *L) { return luasteam_Utils_GetIPCCallCount(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsOverlayEnabled();
 // In Lua:
 // bool Utils.IsOverlayEnabled()
-static int luasteam_Utils_IsOverlayEnabled(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsOverlayEnabled(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsOverlayEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsOverlayEnabled_user(lua_State *L) { return luasteam_Utils_IsOverlayEnabled(L, SteamUtils()); }
+static int luasteam_Utils_IsOverlayEnabled_gs(lua_State *L) { return luasteam_Utils_IsOverlayEnabled(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool BOverlayNeedsPresent();
 // In Lua:
 // bool Utils.BOverlayNeedsPresent()
-static int luasteam_Utils_BOverlayNeedsPresent(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_BOverlayNeedsPresent(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->BOverlayNeedsPresent();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_BOverlayNeedsPresent_user(lua_State *L) { return luasteam_Utils_BOverlayNeedsPresent(L, SteamUtils()); }
+static int luasteam_Utils_BOverlayNeedsPresent_gs(lua_State *L) { return luasteam_Utils_BOverlayNeedsPresent(L, SteamGameServerUtils()); }
 
 // In C++:
 // SteamAPICall_t CheckFileSignature(const char * szFileName);
 // In Lua:
 // uint64 Utils.CheckFileSignature(szFileName: str, callback: function)
-static int luasteam_Utils_CheckFileSignature(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_CheckFileSignature(lua_State *L, ISteamUtils *iface) {
 	int callback_ref = LUA_NOREF;
 	if (lua_isfunction(L, lua_gettop(L))) {
 		lua_pushvalue(L, lua_gettop(L));
@@ -392,13 +406,14 @@ static int luasteam_Utils_CheckFileSignature(lua_State *L) {
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_CheckFileSignature_user(lua_State *L) { return luasteam_Utils_CheckFileSignature(L, SteamUtils()); }
+static int luasteam_Utils_CheckFileSignature_gs(lua_State *L) { return luasteam_Utils_CheckFileSignature(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool ShowGamepadTextInput(EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char * pchDescription, uint32 unCharMax, const char * pchExistingText);
 // In Lua:
 // bool Utils.ShowGamepadTextInput(eInputMode: int, eLineInputMode: int, pchDescription: str, unCharMax: int, pchExistingText: str)
-static int luasteam_Utils_ShowGamepadTextInput(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_ShowGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	EGamepadTextInputMode eInputMode = static_cast<EGamepadTextInputMode>(luaL_checkint(L, 1));
 	EGamepadTextInputLineMode eLineInputMode = static_cast<EGamepadTextInputLineMode>(luaL_checkint(L, 2));
 	const char *pchDescription = luaL_checkstring(L, 3);
@@ -408,24 +423,26 @@ static int luasteam_Utils_ShowGamepadTextInput(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_ShowGamepadTextInput_user(lua_State *L) { return luasteam_Utils_ShowGamepadTextInput(L, SteamUtils()); }
+static int luasteam_Utils_ShowGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_ShowGamepadTextInput(L, SteamGameServerUtils()); }
 
 // In C++:
 // uint32 GetEnteredGamepadTextLength();
 // In Lua:
 // int Utils.GetEnteredGamepadTextLength()
-static int luasteam_Utils_GetEnteredGamepadTextLength(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetEnteredGamepadTextLength(lua_State *L, ISteamUtils *iface) {
 	uint32 __ret = iface->GetEnteredGamepadTextLength();
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetEnteredGamepadTextLength_user(lua_State *L) { return luasteam_Utils_GetEnteredGamepadTextLength(L, SteamUtils()); }
+static int luasteam_Utils_GetEnteredGamepadTextLength_gs(lua_State *L) { return luasteam_Utils_GetEnteredGamepadTextLength(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool GetEnteredGamepadTextInput(char * pchText, uint32 cchText);
 // In Lua:
 // (bool, pchText: str) Utils.GetEnteredGamepadTextInput(cchText: int)
-static int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	uint32 cchText = luaL_checkint(L, 1);
 	std::vector<char> pchText(cchText);
 	bool __ret = iface->GetEnteredGamepadTextInput(pchText.data(), cchText);
@@ -433,113 +450,123 @@ static int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L) {
 	lua_pushstring(L, reinterpret_cast<const char*>(pchText.data()));
 	return 2;
 }
+static int luasteam_Utils_GetEnteredGamepadTextInput_user(lua_State *L) { return luasteam_Utils_GetEnteredGamepadTextInput(L, SteamUtils()); }
+static int luasteam_Utils_GetEnteredGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_GetEnteredGamepadTextInput(L, SteamGameServerUtils()); }
 
 // In C++:
 // const char * GetSteamUILanguage();
 // In Lua:
 // str Utils.GetSteamUILanguage()
-static int luasteam_Utils_GetSteamUILanguage(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetSteamUILanguage(lua_State *L, ISteamUtils *iface) {
 	const char * __ret = iface->GetSteamUILanguage();
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
+static int luasteam_Utils_GetSteamUILanguage_user(lua_State *L) { return luasteam_Utils_GetSteamUILanguage(L, SteamUtils()); }
+static int luasteam_Utils_GetSteamUILanguage_gs(lua_State *L) { return luasteam_Utils_GetSteamUILanguage(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsSteamRunningInVR();
 // In Lua:
 // bool Utils.IsSteamRunningInVR()
-static int luasteam_Utils_IsSteamRunningInVR(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsSteamRunningInVR(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsSteamRunningInVR();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsSteamRunningInVR_user(lua_State *L) { return luasteam_Utils_IsSteamRunningInVR(L, SteamUtils()); }
+static int luasteam_Utils_IsSteamRunningInVR_gs(lua_State *L) { return luasteam_Utils_IsSteamRunningInVR(L, SteamGameServerUtils()); }
 
 // In C++:
 // void SetOverlayNotificationInset(int nHorizontalInset, int nVerticalInset);
 // In Lua:
 // Utils.SetOverlayNotificationInset(nHorizontalInset: int, nVerticalInset: int)
-static int luasteam_Utils_SetOverlayNotificationInset(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_SetOverlayNotificationInset(lua_State *L, ISteamUtils *iface) {
 	int nHorizontalInset = static_cast<int>(luaL_checkint(L, 1));
 	int nVerticalInset = static_cast<int>(luaL_checkint(L, 2));
 	iface->SetOverlayNotificationInset(nHorizontalInset, nVerticalInset);
 	return 0;
 }
+static int luasteam_Utils_SetOverlayNotificationInset_user(lua_State *L) { return luasteam_Utils_SetOverlayNotificationInset(L, SteamUtils()); }
+static int luasteam_Utils_SetOverlayNotificationInset_gs(lua_State *L) { return luasteam_Utils_SetOverlayNotificationInset(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsSteamInBigPictureMode();
 // In Lua:
 // bool Utils.IsSteamInBigPictureMode()
-static int luasteam_Utils_IsSteamInBigPictureMode(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsSteamInBigPictureMode(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsSteamInBigPictureMode();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsSteamInBigPictureMode_user(lua_State *L) { return luasteam_Utils_IsSteamInBigPictureMode(L, SteamUtils()); }
+static int luasteam_Utils_IsSteamInBigPictureMode_gs(lua_State *L) { return luasteam_Utils_IsSteamInBigPictureMode(L, SteamGameServerUtils()); }
 
 // In C++:
 // void StartVRDashboard();
 // In Lua:
 // Utils.StartVRDashboard()
-static int luasteam_Utils_StartVRDashboard(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_StartVRDashboard(lua_State *L, ISteamUtils *iface) {
 	iface->StartVRDashboard();
 	return 0;
 }
+static int luasteam_Utils_StartVRDashboard_user(lua_State *L) { return luasteam_Utils_StartVRDashboard(L, SteamUtils()); }
+static int luasteam_Utils_StartVRDashboard_gs(lua_State *L) { return luasteam_Utils_StartVRDashboard(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsVRHeadsetStreamingEnabled();
 // In Lua:
 // bool Utils.IsVRHeadsetStreamingEnabled()
-static int luasteam_Utils_IsVRHeadsetStreamingEnabled(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsVRHeadsetStreamingEnabled(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsVRHeadsetStreamingEnabled();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsVRHeadsetStreamingEnabled_user(lua_State *L) { return luasteam_Utils_IsVRHeadsetStreamingEnabled(L, SteamUtils()); }
+static int luasteam_Utils_IsVRHeadsetStreamingEnabled_gs(lua_State *L) { return luasteam_Utils_IsVRHeadsetStreamingEnabled(L, SteamGameServerUtils()); }
 
 // In C++:
 // void SetVRHeadsetStreamingEnabled(bool bEnabled);
 // In Lua:
 // Utils.SetVRHeadsetStreamingEnabled(bEnabled: bool)
-static int luasteam_Utils_SetVRHeadsetStreamingEnabled(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_SetVRHeadsetStreamingEnabled(lua_State *L, ISteamUtils *iface) {
 	bool bEnabled = lua_toboolean(L, 1);
 	iface->SetVRHeadsetStreamingEnabled(bEnabled);
 	return 0;
 }
+static int luasteam_Utils_SetVRHeadsetStreamingEnabled_user(lua_State *L) { return luasteam_Utils_SetVRHeadsetStreamingEnabled(L, SteamUtils()); }
+static int luasteam_Utils_SetVRHeadsetStreamingEnabled_gs(lua_State *L) { return luasteam_Utils_SetVRHeadsetStreamingEnabled(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsSteamChinaLauncher();
 // In Lua:
 // bool Utils.IsSteamChinaLauncher()
-static int luasteam_Utils_IsSteamChinaLauncher(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsSteamChinaLauncher(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsSteamChinaLauncher();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsSteamChinaLauncher_user(lua_State *L) { return luasteam_Utils_IsSteamChinaLauncher(L, SteamUtils()); }
+static int luasteam_Utils_IsSteamChinaLauncher_gs(lua_State *L) { return luasteam_Utils_IsSteamChinaLauncher(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool InitFilterText(uint32 unFilterOptions);
 // In Lua:
 // bool Utils.InitFilterText(unFilterOptions: int)
-static int luasteam_Utils_InitFilterText(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_InitFilterText(lua_State *L, ISteamUtils *iface) {
 	uint32 unFilterOptions = static_cast<uint32>(luaL_checkint(L, 1));
 	bool __ret = iface->InitFilterText(unFilterOptions);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_InitFilterText_user(lua_State *L) { return luasteam_Utils_InitFilterText(L, SteamUtils()); }
+static int luasteam_Utils_InitFilterText_gs(lua_State *L) { return luasteam_Utils_InitFilterText(L, SteamGameServerUtils()); }
 
 // In C++:
 // int FilterText(ETextFilteringContext eContext, CSteamID sourceSteamID, const char * pchInputMessage, char * pchOutFilteredText, uint32 nByteSizeOutFilteredText);
 // In Lua:
 // (int, pchOutFilteredText: str) Utils.FilterText(eContext: int, sourceSteamID: uint64, pchInputMessage: str, nByteSizeOutFilteredText: int)
-static int luasteam_Utils_FilterText(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_FilterText(lua_State *L, ISteamUtils *iface) {
 	ETextFilteringContext eContext = static_cast<ETextFilteringContext>(luaL_checkint(L, 1));
 	CSteamID sourceSteamID(luasteam::checkuint64(L, 2));
 	const char *pchInputMessage = luaL_checkstring(L, 3);
@@ -550,36 +577,39 @@ static int luasteam_Utils_FilterText(lua_State *L) {
 	lua_pushstring(L, reinterpret_cast<const char*>(pchOutFilteredText.data()));
 	return 2;
 }
+static int luasteam_Utils_FilterText_user(lua_State *L) { return luasteam_Utils_FilterText(L, SteamUtils()); }
+static int luasteam_Utils_FilterText_gs(lua_State *L) { return luasteam_Utils_FilterText(L, SteamGameServerUtils()); }
 
 // In C++:
 // ESteamIPv6ConnectivityState GetIPv6ConnectivityState(ESteamIPv6ConnectivityProtocol eProtocol);
 // In Lua:
 // int Utils.GetIPv6ConnectivityState(eProtocol: int)
-static int luasteam_Utils_GetIPv6ConnectivityState(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_GetIPv6ConnectivityState(lua_State *L, ISteamUtils *iface) {
 	ESteamIPv6ConnectivityProtocol eProtocol = static_cast<ESteamIPv6ConnectivityProtocol>(luaL_checkint(L, 1));
 	ESteamIPv6ConnectivityState __ret = iface->GetIPv6ConnectivityState(eProtocol);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_GetIPv6ConnectivityState_user(lua_State *L) { return luasteam_Utils_GetIPv6ConnectivityState(L, SteamUtils()); }
+static int luasteam_Utils_GetIPv6ConnectivityState_gs(lua_State *L) { return luasteam_Utils_GetIPv6ConnectivityState(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool IsSteamRunningOnSteamDeck();
 // In Lua:
 // bool Utils.IsSteamRunningOnSteamDeck()
-static int luasteam_Utils_IsSteamRunningOnSteamDeck(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_IsSteamRunningOnSteamDeck(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->IsSteamRunningOnSteamDeck();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_IsSteamRunningOnSteamDeck_user(lua_State *L) { return luasteam_Utils_IsSteamRunningOnSteamDeck(L, SteamUtils()); }
+static int luasteam_Utils_IsSteamRunningOnSteamDeck_gs(lua_State *L) { return luasteam_Utils_IsSteamRunningOnSteamDeck(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
 // In Lua:
 // bool Utils.ShowFloatingGamepadTextInput(eKeyboardMode: int, nTextFieldXPosition: int, nTextFieldYPosition: int, nTextFieldWidth: int, nTextFieldHeight: int)
-static int luasteam_Utils_ShowFloatingGamepadTextInput(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_ShowFloatingGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	EFloatingGamepadTextInputMode eKeyboardMode = static_cast<EFloatingGamepadTextInputMode>(luaL_checkint(L, 1));
 	int nTextFieldXPosition = static_cast<int>(luaL_checkint(L, 2));
 	int nTextFieldYPosition = static_cast<int>(luaL_checkint(L, 3));
@@ -589,154 +619,87 @@ static int luasteam_Utils_ShowFloatingGamepadTextInput(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_ShowFloatingGamepadTextInput_user(lua_State *L) { return luasteam_Utils_ShowFloatingGamepadTextInput(L, SteamUtils()); }
+static int luasteam_Utils_ShowFloatingGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_ShowFloatingGamepadTextInput(L, SteamGameServerUtils()); }
 
 // In C++:
 // void SetGameLauncherMode(bool bLauncherMode);
 // In Lua:
 // Utils.SetGameLauncherMode(bLauncherMode: bool)
-static int luasteam_Utils_SetGameLauncherMode(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_SetGameLauncherMode(lua_State *L, ISteamUtils *iface) {
 	bool bLauncherMode = lua_toboolean(L, 1);
 	iface->SetGameLauncherMode(bLauncherMode);
 	return 0;
 }
+static int luasteam_Utils_SetGameLauncherMode_user(lua_State *L) { return luasteam_Utils_SetGameLauncherMode(L, SteamUtils()); }
+static int luasteam_Utils_SetGameLauncherMode_gs(lua_State *L) { return luasteam_Utils_SetGameLauncherMode(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool DismissFloatingGamepadTextInput();
 // In Lua:
 // bool Utils.DismissFloatingGamepadTextInput()
-static int luasteam_Utils_DismissFloatingGamepadTextInput(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_DismissFloatingGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->DismissFloatingGamepadTextInput();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_DismissFloatingGamepadTextInput_user(lua_State *L) { return luasteam_Utils_DismissFloatingGamepadTextInput(L, SteamUtils()); }
+static int luasteam_Utils_DismissFloatingGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_DismissFloatingGamepadTextInput(L, SteamGameServerUtils()); }
 
 // In C++:
 // bool DismissGamepadTextInput();
 // In Lua:
 // bool Utils.DismissGamepadTextInput()
-static int luasteam_Utils_DismissGamepadTextInput(lua_State *L) {
-	auto *iface = ((UtilsAccessor)lua_touserdata(L, lua_upvalueindex(1)))();
+static int luasteam_Utils_DismissGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	bool __ret = iface->DismissGamepadTextInput();
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_Utils_DismissGamepadTextInput_user(lua_State *L) { return luasteam_Utils_DismissGamepadTextInput(L, SteamUtils()); }
+static int luasteam_Utils_DismissGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_DismissGamepadTextInput(L, SteamGameServerUtils()); }
 
-void register_Utils_auto(lua_State *L, UtilsAccessor accessor) {
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetSecondsSinceAppActive, 1);
-	lua_setfield(L, -2, "GetSecondsSinceAppActive");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetSecondsSinceComputerActive, 1);
-	lua_setfield(L, -2, "GetSecondsSinceComputerActive");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetConnectedUniverse, 1);
-	lua_setfield(L, -2, "GetConnectedUniverse");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetServerRealTime, 1);
-	lua_setfield(L, -2, "GetServerRealTime");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetIPCountry, 1);
-	lua_setfield(L, -2, "GetIPCountry");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetImageSize, 1);
-	lua_setfield(L, -2, "GetImageSize");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetImageRGBA, 1);
-	lua_setfield(L, -2, "GetImageRGBA");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetCurrentBatteryPower, 1);
-	lua_setfield(L, -2, "GetCurrentBatteryPower");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetAppID, 1);
-	lua_setfield(L, -2, "GetAppID");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_SetOverlayNotificationPosition, 1);
-	lua_setfield(L, -2, "SetOverlayNotificationPosition");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsAPICallCompleted, 1);
-	lua_setfield(L, -2, "IsAPICallCompleted");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetAPICallFailureReason, 1);
-	lua_setfield(L, -2, "GetAPICallFailureReason");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetAPICallResult, 1);
-	lua_setfield(L, -2, "GetAPICallResult");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetIPCCallCount, 1);
-	lua_setfield(L, -2, "GetIPCCallCount");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsOverlayEnabled, 1);
-	lua_setfield(L, -2, "IsOverlayEnabled");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_BOverlayNeedsPresent, 1);
-	lua_setfield(L, -2, "BOverlayNeedsPresent");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_CheckFileSignature, 1);
-	lua_setfield(L, -2, "CheckFileSignature");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_ShowGamepadTextInput, 1);
-	lua_setfield(L, -2, "ShowGamepadTextInput");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetEnteredGamepadTextLength, 1);
-	lua_setfield(L, -2, "GetEnteredGamepadTextLength");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetEnteredGamepadTextInput, 1);
-	lua_setfield(L, -2, "GetEnteredGamepadTextInput");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetSteamUILanguage, 1);
-	lua_setfield(L, -2, "GetSteamUILanguage");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsSteamRunningInVR, 1);
-	lua_setfield(L, -2, "IsSteamRunningInVR");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_SetOverlayNotificationInset, 1);
-	lua_setfield(L, -2, "SetOverlayNotificationInset");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsSteamInBigPictureMode, 1);
-	lua_setfield(L, -2, "IsSteamInBigPictureMode");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_StartVRDashboard, 1);
-	lua_setfield(L, -2, "StartVRDashboard");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsVRHeadsetStreamingEnabled, 1);
-	lua_setfield(L, -2, "IsVRHeadsetStreamingEnabled");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_SetVRHeadsetStreamingEnabled, 1);
-	lua_setfield(L, -2, "SetVRHeadsetStreamingEnabled");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsSteamChinaLauncher, 1);
-	lua_setfield(L, -2, "IsSteamChinaLauncher");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_InitFilterText, 1);
-	lua_setfield(L, -2, "InitFilterText");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_FilterText, 1);
-	lua_setfield(L, -2, "FilterText");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_GetIPv6ConnectivityState, 1);
-	lua_setfield(L, -2, "GetIPv6ConnectivityState");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_IsSteamRunningOnSteamDeck, 1);
-	lua_setfield(L, -2, "IsSteamRunningOnSteamDeck");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_ShowFloatingGamepadTextInput, 1);
-	lua_setfield(L, -2, "ShowFloatingGamepadTextInput");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_SetGameLauncherMode, 1);
-	lua_setfield(L, -2, "SetGameLauncherMode");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_DismissFloatingGamepadTextInput, 1);
-	lua_setfield(L, -2, "DismissFloatingGamepadTextInput");
-	lua_pushlightuserdata(L, (void*)accessor);
-	lua_pushcclosure(L, luasteam_Utils_DismissGamepadTextInput, 1);
-	lua_setfield(L, -2, "DismissGamepadTextInput");
+void register_Utils_auto(lua_State *L, bool is_gs) {
+	add_func(L, "GetSecondsSinceAppActive", is_gs ? luasteam_Utils_GetSecondsSinceAppActive_gs : luasteam_Utils_GetSecondsSinceAppActive_user);
+	add_func(L, "GetSecondsSinceComputerActive", is_gs ? luasteam_Utils_GetSecondsSinceComputerActive_gs : luasteam_Utils_GetSecondsSinceComputerActive_user);
+	add_func(L, "GetConnectedUniverse", is_gs ? luasteam_Utils_GetConnectedUniverse_gs : luasteam_Utils_GetConnectedUniverse_user);
+	add_func(L, "GetServerRealTime", is_gs ? luasteam_Utils_GetServerRealTime_gs : luasteam_Utils_GetServerRealTime_user);
+	add_func(L, "GetIPCountry", is_gs ? luasteam_Utils_GetIPCountry_gs : luasteam_Utils_GetIPCountry_user);
+	add_func(L, "GetImageSize", is_gs ? luasteam_Utils_GetImageSize_gs : luasteam_Utils_GetImageSize_user);
+	add_func(L, "GetImageRGBA", is_gs ? luasteam_Utils_GetImageRGBA_gs : luasteam_Utils_GetImageRGBA_user);
+	add_func(L, "GetCurrentBatteryPower", is_gs ? luasteam_Utils_GetCurrentBatteryPower_gs : luasteam_Utils_GetCurrentBatteryPower_user);
+	add_func(L, "GetAppID", is_gs ? luasteam_Utils_GetAppID_gs : luasteam_Utils_GetAppID_user);
+	add_func(L, "SetOverlayNotificationPosition", is_gs ? luasteam_Utils_SetOverlayNotificationPosition_gs : luasteam_Utils_SetOverlayNotificationPosition_user);
+	add_func(L, "IsAPICallCompleted", is_gs ? luasteam_Utils_IsAPICallCompleted_gs : luasteam_Utils_IsAPICallCompleted_user);
+	add_func(L, "GetAPICallFailureReason", is_gs ? luasteam_Utils_GetAPICallFailureReason_gs : luasteam_Utils_GetAPICallFailureReason_user);
+	add_func(L, "GetAPICallResult", is_gs ? luasteam_Utils_GetAPICallResult_gs : luasteam_Utils_GetAPICallResult_user);
+	add_func(L, "GetIPCCallCount", is_gs ? luasteam_Utils_GetIPCCallCount_gs : luasteam_Utils_GetIPCCallCount_user);
+	add_func(L, "IsOverlayEnabled", is_gs ? luasteam_Utils_IsOverlayEnabled_gs : luasteam_Utils_IsOverlayEnabled_user);
+	add_func(L, "BOverlayNeedsPresent", is_gs ? luasteam_Utils_BOverlayNeedsPresent_gs : luasteam_Utils_BOverlayNeedsPresent_user);
+	add_func(L, "CheckFileSignature", is_gs ? luasteam_Utils_CheckFileSignature_gs : luasteam_Utils_CheckFileSignature_user);
+	add_func(L, "ShowGamepadTextInput", is_gs ? luasteam_Utils_ShowGamepadTextInput_gs : luasteam_Utils_ShowGamepadTextInput_user);
+	add_func(L, "GetEnteredGamepadTextLength", is_gs ? luasteam_Utils_GetEnteredGamepadTextLength_gs : luasteam_Utils_GetEnteredGamepadTextLength_user);
+	add_func(L, "GetEnteredGamepadTextInput", is_gs ? luasteam_Utils_GetEnteredGamepadTextInput_gs : luasteam_Utils_GetEnteredGamepadTextInput_user);
+	add_func(L, "GetSteamUILanguage", is_gs ? luasteam_Utils_GetSteamUILanguage_gs : luasteam_Utils_GetSteamUILanguage_user);
+	add_func(L, "IsSteamRunningInVR", is_gs ? luasteam_Utils_IsSteamRunningInVR_gs : luasteam_Utils_IsSteamRunningInVR_user);
+	add_func(L, "SetOverlayNotificationInset", is_gs ? luasteam_Utils_SetOverlayNotificationInset_gs : luasteam_Utils_SetOverlayNotificationInset_user);
+	add_func(L, "IsSteamInBigPictureMode", is_gs ? luasteam_Utils_IsSteamInBigPictureMode_gs : luasteam_Utils_IsSteamInBigPictureMode_user);
+	add_func(L, "StartVRDashboard", is_gs ? luasteam_Utils_StartVRDashboard_gs : luasteam_Utils_StartVRDashboard_user);
+	add_func(L, "IsVRHeadsetStreamingEnabled", is_gs ? luasteam_Utils_IsVRHeadsetStreamingEnabled_gs : luasteam_Utils_IsVRHeadsetStreamingEnabled_user);
+	add_func(L, "SetVRHeadsetStreamingEnabled", is_gs ? luasteam_Utils_SetVRHeadsetStreamingEnabled_gs : luasteam_Utils_SetVRHeadsetStreamingEnabled_user);
+	add_func(L, "IsSteamChinaLauncher", is_gs ? luasteam_Utils_IsSteamChinaLauncher_gs : luasteam_Utils_IsSteamChinaLauncher_user);
+	add_func(L, "InitFilterText", is_gs ? luasteam_Utils_InitFilterText_gs : luasteam_Utils_InitFilterText_user);
+	add_func(L, "FilterText", is_gs ? luasteam_Utils_FilterText_gs : luasteam_Utils_FilterText_user);
+	add_func(L, "GetIPv6ConnectivityState", is_gs ? luasteam_Utils_GetIPv6ConnectivityState_gs : luasteam_Utils_GetIPv6ConnectivityState_user);
+	add_func(L, "IsSteamRunningOnSteamDeck", is_gs ? luasteam_Utils_IsSteamRunningOnSteamDeck_gs : luasteam_Utils_IsSteamRunningOnSteamDeck_user);
+	add_func(L, "ShowFloatingGamepadTextInput", is_gs ? luasteam_Utils_ShowFloatingGamepadTextInput_gs : luasteam_Utils_ShowFloatingGamepadTextInput_user);
+	add_func(L, "SetGameLauncherMode", is_gs ? luasteam_Utils_SetGameLauncherMode_gs : luasteam_Utils_SetGameLauncherMode_user);
+	add_func(L, "DismissFloatingGamepadTextInput", is_gs ? luasteam_Utils_DismissFloatingGamepadTextInput_gs : luasteam_Utils_DismissFloatingGamepadTextInput_user);
+	add_func(L, "DismissGamepadTextInput", is_gs ? luasteam_Utils_DismissGamepadTextInput_gs : luasteam_Utils_DismissGamepadTextInput_user);
 }
 
 void add_Utils_auto(lua_State *L) {
 	lua_createtable(L, 0, 36);
-	register_Utils_auto(L, &SteamUtils);
+	register_Utils_auto(L, false);
 	lua_pushvalue(L, -1);
 	Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Utils");
@@ -895,7 +858,7 @@ void shutdown_GameServerUtils_auto(lua_State *L) {
 
 void add_GameServerUtils_auto(lua_State *L) {
 	lua_createtable(L, 0, 36);
-	register_Utils_auto(L, &SteamGameServerUtils);
+	register_Utils_auto(L, true);
 	lua_pushvalue(L, -1);
 	GameServerUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerUtils");

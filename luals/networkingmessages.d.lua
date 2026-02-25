@@ -2,6 +2,14 @@
 local NetworkingMessages = {}
 
 ---@param identityRemote SteamNetworkingIdentity
+---@param pubData string
+---@param cubData integer
+---@param nSendFlags integer
+---@param nRemoteChannel integer
+---@return integer
+function NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel) end
+
+---@param identityRemote SteamNetworkingIdentity
 ---@return boolean
 function NetworkingMessages.AcceptSessionWithUser(identityRemote) end
 

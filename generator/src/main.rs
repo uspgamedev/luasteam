@@ -1404,7 +1404,7 @@ impl Generator {
         }
         for name in interfaces {
             if dual_accessor_names.contains(name) {
-                h.line(&format!("void register_{}_auto(lua_State *L, ISteam{} *(*)());", name, name));
+                h.line(&format!("void register_{}_auto(lua_State *L, bool is_gs);", name));
             } else {
                 h.line(&format!("void register_{}_auto(lua_State *L);", name));
             }
@@ -1917,9 +1917,6 @@ impl Generator {
         cpp.line("namespace luasteam {");
         cpp.preceeding_blank_line();
         cpp.line(&format!("int {}_ref = LUA_NOREF;", name));
-        if is_dual_accessor {
-            cpp.line(&format!("typedef ISteam{} *(*{}Accessor)();", name, name));
-        }
         cpp.preceeding_blank_line();
 
         let callbacks = self
@@ -1991,6 +1988,19 @@ impl Generator {
                     cpp.line("// In Lua:");
                     cpp.line(&signature.to_lua_comment(name, &lua_method_name));
                     cpp.raw(&generated);
+                    if is_dual_accessor {
+                        // Emit two one-line wrappers that supply the accessor
+                        let gs_accessor_name = &interface.accessors[1].name;
+                        let base = format!("luasteam_{}_{}", name, lua_method_name);
+                        cpp.line(&format!(
+                            "static int {}_user(lua_State *L) {{ return {}(L, {}()); }}",
+                            base, base, accessor_name
+                        ));
+                        cpp.line(&format!(
+                            "static int {}_gs(lua_State *L) {{ return {}(L, {}()); }}",
+                            base, base, gs_accessor_name
+                        ));
+                    }
                     cpp.preceeding_blank_line();
                     generated_methods.push((method, lua_method_name.clone()));
                     method_signatures.push((lua_method_name, signature));
@@ -2018,13 +2028,17 @@ impl Generator {
 
         // Generate register_..._auto function
         if is_dual_accessor {
-            cpp.line(&format!("void register_{}_auto(lua_State *L, {}Accessor accessor) {{", name, name));
+            cpp.line(&format!(
+                "void register_{}_auto(lua_State *L, bool is_gs) {{",
+                name
+            ));
             cpp.indent_right();
             for (_, lua_name) in &generated_methods {
                 let c_name = format!("luasteam_{}_{}", name, lua_name);
-                cpp.line("lua_pushlightuserdata(L, (void*)accessor);");
-                cpp.line(&format!("lua_pushcclosure(L, {}, 1);", c_name));
-                cpp.line(&format!("lua_setfield(L, -2, \"{}\");", lua_name));
+                cpp.line(&format!(
+                    "add_func(L, \"{}\", is_gs ? {}_gs : {}_user);",
+                    lua_name, c_name, c_name
+                ));
             }
         } else {
             cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
@@ -2050,7 +2064,7 @@ impl Generator {
         cpp.line(&format!(
             "register_{}_auto({});",
             name,
-            if is_dual_accessor { format!("L, &{}", accessor_name) } else { "L".to_string() }
+            if is_dual_accessor { "L, false".to_string() } else { "L".to_string() }
         ));
         for enm in &interface.enums {
             for val in &enm.values {
@@ -2083,7 +2097,7 @@ impl Generator {
                 cpp.line(&format!("void add_{}_auto(lua_State *L) {{", gs_name));
                 cpp.indent_right();
                 cpp.line(&format!("lua_createtable(L, 0, {});", generated_methods.len()));
-                cpp.line(&format!("register_{}_auto(L, &{});", name, gs_accessor_name));
+                cpp.line(&format!("register_{}_auto(L, true);", name));
                 cpp.line("lua_pushvalue(L, -1);");
                 cpp.line(&format!("{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);", gs_name));
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", gs_name));
@@ -2169,12 +2183,14 @@ impl Generator {
 
         let lua_method_name = Self::lua_method_public_name(method);
         let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
-        s.line(&format!("static int {}(lua_State *L) {{", c_method_name));
-        s.indent_right();
         if let Some(accessor) = direct_accessor {
+            s.line(&format!("static int {}(lua_State *L) {{", c_method_name));
+            s.indent_right();
             s.line(&format!("auto *iface = {}();", accessor));
         } else {
-            s.line(&format!("auto *iface = (({}Accessor)lua_touserdata(L, lua_upvalueindex(1)))();", interface));
+            // Dual-accessor: base function takes iface directly; wrappers added below
+            s.line(&format!("static int {}(lua_State *L, ISteam{} *iface) {{", c_method_name, interface));
+            s.indent_right();
         }
 
         if method.callresult.is_some() {
