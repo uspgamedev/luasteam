@@ -47,6 +47,13 @@ EXTERN int luasteam_init_server(lua_State *L) {
         luasteam::init_networkingSockets(L);
         luasteam::init_networkingUtils(L);
         luasteam::init_GameServer_auto(L);
+        luasteam::init_GameServerUtils_auto(L);
+        luasteam::init_GameServerNetworking_auto(L);
+        luasteam::init_GameServerHTTP_auto(L);
+        luasteam::init_GameServerUGC_auto(L);
+        luasteam::init_GameServerInventory_auto(L);
+        luasteam::init_GameServerNetworkingMessages_auto(L);
+        luasteam::init_GameServerStats_auto(L);
     } else {
         fprintf(stderr, "Couldn't init game server...\nDo you have a correct steam_appid.txt file?\n");
     }
@@ -66,11 +73,18 @@ EXTERN int luasteam_runCallbacks_server(lua_State *L) {
 EXTERN int luasteam_shutdown_server(lua_State *L) {
     SteamGameServer_Shutdown();
     // Cleaning up
+    luasteam::shutdown_GameServerStats_auto(L);
+    luasteam::shutdown_GameServerNetworkingMessages_auto(L);
+    luasteam::shutdown_GameServerInventory_auto(L);
+    luasteam::shutdown_GameServerUGC_auto(L);
+    luasteam::shutdown_GameServerHTTP_auto(L);
+    luasteam::shutdown_GameServerNetworking_auto(L);
+    luasteam::shutdown_GameServerUtils_auto(L);
+    luasteam::shutdown_GameServer_auto(L);
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_networkingSockets(L);
     luasteam::shutdown_extra(L);
     luasteam::shutdown_Common(L);
-    luasteam::shutdown_GameServer_auto(L);
     return 0;
 }
 
