@@ -68,7 +68,7 @@ void shutdown_Networking_auto(lua_State *L) {
 // In Lua:
 // bool Networking.SendP2PPacket(steamIDRemote: uint64, pubData: str, cubData: int, eP2PSendType: int, nChannel: int)
 static int luasteam_Networking_SendP2PPacket(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
+	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
 	uint32 cubData = luaL_checkint(L, 3);
 	size_t _len__tmp0;
 	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
@@ -122,7 +122,7 @@ static int luasteam_Networking_ReadP2PPacket_gs(lua_State *L) { return luasteam_
 // In Lua:
 // bool Networking.AcceptP2PSessionWithUser(steamIDRemote: uint64)
 static int luasteam_Networking_AcceptP2PSessionWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
+	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
 	bool __ret = iface->AcceptP2PSessionWithUser(steamIDRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -135,7 +135,7 @@ static int luasteam_Networking_AcceptP2PSessionWithUser_gs(lua_State *L) { retur
 // In Lua:
 // bool Networking.CloseP2PSessionWithUser(steamIDRemote: uint64)
 static int luasteam_Networking_CloseP2PSessionWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
+	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
 	bool __ret = iface->CloseP2PSessionWithUser(steamIDRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -148,7 +148,7 @@ static int luasteam_Networking_CloseP2PSessionWithUser_gs(lua_State *L) { return
 // In Lua:
 // bool Networking.CloseP2PChannelWithUser(steamIDRemote: uint64, nChannel: int)
 static int luasteam_Networking_CloseP2PChannelWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
+	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
 	int nChannel = static_cast<int>(luaL_checkint(L, 2));
 	bool __ret = iface->CloseP2PChannelWithUser(steamIDRemote, nChannel);
 	lua_pushboolean(L, __ret);
@@ -162,7 +162,7 @@ static int luasteam_Networking_CloseP2PChannelWithUser_gs(lua_State *L) { return
 // In Lua:
 // (bool, pConnectionState: P2PSessionState_t) Networking.GetP2PSessionState(steamIDRemote: uint64)
 static int luasteam_Networking_GetP2PSessionState(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote(luasteam::checkuint64(L, 1));
+	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
 	P2PSessionState_t pConnectionState;
 	bool __ret = iface->GetP2PSessionState(steamIDRemote, &pConnectionState);
 	lua_pushboolean(L, __ret);
@@ -206,7 +206,7 @@ static int luasteam_Networking_CreateListenSocket_gs(lua_State *L) { return luas
 // In Lua:
 // int Networking.CreateP2PConnectionSocket(steamIDTarget: uint64, nVirtualPort: int, nTimeoutSec: int, bAllowUseOfPacketRelay: bool)
 static int luasteam_Networking_CreateP2PConnectionSocket(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDTarget(luasteam::checkuint64(L, 1));
+	CSteamID steamIDTarget = CSteamID(luasteam::checkuint64(L, 1));
 	int nVirtualPort = static_cast<int>(luaL_checkint(L, 2));
 	int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
 	bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);

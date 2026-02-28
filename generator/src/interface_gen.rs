@@ -1,10 +1,10 @@
 use super::Generator;
+use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::doc_generator::{CallbackInterfaceDocInfo, CallbackMethodDocInfo, CallbackParamDocInfo};
 use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{CallbackStruct, Interface, Method, Param, SkipReason, Stats};
-use crate::COUNTER;
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::Path;
@@ -836,95 +836,29 @@ impl Generator {
                 continue;
             }
 
-            // This is probably somewhat duplicated with generate_check. Though this needs to deal with output pointers as well.
+            // Route all Normal input types through the shared helper; only Pointer/Reference
+            // variants need special per-context handling below.
             match resolved {
-                Normal("char") => {
-                    s.line(&format!(
-                        "char {} = luaL_checkstring(L, {})[0];",
-                        param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::Char);
-                    lua_idx += 1;
-                }
-                Normal("double" | "float") => {
-                    s.line(&format!(
-                        "{} {} = luaL_checknumber(L, {});",
-                        param.paramtype, param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::Float);
-                    lua_idx += 1;
-                }
-                Normal("int" | "unsigned char") => {
-                    s.line(&format!(
-                        "{} {} = static_cast<{}>(luaL_checkint(L, {}));",
-                        param.paramtype, param.paramname, param.paramtype, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::Integer);
-                    lua_idx += 1;
-                }
-                Normal("bool") => {
-                    s.line(&format!(
-                        "bool {} = lua_toboolean(L, {});",
-                        param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::Boolean);
-                    lua_idx += 1;
-                }
-                Pointer {
-                    ttype: "char",
-                    is_const: true,
-                } => {
-                    s.line(&format!(
-                        "const char *{} = luaL_checkstring(L, {});",
-                        param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::String);
-                    lua_idx += 1;
-                }
-                Normal("uint64")
-                | Normal("unsigned long long")
-                | Normal("CSteamID")
-                | Normal("CGameID") => {
-                    s.line(&format!(
-                        "{} {}(luasteam::checkuint64(L, {}));",
-                        param.paramtype, param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(param.paramname.clone(), LType::Uint64);
-                    lua_idx += 1;
-                }
-                Normal(handle_name) if self.opaque_handles.contains(handle_name) => {
-                    s.line(&format!(
-                        "{0} {1} = ({0})lua_touserdata(L, {2});",
-                        param.paramtype, param.paramname, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(
-                        param.paramname.clone(),
-                        LType::LightUserdata(handle_name.to_string()),
-                    );
-                    lua_idx += 1;
-                }
-                Normal(struct_name) if self.added_structs.contains(struct_name) => {
-                    s.line(&format!(
-                        "{} {} = luasteam::check_{}(L, {});",
-                        param.paramtype, param.paramname, struct_name, lua_idx
-                    ));
-                    cpp_call_params.push(param.paramname.clone());
-                    sig.add_param(
-                        param.paramname.clone(),
-                        LType::Userdata(struct_name.to_string()),
-                    );
-                    lua_idx += 1;
-                }
                 Normal(_) => {
-                    // Skip methods with unknown types for now
-                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                    let lua_idx_s = lua_idx.to_string();
+                    match {
+                        self.generate_check(
+                            &param.paramtype,
+                            resolved,
+                            true,
+                            &param.paramname,
+                            &lua_idx_s,
+                            s.indent(),
+                        )
+                    } {
+                        Some((code, ltype)) => {
+                            s.raw(&code);
+                            cpp_call_params.push(param.paramname.clone());
+                            sig.add_param(param.paramname.clone(), ltype);
+                            lua_idx += 1;
+                        }
+                        None => return Err(SkipReason::UnsupportedType(param.paramtype.clone())),
+                    }
                 }
                 CppType::Array { .. } => {
                     unreachable!()
@@ -1038,76 +972,84 @@ impl Generator {
                     if let Some(size) = param.input_array_size_param() {
                         let lua_idx_str = lua_idx.to_string();
                         let out = CodeBuilder::with_indent(s.indent());
-                        let (ok, code, ltype) = self.generate_array_check(
-                            param
-                                .paramtype
-                                .strip_prefix("const ")
-                                .unwrap()
-                                .strip_suffix(" *")
-                                .unwrap(),
-                            resolved.is_buffer(),
-                            true,
-                            &param.paramname,
-                            &lua_idx_str,
-                            out,
-                            size,
-                            (method.methodname_flat
-                                == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
-                                && param.paramname == "pDataToInclude")
-                                || (method.methodname_flat
-                                    == "SteamAPI_ISteamScreenshots_WriteScreenshot"
-                                    && param.paramname == "pubRGB")
-                                || (method.methodname_flat
-                                    == "SteamAPI_ISteamNetworking_SendDataOnSocket"
-                                    && param.paramname == "pubData"),
-                        );
-                        if ok {
-                            sig.add_param(param.paramname.clone(), ltype);
-                            if !size.is_empty() && !size_params_to_ignore.contains(size) {
-                                let p_idx = method
-                                    .params
-                                    .iter()
-                                    .position(|p| p.paramname == size)
-                                    .expect("Size param not found");
-                                let p = &method.params[p_idx];
-                                if p_idx > i {
-                                    size_params_to_ignore.insert(size.to_string());
-                                    lua_idx += 1;
-                                    s.line(&format!(
-                                        "{} {} = luaL_checkint(L, {});",
-                                        p.paramtype
-                                            .strip_suffix(" *")
-                                            .unwrap_or(p.paramtype.as_str()),
-                                        size,
-                                        lua_idx
-                                    ));
-                                    sig.add_param(size.to_string(), LType::Integer);
-                                    lua_idx += 1;
-                                } else {
-                                    assert!(
-                                        !p.paramtype.ends_with(" *"),
-                                        "Size param {} should not be a pointer",
-                                        size
-                                    );
-                                }
-                            }
+                        let (code, ltype) = self
+                            .generate_array_check(
+                                param
+                                    .paramtype
+                                    .strip_prefix("const ")
+                                    .unwrap()
+                                    .strip_suffix(" *")
+                                    .unwrap(),
+                                resolved.is_buffer(),
+                                true,
+                                &param.paramname,
+                                &lua_idx_str,
+                                out,
+                                size,
+                                (method.methodname_flat
+                                    == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
+                                    && param.paramname == "pDataToInclude")
+                                    || (method.methodname_flat
+                                        == "SteamAPI_ISteamScreenshots_WriteScreenshot"
+                                        && param.paramname == "pubRGB")
+                                    || (method.methodname_flat
+                                        == "SteamAPI_ISteamNetworking_SendDataOnSocket"
+                                        && param.paramname == "pubData"),
+                            )
+                            .ok_or_else(|| {
+                                SkipReason::UnsupportedType(format!(
+                                    "size param {} not found",
+                                    size
+                                ))
+                            })?;
 
-                            s.raw(&code);
-                            // Buffer types (void*, char*, uint8*, etc.) are now declared as
-                            // a typed const pointer directly — no .data() needed.
-                            let is_buf =
-                                ["void", "char", "uint8", "unsigned char"].contains(&ttype);
-                            if is_buf {
-                                cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(param.paramname.clone(), ltype);
+                        if !size.is_empty() && !size_params_to_ignore.contains(size) {
+                            let p_idx = method
+                                .params
+                                .iter()
+                                .position(|p| p.paramname == size)
+                                .expect("Size param not found");
+                            let p = &method.params[p_idx];
+                            if p_idx > i {
+                                size_params_to_ignore.insert(size.to_string());
+                                lua_idx += 1;
+                                s.line(&format!(
+                                    "{} {} = luaL_checkint(L, {});",
+                                    p.paramtype
+                                        .strip_suffix(" *")
+                                        .unwrap_or(p.paramtype.as_str()),
+                                    size,
+                                    lua_idx
+                                ));
+                                sig.add_param(size.to_string(), LType::Integer);
+                                lua_idx += 1;
                             } else {
-                                cpp_call_params.push(format!("{}.data()", param.paramname));
+                                assert!(
+                                    !p.paramtype.ends_with(" *"),
+                                    "Size param {} should not be a pointer",
+                                    size
+                                );
                             }
-                        } else {
-                            return Err(SkipReason::UnsupportedType(format!(
-                                "size param {} not found",
-                                size
-                            )));
                         }
+
+                        s.raw(&code);
+                        // Buffer types (void*, char*, uint8*, etc.) are now declared as
+                        // a typed const pointer directly — no .data() needed.
+                        let is_buf = ["void", "char", "uint8", "unsigned char"].contains(&ttype);
+                        if is_buf {
+                            cpp_call_params.push(param.paramname.clone());
+                        } else {
+                            cpp_call_params.push(format!("{}.data()", param.paramname));
+                        }
+                    } else if ttype == "char" {
+                        s.line(&format!(
+                            "const char *{} = luaL_checkstring(L, {});",
+                            param.paramname, lua_idx
+                        ));
+                        cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(param.paramname.clone(), LType::String);
+                        lua_idx += 1;
                     } else {
                         // Non-array const pointer — treat as optional input (nil → nullptr).
                         // If the type has a _ptr check function, use it to avoid a copy.

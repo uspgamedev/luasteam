@@ -101,7 +101,7 @@ static int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
 // bool NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds: float)
 static int luasteam_NetworkingUtils_CheckPingDataUpToDate(lua_State *L) {
 	auto *iface = SteamNetworkingUtils_SteamAPI();
-	float flMaxAgeSeconds = luaL_checknumber(L, 1);
+	float flMaxAgeSeconds = static_cast<float>(luaL_checknumber(L, 1));
 	bool __ret = iface->CheckPingDataUpToDate(flMaxAgeSeconds);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -216,7 +216,7 @@ static int luasteam_NetworkingUtils_SetGlobalConfigValueInt32(lua_State *L) {
 static int luasteam_NetworkingUtils_SetGlobalConfigValueFloat(lua_State *L) {
 	auto *iface = SteamNetworkingUtils_SteamAPI();
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 1));
-	float val = luaL_checknumber(L, 2);
+	float val = static_cast<float>(luaL_checknumber(L, 2));
 	bool __ret = iface->SetGlobalConfigValueFloat(eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -257,7 +257,7 @@ static int luasteam_NetworkingUtils_SetConnectionConfigValueFloat(lua_State *L) 
 	auto *iface = SteamNetworkingUtils_SteamAPI();
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	ESteamNetworkingConfigValue eValue = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
-	float val = luaL_checknumber(L, 3);
+	float val = static_cast<float>(luaL_checknumber(L, 3));
 	bool __ret = iface->SetConnectionConfigValueFloat(hConn, eValue, val);
 	lua_pushboolean(L, __ret);
 	return 1;

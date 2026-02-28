@@ -4,7 +4,7 @@ use crate::cpp_type::CppType;
 use crate::doc_generator::StructDocInfo;
 use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{Field, Method, SkipReason, Stats, Struct};
-use crate::{StructGenOutput, MANUAL_STRUCTS, MANUAL_STRUCTS_WITH_PTR};
+use crate::{MANUAL_STRUCTS, MANUAL_STRUCTS_WITH_PTR, StructGenOutput};
 use std::fs;
 use std::path::Path;
 
@@ -158,32 +158,6 @@ impl Generator {
             let idx = lua_idx.to_string();
 
             let ltype = match resolved {
-                Normal("char") => {
-                    s.line(&format!("char {} = luaL_checkstring(L, {})[0];", n, idx));
-                    LType::Char
-                }
-                Normal("double" | "float") => {
-                    s.line(&format!("{} {} = luaL_checknumber(L, {});", t, n, idx));
-                    LType::Float
-                }
-                Normal("int" | "unsigned char") => {
-                    s.line(&format!(
-                        "{} {} = static_cast<{}>(luaL_checkint(L, {}));",
-                        t, n, t, idx
-                    ));
-                    LType::Integer
-                }
-                Normal("bool") => {
-                    s.line(&format!("bool {} = lua_toboolean(L, {});", n, idx));
-                    LType::Boolean
-                }
-                Normal("uint64")
-                | Normal("unsigned long long")
-                | Normal("CSteamID")
-                | Normal("CGameID") => {
-                    s.line(&format!("{} {}(luasteam::checkuint64(L, {}));", t, n, idx));
-                    LType::Uint64
-                }
                 _ if resolved.is_buffer() && resolved.is_const() => {
                     // For buffers, get the actual element type (char or unsigned char)
                     let buffer_elem_type = if let CppType::Pointer { ttype, .. } = resolved {
@@ -203,23 +177,6 @@ impl Generator {
                         ));
                     }
                     LType::String
-                }
-                Normal(type_name) => {
-                    if self.opaque_handles.contains(type_name) {
-                        s.line(&format!(
-                            "{} {} = ({})lua_touserdata(L, {});",
-                            type_name, n, type_name, idx
-                        ));
-                        LType::LightUserdata(type_name.to_string())
-                    } else if self.added_structs.contains(type_name) {
-                        s.line(&format!(
-                            "{} {} = luasteam::check_{}(L, {});",
-                            type_name, n, type_name, idx
-                        ));
-                        LType::Userdata(type_name.to_string())
-                    } else {
-                        return None;
-                    }
                 }
                 Pointer {
                     is_const: true,
@@ -260,7 +217,13 @@ impl Generator {
                     }
                     LType::Userdata(ttype.to_string())
                 }
-                _ => return None,
+                _ => match { self.generate_check(t, resolved, true, n, &idx, s.indent()) } {
+                    Some((code, ltype)) => {
+                        s.raw(&code);
+                        ltype
+                    }
+                    None => return None,
+                },
             };
 
             sig.add_param(n.to_string(), ltype);
@@ -369,7 +332,7 @@ impl Generator {
                 readable_fields.push((field, push_code));
             }
 
-            let (check_ok, check_code_newindex, _) = self.generate_check(
+            let newindex = self.generate_check(
                 &field.fieldtype,
                 self.type_resolver.resolve_type(&field.fieldtype),
                 false,
@@ -377,7 +340,7 @@ impl Generator {
                 "3",
                 2,
             );
-            let (_, check_code_ctor, _) = self.generate_check(
+            let ctor = self.generate_check(
                 &field.fieldtype,
                 self.type_resolver.resolve_type(&field.fieldtype),
                 false,
@@ -385,7 +348,7 @@ impl Generator {
                 "-1",
                 3,
             );
-            if check_ok {
+            if let Some(((check_code_newindex, _), (check_code_ctor, _))) = newindex.zip(ctor) {
                 writable_fields.push((field, check_code_newindex, check_code_ctor));
             }
         }

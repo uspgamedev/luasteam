@@ -600,7 +600,7 @@ static int luasteam_GameServer_BeginAuthSession(lua_State *L) {
 	size_t _len__tmp0;
 	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
 	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp0);
-	CSteamID steamID(luasteam::checkuint64(L, 3));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 3));
 	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -612,7 +612,7 @@ static int luasteam_GameServer_BeginAuthSession(lua_State *L) {
 // GameServer.EndAuthSession(steamID: uint64)
 static int luasteam_GameServer_EndAuthSession(lua_State *L) {
 	auto *iface = SteamGameServer();
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	iface->EndAuthSession(steamID);
 	return 0;
 }
@@ -634,7 +634,7 @@ static int luasteam_GameServer_CancelAuthTicket(lua_State *L) {
 // int GameServer.UserHasLicenseForApp(steamID: uint64, appID: int)
 static int luasteam_GameServer_UserHasLicenseForApp(lua_State *L) {
 	auto *iface = SteamGameServer();
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
 	EUserHasLicenseForAppResult __ret = iface->UserHasLicenseForApp(steamID, appID);
 	lua_pushinteger(L, __ret);
@@ -647,8 +647,8 @@ static int luasteam_GameServer_UserHasLicenseForApp(lua_State *L) {
 // bool GameServer.RequestUserGroupStatus(steamIDUser: uint64, steamIDGroup: uint64)
 static int luasteam_GameServer_RequestUserGroupStatus(lua_State *L) {
 	auto *iface = SteamGameServer();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
-	CSteamID steamIDGroup(luasteam::checkuint64(L, 2));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	CSteamID steamIDGroup = CSteamID(luasteam::checkuint64(L, 2));
 	bool __ret = iface->RequestUserGroupStatus(steamIDUser, steamIDGroup);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -742,7 +742,7 @@ static int luasteam_GameServer_AssociateWithClan(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDClan(luasteam::checkuint64(L, 1));
+	CSteamID steamIDClan = CSteamID(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = iface->AssociateWithClan(steamIDClan);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<AssociateWithClanResult_t>();
@@ -764,7 +764,7 @@ static int luasteam_GameServer_ComputeNewPlayerCompatibility(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDNewPlayer(luasteam::checkuint64(L, 1));
+	CSteamID steamIDNewPlayer = CSteamID(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = iface->ComputeNewPlayerCompatibility(steamIDNewPlayer);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<ComputeNewPlayerCompatibilityResult_t>();
@@ -792,7 +792,7 @@ static int luasteam_GameServer_CreateUnauthenticatedUserConnection(lua_State *L)
 // bool GameServer.BUpdateUserData(steamIDUser: uint64, pchPlayerName: str, uScore: int)
 static int luasteam_GameServer_BUpdateUserData(lua_State *L) {
 	auto *iface = SteamGameServer();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	const char *pchPlayerName = luaL_checkstring(L, 2);
 	uint32 uScore = static_cast<uint32>(luaL_checkint(L, 3));
 	bool __ret = iface->BUpdateUserData(steamIDUser, pchPlayerName, uScore);

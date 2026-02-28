@@ -457,7 +457,7 @@ static int luasteam_UserStats_SetStatInt32(lua_State *L) {
 static int luasteam_UserStats_SetStatFloat(lua_State *L) {
 	auto *iface = SteamUserStats();
 	const char *pchName = luaL_checkstring(L, 1);
-	float fData = luaL_checknumber(L, 2);
+	float fData = static_cast<float>(luaL_checknumber(L, 2));
 	bool __ret = iface->SetStat(pchName, fData);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -470,8 +470,8 @@ static int luasteam_UserStats_SetStatFloat(lua_State *L) {
 static int luasteam_UserStats_UpdateAvgRateStat(lua_State *L) {
 	auto *iface = SteamUserStats();
 	const char *pchName = luaL_checkstring(L, 1);
-	float flCountThisSession = luaL_checknumber(L, 2);
-	double dSessionLength = luaL_checknumber(L, 3);
+	float flCountThisSession = static_cast<float>(luaL_checknumber(L, 2));
+	double dSessionLength = static_cast<double>(luaL_checknumber(L, 3));
 	bool __ret = iface->UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -615,7 +615,7 @@ static int luasteam_UserStats_RequestUserStats(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = iface->RequestUserStats(steamIDUser);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<UserStatsReceived_t>();
@@ -632,7 +632,7 @@ static int luasteam_UserStats_RequestUserStats(lua_State *L) {
 // (bool, pData: int) UserStats.GetUserStatInt32(steamIDUser: uint64, pchName: str)
 static int luasteam_UserStats_GetUserStatInt32(lua_State *L) {
 	auto *iface = SteamUserStats();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	const char *pchName = luaL_checkstring(L, 2);
 	int32 pData;
 	bool __ret = iface->GetUserStat(steamIDUser, pchName, &pData);
@@ -647,7 +647,7 @@ static int luasteam_UserStats_GetUserStatInt32(lua_State *L) {
 // (bool, pData: float) UserStats.GetUserStatFloat(steamIDUser: uint64, pchName: str)
 static int luasteam_UserStats_GetUserStatFloat(lua_State *L) {
 	auto *iface = SteamUserStats();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	const char *pchName = luaL_checkstring(L, 2);
 	float pData;
 	bool __ret = iface->GetUserStat(steamIDUser, pchName, &pData);
@@ -662,7 +662,7 @@ static int luasteam_UserStats_GetUserStatFloat(lua_State *L) {
 // (bool, pbAchieved: bool) UserStats.GetUserAchievement(steamIDUser: uint64, pchName: str)
 static int luasteam_UserStats_GetUserAchievement(lua_State *L) {
 	auto *iface = SteamUserStats();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	const char *pchName = luaL_checkstring(L, 2);
 	bool pbAchieved;
 	bool __ret = iface->GetUserAchievement(steamIDUser, pchName, &pbAchieved);
@@ -677,7 +677,7 @@ static int luasteam_UserStats_GetUserAchievement(lua_State *L) {
 // (bool, pbAchieved: bool, punUnlockTime: int) UserStats.GetUserAchievementAndUnlockTime(steamIDUser: uint64, pchName: str)
 static int luasteam_UserStats_GetUserAchievementAndUnlockTime(lua_State *L) {
 	auto *iface = SteamUserStats();
-	CSteamID steamIDUser(luasteam::checkuint64(L, 1));
+	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
 	const char *pchName = luaL_checkstring(L, 2);
 	bool pbAchieved;
 	uint32 punUnlockTime;
@@ -752,7 +752,7 @@ static int luasteam_UserStats_FindLeaderboard(lua_State *L) {
 // str UserStats.GetLeaderboardName(hSteamLeaderboard: uint64)
 static int luasteam_UserStats_GetLeaderboardName(lua_State *L) {
 	auto *iface = SteamUserStats();
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	const char * __ret = iface->GetLeaderboardName(hSteamLeaderboard);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
@@ -764,7 +764,7 @@ static int luasteam_UserStats_GetLeaderboardName(lua_State *L) {
 // int UserStats.GetLeaderboardEntryCount(hSteamLeaderboard: uint64)
 static int luasteam_UserStats_GetLeaderboardEntryCount(lua_State *L) {
 	auto *iface = SteamUserStats();
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	int __ret = iface->GetLeaderboardEntryCount(hSteamLeaderboard);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -776,7 +776,7 @@ static int luasteam_UserStats_GetLeaderboardEntryCount(lua_State *L) {
 // int UserStats.GetLeaderboardSortMethod(hSteamLeaderboard: uint64)
 static int luasteam_UserStats_GetLeaderboardSortMethod(lua_State *L) {
 	auto *iface = SteamUserStats();
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	ELeaderboardSortMethod __ret = iface->GetLeaderboardSortMethod(hSteamLeaderboard);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -788,7 +788,7 @@ static int luasteam_UserStats_GetLeaderboardSortMethod(lua_State *L) {
 // int UserStats.GetLeaderboardDisplayType(hSteamLeaderboard: uint64)
 static int luasteam_UserStats_GetLeaderboardDisplayType(lua_State *L) {
 	auto *iface = SteamUserStats();
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	ELeaderboardDisplayType __ret = iface->GetLeaderboardDisplayType(hSteamLeaderboard);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -805,7 +805,7 @@ static int luasteam_UserStats_DownloadLeaderboardEntries(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	ELeaderboardDataRequest eLeaderboardDataRequest = static_cast<ELeaderboardDataRequest>(luaL_checkint(L, 2));
 	int nRangeStart = static_cast<int>(luaL_checkint(L, 3));
 	int nRangeEnd = static_cast<int>(luaL_checkint(L, 4));
@@ -830,7 +830,7 @@ static int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	int cUsers = luaL_checkint(L, 3);
 	luaL_checktype(L, 2, LUA_TTABLE);
 	std::vector<CSteamID> prgUsers(cUsers);
@@ -855,7 +855,7 @@ static int luasteam_UserStats_DownloadLeaderboardEntriesForUsers(lua_State *L) {
 // (bool, pLeaderboardEntry: LeaderboardEntry_t, pDetails: int[]) UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries: uint64, index: int, cDetailsMax: int)
 static int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 	auto *iface = SteamUserStats();
-	SteamLeaderboardEntries_t hSteamLeaderboardEntries(luasteam::checkuint64(L, 1));
+	SteamLeaderboardEntries_t hSteamLeaderboardEntries = luasteam::checkuint64(L, 1);
 	int index = static_cast<int>(luaL_checkint(L, 2));
 	LeaderboardEntry_t pLeaderboardEntry;
 	int cDetailsMax = luaL_checkint(L, 3);
@@ -882,7 +882,7 @@ static int luasteam_UserStats_UploadLeaderboardScore(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
 	ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod = static_cast<ELeaderboardUploadScoreMethod>(luaL_checkint(L, 2));
 	int32 nScore = static_cast<int32>(luaL_checkint(L, 3));
 	int cScoreDetailsCount = luaL_checkint(L, 5);
@@ -914,8 +914,8 @@ static int luasteam_UserStats_AttachLeaderboardUGC(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamLeaderboard_t hSteamLeaderboard(luasteam::checkuint64(L, 1));
-	UGCHandle_t hUGC(luasteam::checkuint64(L, 2));
+	SteamLeaderboard_t hSteamLeaderboard = luasteam::checkuint64(L, 1);
+	UGCHandle_t hUGC = luasteam::checkuint64(L, 2);
 	SteamAPICall_t __ret = iface->AttachLeaderboardUGC(hSteamLeaderboard, hUGC);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<LeaderboardUGCSet_t>();

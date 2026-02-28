@@ -172,7 +172,7 @@ static int luasteam_NetworkingSockets_CloseListenSocket_gs(lua_State *L) { retur
 // bool NetworkingSockets.SetConnectionUserData(hPeer: int, nUserData: uint64)
 static int luasteam_NetworkingSockets_SetConnectionUserData(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
-	int64 nUserData(luasteam::checkuint64(L, 2));
+	int64 nUserData = luasteam::checkuint64(L, 2);
 	bool __ret = iface->SetConnectionUserData(hPeer, nUserData);
 	lua_pushboolean(L, __ret);
 	return 1;

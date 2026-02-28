@@ -20,8 +20,7 @@ use luals_generator::LuaLsGenerator;
 use schema::{CallbackStruct, Method, SkipReason, Stats, SteamApi};
 use type_resolver::TypeResolver;
 
-pub(crate) static COUNTER: std::sync::atomic::AtomicUsize =
-    std::sync::atomic::AtomicUsize::new(0);
+pub(crate) static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 //
 // Structs with custom manual implementations — skip auto-generation but register push/check.
 // Format: (name, reason_for_manual_impl)
@@ -516,7 +515,6 @@ impl Generator {
         fs::write("../src/auto/.clang-format", "DisableFormat: true\n")
             .expect("Unable to write .clang-format");
     }
-
 }
 
 fn main() {

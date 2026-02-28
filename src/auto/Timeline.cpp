@@ -107,7 +107,7 @@ template <> void CallResultListener<SteamTimelineGamePhaseRecordingExists_t>::Re
 static int luasteam_Timeline_SetTimelineTooltip(lua_State *L) {
 	auto *iface = SteamTimeline();
 	const char *pchDescription = luaL_checkstring(L, 1);
-	float flTimeDelta = luaL_checknumber(L, 2);
+	float flTimeDelta = static_cast<float>(luaL_checknumber(L, 2));
 	iface->SetTimelineTooltip(pchDescription, flTimeDelta);
 	return 0;
 }
@@ -118,7 +118,7 @@ static int luasteam_Timeline_SetTimelineTooltip(lua_State *L) {
 // Timeline.ClearTimelineTooltip(flTimeDelta: float)
 static int luasteam_Timeline_ClearTimelineTooltip(lua_State *L) {
 	auto *iface = SteamTimeline();
-	float flTimeDelta = luaL_checknumber(L, 1);
+	float flTimeDelta = static_cast<float>(luaL_checknumber(L, 1));
 	iface->ClearTimelineTooltip(flTimeDelta);
 	return 0;
 }
@@ -144,7 +144,7 @@ static int luasteam_Timeline_AddInstantaneousTimelineEvent(lua_State *L) {
 	const char *pchDescription = luaL_checkstring(L, 2);
 	const char *pchIcon = luaL_checkstring(L, 3);
 	uint32 unIconPriority = static_cast<uint32>(luaL_checkint(L, 4));
-	float flStartOffsetSeconds = luaL_checknumber(L, 5);
+	float flStartOffsetSeconds = static_cast<float>(luaL_checknumber(L, 5));
 	ETimelineEventClipPriority ePossibleClip = static_cast<ETimelineEventClipPriority>(luaL_checkint(L, 6));
 	TimelineEventHandle_t __ret = iface->AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, ePossibleClip);
 	luasteam::pushuint64(L, __ret);
@@ -161,8 +161,8 @@ static int luasteam_Timeline_AddRangeTimelineEvent(lua_State *L) {
 	const char *pchDescription = luaL_checkstring(L, 2);
 	const char *pchIcon = luaL_checkstring(L, 3);
 	uint32 unIconPriority = static_cast<uint32>(luaL_checkint(L, 4));
-	float flStartOffsetSeconds = luaL_checknumber(L, 5);
-	float flDuration = luaL_checknumber(L, 6);
+	float flStartOffsetSeconds = static_cast<float>(luaL_checknumber(L, 5));
+	float flDuration = static_cast<float>(luaL_checknumber(L, 6));
 	ETimelineEventClipPriority ePossibleClip = static_cast<ETimelineEventClipPriority>(luaL_checkint(L, 7));
 	TimelineEventHandle_t __ret = iface->AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, flDuration, ePossibleClip);
 	luasteam::pushuint64(L, __ret);
@@ -179,7 +179,7 @@ static int luasteam_Timeline_StartRangeTimelineEvent(lua_State *L) {
 	const char *pchDescription = luaL_checkstring(L, 2);
 	const char *pchIcon = luaL_checkstring(L, 3);
 	uint32 unPriority = static_cast<uint32>(luaL_checkint(L, 4));
-	float flStartOffsetSeconds = luaL_checknumber(L, 5);
+	float flStartOffsetSeconds = static_cast<float>(luaL_checknumber(L, 5));
 	ETimelineEventClipPriority ePossibleClip = static_cast<ETimelineEventClipPriority>(luaL_checkint(L, 6));
 	TimelineEventHandle_t __ret = iface->StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unPriority, flStartOffsetSeconds, ePossibleClip);
 	luasteam::pushuint64(L, __ret);
@@ -192,7 +192,7 @@ static int luasteam_Timeline_StartRangeTimelineEvent(lua_State *L) {
 // Timeline.UpdateRangeTimelineEvent(ulEvent: uint64, pchTitle: str, pchDescription: str, pchIcon: str, unPriority: int, ePossibleClip: int)
 static int luasteam_Timeline_UpdateRangeTimelineEvent(lua_State *L) {
 	auto *iface = SteamTimeline();
-	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
+	TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
 	const char *pchTitle = luaL_checkstring(L, 2);
 	const char *pchDescription = luaL_checkstring(L, 3);
 	const char *pchIcon = luaL_checkstring(L, 4);
@@ -208,8 +208,8 @@ static int luasteam_Timeline_UpdateRangeTimelineEvent(lua_State *L) {
 // Timeline.EndRangeTimelineEvent(ulEvent: uint64, flEndOffsetSeconds: float)
 static int luasteam_Timeline_EndRangeTimelineEvent(lua_State *L) {
 	auto *iface = SteamTimeline();
-	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
-	float flEndOffsetSeconds = luaL_checknumber(L, 2);
+	TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
+	float flEndOffsetSeconds = static_cast<float>(luaL_checknumber(L, 2));
 	iface->EndRangeTimelineEvent(ulEvent, flEndOffsetSeconds);
 	return 0;
 }
@@ -220,7 +220,7 @@ static int luasteam_Timeline_EndRangeTimelineEvent(lua_State *L) {
 // Timeline.RemoveTimelineEvent(ulEvent: uint64)
 static int luasteam_Timeline_RemoveTimelineEvent(lua_State *L) {
 	auto *iface = SteamTimeline();
-	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
+	TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
 	iface->RemoveTimelineEvent(ulEvent);
 	return 0;
 }
@@ -236,7 +236,7 @@ static int luasteam_Timeline_DoesEventRecordingExist(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
+	TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
 	SteamAPICall_t __ret = iface->DoesEventRecordingExist(ulEvent);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SteamTimelineEventRecordingExists_t>();
@@ -344,7 +344,7 @@ static int luasteam_Timeline_OpenOverlayToGamePhase(lua_State *L) {
 // Timeline.OpenOverlayToTimelineEvent(ulEvent: uint64)
 static int luasteam_Timeline_OpenOverlayToTimelineEvent(lua_State *L) {
 	auto *iface = SteamTimeline();
-	const TimelineEventHandle_t ulEvent(luasteam::checkuint64(L, 1));
+	const TimelineEventHandle_t ulEvent = luasteam::checkuint64(L, 1);
 	iface->OpenOverlayToTimelineEvent(ulEvent);
 	return 0;
 }

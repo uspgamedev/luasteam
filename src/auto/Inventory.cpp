@@ -255,7 +255,7 @@ static int luasteam_Inventory_GetResultTimestamp_gs(lua_State *L) { return luast
 // bool Inventory.CheckResultSteamID(resultHandle: int, steamIDExpected: uint64)
 static int luasteam_Inventory_CheckResultSteamID(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t resultHandle = static_cast<SteamInventoryResult_t>(luaL_checkint(L, 1));
-	CSteamID steamIDExpected(luasteam::checkuint64(L, 2));
+	CSteamID steamIDExpected = CSteamID(luasteam::checkuint64(L, 2));
 	bool __ret = iface->CheckResultSteamID(resultHandle, steamIDExpected);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -416,7 +416,7 @@ static int luasteam_Inventory_AddPromoItems_gs(lua_State *L) { return luasteam_I
 // (bool, pResultHandle: int) Inventory.ConsumeItem(itemConsume: uint64, unQuantity: int)
 static int luasteam_Inventory_ConsumeItem(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t pResultHandle;
-	SteamItemInstanceID_t itemConsume(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t itemConsume = luasteam::checkuint64(L, 1);
 	uint32 unQuantity = static_cast<uint32>(luaL_checkint(L, 2));
 	bool __ret = iface->ConsumeItem(&pResultHandle, itemConsume, unQuantity);
 	lua_pushboolean(L, __ret);
@@ -476,9 +476,9 @@ static int luasteam_Inventory_ExchangeItems_gs(lua_State *L) { return luasteam_I
 // (bool, pResultHandle: int) Inventory.TransferItemQuantity(itemIdSource: uint64, unQuantity: int, itemIdDest: uint64)
 static int luasteam_Inventory_TransferItemQuantity(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t pResultHandle;
-	SteamItemInstanceID_t itemIdSource(luasteam::checkuint64(L, 1));
+	SteamItemInstanceID_t itemIdSource = luasteam::checkuint64(L, 1);
 	uint32 unQuantity = static_cast<uint32>(luaL_checkint(L, 2));
-	SteamItemInstanceID_t itemIdDest(luasteam::checkuint64(L, 3));
+	SteamItemInstanceID_t itemIdDest = luasteam::checkuint64(L, 3);
 	bool __ret = iface->TransferItemQuantity(&pResultHandle, itemIdSource, unQuantity, itemIdDest);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pResultHandle);
@@ -519,7 +519,7 @@ static int luasteam_Inventory_TriggerItemDrop_gs(lua_State *L) { return luasteam
 // (bool, pResultHandle: int) Inventory.TradeItems(steamIDTradePartner: uint64, pArrayGive: uint64[], nArrayGiveLength: int, pArrayGiveQuantity: int[], pArrayGet: uint64[], nArrayGetLength: int, pArrayGetQuantity: int[])
 static int luasteam_Inventory_TradeItems(lua_State *L, ISteamInventory *iface) {
 	SteamInventoryResult_t pResultHandle;
-	CSteamID steamIDTradePartner(luasteam::checkuint64(L, 1));
+	CSteamID steamIDTradePartner = CSteamID(luasteam::checkuint64(L, 1));
 	uint32 nArrayGiveLength = luaL_checkint(L, 3);
 	luaL_checktype(L, 2, LUA_TTABLE);
 	std::vector<SteamItemInstanceID_t> pArrayGive(nArrayGiveLength);
@@ -618,7 +618,7 @@ static int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs(lua_State *
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	SteamAPICall_t __ret = iface->RequestEligiblePromoItemDefinitionsIDs(steamID);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SteamInventoryEligiblePromoItemDefIDs_t>();
@@ -636,7 +636,7 @@ static int luasteam_Inventory_RequestEligiblePromoItemDefinitionsIDs_gs(lua_Stat
 // In Lua:
 // (bool, pItemDefIDs: int[], punItemDefIDsArraySize: int) Inventory.GetEligiblePromoItemDefinitionIDs(steamID: uint64, punItemDefIDsArraySize: int)
 static int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L, ISteamInventory *iface) {
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	uint32 punItemDefIDsArraySize = luaL_checkint(L, 2);
 	std::vector<SteamItemDef_t> pItemDefIDs(punItemDefIDsArraySize);
 	bool __ret = iface->GetEligiblePromoItemDefinitionIDs(steamID, pItemDefIDs.data(), &punItemDefIDsArraySize);
@@ -757,8 +757,8 @@ static int luasteam_Inventory_StartUpdateProperties_gs(lua_State *L) { return lu
 // In Lua:
 // bool Inventory.RemoveProperty(handle: uint64, nItemID: uint64, pchPropertyName: str)
 static int luasteam_Inventory_RemoveProperty(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
-	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+	SteamItemInstanceID_t nItemID = luasteam::checkuint64(L, 2);
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	bool __ret = iface->RemoveProperty(handle, nItemID, pchPropertyName);
 	lua_pushboolean(L, __ret);
@@ -772,8 +772,8 @@ static int luasteam_Inventory_RemoveProperty_gs(lua_State *L) { return luasteam_
 // In Lua:
 // bool Inventory.SetPropertyString(handle: uint64, nItemID: uint64, pchPropertyName: str, pchPropertyValue: str)
 static int luasteam_Inventory_SetPropertyString(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
-	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+	SteamItemInstanceID_t nItemID = luasteam::checkuint64(L, 2);
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	const char *pchPropertyValue = luaL_checkstring(L, 4);
 	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, pchPropertyValue);
@@ -788,8 +788,8 @@ static int luasteam_Inventory_SetPropertyString_gs(lua_State *L) { return luaste
 // In Lua:
 // bool Inventory.SetPropertyBool(handle: uint64, nItemID: uint64, pchPropertyName: str, bValue: bool)
 static int luasteam_Inventory_SetPropertyBool(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
-	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+	SteamItemInstanceID_t nItemID = luasteam::checkuint64(L, 2);
 	const char *pchPropertyName = luaL_checkstring(L, 3);
 	bool bValue = lua_toboolean(L, 4);
 	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, bValue);
@@ -804,10 +804,10 @@ static int luasteam_Inventory_SetPropertyBool_gs(lua_State *L) { return luasteam
 // In Lua:
 // bool Inventory.SetPropertyInt64(handle: uint64, nItemID: uint64, pchPropertyName: str, nValue: uint64)
 static int luasteam_Inventory_SetPropertyInt64(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
-	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+	SteamItemInstanceID_t nItemID = luasteam::checkuint64(L, 2);
 	const char *pchPropertyName = luaL_checkstring(L, 3);
-	int64 nValue(luasteam::checkuint64(L, 4));
+	int64 nValue = luasteam::checkuint64(L, 4);
 	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, nValue);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -820,10 +820,10 @@ static int luasteam_Inventory_SetPropertyInt64_gs(lua_State *L) { return luastea
 // In Lua:
 // bool Inventory.SetPropertyFloat(handle: uint64, nItemID: uint64, pchPropertyName: str, flValue: float)
 static int luasteam_Inventory_SetPropertyFloat(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
-	SteamItemInstanceID_t nItemID(luasteam::checkuint64(L, 2));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
+	SteamItemInstanceID_t nItemID = luasteam::checkuint64(L, 2);
 	const char *pchPropertyName = luaL_checkstring(L, 3);
-	float flValue = luaL_checknumber(L, 4);
+	float flValue = static_cast<float>(luaL_checknumber(L, 4));
 	bool __ret = iface->SetProperty(handle, nItemID, pchPropertyName, flValue);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -836,7 +836,7 @@ static int luasteam_Inventory_SetPropertyFloat_gs(lua_State *L) { return luastea
 // In Lua:
 // (bool, pResultHandle: int) Inventory.SubmitUpdateProperties(handle: uint64)
 static int luasteam_Inventory_SubmitUpdateProperties(lua_State *L, ISteamInventory *iface) {
-	SteamInventoryUpdateHandle_t handle(luasteam::checkuint64(L, 1));
+	SteamInventoryUpdateHandle_t handle = luasteam::checkuint64(L, 1);
 	SteamInventoryResult_t pResultHandle;
 	bool __ret = iface->SubmitUpdateProperties(handle, &pResultHandle);
 	lua_pushboolean(L, __ret);

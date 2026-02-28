@@ -308,7 +308,7 @@ static int luasteam_Utils_SetOverlayNotificationPosition_gs(lua_State *L) { retu
 // In Lua:
 // (bool, pbFailed: bool) Utils.IsAPICallCompleted(hSteamAPICall: uint64)
 static int luasteam_Utils_IsAPICallCompleted(lua_State *L, ISteamUtils *iface) {
-	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
+	SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
 	bool pbFailed;
 	bool __ret = iface->IsAPICallCompleted(hSteamAPICall, &pbFailed);
 	lua_pushboolean(L, __ret);
@@ -323,7 +323,7 @@ static int luasteam_Utils_IsAPICallCompleted_gs(lua_State *L) { return luasteam_
 // In Lua:
 // int Utils.GetAPICallFailureReason(hSteamAPICall: uint64)
 static int luasteam_Utils_GetAPICallFailureReason(lua_State *L, ISteamUtils *iface) {
-	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
+	SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
 	ESteamAPICallFailure __ret = iface->GetAPICallFailureReason(hSteamAPICall);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -336,7 +336,7 @@ static int luasteam_Utils_GetAPICallFailureReason_gs(lua_State *L) { return luas
 // In Lua:
 // (bool, pCallback: str, pbFailed: bool) Utils.GetAPICallResult(hSteamAPICall: uint64, cubCallback: int, iCallbackExpected: int)
 static int luasteam_Utils_GetAPICallResult(lua_State *L, ISteamUtils *iface) {
-	SteamAPICall_t hSteamAPICall(luasteam::checkuint64(L, 1));
+	SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
 	int cubCallback = luaL_checkint(L, 2);
 	std::vector<unsigned char> pCallback(cubCallback);
 	int iCallbackExpected = static_cast<int>(luaL_checkint(L, 3));
@@ -568,7 +568,7 @@ static int luasteam_Utils_InitFilterText_gs(lua_State *L) { return luasteam_Util
 // (int, pchOutFilteredText: str) Utils.FilterText(eContext: int, sourceSteamID: uint64, pchInputMessage: str, nByteSizeOutFilteredText: int)
 static int luasteam_Utils_FilterText(lua_State *L, ISteamUtils *iface) {
 	ETextFilteringContext eContext = static_cast<ETextFilteringContext>(luaL_checkint(L, 1));
-	CSteamID sourceSteamID(luasteam::checkuint64(L, 2));
+	CSteamID sourceSteamID = CSteamID(luasteam::checkuint64(L, 2));
 	const char *pchInputMessage = luaL_checkstring(L, 3);
 	uint32 nByteSizeOutFilteredText = luaL_checkint(L, 4);
 	std::vector<char> pchOutFilteredText(nByteSizeOutFilteredText);

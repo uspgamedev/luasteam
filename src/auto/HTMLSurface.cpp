@@ -767,7 +767,7 @@ static int luasteam_HTMLSurface_SetCookie(lua_State *L) {
 static int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	float flZoom = luaL_checknumber(L, 2);
+	float flZoom = static_cast<float>(luaL_checknumber(L, 2));
 	int nPointX = static_cast<int>(luaL_checkint(L, 3));
 	int nPointY = static_cast<int>(luaL_checkint(L, 4));
 	iface->SetPageScaleFactor(unBrowserHandle, flZoom, nPointX, nPointY);
@@ -793,7 +793,7 @@ static int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
 static int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	float flDPIScaling = luaL_checknumber(L, 2);
+	float flDPIScaling = static_cast<float>(luaL_checknumber(L, 2));
 	iface->SetDPIScalingFactor(unBrowserHandle, flDPIScaling);
 	return 0;
 }

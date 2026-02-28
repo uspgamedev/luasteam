@@ -127,7 +127,7 @@ static int luasteam_Music_PlayNext(lua_State *L) {
 // Music.SetVolume(flVolume: float)
 static int luasteam_Music_SetVolume(lua_State *L) {
 	auto *iface = SteamMusic();
-	float flVolume = luaL_checknumber(L, 1);
+	float flVolume = static_cast<float>(luaL_checknumber(L, 1));
 	iface->SetVolume(flVolume);
 	return 0;
 }

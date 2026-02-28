@@ -403,7 +403,7 @@ static int luasteam_User_GetSteamID(lua_State *L) {
 // User.TrackAppUsageEvent(gameID: uint64, eAppUsageEvent: int, pchExtraInfo: str)
 static int luasteam_User_TrackAppUsageEvent(lua_State *L) {
 	auto *iface = SteamUser();
-	CGameID gameID(luasteam::checkuint64(L, 1));
+	CGameID gameID = CGameID(luasteam::checkuint64(L, 1));
 	int eAppUsageEvent = static_cast<int>(luaL_checkint(L, 2));
 	const char *pchExtraInfo = luaL_checkstring(L, 3);
 	iface->TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo);
@@ -545,7 +545,7 @@ static int luasteam_User_BeginAuthSession(lua_State *L) {
 	size_t _len__tmp1;
 	const char *_tmp1 = luaL_checklstring(L, 1, &_len__tmp1);
 	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp1);
-	CSteamID steamID(luasteam::checkuint64(L, 3));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 3));
 	EBeginAuthSessionResult __ret = iface->BeginAuthSession(pAuthTicket, cbAuthTicket, steamID);
 	lua_pushinteger(L, __ret);
 	return 1;
@@ -557,7 +557,7 @@ static int luasteam_User_BeginAuthSession(lua_State *L) {
 // User.EndAuthSession(steamID: uint64)
 static int luasteam_User_EndAuthSession(lua_State *L) {
 	auto *iface = SteamUser();
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	iface->EndAuthSession(steamID);
 	return 0;
 }
@@ -579,7 +579,7 @@ static int luasteam_User_CancelAuthTicket(lua_State *L) {
 // int User.UserHasLicenseForApp(steamID: uint64, appID: int)
 static int luasteam_User_UserHasLicenseForApp(lua_State *L) {
 	auto *iface = SteamUser();
-	CSteamID steamID(luasteam::checkuint64(L, 1));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 1));
 	AppId_t appID = static_cast<AppId_t>(luaL_checkint(L, 2));
 	EUserHasLicenseForAppResult __ret = iface->UserHasLicenseForApp(steamID, appID);
 	lua_pushinteger(L, __ret);
@@ -603,7 +603,7 @@ static int luasteam_User_BIsBehindNAT(lua_State *L) {
 // User.AdvertiseGame(steamIDGameServer: uint64, unIPServer: int, usPortServer: int)
 static int luasteam_User_AdvertiseGame(lua_State *L) {
 	auto *iface = SteamUser();
-	CSteamID steamIDGameServer(luasteam::checkuint64(L, 1));
+	CSteamID steamIDGameServer = CSteamID(luasteam::checkuint64(L, 1));
 	uint32 unIPServer = static_cast<uint32>(luaL_checkint(L, 2));
 	uint16 usPortServer = static_cast<uint16>(luaL_checkint(L, 3));
 	iface->AdvertiseGame(steamIDGameServer, unIPServer, usPortServer);

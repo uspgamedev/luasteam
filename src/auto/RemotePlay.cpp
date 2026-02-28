@@ -155,7 +155,7 @@ static int luasteam_RemotePlay_ShowRemotePlayTogetherUI(lua_State *L) {
 // bool RemotePlay.BSendRemotePlayTogetherInvite(steamIDFriend: uint64)
 static int luasteam_RemotePlay_BSendRemotePlayTogetherInvite(lua_State *L) {
 	auto *iface = SteamRemotePlay();
-	CSteamID steamIDFriend(luasteam::checkuint64(L, 1));
+	CSteamID steamIDFriend = CSteamID(luasteam::checkuint64(L, 1));
 	bool __ret = iface->BSendRemotePlayTogetherInvite(steamIDFriend);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -219,8 +219,8 @@ static int luasteam_RemotePlay_SetMouseVisibility(lua_State *L) {
 static int luasteam_RemotePlay_SetMousePosition(lua_State *L) {
 	auto *iface = SteamRemotePlay();
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
-	float flNormalizedX = luaL_checknumber(L, 2);
-	float flNormalizedY = luaL_checknumber(L, 3);
+	float flNormalizedX = static_cast<float>(luaL_checknumber(L, 2));
+	float flNormalizedY = static_cast<float>(luaL_checknumber(L, 3));
 	iface->SetMousePosition(unSessionID, flNormalizedX, flNormalizedY);
 	return 0;
 }

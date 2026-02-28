@@ -83,7 +83,7 @@ static int luasteam_HTTP_CreateHTTPRequest_gs(lua_State *L) { return luasteam_HT
 // bool HTTP.SetHTTPRequestContextValue(hRequest: int, ulContextValue: uint64)
 static int luasteam_HTTP_SetHTTPRequestContextValue(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
-	uint64 ulContextValue(luasteam::checkuint64(L, 2));
+	uint64 ulContextValue = luasteam::checkuint64(L, 2);
 	bool __ret = iface->SetHTTPRequestContextValue(hRequest, ulContextValue);
 	lua_pushboolean(L, __ret);
 	return 1;

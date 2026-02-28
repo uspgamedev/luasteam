@@ -2224,7 +2224,7 @@ static int luasteam_SteamNetworkingIdentity_IsInvalid(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetSteamID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	CSteamID steamID(luasteam::checkuint64(L, 2));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 2));
 	self->SetSteamID(steamID);
 	return 0;
 }
@@ -2236,7 +2236,7 @@ static int luasteam_SteamNetworkingIdentity_GetSteamID(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetSteamID64(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint64 steamID(luasteam::checkuint64(L, 2));
+	uint64 steamID = luasteam::checkuint64(L, 2);
 	self->SetSteamID64(steamID);
 	return 0;
 }
@@ -2261,7 +2261,7 @@ static int luasteam_SteamNetworkingIdentity_GetXboxPairwiseID(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetPSNID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint64 id(luasteam::checkuint64(L, 2));
+	uint64 id = luasteam::checkuint64(L, 2);
 	self->SetPSNID(id);
 	return 0;
 }
@@ -2962,14 +2962,14 @@ static int SteamNetworkingConfigValue_tMetatable_ref = LUA_NOREF;
 static int luasteam_SteamNetworkingConfigValue_t_SetInt64(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
-	int64_t data(luasteam::checkuint64(L, 3));
+	int64_t data = luasteam::checkuint64(L, 3);
 	self->SetInt64(eVal, data);
 	return 0;
 }
 static int luasteam_SteamNetworkingConfigValue_t_SetFloat(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
-	float data = luaL_checknumber(L, 3);
+	float data = static_cast<float>(luaL_checknumber(L, 3));
 	self->SetFloat(eVal, data);
 	return 0;
 }

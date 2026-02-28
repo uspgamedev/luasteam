@@ -1,11 +1,11 @@
 use super::Generator;
+use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::lua_type_info::LType;
-use crate::COUNTER;
 
 impl Generator {
-    /// Generate code to check a field from the stack, returns (success, code). Code is indented.
+    /// Generate code to check a lua value and convert it to a C++ type, returning the generated code and the Lua type info.
     pub(crate) fn generate_check(
         &self,
         original_type: &str,
@@ -14,35 +14,42 @@ impl Generator {
         value_accessor: &str,
         lua_idx: &str,
         indent: usize,
-    ) -> (bool, String, LType) {
+    ) -> Option<(String, LType)> {
         let mut out = CodeBuilder::with_indent(indent);
         let type_prefix = if create_var {
             format!("{} ", original_type)
         } else {
             String::new()
         };
-        match resolved {
+        let ltype = match resolved {
             CppType::Normal(type_name) => match type_name {
                 "int" | "unsigned char" => {
                     out.line(&format!(
                         "{}{} = static_cast<{}>(luaL_checkint(L, {}));",
                         type_prefix, value_accessor, original_type, lua_idx
                     ));
-                    (true, out.finish(), LType::Integer)
+                    LType::Integer
+                }
+                "char" => {
+                    out.line(&format!(
+                        "{}{} = static_cast<{}>(luaL_checkstring(L, {})[0]);",
+                        type_prefix, value_accessor, original_type, lua_idx
+                    ));
+                    LType::String
                 }
                 "bool" => {
                     out.line(&format!(
                         "{}{} = lua_toboolean(L, {});",
                         type_prefix, value_accessor, lua_idx
                     ));
-                    (true, out.finish(), LType::Boolean)
+                    LType::Boolean
                 }
                 "double" | "float" => {
                     out.line(&format!(
                         "{}{} = static_cast<{}>(luaL_checknumber(L, {}));",
                         type_prefix, value_accessor, original_type, lua_idx
                     ));
-                    (true, out.finish(), LType::Float)
+                    LType::Float
                 }
                 "uint64" | "unsigned long long" | "CSteamID" | "CGameID" => {
                     let mut get = format!("luasteam::checkuint64(L, {})", lua_idx);
@@ -50,7 +57,7 @@ impl Generator {
                         get = format!("{}({})", type_name, get);
                     }
                     out.line(&format!("{}{} = {};", type_prefix, value_accessor, get));
-                    (true, out.finish(), LType::Uint64)
+                    LType::Uint64
                 }
                 _ => {
                     if self.opaque_handles.contains(type_name) {
@@ -58,23 +65,15 @@ impl Generator {
                             "{}{} = ({})lua_touserdata(L, {});",
                             type_prefix, value_accessor, type_name, lua_idx
                         ));
-                        (
-                            true,
-                            out.finish(),
-                            LType::LightUserdata(type_name.to_string()),
-                        )
+                        LType::LightUserdata(type_name.to_string())
                     } else if self.added_structs.contains(type_name) {
                         out.line(&format!(
                             "{}{} = luasteam::check_{}(L, {});",
                             type_prefix, value_accessor, type_name, lua_idx
                         ));
-                        (true, out.finish(), LType::Userdata(type_name.to_string()))
+                        LType::Userdata(type_name.to_string())
                     } else {
-                        out.line(&format!(
-                            "// Unsupported check type: {} ({})",
-                            original_type, type_name
-                        ));
-                        (false, out.finish(), LType::Integer)
+                        return None;
                     }
                 }
             },
@@ -82,31 +81,24 @@ impl Generator {
                 ttype,
                 size,
                 is_const: _,
-            } => self.generate_array_check(
-                ttype,
-                resolved.is_buffer(),
-                create_var,
-                value_accessor,
-                lua_idx,
-                out,
-                size,
-                false,
-            ),
-            CppType::Pointer {
-                ttype: "void",
-                is_const: false,
             } => {
-                out.line(&format!(
-                    "{}{} = static_cast<void*>(luasteam::checkvoid_ptr(L, {}));",
-                    type_prefix, value_accessor, lua_idx
-                ));
-                (true, out.finish(), LType::Table)
+                return self.generate_array_check(
+                    ttype,
+                    resolved.is_buffer(),
+                    create_var,
+                    value_accessor,
+                    lua_idx,
+                    out,
+                    size,
+                    false,
+                );
             }
             _ => {
                 out.line(&format!("// Unsupported check type: {:?}", resolved));
-                (false, out.finish(), LType::Integer)
+                return None;
             }
-        }
+        };
+        Some((out.finish(), ltype))
     }
 
     pub(crate) fn generate_array_check(
@@ -119,8 +111,8 @@ impl Generator {
         mut out: CodeBuilder,
         size: &str,
         non_const_exception: bool,
-    ) -> (bool, String, LType) {
-        if is_buffer {
+    ) -> Option<(String, LType)> {
+        let ltype = if is_buffer {
             let var = format!(
                 "_tmp{}",
                 COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
@@ -170,7 +162,7 @@ impl Generator {
                     value_accessor, var, len_var, value_accessor
                 ));
             }
-            (true, out.finish(), LType::String)
+            LType::String
         } else {
             assert!(!size.is_empty());
             out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
@@ -186,29 +178,21 @@ impl Generator {
             ));
             out.indent_right();
             out.line(&format!("lua_rawgeti(L, {lua_idx}, i+1);"));
-            let (ok, check, elem_ltype) = self.generate_check(
+            let (check, elem_ltype) = self.generate_check(
                 ttype,
                 self.type_resolver.resolve_type(ttype),
                 false,
                 &format!("{}[i]", value_accessor),
                 "-1",
                 out.indent(),
-            );
-            if ok {
-                out.raw(&check);
-                out.line("lua_pop(L, 1);");
-                out.indent_left();
-                out.line("}");
-                (true, out.finish(), LType::Array(Box::new(elem_ltype)))
-            } else {
-                println!("Unsupported array element type: {} [{}]", ttype, size);
-                out.line(&format!(
-                    "// Unsupported check array type: {} [{}]",
-                    ttype, size
-                ));
-                (false, out.finish(), LType::Integer)
-            }
-        }
+            )?;
+            out.raw(&check);
+            out.line("lua_pop(L, 1);");
+            out.indent_left();
+            out.line("}");
+            LType::Array(Box::new(elem_ltype))
+        };
+        Some((out.finish(), ltype))
     }
 
     pub(crate) fn generate_push(

@@ -121,7 +121,7 @@ static int luasteam_Screenshots_SetLocation(lua_State *L) {
 static int luasteam_Screenshots_TagUser(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
-	CSteamID steamID(luasteam::checkuint64(L, 2));
+	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 2));
 	bool __ret = iface->TagUser(hScreenshot, steamID);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -134,7 +134,7 @@ static int luasteam_Screenshots_TagUser(lua_State *L) {
 static int luasteam_Screenshots_TagPublishedFile(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
-	PublishedFileId_t unPublishedFileID(luasteam::checkuint64(L, 2));
+	PublishedFileId_t unPublishedFileID = luasteam::checkuint64(L, 2);
 	bool __ret = iface->TagPublishedFile(hScreenshot, unPublishedFileID);
 	lua_pushboolean(L, __ret);
 	return 1;
