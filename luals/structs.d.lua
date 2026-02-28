@@ -303,6 +303,10 @@ function SteamNetworkingIPAddr:SetIPv6LocalHost(nPort) end
 ---@return boolean
 function SteamNetworkingIPAddr:IsLocalHost() end
 
+---@param cbBuf integer
+---@param bWithPort boolean
+function SteamNetworkingIPAddr:ToString(cbBuf, bWithPort) end
+
 ---@param pszStr string
 ---@return boolean
 function SteamNetworkingIPAddr:ParseString(pszStr) end
@@ -385,6 +389,9 @@ function SteamNetworkingIdentity:GetGenericString() end
 ---@param cbLen integer
 ---@return boolean
 function SteamNetworkingIdentity:SetGenericBytes(data, cbLen) end
+
+---@param cbBuf integer
+function SteamNetworkingIdentity:ToString(cbBuf) end
 
 ---@param pszStr string
 ---@return boolean

@@ -1,10 +1,11 @@
 use super::Generator;
 use crate::code_builder::CodeBuilder;
-use crate::cpp_type::CppType;
+
 use crate::doc_generator::StructDocInfo;
 use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{Field, Method, SkipReason, Stats, Struct};
 use crate::{MANUAL_STRUCTS, MANUAL_STRUCTS_WITH_PTR, StructGenOutput};
+
 use std::fs;
 use std::path::Path;
 
@@ -142,146 +143,8 @@ impl Generator {
             "{} *self = luasteam::check_{}_ptr(L, 1);",
             struct_name, struct_name
         ));
-
-        let mut cpp_call_params = Vec::new();
-        let mut lua_idx: usize = 2;
         let mut sig = LuaMethodSignature::default();
-
-        for param in &method.params {
-            let resolved = self.type_resolver.resolve_type(&param.paramtype);
-            use CppType::*;
-            if resolved.is_double_pointer() {
-                return None;
-            }
-            let n = &param.paramname;
-            let t = &param.paramtype;
-            let idx = lua_idx.to_string();
-
-            let ltype = match resolved {
-                _ if resolved.is_buffer() && resolved.is_const() => {
-                    // For buffers, get the actual element type (char or unsigned char)
-                    let buffer_elem_type = if let CppType::Pointer { ttype, .. } = resolved {
-                        ttype
-                    } else {
-                        "char"
-                    };
-                    if buffer_elem_type == "char" {
-                        s.line(&format!(
-                            "const char *{} = luaL_checkstring(L, {});",
-                            n, idx
-                        ));
-                    } else {
-                        s.line(&format!(
-                            "const {t} *{n} = reinterpret_cast<const {t} *>(luaL_checkstring(L, {idx}));",
-                            t = buffer_elem_type, n = n, idx = idx
-                        ));
-                    }
-                    LType::String
-                }
-                Pointer {
-                    is_const: true,
-                    ttype,
-                } => {
-                    if self.added_structs_with_ptr.contains(ttype) {
-                        s.line(&format!(
-                            "const {} *{} = luasteam::check_{}_ptr(L, {});",
-                            ttype, n, ttype, idx
-                        ));
-                    } else if self.added_structs.contains(ttype) {
-                        s.line(&format!(
-                            "{} {}_val = luasteam::check_{}(L, {});",
-                            ttype, n, ttype, idx
-                        ));
-                        s.line(&format!("const {} *{} = &{}_val;", ttype, n, n));
-                    } else {
-                        return None;
-                    }
-                    LType::Userdata(ttype.to_string())
-                }
-                Reference {
-                    is_const: true,
-                    ttype,
-                } => {
-                    if self.added_structs_with_ptr.contains(ttype) {
-                        s.line(&format!(
-                            "const {} &{} = *luasteam::check_{}_ptr(L, {});",
-                            ttype, n, ttype, idx
-                        ));
-                    } else if self.added_structs.contains(ttype) {
-                        s.line(&format!(
-                            "{} {} = luasteam::check_{}(L, {});",
-                            ttype, n, ttype, idx
-                        ));
-                    } else {
-                        return None;
-                    }
-                    LType::Userdata(ttype.to_string())
-                }
-                _ => match { self.generate_check(t, resolved, true, n, &idx, s.indent()) } {
-                    Some((code, ltype)) => {
-                        s.raw(&code);
-                        ltype
-                    }
-                    None => return None,
-                },
-            };
-
-            sig.add_param(n.to_string(), ltype);
-            cpp_call_params.push(n.clone());
-            lua_idx += 1;
-        }
-
-        let call = if cpp_call_params.is_empty() {
-            format!("self->{}()", method.methodname)
-        } else {
-            format!(
-                "self->{}({})",
-                method.methodname,
-                cpp_call_params.join(", ")
-            )
-        };
-
-        let return_count;
-        if method.returntype == "void" {
-            s.line(&format!("{};", call));
-            return_count = 0;
-        } else {
-            let resolved_ret = self.type_resolver.resolve_type(&method.returntype);
-            match resolved_ret {
-                CppType::Pointer {
-                    ttype,
-                    is_const: true,
-                } if self.added_structs.contains(ttype) => {
-                    s.line(&format!("const {} *__ret = {};", ttype, call));
-                    s.line("if (__ret != nullptr) {");
-                    s.indent_right();
-                    s.line(&format!("luasteam::push_{}(L, *__ret);", ttype));
-                    s.indent_left();
-                    s.line("} else {");
-                    s.indent_right();
-                    s.line("lua_pushnil(L);");
-                    s.indent_left();
-                    s.line("}");
-                    sig.set_return_type(LType::Userdata(ttype.to_string()));
-                    return_count = 1;
-                }
-                _ => {
-                    let (ok, push, ret_ltype) = self.generate_push(&method.returntype, "__ret", 1);
-                    if !ok {
-                        return None;
-                    }
-                    s.line(&format!("{} __ret = {};", method.returntype, call));
-                    s.raw(&push);
-                    sig.set_return_type(ret_ltype);
-                    return_count = 1;
-                }
-            }
-        }
-
-        s.line(&format!("return {};", return_count));
-        s.indent_left();
-        s.line("}");
-
+        self.generate_method_body(method, &mut s, &mut sig, "self", 2).ok()?;
         Some((lua_name, c_func_name, s.finish(), sig))
     }
 

@@ -2127,6 +2127,15 @@ static int luasteam_SteamNetworkingIPAddr_IsLocalHost(lua_State *L) {
 	lua_pushboolean(L, __ret);
 	return 1;
 }
+static int luasteam_SteamNetworkingIPAddr_ToString(lua_State *L) {
+	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
+	uint32 cbBuf = luaL_checkint(L, 2);
+	std::vector<char> buf(cbBuf);
+	bool bWithPort = lua_toboolean(L, 3);
+	self->ToString(buf.data(), cbBuf, bWithPort);
+	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
+	return 1;
+}
 static int luasteam_SteamNetworkingIPAddr_ParseString(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	const char *pszStr = luaL_checkstring(L, 2);
@@ -2342,6 +2351,14 @@ static int luasteam_SteamNetworkingIdentity_SetGenericBytes(lua_State *L) {
 	uint32 cbLen = static_cast<uint32>(luaL_checkint(L, 3));
 	bool __ret = self->SetGenericBytes(data, cbLen);
 	lua_pushboolean(L, __ret);
+	return 1;
+}
+static int luasteam_SteamNetworkingIdentity_ToString(lua_State *L) {
+	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
+	uint32 cbBuf = luaL_checkint(L, 2);
+	std::vector<char> buf(cbBuf);
+	self->ToString(buf.data(), cbBuf);
+	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_ParseString(lua_State *L) {
@@ -20084,7 +20101,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__newindex", RemotePlayInput_t_newindex);
 	RemotePlayInput_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	// SteamNetworkingIPAddr metatable
-	lua_createtable(L, 0, 13);
+	lua_createtable(L, 0, 14);
 	add_func(L, "Clear", luasteam_SteamNetworkingIPAddr_Clear);
 	add_func(L, "IsIPv6AllZeros", luasteam_SteamNetworkingIPAddr_IsIPv6AllZeros);
 	add_func(L, "SetIPv6", luasteam_SteamNetworkingIPAddr_SetIPv6);
@@ -20093,6 +20110,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "GetIPv4", luasteam_SteamNetworkingIPAddr_GetIPv4);
 	add_func(L, "SetIPv6LocalHost", luasteam_SteamNetworkingIPAddr_SetIPv6LocalHost);
 	add_func(L, "IsLocalHost", luasteam_SteamNetworkingIPAddr_IsLocalHost);
+	add_func(L, "ToString", luasteam_SteamNetworkingIPAddr_ToString);
 	add_func(L, "ParseString", luasteam_SteamNetworkingIPAddr_ParseString);
 	add_func(L, "GetFakeIPType", luasteam_SteamNetworkingIPAddr_GetFakeIPType);
 	add_func(L, "IsFakeIP", luasteam_SteamNetworkingIPAddr_IsFakeIP);
@@ -20100,7 +20118,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__newindex", SteamNetworkingIPAddr_newindex);
 	SteamNetworkingIPAddrMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	// SteamNetworkingIdentity metatable
-	lua_createtable(L, 0, 23);
+	lua_createtable(L, 0, 24);
 	add_func(L, "Clear", luasteam_SteamNetworkingIdentity_Clear);
 	add_func(L, "IsInvalid", luasteam_SteamNetworkingIdentity_IsInvalid);
 	add_func(L, "SetSteamID", luasteam_SteamNetworkingIdentity_SetSteamID);
@@ -20122,6 +20140,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "SetGenericString", luasteam_SteamNetworkingIdentity_SetGenericString);
 	add_func(L, "GetGenericString", luasteam_SteamNetworkingIdentity_GetGenericString);
 	add_func(L, "SetGenericBytes", luasteam_SteamNetworkingIdentity_SetGenericBytes);
+	add_func(L, "ToString", luasteam_SteamNetworkingIdentity_ToString);
 	add_func(L, "ParseString", luasteam_SteamNetworkingIdentity_ParseString);
 	add_func(L, "__index", SteamNetworkingIdentity_index);
 	SteamNetworkingIdentityMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);

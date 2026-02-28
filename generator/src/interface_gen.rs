@@ -711,35 +711,14 @@ impl Generator {
         ))
     }
 
-    fn generate_method(
+    pub(crate) fn generate_method_body(
         &self,
-        interface: &str,
         method: &Method,
-        direct_accessor: Option<&str>,
-    ) -> Result<(String, String, LuaMethodSignature), SkipReason> {
-        // Tricky ones to support:
-        // GetItemDefinitionProperty - has a pointer that must have a value and returns another
-        // GetItemsWithPrices - The JSON looks different from the API
-        // AddPromoItems - Input arrays with counts
-        // Most PublishedFileId_t * should be const, also pubBody in HTTP
-        // GetImageRGBA - uint8* should be a byte buffer, probably
-        let mut s = CodeBuilder::new();
-
-        let lua_method_name = Self::lua_method_public_name(method);
-        let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
-        if let Some(accessor) = direct_accessor {
-            s.line(&format!("static int {}(lua_State *L) {{", c_method_name));
-            s.indent_right();
-            s.line(&format!("auto *iface = {}();", accessor));
-        } else {
-            // Dual-accessor: base function takes iface directly; wrappers added below
-            s.line(&format!(
-                "static int {}(lua_State *L, ISteam{} *iface) {{",
-                c_method_name, interface
-            ));
-            s.indent_right();
-        }
-
+        s: &mut CodeBuilder,
+        sig: &mut LuaMethodSignature,
+        call_on: &str,
+        lua_idx_start: usize,
+    ) -> Result<(), SkipReason> {
         if method.callresult.is_some() {
             s.line("int callback_ref = LUA_NOREF;");
             s.line("if (lua_isfunction(L, lua_gettop(L))) {");
@@ -756,10 +735,8 @@ impl Generator {
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
 
-        let mut sig = LuaMethodSignature::default();
-
         let mut i = 0;
-        let mut lua_idx = 1;
+        let mut lua_idx = lua_idx_start;
         while i < method.params.len() {
             let param = &method.params[i];
             let resolved = self.type_resolver.resolve_type(&param.paramtype);
@@ -1141,7 +1118,8 @@ impl Generator {
         );
 
         let call = format!(
-            "iface->{}({})",
+            "{}->{}({})",
+            call_on,
             method.methodname,
             cpp_call_params.join(", ")
         );
@@ -1153,6 +1131,22 @@ impl Generator {
             );
             s.line(&format!("{};", call));
         } else {
+            let resolved_ret = self.type_resolver.resolve_type(&method.returntype);
+            if let CppType::Pointer { ttype, is_const: true } = resolved_ret
+                && self.added_structs.contains(ttype)
+            {
+                s.line(&format!("const {} *__ret = {};", ttype, call));
+                s.line("if (__ret != nullptr) {");
+                s.indent_right();
+                s.line(&format!("luasteam::push_{}(L, *__ret);", ttype));
+                s.indent_left();
+                s.line("} else {");
+                s.indent_right();
+                s.line("lua_pushnil(L);");
+                s.indent_left();
+                s.line("}");
+                sig.set_return_type(LType::Userdata(ttype.to_string()));
+            } else {
             s.line(&format!("{} __ret = {};", method.returntype, call));
             if let Some(callresult) = &method.callresult {
                 sig.add_param(
@@ -1182,6 +1176,7 @@ impl Generator {
             }
             s.raw(&push);
             sig.set_return_type(ltype);
+            }
         }
 
         // Push pointer output values onto stack
@@ -1323,6 +1318,40 @@ impl Generator {
         s.indent_left();
         s.line("}");
 
+        Ok(())
+    }
+
+    fn generate_method(
+        &self,
+        interface: &str,
+        method: &Method,
+        direct_accessor: Option<&str>,
+    ) -> Result<(String, String, LuaMethodSignature), SkipReason> {
+        // Tricky ones to support:
+        // GetItemDefinitionProperty - has a pointer that must have a value and returns another
+        // GetItemsWithPrices - The JSON looks different from the API
+        // AddPromoItems - Input arrays with counts
+        // Most PublishedFileId_t * should be const, also pubBody in HTTP
+        // GetImageRGBA - uint8* should be a byte buffer, probably
+        let mut s = CodeBuilder::new();
+
+        let lua_method_name = Self::lua_method_public_name(method);
+        let c_method_name = format!("luasteam_{}_{}", interface, lua_method_name);
+        if let Some(accessor) = direct_accessor {
+            s.line(&format!("static int {}(lua_State *L) {{", c_method_name));
+            s.indent_right();
+            s.line(&format!("auto *iface = {}();", accessor));
+        } else {
+            // Dual-accessor: base function takes iface directly; wrappers added below
+            s.line(&format!(
+                "static int {}(lua_State *L, ISteam{} *iface) {{",
+                c_method_name, interface
+            ));
+            s.indent_right();
+        }
+
+        let mut sig = LuaMethodSignature::default();
+        self.generate_method_body(method, &mut s, &mut sig, "iface", 1)?;
         Ok((lua_method_name, s.finish(), sig))
     }
 

@@ -552,6 +552,13 @@ SteamNetworkingIPAddr
 
     :returns: (bool)
 
+.. function:: SteamNetworkingIPAddr:ToString(cbBuf, bWithPort)
+
+    🤖 **Auto-generated binding**
+
+    :param int cbBuf:
+    :param bool bWithPort:
+
 .. function:: SteamNetworkingIPAddr:ParseString(pszStr)
 
     🤖 **Auto-generated binding**
@@ -712,6 +719,12 @@ SteamNetworkingIdentity
     :param str data:
     :param int cbLen:
     :returns: (bool)
+
+.. function:: SteamNetworkingIdentity:ToString(cbBuf)
+
+    🤖 **Auto-generated binding**
+
+    :param int cbBuf:
 
 .. function:: SteamNetworkingIdentity:ParseString(pszStr)
 

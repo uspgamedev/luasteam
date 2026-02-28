@@ -74,13 +74,4 @@ impl<'a> CppType<'a> {
             }
         )
     }
-
-    pub fn is_const(&self) -> bool {
-        match self {
-            CppType::Normal(_) => true,
-            CppType::Array { is_const, .. } => *is_const,
-            CppType::Pointer { is_const, .. } => *is_const,
-            CppType::Reference { is_const, .. } => *is_const,
-        }
-    }
 }

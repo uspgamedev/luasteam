@@ -599,6 +599,30 @@ impl SteamApi {
             p.array_count = Some(in_name.to_owned());
             p.out_array_count = Some(out_name.to_owned());
         }
+        // Struct methods with output string buffers
+        for (s_name, m_name, p_name, count_name) in [
+            ("SteamNetworkingIPAddr", "ToString", "buf", "cbBuf"),
+            ("SteamNetworkingIdentity", "ToString", "buf", "cbBuf"),
+        ] {
+            let st = self
+                .structs
+                .iter_mut()
+                .find(|s| s.name == s_name)
+                .expect("Struct not found");
+            let m = st
+                .methods
+                .iter_mut()
+                .find(|m| m.methodname == m_name)
+                .expect("Method not found");
+            let p = m
+                .params
+                .iter_mut()
+                .find(|p| p.paramname == p_name)
+                .expect("Param not found");
+            assert!(p.paramtype == "char *");
+            assert!(p.out_string_count.is_none());
+            p.out_string_count = Some(count_name.to_string());
+        }
     }
 
     fn fix_steam_client(&mut self) {
