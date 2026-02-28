@@ -1042,13 +1042,21 @@ impl Generator {
                         } else {
                             cpp_call_params.push(format!("{}.data()", param.paramname));
                         }
-                    } else if ttype == "char" {
-                        s.line(&format!(
-                            "const char *{} = luaL_checkstring(L, {});",
-                            param.paramname, lua_idx
-                        ));
+                    } else if resolved.is_buffer() {
+                        let lua_idx_str = lua_idx.to_string();
+                        let (code, ltype) = self
+                            .generate_check(
+                                &param.paramtype,
+                                resolved,
+                                true,
+                                &param.paramname,
+                                &lua_idx_str,
+                                s.indent(),
+                            )
+                            .ok_or_else(|| SkipReason::UnsupportedType(param.paramtype.clone()))?;
+                        s.raw(&code);
                         cpp_call_params.push(param.paramname.clone());
-                        sig.add_param(param.paramname.clone(), LType::String);
+                        sig.add_param(param.paramname.clone(), ltype);
                         lua_idx += 1;
                     } else {
                         // Non-array const pointer — treat as optional input (nil → nullptr).

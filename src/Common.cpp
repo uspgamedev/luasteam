@@ -133,6 +133,15 @@ uint64 assertuint64(lua_State *L, int index, const char *fmt, ...) {
     return *ptr;
 }
 
+void copy_str_into(const char *&dest, const char *src) {
+    if (dest != nullptr) {
+        delete[] dest;
+    }
+    char *new_dest = new char[strlen(src) + 1];
+    strcpy(new_dest, src);
+    dest = new_dest;
+}
+
 void add_func(lua_State *L, const char *name, lua_CFunction func) {
     lua_pushcfunction(L, func);
     lua_setfield(L, -2, name);

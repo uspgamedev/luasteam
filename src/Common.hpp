@@ -25,6 +25,8 @@ void pushuint64(lua_State *L, uint64 v);
 uint64 checkuint64(lua_State *L, int nParam);
 uint64 assertuint64(lua_State *L, int index, const char *fmt, ...);
 
+void copy_str_into(const char *&dest, const char *src);
+
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 

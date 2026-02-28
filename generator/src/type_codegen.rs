@@ -1,8 +1,8 @@
 use super::Generator;
-use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::lua_type_info::LType;
+use crate::COUNTER;
 
 impl Generator {
     /// Generate code to check a lua value and convert it to a C++ type, returning the generated code and the Lua type info.
@@ -77,6 +77,24 @@ impl Generator {
                     }
                 }
             },
+            CppType::Pointer {
+                ttype,
+                is_const: true,
+            } if resolved.is_buffer() => {
+                let mut get = format!("luaL_checkstring(L, {lua_idx})");
+                if ttype != "char" {
+                    get = format!("reinterpret_cast<const {ttype} *>({get})");
+                }
+                if create_var {
+                    out.line(&format!("const {ttype} *{value_accessor} = {get};",));
+                } else {
+                    // If not creating a var, we need to copy the existing string to a new buffer.
+                    out.line(&format!(
+                        "luasteam::copy_str_into({value_accessor}, {get});"
+                    ));
+                }
+                LType::String
+            }
             CppType::Array {
                 ttype,
                 size,

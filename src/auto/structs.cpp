@@ -12102,6 +12102,10 @@ static int HTML_NeedsPaint_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pBGRA") == 0) {
+		luasteam::copy_str_into(self->pBGRA, luaL_checkstring(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "unWide") == 0) {
 		self->unWide = static_cast<uint32>(luaL_checkint(L, 3));
 		return 0;
@@ -12153,6 +12157,11 @@ EXTERN int luasteam_newHTML_NeedsPaint_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pBGRA");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pBGRA, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "unWide");
@@ -12249,6 +12258,18 @@ static int HTML_StartRequest_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "pchTarget") == 0) {
+		luasteam::copy_str_into(self->pchTarget, luaL_checkstring(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "pchPostData") == 0) {
+		luasteam::copy_str_into(self->pchPostData, luaL_checkstring(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "bIsRedirect") == 0) {
 		self->bIsRedirect = lua_toboolean(L, 3);
 		return 0;
@@ -12264,6 +12285,21 @@ EXTERN int luasteam_newHTML_StartRequest_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchTarget");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchTarget, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchPostData");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchPostData, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bIsRedirect");
@@ -12360,8 +12396,20 @@ static int HTML_URLChanged_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "pchPostData") == 0) {
+		luasteam::copy_str_into(self->pchPostData, luaL_checkstring(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "bIsRedirect") == 0) {
 		self->bIsRedirect = lua_toboolean(L, 3);
+		return 0;
+	}
+	if (strcmp(key, "pchPageTitle") == 0) {
+		luasteam::copy_str_into(self->pchPageTitle, luaL_checkstring(L, 3));
 		return 0;
 	}
 	if (strcmp(key, "bNewNavigation") == 0) {
@@ -12381,9 +12429,24 @@ EXTERN int luasteam_newHTML_URLChanged_t(lua_State *L) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
 		}
 		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchPostData");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchPostData, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
 		lua_getfield(L, 1, "bIsRedirect");
 		if (!lua_isnil(L, -1)) {
 			ptr->bIsRedirect = lua_toboolean(L, -1);
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchPageTitle");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchPageTitle, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bNewNavigation");
@@ -12427,6 +12490,14 @@ static int HTML_FinishedRequest_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "pchPageTitle") == 0) {
+		luasteam::copy_str_into(self->pchPageTitle, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_FinishedRequest_t has no field '%%s'", key);
 }
 
@@ -12438,6 +12509,16 @@ EXTERN int luasteam_newHTML_FinishedRequest_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchPageTitle");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchPageTitle, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -12472,6 +12553,10 @@ static int HTML_OpenLinkInNewTab_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_OpenLinkInNewTab_t has no field '%%s'", key);
 }
 
@@ -12483,6 +12568,11 @@ EXTERN int luasteam_newHTML_OpenLinkInNewTab_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -12517,6 +12607,10 @@ static int HTML_ChangedTitle_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchTitle") == 0) {
+		luasteam::copy_str_into(self->pchTitle, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_ChangedTitle_t has no field '%%s'", key);
 }
 
@@ -12528,6 +12622,11 @@ EXTERN int luasteam_newHTML_ChangedTitle_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchTitle");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchTitle, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -12932,6 +13031,10 @@ static int HTML_LinkAtPosition_t_newindex(lua_State *L) {
 		self->y = static_cast<uint32>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "bInput") == 0) {
 		self->bInput = lua_toboolean(L, 3);
 		return 0;
@@ -12961,6 +13064,11 @@ EXTERN int luasteam_newHTML_LinkAtPosition_t(lua_State *L) {
 		lua_getfield(L, 1, "y");
 		if (!lua_isnil(L, -1)) {
 			ptr->y = static_cast<uint32>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bInput");
@@ -13005,6 +13113,10 @@ static int HTML_JSAlert_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchMessage") == 0) {
+		luasteam::copy_str_into(self->pchMessage, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_JSAlert_t has no field '%%s'", key);
 }
 
@@ -13016,6 +13128,11 @@ EXTERN int luasteam_newHTML_JSAlert_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchMessage");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchMessage, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -13050,6 +13167,10 @@ static int HTML_JSConfirm_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchMessage") == 0) {
+		luasteam::copy_str_into(self->pchMessage, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_JSConfirm_t has no field '%%s'", key);
 }
 
@@ -13061,6 +13182,11 @@ EXTERN int luasteam_newHTML_JSConfirm_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchMessage");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchMessage, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -13099,6 +13225,14 @@ static int HTML_FileOpenDialog_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchTitle") == 0) {
+		luasteam::copy_str_into(self->pchTitle, luaL_checkstring(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "pchInitialFile") == 0) {
+		luasteam::copy_str_into(self->pchInitialFile, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_FileOpenDialog_t has no field '%%s'", key);
 }
 
@@ -13110,6 +13244,16 @@ EXTERN int luasteam_newHTML_FileOpenDialog_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchTitle");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchTitle, luaL_checkstring(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchInitialFile");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchInitialFile, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -13164,6 +13308,10 @@ static int HTML_NewWindow_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchURL") == 0) {
+		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "unX") == 0) {
 		self->unX = static_cast<uint32>(luaL_checkint(L, 3));
 		return 0;
@@ -13195,6 +13343,11 @@ EXTERN int luasteam_newHTML_NewWindow_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchURL");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "unX");
@@ -13308,6 +13461,10 @@ static int HTML_StatusText_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchMsg") == 0) {
+		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_StatusText_t has no field '%%s'", key);
 }
 
@@ -13319,6 +13476,11 @@ EXTERN int luasteam_newHTML_StatusText_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchMsg");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -13353,6 +13515,10 @@ static int HTML_ShowToolTip_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchMsg") == 0) {
+		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_ShowToolTip_t has no field '%%s'", key);
 }
 
@@ -13364,6 +13530,11 @@ EXTERN int luasteam_newHTML_ShowToolTip_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchMsg");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
@@ -13398,6 +13569,10 @@ static int HTML_UpdateToolTip_t_newindex(lua_State *L) {
 		self->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "pchMsg") == 0) {
+		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		return 0;
+	}
 	return luaL_error(L, "HTML_UpdateToolTip_t has no field '%%s'", key);
 }
 
@@ -13409,6 +13584,11 @@ EXTERN int luasteam_newHTML_UpdateToolTip_t(lua_State *L) {
 		lua_getfield(L, 1, "unBrowserHandle");
 		if (!lua_isnil(L, -1)) {
 			ptr->unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "pchMsg");
+		if (!lua_isnil(L, -1)) {
+			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
 		}
 		lua_pop(L, 1);
 	}
