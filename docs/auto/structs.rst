@@ -848,6 +848,13 @@ SteamNetworkingConfigValue_t
     * **m_eDataType** (int)
     * **m_val.m_int64** (uint64)
 
+.. function:: SteamNetworkingConfigValue_t:SetInt32(eVal, data)
+
+    🤖 **Auto-generated binding**
+
+    :param int eVal:
+    :param int data:
+
 .. function:: SteamNetworkingConfigValue_t:SetInt64(eVal, data)
 
     🤖 **Auto-generated binding**

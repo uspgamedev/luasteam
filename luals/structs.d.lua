@@ -468,6 +468,10 @@ function Steam.newSteamNetworkPingLocation_t(table) end
 local SteamNetworkingConfigValue_t = {}
 
 ---@param eVal integer
+---@param data integer
+function SteamNetworkingConfigValue_t:SetInt32(eVal, data) end
+
+---@param eVal integer
 ---@param data uint64
 function SteamNetworkingConfigValue_t:SetInt64(eVal, data) end
 

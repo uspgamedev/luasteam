@@ -46,6 +46,7 @@ pub struct Stats {
     pub skipped_interfaces: Vec<(String, SkipReason)>,
     pub skipped_methods: Vec<(String, SkipReason)>,
     pub skipped_structs: Vec<(String, SkipReason)>,
+    pub skipped_struct_methods: Vec<(String, SkipReason)>,
 
     // Per-interface coverage: (total_methods, auto_generated_methods, manual_impl_methods)
     pub interface_coverage: HashMap<String, (usize, usize, usize)>,
@@ -158,6 +159,35 @@ impl Stats {
             }
 
             // Sort and display
+            let mut reasons: Vec<_> = by_reason.keys().collect();
+            reasons.sort();
+
+            for reason_desc in reasons {
+                let methods = by_reason.get(reason_desc).unwrap();
+                println!("\n  [{}] ({} methods)", reason_desc, methods.len());
+                for method_name in methods {
+                    println!("    • {}", method_name);
+                }
+            }
+        }
+
+        // Print skipped struct methods grouped by reason
+        if !self.skipped_struct_methods.is_empty() {
+            println!("\n┌─────────────────────────────────────────────────────────────┐");
+            println!(
+                "│ Skipped Struct Methods ({}) — Grouped by Reason",
+                self.skipped_struct_methods.len()
+            );
+            println!("└─────────────────────────────────────────────────────────────┘");
+
+            let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
+            for (name, reason) in &self.skipped_struct_methods {
+                by_reason
+                    .entry(reason.description())
+                    .or_default()
+                    .push(name);
+            }
+
             let mut reasons: Vec<_> = by_reason.keys().collect();
             reasons.sort();
 

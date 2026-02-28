@@ -42,6 +42,7 @@ pub struct StructGenOutput {
     // For documentation
     pub readable_fields: Vec<(String, LType)>, // (fieldname, ltype)
     pub method_signatures: Vec<(String, LuaMethodSignature)>, // (lua_name, sig)
+    pub skipped_methods: Vec<(String, SkipReason)>, // (StructName::MethodName, reason)
 }
 
 struct Generator {

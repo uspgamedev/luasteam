@@ -2976,6 +2976,13 @@ EXTERN int luasteam_newSteamNetworkPingLocation_t(lua_State *L) {
 
 static int SteamNetworkingConfigValue_tMetatable_ref = LUA_NOREF;
 
+static int luasteam_SteamNetworkingConfigValue_t_SetInt32(lua_State *L) {
+	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
+	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
+	int32_t data = static_cast<int32_t>(luaL_checkint(L, 3));
+	self->SetInt32(eVal, data);
+	return 0;
+}
 static int luasteam_SteamNetworkingConfigValue_t_SetInt64(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
@@ -20165,7 +20172,8 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__newindex", SteamNetworkPingLocation_t_newindex);
 	SteamNetworkPingLocation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	// SteamNetworkingConfigValue_t metatable
-	lua_createtable(L, 0, 5);
+	lua_createtable(L, 0, 6);
+	add_func(L, "SetInt32", luasteam_SteamNetworkingConfigValue_t_SetInt32);
 	add_func(L, "SetInt64", luasteam_SteamNetworkingConfigValue_t_SetInt64);
 	add_func(L, "SetFloat", luasteam_SteamNetworkingConfigValue_t_SetFloat);
 	add_func(L, "SetString", luasteam_SteamNetworkingConfigValue_t_SetString);

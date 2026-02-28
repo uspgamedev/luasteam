@@ -53,6 +53,7 @@ impl Generator {
                     // We are assuming a struct does not depend on one not yet declared
                     self.added_structs.insert(output.name.clone());
                     self.added_structs_with_ptr.insert(output.name.clone());
+                    stats.skipped_struct_methods.extend(output.skipped_methods.iter().cloned());
                     outputs.push(output);
                     stats.structs_generated += 1;
                 }
@@ -130,9 +131,9 @@ impl Generator {
         &self,
         struct_name: &str,
         method: &Method,
-    ) -> Option<(String, String, String, LuaMethodSignature)> {
+    ) -> Result<(String, String, String, LuaMethodSignature), SkipReason> {
         if method.methodname == "Construct" {
-            return None;
+            return Err(SkipReason::ManualBlocklist("internal constructor".to_string()));
         }
         let lua_name = Self::lua_method_public_name(method);
         let c_func_name = format!("luasteam_{}_{}", struct_name, lua_name);
@@ -144,8 +145,8 @@ impl Generator {
             struct_name, struct_name
         ));
         let mut sig = LuaMethodSignature::default();
-        self.generate_method_body(method, &mut s, &mut sig, "self", 2).ok()?;
-        Some((lua_name, c_func_name, s.finish(), sig))
+        self.generate_method_body(method, &mut s, &mut sig, "self", 2)?;
+        Ok((lua_name, c_func_name, s.finish(), sig))
     }
 
     fn generate_struct(&self, st: &Struct) -> Option<StructGenOutput> {
@@ -158,13 +159,22 @@ impl Generator {
         let mut methods: Vec<(String, String)> = Vec::new(); // (lua_name, c_func_name)
         let mut method_cpp = String::new();
         let mut method_signatures: Vec<(String, LuaMethodSignature)> = Vec::new();
+        let mut skipped_methods: Vec<(String, SkipReason)> = Vec::new();
         for method in &st.methods {
-            if let Some((lua_name, c_func_name, cpp_code, sig)) =
-                self.generate_struct_method(name, method)
-            {
-                method_signatures.push((lua_name.clone(), sig));
-                methods.push((lua_name, c_func_name));
-                method_cpp.push_str(&cpp_code);
+            match self.generate_struct_method(name, method) {
+                Ok((lua_name, c_func_name, cpp_code, sig)) => {
+                    method_signatures.push((lua_name.clone(), sig));
+                    methods.push((lua_name, c_func_name));
+                    method_cpp.push_str(&cpp_code);
+                }
+                Err(reason) => {
+                    if !matches!(reason, SkipReason::ManualBlocklist(_)) {
+                        skipped_methods.push((
+                            format!("{}::{}", name, method.methodname),
+                            reason,
+                        ));
+                    }
+                }
             }
         }
 
@@ -539,6 +549,7 @@ impl Generator {
             add_code,
             readable_fields: readable_field_types,
             method_signatures,
+            skipped_methods,
         })
     }
 }

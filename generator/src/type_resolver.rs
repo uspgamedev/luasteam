@@ -46,6 +46,7 @@ impl TypeResolver {
 
         // Add basic types
         type_map.insert("int".to_string(), "int".to_string());
+        type_map.insert("int32_t".to_string(), "int".to_string());
         type_map.insert("int32".to_string(), "int".to_string());
         type_map.insert("uint32".to_string(), "int".to_string());
         type_map.insert("unsigned int".to_string(), "int".to_string());
