@@ -18,4 +18,7 @@ assert(luasteam.Matchmaking ~= nil, "matchmaking interface not found")
 assert(luasteam.GameServerStats ~= nil, "gameServerStats interface not found")
 assert(luasteam.Screenshots ~= nil, "screenshots interface not found")
 
+x, y = luasteam.Extra.ParseUint64("12345678901234567890"), luasteam.Extra.ParseUint64("748638495044322222")
+assert(tostring(x + y) == "13094317396278890112", "ParseUint64 failed (expected 13094317396278890112, got " .. tostring(x + y) .. ")")
+
 print("API import test passed successfully in " .. (os.clock() - before) .. " seconds!")

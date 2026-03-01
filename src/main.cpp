@@ -12,6 +12,7 @@
 EXTERN int luaopen_luasteam(lua_State *L) {
     lua_createtable(L, 0, 41);
     luasteam::add_Core(L);
+    luasteam::init_Common(L);
     luasteam::add_Client(L);
     luasteam::add_GameServerClient(L);
     luasteam::add_Friends_auto(L);

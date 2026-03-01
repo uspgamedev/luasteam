@@ -16,7 +16,7 @@
 EXTERN int luasteam_init(lua_State *L) {
     bool success = SteamAPI_Init();
     if (success) {
-        luasteam::init_Common(L);
+        // luasteam::init_Common(L); // already called
         luasteam::init_Client(L);
         luasteam::init_structs_auto(L);
         luasteam::init_SteamNetworkingMessage_t(L);
