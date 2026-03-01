@@ -14,7 +14,7 @@ fn emit_copy_string_table_to_field(
     lua_tbl_idx: &str,
     target: &str,
     field_name: &str,
-    count_field: &str,
+    alloc_count_expr: &str,
 ) {
     cpp.line(&format!("int32 _n = (int32)lua_objlen(L, {lua_tbl_idx});"));
     cpp.line("const char **_arr = new const char*[_n];");
@@ -26,7 +26,7 @@ fn emit_copy_string_table_to_field(
     cpp.indent_left();
     cpp.line("}");
     cpp.line(&format!("{target}->{field_name} = _arr;"));
-    cpp.line(&format!("{target}->{count_field} = _n;"));
+    cpp.line(&format!("{alloc_count_expr} = _n;"));
 }
 
 impl Generator {
@@ -205,17 +205,19 @@ impl Generator {
         let mut readable_field_types: Vec<(String, LType)> = Vec::new();
         let mut writable_fields: Vec<(&Field, String, String)> = Vec::new();
         // Fields with string_count: const char** arrays managed by Lua.
-        let mut string_array_fields: Vec<(&Field, String)> = Vec::new(); // (field, count_fieldname)
+        // Each entry is (field, alloc_idx) where alloc_idx is the index into the extra
+        // int32 slots appended after the struct in the userdata allocation.
+        let mut string_array_fields: Vec<(&Field, usize)> = Vec::new();
 
         for field in &accessible_fields {
             // Special case: const char ** with string_count metadata
-            if let Some(count_field) = &field.string_count {
-                let count_field = count_field.clone();
+            if field.string_count.is_some() {
+                let idx = string_array_fields.len();
                 readable_field_types.push((
                     field.fieldname.clone(),
                     LType::Array(Box::new(LType::String)),
                 ));
-                string_array_fields.push((field, count_field));
+                string_array_fields.push((field, idx));
                 continue;
             }
 
@@ -292,17 +294,18 @@ impl Generator {
                 cpp.indent_left();
                 cpp.line("}");
             }
-            for (field, count_field) in &string_array_fields {
+            for (field, idx) in &string_array_fields {
                 cpp.line(&format!(
                     "if (strcmp(key, \"{}\") == 0) {{",
                     field.fieldname
                 ));
                 cpp.indent_right();
-                cpp.line("lua_newtable(L);");
                 cpp.line(&format!(
-                    "for (int32 _i = 0; _i < self->{}; _i++) {{",
-                    count_field
+                    "int32 *_alloc_count = (int32*)((char*)self + sizeof({})) + {};",
+                    name, idx
                 ));
+                cpp.line("lua_newtable(L);");
+                cpp.line("for (int32 _i = 0; _i < *_alloc_count; _i++) {");
                 cpp.indent_right();
                 cpp.line(&format!(
                     "lua_pushstring(L, self->{}[_i]);",
@@ -311,6 +314,7 @@ impl Generator {
                 cpp.line("lua_rawseti(L, -2, _i + 1);");
                 cpp.indent_left();
                 cpp.line("}");
+                cpp.line("luasteam::set_readonly_table_metatable(L);");
                 cpp.line("return 1;");
                 cpp.indent_left();
                 cpp.line("}");
@@ -343,19 +347,20 @@ impl Generator {
                 cpp.indent_left();
                 cpp.line("}");
             }
-            for (field, count_field) in &string_array_fields {
+            for (field, idx) in &string_array_fields {
                 cpp.line(&format!(
                     "if (strcmp(key, \"{}\") == 0) {{",
                     field.fieldname
                 ));
                 cpp.indent_right();
                 cpp.line("luaL_checktype(L, 3, LUA_TTABLE);");
+                cpp.line(&format!(
+                    "int32 *_alloc_count = (int32*)((char*)self + sizeof({})) + {};",
+                    name, idx
+                ));
                 cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
                 cpp.indent_right();
-                cpp.line(&format!(
-                    "for (int32 _i = 0; _i < self->{}; _i++)",
-                    count_field
-                ));
+                cpp.line("for (int32 _i = 0; _i < *_alloc_count; _i++)");
                 cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
@@ -365,7 +370,7 @@ impl Generator {
                     "3",
                     "self",
                     &field.fieldname,
-                    count_field,
+                    "*_alloc_count",
                 );
                 cpp.line("return 0;");
                 cpp.indent_left();
@@ -388,13 +393,14 @@ impl Generator {
                 "{} *self = ({}*)lua_touserdata(L, 1);",
                 name, name
             ));
-            for (field, count_field) in &string_array_fields {
+            for (field, idx) in &string_array_fields {
                 cpp.line(&format!("if (self->{} != nullptr) {{", field.fieldname));
                 cpp.indent_right();
                 cpp.line(&format!(
-                    "for (int32 _i = 0; _i < self->{}; _i++)",
-                    count_field
+                    "int32 *_alloc_count = (int32*)((char*)self + sizeof({})) + {};",
+                    name, idx
                 ));
+                cpp.line("for (int32 _i = 0; _i < *_alloc_count; _i++)");
                 cpp.line(&format!("    free((void*)self->{}[_i]);", field.fieldname));
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
@@ -409,11 +415,23 @@ impl Generator {
         // Constructor
         cpp.line(&format!("EXTERN int luasteam_new{}(lua_State *L) {{", name));
         cpp.indent_right();
-        cpp.line(&format!(
-            "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}));",
-            name, name, name
-        ));
-        cpp.line(&format!("new (ptr) {}();", name));
+        let n_extra = string_array_fields.len();
+        if n_extra > 0 {
+            cpp.line(&format!(
+                "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}) + {} * sizeof(int32));",
+                name, name, name, n_extra
+            ));
+            cpp.line(&format!(
+                "memset(ptr, 0, sizeof({}) + {} * sizeof(int32));",
+                name, n_extra
+            ));
+        } else {
+            cpp.line(&format!(
+                "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}));",
+                name, name, name
+            ));
+            cpp.line(&format!("new (ptr) {}();", name));
+        }
         if has_writable {
             cpp.line("if (!lua_isnoneornil(L, 1)) {");
             cpp.indent_right();
@@ -427,16 +445,20 @@ impl Generator {
                 cpp.line("}");
                 cpp.line("lua_pop(L, 1);");
             }
-            for (field, count_field) in &string_array_fields {
+            for (field, idx) in &string_array_fields {
                 cpp.line(&format!("lua_getfield(L, 1, \"{}\");", field.fieldname));
                 cpp.line("if (lua_istable(L, -1)) {");
                 cpp.indent_right();
+                cpp.line(&format!(
+                    "int32 *_alloc_count = (int32*)((char*)ptr + sizeof({})) + {};",
+                    name, idx
+                ));
                 emit_copy_string_table_to_field(
                     &mut cpp,
                     "-1",
                     "ptr",
                     &field.fieldname,
-                    count_field,
+                    "*_alloc_count",
                 );
                 cpp.indent_left();
                 cpp.line("}");
@@ -462,11 +484,23 @@ impl Generator {
             name, name
         ));
         ns.indent_right();
-        ns.line(&format!(
-            "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}));",
-            name, name, name
-        ));
-        ns.line("*ptr = val;");
+        if n_extra > 0 {
+            ns.line(&format!(
+                "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}) + {} * sizeof(int32));",
+                name, name, name, n_extra
+            ));
+            ns.line("*ptr = val;");
+            ns.line(&format!(
+                "memset((char*)ptr + sizeof({}), 0, {} * sizeof(int32));",
+                name, n_extra
+            ));
+        } else {
+            ns.line(&format!(
+                "{} *ptr = ({}*)lua_newuserdata(L, sizeof({}));",
+                name, name, name
+            ));
+            ns.line("*ptr = val;");
+        }
         ns.set_metatable_from_ref(name);
         ns.indent_left();
         ns.line("}");

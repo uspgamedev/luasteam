@@ -217,6 +217,7 @@ SteamParamStringArray_t
     **Fields** (readable and writable):
 
     * **m_ppStrings** (str[])
+    * **m_nNumStrings** (int)
 
 .. _struct-LeaderboardEntry_t:
 

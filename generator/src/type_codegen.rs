@@ -332,6 +332,7 @@ impl Generator {
         s.line("lua_rawseti(L, -2, i+1);");
         s.indent_left();
         s.line("}");
+        s.line("luasteam::set_readonly_table_metatable(L);");
         Some((s.finish(), LType::Array(Box::new(ltype))))
     }
 }

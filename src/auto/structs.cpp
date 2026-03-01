@@ -658,12 +658,18 @@ static int SteamParamStringArray_t_index(lua_State *L) {
 	if (lua_type(L, 2) != LUA_TSTRING) { lua_pushnil(L); return 1; }
 	const char *key = lua_tostring(L, 2);
 	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
+	if (strcmp(key, "m_nNumStrings") == 0) {
+		lua_pushinteger(L, self->m_nNumStrings);
+		return 1;
+	}
 	if (strcmp(key, "m_ppStrings") == 0) {
+		int32 *_alloc_count = (int32*)((char*)self + sizeof(SteamParamStringArray_t)) + 0;
 		lua_newtable(L);
-		for (int32 _i = 0; _i < self->m_nNumStrings; _i++) {
+		for (int32 _i = 0; _i < *_alloc_count; _i++) {
 			lua_pushstring(L, self->m_ppStrings[_i]);
 			lua_rawseti(L, -2, _i + 1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -674,10 +680,15 @@ static int SteamParamStringArray_t_newindex(lua_State *L) {
 	if (lua_type(L, 2) != LUA_TSTRING) { return 0; }
 	const char *key = lua_tostring(L, 2);
 	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
+	if (strcmp(key, "m_nNumStrings") == 0) {
+		self->m_nNumStrings = static_cast<int32>(luaL_checkint(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "m_ppStrings") == 0) {
 		luaL_checktype(L, 3, LUA_TTABLE);
+		int32 *_alloc_count = (int32*)((char*)self + sizeof(SteamParamStringArray_t)) + 0;
 		if (self->m_ppStrings != nullptr) {
-			for (int32 _i = 0; _i < self->m_nNumStrings; _i++)
+			for (int32 _i = 0; _i < *_alloc_count; _i++)
 			    free((void*)self->m_ppStrings[_i]);
 			delete[] self->m_ppStrings;
 		}
@@ -689,7 +700,7 @@ static int SteamParamStringArray_t_newindex(lua_State *L) {
 			lua_pop(L, 1);
 		}
 		self->m_ppStrings = _arr;
-		self->m_nNumStrings = _n;
+		*_alloc_count = _n;
 		return 0;
 	}
 	return luaL_error(L, "SteamParamStringArray_t has no field '%%s'", key);
@@ -698,7 +709,8 @@ static int SteamParamStringArray_t_newindex(lua_State *L) {
 static int SteamParamStringArray_t_gc(lua_State *L) {
 	SteamParamStringArray_t *self = (SteamParamStringArray_t*)lua_touserdata(L, 1);
 	if (self->m_ppStrings != nullptr) {
-		for (int32 _i = 0; _i < self->m_nNumStrings; _i++)
+		int32 *_alloc_count = (int32*)((char*)self + sizeof(SteamParamStringArray_t)) + 0;
+		for (int32 _i = 0; _i < *_alloc_count; _i++)
 		    free((void*)self->m_ppStrings[_i]);
 		delete[] self->m_ppStrings;
 	}
@@ -706,12 +718,18 @@ static int SteamParamStringArray_t_gc(lua_State *L) {
 }
 
 EXTERN int luasteam_newSteamParamStringArray_t(lua_State *L) {
-	SteamParamStringArray_t *ptr = (SteamParamStringArray_t*)lua_newuserdata(L, sizeof(SteamParamStringArray_t));
-	new (ptr) SteamParamStringArray_t();
+	SteamParamStringArray_t *ptr = (SteamParamStringArray_t*)lua_newuserdata(L, sizeof(SteamParamStringArray_t) + 1 * sizeof(int32));
+	memset(ptr, 0, sizeof(SteamParamStringArray_t) + 1 * sizeof(int32));
 	if (!lua_isnoneornil(L, 1)) {
 		luaL_checktype(L, 1, LUA_TTABLE);
+		lua_getfield(L, 1, "m_nNumStrings");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_nNumStrings = static_cast<int32>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
 		lua_getfield(L, 1, "m_ppStrings");
 		if (lua_istable(L, -1)) {
+			int32 *_alloc_count = (int32*)((char*)ptr + sizeof(SteamParamStringArray_t)) + 0;
 			int32 _n = (int32)lua_objlen(L, -1);
 			const char **_arr = new const char*[_n];
 			for (int32 _i = 0; _i < _n; _i++) {
@@ -720,7 +738,7 @@ EXTERN int luasteam_newSteamParamStringArray_t(lua_State *L) {
 				lua_pop(L, 1);
 			}
 			ptr->m_ppStrings = _arr;
-			ptr->m_nNumStrings = _n;
+			*_alloc_count = _n;
 		}
 		lua_pop(L, 1);
 	}
@@ -2446,6 +2464,7 @@ static int SteamNetConnectionInfo_t_index(lua_State *L) {
 			lua_pushinteger(L, self->reserved[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -2669,6 +2688,7 @@ static int SteamNetConnectionRealTimeStatus_t_index(lua_State *L) {
 			lua_pushinteger(L, self->reserved[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -2848,6 +2868,7 @@ static int SteamNetConnectionRealTimeLaneStatus_t_index(lua_State *L) {
 			lua_pushinteger(L, self->reserved[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -4982,6 +5003,7 @@ static int FriendsEnumerateFollowingList_t_index(lua_State *L) {
 			luasteam::pushuint64(L, self->m_rgSteamID[i].ConvertToUint64());
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_nResultsReturned") == 0) {
@@ -6871,6 +6893,7 @@ static int RemoteStorageEnumerateUserPublishedFilesResult_t_index(lua_State *L) 
 			luasteam::pushuint64(L, self->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -7019,6 +7042,7 @@ static int RemoteStorageEnumerateUserSubscribedFilesResult_t_index(lua_State *L)
 			luasteam::pushuint64(L, self->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_rgRTimeSubscribed") == 0) {
@@ -7027,6 +7051,7 @@ static int RemoteStorageEnumerateUserSubscribedFilesResult_t_index(lua_State *L)
 			lua_pushinteger(L, self->m_rgRTimeSubscribed[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -7704,6 +7729,7 @@ static int RemoteStorageEnumerateWorkshopFilesResult_t_index(lua_State *L) {
 			luasteam::pushuint64(L, self->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_rgScore") == 0) {
@@ -7712,6 +7738,7 @@ static int RemoteStorageEnumerateWorkshopFilesResult_t_index(lua_State *L) {
 			lua_pushnumber(L, self->m_rgScore[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_nAppId") == 0) {
@@ -8240,6 +8267,7 @@ static int RemoteStorageEnumerateUserSharedWorkshopFilesResult_t_index(lua_State
 			luasteam::pushuint64(L, self->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -8405,6 +8433,7 @@ static int RemoteStorageEnumeratePublishedFilesByUserActionResult_t_index(lua_St
 			luasteam::pushuint64(L, self->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_rgRTimeUpdated") == 0) {
@@ -8413,6 +8442,7 @@ static int RemoteStorageEnumeratePublishedFilesByUserActionResult_t_index(lua_St
 			lua_pushinteger(L, self->m_rgRTimeUpdated[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -11731,6 +11761,7 @@ static int GetAppDependenciesResult_t_index(lua_State *L) {
 			lua_pushinteger(L, self->m_rgAppIDs[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	if (strcmp(key, "m_nNumAppDependencies") == 0) {
@@ -15728,6 +15759,7 @@ static int SteamNetworkingFakeIPResult_t_index(lua_State *L) {
 			lua_pushinteger(L, self->m_unPorts[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -15915,8 +15947,9 @@ SteamPartyBeaconLocation_t *check_SteamPartyBeaconLocation_t_ptr(lua_State *L, i
 SteamPartyBeaconLocation_t check_SteamPartyBeaconLocation_t(lua_State *L, int nParam) { return *check_SteamPartyBeaconLocation_t_ptr(L, nParam); }
 
 void push_SteamParamStringArray_t(lua_State *L, SteamParamStringArray_t val) {
-	SteamParamStringArray_t *ptr = (SteamParamStringArray_t*)lua_newuserdata(L, sizeof(SteamParamStringArray_t));
+	SteamParamStringArray_t *ptr = (SteamParamStringArray_t*)lua_newuserdata(L, sizeof(SteamParamStringArray_t) + 1 * sizeof(int32));
 	*ptr = val;
+	memset((char*)ptr + sizeof(SteamParamStringArray_t), 0, 1 * sizeof(int32));
 	lua_rawgeti(L, LUA_REGISTRYINDEX, SteamParamStringArray_tMetatable_ref);
 	lua_setmetatable(L, -2);
 }

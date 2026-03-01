@@ -675,13 +675,11 @@ impl SteamApi {
                 .field_mut(field_name)
                 .private = true;
         }
-        // TODO: change this, it shouldn't be managed automatically
         // SteamParamStringArray_t::m_ppStrings is a const char** managed by Lua.
-        // m_nNumStrings is managed alongside it (set/freed atomically), so mark it private.
+        // m_nNumStrings must be set explicitly by the user alongside it (as in C).
         {
             let st = self.struct_mut("SteamParamStringArray_t");
             st.field_mut("m_ppStrings").string_count = Some("m_nNumStrings".to_string());
-            st.field_mut("m_nNumStrings").private = true;
         }
         self.fix_steam_client();
     }

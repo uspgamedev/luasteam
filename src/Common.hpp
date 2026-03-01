@@ -30,6 +30,10 @@ void copy_str_into(const char *&dest, const char *src);
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
 
+// Sets a read-only metatable on the table at the top of the stack.
+// Writing to the table will produce an error.
+void set_readonly_table_metatable(lua_State *L);
+
 template <typename T> class CallResultListener {
   public:
     int callback_ref = LUA_NOREF;

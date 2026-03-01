@@ -423,6 +423,7 @@ template <> void CallResultListener<GetAppDependenciesResult_t>::Result(GetAppDe
 			lua_pushinteger(L, data->m_rgAppIDs[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgAppIDs");
 		lua_pushinteger(L, data->m_nNumAppDependencies);
 		lua_setfield(L, -2, "m_nNumAppDependencies");
@@ -1918,6 +1919,7 @@ static int luasteam_UGC_GetSubscribedItems(lua_State *L, ISteamUGC *iface) {
 		luasteam::pushuint64(L, pvecPublishedFileID[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 static int luasteam_UGC_GetSubscribedItems_user(lua_State *L) { return luasteam_UGC_GetSubscribedItems(L, SteamUGC()); }

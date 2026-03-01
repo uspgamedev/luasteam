@@ -12,25 +12,7 @@
 // ======= SteamGameServer =======
 // ===============================
 
-namespace luasteam {
-
-std::vector<unsigned char> hexToBuffer(const std::string &hexString) {
-    std::vector<unsigned char> buffer;
-    buffer.reserve(hexString.size() / 2);
-    for (size_t i = 0; i < hexString.size(); i += 2) {
-        unsigned int byte;
-        std::istringstream iss(hexString.substr(i, 2));
-        iss >> std::hex >> byte;
-        buffer.push_back(static_cast<unsigned char>(byte));
-    }
-    return buffer;
-}
-
-} // namespace luasteam
-
 using luasteam::CallResultListener;
-
-namespace {} // namespace
 
 // Manually implemented because it's a core initialization function
 // bool SteamGameServer_Init()

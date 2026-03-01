@@ -338,6 +338,7 @@ static int luasteam_Apps_GetInstalledDepots(lua_State *L) {
 		lua_pushinteger(L, pvecDepots[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 

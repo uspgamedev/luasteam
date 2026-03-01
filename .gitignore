@@ -1,6 +1,8 @@
 
 # Created by https://www.gitignore.io/api/c++,lua,osx,linux,windows
 
+generator/audit.py
+
 ### Steam Stuff ###
 
 /sdk

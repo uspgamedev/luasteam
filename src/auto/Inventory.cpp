@@ -211,6 +211,7 @@ static int luasteam_Inventory_GetResultItems(lua_State *L, ISteamInventory *ifac
 		luasteam::push_SteamItemDetails_t(L, pOutItemsArray[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	lua_pushinteger(L, punOutItemsArraySize);
 	return 3;
 }
@@ -584,6 +585,7 @@ static int luasteam_Inventory_GetItemDefinitionIDs(lua_State *L, ISteamInventory
 		lua_pushinteger(L, pItemDefIDs[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	lua_pushinteger(L, punItemDefIDsArraySize);
 	return 3;
 }
@@ -646,6 +648,7 @@ static int luasteam_Inventory_GetEligiblePromoItemDefinitionIDs(lua_State *L, IS
 		lua_pushinteger(L, pItemDefIDs[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	lua_pushinteger(L, punItemDefIDsArraySize);
 	return 3;
 }

@@ -868,6 +868,7 @@ static int luasteam_UserStats_GetDownloadedLeaderboardEntry(lua_State *L) {
 		lua_pushinteger(L, pDetails[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 3;
 }
 
@@ -1085,6 +1086,7 @@ static int luasteam_UserStats_GetGlobalStatHistoryInt64(lua_State *L) {
 		luasteam::pushuint64(L, pData[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 
@@ -1104,6 +1106,7 @@ static int luasteam_UserStats_GetGlobalStatHistoryDouble(lua_State *L) {
 		lua_pushnumber(L, pData[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 

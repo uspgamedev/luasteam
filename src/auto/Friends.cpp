@@ -434,6 +434,7 @@ template <> void CallResultListener<FriendsEnumerateFollowingList_t>::Result(Fri
 			luasteam::pushuint64(L, data->m_rgSteamID[i].ConvertToUint64());
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgSteamID");
 		lua_pushinteger(L, data->m_nResultsReturned);
 		lua_setfield(L, -2, "m_nResultsReturned");
@@ -714,6 +715,7 @@ static int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
 		luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 1;
 }
 
@@ -820,6 +822,7 @@ static int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
 		luasteam::pushuint64(L, psteamIDClans[i].ConvertToUint64());
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 

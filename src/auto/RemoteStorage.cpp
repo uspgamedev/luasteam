@@ -473,12 +473,14 @@ template <> void CallResultListener<RemoteStorageEnumeratePublishedFilesByUserAc
 			luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgPublishedFileId");
 		lua_createtable(L, 50, 0);
 		for(decltype(50) i = 0; i < 50; i++) {
 			lua_pushinteger(L, data->m_rgRTimeUpdated[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgRTimeUpdated");
 	}
 	lua_pushboolean(L, io_fail);
@@ -510,6 +512,7 @@ template <> void CallResultListener<RemoteStorageEnumerateUserPublishedFilesResu
 			luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgPublishedFileId");
 	}
 	lua_pushboolean(L, io_fail);
@@ -541,12 +544,14 @@ template <> void CallResultListener<RemoteStorageEnumerateUserSubscribedFilesRes
 			luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgPublishedFileId");
 		lua_createtable(L, 50, 0);
 		for(decltype(50) i = 0; i < 50; i++) {
 			lua_pushinteger(L, data->m_rgRTimeSubscribed[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgRTimeSubscribed");
 	}
 	lua_pushboolean(L, io_fail);
@@ -578,12 +583,14 @@ template <> void CallResultListener<RemoteStorageEnumerateWorkshopFilesResult_t>
 			luasteam::pushuint64(L, data->m_rgPublishedFileId[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgPublishedFileId");
 		lua_createtable(L, 50, 0);
 		for(decltype(50) i = 0; i < 50; i++) {
 			lua_pushnumber(L, data->m_rgScore[i]);
 			lua_rawseti(L, -2, i+1);
 		}
+		luasteam::set_readonly_table_metatable(L);
 		lua_setfield(L, -2, "m_rgScore");
 		lua_pushinteger(L, data->m_nAppId);
 		lua_setfield(L, -2, "m_nAppId");

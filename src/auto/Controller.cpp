@@ -56,6 +56,7 @@ static int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 
@@ -145,6 +146,7 @@ static int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 		luasteam::pushuint64(L, handlesOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 
@@ -190,6 +192,7 @@ static int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 
@@ -235,6 +238,7 @@ static int luasteam_Controller_GetAnalogActionOrigins(lua_State *L) {
 		lua_pushinteger(L, originsOut[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 

@@ -3,6 +3,9 @@
 
 namespace {
 int uint64Metatable_ref = LUA_NOREF;
+int readonly_table_Metatable_ref = LUA_NOREF;
+
+static int readonly_table_newindex(lua_State *L) { return luaL_error(L, "array fields are read-only; assign a new table directly to the struct field"); }
 
 void my_assert(lua_State *L, int cond, const char *fmt, va_list list) {
     if (cond) {
@@ -142,6 +145,11 @@ void copy_str_into(const char *&dest, const char *src) {
     dest = new_dest;
 }
 
+void set_readonly_table_metatable(lua_State *L) {
+    lua_rawgeti(L, LUA_REGISTRYINDEX, readonly_table_Metatable_ref);
+    lua_setmetatable(L, -2);
+}
+
 void add_func(lua_State *L, const char *name, lua_CFunction func) {
     lua_pushcfunction(L, func);
     lua_setfield(L, -2, name);
@@ -163,12 +171,18 @@ void init_Common(lua_State *L) {
     add_func(L, "__mod", luasteam_moduint64);
     add_func(L, "__tostring", luasteam_uint64ToString);
     uint64Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    // read-only table metatable (used for string array field getters)
+    lua_createtable(L, 0, 1);
+    add_func(L, "__newindex", readonly_table_newindex);
+    readonly_table_Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
 void shutdown_Common(lua_State *L) {
     global_lua_state = nullptr;
     luaL_unref(L, LUA_REGISTRYINDEX, uint64Metatable_ref);
     uint64Metatable_ref = LUA_NOREF;
+    luaL_unref(L, LUA_REGISTRYINDEX, readonly_table_Metatable_ref);
+    readonly_table_Metatable_ref = LUA_NOREF;
 }
 
 } // namespace luasteam

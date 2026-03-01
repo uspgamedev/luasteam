@@ -105,6 +105,7 @@ function Steam.newSteamPartyBeaconLocation_t(table) end
 
 ---@class SteamParamStringArray_t
 ---@field m_ppStrings string[]
+---@field m_nNumStrings integer
 
 ---@param table table?
 ---@return SteamParamStringArray_t

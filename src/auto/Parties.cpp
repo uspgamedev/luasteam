@@ -271,6 +271,7 @@ static int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 		luasteam::push_SteamPartyBeaconLocation_t(L, pLocationList[i]);
 		lua_rawseti(L, -2, i+1);
 	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 
