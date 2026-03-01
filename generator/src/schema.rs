@@ -22,7 +22,10 @@ fn print_skipped_grouped(title: &str, items: &[(String, SkipReason)]) {
     println!("└─────────────────────────────────────────────────────────────┘");
     let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
     for (name, reason) in items {
-        by_reason.entry(reason.description()).or_default().push(name);
+        by_reason
+            .entry(reason.description())
+            .or_default()
+            .push(name);
     }
     let mut reasons: Vec<_> = by_reason.keys().collect();
     reasons.sort();
@@ -241,8 +244,11 @@ impl SteamApi {
             (
                 "ISteamUGC",
                 vec![
+                    ("CreateQueryUGCDetailsRequest", vec!["pvecPublishedFileID"]),
                     ("StartPlaytimeTracking", vec!["pvecPublishedFileID"]),
                     ("StopPlaytimeTracking", vec!["pvecPublishedFileID"]),
+                    ("SetItemsDisabledLocally", vec!["pvecPublishedFileIDs"]),
+                    ("SetSubscriptionsLoadOrder", vec!["pvecPublishedFileIDs"]),
                 ],
             ),
             (
@@ -478,6 +484,11 @@ impl SteamApi {
                 vec![
                     ("GetSubscribedItems", "pvecPublishedFileID", "cMaxEntries"),
                     (
+                        "CreateQueryUGCDetailsRequest",
+                        "pvecPublishedFileID",
+                        "unNumPublishedFileIDs",
+                    ),
+                    (
                         "StartPlaytimeTracking",
                         "pvecPublishedFileID",
                         "unNumPublishedFileIDs",
@@ -485,6 +496,16 @@ impl SteamApi {
                     (
                         "StopPlaytimeTracking",
                         "pvecPublishedFileID",
+                        "unNumPublishedFileIDs",
+                    ),
+                    (
+                        "SetItemsDisabledLocally",
+                        "pvecPublishedFileIDs",
+                        "unNumPublishedFileIDs",
+                    ),
+                    (
+                        "SetSubscriptionsLoadOrder",
+                        "pvecPublishedFileIDs",
                         "unNumPublishedFileIDs",
                     ),
                 ],

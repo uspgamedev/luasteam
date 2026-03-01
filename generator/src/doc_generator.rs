@@ -473,9 +473,7 @@ impl DocGenerator {
             // Constructor
             doc.push_str(&format!(".. function:: Steam.new{}([table])\n\n", st.name));
             doc.push_str("    🤖 Constructor — creates a new userdata instance.\n\n");
-            doc.push_str(&format!(
-                "    :param table table: *(optional)* Initial field values as a table.\n"
-            ));
+            doc.push_str("    :param table table: *(optional)* Initial field values as a table.\n");
             doc.push_str(&format!(
                 "    :returns: ({}) New userdata instance.\n\n",
                 st.name

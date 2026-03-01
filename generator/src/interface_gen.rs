@@ -708,55 +708,52 @@ impl Generator {
             use CppType::*;
             if resolved.is_double_pointer() {
                 // Case 1: char ** with out_string annotation — Steam sets *param to an internal string.
-                if param.out_string.is_some() {
-                    if let CppType::Pointer { ttype, .. } = &resolved
-                        && ttype.contains("char")
-                    {
-                        s.line(&format!("char *{} = nullptr;", param.paramname));
-                        cpp_call_params.push(format!("&{}", param.paramname));
-                        pointer_params.push((param, false));
-                        i += 1;
-                        continue;
-                    }
+                if param.out_string.is_some()
+                    && let CppType::Pointer { ttype, .. } = &resolved
+                    && ttype.contains("char")
+                {
+                    s.line(&format!("char *{} = nullptr;", param.paramname));
+                    cpp_call_params.push(format!("&{}", param.paramname));
+                    pointer_params.push((param, false));
+                    i += 1;
+                    continue;
                 }
                 // Case 2: T** input array where T is an auto-generated struct with array_count.
-                if let Some(sz) = &param.array_count {
-                    if let CppType::Pointer { ttype, .. } = &resolved {
-                        if let Some(struct_name) = ttype.strip_suffix(" *") {
-                            if self.added_structs_with_ptr.contains(struct_name) {
-                                let struct_name = struct_name.to_string();
-                                let sz = sz.clone();
-                                s.line(&format!("int {} = (int)lua_objlen(L, {});", sz, lua_idx));
-                                s.line(&format!(
-                                    "std::vector<{} *> {}_vec({});",
-                                    struct_name, param.paramname, sz
-                                ));
-                                s.line(&format!("for (int _i = 0; _i < {}; _i++) {{", sz));
-                                s.indent_right();
-                                s.line(&format!("lua_rawgeti(L, {}, _i + 1);", lua_idx));
-                                s.line(&format!(
-                                    "{}_vec[_i] = luasteam::check_{}_ptr(L, -1);",
-                                    param.paramname, struct_name
-                                ));
-                                s.line("lua_pop(L, 1);");
-                                s.indent_left();
-                                s.line("}");
-                                s.line(&format!(
-                                    "{} **{} = {}_vec.data();",
-                                    struct_name, param.paramname, param.paramname
-                                ));
-                                cpp_call_params.push(param.paramname.clone());
-                                sig.add_param(
-                                    param.paramname.clone(),
-                                    LType::Array(Box::new(LType::Userdata(struct_name))),
-                                );
-                                size_params_to_ignore.insert(sz);
-                                lua_idx += 1;
-                                i += 1;
-                                continue;
-                            }
-                        }
-                    }
+                if let Some(sz) = &param.array_count
+                    && let CppType::Pointer { ttype, .. } = &resolved
+                    && let Some(struct_name) = ttype.strip_suffix(" *")
+                    && self.added_structs_with_ptr.contains(struct_name)
+                {
+                    let struct_name = struct_name.to_string();
+                    let sz = sz.clone();
+                    s.line(&format!("int {} = (int)lua_objlen(L, {});", sz, lua_idx));
+                    s.line(&format!(
+                        "std::vector<{} *> {}_vec({});",
+                        struct_name, param.paramname, sz
+                    ));
+                    s.line(&format!("for (int _i = 0; _i < {}; _i++) {{", sz));
+                    s.indent_right();
+                    s.line(&format!("lua_rawgeti(L, {}, _i + 1);", lua_idx));
+                    s.line(&format!(
+                        "{}_vec[_i] = luasteam::check_{}_ptr(L, -1);",
+                        param.paramname, struct_name
+                    ));
+                    s.line("lua_pop(L, 1);");
+                    s.indent_left();
+                    s.line("}");
+                    s.line(&format!(
+                        "{} **{} = {}_vec.data();",
+                        struct_name, param.paramname, param.paramname
+                    ));
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(
+                        param.paramname.clone(),
+                        LType::Array(Box::new(LType::Userdata(struct_name))),
+                    );
+                    size_params_to_ignore.insert(sz);
+                    lua_idx += 1;
+                    i += 1;
+                    continue;
                 }
                 return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
             }
@@ -783,16 +780,14 @@ impl Generator {
             match resolved {
                 Normal(_) => {
                     let lua_idx_s = lua_idx.to_string();
-                    match {
-                        self.generate_check(
-                            &param.paramtype,
-                            resolved,
-                            true,
-                            &param.paramname,
-                            &lua_idx_s,
-                            s.indent(),
-                        )
-                    } {
+                    match self.generate_check(
+                        &param.paramtype,
+                        resolved,
+                        true,
+                        &param.paramname,
+                        &lua_idx_s,
+                        s.indent(),
+                    ) {
                         Some((code, ltype)) => {
                             s.raw(&code);
                             cpp_call_params.push(param.paramname.clone());
@@ -1022,10 +1017,7 @@ impl Generator {
                             return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                         }
                         cpp_call_params.push(param.paramname.clone());
-                        sig.add_param(
-                            param.paramname.clone(),
-                            LType::Userdata(ttype.to_string()),
-                        );
+                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
                         lua_idx += 1;
                     }
                 }

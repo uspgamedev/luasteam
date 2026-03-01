@@ -1,8 +1,8 @@
 use super::Generator;
+use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::lua_type_info::LType;
-use crate::COUNTER;
 
 impl Generator {
     /// Generate code to check a lua value and convert it to a C++ type, returning the generated code and the Lua type info.
@@ -153,22 +153,20 @@ impl Generator {
                 if ttype == "char" {
                     assert!(!const_cast);
                     out.line(&format!("const char *{} = {};", value_accessor, var));
+                } else if const_cast {
+                    out.line(&format!(
+                        "{t} *{n} = const_cast<{t} *>(reinterpret_cast<const {t} *>({v}));",
+                        t = ttype,
+                        n = value_accessor,
+                        v = var
+                    ));
                 } else {
-                    if const_cast {
-                        out.line(&format!(
-                            "{t} *{n} = const_cast<{t} *>(reinterpret_cast<const {t} *>({v}));",
-                            t = ttype,
-                            n = value_accessor,
-                            v = var
-                        ));
-                    } else {
-                        out.line(&format!(
-                            "const {t} *{n} = reinterpret_cast<const {t} *>({v});",
-                            t = ttype,
-                            n = value_accessor,
-                            v = var
-                        ));
-                    }
+                    out.line(&format!(
+                        "const {t} *{n} = reinterpret_cast<const {t} *>({v});",
+                        t = ttype,
+                        n = value_accessor,
+                        v = var
+                    ));
                 }
             } else {
                 out.line(&format!(

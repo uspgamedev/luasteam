@@ -752,16 +752,21 @@ static int luasteam_UGC_CreateQueryAllUGCRequestPage_user(lua_State *L) { return
 static int luasteam_UGC_CreateQueryAllUGCRequestPage_gs(lua_State *L) { return luasteam_UGC_CreateQueryAllUGCRequestPage(L, SteamGameServerUGC()); }
 
 // In C++:
-// UGCQueryHandle_t CreateQueryUGCDetailsRequest(PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
+// UGCQueryHandle_t CreateQueryUGCDetailsRequest(const PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
 // In Lua:
-// (uint64, pvecPublishedFileID: uint64) UGC.CreateQueryUGCDetailsRequest(unNumPublishedFileIDs: int)
+// uint64 UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID: uint64[], unNumPublishedFileIDs: int)
 static int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L, ISteamUGC *iface) {
-	PublishedFileId_t pvecPublishedFileID;
-	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
-	UGCQueryHandle_t __ret = iface->CreateQueryUGCDetailsRequest(&pvecPublishedFileID, unNumPublishedFileIDs);
+	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
+	luaL_checktype(L, 1, LUA_TTABLE);
+	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
+	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+		lua_rawgeti(L, 1, i+1);
+		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+		lua_pop(L, 1);
+	}
+	UGCQueryHandle_t __ret = iface->CreateQueryUGCDetailsRequest(pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	luasteam::pushuint64(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileID);
-	return 2;
+	return 1;
 }
 static int luasteam_UGC_CreateQueryUGCDetailsRequest_user(lua_State *L) { return luasteam_UGC_CreateQueryUGCDetailsRequest(L, SteamUGC()); }
 static int luasteam_UGC_CreateQueryUGCDetailsRequest_gs(lua_State *L) { return luasteam_UGC_CreateQueryUGCDetailsRequest(L, SteamGameServerUGC()); }
@@ -2282,32 +2287,42 @@ static int luasteam_UGC_GetUserContentDescriptorPreferences_user(lua_State *L) {
 static int luasteam_UGC_GetUserContentDescriptorPreferences_gs(lua_State *L) { return luasteam_UGC_GetUserContentDescriptorPreferences(L, SteamGameServerUGC()); }
 
 // In C++:
-// bool SetItemsDisabledLocally(PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs, bool bDisabledLocally);
+// bool SetItemsDisabledLocally(const PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs, bool bDisabledLocally);
 // In Lua:
-// (bool, pvecPublishedFileIDs: uint64) UGC.SetItemsDisabledLocally(unNumPublishedFileIDs: int, bDisabledLocally: bool)
+// bool UGC.SetItemsDisabledLocally(pvecPublishedFileIDs: uint64[], unNumPublishedFileIDs: int, bDisabledLocally: bool)
 static int luasteam_UGC_SetItemsDisabledLocally(lua_State *L, ISteamUGC *iface) {
-	PublishedFileId_t pvecPublishedFileIDs;
-	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
-	bool bDisabledLocally = lua_toboolean(L, 2);
-	bool __ret = iface->SetItemsDisabledLocally(&pvecPublishedFileIDs, unNumPublishedFileIDs, bDisabledLocally);
+	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
+	luaL_checktype(L, 1, LUA_TTABLE);
+	std::vector<PublishedFileId_t> pvecPublishedFileIDs(unNumPublishedFileIDs);
+	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+		lua_rawgeti(L, 1, i+1);
+		pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
+		lua_pop(L, 1);
+	}
+	bool bDisabledLocally = lua_toboolean(L, 3);
+	bool __ret = iface->SetItemsDisabledLocally(pvecPublishedFileIDs.data(), unNumPublishedFileIDs, bDisabledLocally);
 	lua_pushboolean(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileIDs);
-	return 2;
+	return 1;
 }
 static int luasteam_UGC_SetItemsDisabledLocally_user(lua_State *L) { return luasteam_UGC_SetItemsDisabledLocally(L, SteamUGC()); }
 static int luasteam_UGC_SetItemsDisabledLocally_gs(lua_State *L) { return luasteam_UGC_SetItemsDisabledLocally(L, SteamGameServerUGC()); }
 
 // In C++:
-// bool SetSubscriptionsLoadOrder(PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs);
+// bool SetSubscriptionsLoadOrder(const PublishedFileId_t * pvecPublishedFileIDs, uint32 unNumPublishedFileIDs);
 // In Lua:
-// (bool, pvecPublishedFileIDs: uint64) UGC.SetSubscriptionsLoadOrder(unNumPublishedFileIDs: int)
+// bool UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs: uint64[], unNumPublishedFileIDs: int)
 static int luasteam_UGC_SetSubscriptionsLoadOrder(lua_State *L, ISteamUGC *iface) {
-	PublishedFileId_t pvecPublishedFileIDs;
-	uint32 unNumPublishedFileIDs = static_cast<uint32>(luaL_checkint(L, 1));
-	bool __ret = iface->SetSubscriptionsLoadOrder(&pvecPublishedFileIDs, unNumPublishedFileIDs);
+	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
+	luaL_checktype(L, 1, LUA_TTABLE);
+	std::vector<PublishedFileId_t> pvecPublishedFileIDs(unNumPublishedFileIDs);
+	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+		lua_rawgeti(L, 1, i+1);
+		pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
+		lua_pop(L, 1);
+	}
+	bool __ret = iface->SetSubscriptionsLoadOrder(pvecPublishedFileIDs.data(), unNumPublishedFileIDs);
 	lua_pushboolean(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileIDs);
-	return 2;
+	return 1;
 }
 static int luasteam_UGC_SetSubscriptionsLoadOrder_user(lua_State *L) { return luasteam_UGC_SetSubscriptionsLoadOrder(L, SteamUGC()); }
 static int luasteam_UGC_SetSubscriptionsLoadOrder_gs(lua_State *L) { return luasteam_UGC_SetSubscriptionsLoadOrder(L, SteamGameServerUGC()); }

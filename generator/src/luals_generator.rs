@@ -112,7 +112,7 @@ impl LuaLsGenerator {
             }
 
             // Constructor on Steam global
-            cb.line(&format!("---@param table table?"));
+            cb.line("---@param table table?");
             cb.line(&format!("---@return {}", st.name));
             cb.line(&format!("function Steam.new{}(table) end", st.name));
             cb.preceeding_blank_line();

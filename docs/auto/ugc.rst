@@ -156,18 +156,14 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `CreateQueryAllUGCRequestPage <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequestPage>`_
 
-.. function:: UGC.CreateQueryUGCDetailsRequest(unNumPublishedFileIDs)
+.. function:: UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID, unNumPublishedFileIDs)
 
     🤖 **Auto-generated binding**
 
+    :param uint64[] pvecPublishedFileID:
     :param int unNumPublishedFileIDs:
     :returns: (uint64) Return value
-    :returns: (uint64) Value for `pvecPublishedFileID`
     :SteamWorks: `CreateQueryUGCDetailsRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryUGCDetailsRequest>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
 
 .. function:: UGC.SendQueryUGCRequest(handle, callback)
 
@@ -1091,32 +1087,24 @@ Function Reference
 
     * Parameter ``pvecDescriptors`` is no longer a paramer, and is instead an additional return value
 
-.. function:: UGC.SetItemsDisabledLocally(unNumPublishedFileIDs, bDisabledLocally)
+.. function:: UGC.SetItemsDisabledLocally(pvecPublishedFileIDs, unNumPublishedFileIDs, bDisabledLocally)
 
     🤖 **Auto-generated binding**
 
+    :param uint64[] pvecPublishedFileIDs:
     :param int unNumPublishedFileIDs:
     :param bool bDisabledLocally:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pvecPublishedFileIDs`
     :SteamWorks: `SetItemsDisabledLocally <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemsDisabledLocally>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvecPublishedFileIDs`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UGC.SetSubscriptionsLoadOrder(unNumPublishedFileIDs)
+.. function:: UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs, unNumPublishedFileIDs)
 
     🤖 **Auto-generated binding**
 
+    :param uint64[] pvecPublishedFileIDs:
     :param int unNumPublishedFileIDs:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pvecPublishedFileIDs`
     :SteamWorks: `SetSubscriptionsLoadOrder <https://partner.steamgames.com/doc/api/ISteamUGC#SetSubscriptionsLoadOrder>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvecPublishedFileIDs`` is no longer a paramer, and is instead an additional return value
 
 
 Unimplemented Methods

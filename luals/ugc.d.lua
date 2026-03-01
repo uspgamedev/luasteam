@@ -19,10 +19,10 @@ function UGC.CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType,
 ---@return uint64
 function UGC.CreateQueryAllUGCRequestPage(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage) end
 
+---@param pvecPublishedFileID uint64[]
 ---@param unNumPublishedFileIDs integer
 ---@return uint64
----@return uint64 -- Value of: pvecPublishedFileID
-function UGC.CreateQueryUGCDetailsRequest(unNumPublishedFileIDs) end
+function UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID, unNumPublishedFileIDs) end
 
 ---@param handle uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
@@ -518,15 +518,15 @@ function UGC.GetWorkshopEULAStatus(callback) end
 ---@return integer -- Value of: pvecDescriptors
 function UGC.GetUserContentDescriptorPreferences(cMaxEntries) end
 
+---@param pvecPublishedFileIDs uint64[]
 ---@param unNumPublishedFileIDs integer
 ---@param bDisabledLocally boolean
 ---@return boolean
----@return uint64 -- Value of: pvecPublishedFileIDs
-function UGC.SetItemsDisabledLocally(unNumPublishedFileIDs, bDisabledLocally) end
+function UGC.SetItemsDisabledLocally(pvecPublishedFileIDs, unNumPublishedFileIDs, bDisabledLocally) end
 
+---@param pvecPublishedFileIDs uint64[]
 ---@param unNumPublishedFileIDs integer
 ---@return boolean
----@return uint64 -- Value of: pvecPublishedFileIDs
-function UGC.SetSubscriptionsLoadOrder(unNumPublishedFileIDs) end
+function UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs, unNumPublishedFileIDs) end
 
 Steam.UGC = UGC

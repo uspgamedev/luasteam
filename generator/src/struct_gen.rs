@@ -18,7 +18,7 @@ fn emit_copy_string_table_to_field(
 ) {
     cpp.line(&format!("int32 _n = (int32)lua_objlen(L, {lua_tbl_idx});"));
     cpp.line("const char **_arr = new const char*[_n];");
-    cpp.line(&format!("for (int32 _i = 0; _i < _n; _i++) {{"));
+    cpp.line("for (int32 _i = 0; _i < _n; _i++) {");
     cpp.indent_right();
     cpp.line(&format!("lua_rawgeti(L, {lua_tbl_idx}, _i + 1);"));
     cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
@@ -360,7 +360,13 @@ impl Generator {
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
                 cpp.line("}");
-                emit_copy_string_table_to_field(&mut cpp, "3", "self", &field.fieldname, count_field);
+                emit_copy_string_table_to_field(
+                    &mut cpp,
+                    "3",
+                    "self",
+                    &field.fieldname,
+                    count_field,
+                );
                 cpp.line("return 0;");
                 cpp.indent_left();
                 cpp.line("}");
@@ -425,7 +431,13 @@ impl Generator {
                 cpp.line(&format!("lua_getfield(L, 1, \"{}\");", field.fieldname));
                 cpp.line("if (lua_istable(L, -1)) {");
                 cpp.indent_right();
-                emit_copy_string_table_to_field(&mut cpp, "-1", "ptr", &field.fieldname, count_field);
+                emit_copy_string_table_to_field(
+                    &mut cpp,
+                    "-1",
+                    "ptr",
+                    &field.fieldname,
+                    count_field,
+                );
                 cpp.indent_left();
                 cpp.line("}");
                 cpp.line("lua_pop(L, 1);");
