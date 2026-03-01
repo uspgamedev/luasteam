@@ -83,7 +83,10 @@ impl LuaLsGenerator {
                     ltype.to_luals_string()
                 ));
             }
-            cb.line(&format!("local {} = {{}}", st.name));
+            // local declaration only needed if there are methods attached to it
+            if !st.method_signatures.is_empty() {
+                cb.line(&format!("local {} = {{}}", st.name));
+            }
             cb.preceeding_blank_line();
 
             // Methods on the class
