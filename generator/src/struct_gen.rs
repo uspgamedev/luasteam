@@ -9,6 +9,26 @@ use crate::{MANUAL_STRUCTS, MANUAL_STRUCTS_WITH_PTR, StructGenOutput};
 use std::fs;
 use std::path::Path;
 
+fn emit_copy_string_table_to_field(
+    cpp: &mut CodeBuilder,
+    lua_tbl_idx: &str,
+    target: &str,
+    field_name: &str,
+    count_field: &str,
+) {
+    cpp.line(&format!("int32 _n = (int32)lua_objlen(L, {lua_tbl_idx});"));
+    cpp.line("const char **_arr = new const char*[_n];");
+    cpp.line(&format!("for (int32 _i = 0; _i < _n; _i++) {{"));
+    cpp.indent_right();
+    cpp.line(&format!("lua_rawgeti(L, {lua_tbl_idx}, _i + 1);"));
+    cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
+    cpp.line("lua_pop(L, 1);");
+    cpp.indent_left();
+    cpp.line("}");
+    cpp.line(&format!("{target}->{field_name} = _arr;"));
+    cpp.line(&format!("{target}->{count_field} = _n;"));
+}
+
 impl Generator {
     pub(crate) fn generate_structs(&mut self, stats: &mut Stats) {
         let incomplete_structs = [
@@ -53,7 +73,9 @@ impl Generator {
                     // We are assuming a struct does not depend on one not yet declared
                     self.added_structs.insert(output.name.clone());
                     self.added_structs_with_ptr.insert(output.name.clone());
-                    stats.skipped_struct_methods.extend(output.skipped_methods.iter().cloned());
+                    stats
+                        .skipped_struct_methods
+                        .extend(output.skipped_methods.iter().cloned());
                     outputs.push(output);
                     stats.structs_generated += 1;
                 }
@@ -133,7 +155,9 @@ impl Generator {
         method: &Method,
     ) -> Result<(String, String, String, LuaMethodSignature), SkipReason> {
         if method.methodname == "Construct" {
-            return Err(SkipReason::ManualBlocklist("internal constructor".to_string()));
+            return Err(SkipReason::ManualBlocklist(
+                "internal constructor".to_string(),
+            ));
         }
         let lua_name = Self::lua_method_public_name(method);
         let c_func_name = format!("luasteam_{}_{}", struct_name, lua_name);
@@ -169,10 +193,7 @@ impl Generator {
                 }
                 Err(reason) => {
                     if !matches!(reason, SkipReason::ManualBlocklist(_)) {
-                        skipped_methods.push((
-                            format!("{}::{}", name, method.methodname),
-                            reason,
-                        ));
+                        skipped_methods.push((format!("{}::{}", name, method.methodname), reason));
                     }
                 }
             }
@@ -198,9 +219,9 @@ impl Generator {
                 continue;
             }
 
-            let (push_ok, push_code, ltype) =
-                self.generate_push(&field.fieldtype, &format!("self->{}", field.fieldname), 2);
-            if push_ok {
+            if let Some((push_code, ltype)) =
+                self.generate_push(&field.fieldtype, &format!("self->{}", field.fieldname), 2)
+            {
                 readable_field_types.push((field.fieldname.clone(), ltype));
                 readable_fields.push((field, push_code));
             }
@@ -235,7 +256,7 @@ impl Generator {
         let mut cpp = CodeBuilder::new();
 
         // Static metatable ref
-        cpp.line(&format!("static int {}Metatable_ref = LUA_NOREF;", name));
+        cpp.metatable_ref_decl(name);
         cpp.preceeding_blank_line();
 
         // Method C functions
@@ -339,17 +360,7 @@ impl Generator {
                 cpp.line(&format!("delete[] self->{};", field.fieldname));
                 cpp.indent_left();
                 cpp.line("}");
-                cpp.line(&format!("int32 _n = (int32)lua_objlen(L, 3);"));
-                cpp.line("const char **_arr = new const char*[_n];");
-                cpp.line("for (int32 _i = 0; _i < _n; _i++) {");
-                cpp.indent_right();
-                cpp.line("lua_rawgeti(L, 3, _i + 1);");
-                cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
-                cpp.line("lua_pop(L, 1);");
-                cpp.indent_left();
-                cpp.line("}");
-                cpp.line(&format!("self->{} = _arr;", field.fieldname));
-                cpp.line(&format!("self->{} = _n;", count_field));
+                emit_copy_string_table_to_field(&mut cpp, "3", "self", &field.fieldname, count_field);
                 cpp.line("return 0;");
                 cpp.indent_left();
                 cpp.line("}");
@@ -414,17 +425,7 @@ impl Generator {
                 cpp.line(&format!("lua_getfield(L, 1, \"{}\");", field.fieldname));
                 cpp.line("if (lua_istable(L, -1)) {");
                 cpp.indent_right();
-                cpp.line("int32 _n = (int32)lua_objlen(L, -1);");
-                cpp.line("const char **_arr = new const char*[_n];");
-                cpp.line("for (int32 _i = 0; _i < _n; _i++) {");
-                cpp.indent_right();
-                cpp.line("lua_rawgeti(L, -1, _i + 1);");
-                cpp.line("_arr[_i] = strdup(luaL_checkstring(L, -1));");
-                cpp.line("lua_pop(L, 1);");
-                cpp.indent_left();
-                cpp.line("}");
-                cpp.line(&format!("ptr->{} = _arr;", field.fieldname));
-                cpp.line(&format!("ptr->{} = _n;", count_field));
+                emit_copy_string_table_to_field(&mut cpp, "-1", "ptr", &field.fieldname, count_field);
                 cpp.indent_left();
                 cpp.line("}");
                 cpp.line("lua_pop(L, 1);");
@@ -432,11 +433,7 @@ impl Generator {
             cpp.indent_left();
             cpp.line("}");
         }
-        cpp.line(&format!(
-            "lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
-            name
-        ));
-        cpp.line("lua_setmetatable(L, -2);");
+        cpp.set_metatable_from_ref(name);
         cpp.line("return 1;");
         cpp.indent_left();
         cpp.line("}");
@@ -458,11 +455,7 @@ impl Generator {
             name, name, name
         ));
         ns.line("*ptr = val;");
-        ns.line(&format!(
-            "lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
-            name
-        ));
-        ns.line("lua_setmetatable(L, -2);");
+        ns.set_metatable_from_ref(name);
         ns.indent_left();
         ns.line("}");
         ns.preceeding_blank_line();
@@ -517,19 +510,12 @@ impl Generator {
         if has_gc {
             init.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
         }
-        init.line(&format!(
-            "{}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
-            name
-        ));
+        init.store_metatable_ref(name);
         let init_code = init.finish();
 
         // Build shutdown_code (indent 1)
         let mut shutdown = CodeBuilder::with_indent(1);
-        shutdown.line(&format!(
-            "luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
-            name
-        ));
-        shutdown.line(&format!("{}Metatable_ref = LUA_NOREF;", name));
+        shutdown.release_metatable_ref(name);
         let shutdown_code = shutdown.finish();
 
         // Build add_code (indent 1)

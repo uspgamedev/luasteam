@@ -1,6 +1,40 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 
+fn print_skipped_list(title: &str, items: &[(String, SkipReason)]) {
+    if items.is_empty() {
+        return;
+    }
+    println!("\n┌─────────────────────────────────────────────────────────────┐");
+    println!("│ {} ({})", title, items.len());
+    println!("└─────────────────────────────────────────────────────────────┘");
+    for (name, reason) in items {
+        println!("  • {} — {}", name, reason.description());
+    }
+}
+
+fn print_skipped_grouped(title: &str, items: &[(String, SkipReason)]) {
+    if items.is_empty() {
+        return;
+    }
+    println!("\n┌─────────────────────────────────────────────────────────────┐");
+    println!("│ {} ({}) — Grouped by Reason", title, items.len());
+    println!("└─────────────────────────────────────────────────────────────┘");
+    let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
+    for (name, reason) in items {
+        by_reason.entry(reason.description()).or_default().push(name);
+    }
+    let mut reasons: Vec<_> = by_reason.keys().collect();
+    reasons.sort();
+    for reason_desc in reasons {
+        let names = by_reason.get(reason_desc).unwrap();
+        println!("\n  [{}] ({} methods)", reason_desc, names.len());
+        for name in names {
+            println!("    • {}", name);
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SkipReason {
     ManualBlocklist(String), // Blocked with no manual implementation
@@ -131,89 +165,22 @@ impl Stats {
         }
 
         // Print skipped interfaces
-        if !self.skipped_interfaces.is_empty() {
-            println!("\n┌─────────────────────────────────────────────────────────────┐");
-            println!("│ Skipped Interfaces ({})", self.skipped_interfaces.len());
-            println!("└─────────────────────────────────────────────────────────────┘");
-            for (name, reason) in &self.skipped_interfaces {
-                println!("  • {} — {}", name, reason.description());
-            }
-        }
+        print_skipped_list("Skipped Interfaces", &self.skipped_interfaces);
 
         // Print skipped methods grouped by reason
-        if !self.skipped_methods.is_empty() {
-            println!("\n┌─────────────────────────────────────────────────────────────┐");
-            println!(
-                "│ Skipped Methods ({}) — Grouped by Reason",
-                self.skipped_methods.len()
-            );
-            println!("└─────────────────────────────────────────────────────────────┘");
-
-            // Group by reason
-            let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
-            for (name, reason) in &self.skipped_methods {
-                by_reason
-                    .entry(reason.description())
-                    .or_default()
-                    .push(name);
-            }
-
-            // Sort and display
-            let mut reasons: Vec<_> = by_reason.keys().collect();
-            reasons.sort();
-
-            for reason_desc in reasons {
-                let methods = by_reason.get(reason_desc).unwrap();
-                println!("\n  [{}] ({} methods)", reason_desc, methods.len());
-                for method_name in methods {
-                    println!("    • {}", method_name);
-                }
-            }
-        }
+        print_skipped_grouped("Skipped Methods", &self.skipped_methods);
 
         // Print skipped struct methods grouped by reason
-        if !self.skipped_struct_methods.is_empty() {
-            println!("\n┌─────────────────────────────────────────────────────────────┐");
-            println!(
-                "│ Skipped Struct Methods ({}) — Grouped by Reason",
-                self.skipped_struct_methods.len()
-            );
-            println!("└─────────────────────────────────────────────────────────────┘");
-
-            let mut by_reason: HashMap<String, Vec<&String>> = HashMap::new();
-            for (name, reason) in &self.skipped_struct_methods {
-                by_reason
-                    .entry(reason.description())
-                    .or_default()
-                    .push(name);
-            }
-
-            let mut reasons: Vec<_> = by_reason.keys().collect();
-            reasons.sort();
-
-            for reason_desc in reasons {
-                let methods = by_reason.get(reason_desc).unwrap();
-                println!("\n  [{}] ({} methods)", reason_desc, methods.len());
-                for method_name in methods {
-                    println!("    • {}", method_name);
-                }
-            }
-        }
+        print_skipped_grouped("Skipped Struct Methods", &self.skipped_struct_methods);
 
         // Print skipped structs (exclude ManualImpl — those are covered)
         let truly_skipped_structs: Vec<_> = self
             .skipped_structs
             .iter()
             .filter(|(_, r)| !r.is_manual_impl())
+            .cloned()
             .collect();
-        if !truly_skipped_structs.is_empty() {
-            println!("\n┌─────────────────────────────────────────────────────────────┐");
-            println!("│ Skipped Structs ({})", truly_skipped_structs.len());
-            println!("└─────────────────────────────────────────────────────────────┘");
-            for (name, reason) in &truly_skipped_structs {
-                println!("  • {} — {}", name, reason.description());
-            }
-        }
+        print_skipped_list("Skipped Structs", &truly_skipped_structs);
 
         println!("\n═══════════════════════════════════════════════════════════════\n");
     }
@@ -795,6 +762,15 @@ pub struct Method {
 }
 
 impl Method {
+    /// Returns a C++ parameter declaration string, e.g. `"int a, const char *b"`.
+    pub fn params_decl(&self) -> String {
+        self.params
+            .iter()
+            .map(|p| format!("{} {}", p.paramtype, p.paramname))
+            .collect::<Vec<_>>()
+            .join(", ")
+    }
+
     pub fn param(&self, name: &str) -> &Param {
         self.params
             .iter()

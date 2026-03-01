@@ -50,7 +50,7 @@ impl Generator {
             let name = &iface.classname;
 
             // Static metatable ref
-            cpp.line(&format!("static int {}Metatable_ref = LUA_NOREF;", name));
+            cpp.metatable_ref_decl(name);
             cpp.preceeding_blank_line();
 
             // Impl struct
@@ -77,12 +77,7 @@ impl Generator {
 
             // Method overrides
             for method in &iface.methods {
-                let params_decl: String = method
-                    .params
-                    .iter()
-                    .map(|p| format!("{} {}", p.paramtype, p.paramname))
-                    .collect::<Vec<_>>()
-                    .join(", ");
+                let params_decl = method.params_decl();
                 cpp.line(&format!(
                     "void {}({}) override {{",
                     method.methodname, params_decl
@@ -93,9 +88,9 @@ impl Generator {
                     method.methodname
                 ));
                 for param in &method.params {
-                    let (ok, code, _) =
-                        self.generate_push(&param.paramtype, &param.paramname, cpp.indent());
-                    if ok {
+                    if let Some((code, _)) =
+                        self.generate_push(&param.paramtype, &param.paramname, cpp.indent())
+                    {
                         cpp.raw(&code);
                     } else {
                         cpp.line("lua_pushnil(L); // unsupported param type");
@@ -127,11 +122,7 @@ impl Generator {
                     method.methodname
                 ));
             }
-            cpp.line(&format!(
-                "lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
-                name
-            ));
-            cpp.line("lua_setmetatable(L, -2);");
+            cpp.set_metatable_from_ref(name);
             cpp.line("return 1;");
             cpp.indent_left();
             cpp.line("}");
@@ -179,10 +170,7 @@ impl Generator {
             let name = &iface.classname;
             cpp.line(&format!("luaL_newmetatable(L, \"{}\");", name));
             cpp.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
-            cpp.line(&format!(
-                "{0}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
-                name
-            ));
+            cpp.store_metatable_ref(name);
         }
         cpp.indent_left();
         cpp.line("}");
@@ -192,11 +180,7 @@ impl Generator {
         cpp.indent_right();
         for iface in &callback_interfaces {
             let name = &iface.classname;
-            cpp.line(&format!(
-                "luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
-                name
-            ));
-            cpp.line(&format!("{}Metatable_ref = LUA_NOREF;", name));
+            cpp.release_metatable_ref(name);
         }
         cpp.indent_left();
         cpp.line("}");
@@ -229,8 +213,10 @@ impl Generator {
                             .params
                             .iter()
                             .map(|p| {
-                                let (_, _, ltype) =
-                                    self.generate_push(&p.paramtype, &p.paramname, 0);
+                                let ltype = self
+                                    .generate_push(&p.paramtype, &p.paramname, 0)
+                                    .map(|(_, lt)| lt)
+                                    .unwrap_or(LType::Integer);
                                 CallbackParamDocInfo {
                                     name: p.paramname.clone(),
                                     ltype,
@@ -301,29 +287,20 @@ impl Generator {
         };
 
         for cb in callbacks {
-            let mut cpp_func_name = cb.name.clone();
-            if cpp_func_name.ends_with("_t") {
-                cpp_func_name = cpp_func_name[..cpp_func_name.len() - 2].to_string();
-            }
-            cpp_func_name = format!("On{}", cpp_func_name);
+            let func_name = Self::to_lua_callback_name(&cb.name);
             s.line(&format!(
                 "{}({}, {}, {});",
-                macro_name, class_name, cpp_func_name, cb.name
+                macro_name, class_name, func_name, cb.name
             ));
         }
         s.indent_left();
         s.line("};");
 
         for cb in callbacks {
-            let lua_func_name = Self::to_lua_callback_name(&cb.name);
-            let mut cpp_func_name = cb.name.clone();
-            if cpp_func_name.ends_with("_t") {
-                cpp_func_name = cpp_func_name[..cpp_func_name.len() - 2].to_string();
-            }
-            cpp_func_name = format!("On{}", cpp_func_name);
+            let func_name = Self::to_lua_callback_name(&cb.name);
             s.line(&format!(
                 "void {}::{}({} *data) {{",
-                class_name, cpp_func_name, cb.name
+                class_name, func_name, cb.name
             ));
             s.indent_right();
             s.line("if (data == nullptr) return;");
@@ -333,7 +310,7 @@ impl Generator {
                 "lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::{}_ref);",
                 name_lower
             ));
-            s.line(&format!("lua_getfield(L, -1, \"{}\");", lua_func_name));
+            s.line(&format!("lua_getfield(L, -1, \"{}\");", func_name));
             s.line("if (lua_isnil(L, -1)) {");
             s.indent_right();
             s.line("lua_pop(L, 2);");
@@ -385,13 +362,12 @@ impl Generator {
 
     fn push_struct_fields(&self, s: &mut CodeBuilder, cb: &CallbackStruct) {
         for field in &cb.fields {
-            let (ok, push, _) = self.generate_push(
+            if let Some((push, _)) = self.generate_push(
                 &field.fieldtype,
                 &format!("data->{}", field.fieldname),
                 s.indent(),
-            );
-            s.raw(&push);
-            if ok {
+            ) {
+                s.raw(&push);
                 s.line(&format!("lua_setfield(L, -2, \"{}\");", field.fieldname));
             }
         }
@@ -531,12 +507,7 @@ impl Generator {
                 },
             ) {
                 Ok((lua_method_name, generated, signature)) => {
-                    let params_str = method
-                        .params
-                        .iter()
-                        .map(|p| format!("{} {}", p.paramtype, p.paramname))
-                        .collect::<Vec<_>>()
-                        .join(", ");
+                    let params_str = method.params_decl();
                     cpp.line("// In C++:");
                     cpp.line(&format!(
                         "// {} {}({});",
@@ -584,26 +555,20 @@ impl Generator {
             .write_interface(luals_dir, interface, &method_signatures, callbacks);
 
         // Generate register_..._auto function
-        if is_dual_accessor {
-            cpp.line(&format!(
-                "void register_{}_auto(lua_State *L, bool is_gs) {{",
-                name
-            ));
-            cpp.indent_right();
-            for (_, lua_name) in &generated_methods {
-                let c_name = format!("luasteam_{}_{}", name, lua_name);
-                cpp.line(&format!(
-                    "add_func(L, \"{}\", is_gs ? {}_gs : {}_user);",
-                    lua_name, c_name, c_name
-                ));
-            }
-        } else {
-            cpp.line(&format!("void register_{}_auto(lua_State *L) {{", name));
-            cpp.indent_right();
-            for (_, lua_name) in &generated_methods {
-                let c_name = format!("luasteam_{}_{}", name, lua_name);
-                cpp.line(&format!("add_func(L, \"{}\", {});", lua_name, c_name));
-            }
+        let extra_param = if is_dual_accessor { ", bool is_gs" } else { "" };
+        cpp.line(&format!(
+            "void register_{}_auto(lua_State *L{}) {{",
+            name, extra_param
+        ));
+        cpp.indent_right();
+        for (_, lua_name) in &generated_methods {
+            let c_name = format!("luasteam_{}_{}", name, lua_name);
+            let func = if is_dual_accessor {
+                format!("is_gs ? {c_name}_gs : {c_name}_user")
+            } else {
+                c_name
+            };
+            cpp.line(&format!("add_func(L, \"{}\", {});", lua_name, func));
         }
         cpp.indent_left();
         cpp.line("}");
@@ -949,6 +914,7 @@ impl Generator {
                     if let Some(size) = param.input_array_size_param() {
                         let lua_idx_str = lua_idx.to_string();
                         let out = CodeBuilder::with_indent(s.indent());
+                        let is_buffer = resolved.is_buffer();
                         let (code, ltype) = self
                             .generate_array_check(
                                 param
@@ -957,7 +923,7 @@ impl Generator {
                                     .unwrap()
                                     .strip_suffix(" *")
                                     .unwrap(),
-                                resolved.is_buffer(),
+                                is_buffer,
                                 true,
                                 &param.paramname,
                                 &lua_idx_str,
@@ -1011,10 +977,7 @@ impl Generator {
                         }
 
                         s.raw(&code);
-                        // Buffer types (void*, char*, uint8*, etc.) are now declared as
-                        // a typed const pointer directly — no .data() needed.
-                        let is_buf = ["void", "char", "uint8", "unsigned char"].contains(&ttype);
-                        if is_buf {
+                        if is_buffer {
                             cpp_call_params.push(param.paramname.clone());
                         } else {
                             cpp_call_params.push(format!("{}.data()", param.paramname));
@@ -1043,12 +1006,6 @@ impl Generator {
                                 "const {t} *{n} = lua_isnil(L, {idx}) ? nullptr : luasteam::check_{t}_ptr(L, {idx});",
                                 t = ttype, n = param.paramname, idx = lua_idx
                             ));
-                            cpp_call_params.push(param.paramname.clone());
-                            sig.add_param(
-                                param.paramname.clone(),
-                                LType::Userdata(ttype.to_string()),
-                            );
-                            lua_idx += 1;
                         } else if self.added_structs.contains(ttype) {
                             s.line(&format!("{t} {n}_val;", t = ttype, n = param.paramname));
                             s.line(&format!(
@@ -1061,15 +1018,15 @@ impl Generator {
                                 n = param.paramname,
                                 idx = lua_idx
                             ));
-                            cpp_call_params.push(param.paramname.clone());
-                            sig.add_param(
-                                param.paramname.clone(),
-                                LType::Userdata(ttype.to_string()),
-                            );
-                            lua_idx += 1;
                         } else {
                             return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                         }
+                        cpp_call_params.push(param.paramname.clone());
+                        sig.add_param(
+                            param.paramname.clone(),
+                            LType::Userdata(ttype.to_string()),
+                        );
+                        lua_idx += 1;
                     }
                 }
                 CppType::Reference {
@@ -1085,9 +1042,6 @@ impl Generator {
                             n = param.paramname,
                             idx = lua_idx
                         ));
-                        cpp_call_params.push(param.paramname.clone());
-                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
-                        lua_idx += 1;
                     } else if self.added_structs.contains(ttype) {
                         s.line(&format!(
                             "{t} {n} = luasteam::check_{t}(L, {idx});",
@@ -1095,12 +1049,12 @@ impl Generator {
                             n = param.paramname,
                             idx = lua_idx
                         ));
-                        cpp_call_params.push(param.paramname.clone());
-                        sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
-                        lua_idx += 1;
                     } else {
                         return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                     }
+                    cpp_call_params.push(param.paramname.clone());
+                    sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
+                    lua_idx += 1;
                 }
                 CppType::Reference {
                     ttype: _,
@@ -1132,7 +1086,10 @@ impl Generator {
             s.line(&format!("{};", call));
         } else {
             let resolved_ret = self.type_resolver.resolve_type(&method.returntype);
-            if let CppType::Pointer { ttype, is_const: true } = resolved_ret
+            if let CppType::Pointer {
+                ttype,
+                is_const: true,
+            } = resolved_ret
                 && self.added_structs.contains(ttype)
             {
                 s.line(&format!("const {} *__ret = {};", ttype, call));
@@ -1147,35 +1104,33 @@ impl Generator {
                 s.line("}");
                 sig.set_return_type(LType::Userdata(ttype.to_string()));
             } else {
-            s.line(&format!("{} __ret = {};", method.returntype, call));
-            if let Some(callresult) = &method.callresult {
-                sig.add_param(
-                    "callback".to_string(),
-                    LType::CallresultCallback {
-                        struct_t: callresult.clone(),
-                    },
-                );
-                s.line("if (callback_ref != LUA_NOREF) {");
-                s.indent_right();
-                s.line(&format!(
-                    "auto *listener = new luasteam::CallResultListener<{}>();",
-                    callresult
-                ));
-                s.line("listener->callback_ref = callback_ref;");
-                s.line(&format!(
+                s.line(&format!("{} __ret = {};", method.returntype, call));
+                if let Some(callresult) = &method.callresult {
+                    sig.add_param(
+                        "callback".to_string(),
+                        LType::CallresultCallback {
+                            struct_t: callresult.clone(),
+                        },
+                    );
+                    s.line("if (callback_ref != LUA_NOREF) {");
+                    s.indent_right();
+                    s.line(&format!(
+                        "auto *listener = new luasteam::CallResultListener<{}>();",
+                        callresult
+                    ));
+                    s.line("listener->callback_ref = callback_ref;");
+                    s.line(&format!(
                     "listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<{}>::Result);",
                     callresult
                 ));
-                s.indent_left();
-                s.line("}");
-            }
-            let (ok, push, ltype) = self.generate_push(&method.returntype, "__ret", 1);
-            if !ok {
-                // Skip methods with unknown return types
-                return Err(SkipReason::UnsupportedType(method.returntype.clone()));
-            }
-            s.raw(&push);
-            sig.set_return_type(ltype);
+                    s.indent_left();
+                    s.line("}");
+                }
+                let (push, ltype) = self
+                    .generate_push(&method.returntype, "__ret", 1)
+                    .ok_or_else(|| SkipReason::UnsupportedType(method.returntype.clone()))?;
+                s.raw(&push);
+                sig.set_return_type(ltype);
             }
         }
 
@@ -1297,14 +1252,13 @@ impl Generator {
                     s.raw(&out.finish());
                     sig.add_output_param(param.paramname.clone(), LType::String);
                 } else {
-                    let (ok, push, ltype) = self.generate_push(
-                        param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
-                        &param.paramname,
-                        1,
-                    );
-                    if !ok {
-                        return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
-                    }
+                    let (push, ltype) = self
+                        .generate_push(
+                            param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
+                            &param.paramname,
+                            1,
+                        )
+                        .ok_or_else(|| SkipReason::UnsupportedType(param.paramtype.clone()))?;
                     s.raw(&push);
                     sig.add_output_param(param.paramname.clone(), ltype);
                 }

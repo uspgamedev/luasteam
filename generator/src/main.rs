@@ -387,9 +387,8 @@ impl Generator {
         stats.consts_total = self.api.consts.len();
 
         for enm in &self.api.consts {
-            let (ok, push, _) = self.generate_push(&enm.consttype, &enm.constval, 1);
-            cpp.raw(&push);
-            if ok {
+            if let Some((push, _)) = self.generate_push(&enm.consttype, &enm.constval, 1) {
+                cpp.raw(&push);
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", enm.constname));
                 stats.const_generated += 1;
             }

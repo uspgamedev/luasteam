@@ -54,4 +54,32 @@ impl CodeBuilder {
     pub fn finish(self) -> String {
         self.out
     }
+
+    // Lua registry metatable helpers
+    pub fn metatable_ref_decl(&mut self, name: &str) {
+        self.line(&format!("static int {}Metatable_ref = LUA_NOREF;", name));
+    }
+
+    pub fn set_metatable_from_ref(&mut self, name: &str) {
+        self.line(&format!(
+            "lua_rawgeti(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
+            name
+        ));
+        self.line("lua_setmetatable(L, -2);");
+    }
+
+    pub fn store_metatable_ref(&mut self, name: &str) {
+        self.line(&format!(
+            "{}Metatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);",
+            name
+        ));
+    }
+
+    pub fn release_metatable_ref(&mut self, name: &str) {
+        self.line(&format!(
+            "luaL_unref(L, LUA_REGISTRYINDEX, {}Metatable_ref);",
+            name
+        ));
+        self.line(&format!("{}Metatable_ref = LUA_NOREF;", name));
+    }
 }

@@ -128,7 +128,7 @@ impl Generator {
         lua_idx: &str,
         mut out: CodeBuilder,
         size: &str,
-        non_const_exception: bool,
+        const_cast: bool,
     ) -> Option<(String, LType)> {
         let ltype = if is_buffer {
             let var = format!(
@@ -151,10 +151,10 @@ impl Generator {
                 // We use const_cast to a non-const pointer so this works for both
                 // `const T*` and `T*` method signatures (some Steam APIs lack const).
                 if ttype == "char" {
-                    assert!(!non_const_exception);
+                    assert!(!const_cast);
                     out.line(&format!("const char *{} = {};", value_accessor, var));
                 } else {
-                    if non_const_exception {
+                    if const_cast {
                         out.line(&format!(
                             "{t} *{n} = const_cast<{t} *>(reinterpret_cast<const {t} *>({v}));",
                             t = ttype,
@@ -218,7 +218,7 @@ impl Generator {
         ftype: &str,
         value_accessor: &str,
         indent: usize,
-    ) -> (bool, String, LType) {
+    ) -> Option<(String, LType)> {
         let resolved = self.type_resolver.resolve_type(ftype);
 
         let (push, ltype) = match resolved {
@@ -260,10 +260,7 @@ impl Generator {
                             LType::Userdata(s.to_string()),
                         )
                     } else {
-                        (
-                            format!("// Skip unsupported type: {}", ftype),
-                            LType::Integer, // ignored
-                        )
+                        return None;
                     }
                 }
             },
@@ -283,12 +280,9 @@ impl Generator {
                 } else if let Some((code, ltype)) =
                     self.push_array(ttype, value_accessor, size.to_string().as_str(), indent)
                 {
-                    return (true, code, ltype);
+                    return Some((code, ltype));
                 } else {
-                    (
-                        format!("// Skip unsupported array type: {}", ftype),
-                        LType::Integer, // ignored
-                    )
+                    return None;
                 }
             }
             _ if resolved.is_buffer() => (
@@ -298,13 +292,6 @@ impl Generator {
                 ),
                 LType::String,
             ),
-            CppType::Pointer {
-                ttype: "void",
-                is_const: false,
-            } => (
-                format!("luasteam::pushvoid_ptr(L, {});", value_accessor),
-                LType::Table, // Wrong, should be something else
-            ),
             CppType::Reference { ttype, .. } => {
                 if self.added_structs.contains(ttype) {
                     (
@@ -312,21 +299,14 @@ impl Generator {
                         LType::Userdata(ttype.to_string()),
                     )
                 } else {
-                    (
-                        format!("// Skip unsupported reference type: {}", ftype),
-                        LType::Integer,
-                    )
+                    return None;
                 }
             }
-            _ => (
-                format!("// Skip unsupported type: {}", ftype),
-                LType::Integer, // ignored
-            ),
+            _ => return None,
         };
-        let ok = !push.starts_with("//");
         let mut out = CodeBuilder::with_indent(indent);
         out.line(&push);
-        (ok, out.finish(), ltype)
+        Some((out.finish(), ltype))
     }
 
     pub(crate) fn push_array(
@@ -340,25 +320,20 @@ impl Generator {
 
         s.line(&format!("lua_createtable(L, {}, 0);", size));
         s.indent_right();
-        let (ok, push, ltype) =
-            self.generate_push(ttype, &format!("{}[i]", value_accessor), s.indent());
+        let (push, ltype) =
+            self.generate_push(ttype, &format!("{}[i]", value_accessor), s.indent())?;
         s.indent_left();
-        if ok {
-            s.line(&format!(
-                "for(decltype({}) i = 0; i < {}; i++) {{",
-                size, size
-            ));
-            s.indent_right();
-            if !push.is_empty() {
-                s.raw(&push);
-            }
-            s.line("lua_rawseti(L, -2, i+1);");
-            s.indent_left();
-            s.line("}");
-        } else {
-            // Don't print, just return None
-            return None;
+        s.line(&format!(
+            "for(decltype({}) i = 0; i < {}; i++) {{",
+            size, size
+        ));
+        s.indent_right();
+        if !push.is_empty() {
+            s.raw(&push);
         }
+        s.line("lua_rawseti(L, -2, i+1);");
+        s.indent_left();
+        s.line("}");
         Some((s.finish(), LType::Array(Box::new(ltype))))
     }
 }
