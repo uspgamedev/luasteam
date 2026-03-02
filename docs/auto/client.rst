@@ -4,7 +4,7 @@ ISteamClient
 
 .. note::
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
-   Methods marked with ✋ require manual implementation.
+   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
 List of Functions
 -----------------
@@ -72,7 +72,7 @@ Function Reference
 
 **Example**::
 
-    local hUser = Steam.Client.CreateLocalUser(hPipe, 'k_EAccountTypeIndividual')
+    local hUser, hPipe = Steam.Client.CreateLocalUser(Steam.k_EAccountTypeIndividual)
 
 .. function:: Client.CreateSteamPipe()
 

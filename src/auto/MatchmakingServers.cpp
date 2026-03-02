@@ -26,7 +26,7 @@ static int luasteam_MatchmakingServers_RequestInternetServerList(lua_State *L) {
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
-	HServerListRequest __ret = iface->RequestInternetServerList(iApp, ppchFilters, nFilters, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestInternetServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -39,7 +39,7 @@ static int luasteam_MatchmakingServers_RequestLANServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 2);
-	HServerListRequest __ret = iface->RequestLANServerList(iApp, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestLANServerList(iface, iApp, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -60,7 +60,7 @@ static int luasteam_MatchmakingServers_RequestFriendsServerList(lua_State *L) {
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
-	HServerListRequest __ret = iface->RequestFriendsServerList(iApp, ppchFilters, nFilters, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestFriendsServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -81,7 +81,7 @@ static int luasteam_MatchmakingServers_RequestFavoritesServerList(lua_State *L) 
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
-	HServerListRequest __ret = iface->RequestFavoritesServerList(iApp, ppchFilters, nFilters, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestFavoritesServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -102,7 +102,7 @@ static int luasteam_MatchmakingServers_RequestHistoryServerList(lua_State *L) {
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
-	HServerListRequest __ret = iface->RequestHistoryServerList(iApp, ppchFilters, nFilters, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestHistoryServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -123,7 +123,7 @@ static int luasteam_MatchmakingServers_RequestSpectatorServerList(lua_State *L) 
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
 	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
-	HServerListRequest __ret = iface->RequestSpectatorServerList(iApp, ppchFilters, nFilters, pRequestServersResponse);
+	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestSpectatorServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
 }
@@ -135,7 +135,7 @@ static int luasteam_MatchmakingServers_RequestSpectatorServerList(lua_State *L) 
 static int luasteam_MatchmakingServers_ReleaseRequest(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hServerListRequest = (HServerListRequest)lua_touserdata(L, 1);
-	iface->ReleaseRequest(hServerListRequest);
+	SteamAPI_ISteamMatchmakingServers_ReleaseRequest(iface, hServerListRequest);
 	return 0;
 }
 
@@ -146,7 +146,7 @@ static int luasteam_MatchmakingServers_ReleaseRequest(lua_State *L) {
 static int luasteam_MatchmakingServers_CancelQuery(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hRequest = (HServerListRequest)lua_touserdata(L, 1);
-	iface->CancelQuery(hRequest);
+	SteamAPI_ISteamMatchmakingServers_CancelQuery(iface, hRequest);
 	return 0;
 }
 
@@ -157,7 +157,7 @@ static int luasteam_MatchmakingServers_CancelQuery(lua_State *L) {
 static int luasteam_MatchmakingServers_RefreshQuery(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hRequest = (HServerListRequest)lua_touserdata(L, 1);
-	iface->RefreshQuery(hRequest);
+	SteamAPI_ISteamMatchmakingServers_RefreshQuery(iface, hRequest);
 	return 0;
 }
 
@@ -168,7 +168,7 @@ static int luasteam_MatchmakingServers_RefreshQuery(lua_State *L) {
 static int luasteam_MatchmakingServers_IsRefreshing(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hRequest = (HServerListRequest)lua_touserdata(L, 1);
-	bool __ret = iface->IsRefreshing(hRequest);
+	bool __ret = SteamAPI_ISteamMatchmakingServers_IsRefreshing(iface, hRequest);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -180,7 +180,7 @@ static int luasteam_MatchmakingServers_IsRefreshing(lua_State *L) {
 static int luasteam_MatchmakingServers_GetServerCount(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hRequest = (HServerListRequest)lua_touserdata(L, 1);
-	int __ret = iface->GetServerCount(hRequest);
+	int __ret = SteamAPI_ISteamMatchmakingServers_GetServerCount(iface, hRequest);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -193,7 +193,7 @@ static int luasteam_MatchmakingServers_RefreshServer(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerListRequest hRequest = (HServerListRequest)lua_touserdata(L, 1);
 	int iServer = static_cast<int>(luaL_checkint(L, 2));
-	iface->RefreshServer(hRequest, iServer);
+	SteamAPI_ISteamMatchmakingServers_RefreshServer(iface, hRequest, iServer);
 	return 0;
 }
 
@@ -206,7 +206,7 @@ static int luasteam_MatchmakingServers_PingServer(lua_State *L) {
 	uint32 unIP = static_cast<uint32>(luaL_checkint(L, 1));
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
 	ISteamMatchmakingPingResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingPingResponse(L, 3);
-	HServerQuery __ret = iface->PingServer(unIP, usPort, pRequestServersResponse);
+	HServerQuery __ret = SteamAPI_ISteamMatchmakingServers_PingServer(iface, unIP, usPort, pRequestServersResponse);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -220,7 +220,7 @@ static int luasteam_MatchmakingServers_PlayerDetails(lua_State *L) {
 	uint32 unIP = static_cast<uint32>(luaL_checkint(L, 1));
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
 	ISteamMatchmakingPlayersResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingPlayersResponse(L, 3);
-	HServerQuery __ret = iface->PlayerDetails(unIP, usPort, pRequestServersResponse);
+	HServerQuery __ret = SteamAPI_ISteamMatchmakingServers_PlayerDetails(iface, unIP, usPort, pRequestServersResponse);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -234,7 +234,7 @@ static int luasteam_MatchmakingServers_ServerRules(lua_State *L) {
 	uint32 unIP = static_cast<uint32>(luaL_checkint(L, 1));
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
 	ISteamMatchmakingRulesResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingRulesResponse(L, 3);
-	HServerQuery __ret = iface->ServerRules(unIP, usPort, pRequestServersResponse);
+	HServerQuery __ret = SteamAPI_ISteamMatchmakingServers_ServerRules(iface, unIP, usPort, pRequestServersResponse);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -246,7 +246,7 @@ static int luasteam_MatchmakingServers_ServerRules(lua_State *L) {
 static int luasteam_MatchmakingServers_CancelServerQuery(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	HServerQuery hServerQuery = static_cast<HServerQuery>(luaL_checkint(L, 1));
-	iface->CancelServerQuery(hServerQuery);
+	SteamAPI_ISteamMatchmakingServers_CancelServerQuery(iface, hServerQuery);
 	return 0;
 }
 

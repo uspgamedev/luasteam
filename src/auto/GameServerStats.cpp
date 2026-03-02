@@ -105,8 +105,8 @@ static int luasteam_GameServerStats_RequestUserStats(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
-	SteamAPICall_t __ret = iface->RequestUserStats(steamIDUser);
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
+	SteamAPICall_t __ret = SteamAPI_ISteamGameServerStats_RequestUserStats(iface, steamIDUser);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<GSStatsReceived_t>();
 		listener->callback_ref = callback_ref;
@@ -122,10 +122,10 @@ static int luasteam_GameServerStats_RequestUserStats(lua_State *L) {
 // (bool, pData: int) GameServerStats.GetUserStatInt32(steamIDUser: uint64, pchName: str)
 static int luasteam_GameServerStats_GetUserStatInt32(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	int32 pData;
-	bool __ret = iface->GetUserStat(steamIDUser, pchName, &pData);
+	bool __ret = SteamAPI_ISteamGameServerStats_GetUserStatInt32(iface, steamIDUser, pchName, &pData);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pData);
 	return 2;
@@ -137,10 +137,10 @@ static int luasteam_GameServerStats_GetUserStatInt32(lua_State *L) {
 // (bool, pData: float) GameServerStats.GetUserStatFloat(steamIDUser: uint64, pchName: str)
 static int luasteam_GameServerStats_GetUserStatFloat(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	float pData;
-	bool __ret = iface->GetUserStat(steamIDUser, pchName, &pData);
+	bool __ret = SteamAPI_ISteamGameServerStats_GetUserStatFloat(iface, steamIDUser, pchName, &pData);
 	lua_pushboolean(L, __ret);
 	lua_pushnumber(L, pData);
 	return 2;
@@ -152,10 +152,10 @@ static int luasteam_GameServerStats_GetUserStatFloat(lua_State *L) {
 // (bool, pbAchieved: bool) GameServerStats.GetUserAchievement(steamIDUser: uint64, pchName: str)
 static int luasteam_GameServerStats_GetUserAchievement(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	bool pbAchieved;
-	bool __ret = iface->GetUserAchievement(steamIDUser, pchName, &pbAchieved);
+	bool __ret = SteamAPI_ISteamGameServerStats_GetUserAchievement(iface, steamIDUser, pchName, &pbAchieved);
 	lua_pushboolean(L, __ret);
 	lua_pushboolean(L, pbAchieved);
 	return 2;
@@ -167,10 +167,10 @@ static int luasteam_GameServerStats_GetUserAchievement(lua_State *L) {
 // bool GameServerStats.SetUserStatInt32(steamIDUser: uint64, pchName: str, nData: int)
 static int luasteam_GameServerStats_SetUserStatInt32(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	int32 nData = static_cast<int32>(luaL_checkint(L, 3));
-	bool __ret = iface->SetUserStat(steamIDUser, pchName, nData);
+	bool __ret = SteamAPI_ISteamGameServerStats_SetUserStatInt32(iface, steamIDUser, pchName, nData);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -181,10 +181,10 @@ static int luasteam_GameServerStats_SetUserStatInt32(lua_State *L) {
 // bool GameServerStats.SetUserStatFloat(steamIDUser: uint64, pchName: str, fData: float)
 static int luasteam_GameServerStats_SetUserStatFloat(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	float fData = static_cast<float>(luaL_checknumber(L, 3));
-	bool __ret = iface->SetUserStat(steamIDUser, pchName, fData);
+	bool __ret = SteamAPI_ISteamGameServerStats_SetUserStatFloat(iface, steamIDUser, pchName, fData);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -195,11 +195,11 @@ static int luasteam_GameServerStats_SetUserStatFloat(lua_State *L) {
 // bool GameServerStats.UpdateUserAvgRateStat(steamIDUser: uint64, pchName: str, flCountThisSession: float, dSessionLength: float)
 static int luasteam_GameServerStats_UpdateUserAvgRateStat(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
 	float flCountThisSession = static_cast<float>(luaL_checknumber(L, 3));
 	double dSessionLength = static_cast<double>(luaL_checknumber(L, 4));
-	bool __ret = iface->UpdateUserAvgRateStat(steamIDUser, pchName, flCountThisSession, dSessionLength);
+	bool __ret = SteamAPI_ISteamGameServerStats_UpdateUserAvgRateStat(iface, steamIDUser, pchName, flCountThisSession, dSessionLength);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -210,9 +210,9 @@ static int luasteam_GameServerStats_UpdateUserAvgRateStat(lua_State *L) {
 // bool GameServerStats.SetUserAchievement(steamIDUser: uint64, pchName: str)
 static int luasteam_GameServerStats_SetUserAchievement(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
-	bool __ret = iface->SetUserAchievement(steamIDUser, pchName);
+	bool __ret = SteamAPI_ISteamGameServerStats_SetUserAchievement(iface, steamIDUser, pchName);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -223,9 +223,9 @@ static int luasteam_GameServerStats_SetUserAchievement(lua_State *L) {
 // bool GameServerStats.ClearUserAchievement(steamIDUser: uint64, pchName: str)
 static int luasteam_GameServerStats_ClearUserAchievement(lua_State *L) {
 	auto *iface = SteamGameServerStats();
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
 	const char *pchName = luaL_checkstring(L, 2);
-	bool __ret = iface->ClearUserAchievement(steamIDUser, pchName);
+	bool __ret = SteamAPI_ISteamGameServerStats_ClearUserAchievement(iface, steamIDUser, pchName);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -241,8 +241,8 @@ static int luasteam_GameServerStats_StoreUserStats(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 1));
-	SteamAPICall_t __ret = iface->StoreUserStats(steamIDUser);
+	uint64 steamIDUser = luasteam::checkuint64(L, 1);
+	SteamAPICall_t __ret = SteamAPI_ISteamGameServerStats_StoreUserStats(iface, steamIDUser);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<GSStatsStored_t>();
 		listener->callback_ref = callback_ref;

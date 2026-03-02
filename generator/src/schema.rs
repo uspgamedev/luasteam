@@ -217,7 +217,6 @@ impl SteamApi {
     fn fix_deprecated(&mut self) {
         self.interfaces.iter_mut().for_each(|i| {
             i.methods.retain_mut(|m| {
-                m.params.retain(|p| !p.paramname.ends_with("_Deprecated"));
                 !m.methodname.ends_with("_DEPRECATED")
             })
         });

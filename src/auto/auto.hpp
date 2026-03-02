@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_AUTO_HPP
 #define LUASTEAM_AUTO_HPP
 
-#include "../common.hpp"
+#include "../Common.hpp"
 #include <vector>
 
 namespace luasteam {

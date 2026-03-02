@@ -11,7 +11,7 @@ SPHINXBUILD=sphinx-build
 -include .env
 
 GNU_OUT=luasteam.so
-IPATHS=-I$(LUAJIT_PATH)/src
+IPATHS=-I$(LUAJIT_PATH)/src -Isdk/public
 GNU_FLAGS=$(IPATHS)
 
 OSX_OUT=luasteam.so

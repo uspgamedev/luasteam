@@ -775,6 +775,18 @@ impl Generator {
                 continue;
             }
 
+            // Deprecated parameters (flat API exposes them, C++ hid them with defaults).
+            // Pass null/zero and skip from the Lua API.
+            if param.paramname.ends_with("_Deprecated") {
+                let default_val = match resolved {
+                    CppType::Pointer { .. } => "nullptr",
+                    _ => "0",
+                };
+                cpp_call_params.push(default_val.to_string());
+                i += 1;
+                continue;
+            }
+
             // Route all Normal input types through the shared helper; only Pointer/Reference
             // variants need special per-context handling below.
             match resolved {
@@ -1063,12 +1075,11 @@ impl Generator {
             size_params_to_ignore
         );
 
-        let call = format!(
-            "{}->{}({})",
-            call_on,
-            method.methodname,
-            cpp_call_params.join(", ")
-        );
+        let call = if cpp_call_params.is_empty() {
+            format!("{}({})", method.methodname_flat, call_on)
+        } else {
+            format!("{}({}, {})", method.methodname_flat, call_on, cpp_call_params.join(", "))
+        };
 
         if method.returntype == "void" {
             assert!(
@@ -1096,7 +1107,14 @@ impl Generator {
                 s.line("}");
                 sig.set_return_type(LType::Userdata(ttype.to_string()));
             } else {
-                s.line(&format!("{} __ret = {};", method.returntype, call));
+                s.line(&format!(
+                    "{} __ret = {};",
+                    match method.returntype.as_str() {
+                        "CSteamID" | "CGameID" => "uint64",
+                        t => t,
+                    },
+                    call
+                ));
                 if let Some(callresult) = &method.callresult {
                     sig.add_param(
                         "callback".to_string(),
@@ -1118,8 +1136,12 @@ impl Generator {
                     s.indent_left();
                     s.line("}");
                 }
+                let ret_push_type = match method.returntype.as_str() {
+                    "CSteamID" | "CGameID" => "uint64",
+                    t => t,
+                };
                 let (push, ltype) = self
-                    .generate_push(&method.returntype, "__ret", 1)
+                    .generate_push(ret_push_type, "__ret", 1)
                     .ok_or_else(|| SkipReason::UnsupportedType(method.returntype.clone()))?;
                 s.raw(&push);
                 sig.set_return_type(ltype);

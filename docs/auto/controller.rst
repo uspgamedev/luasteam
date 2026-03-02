@@ -4,7 +4,7 @@ ISteamController
 
 .. note::
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
-   Methods marked with ✋ require manual implementation.
+   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
 List of Functions
 -----------------
@@ -57,7 +57,8 @@ Function Reference
 
 **Example**::
 
-    Steam.Controller.ActivateActionSet(controllerHandle, actionSetHandle)
+    local gameplaySet = Steam.Controller.GetActionSetHandle('GameControls')
+    Steam.Controller.ActivateActionSet(controllerHandle, gameplaySet)
 
 .. function:: Controller.ActivateActionSetLayer(controllerHandle, actionSetLayerHandle)
 
@@ -127,6 +128,7 @@ Function Reference
 
 **Example**::
 
+    local moveHandle = Steam.Controller.GetAnalogActionHandle('Move')
     local data = Steam.Controller.GetAnalogActionData(controllerHandle, moveHandle)
     player.setVelocity(data.x * speed, data.y * speed)
 

@@ -60,7 +60,7 @@ static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	void *pubRGB = const_cast<void *>(reinterpret_cast<const void *>(_tmp0));
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
-	ScreenshotHandle __ret = iface->WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight);
+	ScreenshotHandle __ret = SteamAPI_ISteamScreenshots_WriteScreenshot(iface, pubRGB, cubRGB, nWidth, nHeight);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -75,7 +75,7 @@ static int luasteam_Screenshots_AddScreenshotToLibrary(lua_State *L) {
 	const char *pchThumbnailFilename = luaL_checkstring(L, 2);
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
-	ScreenshotHandle __ret = iface->AddScreenshotToLibrary(pchFilename, pchThumbnailFilename, nWidth, nHeight);
+	ScreenshotHandle __ret = SteamAPI_ISteamScreenshots_AddScreenshotToLibrary(iface, pchFilename, pchThumbnailFilename, nWidth, nHeight);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -86,7 +86,7 @@ static int luasteam_Screenshots_AddScreenshotToLibrary(lua_State *L) {
 // Screenshots.TriggerScreenshot()
 static int luasteam_Screenshots_TriggerScreenshot(lua_State *L) {
 	auto *iface = SteamScreenshots();
-	iface->TriggerScreenshot();
+	SteamAPI_ISteamScreenshots_TriggerScreenshot(iface);
 	return 0;
 }
 
@@ -97,7 +97,7 @@ static int luasteam_Screenshots_TriggerScreenshot(lua_State *L) {
 static int luasteam_Screenshots_HookScreenshots(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	bool bHook = lua_toboolean(L, 1);
-	iface->HookScreenshots(bHook);
+	SteamAPI_ISteamScreenshots_HookScreenshots(iface, bHook);
 	return 0;
 }
 
@@ -109,7 +109,7 @@ static int luasteam_Screenshots_SetLocation(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
 	const char *pchLocation = luaL_checkstring(L, 2);
-	bool __ret = iface->SetLocation(hScreenshot, pchLocation);
+	bool __ret = SteamAPI_ISteamScreenshots_SetLocation(iface, hScreenshot, pchLocation);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -121,8 +121,8 @@ static int luasteam_Screenshots_SetLocation(lua_State *L) {
 static int luasteam_Screenshots_TagUser(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
-	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 2));
-	bool __ret = iface->TagUser(hScreenshot, steamID);
+	uint64 steamID = luasteam::checkuint64(L, 2);
+	bool __ret = SteamAPI_ISteamScreenshots_TagUser(iface, hScreenshot, steamID);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -135,7 +135,7 @@ static int luasteam_Screenshots_TagPublishedFile(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
 	PublishedFileId_t unPublishedFileID = luasteam::checkuint64(L, 2);
-	bool __ret = iface->TagPublishedFile(hScreenshot, unPublishedFileID);
+	bool __ret = SteamAPI_ISteamScreenshots_TagPublishedFile(iface, hScreenshot, unPublishedFileID);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -146,7 +146,7 @@ static int luasteam_Screenshots_TagPublishedFile(lua_State *L) {
 // bool Screenshots.IsScreenshotsHooked()
 static int luasteam_Screenshots_IsScreenshotsHooked(lua_State *L) {
 	auto *iface = SteamScreenshots();
-	bool __ret = iface->IsScreenshotsHooked();
+	bool __ret = SteamAPI_ISteamScreenshots_IsScreenshotsHooked(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -160,7 +160,7 @@ static int luasteam_Screenshots_AddVRScreenshotToLibrary(lua_State *L) {
 	EVRScreenshotType eType = static_cast<EVRScreenshotType>(luaL_checkint(L, 1));
 	const char *pchFilename = luaL_checkstring(L, 2);
 	const char *pchVRFilename = luaL_checkstring(L, 3);
-	ScreenshotHandle __ret = iface->AddVRScreenshotToLibrary(eType, pchFilename, pchVRFilename);
+	ScreenshotHandle __ret = SteamAPI_ISteamScreenshots_AddVRScreenshotToLibrary(iface, eType, pchFilename, pchVRFilename);
 	lua_pushinteger(L, __ret);
 	return 1;
 }

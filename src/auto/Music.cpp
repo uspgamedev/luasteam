@@ -54,7 +54,7 @@ void shutdown_Music_auto(lua_State *L) {
 // bool Music.BIsEnabled()
 static int luasteam_Music_BIsEnabled(lua_State *L) {
 	auto *iface = SteamMusic();
-	bool __ret = iface->BIsEnabled();
+	bool __ret = SteamAPI_ISteamMusic_BIsEnabled(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -65,7 +65,7 @@ static int luasteam_Music_BIsEnabled(lua_State *L) {
 // bool Music.BIsPlaying()
 static int luasteam_Music_BIsPlaying(lua_State *L) {
 	auto *iface = SteamMusic();
-	bool __ret = iface->BIsPlaying();
+	bool __ret = SteamAPI_ISteamMusic_BIsPlaying(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -76,7 +76,7 @@ static int luasteam_Music_BIsPlaying(lua_State *L) {
 // int Music.GetPlaybackStatus()
 static int luasteam_Music_GetPlaybackStatus(lua_State *L) {
 	auto *iface = SteamMusic();
-	AudioPlayback_Status __ret = iface->GetPlaybackStatus();
+	AudioPlayback_Status __ret = SteamAPI_ISteamMusic_GetPlaybackStatus(iface);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -87,7 +87,7 @@ static int luasteam_Music_GetPlaybackStatus(lua_State *L) {
 // Music.Play()
 static int luasteam_Music_Play(lua_State *L) {
 	auto *iface = SteamMusic();
-	iface->Play();
+	SteamAPI_ISteamMusic_Play(iface);
 	return 0;
 }
 
@@ -97,7 +97,7 @@ static int luasteam_Music_Play(lua_State *L) {
 // Music.Pause()
 static int luasteam_Music_Pause(lua_State *L) {
 	auto *iface = SteamMusic();
-	iface->Pause();
+	SteamAPI_ISteamMusic_Pause(iface);
 	return 0;
 }
 
@@ -107,7 +107,7 @@ static int luasteam_Music_Pause(lua_State *L) {
 // Music.PlayPrevious()
 static int luasteam_Music_PlayPrevious(lua_State *L) {
 	auto *iface = SteamMusic();
-	iface->PlayPrevious();
+	SteamAPI_ISteamMusic_PlayPrevious(iface);
 	return 0;
 }
 
@@ -117,7 +117,7 @@ static int luasteam_Music_PlayPrevious(lua_State *L) {
 // Music.PlayNext()
 static int luasteam_Music_PlayNext(lua_State *L) {
 	auto *iface = SteamMusic();
-	iface->PlayNext();
+	SteamAPI_ISteamMusic_PlayNext(iface);
 	return 0;
 }
 
@@ -128,7 +128,7 @@ static int luasteam_Music_PlayNext(lua_State *L) {
 static int luasteam_Music_SetVolume(lua_State *L) {
 	auto *iface = SteamMusic();
 	float flVolume = static_cast<float>(luaL_checknumber(L, 1));
-	iface->SetVolume(flVolume);
+	SteamAPI_ISteamMusic_SetVolume(iface, flVolume);
 	return 0;
 }
 
@@ -138,7 +138,7 @@ static int luasteam_Music_SetVolume(lua_State *L) {
 // float Music.GetVolume()
 static int luasteam_Music_GetVolume(lua_State *L) {
 	auto *iface = SteamMusic();
-	float __ret = iface->GetVolume();
+	float __ret = SteamAPI_ISteamMusic_GetVolume(iface);
 	lua_pushnumber(L, __ret);
 	return 1;
 }

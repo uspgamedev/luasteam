@@ -260,7 +260,7 @@ template <> void CallResultListener<LobbyMatchList_t>::Result(LobbyMatchList_t *
 // int Matchmaking.GetFavoriteGameCount()
 static int luasteam_Matchmaking_GetFavoriteGameCount(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	int __ret = iface->GetFavoriteGameCount();
+	int __ret = SteamAPI_ISteamMatchmaking_GetFavoriteGameCount(iface);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -278,7 +278,7 @@ static int luasteam_Matchmaking_GetFavoriteGame(lua_State *L) {
 	uint16 pnQueryPort;
 	uint32 punFlags;
 	uint32 pRTime32LastPlayedOnServer;
-	bool __ret = iface->GetFavoriteGame(iGame, &pnAppID, &pnIP, &pnConnPort, &pnQueryPort, &punFlags, &pRTime32LastPlayedOnServer);
+	bool __ret = SteamAPI_ISteamMatchmaking_GetFavoriteGame(iface, iGame, &pnAppID, &pnIP, &pnConnPort, &pnQueryPort, &punFlags, &pRTime32LastPlayedOnServer);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pnAppID);
 	lua_pushinteger(L, pnIP);
@@ -301,7 +301,7 @@ static int luasteam_Matchmaking_AddFavoriteGame(lua_State *L) {
 	uint16 nQueryPort = static_cast<uint16>(luaL_checkint(L, 4));
 	uint32 unFlags = static_cast<uint32>(luaL_checkint(L, 5));
 	uint32 rTime32LastPlayedOnServer = static_cast<uint32>(luaL_checkint(L, 6));
-	int __ret = iface->AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer);
+	int __ret = SteamAPI_ISteamMatchmaking_AddFavoriteGame(iface, nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -317,7 +317,7 @@ static int luasteam_Matchmaking_RemoveFavoriteGame(lua_State *L) {
 	uint16 nConnPort = static_cast<uint16>(luaL_checkint(L, 3));
 	uint16 nQueryPort = static_cast<uint16>(luaL_checkint(L, 4));
 	uint32 unFlags = static_cast<uint32>(luaL_checkint(L, 5));
-	bool __ret = iface->RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags);
+	bool __ret = SteamAPI_ISteamMatchmaking_RemoveFavoriteGame(iface, nAppID, nIP, nConnPort, nQueryPort, unFlags);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -333,7 +333,7 @@ static int luasteam_Matchmaking_RequestLobbyList(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	SteamAPICall_t __ret = iface->RequestLobbyList();
+	SteamAPICall_t __ret = SteamAPI_ISteamMatchmaking_RequestLobbyList(iface);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<LobbyMatchList_t>();
 		listener->callback_ref = callback_ref;
@@ -352,7 +352,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListStringFilter(lua_State *L) {
 	const char *pchKeyToMatch = luaL_checkstring(L, 1);
 	const char *pchValueToMatch = luaL_checkstring(L, 2);
 	ELobbyComparison eComparisonType = static_cast<ELobbyComparison>(luaL_checkint(L, 3));
-	iface->AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListStringFilter(iface, pchKeyToMatch, pchValueToMatch, eComparisonType);
 	return 0;
 }
 
@@ -365,7 +365,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListNumericalFilter(lua_State *L)
 	const char *pchKeyToMatch = luaL_checkstring(L, 1);
 	int nValueToMatch = static_cast<int>(luaL_checkint(L, 2));
 	ELobbyComparison eComparisonType = static_cast<ELobbyComparison>(luaL_checkint(L, 3));
-	iface->AddRequestLobbyListNumericalFilter(pchKeyToMatch, nValueToMatch, eComparisonType);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListNumericalFilter(iface, pchKeyToMatch, nValueToMatch, eComparisonType);
 	return 0;
 }
 
@@ -377,7 +377,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListNearValueFilter(lua_State *L)
 	auto *iface = SteamMatchmaking();
 	const char *pchKeyToMatch = luaL_checkstring(L, 1);
 	int nValueToBeCloseTo = static_cast<int>(luaL_checkint(L, 2));
-	iface->AddRequestLobbyListNearValueFilter(pchKeyToMatch, nValueToBeCloseTo);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListNearValueFilter(iface, pchKeyToMatch, nValueToBeCloseTo);
 	return 0;
 }
 
@@ -388,7 +388,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListNearValueFilter(lua_State *L)
 static int luasteam_Matchmaking_AddRequestLobbyListFilterSlotsAvailable(lua_State *L) {
 	auto *iface = SteamMatchmaking();
 	int nSlotsAvailable = static_cast<int>(luaL_checkint(L, 1));
-	iface->AddRequestLobbyListFilterSlotsAvailable(nSlotsAvailable);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListFilterSlotsAvailable(iface, nSlotsAvailable);
 	return 0;
 }
 
@@ -399,7 +399,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListFilterSlotsAvailable(lua_Stat
 static int luasteam_Matchmaking_AddRequestLobbyListDistanceFilter(lua_State *L) {
 	auto *iface = SteamMatchmaking();
 	ELobbyDistanceFilter eLobbyDistanceFilter = static_cast<ELobbyDistanceFilter>(luaL_checkint(L, 1));
-	iface->AddRequestLobbyListDistanceFilter(eLobbyDistanceFilter);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListDistanceFilter(iface, eLobbyDistanceFilter);
 	return 0;
 }
 
@@ -410,7 +410,7 @@ static int luasteam_Matchmaking_AddRequestLobbyListDistanceFilter(lua_State *L) 
 static int luasteam_Matchmaking_AddRequestLobbyListResultCountFilter(lua_State *L) {
 	auto *iface = SteamMatchmaking();
 	int cMaxResults = static_cast<int>(luaL_checkint(L, 1));
-	iface->AddRequestLobbyListResultCountFilter(cMaxResults);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListResultCountFilter(iface, cMaxResults);
 	return 0;
 }
 
@@ -420,8 +420,8 @@ static int luasteam_Matchmaking_AddRequestLobbyListResultCountFilter(lua_State *
 // Matchmaking.AddRequestLobbyListCompatibleMembersFilter(steamIDLobby: uint64)
 static int luasteam_Matchmaking_AddRequestLobbyListCompatibleMembersFilter(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	iface->AddRequestLobbyListCompatibleMembersFilter(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	SteamAPI_ISteamMatchmaking_AddRequestLobbyListCompatibleMembersFilter(iface, steamIDLobby);
 	return 0;
 }
 
@@ -432,8 +432,8 @@ static int luasteam_Matchmaking_AddRequestLobbyListCompatibleMembersFilter(lua_S
 static int luasteam_Matchmaking_GetLobbyByIndex(lua_State *L) {
 	auto *iface = SteamMatchmaking();
 	int iLobby = static_cast<int>(luaL_checkint(L, 1));
-	CSteamID __ret = iface->GetLobbyByIndex(iLobby);
-	luasteam::pushuint64(L, __ret.ConvertToUint64());
+	uint64 __ret = SteamAPI_ISteamMatchmaking_GetLobbyByIndex(iface, iLobby);
+	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
@@ -450,7 +450,7 @@ static int luasteam_Matchmaking_CreateLobby(lua_State *L) {
 	}
 	ELobbyType eLobbyType = static_cast<ELobbyType>(luaL_checkint(L, 1));
 	int cMaxMembers = static_cast<int>(luaL_checkint(L, 2));
-	SteamAPICall_t __ret = iface->CreateLobby(eLobbyType, cMaxMembers);
+	SteamAPICall_t __ret = SteamAPI_ISteamMatchmaking_CreateLobby(iface, eLobbyType, cMaxMembers);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<LobbyCreated_t>();
 		listener->callback_ref = callback_ref;
@@ -471,8 +471,8 @@ static int luasteam_Matchmaking_JoinLobby(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	SteamAPICall_t __ret = iface->JoinLobby(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	SteamAPICall_t __ret = SteamAPI_ISteamMatchmaking_JoinLobby(iface, steamIDLobby);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<LobbyEnter_t>();
 		listener->callback_ref = callback_ref;
@@ -488,8 +488,8 @@ static int luasteam_Matchmaking_JoinLobby(lua_State *L) {
 // Matchmaking.LeaveLobby(steamIDLobby: uint64)
 static int luasteam_Matchmaking_LeaveLobby(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	iface->LeaveLobby(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	SteamAPI_ISteamMatchmaking_LeaveLobby(iface, steamIDLobby);
 	return 0;
 }
 
@@ -499,9 +499,9 @@ static int luasteam_Matchmaking_LeaveLobby(lua_State *L) {
 // bool Matchmaking.InviteUserToLobby(steamIDLobby: uint64, steamIDInvitee: uint64)
 static int luasteam_Matchmaking_InviteUserToLobby(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	CSteamID steamIDInvitee = CSteamID(luasteam::checkuint64(L, 2));
-	bool __ret = iface->InviteUserToLobby(steamIDLobby, steamIDInvitee);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	uint64 steamIDInvitee = luasteam::checkuint64(L, 2);
+	bool __ret = SteamAPI_ISteamMatchmaking_InviteUserToLobby(iface, steamIDLobby, steamIDInvitee);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -512,8 +512,8 @@ static int luasteam_Matchmaking_InviteUserToLobby(lua_State *L) {
 // int Matchmaking.GetNumLobbyMembers(steamIDLobby: uint64)
 static int luasteam_Matchmaking_GetNumLobbyMembers(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	int __ret = iface->GetNumLobbyMembers(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	int __ret = SteamAPI_ISteamMatchmaking_GetNumLobbyMembers(iface, steamIDLobby);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -524,10 +524,10 @@ static int luasteam_Matchmaking_GetNumLobbyMembers(lua_State *L) {
 // uint64 Matchmaking.GetLobbyMemberByIndex(steamIDLobby: uint64, iMember: int)
 static int luasteam_Matchmaking_GetLobbyMemberByIndex(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	int iMember = static_cast<int>(luaL_checkint(L, 2));
-	CSteamID __ret = iface->GetLobbyMemberByIndex(steamIDLobby, iMember);
-	luasteam::pushuint64(L, __ret.ConvertToUint64());
+	uint64 __ret = SteamAPI_ISteamMatchmaking_GetLobbyMemberByIndex(iface, steamIDLobby, iMember);
+	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
@@ -537,9 +537,9 @@ static int luasteam_Matchmaking_GetLobbyMemberByIndex(lua_State *L) {
 // str Matchmaking.GetLobbyData(steamIDLobby: uint64, pchKey: str)
 static int luasteam_Matchmaking_GetLobbyData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	const char *pchKey = luaL_checkstring(L, 2);
-	const char * __ret = iface->GetLobbyData(steamIDLobby, pchKey);
+	const char * __ret = SteamAPI_ISteamMatchmaking_GetLobbyData(iface, steamIDLobby, pchKey);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -550,10 +550,10 @@ static int luasteam_Matchmaking_GetLobbyData(lua_State *L) {
 // bool Matchmaking.SetLobbyData(steamIDLobby: uint64, pchKey: str, pchValue: str)
 static int luasteam_Matchmaking_SetLobbyData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	const char *pchKey = luaL_checkstring(L, 2);
 	const char *pchValue = luaL_checkstring(L, 3);
-	bool __ret = iface->SetLobbyData(steamIDLobby, pchKey, pchValue);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLobbyData(iface, steamIDLobby, pchKey, pchValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -564,8 +564,8 @@ static int luasteam_Matchmaking_SetLobbyData(lua_State *L) {
 // int Matchmaking.GetLobbyDataCount(steamIDLobby: uint64)
 static int luasteam_Matchmaking_GetLobbyDataCount(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	int __ret = iface->GetLobbyDataCount(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	int __ret = SteamAPI_ISteamMatchmaking_GetLobbyDataCount(iface, steamIDLobby);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -576,13 +576,13 @@ static int luasteam_Matchmaking_GetLobbyDataCount(lua_State *L) {
 // (bool, pchKey: str, pchValue: str) Matchmaking.GetLobbyDataByIndex(steamIDLobby: uint64, iLobbyData: int, cchKeyBufferSize: int, cchValueBufferSize: int)
 static int luasteam_Matchmaking_GetLobbyDataByIndex(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	int iLobbyData = static_cast<int>(luaL_checkint(L, 2));
 	int cchKeyBufferSize = luaL_checkint(L, 3);
 	std::vector<char> pchKey(cchKeyBufferSize);
 	int cchValueBufferSize = luaL_checkint(L, 4);
 	std::vector<char> pchValue(cchValueBufferSize);
-	bool __ret = iface->GetLobbyDataByIndex(steamIDLobby, iLobbyData, pchKey.data(), cchKeyBufferSize, pchValue.data(), cchValueBufferSize);
+	bool __ret = SteamAPI_ISteamMatchmaking_GetLobbyDataByIndex(iface, steamIDLobby, iLobbyData, pchKey.data(), cchKeyBufferSize, pchValue.data(), cchValueBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchKey.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
@@ -595,9 +595,9 @@ static int luasteam_Matchmaking_GetLobbyDataByIndex(lua_State *L) {
 // bool Matchmaking.DeleteLobbyData(steamIDLobby: uint64, pchKey: str)
 static int luasteam_Matchmaking_DeleteLobbyData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	const char *pchKey = luaL_checkstring(L, 2);
-	bool __ret = iface->DeleteLobbyData(steamIDLobby, pchKey);
+	bool __ret = SteamAPI_ISteamMatchmaking_DeleteLobbyData(iface, steamIDLobby, pchKey);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -608,10 +608,10 @@ static int luasteam_Matchmaking_DeleteLobbyData(lua_State *L) {
 // str Matchmaking.GetLobbyMemberData(steamIDLobby: uint64, steamIDUser: uint64, pchKey: str)
 static int luasteam_Matchmaking_GetLobbyMemberData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	CSteamID steamIDUser = CSteamID(luasteam::checkuint64(L, 2));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	uint64 steamIDUser = luasteam::checkuint64(L, 2);
 	const char *pchKey = luaL_checkstring(L, 3);
-	const char * __ret = iface->GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey);
+	const char * __ret = SteamAPI_ISteamMatchmaking_GetLobbyMemberData(iface, steamIDLobby, steamIDUser, pchKey);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -622,10 +622,10 @@ static int luasteam_Matchmaking_GetLobbyMemberData(lua_State *L) {
 // Matchmaking.SetLobbyMemberData(steamIDLobby: uint64, pchKey: str, pchValue: str)
 static int luasteam_Matchmaking_SetLobbyMemberData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	const char *pchKey = luaL_checkstring(L, 2);
 	const char *pchValue = luaL_checkstring(L, 3);
-	iface->SetLobbyMemberData(steamIDLobby, pchKey, pchValue);
+	SteamAPI_ISteamMatchmaking_SetLobbyMemberData(iface, steamIDLobby, pchKey, pchValue);
 	return 0;
 }
 
@@ -635,12 +635,12 @@ static int luasteam_Matchmaking_SetLobbyMemberData(lua_State *L) {
 // bool Matchmaking.SendLobbyChatMsg(steamIDLobby: uint64, pvMsgBody: str, cubMsgBody: int)
 static int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	int cubMsgBody = luaL_checkint(L, 3);
 	size_t _len__tmp0;
 	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
 	const void *pvMsgBody = reinterpret_cast<const void *>(_tmp0);
-	bool __ret = iface->SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody);
+	bool __ret = SteamAPI_ISteamMatchmaking_SendLobbyChatMsg(iface, steamIDLobby, pvMsgBody, cubMsgBody);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -651,13 +651,13 @@ static int luasteam_Matchmaking_SendLobbyChatMsg(lua_State *L) {
 // (int, pSteamIDUser: uint64, pvData: str, peChatEntryType: int) Matchmaking.GetLobbyChatEntry(steamIDLobby: uint64, iChatID: int, cubData: int)
 static int luasteam_Matchmaking_GetLobbyChatEntry(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	int iChatID = static_cast<int>(luaL_checkint(L, 2));
 	CSteamID pSteamIDUser;
 	int cubData = luaL_checkint(L, 3);
 	std::vector<unsigned char> pvData(cubData);
 	EChatEntryType peChatEntryType;
-	int __ret = iface->GetLobbyChatEntry(steamIDLobby, iChatID, &pSteamIDUser, pvData.data(), cubData, &peChatEntryType);
+	int __ret = SteamAPI_ISteamMatchmaking_GetLobbyChatEntry(iface, steamIDLobby, iChatID, &pSteamIDUser, pvData.data(), cubData, &peChatEntryType);
 	lua_pushinteger(L, __ret);
 	luasteam::pushuint64(L, pSteamIDUser.ConvertToUint64());
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
@@ -671,8 +671,8 @@ static int luasteam_Matchmaking_GetLobbyChatEntry(lua_State *L) {
 // bool Matchmaking.RequestLobbyData(steamIDLobby: uint64)
 static int luasteam_Matchmaking_RequestLobbyData(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	bool __ret = iface->RequestLobbyData(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	bool __ret = SteamAPI_ISteamMatchmaking_RequestLobbyData(iface, steamIDLobby);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -683,11 +683,11 @@ static int luasteam_Matchmaking_RequestLobbyData(lua_State *L) {
 // Matchmaking.SetLobbyGameServer(steamIDLobby: uint64, unGameServerIP: int, unGameServerPort: int, steamIDGameServer: uint64)
 static int luasteam_Matchmaking_SetLobbyGameServer(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	uint32 unGameServerIP = static_cast<uint32>(luaL_checkint(L, 2));
 	uint16 unGameServerPort = static_cast<uint16>(luaL_checkint(L, 3));
-	CSteamID steamIDGameServer = CSteamID(luasteam::checkuint64(L, 4));
-	iface->SetLobbyGameServer(steamIDLobby, unGameServerIP, unGameServerPort, steamIDGameServer);
+	uint64 steamIDGameServer = luasteam::checkuint64(L, 4);
+	SteamAPI_ISteamMatchmaking_SetLobbyGameServer(iface, steamIDLobby, unGameServerIP, unGameServerPort, steamIDGameServer);
 	return 0;
 }
 
@@ -697,11 +697,11 @@ static int luasteam_Matchmaking_SetLobbyGameServer(lua_State *L) {
 // (bool, punGameServerIP: int, punGameServerPort: int, psteamIDGameServer: uint64) Matchmaking.GetLobbyGameServer(steamIDLobby: uint64)
 static int luasteam_Matchmaking_GetLobbyGameServer(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	uint32 punGameServerIP;
 	uint16 punGameServerPort;
 	CSteamID psteamIDGameServer;
-	bool __ret = iface->GetLobbyGameServer(steamIDLobby, &punGameServerIP, &punGameServerPort, &psteamIDGameServer);
+	bool __ret = SteamAPI_ISteamMatchmaking_GetLobbyGameServer(iface, steamIDLobby, &punGameServerIP, &punGameServerPort, &psteamIDGameServer);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, punGameServerIP);
 	lua_pushinteger(L, punGameServerPort);
@@ -715,9 +715,9 @@ static int luasteam_Matchmaking_GetLobbyGameServer(lua_State *L) {
 // bool Matchmaking.SetLobbyMemberLimit(steamIDLobby: uint64, cMaxMembers: int)
 static int luasteam_Matchmaking_SetLobbyMemberLimit(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	int cMaxMembers = static_cast<int>(luaL_checkint(L, 2));
-	bool __ret = iface->SetLobbyMemberLimit(steamIDLobby, cMaxMembers);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLobbyMemberLimit(iface, steamIDLobby, cMaxMembers);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -728,8 +728,8 @@ static int luasteam_Matchmaking_SetLobbyMemberLimit(lua_State *L) {
 // int Matchmaking.GetLobbyMemberLimit(steamIDLobby: uint64)
 static int luasteam_Matchmaking_GetLobbyMemberLimit(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	int __ret = iface->GetLobbyMemberLimit(steamIDLobby);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	int __ret = SteamAPI_ISteamMatchmaking_GetLobbyMemberLimit(iface, steamIDLobby);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -740,9 +740,9 @@ static int luasteam_Matchmaking_GetLobbyMemberLimit(lua_State *L) {
 // bool Matchmaking.SetLobbyType(steamIDLobby: uint64, eLobbyType: int)
 static int luasteam_Matchmaking_SetLobbyType(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	ELobbyType eLobbyType = static_cast<ELobbyType>(luaL_checkint(L, 2));
-	bool __ret = iface->SetLobbyType(steamIDLobby, eLobbyType);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLobbyType(iface, steamIDLobby, eLobbyType);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -753,9 +753,9 @@ static int luasteam_Matchmaking_SetLobbyType(lua_State *L) {
 // bool Matchmaking.SetLobbyJoinable(steamIDLobby: uint64, bLobbyJoinable: bool)
 static int luasteam_Matchmaking_SetLobbyJoinable(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
 	bool bLobbyJoinable = lua_toboolean(L, 2);
-	bool __ret = iface->SetLobbyJoinable(steamIDLobby, bLobbyJoinable);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLobbyJoinable(iface, steamIDLobby, bLobbyJoinable);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -766,9 +766,9 @@ static int luasteam_Matchmaking_SetLobbyJoinable(lua_State *L) {
 // uint64 Matchmaking.GetLobbyOwner(steamIDLobby: uint64)
 static int luasteam_Matchmaking_GetLobbyOwner(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	CSteamID __ret = iface->GetLobbyOwner(steamIDLobby);
-	luasteam::pushuint64(L, __ret.ConvertToUint64());
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	uint64 __ret = SteamAPI_ISteamMatchmaking_GetLobbyOwner(iface, steamIDLobby);
+	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 
@@ -778,9 +778,9 @@ static int luasteam_Matchmaking_GetLobbyOwner(lua_State *L) {
 // bool Matchmaking.SetLobbyOwner(steamIDLobby: uint64, steamIDNewOwner: uint64)
 static int luasteam_Matchmaking_SetLobbyOwner(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	CSteamID steamIDNewOwner = CSteamID(luasteam::checkuint64(L, 2));
-	bool __ret = iface->SetLobbyOwner(steamIDLobby, steamIDNewOwner);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	uint64 steamIDNewOwner = luasteam::checkuint64(L, 2);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLobbyOwner(iface, steamIDLobby, steamIDNewOwner);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -791,9 +791,9 @@ static int luasteam_Matchmaking_SetLobbyOwner(lua_State *L) {
 // bool Matchmaking.SetLinkedLobby(steamIDLobby: uint64, steamIDLobbyDependent: uint64)
 static int luasteam_Matchmaking_SetLinkedLobby(lua_State *L) {
 	auto *iface = SteamMatchmaking();
-	CSteamID steamIDLobby = CSteamID(luasteam::checkuint64(L, 1));
-	CSteamID steamIDLobbyDependent = CSteamID(luasteam::checkuint64(L, 2));
-	bool __ret = iface->SetLinkedLobby(steamIDLobby, steamIDLobbyDependent);
+	uint64 steamIDLobby = luasteam::checkuint64(L, 1);
+	uint64 steamIDLobbyDependent = luasteam::checkuint64(L, 2);
+	bool __ret = SteamAPI_ISteamMatchmaking_SetLinkedLobby(iface, steamIDLobby, steamIDLobbyDependent);
 	lua_pushboolean(L, __ret);
 	return 1;
 }

@@ -60,7 +60,7 @@ static int luasteam_NetworkingMessages_SendMessageToUser(lua_State *L, ISteamNet
 	const void *pubData = reinterpret_cast<const void *>(_tmp0);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int nRemoteChannel = static_cast<int>(luaL_checkint(L, 5));
-	EResult __ret = iface->SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel);
+	EResult __ret = SteamAPI_ISteamNetworkingMessages_SendMessageToUser(iface, identityRemote, pubData, cubData, nSendFlags, nRemoteChannel);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -73,7 +73,7 @@ static int luasteam_NetworkingMessages_SendMessageToUser_gs(lua_State *L) { retu
 // bool NetworkingMessages.AcceptSessionWithUser(identityRemote: SteamNetworkingIdentity)
 static int luasteam_NetworkingMessages_AcceptSessionWithUser(lua_State *L, ISteamNetworkingMessages *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	bool __ret = iface->AcceptSessionWithUser(identityRemote);
+	bool __ret = SteamAPI_ISteamNetworkingMessages_AcceptSessionWithUser(iface, identityRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -86,7 +86,7 @@ static int luasteam_NetworkingMessages_AcceptSessionWithUser_gs(lua_State *L) { 
 // bool NetworkingMessages.CloseSessionWithUser(identityRemote: SteamNetworkingIdentity)
 static int luasteam_NetworkingMessages_CloseSessionWithUser(lua_State *L, ISteamNetworkingMessages *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	bool __ret = iface->CloseSessionWithUser(identityRemote);
+	bool __ret = SteamAPI_ISteamNetworkingMessages_CloseSessionWithUser(iface, identityRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -100,7 +100,7 @@ static int luasteam_NetworkingMessages_CloseSessionWithUser_gs(lua_State *L) { r
 static int luasteam_NetworkingMessages_CloseChannelWithUser(lua_State *L, ISteamNetworkingMessages *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	int nLocalChannel = static_cast<int>(luaL_checkint(L, 2));
-	bool __ret = iface->CloseChannelWithUser(identityRemote, nLocalChannel);
+	bool __ret = SteamAPI_ISteamNetworkingMessages_CloseChannelWithUser(iface, identityRemote, nLocalChannel);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -115,7 +115,7 @@ static int luasteam_NetworkingMessages_GetSessionConnectionInfo(lua_State *L, IS
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	SteamNetConnectionInfo_t pConnectionInfo;
 	SteamNetConnectionRealTimeStatus_t pQuickStatus;
-	ESteamNetworkingConnectionState __ret = iface->GetSessionConnectionInfo(identityRemote, &pConnectionInfo, &pQuickStatus);
+	ESteamNetworkingConnectionState __ret = SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(iface, identityRemote, &pConnectionInfo, &pQuickStatus);
 	lua_pushinteger(L, __ret);
 	luasteam::push_SteamNetConnectionInfo_t(L, pConnectionInfo);
 	luasteam::push_SteamNetConnectionRealTimeStatus_t(L, pQuickStatus);

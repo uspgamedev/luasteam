@@ -132,7 +132,7 @@ impl DocGenerator {
 
         doc.push_str(".. note::\n");
         doc.push_str("   This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.\n");
-        doc.push_str("   Methods marked with ✋ require manual implementation.\n\n");
+        doc.push_str("   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.\n\n");
         // Check if any methods have multiple overloads (detected by searching for similar names)
         let has_overloads = !method_signatures.is_empty() && {
             let mut name_counts: HashMap<String, usize> = HashMap::new();

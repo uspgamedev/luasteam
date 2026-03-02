@@ -15,7 +15,7 @@ void shutdown_Client_auto(lua_State *L) {
 // In Lua:
 // int Client.CreateSteamPipe()
 static int luasteam_Client_CreateSteamPipe(lua_State *L, ISteamClient *iface) {
-	HSteamPipe __ret = iface->CreateSteamPipe();
+	HSteamPipe __ret = SteamAPI_ISteamClient_CreateSteamPipe(iface);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -28,7 +28,7 @@ static int luasteam_Client_CreateSteamPipe_gs(lua_State *L) { return luasteam_Cl
 // bool Client.BReleaseSteamPipe(hSteamPipe: int)
 static int luasteam_Client_BReleaseSteamPipe(lua_State *L, ISteamClient *iface) {
 	HSteamPipe hSteamPipe = static_cast<HSteamPipe>(luaL_checkint(L, 1));
-	bool __ret = iface->BReleaseSteamPipe(hSteamPipe);
+	bool __ret = SteamAPI_ISteamClient_BReleaseSteamPipe(iface, hSteamPipe);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -41,7 +41,7 @@ static int luasteam_Client_BReleaseSteamPipe_gs(lua_State *L) { return luasteam_
 // int Client.ConnectToGlobalUser(hSteamPipe: int)
 static int luasteam_Client_ConnectToGlobalUser(lua_State *L, ISteamClient *iface) {
 	HSteamPipe hSteamPipe = static_cast<HSteamPipe>(luaL_checkint(L, 1));
-	HSteamUser __ret = iface->ConnectToGlobalUser(hSteamPipe);
+	HSteamUser __ret = SteamAPI_ISteamClient_ConnectToGlobalUser(iface, hSteamPipe);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -55,7 +55,7 @@ static int luasteam_Client_ConnectToGlobalUser_gs(lua_State *L) { return luastea
 static int luasteam_Client_CreateLocalUser(lua_State *L, ISteamClient *iface) {
 	HSteamPipe phSteamPipe;
 	EAccountType eAccountType = static_cast<EAccountType>(luaL_checkint(L, 1));
-	HSteamUser __ret = iface->CreateLocalUser(&phSteamPipe, eAccountType);
+	HSteamUser __ret = SteamAPI_ISteamClient_CreateLocalUser(iface, &phSteamPipe, eAccountType);
 	lua_pushinteger(L, __ret);
 	lua_pushinteger(L, phSteamPipe);
 	return 2;
@@ -70,7 +70,7 @@ static int luasteam_Client_CreateLocalUser_gs(lua_State *L) { return luasteam_Cl
 static int luasteam_Client_ReleaseUser(lua_State *L, ISteamClient *iface) {
 	HSteamPipe hSteamPipe = static_cast<HSteamPipe>(luaL_checkint(L, 1));
 	HSteamUser hUser = static_cast<HSteamUser>(luaL_checkint(L, 2));
-	iface->ReleaseUser(hSteamPipe, hUser);
+	SteamAPI_ISteamClient_ReleaseUser(iface, hSteamPipe, hUser);
 	return 0;
 }
 static int luasteam_Client_ReleaseUser_user(lua_State *L) { return luasteam_Client_ReleaseUser(L, SteamClient()); }
@@ -83,7 +83,7 @@ static int luasteam_Client_ReleaseUser_gs(lua_State *L) { return luasteam_Client
 static int luasteam_Client_SetLocalIPBinding(lua_State *L, ISteamClient *iface) {
 	const SteamIPAddress_t &unIP = *luasteam::check_SteamIPAddress_t_ptr(L, 1);
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
-	iface->SetLocalIPBinding(unIP, usPort);
+	SteamAPI_ISteamClient_SetLocalIPBinding(iface, unIP, usPort);
 	return 0;
 }
 static int luasteam_Client_SetLocalIPBinding_user(lua_State *L) { return luasteam_Client_SetLocalIPBinding(L, SteamClient()); }
@@ -94,7 +94,7 @@ static int luasteam_Client_SetLocalIPBinding_gs(lua_State *L) { return luasteam_
 // In Lua:
 // int Client.GetIPCCallCount()
 static int luasteam_Client_GetIPCCallCount(lua_State *L, ISteamClient *iface) {
-	uint32 __ret = iface->GetIPCCallCount();
+	uint32 __ret = SteamAPI_ISteamClient_GetIPCCallCount(iface);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -106,7 +106,7 @@ static int luasteam_Client_GetIPCCallCount_gs(lua_State *L) { return luasteam_Cl
 // In Lua:
 // bool Client.BShutdownIfAllPipesClosed()
 static int luasteam_Client_BShutdownIfAllPipesClosed(lua_State *L, ISteamClient *iface) {
-	bool __ret = iface->BShutdownIfAllPipesClosed();
+	bool __ret = SteamAPI_ISteamClient_BShutdownIfAllPipesClosed(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }

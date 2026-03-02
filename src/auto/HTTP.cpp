@@ -70,7 +70,7 @@ void shutdown_HTTP_auto(lua_State *L) {
 static int luasteam_HTTP_CreateHTTPRequest(lua_State *L, ISteamHTTP *iface) {
 	EHTTPMethod eHTTPRequestMethod = static_cast<EHTTPMethod>(luaL_checkint(L, 1));
 	const char *pchAbsoluteURL = luaL_checkstring(L, 2);
-	HTTPRequestHandle __ret = iface->CreateHTTPRequest(eHTTPRequestMethod, pchAbsoluteURL);
+	HTTPRequestHandle __ret = SteamAPI_ISteamHTTP_CreateHTTPRequest(iface, eHTTPRequestMethod, pchAbsoluteURL);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -84,7 +84,7 @@ static int luasteam_HTTP_CreateHTTPRequest_gs(lua_State *L) { return luasteam_HT
 static int luasteam_HTTP_SetHTTPRequestContextValue(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint64 ulContextValue = luasteam::checkuint64(L, 2);
-	bool __ret = iface->SetHTTPRequestContextValue(hRequest, ulContextValue);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestContextValue(iface, hRequest, ulContextValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -98,7 +98,7 @@ static int luasteam_HTTP_SetHTTPRequestContextValue_gs(lua_State *L) { return lu
 static int luasteam_HTTP_SetHTTPRequestNetworkActivityTimeout(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint32 unTimeoutSeconds = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = iface->SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestNetworkActivityTimeout(iface, hRequest, unTimeoutSeconds);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -113,7 +113,7 @@ static int luasteam_HTTP_SetHTTPRequestHeaderValue(lua_State *L, ISteamHTTP *ifa
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchHeaderName = luaL_checkstring(L, 2);
 	const char *pchHeaderValue = luaL_checkstring(L, 3);
-	bool __ret = iface->SetHTTPRequestHeaderValue(hRequest, pchHeaderName, pchHeaderValue);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestHeaderValue(iface, hRequest, pchHeaderName, pchHeaderValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -128,7 +128,7 @@ static int luasteam_HTTP_SetHTTPRequestGetOrPostParameter(lua_State *L, ISteamHT
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchParamName = luaL_checkstring(L, 2);
 	const char *pchParamValue = luaL_checkstring(L, 3);
-	bool __ret = iface->SetHTTPRequestGetOrPostParameter(hRequest, pchParamName, pchParamValue);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestGetOrPostParameter(iface, hRequest, pchParamName, pchParamValue);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -142,7 +142,7 @@ static int luasteam_HTTP_SetHTTPRequestGetOrPostParameter_gs(lua_State *L) { ret
 static int luasteam_HTTP_SendHTTPRequest(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	SteamAPICall_t pCallHandle;
-	bool __ret = iface->SendHTTPRequest(hRequest, &pCallHandle);
+	bool __ret = SteamAPI_ISteamHTTP_SendHTTPRequest(iface, hRequest, &pCallHandle);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pCallHandle);
 	return 2;
@@ -157,7 +157,7 @@ static int luasteam_HTTP_SendHTTPRequest_gs(lua_State *L) { return luasteam_HTTP
 static int luasteam_HTTP_SendHTTPRequestAndStreamResponse(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	SteamAPICall_t pCallHandle;
-	bool __ret = iface->SendHTTPRequestAndStreamResponse(hRequest, &pCallHandle);
+	bool __ret = SteamAPI_ISteamHTTP_SendHTTPRequestAndStreamResponse(iface, hRequest, &pCallHandle);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pCallHandle);
 	return 2;
@@ -171,7 +171,7 @@ static int luasteam_HTTP_SendHTTPRequestAndStreamResponse_gs(lua_State *L) { ret
 // bool HTTP.DeferHTTPRequest(hRequest: int)
 static int luasteam_HTTP_DeferHTTPRequest(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
-	bool __ret = iface->DeferHTTPRequest(hRequest);
+	bool __ret = SteamAPI_ISteamHTTP_DeferHTTPRequest(iface, hRequest);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -184,7 +184,7 @@ static int luasteam_HTTP_DeferHTTPRequest_gs(lua_State *L) { return luasteam_HTT
 // bool HTTP.PrioritizeHTTPRequest(hRequest: int)
 static int luasteam_HTTP_PrioritizeHTTPRequest(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
-	bool __ret = iface->PrioritizeHTTPRequest(hRequest);
+	bool __ret = SteamAPI_ISteamHTTP_PrioritizeHTTPRequest(iface, hRequest);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -199,7 +199,7 @@ static int luasteam_HTTP_GetHTTPResponseHeaderSize(lua_State *L, ISteamHTTP *ifa
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchHeaderName = luaL_checkstring(L, 2);
 	uint32 unResponseHeaderSize;
-	bool __ret = iface->GetHTTPResponseHeaderSize(hRequest, pchHeaderName, &unResponseHeaderSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseHeaderSize(iface, hRequest, pchHeaderName, &unResponseHeaderSize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, unResponseHeaderSize);
 	return 2;
@@ -216,7 +216,7 @@ static int luasteam_HTTP_GetHTTPResponseHeaderValue(lua_State *L, ISteamHTTP *if
 	const char *pchHeaderName = luaL_checkstring(L, 2);
 	uint8 pHeaderValueBuffer;
 	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = iface->GetHTTPResponseHeaderValue(hRequest, pchHeaderName, &pHeaderValueBuffer, unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseHeaderValue(iface, hRequest, pchHeaderName, &pHeaderValueBuffer, unBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pHeaderValueBuffer);
 	return 2;
@@ -231,7 +231,7 @@ static int luasteam_HTTP_GetHTTPResponseHeaderValue_gs(lua_State *L) { return lu
 static int luasteam_HTTP_GetHTTPResponseBodySize(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint32 unBodySize;
-	bool __ret = iface->GetHTTPResponseBodySize(hRequest, &unBodySize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseBodySize(iface, hRequest, &unBodySize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, unBodySize);
 	return 2;
@@ -247,7 +247,7 @@ static int luasteam_HTTP_GetHTTPResponseBodyData(lua_State *L, ISteamHTTP *iface
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint8 pBodyDataBuffer;
 	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = iface->GetHTTPResponseBodyData(hRequest, &pBodyDataBuffer, unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseBodyData(iface, hRequest, &pBodyDataBuffer, unBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pBodyDataBuffer);
 	return 2;
@@ -264,7 +264,7 @@ static int luasteam_HTTP_GetHTTPStreamingResponseBodyData(lua_State *L, ISteamHT
 	uint32 cOffset = static_cast<uint32>(luaL_checkint(L, 2));
 	uint8 pBodyDataBuffer;
 	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = iface->GetHTTPStreamingResponseBodyData(hRequest, cOffset, &pBodyDataBuffer, unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPStreamingResponseBodyData(iface, hRequest, cOffset, &pBodyDataBuffer, unBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pBodyDataBuffer);
 	return 2;
@@ -278,7 +278,7 @@ static int luasteam_HTTP_GetHTTPStreamingResponseBodyData_gs(lua_State *L) { ret
 // bool HTTP.ReleaseHTTPRequest(hRequest: int)
 static int luasteam_HTTP_ReleaseHTTPRequest(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
-	bool __ret = iface->ReleaseHTTPRequest(hRequest);
+	bool __ret = SteamAPI_ISteamHTTP_ReleaseHTTPRequest(iface, hRequest);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -292,7 +292,7 @@ static int luasteam_HTTP_ReleaseHTTPRequest_gs(lua_State *L) { return luasteam_H
 static int luasteam_HTTP_GetHTTPDownloadProgressPct(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	float pflPercentOut;
-	bool __ret = iface->GetHTTPDownloadProgressPct(hRequest, &pflPercentOut);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPDownloadProgressPct(iface, hRequest, &pflPercentOut);
 	lua_pushboolean(L, __ret);
 	lua_pushnumber(L, pflPercentOut);
 	return 2;
@@ -309,7 +309,7 @@ static int luasteam_HTTP_SetHTTPRequestRawPostBody(lua_State *L, ISteamHTTP *ifa
 	const char *pchContentType = luaL_checkstring(L, 2);
 	uint8 pubBody;
 	uint32 unBodyLen = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = iface->SetHTTPRequestRawPostBody(hRequest, pchContentType, &pubBody, unBodyLen);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody(iface, hRequest, pchContentType, &pubBody, unBodyLen);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pubBody);
 	return 2;
@@ -323,7 +323,7 @@ static int luasteam_HTTP_SetHTTPRequestRawPostBody_gs(lua_State *L) { return lua
 // int HTTP.CreateCookieContainer(bAllowResponsesToModify: bool)
 static int luasteam_HTTP_CreateCookieContainer(lua_State *L, ISteamHTTP *iface) {
 	bool bAllowResponsesToModify = lua_toboolean(L, 1);
-	HTTPCookieContainerHandle __ret = iface->CreateCookieContainer(bAllowResponsesToModify);
+	HTTPCookieContainerHandle __ret = SteamAPI_ISteamHTTP_CreateCookieContainer(iface, bAllowResponsesToModify);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -336,7 +336,7 @@ static int luasteam_HTTP_CreateCookieContainer_gs(lua_State *L) { return luastea
 // bool HTTP.ReleaseCookieContainer(hCookieContainer: int)
 static int luasteam_HTTP_ReleaseCookieContainer(lua_State *L, ISteamHTTP *iface) {
 	HTTPCookieContainerHandle hCookieContainer = static_cast<HTTPCookieContainerHandle>(luaL_checkint(L, 1));
-	bool __ret = iface->ReleaseCookieContainer(hCookieContainer);
+	bool __ret = SteamAPI_ISteamHTTP_ReleaseCookieContainer(iface, hCookieContainer);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -352,7 +352,7 @@ static int luasteam_HTTP_SetCookie(lua_State *L, ISteamHTTP *iface) {
 	const char *pchHost = luaL_checkstring(L, 2);
 	const char *pchUrl = luaL_checkstring(L, 3);
 	const char *pchCookie = luaL_checkstring(L, 4);
-	bool __ret = iface->SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie);
+	bool __ret = SteamAPI_ISteamHTTP_SetCookie(iface, hCookieContainer, pchHost, pchUrl, pchCookie);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -366,7 +366,7 @@ static int luasteam_HTTP_SetCookie_gs(lua_State *L) { return luasteam_HTTP_SetCo
 static int luasteam_HTTP_SetHTTPRequestCookieContainer(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	HTTPCookieContainerHandle hCookieContainer = static_cast<HTTPCookieContainerHandle>(luaL_checkint(L, 2));
-	bool __ret = iface->SetHTTPRequestCookieContainer(hRequest, hCookieContainer);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestCookieContainer(iface, hRequest, hCookieContainer);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -380,7 +380,7 @@ static int luasteam_HTTP_SetHTTPRequestCookieContainer_gs(lua_State *L) { return
 static int luasteam_HTTP_SetHTTPRequestUserAgentInfo(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchUserAgentInfo = luaL_checkstring(L, 2);
-	bool __ret = iface->SetHTTPRequestUserAgentInfo(hRequest, pchUserAgentInfo);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestUserAgentInfo(iface, hRequest, pchUserAgentInfo);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -394,7 +394,7 @@ static int luasteam_HTTP_SetHTTPRequestUserAgentInfo_gs(lua_State *L) { return l
 static int luasteam_HTTP_SetHTTPRequestRequiresVerifiedCertificate(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	bool bRequireVerifiedCertificate = lua_toboolean(L, 2);
-	bool __ret = iface->SetHTTPRequestRequiresVerifiedCertificate(hRequest, bRequireVerifiedCertificate);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestRequiresVerifiedCertificate(iface, hRequest, bRequireVerifiedCertificate);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -408,7 +408,7 @@ static int luasteam_HTTP_SetHTTPRequestRequiresVerifiedCertificate_gs(lua_State 
 static int luasteam_HTTP_SetHTTPRequestAbsoluteTimeoutMS(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint32 unMilliseconds = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = iface->SetHTTPRequestAbsoluteTimeoutMS(hRequest, unMilliseconds);
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestAbsoluteTimeoutMS(iface, hRequest, unMilliseconds);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -422,7 +422,7 @@ static int luasteam_HTTP_SetHTTPRequestAbsoluteTimeoutMS_gs(lua_State *L) { retu
 static int luasteam_HTTP_GetHTTPRequestWasTimedOut(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	bool pbWasTimedOut;
-	bool __ret = iface->GetHTTPRequestWasTimedOut(hRequest, &pbWasTimedOut);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPRequestWasTimedOut(iface, hRequest, &pbWasTimedOut);
 	lua_pushboolean(L, __ret);
 	lua_pushboolean(L, pbWasTimedOut);
 	return 2;

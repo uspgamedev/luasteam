@@ -437,7 +437,7 @@ impl Generator {
         h.line("#ifndef LUASTEAM_AUTO_HPP");
         h.line("#define LUASTEAM_AUTO_HPP");
         h.preceeding_blank_line();
-        h.line("#include \"../common.hpp\"");
+        h.line("#include \"../Common.hpp\"");
         h.line("#include <vector>");
         h.preceeding_blank_line();
         h.line("namespace luasteam {");

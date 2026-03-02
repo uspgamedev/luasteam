@@ -68,14 +68,14 @@ void shutdown_Networking_auto(lua_State *L) {
 // In Lua:
 // bool Networking.SendP2PPacket(steamIDRemote: uint64, pubData: str, cubData: int, eP2PSendType: int, nChannel: int)
 static int luasteam_Networking_SendP2PPacket(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
 	uint32 cubData = luaL_checkint(L, 3);
 	size_t _len__tmp0;
 	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
 	const void *pubData = reinterpret_cast<const void *>(_tmp0);
 	EP2PSend eP2PSendType = static_cast<EP2PSend>(luaL_checkint(L, 4));
 	int nChannel = static_cast<int>(luaL_checkint(L, 5));
-	bool __ret = iface->SendP2PPacket(steamIDRemote, pubData, cubData, eP2PSendType, nChannel);
+	bool __ret = SteamAPI_ISteamNetworking_SendP2PPacket(iface, steamIDRemote, pubData, cubData, eP2PSendType, nChannel);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -89,7 +89,7 @@ static int luasteam_Networking_SendP2PPacket_gs(lua_State *L) { return luasteam_
 static int luasteam_Networking_IsP2PPacketAvailable(lua_State *L, ISteamNetworking *iface) {
 	uint32 pcubMsgSize;
 	int nChannel = static_cast<int>(luaL_checkint(L, 1));
-	bool __ret = iface->IsP2PPacketAvailable(&pcubMsgSize, nChannel);
+	bool __ret = SteamAPI_ISteamNetworking_IsP2PPacketAvailable(iface, &pcubMsgSize, nChannel);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pcubMsgSize);
 	return 2;
@@ -107,7 +107,7 @@ static int luasteam_Networking_ReadP2PPacket(lua_State *L, ISteamNetworking *ifa
 	std::vector<unsigned char> pubDest(cubDest);
 	CSteamID psteamIDRemote;
 	int nChannel = static_cast<int>(luaL_checkint(L, 2));
-	bool __ret = iface->ReadP2PPacket(pubDest.data(), cubDest, &pcubMsgSize, &psteamIDRemote, nChannel);
+	bool __ret = SteamAPI_ISteamNetworking_ReadP2PPacket(iface, pubDest.data(), cubDest, &pcubMsgSize, &psteamIDRemote, nChannel);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);
@@ -122,8 +122,8 @@ static int luasteam_Networking_ReadP2PPacket_gs(lua_State *L) { return luasteam_
 // In Lua:
 // bool Networking.AcceptP2PSessionWithUser(steamIDRemote: uint64)
 static int luasteam_Networking_AcceptP2PSessionWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
-	bool __ret = iface->AcceptP2PSessionWithUser(steamIDRemote);
+	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
+	bool __ret = SteamAPI_ISteamNetworking_AcceptP2PSessionWithUser(iface, steamIDRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -135,8 +135,8 @@ static int luasteam_Networking_AcceptP2PSessionWithUser_gs(lua_State *L) { retur
 // In Lua:
 // bool Networking.CloseP2PSessionWithUser(steamIDRemote: uint64)
 static int luasteam_Networking_CloseP2PSessionWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
-	bool __ret = iface->CloseP2PSessionWithUser(steamIDRemote);
+	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
+	bool __ret = SteamAPI_ISteamNetworking_CloseP2PSessionWithUser(iface, steamIDRemote);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -148,9 +148,9 @@ static int luasteam_Networking_CloseP2PSessionWithUser_gs(lua_State *L) { return
 // In Lua:
 // bool Networking.CloseP2PChannelWithUser(steamIDRemote: uint64, nChannel: int)
 static int luasteam_Networking_CloseP2PChannelWithUser(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
 	int nChannel = static_cast<int>(luaL_checkint(L, 2));
-	bool __ret = iface->CloseP2PChannelWithUser(steamIDRemote, nChannel);
+	bool __ret = SteamAPI_ISteamNetworking_CloseP2PChannelWithUser(iface, steamIDRemote, nChannel);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -162,9 +162,9 @@ static int luasteam_Networking_CloseP2PChannelWithUser_gs(lua_State *L) { return
 // In Lua:
 // (bool, pConnectionState: P2PSessionState_t) Networking.GetP2PSessionState(steamIDRemote: uint64)
 static int luasteam_Networking_GetP2PSessionState(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDRemote = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
 	P2PSessionState_t pConnectionState;
-	bool __ret = iface->GetP2PSessionState(steamIDRemote, &pConnectionState);
+	bool __ret = SteamAPI_ISteamNetworking_GetP2PSessionState(iface, steamIDRemote, &pConnectionState);
 	lua_pushboolean(L, __ret);
 	luasteam::push_P2PSessionState_t(L, pConnectionState);
 	return 2;
@@ -178,7 +178,7 @@ static int luasteam_Networking_GetP2PSessionState_gs(lua_State *L) { return luas
 // bool Networking.AllowP2PPacketRelay(bAllow: bool)
 static int luasteam_Networking_AllowP2PPacketRelay(lua_State *L, ISteamNetworking *iface) {
 	bool bAllow = lua_toboolean(L, 1);
-	bool __ret = iface->AllowP2PPacketRelay(bAllow);
+	bool __ret = SteamAPI_ISteamNetworking_AllowP2PPacketRelay(iface, bAllow);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -194,7 +194,7 @@ static int luasteam_Networking_CreateListenSocket(lua_State *L, ISteamNetworking
 	SteamIPAddress_t nIP = luasteam::check_SteamIPAddress_t(L, 2);
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
 	bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);
-	SNetListenSocket_t __ret = iface->CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay);
+	SNetListenSocket_t __ret = SteamAPI_ISteamNetworking_CreateListenSocket(iface, nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -206,11 +206,11 @@ static int luasteam_Networking_CreateListenSocket_gs(lua_State *L) { return luas
 // In Lua:
 // int Networking.CreateP2PConnectionSocket(steamIDTarget: uint64, nVirtualPort: int, nTimeoutSec: int, bAllowUseOfPacketRelay: bool)
 static int luasteam_Networking_CreateP2PConnectionSocket(lua_State *L, ISteamNetworking *iface) {
-	CSteamID steamIDTarget = CSteamID(luasteam::checkuint64(L, 1));
+	uint64 steamIDTarget = luasteam::checkuint64(L, 1);
 	int nVirtualPort = static_cast<int>(luaL_checkint(L, 2));
 	int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
 	bool bAllowUseOfPacketRelay = lua_toboolean(L, 4);
-	SNetSocket_t __ret = iface->CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay);
+	SNetSocket_t __ret = SteamAPI_ISteamNetworking_CreateP2PConnectionSocket(iface, steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -225,7 +225,7 @@ static int luasteam_Networking_CreateConnectionSocket(lua_State *L, ISteamNetwor
 	SteamIPAddress_t nIP = luasteam::check_SteamIPAddress_t(L, 1);
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 2));
 	int nTimeoutSec = static_cast<int>(luaL_checkint(L, 3));
-	SNetSocket_t __ret = iface->CreateConnectionSocket(nIP, nPort, nTimeoutSec);
+	SNetSocket_t __ret = SteamAPI_ISteamNetworking_CreateConnectionSocket(iface, nIP, nPort, nTimeoutSec);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -239,7 +239,7 @@ static int luasteam_Networking_CreateConnectionSocket_gs(lua_State *L) { return 
 static int luasteam_Networking_DestroySocket(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
 	bool bNotifyRemoteEnd = lua_toboolean(L, 2);
-	bool __ret = iface->DestroySocket(hSocket, bNotifyRemoteEnd);
+	bool __ret = SteamAPI_ISteamNetworking_DestroySocket(iface, hSocket, bNotifyRemoteEnd);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -253,7 +253,7 @@ static int luasteam_Networking_DestroySocket_gs(lua_State *L) { return luasteam_
 static int luasteam_Networking_DestroyListenSocket(lua_State *L, ISteamNetworking *iface) {
 	SNetListenSocket_t hSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
 	bool bNotifyRemoteEnd = lua_toboolean(L, 2);
-	bool __ret = iface->DestroyListenSocket(hSocket, bNotifyRemoteEnd);
+	bool __ret = SteamAPI_ISteamNetworking_DestroyListenSocket(iface, hSocket, bNotifyRemoteEnd);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -271,7 +271,7 @@ static int luasteam_Networking_SendDataOnSocket(lua_State *L, ISteamNetworking *
 	const char *_tmp1 = luaL_checklstring(L, 2, &_len__tmp1);
 	void *pubData = const_cast<void *>(reinterpret_cast<const void *>(_tmp1));
 	bool bReliable = lua_toboolean(L, 4);
-	bool __ret = iface->SendDataOnSocket(hSocket, pubData, cubData, bReliable);
+	bool __ret = SteamAPI_ISteamNetworking_SendDataOnSocket(iface, hSocket, pubData, cubData, bReliable);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -285,7 +285,7 @@ static int luasteam_Networking_SendDataOnSocket_gs(lua_State *L) { return luaste
 static int luasteam_Networking_IsDataAvailableOnSocket(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
 	uint32 pcubMsgSize;
-	bool __ret = iface->IsDataAvailableOnSocket(hSocket, &pcubMsgSize);
+	bool __ret = SteamAPI_ISteamNetworking_IsDataAvailableOnSocket(iface, hSocket, &pcubMsgSize);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pcubMsgSize);
 	return 2;
@@ -302,7 +302,7 @@ static int luasteam_Networking_RetrieveDataFromSocket(lua_State *L, ISteamNetwor
 	uint32 cubDest = luaL_checkint(L, 2);
 	uint32 pcubMsgSize = cubDest;
 	std::vector<unsigned char> pubDest(cubDest);
-	bool __ret = iface->RetrieveDataFromSocket(hSocket, pubDest.data(), cubDest, &pcubMsgSize);
+	bool __ret = SteamAPI_ISteamNetworking_RetrieveDataFromSocket(iface, hSocket, pubDest.data(), cubDest, &pcubMsgSize);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);
@@ -319,7 +319,7 @@ static int luasteam_Networking_IsDataAvailable(lua_State *L, ISteamNetworking *i
 	SNetListenSocket_t hListenSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
 	uint32 pcubMsgSize;
 	SNetSocket_t phSocket;
-	bool __ret = iface->IsDataAvailable(hListenSocket, &pcubMsgSize, &phSocket);
+	bool __ret = SteamAPI_ISteamNetworking_IsDataAvailable(iface, hListenSocket, &pcubMsgSize, &phSocket);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pcubMsgSize);
 	lua_pushinteger(L, phSocket);
@@ -338,7 +338,7 @@ static int luasteam_Networking_RetrieveData(lua_State *L, ISteamNetworking *ifac
 	uint32 pcubMsgSize = cubDest;
 	std::vector<unsigned char> pubDest(cubDest);
 	SNetSocket_t phSocket;
-	bool __ret = iface->RetrieveData(hListenSocket, pubDest.data(), cubDest, &pcubMsgSize, &phSocket);
+	bool __ret = SteamAPI_ISteamNetworking_RetrieveData(iface, hListenSocket, pubDest.data(), cubDest, &pcubMsgSize, &phSocket);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);
@@ -358,7 +358,7 @@ static int luasteam_Networking_GetSocketInfo(lua_State *L, ISteamNetworking *ifa
 	int peSocketStatus;
 	SteamIPAddress_t punIPRemote;
 	uint16 punPortRemote;
-	bool __ret = iface->GetSocketInfo(hSocket, &pSteamIDRemote, &peSocketStatus, &punIPRemote, &punPortRemote);
+	bool __ret = SteamAPI_ISteamNetworking_GetSocketInfo(iface, hSocket, &pSteamIDRemote, &peSocketStatus, &punIPRemote, &punPortRemote);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pSteamIDRemote.ConvertToUint64());
 	lua_pushinteger(L, peSocketStatus);
@@ -377,7 +377,7 @@ static int luasteam_Networking_GetListenSocketInfo(lua_State *L, ISteamNetworkin
 	SNetListenSocket_t hListenSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
 	SteamIPAddress_t pnIP;
 	uint16 pnPort;
-	bool __ret = iface->GetListenSocketInfo(hListenSocket, &pnIP, &pnPort);
+	bool __ret = SteamAPI_ISteamNetworking_GetListenSocketInfo(iface, hListenSocket, &pnIP, &pnPort);
 	lua_pushboolean(L, __ret);
 	luasteam::push_SteamIPAddress_t(L, pnIP);
 	lua_pushinteger(L, pnPort);
@@ -392,7 +392,7 @@ static int luasteam_Networking_GetListenSocketInfo_gs(lua_State *L) { return lua
 // int Networking.GetSocketConnectionType(hSocket: int)
 static int luasteam_Networking_GetSocketConnectionType(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
-	ESNetSocketConnectionType __ret = iface->GetSocketConnectionType(hSocket);
+	ESNetSocketConnectionType __ret = SteamAPI_ISteamNetworking_GetSocketConnectionType(iface, hSocket);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -405,7 +405,7 @@ static int luasteam_Networking_GetSocketConnectionType_gs(lua_State *L) { return
 // int Networking.GetMaxPacketSize(hSocket: int)
 static int luasteam_Networking_GetMaxPacketSize(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
-	int __ret = iface->GetMaxPacketSize(hSocket);
+	int __ret = SteamAPI_ISteamNetworking_GetMaxPacketSize(iface, hSocket);
 	lua_pushinteger(L, __ret);
 	return 1;
 }

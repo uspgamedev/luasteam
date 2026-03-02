@@ -6,7 +6,7 @@ static int SteamIPAddress_tMetatable_ref = LUA_NOREF;
 
 static int luasteam_SteamIPAddress_t_IsSet(lua_State *L) {
 	SteamIPAddress_t *self = luasteam::check_SteamIPAddress_t_ptr(L, 1);
-	bool __ret = self->IsSet();
+	bool __ret = SteamAPI_SteamIPAddress_t_IsSet(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -239,54 +239,54 @@ static int luasteam_servernetadr_t_Init(lua_State *L) {
 	unsigned int ip = static_cast<unsigned int>(luaL_checkint(L, 2));
 	uint16 usQueryPort = static_cast<uint16>(luaL_checkint(L, 3));
 	uint16 usConnectionPort = static_cast<uint16>(luaL_checkint(L, 4));
-	self->Init(ip, usQueryPort, usConnectionPort);
+	SteamAPI_servernetadr_t_Init(self, ip, usQueryPort, usConnectionPort);
 	return 0;
 }
 static int luasteam_servernetadr_t_GetQueryPort(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
-	uint16 __ret = self->GetQueryPort();
+	uint16 __ret = SteamAPI_servernetadr_t_GetQueryPort(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_servernetadr_t_SetQueryPort(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
-	self->SetQueryPort(usPort);
+	SteamAPI_servernetadr_t_SetQueryPort(self, usPort);
 	return 0;
 }
 static int luasteam_servernetadr_t_GetConnectionPort(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
-	uint16 __ret = self->GetConnectionPort();
+	uint16 __ret = SteamAPI_servernetadr_t_GetConnectionPort(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_servernetadr_t_SetConnectionPort(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
 	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
-	self->SetConnectionPort(usPort);
+	SteamAPI_servernetadr_t_SetConnectionPort(self, usPort);
 	return 0;
 }
 static int luasteam_servernetadr_t_GetIP(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
-	uint32 __ret = self->GetIP();
+	uint32 __ret = SteamAPI_servernetadr_t_GetIP(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_servernetadr_t_SetIP(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
 	uint32 unIP = static_cast<uint32>(luaL_checkint(L, 2));
-	self->SetIP(unIP);
+	SteamAPI_servernetadr_t_SetIP(self, unIP);
 	return 0;
 }
 static int luasteam_servernetadr_t_GetConnectionAddressString(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
-	const char * __ret = self->GetConnectionAddressString();
+	const char * __ret = SteamAPI_servernetadr_t_GetConnectionAddressString(self);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
 static int luasteam_servernetadr_t_GetQueryAddressString(lua_State *L) {
 	servernetadr_t *self = luasteam::check_servernetadr_t_ptr(L, 1);
-	const char * __ret = self->GetQueryAddressString();
+	const char * __ret = SteamAPI_servernetadr_t_GetQueryAddressString(self);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -312,14 +312,14 @@ static int gameserveritem_tMetatable_ref = LUA_NOREF;
 
 static int luasteam_gameserveritem_t_GetName(lua_State *L) {
 	gameserveritem_t *self = luasteam::check_gameserveritem_t_ptr(L, 1);
-	const char * __ret = self->GetName();
+	const char * __ret = SteamAPI_gameserveritem_t_GetName(self);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
 static int luasteam_gameserveritem_t_SetName(lua_State *L) {
 	gameserveritem_t *self = luasteam::check_gameserveritem_t_ptr(L, 1);
 	const char *pName = luaL_checkstring(L, 2);
-	self->SetName(pName);
+	SteamAPI_gameserveritem_t_SetName(self, pName);
 	return 0;
 }
 static int gameserveritem_t_index(lua_State *L) {
@@ -2098,12 +2098,12 @@ static int SteamNetworkingIPAddrMetatable_ref = LUA_NOREF;
 
 static int luasteam_SteamNetworkingIPAddr_Clear(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	self->Clear();
+	SteamAPI_SteamNetworkingIPAddr_Clear(self);
 	return 0;
 }
 static int luasteam_SteamNetworkingIPAddr_IsIPv6AllZeros(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	bool __ret = self->IsIPv6AllZeros();
+	bool __ret = SteamAPI_SteamNetworkingIPAddr_IsIPv6AllZeros(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2111,37 +2111,37 @@ static int luasteam_SteamNetworkingIPAddr_SetIPv6(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	const unsigned char *ipv6 = reinterpret_cast<const unsigned char *>(luaL_checkstring(L, 2));
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
-	self->SetIPv6(ipv6, nPort);
+	SteamAPI_SteamNetworkingIPAddr_SetIPv6(self, ipv6, nPort);
 	return 0;
 }
 static int luasteam_SteamNetworkingIPAddr_SetIPv4(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	uint32 nIP = static_cast<uint32>(luaL_checkint(L, 2));
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
-	self->SetIPv4(nIP, nPort);
+	SteamAPI_SteamNetworkingIPAddr_SetIPv4(self, nIP, nPort);
 	return 0;
 }
 static int luasteam_SteamNetworkingIPAddr_IsIPv4(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	bool __ret = self->IsIPv4();
+	bool __ret = SteamAPI_SteamNetworkingIPAddr_IsIPv4(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_GetIPv4(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	uint32 __ret = self->GetIPv4();
+	uint32 __ret = SteamAPI_SteamNetworkingIPAddr_GetIPv4(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_SetIPv6LocalHost(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 2));
-	self->SetIPv6LocalHost(nPort);
+	SteamAPI_SteamNetworkingIPAddr_SetIPv6LocalHost(self, nPort);
 	return 0;
 }
 static int luasteam_SteamNetworkingIPAddr_IsLocalHost(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	bool __ret = self->IsLocalHost();
+	bool __ret = SteamAPI_SteamNetworkingIPAddr_IsLocalHost(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2150,26 +2150,26 @@ static int luasteam_SteamNetworkingIPAddr_ToString(lua_State *L) {
 	uint32 cbBuf = luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
 	bool bWithPort = lua_toboolean(L, 3);
-	self->ToString(buf.data(), cbBuf, bWithPort);
+	SteamAPI_SteamNetworkingIPAddr_ToString(self, buf.data(), cbBuf, bWithPort);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_ParseString(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	const char *pszStr = luaL_checkstring(L, 2);
-	bool __ret = self->ParseString(pszStr);
+	bool __ret = SteamAPI_SteamNetworkingIPAddr_ParseString(self, pszStr);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_GetFakeIPType(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	ESteamNetworkingFakeIPType __ret = self->GetFakeIPType();
+	ESteamNetworkingFakeIPType __ret = SteamAPI_SteamNetworkingIPAddr_GetFakeIPType(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_IsFakeIP(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	bool __ret = self->IsFakeIP();
+	bool __ret = SteamAPI_SteamNetworkingIPAddr_IsFakeIP(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2240,73 +2240,73 @@ static int SteamNetworkingIdentityMetatable_ref = LUA_NOREF;
 
 static int luasteam_SteamNetworkingIdentity_Clear(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	self->Clear();
+	SteamAPI_SteamNetworkingIdentity_Clear(self);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_IsInvalid(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	bool __ret = self->IsInvalid();
+	bool __ret = SteamAPI_SteamNetworkingIdentity_IsInvalid(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetSteamID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	CSteamID steamID = CSteamID(luasteam::checkuint64(L, 2));
-	self->SetSteamID(steamID);
+	uint64 steamID = luasteam::checkuint64(L, 2);
+	SteamAPI_SteamNetworkingIdentity_SetSteamID(self, steamID);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_GetSteamID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	CSteamID __ret = self->GetSteamID();
-	luasteam::pushuint64(L, __ret.ConvertToUint64());
+	uint64 __ret = SteamAPI_SteamNetworkingIdentity_GetSteamID(self);
+	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetSteamID64(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint64 steamID = luasteam::checkuint64(L, 2);
-	self->SetSteamID64(steamID);
+	SteamAPI_SteamNetworkingIdentity_SetSteamID64(self, steamID);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_GetSteamID64(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint64 __ret = self->GetSteamID64();
+	uint64 __ret = SteamAPI_SteamNetworkingIdentity_GetSteamID64(self);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetXboxPairwiseID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	const char *pszString = luaL_checkstring(L, 2);
-	bool __ret = self->SetXboxPairwiseID(pszString);
+	bool __ret = SteamAPI_SteamNetworkingIdentity_SetXboxPairwiseID(self, pszString);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_GetXboxPairwiseID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char * __ret = self->GetXboxPairwiseID();
+	const char * __ret = SteamAPI_SteamNetworkingIdentity_GetXboxPairwiseID(self);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetPSNID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint64 id = luasteam::checkuint64(L, 2);
-	self->SetPSNID(id);
+	SteamAPI_SteamNetworkingIdentity_SetPSNID(self, id);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_GetPSNID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint64 __ret = self->GetPSNID();
+	uint64 __ret = SteamAPI_SteamNetworkingIdentity_GetPSNID(self);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetIPAddr(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	const SteamNetworkingIPAddr &addr = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 2);
-	self->SetIPAddr(addr);
+	SteamAPI_SteamNetworkingIdentity_SetIPAddr(self, addr);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_GetIPAddr(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const SteamNetworkingIPAddr *__ret = self->GetIPAddr();
+	const SteamNetworkingIPAddr *__ret = SteamAPI_SteamNetworkingIdentity_GetIPAddr(self);
 	if (__ret != nullptr) {
 		luasteam::push_SteamNetworkingIPAddr(L, *__ret);
 	} else {
@@ -2318,48 +2318,48 @@ static int luasteam_SteamNetworkingIdentity_SetIPv4Addr(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint32 nIPv4 = static_cast<uint32>(luaL_checkint(L, 2));
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
-	self->SetIPv4Addr(nIPv4, nPort);
+	SteamAPI_SteamNetworkingIdentity_SetIPv4Addr(self, nIPv4, nPort);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_GetIPv4(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint32 __ret = self->GetIPv4();
+	uint32 __ret = SteamAPI_SteamNetworkingIdentity_GetIPv4(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_GetFakeIPType(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	ESteamNetworkingFakeIPType __ret = self->GetFakeIPType();
+	ESteamNetworkingFakeIPType __ret = SteamAPI_SteamNetworkingIdentity_GetFakeIPType(self);
 	lua_pushinteger(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_IsFakeIP(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	bool __ret = self->IsFakeIP();
+	bool __ret = SteamAPI_SteamNetworkingIdentity_IsFakeIP(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetLocalHost(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	self->SetLocalHost();
+	SteamAPI_SteamNetworkingIdentity_SetLocalHost(self);
 	return 0;
 }
 static int luasteam_SteamNetworkingIdentity_IsLocalHost(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	bool __ret = self->IsLocalHost();
+	bool __ret = SteamAPI_SteamNetworkingIdentity_IsLocalHost(self);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_SetGenericString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	const char *pszString = luaL_checkstring(L, 2);
-	bool __ret = self->SetGenericString(pszString);
+	bool __ret = SteamAPI_SteamNetworkingIdentity_SetGenericString(self, pszString);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_GetGenericString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char * __ret = self->GetGenericString();
+	const char * __ret = SteamAPI_SteamNetworkingIdentity_GetGenericString(self);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
 }
@@ -2367,7 +2367,7 @@ static int luasteam_SteamNetworkingIdentity_SetGenericBytes(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	const void *data = reinterpret_cast<const void *>(luaL_checkstring(L, 2));
 	uint32 cbLen = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = self->SetGenericBytes(data, cbLen);
+	bool __ret = SteamAPI_SteamNetworkingIdentity_SetGenericBytes(self, data, cbLen);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2375,14 +2375,14 @@ static int luasteam_SteamNetworkingIdentity_ToString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	uint32 cbBuf = luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
-	self->ToString(buf.data(), cbBuf);
+	SteamAPI_SteamNetworkingIdentity_ToString(self, buf.data(), cbBuf);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_ParseString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	const char *pszStr = luaL_checkstring(L, 2);
-	bool __ret = self->ParseString(pszStr);
+	bool __ret = SteamAPI_SteamNetworkingIdentity_ParseString(self, pszStr);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -3001,28 +3001,28 @@ static int luasteam_SteamNetworkingConfigValue_t_SetInt32(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	int32_t data = static_cast<int32_t>(luaL_checkint(L, 3));
-	self->SetInt32(eVal, data);
+	SteamAPI_SteamNetworkingConfigValue_t_SetInt32(self, eVal, data);
 	return 0;
 }
 static int luasteam_SteamNetworkingConfigValue_t_SetInt64(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	int64_t data = luasteam::checkuint64(L, 3);
-	self->SetInt64(eVal, data);
+	SteamAPI_SteamNetworkingConfigValue_t_SetInt64(self, eVal, data);
 	return 0;
 }
 static int luasteam_SteamNetworkingConfigValue_t_SetFloat(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	float data = static_cast<float>(luaL_checknumber(L, 3));
-	self->SetFloat(eVal, data);
+	SteamAPI_SteamNetworkingConfigValue_t_SetFloat(self, eVal, data);
 	return 0;
 }
 static int luasteam_SteamNetworkingConfigValue_t_SetString(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
 	const char *data = luaL_checkstring(L, 3);
-	self->SetString(eVal, data);
+	SteamAPI_SteamNetworkingConfigValue_t_SetString(self, eVal, data);
 	return 0;
 }
 static int SteamNetworkingConfigValue_t_index(lua_State *L) {

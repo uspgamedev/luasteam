@@ -390,7 +390,7 @@ template <> void CallResultListener<HTML_BrowserReady_t>::Result(HTML_BrowserRea
 // bool HTMLSurface.Init()
 static int luasteam_HTMLSurface_Init(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
-	bool __ret = iface->Init();
+	bool __ret = SteamAPI_ISteamHTMLSurface_Init(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -401,7 +401,7 @@ static int luasteam_HTMLSurface_Init(lua_State *L) {
 // bool HTMLSurface.Shutdown()
 static int luasteam_HTMLSurface_Shutdown(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
-	bool __ret = iface->Shutdown();
+	bool __ret = SteamAPI_ISteamHTMLSurface_Shutdown(iface);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -419,7 +419,7 @@ static int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 	}
 	const char *pchUserAgent = luaL_checkstring(L, 1);
 	const char *pchUserCSS = luaL_checkstring(L, 2);
-	SteamAPICall_t __ret = iface->CreateBrowser(pchUserAgent, pchUserCSS);
+	SteamAPICall_t __ret = SteamAPI_ISteamHTMLSurface_CreateBrowser(iface, pchUserAgent, pchUserCSS);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<HTML_BrowserReady_t>();
 		listener->callback_ref = callback_ref;
@@ -436,7 +436,7 @@ static int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 static int luasteam_HTMLSurface_RemoveBrowser(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->RemoveBrowser(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_RemoveBrowser(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -449,7 +449,7 @@ static int luasteam_HTMLSurface_LoadURL(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchURL = luaL_checkstring(L, 2);
 	const char *pchPostData = luaL_checkstring(L, 3);
-	iface->LoadURL(unBrowserHandle, pchURL, pchPostData);
+	SteamAPI_ISteamHTMLSurface_LoadURL(iface, unBrowserHandle, pchURL, pchPostData);
 	return 0;
 }
 
@@ -462,7 +462,7 @@ static int luasteam_HTMLSurface_SetSize(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 unWidth = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 unHeight = static_cast<uint32>(luaL_checkint(L, 3));
-	iface->SetSize(unBrowserHandle, unWidth, unHeight);
+	SteamAPI_ISteamHTMLSurface_SetSize(iface, unBrowserHandle, unWidth, unHeight);
 	return 0;
 }
 
@@ -473,7 +473,7 @@ static int luasteam_HTMLSurface_SetSize(lua_State *L) {
 static int luasteam_HTMLSurface_StopLoad(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->StopLoad(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_StopLoad(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -484,7 +484,7 @@ static int luasteam_HTMLSurface_StopLoad(lua_State *L) {
 static int luasteam_HTMLSurface_Reload(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->Reload(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_Reload(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -495,7 +495,7 @@ static int luasteam_HTMLSurface_Reload(lua_State *L) {
 static int luasteam_HTMLSurface_GoBack(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->GoBack(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_GoBack(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -506,7 +506,7 @@ static int luasteam_HTMLSurface_GoBack(lua_State *L) {
 static int luasteam_HTMLSurface_GoForward(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->GoForward(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_GoForward(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -519,7 +519,7 @@ static int luasteam_HTMLSurface_AddHeader(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchKey = luaL_checkstring(L, 2);
 	const char *pchValue = luaL_checkstring(L, 3);
-	iface->AddHeader(unBrowserHandle, pchKey, pchValue);
+	SteamAPI_ISteamHTMLSurface_AddHeader(iface, unBrowserHandle, pchKey, pchValue);
 	return 0;
 }
 
@@ -531,7 +531,7 @@ static int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	const char *pchScript = luaL_checkstring(L, 2);
-	iface->ExecuteJavascript(unBrowserHandle, pchScript);
+	SteamAPI_ISteamHTMLSurface_ExecuteJavascript(iface, unBrowserHandle, pchScript);
 	return 0;
 }
 
@@ -543,7 +543,7 @@ static int luasteam_HTMLSurface_MouseUp(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
-	iface->MouseUp(unBrowserHandle, eMouseButton);
+	SteamAPI_ISteamHTMLSurface_MouseUp(iface, unBrowserHandle, eMouseButton);
 	return 0;
 }
 
@@ -555,7 +555,7 @@ static int luasteam_HTMLSurface_MouseDown(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
-	iface->MouseDown(unBrowserHandle, eMouseButton);
+	SteamAPI_ISteamHTMLSurface_MouseDown(iface, unBrowserHandle, eMouseButton);
 	return 0;
 }
 
@@ -567,7 +567,7 @@ static int luasteam_HTMLSurface_MouseDoubleClick(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	ISteamHTMLSurface::EHTMLMouseButton eMouseButton = static_cast<ISteamHTMLSurface::EHTMLMouseButton>(luaL_checkint(L, 2));
-	iface->MouseDoubleClick(unBrowserHandle, eMouseButton);
+	SteamAPI_ISteamHTMLSurface_MouseDoubleClick(iface, unBrowserHandle, eMouseButton);
 	return 0;
 }
 
@@ -580,7 +580,7 @@ static int luasteam_HTMLSurface_MouseMove(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int x = static_cast<int>(luaL_checkint(L, 2));
 	int y = static_cast<int>(luaL_checkint(L, 3));
-	iface->MouseMove(unBrowserHandle, x, y);
+	SteamAPI_ISteamHTMLSurface_MouseMove(iface, unBrowserHandle, x, y);
 	return 0;
 }
 
@@ -592,7 +592,7 @@ static int luasteam_HTMLSurface_MouseWheel(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int32 nDelta = static_cast<int32>(luaL_checkint(L, 2));
-	iface->MouseWheel(unBrowserHandle, nDelta);
+	SteamAPI_ISteamHTMLSurface_MouseWheel(iface, unBrowserHandle, nDelta);
 	return 0;
 }
 
@@ -606,7 +606,7 @@ static int luasteam_HTMLSurface_KeyDown(lua_State *L) {
 	uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
 	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
 	bool bIsSystemKey = lua_toboolean(L, 4);
-	iface->KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey);
+	SteamAPI_ISteamHTMLSurface_KeyDown(iface, unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey);
 	return 0;
 }
 
@@ -619,7 +619,7 @@ static int luasteam_HTMLSurface_KeyUp(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 nNativeKeyCode = static_cast<uint32>(luaL_checkint(L, 2));
 	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
-	iface->KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers);
+	SteamAPI_ISteamHTMLSurface_KeyUp(iface, unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers);
 	return 0;
 }
 
@@ -632,7 +632,7 @@ static int luasteam_HTMLSurface_KeyChar(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 cUnicodeChar = static_cast<uint32>(luaL_checkint(L, 2));
 	ISteamHTMLSurface::EHTMLKeyModifiers eHTMLKeyModifiers = static_cast<ISteamHTMLSurface::EHTMLKeyModifiers>(luaL_checkint(L, 3));
-	iface->KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers);
+	SteamAPI_ISteamHTMLSurface_KeyChar(iface, unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers);
 	return 0;
 }
 
@@ -644,7 +644,7 @@ static int luasteam_HTMLSurface_SetHorizontalScroll(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 nAbsolutePixelScroll = static_cast<uint32>(luaL_checkint(L, 2));
-	iface->SetHorizontalScroll(unBrowserHandle, nAbsolutePixelScroll);
+	SteamAPI_ISteamHTMLSurface_SetHorizontalScroll(iface, unBrowserHandle, nAbsolutePixelScroll);
 	return 0;
 }
 
@@ -656,7 +656,7 @@ static int luasteam_HTMLSurface_SetVerticalScroll(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	uint32 nAbsolutePixelScroll = static_cast<uint32>(luaL_checkint(L, 2));
-	iface->SetVerticalScroll(unBrowserHandle, nAbsolutePixelScroll);
+	SteamAPI_ISteamHTMLSurface_SetVerticalScroll(iface, unBrowserHandle, nAbsolutePixelScroll);
 	return 0;
 }
 
@@ -668,7 +668,7 @@ static int luasteam_HTMLSurface_SetKeyFocus(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bHasKeyFocus = lua_toboolean(L, 2);
-	iface->SetKeyFocus(unBrowserHandle, bHasKeyFocus);
+	SteamAPI_ISteamHTMLSurface_SetKeyFocus(iface, unBrowserHandle, bHasKeyFocus);
 	return 0;
 }
 
@@ -679,7 +679,7 @@ static int luasteam_HTMLSurface_SetKeyFocus(lua_State *L) {
 static int luasteam_HTMLSurface_ViewSource(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->ViewSource(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_ViewSource(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -690,7 +690,7 @@ static int luasteam_HTMLSurface_ViewSource(lua_State *L) {
 static int luasteam_HTMLSurface_CopyToClipboard(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->CopyToClipboard(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_CopyToClipboard(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -701,7 +701,7 @@ static int luasteam_HTMLSurface_CopyToClipboard(lua_State *L) {
 static int luasteam_HTMLSurface_PasteFromClipboard(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->PasteFromClipboard(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_PasteFromClipboard(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -715,7 +715,7 @@ static int luasteam_HTMLSurface_Find(lua_State *L) {
 	const char *pchSearchStr = luaL_checkstring(L, 2);
 	bool bCurrentlyInFind = lua_toboolean(L, 3);
 	bool bReverse = lua_toboolean(L, 4);
-	iface->Find(unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse);
+	SteamAPI_ISteamHTMLSurface_Find(iface, unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse);
 	return 0;
 }
 
@@ -726,7 +726,7 @@ static int luasteam_HTMLSurface_Find(lua_State *L) {
 static int luasteam_HTMLSurface_StopFind(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->StopFind(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_StopFind(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -739,7 +739,7 @@ static int luasteam_HTMLSurface_GetLinkAtPosition(lua_State *L) {
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	int x = static_cast<int>(luaL_checkint(L, 2));
 	int y = static_cast<int>(luaL_checkint(L, 3));
-	iface->GetLinkAtPosition(unBrowserHandle, x, y);
+	SteamAPI_ISteamHTMLSurface_GetLinkAtPosition(iface, unBrowserHandle, x, y);
 	return 0;
 }
 
@@ -756,7 +756,7 @@ static int luasteam_HTMLSurface_SetCookie(lua_State *L) {
 	RTime32 nExpires = static_cast<RTime32>(luaL_checkint(L, 5));
 	bool bSecure = lua_toboolean(L, 6);
 	bool bHTTPOnly = lua_toboolean(L, 7);
-	iface->SetCookie(pchHostname, pchKey, pchValue, pchPath, nExpires, bSecure, bHTTPOnly);
+	SteamAPI_ISteamHTMLSurface_SetCookie(iface, pchHostname, pchKey, pchValue, pchPath, nExpires, bSecure, bHTTPOnly);
 	return 0;
 }
 
@@ -770,7 +770,7 @@ static int luasteam_HTMLSurface_SetPageScaleFactor(lua_State *L) {
 	float flZoom = static_cast<float>(luaL_checknumber(L, 2));
 	int nPointX = static_cast<int>(luaL_checkint(L, 3));
 	int nPointY = static_cast<int>(luaL_checkint(L, 4));
-	iface->SetPageScaleFactor(unBrowserHandle, flZoom, nPointX, nPointY);
+	SteamAPI_ISteamHTMLSurface_SetPageScaleFactor(iface, unBrowserHandle, flZoom, nPointX, nPointY);
 	return 0;
 }
 
@@ -782,7 +782,7 @@ static int luasteam_HTMLSurface_SetBackgroundMode(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bBackgroundMode = lua_toboolean(L, 2);
-	iface->SetBackgroundMode(unBrowserHandle, bBackgroundMode);
+	SteamAPI_ISteamHTMLSurface_SetBackgroundMode(iface, unBrowserHandle, bBackgroundMode);
 	return 0;
 }
 
@@ -794,7 +794,7 @@ static int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	float flDPIScaling = static_cast<float>(luaL_checknumber(L, 2));
-	iface->SetDPIScalingFactor(unBrowserHandle, flDPIScaling);
+	SteamAPI_ISteamHTMLSurface_SetDPIScalingFactor(iface, unBrowserHandle, flDPIScaling);
 	return 0;
 }
 
@@ -805,7 +805,7 @@ static int luasteam_HTMLSurface_SetDPIScalingFactor(lua_State *L) {
 static int luasteam_HTMLSurface_OpenDeveloperTools(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	iface->OpenDeveloperTools(unBrowserHandle);
+	SteamAPI_ISteamHTMLSurface_OpenDeveloperTools(iface, unBrowserHandle);
 	return 0;
 }
 
@@ -817,7 +817,7 @@ static int luasteam_HTMLSurface_AllowStartRequest(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bAllowed = lua_toboolean(L, 2);
-	iface->AllowStartRequest(unBrowserHandle, bAllowed);
+	SteamAPI_ISteamHTMLSurface_AllowStartRequest(iface, unBrowserHandle, bAllowed);
 	return 0;
 }
 
@@ -829,7 +829,7 @@ static int luasteam_HTMLSurface_JSDialogResponse(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
 	bool bResult = lua_toboolean(L, 2);
-	iface->JSDialogResponse(unBrowserHandle, bResult);
+	SteamAPI_ISteamHTMLSurface_JSDialogResponse(iface, unBrowserHandle, bResult);
 	return 0;
 }
 

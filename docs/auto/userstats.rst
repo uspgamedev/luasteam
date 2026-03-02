@@ -4,7 +4,7 @@ ISteamUserStats
 
 .. note::
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
-   Methods marked with ✋ require manual implementation.
+   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
 List of Functions
 -----------------

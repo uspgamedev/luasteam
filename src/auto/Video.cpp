@@ -85,7 +85,7 @@ void shutdown_Video_auto(lua_State *L) {
 static int luasteam_Video_GetVideoURL(lua_State *L) {
 	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-	iface->GetVideoURL(unVideoAppID);
+	SteamAPI_ISteamVideo_GetVideoURL(iface, unVideoAppID);
 	return 0;
 }
 
@@ -96,7 +96,7 @@ static int luasteam_Video_GetVideoURL(lua_State *L) {
 static int luasteam_Video_IsBroadcasting(lua_State *L) {
 	auto *iface = SteamVideo();
 	int pnNumViewers;
-	bool __ret = iface->IsBroadcasting(&pnNumViewers);
+	bool __ret = SteamAPI_ISteamVideo_IsBroadcasting(iface, &pnNumViewers);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pnNumViewers);
 	return 2;
@@ -109,7 +109,7 @@ static int luasteam_Video_IsBroadcasting(lua_State *L) {
 static int luasteam_Video_GetOPFSettings(lua_State *L) {
 	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-	iface->GetOPFSettings(unVideoAppID);
+	SteamAPI_ISteamVideo_GetOPFSettings(iface, unVideoAppID);
 	return 0;
 }
 
@@ -122,7 +122,7 @@ static int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
 	int32 pnBufferSize = luaL_checkint(L, 2);
 	std::vector<char> pchBuffer(pnBufferSize);
-	bool __ret = iface->GetOPFStringForApp(unVideoAppID, pchBuffer.data(), &pnBufferSize);
+	bool __ret = SteamAPI_ISteamVideo_GetOPFStringForApp(iface, unVideoAppID, pchBuffer.data(), &pnBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
 	lua_pushinteger(L, pnBufferSize);

@@ -3345,7 +3345,8 @@ local gameplaySet = Steam.Controller.GetActionSetHandle('GameControls')
 
 [ISteamController.ActivateActionSet]
 example = """
-Steam.Controller.ActivateActionSet(controllerHandle, actionSetHandle)
+local gameplaySet = Steam.Controller.GetActionSetHandle('GameControls')
+Steam.Controller.ActivateActionSet(controllerHandle, gameplaySet)
 """
 
 [ISteamController.GetDigitalActionHandle]
@@ -3368,6 +3369,7 @@ local moveHandle = Steam.Controller.GetAnalogActionHandle('Move')
 
 [ISteamController.GetAnalogActionData]
 example = """
+local moveHandle = Steam.Controller.GetAnalogActionHandle('Move')
 local data = Steam.Controller.GetAnalogActionData(controllerHandle, moveHandle)
 player.setVelocity(data.x * speed, data.y * speed)
 """
@@ -3559,7 +3561,7 @@ Steam.Client.BReleaseSteamPipe(hPipe)
 
 [ISteamClient.CreateLocalUser]
 example = """
-local hUser = Steam.Client.CreateLocalUser(hPipe, 'k_EAccountTypeIndividual')
+local hUser, hPipe = Steam.Client.CreateLocalUser(Steam.k_EAccountTypeIndividual)
 """
 
 [ISteamClient.ConnectToGlobalUser]
