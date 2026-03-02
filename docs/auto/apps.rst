@@ -62,9 +62,9 @@ Function Reference
     :param int iDLC:
     :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (bool) Return value
-    :returns: (int) Value for `pAppID`
-    :returns: (bool) Value for `pbAvailable`
-    :returns: (str) Value for `pchName`
+    :returns: (int) ``pAppID``
+    :returns: (bool) ``pbAvailable``
+    :returns: (str) ``pchName``
     :SteamWorks: `BGetDLCDataByIndex <https://partner.steamgames.com/doc/api/ISteamApps#BGetDLCDataByIndex>`_
 
     **Signature differences from C++ API:**
@@ -163,8 +163,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (int) Value for `punSecondsAllowed`
-    :returns: (int) Value for `punSecondsPlayed`
+    :returns: (int) ``punSecondsAllowed``
+    :returns: (int) ``punSecondsPlayed``
     :SteamWorks: `BIsTimedTrial <https://partner.steamgames.com/doc/api/ISteamApps#BIsTimedTrial>`_
 
     **Signature differences from C++ API:**
@@ -204,7 +204,7 @@ Function Reference
     :param int appID:
     :param int cchFolderBufferSize: size of the buffer to be allocated to hold the return value ``pchFolder``
     :returns: (int) Return value
-    :returns: (str) Value for `pchFolder`
+    :returns: (str) ``pchFolder``
     :SteamWorks: `GetAppInstallDir <https://partner.steamgames.com/doc/api/ISteamApps#GetAppInstallDir>`_
 
     **Signature differences from C++ API:**
@@ -253,10 +253,10 @@ Function Reference
     :param int cchBetaName: size of the buffer to be allocated to hold the return value ``pchBetaName``
     :param int cchDescription: size of the buffer to be allocated to hold the return value ``pchDescription``
     :returns: (bool) Return value
-    :returns: (int) Value for `punFlags`
-    :returns: (int) Value for `punBuildID`
-    :returns: (str) Value for `pchBetaName`
-    :returns: (str) Value for `pchDescription`
+    :returns: (int) ``punFlags``
+    :returns: (int) ``punBuildID``
+    :returns: (str) ``pchBetaName``
+    :returns: (str) ``pchDescription``
     :SteamWorks: `GetBetaInfo <https://partner.steamgames.com/doc/api/ISteamApps#GetBetaInfo>`_
 
     **Signature differences from C++ API:**
@@ -272,7 +272,7 @@ Function Reference
 
     :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchName`
+    :returns: (str) ``pchName``
     :SteamWorks: `GetCurrentBetaName <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentBetaName>`_
 
     **Signature differences from C++ API:**
@@ -313,8 +313,8 @@ Function Reference
 
     :param int nAppID:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `punBytesDownloaded`
-    :returns: (uint64) Value for `punBytesTotal`
+    :returns: (uint64) ``punBytesDownloaded``
+    :returns: (uint64) ``punBytesTotal``
     :SteamWorks: `GetDlcDownloadProgress <https://partner.steamgames.com/doc/api/ISteamApps#GetDlcDownloadProgress>`_
 
     **Signature differences from C++ API:**
@@ -351,7 +351,7 @@ Function Reference
     :param int appID:
     :param int cMaxDepots: size of the buffer to be allocated to hold the return value ``pvecDepots``
     :returns: (int) Return value
-    :returns: (int[]) Value for `pvecDepots`
+    :returns: (int[]) ``pvecDepots``
     :SteamWorks: `GetInstalledDepots <https://partner.steamgames.com/doc/api/ISteamApps#GetInstalledDepots>`_
 
     **Signature differences from C++ API:**
@@ -371,7 +371,7 @@ Function Reference
 
     :param int cubCommandLine: size of the buffer to be allocated to hold the return value ``pszCommandLine``
     :returns: (int) Return value
-    :returns: (str) Value for `pszCommandLine`
+    :returns: (str) ``pszCommandLine``
     :SteamWorks: `GetLaunchCommandLine <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchCommandLine>`_
 
     **Signature differences from C++ API:**
@@ -406,8 +406,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :returns: (int) Value for `pnAvailable`
-    :returns: (int) Value for `pnPrivate`
+    :returns: (int) ``pnAvailable``
+    :returns: (int) ``pnPrivate``
     :SteamWorks: `GetNumBetas <https://partner.steamgames.com/doc/api/ISteamApps#GetNumBetas>`_
 
     **Signature differences from C++ API:**

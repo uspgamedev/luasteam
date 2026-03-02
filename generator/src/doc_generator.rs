@@ -348,31 +348,20 @@ impl DocGenerator {
                     format!("`{struct_t}`")
                 };
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct {} and a boolean\n", param.name, struct_ref));
-            } else if !param_desc.is_empty() {
-                doc.push_str(&format!(
-                    "    :param {} {}: {}\n",
-                    param.ltype.to_rst_link(&self.structs),
-                    param.name,
-                    param_desc
-                ));
-            } else if let Some((array_name, is_output)) = &param.size_of {
-                let auto_desc = if *is_output {
-                    format!("size of the buffer to be allocated to hold the return value ``{}``", array_name)
-                } else {
-                    format!("size of the input array ``{}``", array_name)
-                };
-                doc.push_str(&format!(
-                    "    :param {} {}: {}\n",
-                    param.ltype.to_rst_link(&self.structs),
-                    param.name,
-                    auto_desc
-                ));
             } else {
-                doc.push_str(&format!(
-                    "    :param {} {}:\n",
-                    param.ltype.to_rst_link(&self.structs),
-                    param.name
-                ));
+                let type_str = param.ltype.to_rst_link(&self.structs);
+                let desc = if !param_desc.is_empty() {
+                    param_desc.to_string()
+                } else if let Some((array_name, is_output)) = &param.size_of {
+                    if *is_output {
+                        format!("size of the buffer to be allocated to hold the return value ``{}``", array_name)
+                    } else {
+                        format!("size of the input array ``{}``", array_name)
+                    }
+                } else {
+                    String::new()
+                };
+                doc.push_str(&Self::format_param_field(&type_str, &param.name, &desc));
             }
         }
 
@@ -387,7 +376,7 @@ impl DocGenerator {
         // Output parameters become additional return values
         for output_param in &signature.output_params {
             doc.push_str(&format!(
-                "    :returns: ({}) Value for `{}`\n",
+                "    :returns: ({}) ``{}``\n",
                 output_param.ltype.to_rst_link(&self.structs),
                 output_param.name
             ));
@@ -680,6 +669,24 @@ impl DocGenerator {
         }
 
         doc
+    }
+
+    /// Emit a `:param` RST field safely. When `type_str` contains RST role markup (e.g. `:ref:`)
+    /// it cannot be placed before the parameter name in the Sphinx field syntax because that
+    /// breaks the field list parser. In that case the type is placed in the description instead.
+    fn format_param_field(type_str: &str, name: &str, desc: &str) -> String {
+        // If the type contains RST role markup, embed it in the description
+        if type_str.contains(":ref:") || type_str.contains(":func:") || type_str.contains(":class:") {
+            if desc.is_empty() {
+                format!("    :param {}: ({})\n", name, type_str)
+            } else {
+                format!("    :param {}: ({}) {}\n", name, type_str, desc)
+            }
+        } else if desc.is_empty() {
+            format!("    :param {} {}:\n", type_str, name)
+        } else {
+            format!("    :param {} {}: {}\n", type_str, name, desc)
+        }
     }
 
     /// Convert a raw C++ field type to a human-readable doc type string.

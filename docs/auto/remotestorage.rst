@@ -167,8 +167,8 @@ Function Reference
     :param int unDays:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateWorkshopFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult>` and a boolean
     :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pUserTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pUserTags``
     :SteamWorks: `EnumeratePublishedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedWorkshopFiles>`_
 
     **Signature differences from C++ API:**
@@ -193,8 +193,8 @@ Function Reference
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateUserPublishedFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult>` and a boolean
     :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pRequiredTags`
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pExcludedTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pRequiredTags``
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pExcludedTags``
     :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
 
     **Signature differences from C++ API:**
@@ -270,7 +270,7 @@ Function Reference
     :param str pchFile:
     :param int cubDataToRead: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
-    :returns: (str) Value for `pvData`
+    :returns: (str) ``pvData``
     :SteamWorks: `FileRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileRead>`_
 
     **Signature differences from C++ API:**
@@ -312,7 +312,7 @@ Function Reference
     :param uint64 hReadCall:
     :param int cubToRead: size of the buffer to be allocated to hold the return value ``pvBuffer``
     :returns: (bool) Return value
-    :returns: (str) Value for `pvBuffer`
+    :returns: (str) ``pvBuffer``
     :SteamWorks: `FileReadAsyncComplete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsyncComplete>`_
 
     **Signature differences from C++ API:**
@@ -439,7 +439,7 @@ Function Reference
 
     :param int iFile:
     :returns: (str) Return value
-    :returns: (int) Value for `pnFileSizeInBytes`
+    :returns: (int) ``pnFileSizeInBytes``
     :SteamWorks: `GetFileNameAndSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileNameAndSize>`_
 
     **Signature differences from C++ API:**
@@ -482,8 +482,8 @@ Function Reference
 
     :param int iFile:
     :returns: (str) Return value
-    :returns: (int) Value for `pEChangeType`
-    :returns: (int) Value for `pEFilePathType`
+    :returns: (int) ``pEChangeType``
+    :returns: (int) ``pEFilePathType``
     :SteamWorks: `GetLocalFileChange <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetLocalFileChange>`_
 
     **Signature differences from C++ API:**
@@ -531,8 +531,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pnTotalBytes`
-    :returns: (uint64) Value for `puAvailableBytes`
+    :returns: (uint64) ``pnTotalBytes``
+    :returns: (uint64) ``puAvailableBytes``
     :SteamWorks: `GetQuota <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetQuota>`_
 
     **Signature differences from C++ API:**
@@ -559,8 +559,8 @@ Function Reference
 
     :param uint64 hContent:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnBytesDownloaded`
-    :returns: (int) Value for `pnBytesExpected`
+    :returns: (int) ``pnBytesDownloaded``
+    :returns: (int) ``pnBytesExpected``
     :SteamWorks: `GetUGCDownloadProgress <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDownloadProgress>`_
 
     **Signature differences from C++ API:**
@@ -611,7 +611,7 @@ Function Reference
     :param int eVisibility:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
     :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
 
     **Signature differences from C++ API:**
@@ -631,7 +631,7 @@ Function Reference
     :param int eWorkshopFileType:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
     :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
 
     **Signature differences from C++ API:**
@@ -708,7 +708,7 @@ Function Reference
     :param int cOffset:
     :param int eAction:
     :returns: (int) Return value
-    :returns: (str) Value for `pvData`
+    :returns: (str) ``pvData``
     :SteamWorks: `UGCRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCRead>`_
 
     **Signature differences from C++ API:**
@@ -766,7 +766,7 @@ Function Reference
 
     :param uint64 updateHandle:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :SteamWorks: `UpdatePublishedFileTags <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTags>`_
 
     **Signature differences from C++ API:**

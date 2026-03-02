@@ -2822,7 +2822,7 @@ end
 [ISteamGameServer.OnGSClientGroupStatus]
 example = """
 function Steam.GameServer.OnGSClientGroupStatus(data)
-    if data.m_bMember ~= 0 then
+    if data.m_bMember then
         print('Player is a member of the required group:', tostring(data.m_SteamIDUser))
     end
 end

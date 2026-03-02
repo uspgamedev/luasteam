@@ -52,7 +52,16 @@ impl LType {
     pub fn to_rst_link(&self, structs: &[crate::schema::Struct]) -> String {
         match self {
             LType::Userdata(name) => format!(":ref:`{} <struct-{}>`", name, name),
-            LType::Array(inner) => format!("{}[]", inner.to_rst_link(structs)),
+            // Use `\ ` between the role and `[]` to avoid docutils inline-markup parser confusion
+            // when `[]` immediately follows a `:ref:` closing backtick.
+            LType::Array(inner) => {
+                let inner_str = inner.to_rst_link(structs);
+                if inner_str.contains(":ref:") {
+                    format!("{}\\ []", inner_str)
+                } else {
+                    format!("{}[]", inner_str)
+                }
+            }
             _ => self.to_lua_doc_reference(structs),
         }
     }

@@ -82,7 +82,7 @@ Function Reference
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (float) Value for `pflPercentOut`
+    :returns: (float) ``pflPercentOut``
     :SteamWorks: `GetHTTPDownloadProgressPct <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPDownloadProgressPct>`_
 
     **Signature differences from C++ API:**
@@ -101,7 +101,7 @@ Function Reference
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbWasTimedOut`
+    :returns: (bool) ``pbWasTimedOut``
     :SteamWorks: `GetHTTPRequestWasTimedOut <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPRequestWasTimedOut>`_
 
     **Signature differences from C++ API:**
@@ -115,7 +115,7 @@ Function Reference
     :param int hRequest:
     :param int unBufferSize:
     :returns: (bool) Return value
-    :returns: (int) Value for `pBodyDataBuffer`
+    :returns: (int) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodyData>`_
 
     **Signature differences from C++ API:**
@@ -132,7 +132,7 @@ Function Reference
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (int) Value for `unBodySize`
+    :returns: (int) ``unBodySize``
     :SteamWorks: `GetHTTPResponseBodySize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodySize>`_
 
     **Signature differences from C++ API:**
@@ -157,7 +157,7 @@ Function Reference
     :param int hRequest:
     :param str pchHeaderName:
     :returns: (bool) Return value
-    :returns: (int) Value for `unResponseHeaderSize`
+    :returns: (int) ``unResponseHeaderSize``
     :SteamWorks: `GetHTTPResponseHeaderSize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseHeaderSize>`_
 
     **Signature differences from C++ API:**
@@ -172,7 +172,7 @@ Function Reference
     :param str pchHeaderName:
     :param int unBufferSize:
     :returns: (bool) Return value
-    :returns: (int) Value for `pHeaderValueBuffer`
+    :returns: (int) ``pHeaderValueBuffer``
     :SteamWorks: `GetHTTPResponseHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseHeaderValue>`_
 
     **Signature differences from C++ API:**
@@ -198,7 +198,7 @@ Function Reference
     :param int cOffset:
     :param int unBufferSize:
     :returns: (bool) Return value
-    :returns: (int) Value for `pBodyDataBuffer`
+    :returns: (int) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPStreamingResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPStreamingResponseBodyData>`_
 
     **Signature differences from C++ API:**
@@ -240,7 +240,7 @@ Function Reference
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pCallHandle`
+    :returns: (uint64) ``pCallHandle``
     :SteamWorks: `SendHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequest>`_
 
     **Signature differences from C++ API:**
@@ -259,7 +259,7 @@ Function Reference
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pCallHandle`
+    :returns: (uint64) ``pCallHandle``
     :SteamWorks: `SendHTTPRequestAndStreamResponse <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequestAndStreamResponse>`_
 
     **Signature differences from C++ API:**
@@ -358,7 +358,7 @@ Function Reference
     :param str pchContentType:
     :param int unBodyLen:
     :returns: (bool) Return value
-    :returns: (int) Value for `pubBody`
+    :returns: (int) ``pubBody``
     :SteamWorks: `SetHTTPRequestRawPostBody <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestRawPostBody>`_
 
     **Signature differences from C++ API:**

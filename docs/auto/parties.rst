@@ -71,7 +71,7 @@ Function Reference
 
     :param int uMaxNumLocations: size of the buffer to be allocated to hold the return value ``pLocationList``
     :returns: (bool) Return value
-    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`[]) Value for `pLocationList`
+    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`\ []) ``pLocationList``
     :SteamWorks: `GetAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetAvailableBeaconLocations>`_
 
     **Signature differences from C++ API:**
@@ -97,9 +97,9 @@ Function Reference
     :param uint64 ulBeaconID:
     :param int cchMetadata: size of the buffer to be allocated to hold the return value ``pchMetadata``
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pSteamIDBeaconOwner`
-    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) Value for `pLocation`
-    :returns: (str) Value for `pchMetadata`
+    :returns: (uint64) ``pSteamIDBeaconOwner``
+    :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) ``pLocation``
+    :returns: (str) ``pchMetadata``
     :SteamWorks: `GetBeaconDetails <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconDetails>`_
 
     **Signature differences from C++ API:**
@@ -116,11 +116,11 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>` BeaconLocation:
+    :param BeaconLocation: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`)
     :param int eData:
     :param int cchDataStringOut: size of the buffer to be allocated to hold the return value ``pchDataStringOut``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchDataStringOut`
+    :returns: (str) ``pchDataStringOut``
     :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_
 
     **Signature differences from C++ API:**
@@ -150,7 +150,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (int) Value for `puNumLocations`
+    :returns: (int) ``puNumLocations``
     :SteamWorks: `GetNumAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetNumAvailableBeaconLocations>`_
 
     **Signature differences from C++ API:**

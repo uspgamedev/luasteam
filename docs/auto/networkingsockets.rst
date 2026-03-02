@@ -126,9 +126,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` address:
+    :param address: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
@@ -140,10 +140,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int nRemoteVirtualPort:
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `ConnectP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectP2P>`_
 
@@ -156,10 +156,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityTarget:
+    :param identityTarget: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int nRemoteVirtualPort:
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `ConnectToHostedDedicatedServer <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectToHostedDedicatedServer>`_
 
@@ -169,7 +169,7 @@ Function Reference
 
     :param int nLocalVirtualPort:
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `CreateHostedDedicatedServerListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateHostedDedicatedServerListenSocket>`_
 
@@ -177,9 +177,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` localAddress:
+    :param localAddress: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `CreateListenSocketIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketIP>`_
 
@@ -194,7 +194,7 @@ Function Reference
 
     :param int nLocalVirtualPort:
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
@@ -209,7 +209,7 @@ Function Reference
 
     :param int idxFakePort:
     :param int nOptions:
-    :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
     :returns: (int) Return value
     :SteamWorks: `CreateListenSocketP2PFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2PFakeIP>`_
 
@@ -231,11 +231,11 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param bool bUseNetworkLoopback:
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pIdentity1:
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pIdentity2:
+    :param pIdentity1: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
+    :param pIdentity2: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (bool) Return value
-    :returns: (int) Value for `pOutConnection1`
-    :returns: (int) Value for `pOutConnection2`
+    :returns: (int) ``pOutConnection1``
+    :returns: (int) ``pOutConnection2``
     :SteamWorks: `CreateSocketPair <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateSocketPair>`_
 
     **Signature differences from C++ API:**
@@ -272,7 +272,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :returns: (:ref:`SteamNetAuthenticationStatus_t <struct-SteamNetAuthenticationStatus_t>`) Value for `pDetails`
+    :returns: (:ref:`SteamNetAuthenticationStatus_t <struct-SteamNetAuthenticationStatus_t>`) ``pDetails``
     :SteamWorks: `GetAuthenticationStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetAuthenticationStatus>`_
 
     **Signature differences from C++ API:**
@@ -285,7 +285,7 @@ Function Reference
 
     :param int hConn:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) Value for `pInfo`
+    :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) ``pInfo``
     :SteamWorks: `GetConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionInfo>`_
 
     **Signature differences from C++ API:**
@@ -306,7 +306,7 @@ Function Reference
     :param int hPeer:
     :param int nMaxLen: size of the buffer to be allocated to hold the return value ``pszName``
     :returns: (bool) Return value
-    :returns: (str) Value for `pszName`
+    :returns: (str) ``pszName``
     :SteamWorks: `GetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionName>`_
 
     **Signature differences from C++ API:**
@@ -320,8 +320,8 @@ Function Reference
     :param int hConn:
     :param int nLanes:
     :returns: (int) Return value
-    :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) Value for `pStatus`
-    :returns: (:ref:`SteamNetConnectionRealTimeLaneStatus_t <struct-SteamNetConnectionRealTimeLaneStatus_t>`) Value for `pLanes`
+    :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) ``pStatus``
+    :returns: (:ref:`SteamNetConnectionRealTimeLaneStatus_t <struct-SteamNetConnectionRealTimeLaneStatus_t>`) ``pLanes``
     :SteamWorks: `GetConnectionRealTimeStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionRealTimeStatus>`_
 
     **Signature differences from C++ API:**
@@ -348,7 +348,7 @@ Function Reference
     :param int hConn:
     :param int cbBuf: size of the buffer to be allocated to hold the return value ``pszBuf``
     :returns: (int) Return value
-    :returns: (str) Value for `pszBuf`
+    :returns: (str) ``pszBuf``
     :SteamWorks: `GetDetailedConnectionStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetDetailedConnectionStatus>`_
 
     **Signature differences from C++ API:**
@@ -360,7 +360,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int idxFirstPort:
-    :returns: (:ref:`SteamNetworkingFakeIPResult_t <struct-SteamNetworkingFakeIPResult_t>`) Value for `pInfo`
+    :returns: (:ref:`SteamNetworkingFakeIPResult_t <struct-SteamNetworkingFakeIPResult_t>`) ``pInfo``
     :SteamWorks: `GetFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetFakeIP>`_
 
     **Signature differences from C++ API:**
@@ -386,7 +386,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) Value for `pIdentity`
+    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) ``pIdentity``
     :SteamWorks: `GetIdentity <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetIdentity>`_
 
     **Signature differences from C++ API:**
@@ -406,7 +406,7 @@ Function Reference
 
     :param int hSocket:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) Value for `address`
+    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``address``
     :SteamWorks: `GetListenSocketAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetListenSocketAddress>`_
 
     **Signature differences from C++ API:**
@@ -419,7 +419,7 @@ Function Reference
 
     :param int hConn:
     :returns: (int) Return value
-    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) Value for `pOutAddr`
+    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``pOutAddr``
     :SteamWorks: `GetRemoteFakeIPForConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetRemoteFakeIPForConnection>`_
 
     **Signature differences from C++ API:**
@@ -502,7 +502,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pIdentity:
+    :param pIdentity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :SteamWorks: `ResetIdentity <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ResetIdentity>`_
 
 .. function:: NetworkingSockets.RunCallbacks()
@@ -525,7 +525,7 @@ Function Reference
     :param int cbData: size of the input array ``pData``
     :param int nSendFlags:
     :returns: (int) Return value
-    :returns: (uint64) Value for `pOutMessageNumber`
+    :returns: (uint64) ``pOutMessageNumber``
     :SteamWorks: `SendMessageToConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessageToConnection>`_
 
     **Signature differences from C++ API:**

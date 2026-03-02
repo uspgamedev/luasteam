@@ -28,7 +28,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (bool) Return value
     :SteamWorks: `AcceptSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#AcceptSessionWithUser>`_
 
@@ -42,7 +42,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int nLocalChannel:
     :returns: (bool) Return value
     :SteamWorks: `CloseChannelWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseChannelWithUser>`_
@@ -51,7 +51,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (bool) Return value
     :SteamWorks: `CloseSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseSessionWithUser>`_
 
@@ -64,10 +64,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (int) Return value
-    :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) Value for `pConnectionInfo`
-    :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) Value for `pQuickStatus`
+    :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) ``pConnectionInfo``
+    :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) ``pQuickStatus``
     :SteamWorks: `GetSessionConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#GetSessionConnectionInfo>`_
 
     **Signature differences from C++ API:**
@@ -79,7 +79,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param str pubData:
     :param int cubData: size of the input array ``pubData``
     :param int nSendFlags:

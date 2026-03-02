@@ -185,10 +185,10 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSnid:
+    :param pSnid: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (int) Return value
-    :returns: (str) Value for `pTicket`
-    :returns: (int) Value for `pcbTicket`
+    :returns: (str) ``pTicket``
+    :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetAuthSessionTicket>`_
 
     **Signature differences from C++ API:**
@@ -208,9 +208,9 @@ Function Reference
 
     :param int cbMaxOut: size of the buffer to be allocated to hold the return value ``pOut``
     :returns: (int) Return value
-    :returns: (str) Value for `pOut`
-    :returns: (int) Value for `pNetAdr`
-    :returns: (int) Value for `pPort`
+    :returns: (str) ``pOut``
+    :returns: (int) ``pNetAdr``
+    :returns: (int) ``pPort``
     :SteamWorks: `GetNextOutgoingPacket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetNextOutgoingPacket>`_
 
     **Signature differences from C++ API:**
@@ -645,7 +645,7 @@ Callbacks
 **Example**::
 
     function Steam.GameServer.OnGSClientGroupStatus(data)
-        if data.m_bMember ~= 0 then
+        if data.m_bMember then
             print('Player is a member of the required group:', tostring(data.m_SteamIDUser))
         end
     end

@@ -80,7 +80,7 @@ Function Reference
 
     :param int unIP:
     :param int usPort:
-    :param :ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>` pRequestServersResponse:
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>`)
     :returns: (int) Return value
     :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
 
@@ -102,7 +102,7 @@ Function Reference
 
     :param int unIP:
     :param int usPort:
-    :param :ref:`ISteamMatchmakingPlayersResponse <struct-ISteamMatchmakingPlayersResponse>` pRequestServersResponse:
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingPlayersResponse <struct-ISteamMatchmakingPlayersResponse>`)
     :returns: (int) Return value
     :SteamWorks: `PlayerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PlayerDetails>`_
 
@@ -142,8 +142,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestFavoritesServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFavoritesServerList>`_
 
@@ -152,8 +152,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
 
@@ -175,8 +175,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestHistoryServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestHistoryServerList>`_
 
@@ -185,8 +185,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
 
@@ -210,7 +210,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
 
@@ -219,8 +219,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iApp:
-    :param :ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`[] ppchFilters:
-    :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
+    :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_
 
@@ -230,7 +230,7 @@ Function Reference
 
     :param int unIP:
     :param int usPort:
-    :param :ref:`ISteamMatchmakingRulesResponse <struct-ISteamMatchmakingRulesResponse>` pRequestServersResponse:
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingRulesResponse <struct-ISteamMatchmakingRulesResponse>`)
     :returns: (int) Return value
     :SteamWorks: `ServerRules <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerRules>`_
 

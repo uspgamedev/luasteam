@@ -156,7 +156,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :returns: (int) Return value
-    :returns: (uint64[]) Value for `handlesOut`
+    :returns: (uint64[]) ``handlesOut``
     :SteamWorks: `GetActiveActionSetLayers <https://partner.steamgames.com/doc/api/ISteamInput#GetActiveActionSetLayers>`_
 
     **Signature differences from C++ API:**
@@ -198,7 +198,7 @@ Function Reference
     :param uint64 actionSetHandle:
     :param uint64 analogActionHandle:
     :returns: (int) Return value
-    :returns: (int[]) Value for `originsOut`
+    :returns: (int[]) ``originsOut``
     :SteamWorks: `GetAnalogActionOrigins <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionOrigins>`_
 
     **Signature differences from C++ API:**
@@ -210,7 +210,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :returns: (uint64[]) Value for `handlesOut`
+    :returns: (uint64[]) ``handlesOut``
     :SteamWorks: `GetConnectedControllers <https://partner.steamgames.com/doc/api/ISteamInput#GetConnectedControllers>`_
 
     **Signature differences from C++ API:**
@@ -251,8 +251,8 @@ Function Reference
 
     :param uint64 inputHandle:
     :returns: (bool) Return value
-    :returns: (int) Value for `pMajor`
-    :returns: (int) Value for `pMinor`
+    :returns: (int) ``pMajor``
+    :returns: (int) ``pMinor``
     :SteamWorks: `GetDeviceBindingRevision <https://partner.steamgames.com/doc/api/ISteamInput#GetDeviceBindingRevision>`_
 
     **Signature differences from C++ API:**
@@ -297,7 +297,7 @@ Function Reference
     :param uint64 actionSetHandle:
     :param uint64 digitalActionHandle:
     :returns: (int) Return value
-    :returns: (int[]) Value for `originsOut`
+    :returns: (int[]) ``originsOut``
     :SteamWorks: `GetDigitalActionOrigins <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionOrigins>`_
 
     **Signature differences from C++ API:**

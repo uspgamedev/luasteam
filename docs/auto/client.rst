@@ -63,7 +63,7 @@ Function Reference
 
     :param int eAccountType:
     :returns: (int) Return value
-    :returns: (int) Value for `phSteamPipe`
+    :returns: (int) ``phSteamPipe``
     :SteamWorks: `CreateLocalUser <https://partner.steamgames.com/doc/api/ISteamClient#CreateLocalUser>`_
 
     **Signature differences from C++ API:**
@@ -108,7 +108,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamIPAddress_t <struct-SteamIPAddress_t>` unIP:
+    :param unIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
     :param int usPort:
     :SteamWorks: `SetLocalIPBinding <https://partner.steamgames.com/doc/api/ISteamClient#SetLocalIPBinding>`_
 

@@ -199,7 +199,7 @@ Function Reference
 
     :param str pchName: The 'API Name' of the achievement
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
+    :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
 
     Gets the unlock status of an Achievement.
@@ -221,7 +221,7 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pflPercent`
+    :returns: (float) ``pflPercent``
     :SteamWorks: `GetAchievementAchievedPercent <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAchievedPercent>`_
 
     **Signature differences from C++ API:**
@@ -234,8 +234,8 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :returns: (int) Value for `punUnlockTime`
+    :returns: (bool) ``pbAchieved``
+    :returns: (int) ``punUnlockTime``
     :SteamWorks: `GetAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAndUnlockTime>`_
 
     **Signature differences from C++ API:**
@@ -291,8 +291,8 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pfMinProgress`
-    :returns: (float) Value for `pfMaxProgress`
+    :returns: (float) ``pfMinProgress``
+    :returns: (float) ``pfMaxProgress``
     :SteamWorks: `GetAchievementProgressLimitsFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsFloat>`_
 
     **Signature differences from C++ API:**
@@ -306,8 +306,8 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnMinProgress`
-    :returns: (int) Value for `pnMaxProgress`
+    :returns: (int) ``pnMinProgress``
+    :returns: (int) ``pnMaxProgress``
     :SteamWorks: `GetAchievementProgressLimitsInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsInt32>`_
 
     **Signature differences from C++ API:**
@@ -330,8 +330,8 @@ Function Reference
     :param int index:
     :param int cDetailsMax: size of the buffer to be allocated to hold the return value ``pDetails``
     :returns: (bool) Return value
-    :returns: (:ref:`LeaderboardEntry_t <struct-LeaderboardEntry_t>`) Value for `pLeaderboardEntry`
-    :returns: (int[]) Value for `pDetails`
+    :returns: (:ref:`LeaderboardEntry_t <struct-LeaderboardEntry_t>`) ``pLeaderboardEntry``
+    :returns: (int[]) ``pDetails``
     :SteamWorks: `GetDownloadedLeaderboardEntry <https://partner.steamgames.com/doc/api/ISteamUserStats#GetDownloadedLeaderboardEntry>`_
 
     **Signature differences from C++ API:**
@@ -345,7 +345,7 @@ Function Reference
 
     :param str pchStatName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pData`
+    :returns: (float) ``pData``
     :SteamWorks: `GetGlobalStatDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatDouble>`_
 
     **Signature differences from C++ API:**
@@ -366,7 +366,7 @@ Function Reference
     :param str pchStatName:
     :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
     :returns: (int) Return value
-    :returns: (float[]) Value for `pData`
+    :returns: (float[]) ``pData``
     :SteamWorks: `GetGlobalStatHistoryDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryDouble>`_
 
     **Signature differences from C++ API:**
@@ -380,7 +380,7 @@ Function Reference
     :param str pchStatName:
     :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
     :returns: (int) Return value
-    :returns: (uint64[]) Value for `pData`
+    :returns: (uint64[]) ``pData``
     :SteamWorks: `GetGlobalStatHistoryInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryInt64>`_
 
     **Signature differences from C++ API:**
@@ -393,7 +393,7 @@ Function Reference
 
     :param str pchStatName:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pData`
+    :returns: (uint64) ``pData``
     :SteamWorks: `GetGlobalStatInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatInt64>`_
 
     **Signature differences from C++ API:**
@@ -466,9 +466,9 @@ Function Reference
 
     :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (int) Return value
-    :returns: (str) Value for `pchName`
-    :returns: (float) Value for `pflPercent`
-    :returns: (bool) Value for `pbAchieved`
+    :returns: (str) ``pchName``
+    :returns: (float) ``pflPercent``
+    :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetMostAchievedAchievementInfo <https://partner.steamgames.com/doc/api/ISteamUserStats#GetMostAchievedAchievementInfo>`_
 
     **Signature differences from C++ API:**
@@ -492,9 +492,9 @@ Function Reference
     :param int iIteratorPrevious:
     :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (int) Return value
-    :returns: (str) Value for `pchName`
-    :returns: (float) Value for `pflPercent`
-    :returns: (bool) Value for `pbAchieved`
+    :returns: (str) ``pchName``
+    :returns: (float) ``pflPercent``
+    :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetNextMostAchievedAchievementInfo <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNextMostAchievedAchievementInfo>`_
 
     **Signature differences from C++ API:**
@@ -541,7 +541,7 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pData`
+    :returns: (float) ``pData``
     :SteamWorks: `GetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatFloat>`_
 
     **Signature differences from C++ API:**
@@ -561,7 +561,7 @@ Function Reference
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pData`
+    :returns: (int) ``pData``
     :SteamWorks: `GetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatInt32>`_
 
     **Signature differences from C++ API:**
@@ -582,7 +582,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
+    :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievement>`_
 
     **Signature differences from C++ API:**
@@ -603,8 +603,8 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :returns: (int) Value for `punUnlockTime`
+    :returns: (bool) ``pbAchieved``
+    :returns: (int) ``punUnlockTime``
     :SteamWorks: `GetUserAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievementAndUnlockTime>`_
 
     **Signature differences from C++ API:**
@@ -619,7 +619,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pData`
+    :returns: (float) ``pData``
     :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatFloat>`_
 
     **Signature differences from C++ API:**
@@ -633,7 +633,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pData`
+    :returns: (int) ``pData``
     :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatInt32>`_
 
     **Signature differences from C++ API:**

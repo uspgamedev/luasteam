@@ -108,7 +108,7 @@ Function Reference
     :param str pchInputMessage:
     :param int nByteSizeOutFilteredText: size of the buffer to be allocated to hold the return value ``pchOutFilteredText``
     :returns: (int) Return value
-    :returns: (str) Value for `pchOutFilteredText`
+    :returns: (str) ``pchOutFilteredText``
     :SteamWorks: `FilterText <https://partner.steamgames.com/doc/api/ISteamUtils#FilterText>`_
 
     **Signature differences from C++ API:**
@@ -138,8 +138,8 @@ Function Reference
     :param int cubCallback: size of the buffer to be allocated to hold the return value ``pCallback``
     :param int iCallbackExpected:
     :returns: (bool) Return value
-    :returns: (str) Value for `pCallback`
-    :returns: (bool) Value for `pbFailed`
+    :returns: (str) ``pCallback``
+    :returns: (bool) ``pbFailed``
     :SteamWorks: `GetAPICallResult <https://partner.steamgames.com/doc/api/ISteamUtils#GetAPICallResult>`_
 
     **Signature differences from C++ API:**
@@ -185,7 +185,7 @@ Function Reference
 
     :param int cchText: size of the buffer to be allocated to hold the return value ``pchText``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchText`
+    :returns: (str) ``pchText``
     :SteamWorks: `GetEnteredGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#GetEnteredGamepadTextInput>`_
 
     **Signature differences from C++ API:**
@@ -233,7 +233,7 @@ Function Reference
     :param int iImage:
     :param int nDestBufferSize: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
-    :returns: (str) Value for `pubDest`
+    :returns: (str) ``pubDest``
     :SteamWorks: `GetImageRGBA <https://partner.steamgames.com/doc/api/ISteamUtils#GetImageRGBA>`_
 
     **Signature differences from C++ API:**
@@ -253,8 +253,8 @@ Function Reference
 
     :param int iImage:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnWidth`
-    :returns: (int) Value for `pnHeight`
+    :returns: (int) ``pnWidth``
+    :returns: (int) ``pnHeight``
     :SteamWorks: `GetImageSize <https://partner.steamgames.com/doc/api/ISteamUtils#GetImageSize>`_
 
     **Signature differences from C++ API:**
@@ -324,7 +324,7 @@ Function Reference
 
     :param uint64 hSteamAPICall:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbFailed`
+    :returns: (bool) ``pbFailed``
     :SteamWorks: `IsAPICallCompleted <https://partner.steamgames.com/doc/api/ISteamUtils#IsAPICallCompleted>`_
 
     **Signature differences from C++ API:**

@@ -170,12 +170,12 @@ Function Reference
 
     :param int iGame:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnAppID`
-    :returns: (int) Value for `pnIP`
-    :returns: (int) Value for `pnConnPort`
-    :returns: (int) Value for `pnQueryPort`
-    :returns: (int) Value for `punFlags`
-    :returns: (int) Value for `pRTime32LastPlayedOnServer`
+    :returns: (int) ``pnAppID``
+    :returns: (int) ``pnIP``
+    :returns: (int) ``pnConnPort``
+    :returns: (int) ``pnQueryPort``
+    :returns: (int) ``punFlags``
+    :returns: (int) ``pRTime32LastPlayedOnServer``
     :SteamWorks: `GetFavoriteGame <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetFavoriteGame>`_
 
     **Signature differences from C++ API:**
@@ -210,9 +210,9 @@ Function Reference
     :param int iChatID:
     :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
-    :returns: (uint64) Value for `pSteamIDUser`
-    :returns: (str) Value for `pvData`
-    :returns: (int) Value for `peChatEntryType`
+    :returns: (uint64) ``pSteamIDUser``
+    :returns: (str) ``pvData``
+    :returns: (int) ``peChatEntryType``
     :SteamWorks: `GetLobbyChatEntry <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyChatEntry>`_
 
     **Signature differences from C++ API:**
@@ -244,8 +244,8 @@ Function Reference
     :param int cchKeyBufferSize: size of the buffer to be allocated to hold the return value ``pchKey``
     :param int cchValueBufferSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchKey`
-    :returns: (str) Value for `pchValue`
+    :returns: (str) ``pchKey``
+    :returns: (str) ``pchValue``
     :SteamWorks: `GetLobbyDataByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataByIndex>`_
 
     **Signature differences from C++ API:**
@@ -267,9 +267,9 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :returns: (bool) Return value
-    :returns: (int) Value for `punGameServerIP`
-    :returns: (int) Value for `punGameServerPort`
-    :returns: (uint64) Value for `psteamIDGameServer`
+    :returns: (int) ``punGameServerIP``
+    :returns: (int) ``punGameServerPort``
+    :returns: (uint64) ``psteamIDGameServer``
     :SteamWorks: `GetLobbyGameServer <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyGameServer>`_
 
     **Signature differences from C++ API:**

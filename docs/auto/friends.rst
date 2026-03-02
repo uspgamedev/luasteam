@@ -223,7 +223,7 @@ Function Reference
     :param int cClansToRequest: size of the buffer to be allocated to hold the return value ``psteamIDClans``
     :param function callback: CallResult callback receiving struct :func:`DownloadClanActivityCountsResult_t <Friends.OnDownloadClanActivityCountsResult>` and a boolean
     :returns: (uint64) Return value
-    :returns: (uint64[]) Value for `psteamIDClans`
+    :returns: (uint64[]) ``psteamIDClans``
     :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
 
     **Signature differences from C++ API:**
@@ -254,9 +254,9 @@ Function Reference
 
     :param uint64 steamIDClan:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnOnline`
-    :returns: (int) Value for `pnInGame`
-    :returns: (int) Value for `pnChatting`
+    :returns: (int) ``pnOnline``
+    :returns: (int) ``pnInGame``
+    :returns: (int) ``pnChatting``
     :SteamWorks: `GetClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanActivityCounts>`_
 
     **Signature differences from C++ API:**
@@ -293,9 +293,9 @@ Function Reference
     :param int iMessage:
     :param int cchTextMax: size of the buffer to be allocated to hold the return value ``prgchText``
     :returns: (int) Return value
-    :returns: (str) Value for `prgchText`
-    :returns: (int) Value for `peChatEntryType`
-    :returns: (uint64) Value for `psteamidChatter`
+    :returns: (str) ``prgchText``
+    :returns: (int) ``peChatEntryType``
+    :returns: (uint64) ``psteamidChatter``
     :SteamWorks: `GetClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMessage>`_
 
     **Signature differences from C++ API:**
@@ -487,7 +487,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :returns: (bool) Return value
-    :returns: (:ref:`FriendGameInfo_t <struct-FriendGameInfo_t>`) Value for `pFriendGameInfo`
+    :returns: (:ref:`FriendGameInfo_t <struct-FriendGameInfo_t>`) ``pFriendGameInfo``
     :SteamWorks: `GetFriendGamePlayed <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendGamePlayed>`_
 
     **Signature differences from C++ API:**
@@ -509,8 +509,8 @@ Function Reference
     :param int iMessageID:
     :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
-    :returns: (str) Value for `pvData`
-    :returns: (int) Value for `peChatEntryType`
+    :returns: (str) ``pvData``
+    :returns: (int) ``peChatEntryType``
     :SteamWorks: `GetFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendMessage>`_
 
     **Signature differences from C++ API:**
@@ -668,7 +668,7 @@ Function Reference
 
     :param int friendsGroupID:
     :param int nMembersCount: size of the buffer to be allocated to hold the return value ``pOutSteamIDMembers``
-    :returns: (uint64[]) Value for `pOutSteamIDMembers`
+    :returns: (uint64[]) ``pOutSteamIDMembers``
     :SteamWorks: `GetFriendsGroupMembersList <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersList>`_
 
     **Signature differences from C++ API:**

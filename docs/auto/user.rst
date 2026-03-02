@@ -173,8 +173,8 @@ Function Reference
     :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
     :param int nDesiredSampleRate:
     :returns: (int) Return value
-    :returns: (str) Value for `pDestBuffer`
-    :returns: (int) Value for `nBytesWritten`
+    :returns: (str) ``pDestBuffer``
+    :returns: (int) ``nBytesWritten``
     :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
 
     **Signature differences from C++ API:**
@@ -207,10 +207,10 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSteamNetworkingIdentity:
+    :param pSteamNetworkingIdentity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (int) Return value
-    :returns: (str) Value for `pTicket`
-    :returns: (int) Value for `pcbTicket`
+    :returns: (str) ``pTicket``
+    :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
 
     **Signature differences from C++ API:**
@@ -240,7 +240,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :returns: (int) Value for `pcbCompressed`
+    :returns: (int) ``pcbCompressed``
     :SteamWorks: `GetAvailableVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetAvailableVoice>`_
 
     **Signature differences from C++ API:**
@@ -269,8 +269,8 @@ Function Reference
 
     :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
     :returns: (bool) Return value
-    :returns: (str) Value for `pTicket`
-    :returns: (int) Value for `pcbTicket`
+    :returns: (str) ``pTicket``
+    :returns: (int) ``pcbTicket``
     :SteamWorks: `GetEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetEncryptedAppTicket>`_
 
     **Signature differences from C++ API:**
@@ -342,7 +342,7 @@ Function Reference
 
     :param int cubBuffer: size of the buffer to be allocated to hold the return value ``pchBuffer``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchBuffer`
+    :returns: (str) ``pchBuffer``
     :SteamWorks: `GetUserDataFolder <https://partner.steamgames.com/doc/api/ISteamUser#GetUserDataFolder>`_
 
     **Signature differences from C++ API:**
@@ -363,8 +363,8 @@ Function Reference
     :param bool bWantCompressed:
     :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
     :returns: (int) Return value
-    :returns: (str) Value for `pDestBuffer`
-    :returns: (int) Value for `nBytesWritten`
+    :returns: (str) ``pDestBuffer``
+    :returns: (int) ``nBytesWritten``
     :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
 
     **Signature differences from C++ API:**

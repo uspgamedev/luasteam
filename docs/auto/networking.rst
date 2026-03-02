@@ -100,7 +100,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamIPAddress_t <struct-SteamIPAddress_t>` nIP:
+    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
     :param int nPort:
     :param int nTimeoutSec:
     :returns: (int) Return value
@@ -111,7 +111,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nVirtualP2PPort:
-    :param :ref:`SteamIPAddress_t <struct-SteamIPAddress_t>` nIP:
+    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
     :param int nPort:
     :param bool bAllowUseOfPacketRelay:
     :returns: (int) Return value
@@ -152,8 +152,8 @@ Function Reference
 
     :param int hListenSocket:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Value for `pnIP`
-    :returns: (int) Value for `pnPort`
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``pnIP``
+    :returns: (int) ``pnPort``
     :SteamWorks: `GetListenSocketInfo <https://partner.steamgames.com/doc/api/ISteamNetworking#GetListenSocketInfo>`_
 
     **Signature differences from C++ API:**
@@ -175,7 +175,7 @@ Function Reference
 
     :param uint64 steamIDRemote:
     :returns: (bool) Return value
-    :returns: (:ref:`P2PSessionState_t <struct-P2PSessionState_t>`) Value for `pConnectionState`
+    :returns: (:ref:`P2PSessionState_t <struct-P2PSessionState_t>`) ``pConnectionState``
     :SteamWorks: `GetP2PSessionState <https://partner.steamgames.com/doc/api/ISteamNetworking#GetP2PSessionState>`_
 
     **Signature differences from C++ API:**
@@ -204,10 +204,10 @@ Function Reference
 
     :param int hSocket:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pSteamIDRemote`
-    :returns: (int) Value for `peSocketStatus`
-    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Value for `punIPRemote`
-    :returns: (int) Value for `punPortRemote`
+    :returns: (uint64) ``pSteamIDRemote``
+    :returns: (int) ``peSocketStatus``
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``punIPRemote``
+    :returns: (int) ``punPortRemote``
     :SteamWorks: `GetSocketInfo <https://partner.steamgames.com/doc/api/ISteamNetworking#GetSocketInfo>`_
 
     **Signature differences from C++ API:**
@@ -223,8 +223,8 @@ Function Reference
 
     :param int hListenSocket:
     :returns: (bool) Return value
-    :returns: (int) Value for `pcubMsgSize`
-    :returns: (int) Value for `phSocket`
+    :returns: (int) ``pcubMsgSize``
+    :returns: (int) ``phSocket``
     :SteamWorks: `IsDataAvailable <https://partner.steamgames.com/doc/api/ISteamNetworking#IsDataAvailable>`_
 
     **Signature differences from C++ API:**
@@ -238,7 +238,7 @@ Function Reference
 
     :param int hSocket:
     :returns: (bool) Return value
-    :returns: (int) Value for `pcubMsgSize`
+    :returns: (int) ``pcubMsgSize``
     :SteamWorks: `IsDataAvailableOnSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#IsDataAvailableOnSocket>`_
 
     **Signature differences from C++ API:**
@@ -251,7 +251,7 @@ Function Reference
 
     :param int nChannel:
     :returns: (bool) Return value
-    :returns: (int) Value for `pcubMsgSize`
+    :returns: (int) ``pcubMsgSize``
     :SteamWorks: `IsP2PPacketAvailable <https://partner.steamgames.com/doc/api/ISteamNetworking#IsP2PPacketAvailable>`_
 
     **Signature differences from C++ API:**
@@ -274,9 +274,9 @@ Function Reference
     :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :param int nChannel:
     :returns: (bool) Return value
-    :returns: (str) Value for `pubDest`
-    :returns: (int) Value for `pcubMsgSize`
-    :returns: (uint64) Value for `psteamIDRemote`
+    :returns: (str) ``pubDest``
+    :returns: (int) ``pcubMsgSize``
+    :returns: (uint64) ``psteamIDRemote``
     :SteamWorks: `ReadP2PPacket <https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket>`_
 
     **Signature differences from C++ API:**
@@ -296,9 +296,9 @@ Function Reference
     :param int hListenSocket:
     :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
-    :returns: (str) Value for `pubDest`
-    :returns: (int) Value for `pcubMsgSize`
-    :returns: (int) Value for `phSocket`
+    :returns: (str) ``pubDest``
+    :returns: (int) ``pcubMsgSize``
+    :returns: (int) ``phSocket``
     :SteamWorks: `RetrieveData <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveData>`_
 
     **Signature differences from C++ API:**
@@ -314,8 +314,8 @@ Function Reference
     :param int hSocket:
     :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
-    :returns: (str) Value for `pubDest`
-    :returns: (int) Value for `pcubMsgSize`
+    :returns: (str) ``pubDest``
+    :returns: (int) ``pcubMsgSize``
     :SteamWorks: `RetrieveDataFromSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#RetrieveDataFromSocket>`_
 
     **Signature differences from C++ API:**

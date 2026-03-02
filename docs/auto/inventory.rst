@@ -65,7 +65,7 @@ Function Reference
 
     :param int itemDef:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `AddPromoItem <https://partner.steamgames.com/doc/api/ISteamInventory#AddPromoItem>`_
 
     **Signature differences from C++ API:**
@@ -84,7 +84,7 @@ Function Reference
     :param int[] pArrayItemDefs:
     :param int unArrayLength: size of the input array ``pArrayItemDefs``
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `AddPromoItems <https://partner.steamgames.com/doc/api/ISteamInventory#AddPromoItems>`_
 
     **Signature differences from C++ API:**
@@ -107,7 +107,7 @@ Function Reference
     :param uint64 itemConsume:
     :param int unQuantity:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `ConsumeItem <https://partner.steamgames.com/doc/api/ISteamInventory#ConsumeItem>`_
 
     **Signature differences from C++ API:**
@@ -127,7 +127,7 @@ Function Reference
     :param int unBufferSize: size of the input array ``pBuffer``
     :param bool bRESERVED_MUST_BE_FALSE:
     :returns: (bool) Return value
-    :returns: (int) Value for `pOutResultHandle`
+    :returns: (int) ``pOutResultHandle``
     :SteamWorks: `DeserializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#DeserializeResult>`_
 
     **Signature differences from C++ API:**
@@ -156,7 +156,7 @@ Function Reference
     :param int unArrayDestroyLength: size of the input array ``pArrayDestroy``
     :param int[] punArrayDestroyQuantity:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `ExchangeItems <https://partner.steamgames.com/doc/api/ISteamInventory#ExchangeItems>`_
 
     **Signature differences from C++ API:**
@@ -171,7 +171,7 @@ Function Reference
     :param int unArrayLength: size of the input array ``pArrayItemDefs``
     :param int[] punArrayQuantity:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `GenerateItems <https://partner.steamgames.com/doc/api/ISteamInventory#GenerateItems>`_
 
     **Signature differences from C++ API:**
@@ -183,7 +183,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `GetAllItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetAllItems>`_
 
     **Signature differences from C++ API:**
@@ -203,8 +203,8 @@ Function Reference
     :param uint64 steamID:
     :param int punItemDefIDsArraySize: size of the buffer to be allocated to hold the return value ``pItemDefIDs``
     :returns: (bool) Return value
-    :returns: (int[]) Value for `pItemDefIDs`
-    :returns: (int) Value for `punItemDefIDsArraySize`
+    :returns: (int[]) ``pItemDefIDs``
+    :returns: (int) ``punItemDefIDsArraySize``
     :SteamWorks: `GetEligiblePromoItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetEligiblePromoItemDefinitionIDs>`_
 
     **Signature differences from C++ API:**
@@ -218,8 +218,8 @@ Function Reference
 
     :param int punItemDefIDsArraySize: size of the buffer to be allocated to hold the return value ``pItemDefIDs``
     :returns: (bool) Return value
-    :returns: (int[]) Value for `pItemDefIDs`
-    :returns: (int) Value for `punItemDefIDsArraySize`
+    :returns: (int[]) ``pItemDefIDs``
+    :returns: (int) ``punItemDefIDsArraySize``
     :SteamWorks: `GetItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionIDs>`_
 
     **Signature differences from C++ API:**
@@ -243,8 +243,8 @@ Function Reference
     :param str pchPropertyName:
     :param int punValueBufferSizeOut: size of the buffer to be allocated to hold the return value ``pchValueBuffer``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchValueBuffer`
-    :returns: (int) Value for `punValueBufferSizeOut`
+    :returns: (str) ``pchValueBuffer``
+    :returns: (int) ``punValueBufferSizeOut``
     :SteamWorks: `GetItemDefinitionProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionProperty>`_
 
     **Signature differences from C++ API:**
@@ -262,8 +262,8 @@ Function Reference
 
     :param int iDefinition:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pCurrentPrice`
-    :returns: (uint64) Value for `pBasePrice`
+    :returns: (uint64) ``pCurrentPrice``
+    :returns: (uint64) ``pBasePrice``
     :SteamWorks: `GetItemPrice <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemPrice>`_
 
     **Signature differences from C++ API:**
@@ -278,7 +278,7 @@ Function Reference
     :param uint64[] pInstanceIDs:
     :param int unCountInstanceIDs: size of the input array ``pInstanceIDs``
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `GetItemsByID <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsByID>`_
 
     **Signature differences from C++ API:**
@@ -306,8 +306,8 @@ Function Reference
     :param str pchPropertyName:
     :param int punValueBufferSizeOut: size of the buffer to be allocated to hold the return value ``pchValueBuffer``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchValueBuffer`
-    :returns: (int) Value for `punValueBufferSizeOut`
+    :returns: (str) ``pchValueBuffer``
+    :returns: (int) ``punValueBufferSizeOut``
     :SteamWorks: `GetResultItemProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItemProperty>`_
 
     **Signature differences from C++ API:**
@@ -322,8 +322,8 @@ Function Reference
     :param int resultHandle:
     :param int punOutItemsArraySize: size of the buffer to be allocated to hold the return value ``pOutItemsArray``
     :returns: (bool) Return value
-    :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`[]) Value for `pOutItemsArray`
-    :returns: (int) Value for `punOutItemsArraySize`
+    :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`\ []) ``pOutItemsArray``
+    :returns: (int) ``punOutItemsArraySize``
     :SteamWorks: `GetResultItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItems>`_
 
     **Signature differences from C++ API:**
@@ -370,7 +370,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `GrantPromoItems <https://partner.steamgames.com/doc/api/ISteamInventory#GrantPromoItems>`_
 
     **Signature differences from C++ API:**
@@ -383,7 +383,7 @@ Function Reference
 
     :param str pchItemToken:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `InspectItem <https://partner.steamgames.com/doc/api/ISteamInventory#InspectItem>`_
 
     **Signature differences from C++ API:**
@@ -524,7 +524,7 @@ Function Reference
 
     :param uint64 handle:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `SubmitUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#SubmitUpdateProperties>`_
 
     **Signature differences from C++ API:**
@@ -543,7 +543,7 @@ Function Reference
     :param int nArrayGetLength: size of the input array ``pArrayGet``
     :param int[] pArrayGetQuantity:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `TradeItems <https://partner.steamgames.com/doc/api/ISteamInventory#TradeItems>`_
 
     **Signature differences from C++ API:**
@@ -558,7 +558,7 @@ Function Reference
     :param int unQuantity:
     :param uint64 itemIdDest:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `TransferItemQuantity <https://partner.steamgames.com/doc/api/ISteamInventory#TransferItemQuantity>`_
 
     **Signature differences from C++ API:**
@@ -576,7 +576,7 @@ Function Reference
 
     :param int dropListDefinition:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
+    :returns: (int) ``pResultHandle``
     :SteamWorks: `TriggerItemDrop <https://partner.steamgames.com/doc/api/ISteamInventory#TriggerItemDrop>`_
 
     **Signature differences from C++ API:**

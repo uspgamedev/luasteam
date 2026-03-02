@@ -257,7 +257,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param :ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>` pTagGroups:
+    :param pTagGroups: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredTagGroup <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTagGroup>`_
 
@@ -409,8 +409,8 @@ Function Reference
 
     :param uint64 nPublishedFileID:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `punBytesDownloaded`
-    :returns: (uint64) Value for `punBytesTotal`
+    :returns: (uint64) ``punBytesDownloaded``
+    :returns: (uint64) ``punBytesTotal``
     :SteamWorks: `GetItemDownloadInfo <https://partner.steamgames.com/doc/api/ISteamUGC#GetItemDownloadInfo>`_
 
     **Signature differences from C++ API:**
@@ -432,9 +432,9 @@ Function Reference
     :param uint64 nPublishedFileID:
     :param int cchFolderSize: size of the buffer to be allocated to hold the return value ``pchFolder``
     :returns: (bool) Return value
-    :returns: (uint64) Value for `punSizeOnDisk`
-    :returns: (str) Value for `pchFolder`
-    :returns: (int) Value for `punTimeStamp`
+    :returns: (uint64) ``punSizeOnDisk``
+    :returns: (str) ``pchFolder``
+    :returns: (int) ``punTimeStamp``
     :SteamWorks: `GetItemInstallInfo <https://partner.steamgames.com/doc/api/ISteamUGC#GetItemInstallInfo>`_
 
     **Signature differences from C++ API:**
@@ -470,8 +470,8 @@ Function Reference
 
     :param uint64 handle:
     :returns: (int) Return value
-    :returns: (uint64) Value for `punBytesProcessed`
-    :returns: (uint64) Value for `punBytesTotal`
+    :returns: (uint64) ``punBytesProcessed``
+    :returns: (uint64) ``punBytesTotal``
     :SteamWorks: `GetItemUpdateProgress <https://partner.steamgames.com/doc/api/ISteamUGC#GetItemUpdateProgress>`_
 
     **Signature differences from C++ API:**
@@ -518,9 +518,9 @@ Function Reference
     :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURLOrVideoID``
     :param int cchOriginalFileNameSize: size of the buffer to be allocated to hold the return value ``pchOriginalFileName``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchURLOrVideoID`
-    :returns: (str) Value for `pchOriginalFileName`
-    :returns: (int) Value for `pPreviewType`
+    :returns: (str) ``pchURLOrVideoID``
+    :returns: (str) ``pchOriginalFileName``
+    :returns: (int) ``pPreviewType``
     :SteamWorks: `GetQueryUGCAdditionalPreview <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCAdditionalPreview>`_
 
     **Signature differences from C++ API:**
@@ -537,7 +537,7 @@ Function Reference
     :param int index:
     :param int cMaxEntries:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pvecPublishedFileID`
+    :returns: (uint64) ``pvecPublishedFileID``
     :SteamWorks: `GetQueryUGCChildren <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCChildren>`_
 
     **Signature differences from C++ API:**
@@ -552,7 +552,7 @@ Function Reference
     :param int index:
     :param int cMaxEntries:
     :returns: (int) Return value
-    :returns: (int) Value for `pvecDescriptors`
+    :returns: (int) ``pvecDescriptors``
     :SteamWorks: `GetQueryUGCContentDescriptors <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCContentDescriptors>`_
 
     **Signature differences from C++ API:**
@@ -569,8 +569,8 @@ Function Reference
     :param int cchKeySize: size of the buffer to be allocated to hold the return value ``pchKey``
     :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchKey`
-    :returns: (str) Value for `pchValue`
+    :returns: (str) ``pchKey``
+    :returns: (str) ``pchValue``
     :SteamWorks: `GetQueryUGCKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCKeyValueTag>`_
 
     **Signature differences from C++ API:**
@@ -586,7 +586,7 @@ Function Reference
     :param int index:
     :param int cchMetadatasize: size of the buffer to be allocated to hold the return value ``pchMetadata``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchMetadata`
+    :returns: (str) ``pchMetadata``
     :SteamWorks: `GetQueryUGCMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCMetadata>`_
 
     **Signature differences from C++ API:**
@@ -628,7 +628,7 @@ Function Reference
     :param int index:
     :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURL``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchURL`
+    :returns: (str) ``pchURL``
     :SteamWorks: `GetQueryUGCPreviewURL <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCPreviewURL>`_
 
     **Signature differences from C++ API:**
@@ -649,7 +649,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamUGCDetails_t <struct-SteamUGCDetails_t>`) Value for `pDetails`
+    :returns: (:ref:`SteamUGCDetails_t <struct-SteamUGCDetails_t>`) ``pDetails``
     :SteamWorks: `GetQueryUGCResult <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCResult>`_
 
     **Signature differences from C++ API:**
@@ -668,7 +668,7 @@ Function Reference
     :param int index:
     :param int eStatType:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pStatValue`
+    :returns: (uint64) ``pStatValue``
     :SteamWorks: `GetQueryUGCStatistic <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCStatistic>`_
 
     **Signature differences from C++ API:**
@@ -684,7 +684,7 @@ Function Reference
     :param int indexTag:
     :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchValue`
+    :returns: (str) ``pchValue``
     :SteamWorks: `GetQueryUGCTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTag>`_
 
     **Signature differences from C++ API:**
@@ -700,7 +700,7 @@ Function Reference
     :param int indexTag:
     :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchValue`
+    :returns: (str) ``pchValue``
     :SteamWorks: `GetQueryUGCTagDisplayName <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTagDisplayName>`_
 
     **Signature differences from C++ API:**
@@ -714,7 +714,7 @@ Function Reference
     :param int cMaxEntries: size of the buffer to be allocated to hold the return value ``pvecPublishedFileID``
     :param bool bIncludeLocallyDisabled:
     :returns: (int) Return value
-    :returns: (uint64[]) Value for `pvecPublishedFileID`
+    :returns: (uint64[]) ``pvecPublishedFileID``
     :SteamWorks: `GetSubscribedItems <https://partner.steamgames.com/doc/api/ISteamUGC#GetSubscribedItems>`_
 
     **Signature differences from C++ API:**
@@ -738,8 +738,8 @@ Function Reference
     :param int versionIndex:
     :param int cchGameBranchSize: size of the buffer to be allocated to hold the return value ``pchGameBranchMin``
     :returns: (bool) Return value
-    :returns: (str) Value for `pchGameBranchMin`
-    :returns: (str) Value for `pchGameBranchMax`
+    :returns: (str) ``pchGameBranchMin``
+    :returns: (str) ``pchGameBranchMax``
     :SteamWorks: `GetSupportedGameVersionData <https://partner.steamgames.com/doc/api/ISteamUGC#GetSupportedGameVersionData>`_
 
     **Signature differences from C++ API:**
@@ -753,7 +753,7 @@ Function Reference
 
     :param int cMaxEntries:
     :returns: (int) Return value
-    :returns: (int) Value for `pvecDescriptors`
+    :returns: (int) ``pvecDescriptors``
     :SteamWorks: `GetUserContentDescriptorPreferences <https://partner.steamgames.com/doc/api/ISteamUGC#GetUserContentDescriptorPreferences>`_
 
     **Signature differences from C++ API:**
@@ -1008,7 +1008,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param :ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>` pTags:
+    :param pTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :param bool bAllowAdminTags:
     :returns: (bool) Return value
     :SteamWorks: `SetItemTags <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTags>`_

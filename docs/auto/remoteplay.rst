@@ -48,8 +48,8 @@ Function Reference
 
     :param int unSessionID:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnResolutionX`
-    :returns: (int) Value for `pnResolutionY`
+    :returns: (int) ``pnResolutionX``
+    :returns: (int) ``pnResolutionY``
     :SteamWorks: `BGetSessionClientResolution <https://partner.steamgames.com/doc/api/ISteamRemotePlay#BGetSessionClientResolution>`_
 
     **Signature differences from C++ API:**
@@ -96,7 +96,7 @@ Function Reference
 
     :param int unMaxEvents: size of the buffer to be allocated to hold the return value ``pInput``
     :returns: (int) Return value
-    :returns: (:ref:`RemotePlayInput_t <struct-RemotePlayInput_t>`[]) Value for `pInput`
+    :returns: (:ref:`RemotePlayInput_t <struct-RemotePlayInput_t>`\ []) ``pInput``
     :SteamWorks: `GetInput <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetInput>`_
 
     **Signature differences from C++ API:**

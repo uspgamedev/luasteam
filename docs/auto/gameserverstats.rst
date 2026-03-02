@@ -45,7 +45,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
+    :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserAchievement>`_
 
     **Signature differences from C++ API:**
@@ -66,7 +66,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pData`
+    :returns: (float) ``pData``
     :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatFloat>`_
 
     **Signature differences from C++ API:**
@@ -80,7 +80,7 @@ Function Reference
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pData`
+    :returns: (int) ``pData``
     :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatInt32>`_
 
     **Signature differences from C++ API:**

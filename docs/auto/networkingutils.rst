@@ -87,9 +87,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` location:
+    :param location: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`)
     :param int cchBufSize: size of the buffer to be allocated to hold the return value ``pszBuf``
-    :returns: (str) Value for `pszBuf`
+    :returns: (str) ``pszBuf``
     :SteamWorks: `ConvertPingLocationToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ConvertPingLocationToString>`_
 
     **Signature differences from C++ API:**
@@ -100,8 +100,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` location1:
-    :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` location2:
+    :param location1: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`)
+    :param location2: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`)
     :returns: (int) Return value
     :SteamWorks: `EstimatePingTimeBetweenTwoLocations <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#EstimatePingTimeBetweenTwoLocations>`_
 
@@ -109,7 +109,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` remoteLocation:
+    :param remoteLocation: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`)
     :returns: (int) Return value
     :SteamWorks: `EstimatePingTimeFromLocalHost <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#EstimatePingTimeFromLocalHost>`_
 
@@ -119,8 +119,8 @@ Function Reference
 
     :param int eValue:
     :returns: (str) Return value
-    :returns: (int) Value for `pOutDataType`
-    :returns: (int) Value for `pOutScope`
+    :returns: (int) ``pOutDataType``
+    :returns: (int) ``pOutScope``
     :SteamWorks: `GetConfigValueInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetConfigValueInfo>`_
 
     **Signature differences from C++ API:**
@@ -167,7 +167,7 @@ Function Reference
 
     :param int nListSz:
     :returns: (int) Return value
-    :returns: (int) Value for `list`
+    :returns: (int) ``list``
     :SteamWorks: `GetPOPList <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetPOPList>`_
 
     **Signature differences from C++ API:**
@@ -180,7 +180,7 @@ Function Reference
 
     :param int popID:
     :returns: (int) Return value
-    :returns: (int) Value for `pViaRelayPoP`
+    :returns: (int) ``pViaRelayPoP``
     :SteamWorks: `GetPingToDataCenter <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetPingToDataCenter>`_
 
     **Signature differences from C++ API:**
@@ -191,9 +191,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` fakeIP:
+    :param fakeIP: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :returns: (int) Return value
-    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) Value for `pOutRealIdentity`
+    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) ``pOutRealIdentity``
     :SteamWorks: `GetRealIdentityForFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRealIdentityForFakeIP>`_
 
     **Signature differences from C++ API:**
@@ -205,7 +205,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :returns: (:ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`) Value for `pDetails`
+    :returns: (:ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`) ``pDetails``
     :SteamWorks: `GetRelayNetworkStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRelayNetworkStatus>`_
 
     **Signature differences from C++ API:**
@@ -409,7 +409,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
+    :param addr: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :returns: (int) Return value
     :SteamWorks: `SteamNetworkingIPAddr_GetFakeIPType <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_GetFakeIPType>`_
 
@@ -419,7 +419,7 @@ Function Reference
 
     :param str pszStr:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) Value for `pAddr`
+    :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``pAddr``
     :SteamWorks: `SteamNetworkingIPAddr_ParseString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ParseString>`_
 
     **Signature differences from C++ API:**
@@ -437,10 +437,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
+    :param addr: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
     :param bool bWithPort:
-    :returns: (str) Value for `buf`
+    :returns: (str) ``buf``
     :SteamWorks: `SteamNetworkingIPAddr_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ToString>`_
 
     **Signature differences from C++ API:**
@@ -458,7 +458,7 @@ Function Reference
 
     :param str pszStr:
     :returns: (bool) Return value
-    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) Value for `pIdentity`
+    :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) ``pIdentity``
     :SteamWorks: `SteamNetworkingIdentity_ParseString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ParseString>`_
 
     **Signature differences from C++ API:**
@@ -476,9 +476,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identity:
+    :param identity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
-    :returns: (str) Value for `buf`
+    :returns: (str) ``buf``
     :SteamWorks: `SteamNetworkingIdentity_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ToString>`_
 
     **Signature differences from C++ API:**
