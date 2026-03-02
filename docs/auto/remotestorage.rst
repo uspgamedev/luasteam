@@ -9,64 +9,64 @@ ISteamRemoteStorage
 List of Functions
 -----------------
 
-* :func:`RemoteStorage.FileWrite`
-* :func:`RemoteStorage.FileRead`
-* :func:`RemoteStorage.FileWriteAsync`
-* :func:`RemoteStorage.FileReadAsync`
-* :func:`RemoteStorage.FileReadAsyncComplete`
-* :func:`RemoteStorage.FileForget`
-* :func:`RemoteStorage.FileDelete`
-* :func:`RemoteStorage.FileShare`
-* :func:`RemoteStorage.SetSyncPlatforms`
-* :func:`RemoteStorage.FileWriteStreamOpen`
-* :func:`RemoteStorage.FileWriteStreamWriteChunk`
-* :func:`RemoteStorage.FileWriteStreamClose`
-* :func:`RemoteStorage.FileWriteStreamCancel`
-* :func:`RemoteStorage.FileExists`
-* :func:`RemoteStorage.FilePersisted`
-* :func:`RemoteStorage.GetFileSize`
-* :func:`RemoteStorage.GetFileTimestamp`
-* :func:`RemoteStorage.GetSyncPlatforms`
-* :func:`RemoteStorage.GetFileCount`
-* :func:`RemoteStorage.GetFileNameAndSize`
-* :func:`RemoteStorage.GetQuota`
-* :func:`RemoteStorage.IsCloudEnabledForAccount`
-* :func:`RemoteStorage.IsCloudEnabledForApp`
-* :func:`RemoteStorage.SetCloudEnabledForApp`
-* :func:`RemoteStorage.UGCDownload`
-* :func:`RemoteStorage.GetUGCDownloadProgress`
-* :func:`RemoteStorage.UGCRead`
-* :func:`RemoteStorage.GetCachedUGCCount`
-* :func:`RemoteStorage.GetCachedUGCHandle`
-* :func:`RemoteStorage.PublishWorkshopFile`
-* :func:`RemoteStorage.CreatePublishedFileUpdateRequest`
-* :func:`RemoteStorage.UpdatePublishedFileFile`
-* :func:`RemoteStorage.UpdatePublishedFilePreviewFile`
-* :func:`RemoteStorage.UpdatePublishedFileTitle`
-* :func:`RemoteStorage.UpdatePublishedFileDescription`
-* :func:`RemoteStorage.UpdatePublishedFileVisibility`
-* :func:`RemoteStorage.UpdatePublishedFileTags`
+* :func:`RemoteStorage.BeginFileWriteBatch`
 * :func:`RemoteStorage.CommitPublishedFileUpdate`
-* :func:`RemoteStorage.GetPublishedFileDetails`
+* :func:`RemoteStorage.CreatePublishedFileUpdateRequest`
 * :func:`RemoteStorage.DeletePublishedFile`
-* :func:`RemoteStorage.EnumerateUserPublishedFiles`
-* :func:`RemoteStorage.SubscribePublishedFile`
-* :func:`RemoteStorage.EnumerateUserSubscribedFiles`
-* :func:`RemoteStorage.UnsubscribePublishedFile`
-* :func:`RemoteStorage.UpdatePublishedFileSetChangeDescription`
-* :func:`RemoteStorage.GetPublishedItemVoteDetails`
-* :func:`RemoteStorage.UpdateUserPublishedItemVote`
-* :func:`RemoteStorage.GetUserPublishedItemVoteDetails`
-* :func:`RemoteStorage.EnumerateUserSharedWorkshopFiles`
-* :func:`RemoteStorage.PublishVideo`
-* :func:`RemoteStorage.SetUserPublishedFileAction`
+* :func:`RemoteStorage.EndFileWriteBatch`
 * :func:`RemoteStorage.EnumeratePublishedFilesByUserAction`
 * :func:`RemoteStorage.EnumeratePublishedWorkshopFiles`
-* :func:`RemoteStorage.UGCDownloadToLocation`
-* :func:`RemoteStorage.GetLocalFileChangeCount`
+* :func:`RemoteStorage.EnumerateUserPublishedFiles`
+* :func:`RemoteStorage.EnumerateUserSharedWorkshopFiles`
+* :func:`RemoteStorage.EnumerateUserSubscribedFiles`
+* :func:`RemoteStorage.FileDelete`
+* :func:`RemoteStorage.FileExists`
+* :func:`RemoteStorage.FileForget`
+* :func:`RemoteStorage.FilePersisted`
+* :func:`RemoteStorage.FileRead`
+* :func:`RemoteStorage.FileReadAsync`
+* :func:`RemoteStorage.FileReadAsyncComplete`
+* :func:`RemoteStorage.FileShare`
+* :func:`RemoteStorage.FileWrite`
+* :func:`RemoteStorage.FileWriteAsync`
+* :func:`RemoteStorage.FileWriteStreamCancel`
+* :func:`RemoteStorage.FileWriteStreamClose`
+* :func:`RemoteStorage.FileWriteStreamOpen`
+* :func:`RemoteStorage.FileWriteStreamWriteChunk`
+* :func:`RemoteStorage.GetCachedUGCCount`
+* :func:`RemoteStorage.GetCachedUGCHandle`
+* :func:`RemoteStorage.GetFileCount`
+* :func:`RemoteStorage.GetFileNameAndSize`
+* :func:`RemoteStorage.GetFileSize`
+* :func:`RemoteStorage.GetFileTimestamp`
 * :func:`RemoteStorage.GetLocalFileChange`
-* :func:`RemoteStorage.BeginFileWriteBatch`
-* :func:`RemoteStorage.EndFileWriteBatch`
+* :func:`RemoteStorage.GetLocalFileChangeCount`
+* :func:`RemoteStorage.GetPublishedFileDetails`
+* :func:`RemoteStorage.GetPublishedItemVoteDetails`
+* :func:`RemoteStorage.GetQuota`
+* :func:`RemoteStorage.GetSyncPlatforms`
+* :func:`RemoteStorage.GetUGCDownloadProgress`
+* :func:`RemoteStorage.GetUserPublishedItemVoteDetails`
+* :func:`RemoteStorage.IsCloudEnabledForAccount`
+* :func:`RemoteStorage.IsCloudEnabledForApp`
+* :func:`RemoteStorage.PublishVideo`
+* :func:`RemoteStorage.PublishWorkshopFile`
+* :func:`RemoteStorage.SetCloudEnabledForApp`
+* :func:`RemoteStorage.SetSyncPlatforms`
+* :func:`RemoteStorage.SetUserPublishedFileAction`
+* :func:`RemoteStorage.SubscribePublishedFile`
+* :func:`RemoteStorage.UGCDownload`
+* :func:`RemoteStorage.UGCDownloadToLocation`
+* :func:`RemoteStorage.UGCRead`
+* :func:`RemoteStorage.UnsubscribePublishedFile`
+* :func:`RemoteStorage.UpdatePublishedFileDescription`
+* :func:`RemoteStorage.UpdatePublishedFileFile`
+* :func:`RemoteStorage.UpdatePublishedFilePreviewFile`
+* :func:`RemoteStorage.UpdatePublishedFileSetChangeDescription`
+* :func:`RemoteStorage.UpdatePublishedFileTags`
+* :func:`RemoteStorage.UpdatePublishedFileTitle`
+* :func:`RemoteStorage.UpdatePublishedFileVisibility`
+* :func:`RemoteStorage.UpdateUserPublishedItemVote`
 
 List of Callbacks
 -----------------
@@ -100,370 +100,12 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: RemoteStorage.FileWrite(pchFile, pvData, cubData)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param str pvData:
-    :param int cubData:
-    :returns: (bool) Return value
-    :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
-
-.. function:: RemoteStorage.FileRead(pchFile, cubDataToRead)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param int cubDataToRead:
-    :returns: (int) Return value
-    :returns: (str) Value for `pvData`
-    :SteamWorks: `FileRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileRead>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param str pvData:
-    :param int cubData:
-    :param function callback: CallResult callback receiving struct `RemoteStorageFileWriteAsyncComplete_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
-
-.. function:: RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param int nOffset:
-    :param int cubToRead:
-    :param function callback: CallResult callback receiving struct `RemoteStorageFileReadAsyncComplete_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `FileReadAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsync>`_
-
-.. function:: RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hReadCall:
-    :param int cubToRead:
-    :returns: (bool) Return value
-    :returns: (str) Value for `pvBuffer`
-    :SteamWorks: `FileReadAsyncComplete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsyncComplete>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvBuffer`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.FileForget(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (bool) Return value
-    :SteamWorks: `FileForget <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileForget>`_
-
-.. function:: RemoteStorage.FileDelete(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (bool) Return value
-    :SteamWorks: `FileDelete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileDelete>`_
-
-.. function:: RemoteStorage.FileShare(pchFile, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param function callback: CallResult callback receiving struct `RemoteStorageFileShareResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `FileShare <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileShare>`_
-
-.. function:: RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param int eRemoteStoragePlatform:
-    :returns: (bool) Return value
-    :SteamWorks: `SetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetSyncPlatforms>`_
-
-.. function:: RemoteStorage.FileWriteStreamOpen(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (uint64) Return value
-    :SteamWorks: `FileWriteStreamOpen <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamOpen>`_
-
-.. function:: RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 writeHandle:
-    :param str pvData:
-    :param int cubData:
-    :returns: (bool) Return value
-    :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
-
-.. function:: RemoteStorage.FileWriteStreamClose(writeHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 writeHandle:
-    :returns: (bool) Return value
-    :SteamWorks: `FileWriteStreamClose <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamClose>`_
-
-.. function:: RemoteStorage.FileWriteStreamCancel(writeHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 writeHandle:
-    :returns: (bool) Return value
-    :SteamWorks: `FileWriteStreamCancel <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamCancel>`_
-
-.. function:: RemoteStorage.FileExists(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (bool) Return value
-    :SteamWorks: `FileExists <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileExists>`_
-
-.. function:: RemoteStorage.FilePersisted(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (bool) Return value
-    :SteamWorks: `FilePersisted <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FilePersisted>`_
-
-.. function:: RemoteStorage.GetFileSize(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (int) Return value
-    :SteamWorks: `GetFileSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileSize>`_
-
-.. function:: RemoteStorage.GetFileTimestamp(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetFileTimestamp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileTimestamp>`_
-
-.. function:: RemoteStorage.GetSyncPlatforms(pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :returns: (int) Return value
-    :SteamWorks: `GetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetSyncPlatforms>`_
-
-.. function:: RemoteStorage.GetFileCount()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetFileCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileCount>`_
-
-.. function:: RemoteStorage.GetFileNameAndSize(iFile)
-
-    🤖 **Auto-generated binding**
-
-    :param int iFile:
-    :returns: (str) Return value
-    :returns: (int) Value for `pnFileSizeInBytes`
-    :SteamWorks: `GetFileNameAndSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileNameAndSize>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnFileSizeInBytes`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.GetQuota()
+.. function:: RemoteStorage.BeginFileWriteBatch()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pnTotalBytes`
-    :returns: (uint64) Value for `puAvailableBytes`
-    :SteamWorks: `GetQuota <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetQuota>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnTotalBytes`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``puAvailableBytes`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.IsCloudEnabledForAccount()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `IsCloudEnabledForAccount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#IsCloudEnabledForAccount>`_
-
-.. function:: RemoteStorage.IsCloudEnabledForApp()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `IsCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#IsCloudEnabledForApp>`_
-
-.. function:: RemoteStorage.SetCloudEnabledForApp(bEnabled)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bEnabled:
-    :SteamWorks: `SetCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetCloudEnabledForApp>`_
-
-.. function:: RemoteStorage.UGCDownload(hContent, unPriority, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hContent:
-    :param int unPriority:
-    :param function callback: CallResult callback receiving struct `RemoteStorageDownloadUGCResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `UGCDownload <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownload>`_
-
-.. function:: RemoteStorage.GetUGCDownloadProgress(hContent)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hContent:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pnBytesDownloaded`
-    :returns: (int) Value for `pnBytesExpected`
-    :SteamWorks: `GetUGCDownloadProgress <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDownloadProgress>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnBytesDownloaded`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnBytesExpected`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hContent:
-    :param int cubDataToRead:
-    :param int cOffset:
-    :param int eAction:
-    :returns: (int) Return value
-    :returns: (str) Value for `pvData`
-    :SteamWorks: `UGCRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCRead>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.GetCachedUGCCount()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetCachedUGCCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCCount>`_
-
-.. function:: RemoteStorage.GetCachedUGCHandle(iCachedContent)
-
-    🤖 **Auto-generated binding**
-
-    :param int iCachedContent:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetCachedUGCHandle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCHandle>`_
-
-.. function:: RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchFile:
-    :param str pchPreviewFile:
-    :param int nConsumerAppId:
-    :param str pchTitle:
-    :param str pchDescription:
-    :param int eVisibility:
-    :param int eWorkshopFileType:
-    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
-    :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
-    :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :returns: (uint64) Return value
-    :SteamWorks: `CreatePublishedFileUpdateRequest <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#CreatePublishedFileUpdateRequest>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileFile(updateHandle, pchFile)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param str pchFile:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFileFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileFile>`_
-
-.. function:: RemoteStorage.UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param str pchPreviewFile:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFilePreviewFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFilePreviewFile>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileTitle(updateHandle, pchTitle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param str pchTitle:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFileTitle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTitle>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescription)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param str pchDescription:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFileDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileDescription>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileVisibility(updateHandle, eVisibility)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param int eVisibility:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFileVisibility <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileVisibility>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileTags(updateHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :returns: (bool) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
-    :SteamWorks: `UpdatePublishedFileTags <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTags>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
+    :SteamWorks: `BeginFileWriteBatch <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#BeginFileWriteBatch>`_
 
 .. function:: RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback)
 
@@ -474,15 +116,13 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `CommitPublishedFileUpdate <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#CommitPublishedFileUpdate>`_
 
-.. function:: RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback)
+.. function:: RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId)
 
     🤖 **Auto-generated binding**
 
     :param uint64 unPublishedFileId:
-    :param int unMaxSecondsOld:
-    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedFileDetailsResult_t` and a boolean
     :returns: (uint64) Return value
-    :SteamWorks: `GetPublishedFileDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedFileDetails>`_
+    :SteamWorks: `CreatePublishedFileUpdateRequest <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#CreatePublishedFileUpdateRequest>`_
 
 .. function:: RemoteStorage.DeletePublishedFile(unPublishedFileId, callback)
 
@@ -493,126 +133,12 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `DeletePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#DeletePublishedFile>`_
 
-.. function:: RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback)
+.. function:: RemoteStorage.EndFileWriteBatch()
 
     🤖 **Auto-generated binding**
 
-    :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserPublishedFilesResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `EnumerateUserPublishedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserPublishedFiles>`_
-
-.. function:: RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param function callback: CallResult callback receiving struct `RemoteStorageSubscribePublishedFileResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `SubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SubscribePublishedFile>`_
-
-.. function:: RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserSubscribedFilesResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `EnumerateUserSubscribedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSubscribedFiles>`_
-
-.. function:: RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param function callback: CallResult callback receiving struct `RemoteStorageUnsubscribePublishedFileResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `UnsubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UnsubscribePublishedFile>`_
-
-.. function:: RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 updateHandle:
-    :param str pchChangeDescription:
     :returns: (bool) Return value
-    :SteamWorks: `UpdatePublishedFileSetChangeDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileSetChangeDescription>`_
-
-.. function:: RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedItemVoteDetailsResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedItemVoteDetails>`_
-
-.. function:: RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param bool bVoteUp:
-    :param function callback: CallResult callback receiving struct `RemoteStorageUpdateUserPublishedItemVoteResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `UpdateUserPublishedItemVote <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdateUserPublishedItemVote>`_
-
-.. function:: RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedItemVoteDetailsResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetUserPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUserPublishedItemVoteDetails>`_
-
-.. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamId:
-    :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserPublishedFilesResult_t` and a boolean
-    :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pRequiredTags`
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pExcludedTags`
-    :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pRequiredTags`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pExcludedTags`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int eVideoProvider:
-    :param str pchVideoAccount:
-    :param str pchVideoIdentifier:
-    :param str pchPreviewFile:
-    :param int nConsumerAppId:
-    :param str pchTitle:
-    :param str pchDescription:
-    :param int eVisibility:
-    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
-    :returns: (uint64) Return value
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
-    :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
-
-.. function:: RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 unPublishedFileId:
-    :param int eAction:
-    :param function callback: CallResult callback receiving struct `RemoteStorageSetUserPublishedFileActionResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `SetUserPublishedFileAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetUserPublishedFileAction>`_
+    :SteamWorks: `EndFileWriteBatch <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EndFileWriteBatch>`_
 
 .. function:: RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex, callback)
 
@@ -643,23 +169,226 @@ Function Reference
     * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pUserTags`` is no longer a paramer, and is instead an additional return value
 
-.. function:: RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback)
+.. function:: RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hContent:
-    :param str pchLocation:
-    :param int unPriority:
-    :param function callback: CallResult callback receiving struct `RemoteStorageDownloadUGCResult_t` and a boolean
+    :param int unStartIndex:
+    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserPublishedFilesResult_t` and a boolean
     :returns: (uint64) Return value
-    :SteamWorks: `UGCDownloadToLocation <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownloadToLocation>`_
+    :SteamWorks: `EnumerateUserPublishedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserPublishedFiles>`_
 
-.. function:: RemoteStorage.GetLocalFileChangeCount()
+.. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamId:
+    :param int unStartIndex:
+    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserPublishedFilesResult_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pRequiredTags`
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pExcludedTags`
+    :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pRequiredTags`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pExcludedTags`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int unStartIndex:
+    :param function callback: CallResult callback receiving struct `RemoteStorageEnumerateUserSubscribedFilesResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `EnumerateUserSubscribedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSubscribedFiles>`_
+
+.. function:: RemoteStorage.FileDelete(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (bool) Return value
+    :SteamWorks: `FileDelete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileDelete>`_
+
+.. function:: RemoteStorage.FileExists(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (bool) Return value
+    :SteamWorks: `FileExists <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileExists>`_
+
+.. function:: RemoteStorage.FileForget(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (bool) Return value
+    :SteamWorks: `FileForget <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileForget>`_
+
+.. function:: RemoteStorage.FilePersisted(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (bool) Return value
+    :SteamWorks: `FilePersisted <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FilePersisted>`_
+
+.. function:: RemoteStorage.FileRead(pchFile, cubDataToRead)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param int cubDataToRead:
+    :returns: (int) Return value
+    :returns: (str) Value for `pvData`
+    :SteamWorks: `FileRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileRead>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param int nOffset:
+    :param int cubToRead:
+    :param function callback: CallResult callback receiving struct `RemoteStorageFileReadAsyncComplete_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FileReadAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsync>`_
+
+.. function:: RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hReadCall:
+    :param int cubToRead:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pvBuffer`
+    :SteamWorks: `FileReadAsyncComplete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsyncComplete>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pvBuffer`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.FileShare(pchFile, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param function callback: CallResult callback receiving struct `RemoteStorageFileShareResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FileShare <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileShare>`_
+
+.. function:: RemoteStorage.FileWrite(pchFile, pvData, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pvData:
+    :param int cubData:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
+
+.. function:: RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pvData:
+    :param int cubData:
+    :param function callback: CallResult callback receiving struct `RemoteStorageFileWriteAsyncComplete_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
+
+.. function:: RemoteStorage.FileWriteStreamCancel(writeHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 writeHandle:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWriteStreamCancel <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamCancel>`_
+
+.. function:: RemoteStorage.FileWriteStreamClose(writeHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 writeHandle:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWriteStreamClose <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamClose>`_
+
+.. function:: RemoteStorage.FileWriteStreamOpen(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (uint64) Return value
+    :SteamWorks: `FileWriteStreamOpen <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamOpen>`_
+
+.. function:: RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 writeHandle:
+    :param str pvData:
+    :param int cubData:
+    :returns: (bool) Return value
+    :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
+
+.. function:: RemoteStorage.GetCachedUGCCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :SteamWorks: `GetLocalFileChangeCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetLocalFileChangeCount>`_
+    :SteamWorks: `GetCachedUGCCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCCount>`_
+
+.. function:: RemoteStorage.GetCachedUGCHandle(iCachedContent)
+
+    🤖 **Auto-generated binding**
+
+    :param int iCachedContent:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetCachedUGCHandle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCHandle>`_
+
+.. function:: RemoteStorage.GetFileCount()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetFileCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileCount>`_
+
+.. function:: RemoteStorage.GetFileNameAndSize(iFile)
+
+    🤖 **Auto-generated binding**
+
+    :param int iFile:
+    :returns: (str) Return value
+    :returns: (int) Value for `pnFileSizeInBytes`
+    :SteamWorks: `GetFileNameAndSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileNameAndSize>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnFileSizeInBytes`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.GetFileSize(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (int) Return value
+    :SteamWorks: `GetFileSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileSize>`_
+
+.. function:: RemoteStorage.GetFileTimestamp(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetFileTimestamp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileTimestamp>`_
 
 .. function:: RemoteStorage.GetLocalFileChange(iFile)
 
@@ -676,19 +405,290 @@ Function Reference
     * Parameter ``pEChangeType`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pEFilePathType`` is no longer a paramer, and is instead an additional return value
 
-.. function:: RemoteStorage.BeginFileWriteBatch()
+.. function:: RemoteStorage.GetLocalFileChangeCount()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetLocalFileChangeCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetLocalFileChangeCount>`_
+
+.. function:: RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param int unMaxSecondsOld:
+    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedFileDetailsResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetPublishedFileDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedFileDetails>`_
+
+.. function:: RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedItemVoteDetailsResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedItemVoteDetails>`_
+
+.. function:: RemoteStorage.GetQuota()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :SteamWorks: `BeginFileWriteBatch <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#BeginFileWriteBatch>`_
+    :returns: (uint64) Value for `pnTotalBytes`
+    :returns: (uint64) Value for `puAvailableBytes`
+    :SteamWorks: `GetQuota <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetQuota>`_
 
-.. function:: RemoteStorage.EndFileWriteBatch()
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnTotalBytes`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``puAvailableBytes`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.GetSyncPlatforms(pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :returns: (int) Return value
+    :SteamWorks: `GetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetSyncPlatforms>`_
+
+.. function:: RemoteStorage.GetUGCDownloadProgress(hContent)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hContent:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pnBytesDownloaded`
+    :returns: (int) Value for `pnBytesExpected`
+    :SteamWorks: `GetUGCDownloadProgress <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDownloadProgress>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnBytesDownloaded`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnBytesExpected`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param function callback: CallResult callback receiving struct `RemoteStorageGetPublishedItemVoteDetailsResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetUserPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUserPublishedItemVoteDetails>`_
+
+.. function:: RemoteStorage.IsCloudEnabledForAccount()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
-    :SteamWorks: `EndFileWriteBatch <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EndFileWriteBatch>`_
+    :SteamWorks: `IsCloudEnabledForAccount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#IsCloudEnabledForAccount>`_
+
+.. function:: RemoteStorage.IsCloudEnabledForApp()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `IsCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#IsCloudEnabledForApp>`_
+
+.. function:: RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int eVideoProvider:
+    :param str pchVideoAccount:
+    :param str pchVideoIdentifier:
+    :param str pchPreviewFile:
+    :param int nConsumerAppId:
+    :param str pchTitle:
+    :param str pchDescription:
+    :param int eVisibility:
+    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param str pchPreviewFile:
+    :param int nConsumerAppId:
+    :param str pchTitle:
+    :param str pchDescription:
+    :param int eVisibility:
+    :param int eWorkshopFileType:
+    :param function callback: CallResult callback receiving struct `RemoteStoragePublishFileProgress_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.SetCloudEnabledForApp(bEnabled)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bEnabled:
+    :SteamWorks: `SetCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetCloudEnabledForApp>`_
+
+.. function:: RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchFile:
+    :param int eRemoteStoragePlatform:
+    :returns: (bool) Return value
+    :SteamWorks: `SetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetSyncPlatforms>`_
+
+.. function:: RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param int eAction:
+    :param function callback: CallResult callback receiving struct `RemoteStorageSetUserPublishedFileActionResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `SetUserPublishedFileAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetUserPublishedFileAction>`_
+
+.. function:: RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param function callback: CallResult callback receiving struct `RemoteStorageSubscribePublishedFileResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `SubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SubscribePublishedFile>`_
+
+.. function:: RemoteStorage.UGCDownload(hContent, unPriority, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hContent:
+    :param int unPriority:
+    :param function callback: CallResult callback receiving struct `RemoteStorageDownloadUGCResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `UGCDownload <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownload>`_
+
+.. function:: RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hContent:
+    :param str pchLocation:
+    :param int unPriority:
+    :param function callback: CallResult callback receiving struct `RemoteStorageDownloadUGCResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `UGCDownloadToLocation <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownloadToLocation>`_
+
+.. function:: RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hContent:
+    :param int cubDataToRead:
+    :param int cOffset:
+    :param int eAction:
+    :returns: (int) Return value
+    :returns: (str) Value for `pvData`
+    :SteamWorks: `UGCRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCRead>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param function callback: CallResult callback receiving struct `RemoteStorageUnsubscribePublishedFileResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `UnsubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UnsubscribePublishedFile>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescription)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param str pchDescription:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFileDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileDescription>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileFile(updateHandle, pchFile)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param str pchFile:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFileFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileFile>`_
+
+.. function:: RemoteStorage.UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param str pchPreviewFile:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFilePreviewFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFilePreviewFile>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param str pchChangeDescription:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFileSetChangeDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileSetChangeDescription>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileTags(updateHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :returns: (bool) Return value
+    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) Value for `pTags`
+    :SteamWorks: `UpdatePublishedFileTags <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTags>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pTags`` is no longer a paramer, and is instead an additional return value
+
+.. function:: RemoteStorage.UpdatePublishedFileTitle(updateHandle, pchTitle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param str pchTitle:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFileTitle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTitle>`_
+
+.. function:: RemoteStorage.UpdatePublishedFileVisibility(updateHandle, eVisibility)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 updateHandle:
+    :param int eVisibility:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdatePublishedFileVisibility <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileVisibility>`_
+
+.. function:: RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 unPublishedFileId:
+    :param bool bVoteUp:
+    :param function callback: CallResult callback receiving struct `RemoteStorageUpdateUserPublishedItemVoteResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `UpdateUserPublishedItemVote <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdateUserPublishedItemVote>`_
 
 
 Unimplemented Methods

@@ -9,24 +9,18 @@ ISteamClient
 List of Functions
 -----------------
 
-* :func:`Client.CreateSteamPipe`
 * :func:`Client.BReleaseSteamPipe`
+* :func:`Client.BShutdownIfAllPipesClosed`
 * :func:`Client.ConnectToGlobalUser`
 * :func:`Client.CreateLocalUser`
+* :func:`Client.CreateSteamPipe`
+* :func:`Client.GetIPCCallCount`
 * :func:`Client.ReleaseUser`
 * :func:`Client.SetLocalIPBinding`
-* :func:`Client.GetIPCCallCount`
-* :func:`Client.BShutdownIfAllPipesClosed`
+* :func:`Client.SetWarningMessageHook`
 
 Function Reference
 ------------------
-
-.. function:: Client.CreateSteamPipe()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `CreateSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#CreateSteamPipe>`_
 
 .. function:: Client.BReleaseSteamPipe(hSteamPipe)
 
@@ -35,6 +29,13 @@ Function Reference
     :param int hSteamPipe:
     :returns: (bool) Return value
     :SteamWorks: `BReleaseSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#BReleaseSteamPipe>`_
+
+.. function:: Client.BShutdownIfAllPipesClosed()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BShutdownIfAllPipesClosed <https://partner.steamgames.com/doc/api/ISteamClient#BShutdownIfAllPipesClosed>`_
 
 .. function:: Client.ConnectToGlobalUser(hSteamPipe)
 
@@ -57,6 +58,20 @@ Function Reference
 
     * Parameter ``phSteamPipe`` is no longer a paramer, and is instead an additional return value
 
+.. function:: Client.CreateSteamPipe()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `CreateSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#CreateSteamPipe>`_
+
+.. function:: Client.GetIPCCallCount()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetIPCCallCount <https://partner.steamgames.com/doc/api/ISteamClient#GetIPCCallCount>`_
+
 .. function:: Client.ReleaseUser(hSteamPipe, hUser)
 
     🤖 **Auto-generated binding**
@@ -73,19 +88,24 @@ Function Reference
     :param int usPort:
     :SteamWorks: `SetLocalIPBinding <https://partner.steamgames.com/doc/api/ISteamClient#SetLocalIPBinding>`_
 
-.. function:: Client.GetIPCCallCount()
+.. function:: Client.SetWarningMessageHook(callback)
 
-    🤖 **Auto-generated binding**
+    ✍️ **Manually implemented**
 
-    :returns: (int) Return value
-    :SteamWorks: `GetIPCCallCount <https://partner.steamgames.com/doc/api/ISteamClient#GetIPCCallCount>`_
+    :param function or nil callback: Function receiving ``(severity: integer, message: string)``. Pass ``nil`` to clear the hook.
+    :returns: nothing
+    :SteamWorks: `SetWarningMessageHook <https://partner.steamgames.com/doc/api/ISteamClient#SetWarningMessageHook>`_
 
-.. function:: Client.BShutdownIfAllPipesClosed()
+    Sets a callback to receive Steam API warning and info messages.
 
-    🤖 **Auto-generated binding**
+    **Signature differences from C++ API:**
 
-    :returns: (bool) Return value
-    :SteamWorks: `BShutdownIfAllPipesClosed <https://partner.steamgames.com/doc/api/ISteamClient#BShutdownIfAllPipesClosed>`_
+    * The C++ ``SteamAPIWarningMessageHook_t`` function pointer is replaced by a Lua function.
+    * Pass ``nil`` instead of ``nullptr`` to clear the hook.
+
+    **Notes:**
+
+    * Also available as ``Steam.GameServerClient.SetWarningMessageHook`` with identical signature.
 
 
 Unimplemented Methods

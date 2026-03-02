@@ -12,12 +12,12 @@ List of Functions
 * :func:`Music.BIsEnabled`
 * :func:`Music.BIsPlaying`
 * :func:`Music.GetPlaybackStatus`
-* :func:`Music.Play`
-* :func:`Music.Pause`
-* :func:`Music.PlayPrevious`
-* :func:`Music.PlayNext`
-* :func:`Music.SetVolume`
 * :func:`Music.GetVolume`
+* :func:`Music.Pause`
+* :func:`Music.Play`
+* :func:`Music.PlayNext`
+* :func:`Music.PlayPrevious`
+* :func:`Music.SetVolume`
 
 List of Callbacks
 -----------------
@@ -49,11 +49,12 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetPlaybackStatus <https://partner.steamgames.com/doc/api/ISteamMusic#GetPlaybackStatus>`_
 
-.. function:: Music.Play()
+.. function:: Music.GetVolume()
 
     🤖 **Auto-generated binding**
 
-    :SteamWorks: `Play <https://partner.steamgames.com/doc/api/ISteamMusic#Play>`_
+    :returns: (float) Return value
+    :SteamWorks: `GetVolume <https://partner.steamgames.com/doc/api/ISteamMusic#GetVolume>`_
 
 .. function:: Music.Pause()
 
@@ -61,11 +62,11 @@ Function Reference
 
     :SteamWorks: `Pause <https://partner.steamgames.com/doc/api/ISteamMusic#Pause>`_
 
-.. function:: Music.PlayPrevious()
+.. function:: Music.Play()
 
     🤖 **Auto-generated binding**
 
-    :SteamWorks: `PlayPrevious <https://partner.steamgames.com/doc/api/ISteamMusic#PlayPrevious>`_
+    :SteamWorks: `Play <https://partner.steamgames.com/doc/api/ISteamMusic#Play>`_
 
 .. function:: Music.PlayNext()
 
@@ -73,19 +74,18 @@ Function Reference
 
     :SteamWorks: `PlayNext <https://partner.steamgames.com/doc/api/ISteamMusic#PlayNext>`_
 
+.. function:: Music.PlayPrevious()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `PlayPrevious <https://partner.steamgames.com/doc/api/ISteamMusic#PlayPrevious>`_
+
 .. function:: Music.SetVolume(flVolume)
 
     🤖 **Auto-generated binding**
 
     :param float flVolume:
     :SteamWorks: `SetVolume <https://partner.steamgames.com/doc/api/ISteamMusic#SetVolume>`_
-
-.. function:: Music.GetVolume()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (float) Return value
-    :SteamWorks: `GetVolume <https://partner.steamgames.com/doc/api/ISteamMusic#GetVolume>`_
 
 
 Callbacks

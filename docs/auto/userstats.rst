@@ -9,50 +9,50 @@ ISteamUserStats
 List of Functions
 -----------------
 
-* :func:`UserStats.GetStatInt32`
-* :func:`UserStats.GetStatFloat`
-* :func:`UserStats.SetStatInt32`
-* :func:`UserStats.SetStatFloat`
-* :func:`UserStats.UpdateAvgRateStat`
-* :func:`UserStats.GetAchievement`
-* :func:`UserStats.SetAchievement`
+* :func:`UserStats.AttachLeaderboardUGC`
 * :func:`UserStats.ClearAchievement`
-* :func:`UserStats.GetAchievementAndUnlockTime`
-* :func:`UserStats.StoreStats`
-* :func:`UserStats.GetAchievementIcon`
-* :func:`UserStats.GetAchievementDisplayAttribute`
-* :func:`UserStats.IndicateAchievementProgress`
-* :func:`UserStats.GetNumAchievements`
-* :func:`UserStats.GetAchievementName`
-* :func:`UserStats.RequestUserStats`
-* :func:`UserStats.GetUserStatInt32`
-* :func:`UserStats.GetUserStatFloat`
-* :func:`UserStats.GetUserAchievement`
-* :func:`UserStats.GetUserAchievementAndUnlockTime`
-* :func:`UserStats.ResetAllStats`
-* :func:`UserStats.FindOrCreateLeaderboard`
-* :func:`UserStats.FindLeaderboard`
-* :func:`UserStats.GetLeaderboardName`
-* :func:`UserStats.GetLeaderboardEntryCount`
-* :func:`UserStats.GetLeaderboardSortMethod`
-* :func:`UserStats.GetLeaderboardDisplayType`
 * :func:`UserStats.DownloadLeaderboardEntries`
 * :func:`UserStats.DownloadLeaderboardEntriesForUsers`
+* :func:`UserStats.FindLeaderboard`
+* :func:`UserStats.FindOrCreateLeaderboard`
+* :func:`UserStats.GetAchievement`
+* :func:`UserStats.GetAchievementAchievedPercent`
+* :func:`UserStats.GetAchievementAndUnlockTime`
+* :func:`UserStats.GetAchievementDisplayAttribute`
+* :func:`UserStats.GetAchievementIcon`
+* :func:`UserStats.GetAchievementName`
+* :func:`UserStats.GetAchievementProgressLimitsFloat`
+* :func:`UserStats.GetAchievementProgressLimitsInt32`
 * :func:`UserStats.GetDownloadedLeaderboardEntry`
-* :func:`UserStats.UploadLeaderboardScore`
-* :func:`UserStats.AttachLeaderboardUGC`
-* :func:`UserStats.GetNumberOfCurrentPlayers`
-* :func:`UserStats.RequestGlobalAchievementPercentages`
+* :func:`UserStats.GetGlobalStatDouble`
+* :func:`UserStats.GetGlobalStatHistoryDouble`
+* :func:`UserStats.GetGlobalStatHistoryInt64`
+* :func:`UserStats.GetGlobalStatInt64`
+* :func:`UserStats.GetLeaderboardDisplayType`
+* :func:`UserStats.GetLeaderboardEntryCount`
+* :func:`UserStats.GetLeaderboardName`
+* :func:`UserStats.GetLeaderboardSortMethod`
 * :func:`UserStats.GetMostAchievedAchievementInfo`
 * :func:`UserStats.GetNextMostAchievedAchievementInfo`
-* :func:`UserStats.GetAchievementAchievedPercent`
+* :func:`UserStats.GetNumAchievements`
+* :func:`UserStats.GetNumberOfCurrentPlayers`
+* :func:`UserStats.GetStatFloat`
+* :func:`UserStats.GetStatInt32`
+* :func:`UserStats.GetUserAchievement`
+* :func:`UserStats.GetUserAchievementAndUnlockTime`
+* :func:`UserStats.GetUserStatFloat`
+* :func:`UserStats.GetUserStatInt32`
+* :func:`UserStats.IndicateAchievementProgress`
+* :func:`UserStats.RequestGlobalAchievementPercentages`
 * :func:`UserStats.RequestGlobalStats`
-* :func:`UserStats.GetGlobalStatInt64`
-* :func:`UserStats.GetGlobalStatDouble`
-* :func:`UserStats.GetGlobalStatHistoryInt64`
-* :func:`UserStats.GetGlobalStatHistoryDouble`
-* :func:`UserStats.GetAchievementProgressLimitsInt32`
-* :func:`UserStats.GetAchievementProgressLimitsFloat`
+* :func:`UserStats.RequestUserStats`
+* :func:`UserStats.ResetAllStats`
+* :func:`UserStats.SetAchievement`
+* :func:`UserStats.SetStatFloat`
+* :func:`UserStats.SetStatInt32`
+* :func:`UserStats.StoreStats`
+* :func:`UserStats.UpdateAvgRateStat`
+* :func:`UserStats.UploadLeaderboardScore`
 
 List of Callbacks
 -----------------
@@ -74,80 +74,15 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: UserStats.GetStatInt32(pchName)
+.. function:: UserStats.AttachLeaderboardUGC(hSteamLeaderboard, hUGC, callback)
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pData`
-    :SteamWorks: `GetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatInt32>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetStatFloat(pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (float) Value for `pData`
-    :SteamWorks: `GetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatFloat>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.SetStatInt32(pchName, nData)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :param int nData:
-    :returns: (bool) Return value
-    :SteamWorks: `SetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatInt32>`_
-
-.. function:: UserStats.SetStatFloat(pchName, fData)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :param float fData:
-    :returns: (bool) Return value
-    :SteamWorks: `SetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatFloat>`_
-
-.. function:: UserStats.UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :param float flCountThisSession:
-    :param float dSessionLength:
-    :returns: (bool) Return value
-    :SteamWorks: `UpdateAvgRateStat <https://partner.steamgames.com/doc/api/ISteamUserStats#UpdateAvgRateStat>`_
-
-.. function:: UserStats.GetAchievement(pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.SetAchievement(pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :returns: (bool) Return value
-    :SteamWorks: `SetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#SetAchievement>`_
+    :param uint64 hSteamLeaderboard:
+    :param uint64 hUGC:
+    :param function callback: CallResult callback receiving struct `LeaderboardUGCSet_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `AttachLeaderboardUGC <https://partner.steamgames.com/doc/api/ISteamUserStats#AttachLeaderboardUGC>`_
 
 .. function:: UserStats.ClearAchievement(pchName)
 
@@ -156,197 +91,6 @@ Function Reference
     :param str pchName:
     :returns: (bool) Return value
     :SteamWorks: `ClearAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#ClearAchievement>`_
-
-.. function:: UserStats.GetAchievementAndUnlockTime(pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :returns: (int) Value for `punUnlockTime`
-    :SteamWorks: `GetAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAndUnlockTime>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.StoreStats()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `StoreStats <https://partner.steamgames.com/doc/api/ISteamUserStats#StoreStats>`_
-
-.. function:: UserStats.GetAchievementIcon(pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :returns: (int) Return value
-    :SteamWorks: `GetAchievementIcon <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementIcon>`_
-
-.. function:: UserStats.GetAchievementDisplayAttribute(pchName, pchKey)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :param str pchKey:
-    :returns: (str) Return value
-    :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
-
-.. function:: UserStats.IndicateAchievementProgress(pchName, nCurProgress, nMaxProgress)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchName:
-    :param int nCurProgress:
-    :param int nMaxProgress:
-    :returns: (bool) Return value
-    :SteamWorks: `IndicateAchievementProgress <https://partner.steamgames.com/doc/api/ISteamUserStats#IndicateAchievementProgress>`_
-
-.. function:: UserStats.GetNumAchievements()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetNumAchievements <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumAchievements>`_
-
-.. function:: UserStats.GetAchievementName(iAchievement)
-
-    🤖 **Auto-generated binding**
-
-    :param int iAchievement:
-    :returns: (str) Return value
-    :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
-
-.. function:: UserStats.RequestUserStats(steamIDUser, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `UserStatsReceived_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
-
-.. function:: UserStats.GetUserStatInt32(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pData`
-    :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatInt32>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetUserStatFloat(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (float) Value for `pData`
-    :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatFloat>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetUserAchievement(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievement>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (bool) Value for `pbAchieved`
-    :returns: (int) Value for `punUnlockTime`
-    :SteamWorks: `GetUserAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievementAndUnlockTime>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.ResetAllStats(bAchievementsToo)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bAchievementsToo:
-    :returns: (bool) Return value
-    :SteamWorks: `ResetAllStats <https://partner.steamgames.com/doc/api/ISteamUserStats#ResetAllStats>`_
-
-.. function:: UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchLeaderboardName:
-    :param int eLeaderboardSortMethod:
-    :param int eLeaderboardDisplayType:
-    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
-
-.. function:: UserStats.FindLeaderboard(pchLeaderboardName, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchLeaderboardName:
-    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
-
-.. function:: UserStats.GetLeaderboardName(hSteamLeaderboard)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hSteamLeaderboard:
-    :returns: (str) Return value
-    :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
-
-.. function:: UserStats.GetLeaderboardEntryCount(hSteamLeaderboard)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hSteamLeaderboard:
-    :returns: (int) Return value
-    :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
-
-.. function:: UserStats.GetLeaderboardSortMethod(hSteamLeaderboard)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hSteamLeaderboard:
-    :returns: (int) Return value
-    :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
-
-.. function:: UserStats.GetLeaderboardDisplayType(hSteamLeaderboard)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 hSteamLeaderboard:
-    :returns: (int) Return value
-    :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
 .. function:: UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback)
 
@@ -371,6 +115,122 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
 
+.. function:: UserStats.FindLeaderboard(pchLeaderboardName, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchLeaderboardName:
+    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
+
+.. function:: UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchLeaderboardName:
+    :param int eLeaderboardSortMethod:
+    :param int eLeaderboardDisplayType:
+    :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
+
+.. function:: UserStats.GetAchievement(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (bool) Value for `pbAchieved`
+    :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetAchievementAchievedPercent(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (float) Value for `pflPercent`
+    :SteamWorks: `GetAchievementAchievedPercent <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAchievedPercent>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetAchievementAndUnlockTime(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (bool) Value for `pbAchieved`
+    :returns: (int) Value for `punUnlockTime`
+    :SteamWorks: `GetAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAndUnlockTime>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetAchievementDisplayAttribute(pchName, pchKey)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :param str pchKey:
+    :returns: (str) Return value
+    :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
+
+.. function:: UserStats.GetAchievementIcon(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (int) Return value
+    :SteamWorks: `GetAchievementIcon <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementIcon>`_
+
+.. function:: UserStats.GetAchievementName(iAchievement)
+
+    🤖 **Auto-generated binding**
+
+    :param int iAchievement:
+    :returns: (str) Return value
+    :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
+
+.. function:: UserStats.GetAchievementProgressLimitsFloat(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (float) Value for `pfMinProgress`
+    :returns: (float) Value for `pfMaxProgress`
+    :SteamWorks: `GetAchievementProgressLimitsFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsFloat>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pfMinProgress`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pfMaxProgress`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetAchievementProgressLimitsInt32(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pnMinProgress`
+    :returns: (int) Value for `pnMaxProgress`
+    :SteamWorks: `GetAchievementProgressLimitsInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsInt32>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnMinProgress`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnMaxProgress`` is no longer a paramer, and is instead an additional return value
+
 .. function:: UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, cDetailsMax)
 
     🤖 **Auto-generated binding**
@@ -388,44 +248,91 @@ Function Reference
     * Parameter ``pLeaderboardEntry`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
-.. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback)
+.. function:: UserStats.GetGlobalStatDouble(pchStatName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchStatName:
+    :returns: (bool) Return value
+    :returns: (float) Value for `pData`
+    :SteamWorks: `GetGlobalStatDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatDouble>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchStatName:
+    :param int cubData:
+    :returns: (int) Return value
+    :returns: (float[]) Value for `pData`
+    :SteamWorks: `GetGlobalStatHistoryDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryDouble>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchStatName:
+    :param int cubData:
+    :returns: (int) Return value
+    :returns: (uint64[]) Value for `pData`
+    :SteamWorks: `GetGlobalStatHistoryInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryInt64>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetGlobalStatInt64(pchStatName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchStatName:
+    :returns: (bool) Return value
+    :returns: (uint64) Value for `pData`
+    :SteamWorks: `GetGlobalStatInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatInt64>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetLeaderboardDisplayType(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :param int eLeaderboardUploadScoreMethod:
-    :param int nScore:
-    :param int[] pScoreDetails:
-    :param int cScoreDetailsCount:
-    :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_
+    :returns: (int) Return value
+    :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
-.. function:: UserStats.AttachLeaderboardUGC(hSteamLeaderboard, hUGC, callback)
+.. function:: UserStats.GetLeaderboardEntryCount(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :param uint64 hUGC:
-    :param function callback: CallResult callback receiving struct `LeaderboardUGCSet_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `AttachLeaderboardUGC <https://partner.steamgames.com/doc/api/ISteamUserStats#AttachLeaderboardUGC>`_
+    :returns: (int) Return value
+    :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
 
-.. function:: UserStats.GetNumberOfCurrentPlayers(callback)
+.. function:: UserStats.GetLeaderboardName(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `NumberOfCurrentPlayers_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetNumberOfCurrentPlayers <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumberOfCurrentPlayers>`_
+    :param uint64 hSteamLeaderboard:
+    :returns: (str) Return value
+    :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
 
-.. function:: UserStats.RequestGlobalAchievementPercentages(callback)
+.. function:: UserStats.GetLeaderboardSortMethod(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `GlobalAchievementPercentagesReady_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestGlobalAchievementPercentages <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalAchievementPercentages>`_
+    :param uint64 hSteamLeaderboard:
+    :returns: (int) Return value
+    :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
 
 .. function:: UserStats.GetMostAchievedAchievementInfo(unNameBufLen)
 
@@ -462,18 +369,122 @@ Function Reference
     * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
-.. function:: UserStats.GetAchievementAchievedPercent(pchName)
+.. function:: UserStats.GetNumAchievements()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetNumAchievements <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumAchievements>`_
+
+.. function:: UserStats.GetNumberOfCurrentPlayers(callback)
+
+    🤖 **Auto-generated binding**
+
+    :param function callback: CallResult callback receiving struct `NumberOfCurrentPlayers_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetNumberOfCurrentPlayers <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumberOfCurrentPlayers>`_
+
+.. function:: UserStats.GetStatFloat(pchName)
 
     🤖 **Auto-generated binding**
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (float) Value for `pflPercent`
-    :SteamWorks: `GetAchievementAchievedPercent <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAchievedPercent>`_
+    :returns: (float) Value for `pData`
+    :SteamWorks: `GetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatFloat>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetStatInt32(pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pData`
+    :SteamWorks: `GetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStatInt32>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetUserAchievement(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (bool) Value for `pbAchieved`
+    :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievement>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (bool) Value for `pbAchieved`
+    :returns: (int) Value for `punUnlockTime`
+    :SteamWorks: `GetUserAchievementAndUnlockTime <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievementAndUnlockTime>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetUserStatFloat(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (float) Value for `pData`
+    :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatFloat>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.GetUserStatInt32(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pData`
+    :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStatInt32>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: UserStats.IndicateAchievementProgress(pchName, nCurProgress, nMaxProgress)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :param int nCurProgress:
+    :param int nMaxProgress:
+    :returns: (bool) Return value
+    :SteamWorks: `IndicateAchievementProgress <https://partner.steamgames.com/doc/api/ISteamUserStats#IndicateAchievementProgress>`_
+
+.. function:: UserStats.RequestGlobalAchievementPercentages(callback)
+
+    🤖 **Auto-generated binding**
+
+    :param function callback: CallResult callback receiving struct `GlobalAchievementPercentagesReady_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestGlobalAchievementPercentages <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalAchievementPercentages>`_
 
 .. function:: UserStats.RequestGlobalStats(nHistoryDays, callback)
 
@@ -484,89 +495,78 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `RequestGlobalStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalStats>`_
 
-.. function:: UserStats.GetGlobalStatInt64(pchStatName)
+.. function:: UserStats.RequestUserStats(steamIDUser, callback)
 
     🤖 **Auto-generated binding**
 
-    :param str pchStatName:
+    :param uint64 steamIDUser:
+    :param function callback: CallResult callback receiving struct `UserStatsReceived_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
+
+.. function:: UserStats.ResetAllStats(bAchievementsToo)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bAchievementsToo:
     :returns: (bool) Return value
-    :returns: (uint64) Value for `pData`
-    :SteamWorks: `GetGlobalStatInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatInt64>`_
+    :SteamWorks: `ResetAllStats <https://partner.steamgames.com/doc/api/ISteamUserStats#ResetAllStats>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetGlobalStatDouble(pchStatName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchStatName:
-    :returns: (bool) Return value
-    :returns: (float) Value for `pData`
-    :SteamWorks: `GetGlobalStatDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatDouble>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchStatName:
-    :param int cubData:
-    :returns: (int) Return value
-    :returns: (uint64[]) Value for `pData`
-    :SteamWorks: `GetGlobalStatHistoryInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryInt64>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchStatName:
-    :param int cubData:
-    :returns: (int) Return value
-    :returns: (float[]) Value for `pData`
-    :SteamWorks: `GetGlobalStatHistoryDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryDouble>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetAchievementProgressLimitsInt32(pchName)
+.. function:: UserStats.SetAchievement(pchName)
 
     🤖 **Auto-generated binding**
 
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pnMinProgress`
-    :returns: (int) Value for `pnMaxProgress`
-    :SteamWorks: `GetAchievementProgressLimitsInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsInt32>`_
+    :SteamWorks: `SetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#SetAchievement>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnMinProgress`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnMaxProgress`` is no longer a paramer, and is instead an additional return value
-
-.. function:: UserStats.GetAchievementProgressLimitsFloat(pchName)
+.. function:: UserStats.SetStatFloat(pchName, fData)
 
     🤖 **Auto-generated binding**
 
     :param str pchName:
+    :param float fData:
     :returns: (bool) Return value
-    :returns: (float) Value for `pfMinProgress`
-    :returns: (float) Value for `pfMaxProgress`
-    :SteamWorks: `GetAchievementProgressLimitsFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementProgressLimitsFloat>`_
+    :SteamWorks: `SetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatFloat>`_
 
-    **Signature differences from C++ API:**
+.. function:: UserStats.SetStatInt32(pchName, nData)
 
-    * Parameter ``pfMinProgress`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pfMaxProgress`` is no longer a paramer, and is instead an additional return value
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :param int nData:
+    :returns: (bool) Return value
+    :SteamWorks: `SetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatInt32>`_
+
+.. function:: UserStats.StoreStats()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `StoreStats <https://partner.steamgames.com/doc/api/ISteamUserStats#StoreStats>`_
+
+.. function:: UserStats.UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchName:
+    :param float flCountThisSession:
+    :param float dSessionLength:
+    :returns: (bool) Return value
+    :SteamWorks: `UpdateAvgRateStat <https://partner.steamgames.com/doc/api/ISteamUserStats#UpdateAvgRateStat>`_
+
+.. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hSteamLeaderboard:
+    :param int eLeaderboardUploadScoreMethod:
+    :param int nScore:
+    :param int[] pScoreDetails:
+    :param int cScoreDetailsCount:
+    :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_
 
 
 Callbacks

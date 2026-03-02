@@ -9,16 +9,16 @@ ISteamGameServerStats
 List of Functions
 -----------------
 
-* :func:`GameServerStats.RequestUserStats`
-* :func:`GameServerStats.GetUserStatInt32`
-* :func:`GameServerStats.GetUserStatFloat`
-* :func:`GameServerStats.GetUserAchievement`
-* :func:`GameServerStats.SetUserStatInt32`
-* :func:`GameServerStats.SetUserStatFloat`
-* :func:`GameServerStats.UpdateUserAvgRateStat`
-* :func:`GameServerStats.SetUserAchievement`
 * :func:`GameServerStats.ClearUserAchievement`
+* :func:`GameServerStats.GetUserAchievement`
+* :func:`GameServerStats.GetUserStatFloat`
+* :func:`GameServerStats.GetUserStatInt32`
+* :func:`GameServerStats.RequestUserStats`
+* :func:`GameServerStats.SetUserAchievement`
+* :func:`GameServerStats.SetUserStatFloat`
+* :func:`GameServerStats.SetUserStatInt32`
 * :func:`GameServerStats.StoreUserStats`
+* :func:`GameServerStats.UpdateUserAvgRateStat`
 
 List of Callbacks
 -----------------
@@ -29,42 +29,14 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: GameServerStats.RequestUserStats(steamIDUser, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `GSStatsReceived_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
-
-.. function:: GameServerStats.GetUserStatInt32(steamIDUser, pchName)
+.. function:: GameServerStats.ClearUserAchievement(steamIDUser, pchName)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
     :param str pchName:
     :returns: (bool) Return value
-    :returns: (int) Value for `pData`
-    :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatInt32>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
-
-.. function:: GameServerStats.GetUserStatFloat(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :returns: (float) Value for `pData`
-    :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatFloat>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+    :SteamWorks: `ClearUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#ClearUserAchievement>`_
 
 .. function:: GameServerStats.GetUserAchievement(steamIDUser, pchName)
 
@@ -80,15 +52,51 @@ Function Reference
 
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
 
-.. function:: GameServerStats.SetUserStatInt32(steamIDUser, pchName, nData)
+.. function:: GameServerStats.GetUserStatFloat(steamIDUser, pchName)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
     :param str pchName:
-    :param int nData:
     :returns: (bool) Return value
-    :SteamWorks: `SetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatInt32>`_
+    :returns: (float) Value for `pData`
+    :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatFloat>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: GameServerStats.GetUserStatInt32(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pData`
+    :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatInt32>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+.. function:: GameServerStats.RequestUserStats(steamIDUser, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param function callback: CallResult callback receiving struct `GSStatsReceived_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
+
+.. function:: GameServerStats.SetUserAchievement(steamIDUser, pchName)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :returns: (bool) Return value
+    :SteamWorks: `SetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserAchievement>`_
 
 .. function:: GameServerStats.SetUserStatFloat(steamIDUser, pchName, fData)
 
@@ -100,6 +108,25 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatFloat>`_
 
+.. function:: GameServerStats.SetUserStatInt32(steamIDUser, pchName, nData)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param str pchName:
+    :param int nData:
+    :returns: (bool) Return value
+    :SteamWorks: `SetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatInt32>`_
+
+.. function:: GameServerStats.StoreUserStats(steamIDUser, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param function callback: CallResult callback receiving struct `GSStatsStored_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
+
 .. function:: GameServerStats.UpdateUserAvgRateStat(steamIDUser, pchName, flCountThisSession, dSessionLength)
 
     🤖 **Auto-generated binding**
@@ -110,33 +137,6 @@ Function Reference
     :param float dSessionLength:
     :returns: (bool) Return value
     :SteamWorks: `UpdateUserAvgRateStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#UpdateUserAvgRateStat>`_
-
-.. function:: GameServerStats.SetUserAchievement(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :SteamWorks: `SetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserAchievement>`_
-
-.. function:: GameServerStats.ClearUserAchievement(steamIDUser, pchName)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param str pchName:
-    :returns: (bool) Return value
-    :SteamWorks: `ClearUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#ClearUserAchievement>`_
-
-.. function:: GameServerStats.StoreUserStats(steamIDUser, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param function callback: CallResult callback receiving struct `GSStatsStored_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
 
 
 Callbacks

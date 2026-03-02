@@ -9,44 +9,44 @@ ISteamMatchmaking
 List of Functions
 -----------------
 
-* :func:`Matchmaking.GetFavoriteGameCount`
-* :func:`Matchmaking.GetFavoriteGame`
 * :func:`Matchmaking.AddFavoriteGame`
-* :func:`Matchmaking.RemoveFavoriteGame`
-* :func:`Matchmaking.RequestLobbyList`
-* :func:`Matchmaking.AddRequestLobbyListStringFilter`
-* :func:`Matchmaking.AddRequestLobbyListNumericalFilter`
-* :func:`Matchmaking.AddRequestLobbyListNearValueFilter`
-* :func:`Matchmaking.AddRequestLobbyListFilterSlotsAvailable`
-* :func:`Matchmaking.AddRequestLobbyListDistanceFilter`
-* :func:`Matchmaking.AddRequestLobbyListResultCountFilter`
 * :func:`Matchmaking.AddRequestLobbyListCompatibleMembersFilter`
-* :func:`Matchmaking.GetLobbyByIndex`
+* :func:`Matchmaking.AddRequestLobbyListDistanceFilter`
+* :func:`Matchmaking.AddRequestLobbyListFilterSlotsAvailable`
+* :func:`Matchmaking.AddRequestLobbyListNearValueFilter`
+* :func:`Matchmaking.AddRequestLobbyListNumericalFilter`
+* :func:`Matchmaking.AddRequestLobbyListResultCountFilter`
+* :func:`Matchmaking.AddRequestLobbyListStringFilter`
 * :func:`Matchmaking.CreateLobby`
+* :func:`Matchmaking.DeleteLobbyData`
+* :func:`Matchmaking.GetFavoriteGame`
+* :func:`Matchmaking.GetFavoriteGameCount`
+* :func:`Matchmaking.GetLobbyByIndex`
+* :func:`Matchmaking.GetLobbyChatEntry`
+* :func:`Matchmaking.GetLobbyData`
+* :func:`Matchmaking.GetLobbyDataByIndex`
+* :func:`Matchmaking.GetLobbyDataCount`
+* :func:`Matchmaking.GetLobbyGameServer`
+* :func:`Matchmaking.GetLobbyMemberByIndex`
+* :func:`Matchmaking.GetLobbyMemberData`
+* :func:`Matchmaking.GetLobbyMemberLimit`
+* :func:`Matchmaking.GetLobbyOwner`
+* :func:`Matchmaking.GetNumLobbyMembers`
+* :func:`Matchmaking.InviteUserToLobby`
 * :func:`Matchmaking.JoinLobby`
 * :func:`Matchmaking.LeaveLobby`
-* :func:`Matchmaking.InviteUserToLobby`
-* :func:`Matchmaking.GetNumLobbyMembers`
-* :func:`Matchmaking.GetLobbyMemberByIndex`
-* :func:`Matchmaking.GetLobbyData`
-* :func:`Matchmaking.SetLobbyData`
-* :func:`Matchmaking.GetLobbyDataCount`
-* :func:`Matchmaking.GetLobbyDataByIndex`
-* :func:`Matchmaking.DeleteLobbyData`
-* :func:`Matchmaking.GetLobbyMemberData`
-* :func:`Matchmaking.SetLobbyMemberData`
-* :func:`Matchmaking.SendLobbyChatMsg`
-* :func:`Matchmaking.GetLobbyChatEntry`
+* :func:`Matchmaking.RemoveFavoriteGame`
 * :func:`Matchmaking.RequestLobbyData`
-* :func:`Matchmaking.SetLobbyGameServer`
-* :func:`Matchmaking.GetLobbyGameServer`
-* :func:`Matchmaking.SetLobbyMemberLimit`
-* :func:`Matchmaking.GetLobbyMemberLimit`
-* :func:`Matchmaking.SetLobbyType`
-* :func:`Matchmaking.SetLobbyJoinable`
-* :func:`Matchmaking.GetLobbyOwner`
-* :func:`Matchmaking.SetLobbyOwner`
+* :func:`Matchmaking.RequestLobbyList`
+* :func:`Matchmaking.SendLobbyChatMsg`
 * :func:`Matchmaking.SetLinkedLobby`
+* :func:`Matchmaking.SetLobbyData`
+* :func:`Matchmaking.SetLobbyGameServer`
+* :func:`Matchmaking.SetLobbyJoinable`
+* :func:`Matchmaking.SetLobbyMemberData`
+* :func:`Matchmaking.SetLobbyMemberLimit`
+* :func:`Matchmaking.SetLobbyOwner`
+* :func:`Matchmaking.SetLobbyType`
 
 List of Callbacks
 -----------------
@@ -66,12 +66,91 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: Matchmaking.GetFavoriteGameCount()
+.. function:: Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer)
 
     🤖 **Auto-generated binding**
 
+    :param int nAppID:
+    :param int nIP:
+    :param int nConnPort:
+    :param int nQueryPort:
+    :param int unFlags:
+    :param int rTime32LastPlayedOnServer:
     :returns: (int) Return value
-    :SteamWorks: `GetFavoriteGameCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetFavoriteGameCount>`_
+    :SteamWorks: `AddFavoriteGame <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddFavoriteGame>`_
+
+.. function:: Matchmaking.AddRequestLobbyListCompatibleMembersFilter(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :SteamWorks: `AddRequestLobbyListCompatibleMembersFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListCompatibleMembersFilter>`_
+
+.. function:: Matchmaking.AddRequestLobbyListDistanceFilter(eLobbyDistanceFilter)
+
+    🤖 **Auto-generated binding**
+
+    :param int eLobbyDistanceFilter:
+    :SteamWorks: `AddRequestLobbyListDistanceFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListDistanceFilter>`_
+
+.. function:: Matchmaking.AddRequestLobbyListFilterSlotsAvailable(nSlotsAvailable)
+
+    🤖 **Auto-generated binding**
+
+    :param int nSlotsAvailable:
+    :SteamWorks: `AddRequestLobbyListFilterSlotsAvailable <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListFilterSlotsAvailable>`_
+
+.. function:: Matchmaking.AddRequestLobbyListNearValueFilter(pchKeyToMatch, nValueToBeCloseTo)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchKeyToMatch:
+    :param int nValueToBeCloseTo:
+    :SteamWorks: `AddRequestLobbyListNearValueFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNearValueFilter>`_
+
+.. function:: Matchmaking.AddRequestLobbyListNumericalFilter(pchKeyToMatch, nValueToMatch, eComparisonType)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchKeyToMatch:
+    :param int nValueToMatch:
+    :param int eComparisonType:
+    :SteamWorks: `AddRequestLobbyListNumericalFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNumericalFilter>`_
+
+.. function:: Matchmaking.AddRequestLobbyListResultCountFilter(cMaxResults)
+
+    🤖 **Auto-generated binding**
+
+    :param int cMaxResults:
+    :SteamWorks: `AddRequestLobbyListResultCountFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListResultCountFilter>`_
+
+.. function:: Matchmaking.AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchKeyToMatch:
+    :param str pchValueToMatch:
+    :param int eComparisonType:
+    :SteamWorks: `AddRequestLobbyListStringFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListStringFilter>`_
+
+.. function:: Matchmaking.CreateLobby(eLobbyType, cMaxMembers, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int eLobbyType:
+    :param int cMaxMembers:
+    :param function callback: CallResult callback receiving struct `LobbyCreated_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `CreateLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#CreateLobby>`_
+
+.. function:: Matchmaking.DeleteLobbyData(steamIDLobby, pchKey)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param str pchKey:
+    :returns: (bool) Return value
+    :SteamWorks: `DeleteLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#DeleteLobbyData>`_
 
 .. function:: Matchmaking.GetFavoriteGame(iGame)
 
@@ -96,92 +175,12 @@ Function Reference
     * Parameter ``punFlags`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pRTime32LastPlayedOnServer`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer)
+.. function:: Matchmaking.GetFavoriteGameCount()
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
-    :param int nIP:
-    :param int nConnPort:
-    :param int nQueryPort:
-    :param int unFlags:
-    :param int rTime32LastPlayedOnServer:
     :returns: (int) Return value
-    :SteamWorks: `AddFavoriteGame <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddFavoriteGame>`_
-
-.. function:: Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags)
-
-    🤖 **Auto-generated binding**
-
-    :param int nAppID:
-    :param int nIP:
-    :param int nConnPort:
-    :param int nQueryPort:
-    :param int unFlags:
-    :returns: (bool) Return value
-    :SteamWorks: `RemoveFavoriteGame <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RemoveFavoriteGame>`_
-
-.. function:: Matchmaking.RequestLobbyList(callback)
-
-    🤖 **Auto-generated binding**
-
-    :param function callback: CallResult callback receiving struct `LobbyMatchList_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestLobbyList <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyList>`_
-
-.. function:: Matchmaking.AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchKeyToMatch:
-    :param str pchValueToMatch:
-    :param int eComparisonType:
-    :SteamWorks: `AddRequestLobbyListStringFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListStringFilter>`_
-
-.. function:: Matchmaking.AddRequestLobbyListNumericalFilter(pchKeyToMatch, nValueToMatch, eComparisonType)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchKeyToMatch:
-    :param int nValueToMatch:
-    :param int eComparisonType:
-    :SteamWorks: `AddRequestLobbyListNumericalFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNumericalFilter>`_
-
-.. function:: Matchmaking.AddRequestLobbyListNearValueFilter(pchKeyToMatch, nValueToBeCloseTo)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchKeyToMatch:
-    :param int nValueToBeCloseTo:
-    :SteamWorks: `AddRequestLobbyListNearValueFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNearValueFilter>`_
-
-.. function:: Matchmaking.AddRequestLobbyListFilterSlotsAvailable(nSlotsAvailable)
-
-    🤖 **Auto-generated binding**
-
-    :param int nSlotsAvailable:
-    :SteamWorks: `AddRequestLobbyListFilterSlotsAvailable <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListFilterSlotsAvailable>`_
-
-.. function:: Matchmaking.AddRequestLobbyListDistanceFilter(eLobbyDistanceFilter)
-
-    🤖 **Auto-generated binding**
-
-    :param int eLobbyDistanceFilter:
-    :SteamWorks: `AddRequestLobbyListDistanceFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListDistanceFilter>`_
-
-.. function:: Matchmaking.AddRequestLobbyListResultCountFilter(cMaxResults)
-
-    🤖 **Auto-generated binding**
-
-    :param int cMaxResults:
-    :SteamWorks: `AddRequestLobbyListResultCountFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListResultCountFilter>`_
-
-.. function:: Matchmaking.AddRequestLobbyListCompatibleMembersFilter(steamIDLobby)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :SteamWorks: `AddRequestLobbyListCompatibleMembersFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListCompatibleMembersFilter>`_
+    :SteamWorks: `GetFavoriteGameCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetFavoriteGameCount>`_
 
 .. function:: Matchmaking.GetLobbyByIndex(iLobby)
 
@@ -190,141 +189,6 @@ Function Reference
     :param int iLobby:
     :returns: (uint64) Return value
     :SteamWorks: `GetLobbyByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyByIndex>`_
-
-.. function:: Matchmaking.CreateLobby(eLobbyType, cMaxMembers, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int eLobbyType:
-    :param int cMaxMembers:
-    :param function callback: CallResult callback receiving struct `LobbyCreated_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `CreateLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#CreateLobby>`_
-
-.. function:: Matchmaking.JoinLobby(steamIDLobby, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param function callback: CallResult callback receiving struct `LobbyEnter_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
-
-.. function:: Matchmaking.LeaveLobby(steamIDLobby)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :SteamWorks: `LeaveLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LeaveLobby>`_
-
-.. function:: Matchmaking.InviteUserToLobby(steamIDLobby, steamIDInvitee)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDInvitee:
-    :returns: (bool) Return value
-    :SteamWorks: `InviteUserToLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#InviteUserToLobby>`_
-
-.. function:: Matchmaking.GetNumLobbyMembers(steamIDLobby)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :returns: (int) Return value
-    :SteamWorks: `GetNumLobbyMembers <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetNumLobbyMembers>`_
-
-.. function:: Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param int iMember:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetLobbyMemberByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberByIndex>`_
-
-.. function:: Matchmaking.GetLobbyData(steamIDLobby, pchKey)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pchKey:
-    :returns: (str) Return value
-    :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
-
-.. function:: Matchmaking.SetLobbyData(steamIDLobby, pchKey, pchValue)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pchKey:
-    :param str pchValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyData>`_
-
-.. function:: Matchmaking.GetLobbyDataCount(steamIDLobby)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :returns: (int) Return value
-    :SteamWorks: `GetLobbyDataCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataCount>`_
-
-.. function:: Matchmaking.GetLobbyDataByIndex(steamIDLobby, iLobbyData, cchKeyBufferSize, cchValueBufferSize)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param int iLobbyData:
-    :param int cchKeyBufferSize:
-    :param int cchValueBufferSize:
-    :returns: (bool) Return value
-    :returns: (str) Value for `pchKey`
-    :returns: (str) Value for `pchValue`
-    :SteamWorks: `GetLobbyDataByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataByIndex>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Matchmaking.DeleteLobbyData(steamIDLobby, pchKey)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pchKey:
-    :returns: (bool) Return value
-    :SteamWorks: `DeleteLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#DeleteLobbyData>`_
-
-.. function:: Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDUser:
-    :param str pchKey:
-    :returns: (str) Return value
-    :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
-
-.. function:: Matchmaking.SetLobbyMemberData(steamIDLobby, pchKey, pchValue)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pchKey:
-    :param str pchValue:
-    :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
-
-.. function:: Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :param str pvMsgBody:
-    :param int cubMsgBody:
-    :returns: (bool) Return value
-    :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
 
 .. function:: Matchmaking.GetLobbyChatEntry(steamIDLobby, iChatID, cubData)
 
@@ -345,23 +209,40 @@ Function Reference
     * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
     * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Matchmaking.RequestLobbyData(steamIDLobby)
+.. function:: Matchmaking.GetLobbyData(steamIDLobby, pchKey)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
+    :param str pchKey:
+    :returns: (str) Return value
+    :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
+
+.. function:: Matchmaking.GetLobbyDataByIndex(steamIDLobby, iLobbyData, cchKeyBufferSize, cchValueBufferSize)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param int iLobbyData:
+    :param int cchKeyBufferSize:
+    :param int cchValueBufferSize:
     :returns: (bool) Return value
-    :SteamWorks: `RequestLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyData>`_
+    :returns: (str) Value for `pchKey`
+    :returns: (str) Value for `pchValue`
+    :SteamWorks: `GetLobbyDataByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataByIndex>`_
 
-.. function:: Matchmaking.SetLobbyGameServer(steamIDLobby, unGameServerIP, unGameServerPort, steamIDGameServer)
+    **Signature differences from C++ API:**
+
+    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Matchmaking.GetLobbyDataCount(steamIDLobby)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param int unGameServerIP:
-    :param int unGameServerPort:
-    :param uint64 steamIDGameServer:
-    :SteamWorks: `SetLobbyGameServer <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyGameServer>`_
+    :returns: (int) Return value
+    :SteamWorks: `GetLobbyDataCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataCount>`_
 
 .. function:: Matchmaking.GetLobbyGameServer(steamIDLobby)
 
@@ -380,14 +261,24 @@ Function Reference
     * Parameter ``punGameServerPort`` is no longer a paramer, and is instead an additional return value
     * Parameter ``psteamIDGameServer`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Matchmaking.SetLobbyMemberLimit(steamIDLobby, cMaxMembers)
+.. function:: Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param int cMaxMembers:
-    :returns: (bool) Return value
-    :SteamWorks: `SetLobbyMemberLimit <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberLimit>`_
+    :param int iMember:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetLobbyMemberByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberByIndex>`_
+
+.. function:: Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param uint64 steamIDUser:
+    :param str pchKey:
+    :returns: (str) Return value
+    :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
 
 .. function:: Matchmaking.GetLobbyMemberLimit(steamIDLobby)
 
@@ -397,14 +288,113 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLobbyMemberLimit <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberLimit>`_
 
-.. function:: Matchmaking.SetLobbyType(steamIDLobby, eLobbyType)
+.. function:: Matchmaking.GetLobbyOwner(steamIDLobby)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param int eLobbyType:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyOwner>`_
+
+.. function:: Matchmaking.GetNumLobbyMembers(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :returns: (int) Return value
+    :SteamWorks: `GetNumLobbyMembers <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetNumLobbyMembers>`_
+
+.. function:: Matchmaking.InviteUserToLobby(steamIDLobby, steamIDInvitee)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param uint64 steamIDInvitee:
     :returns: (bool) Return value
-    :SteamWorks: `SetLobbyType <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyType>`_
+    :SteamWorks: `InviteUserToLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#InviteUserToLobby>`_
+
+.. function:: Matchmaking.JoinLobby(steamIDLobby, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param function callback: CallResult callback receiving struct `LobbyEnter_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
+
+.. function:: Matchmaking.LeaveLobby(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :SteamWorks: `LeaveLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LeaveLobby>`_
+
+.. function:: Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags)
+
+    🤖 **Auto-generated binding**
+
+    :param int nAppID:
+    :param int nIP:
+    :param int nConnPort:
+    :param int nQueryPort:
+    :param int unFlags:
+    :returns: (bool) Return value
+    :SteamWorks: `RemoveFavoriteGame <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RemoveFavoriteGame>`_
+
+.. function:: Matchmaking.RequestLobbyData(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :returns: (bool) Return value
+    :SteamWorks: `RequestLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyData>`_
+
+.. function:: Matchmaking.RequestLobbyList(callback)
+
+    🤖 **Auto-generated binding**
+
+    :param function callback: CallResult callback receiving struct `LobbyMatchList_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestLobbyList <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyList>`_
+
+.. function:: Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param str pvMsgBody:
+    :param int cubMsgBody:
+    :returns: (bool) Return value
+    :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
+
+.. function:: Matchmaking.SetLinkedLobby(steamIDLobby, steamIDLobbyDependent)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param uint64 steamIDLobbyDependent:
+    :returns: (bool) Return value
+    :SteamWorks: `SetLinkedLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLinkedLobby>`_
+
+.. function:: Matchmaking.SetLobbyData(steamIDLobby, pchKey, pchValue)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param str pchKey:
+    :param str pchValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyData>`_
+
+.. function:: Matchmaking.SetLobbyGameServer(steamIDLobby, unGameServerIP, unGameServerPort, steamIDGameServer)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param int unGameServerIP:
+    :param int unGameServerPort:
+    :param uint64 steamIDGameServer:
+    :SteamWorks: `SetLobbyGameServer <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyGameServer>`_
 
 .. function:: Matchmaking.SetLobbyJoinable(steamIDLobby, bLobbyJoinable)
 
@@ -415,13 +405,23 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyJoinable <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyJoinable>`_
 
-.. function:: Matchmaking.GetLobbyOwner(steamIDLobby)
+.. function:: Matchmaking.SetLobbyMemberData(steamIDLobby, pchKey, pchValue)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyOwner>`_
+    :param str pchKey:
+    :param str pchValue:
+    :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
+
+.. function:: Matchmaking.SetLobbyMemberLimit(steamIDLobby, cMaxMembers)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :param int cMaxMembers:
+    :returns: (bool) Return value
+    :SteamWorks: `SetLobbyMemberLimit <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberLimit>`_
 
 .. function:: Matchmaking.SetLobbyOwner(steamIDLobby, steamIDNewOwner)
 
@@ -432,14 +432,14 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyOwner>`_
 
-.. function:: Matchmaking.SetLinkedLobby(steamIDLobby, steamIDLobbyDependent)
+.. function:: Matchmaking.SetLobbyType(steamIDLobby, eLobbyType)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param uint64 steamIDLobbyDependent:
+    :param int eLobbyType:
     :returns: (bool) Return value
-    :SteamWorks: `SetLinkedLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLinkedLobby>`_
+    :SteamWorks: `SetLobbyType <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyType>`_
 
 
 Callbacks

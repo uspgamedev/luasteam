@@ -100,12 +100,19 @@ EXTERN int luasteam_runCallbacks(lua_State *L) {
     return 0;
 }
 
+EXTERN int luasteam_init_server(lua_State *L);
+EXTERN int luasteam_shutdown_server(lua_State *L);
+EXTERN int luasteam_runCallbacks_server(lua_State *L);
+
 namespace luasteam {
 
 void add_Core(lua_State *L) {
     add_func(L, "Init", luasteam_init);
     add_func(L, "Shutdown", luasteam_shutdown);
     add_func(L, "RunCallbacks", luasteam_runCallbacks);
+    add_func(L, "GameServerInit", luasteam_init_server);
+    add_func(L, "GameServerShutdown", luasteam_shutdown_server);
+    add_func(L, "GameServerRunCallbacks", luasteam_runCallbacks_server);
     add_structs_auto(L);
     add_callback_interfaces_auto(L);
 }

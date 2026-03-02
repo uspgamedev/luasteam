@@ -14,11 +14,12 @@ Function Reference
 
 .. function:: extra.ParseUint64 (str)
 
-    :param string str: The string to convert to uint64.
+    :param str: The value to convert to uint64. Accepts either a string or an integer.
+    :type str: string or integer
     :returns: (`uint64`) The parsed number. 0 if the string was invalid.
     :see: :ref:`64-bit-integers`
 
-    Converts a string to a 64-bit integer that can be used with this library.
+    Converts a string or integer to a 64-bit integer userdata that can be used with this library.
 
 **Example**::
 

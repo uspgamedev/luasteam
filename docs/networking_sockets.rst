@@ -11,56 +11,7 @@ There are two ways to use it.
 
 Read more at https://partner.steamgames.com/doc/features/multiplayer/steamdatagramrelay.
 
-List of Functions
------------------
-* :func:`NetworkingSockets.SendMessages`
-* :func:`NetworkingSockets.ReceiveMessagesOnPollGroup`
-
-Function Reference
-------------------
-.. function:: NetworkingSockets.SendMessages()
-
-    :param int n: The number of messages you are going to send
-    :param table messages: A number indexed table with all messages you want to send. Indices from 1..n need to exist. Each message is a table with the following keys:
-        
-            * **conn** - The id of the connection to send a message to
-            * **msg** - The message to send. Can be any length (up to configured SendBufferSize), splitting will be handled by the library
-            * **flag** - A flag to specify how the message should be sent. See :func:`NetworkingSockets.SendMessageToConnection` for details
-
-    :returns: (`table`) Result table with ``true`` or ``false`` for each message, indexed 1..n, e.g. ``{ 1 = true, 2 = false }``
-    :SteamWorks: `SendMessages <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages>`_
-
-    This is a more efficient way to send out messages. E.g. you could gather all messages generated in an update cycle and then send them out all in one go using this method instead of dispatching them individually with :func:`NetworkingSockets.SendMessageToConnection`.
-
-**Example**::
-
-    local messages = {}
-    messages[1] = { conn = connection1, msg = "Hello!", flag = Steam.NetworkingSockets.flags.Send_Reliable }
-    messages[2] = { conn = connection2, msg = "World", flag = Steam.NetworkingSockets.flags.Send_Reliable }
-    local result = Steam.NetworkingSockets.SendMessages(#messages, messages)
-
-.. function:: NetworkingSockets.ReceiveMessagesOnPollGroup()
-
-    :param int pollGroup: The poll group to receive messages from
-    :returns: (`int`, `table`) Returns two parameters
-
-        * **n** - The number of messages received. ``-1`` if the passed poll group id is invalid (the table is nil in this case).
-        * **messages** - A 1..n index table of messages. Reliable messages are in order in relation to each other. Unreliable messages might be in any order inside the table. Each message is a table with a ``conn`` and a ``msg`` field.
-
-    :SteamWorks: `ReceiveMessagesOnPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup>`_
-
-    This is the poll group equivalent to :func:`NetworkingSockets.ReceiveMessagesOnConnection`. The advantage of this version is that you can just get all messages to any connection assigned. If you expect larger number of connections, it's much more efficient to create one or more poll groups and just poll the group instead of having to check messages for every connection individually.
-
-    Receive all the messages that are waiting on the given poll group **up to 32**. Call this repeatedly until ``n < 32``
-
-    A result table might look like this: ``{ 1 = { conn = 5235, msg = "A message" }, 2 = { conn = 5235, msg = "Another message" }, 3 = { conn = 5678, msg = "Yet another message" } }``
-    
-    Iterate with ipairs to retain the order any reliable messages were received in.
-
-**Example**::
-
-    local n, messages = Steam.NetworkingSockets.ReceiveMessagesOnPollGroup(pollGroup)
-
+For the complete function reference, see :doc:`auto/networkingsockets`.
 
 Examples
 --------

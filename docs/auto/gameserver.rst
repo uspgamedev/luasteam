@@ -9,45 +9,45 @@ ISteamGameServer
 List of Functions
 -----------------
 
-* :func:`GameServer.SetProduct`
-* :func:`GameServer.SetGameDescription`
-* :func:`GameServer.SetModDir`
-* :func:`GameServer.SetDedicatedServer`
-* :func:`GameServer.LogOn`
-* :func:`GameServer.LogOnAnonymous`
-* :func:`GameServer.LogOff`
+* :func:`GameServer.AssociateWithClan`
 * :func:`GameServer.BLoggedOn`
 * :func:`GameServer.BSecure`
-* :func:`GameServer.GetSteamID`
-* :func:`GameServer.WasRestartRequested`
-* :func:`GameServer.SetMaxPlayerCount`
-* :func:`GameServer.SetBotPlayerCount`
-* :func:`GameServer.SetServerName`
-* :func:`GameServer.SetMapName`
-* :func:`GameServer.SetPasswordProtected`
-* :func:`GameServer.SetSpectatorPort`
-* :func:`GameServer.SetSpectatorServerName`
-* :func:`GameServer.ClearAllKeyValues`
-* :func:`GameServer.SetKeyValue`
-* :func:`GameServer.SetGameTags`
-* :func:`GameServer.SetGameData`
-* :func:`GameServer.SetRegion`
-* :func:`GameServer.SetAdvertiseServerActive`
-* :func:`GameServer.GetAuthSessionTicket`
+* :func:`GameServer.BUpdateUserData`
 * :func:`GameServer.BeginAuthSession`
-* :func:`GameServer.EndAuthSession`
 * :func:`GameServer.CancelAuthTicket`
-* :func:`GameServer.UserHasLicenseForApp`
-* :func:`GameServer.RequestUserGroupStatus`
-* :func:`GameServer.GetGameplayStats`
-* :func:`GameServer.GetServerReputation`
-* :func:`GameServer.GetPublicIP`
-* :func:`GameServer.HandleIncomingPacket`
-* :func:`GameServer.GetNextOutgoingPacket`
-* :func:`GameServer.AssociateWithClan`
+* :func:`GameServer.ClearAllKeyValues`
 * :func:`GameServer.ComputeNewPlayerCompatibility`
 * :func:`GameServer.CreateUnauthenticatedUserConnection`
-* :func:`GameServer.BUpdateUserData`
+* :func:`GameServer.EndAuthSession`
+* :func:`GameServer.GetAuthSessionTicket`
+* :func:`GameServer.GetGameplayStats`
+* :func:`GameServer.GetNextOutgoingPacket`
+* :func:`GameServer.GetPublicIP`
+* :func:`GameServer.GetServerReputation`
+* :func:`GameServer.GetSteamID`
+* :func:`GameServer.HandleIncomingPacket`
+* :func:`GameServer.LogOff`
+* :func:`GameServer.LogOn`
+* :func:`GameServer.LogOnAnonymous`
+* :func:`GameServer.RequestUserGroupStatus`
+* :func:`GameServer.SetAdvertiseServerActive`
+* :func:`GameServer.SetBotPlayerCount`
+* :func:`GameServer.SetDedicatedServer`
+* :func:`GameServer.SetGameData`
+* :func:`GameServer.SetGameDescription`
+* :func:`GameServer.SetGameTags`
+* :func:`GameServer.SetKeyValue`
+* :func:`GameServer.SetMapName`
+* :func:`GameServer.SetMaxPlayerCount`
+* :func:`GameServer.SetModDir`
+* :func:`GameServer.SetPasswordProtected`
+* :func:`GameServer.SetProduct`
+* :func:`GameServer.SetRegion`
+* :func:`GameServer.SetServerName`
+* :func:`GameServer.SetSpectatorPort`
+* :func:`GameServer.SetSpectatorServerName`
+* :func:`GameServer.UserHasLicenseForApp`
+* :func:`GameServer.WasRestartRequested`
 
 List of Callbacks
 -----------------
@@ -70,52 +70,14 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: GameServer.SetProduct(pszProduct)
+.. function:: GameServer.AssociateWithClan(steamIDClan, callback)
 
     🤖 **Auto-generated binding**
 
-    :param str pszProduct:
-    :SteamWorks: `SetProduct <https://partner.steamgames.com/doc/api/ISteamGameServer#SetProduct>`_
-
-.. function:: GameServer.SetGameDescription(pszGameDescription)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszGameDescription:
-    :SteamWorks: `SetGameDescription <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameDescription>`_
-
-.. function:: GameServer.SetModDir(pszModDir)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszModDir:
-    :SteamWorks: `SetModDir <https://partner.steamgames.com/doc/api/ISteamGameServer#SetModDir>`_
-
-.. function:: GameServer.SetDedicatedServer(bDedicated)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bDedicated:
-    :SteamWorks: `SetDedicatedServer <https://partner.steamgames.com/doc/api/ISteamGameServer#SetDedicatedServer>`_
-
-.. function:: GameServer.LogOn(pszToken)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszToken:
-    :SteamWorks: `LogOn <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOn>`_
-
-.. function:: GameServer.LogOnAnonymous()
-
-    🤖 **Auto-generated binding**
-
-    :SteamWorks: `LogOnAnonymous <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOnAnonymous>`_
-
-.. function:: GameServer.LogOff()
-
-    🤖 **Auto-generated binding**
-
-    :SteamWorks: `LogOff <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOff>`_
+    :param uint64 steamIDClan:
+    :param function callback: CallResult callback receiving struct `AssociateWithClanResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
 
 .. function:: GameServer.BLoggedOn()
 
@@ -131,68 +93,32 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BSecure <https://partner.steamgames.com/doc/api/ISteamGameServer#BSecure>`_
 
-.. function:: GameServer.GetSteamID()
+.. function:: GameServer.BUpdateUserData(steamIDUser, pchPlayerName, uScore)
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
-    :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamGameServer#GetSteamID>`_
-
-.. function:: GameServer.WasRestartRequested()
-
-    🤖 **Auto-generated binding**
-
+    :param uint64 steamIDUser:
+    :param str pchPlayerName:
+    :param int uScore:
     :returns: (bool) Return value
-    :SteamWorks: `WasRestartRequested <https://partner.steamgames.com/doc/api/ISteamGameServer#WasRestartRequested>`_
+    :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
 
-.. function:: GameServer.SetMaxPlayerCount(cPlayersMax)
-
-    🤖 **Auto-generated binding**
-
-    :param int cPlayersMax:
-    :SteamWorks: `SetMaxPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMaxPlayerCount>`_
-
-.. function:: GameServer.SetBotPlayerCount(cBotplayers)
+.. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
 
     🤖 **Auto-generated binding**
 
-    :param int cBotplayers:
-    :SteamWorks: `SetBotPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetBotPlayerCount>`_
+    :param str pAuthTicket:
+    :param int cbAuthTicket:
+    :param uint64 steamID:
+    :returns: (int) Return value
+    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
 
-.. function:: GameServer.SetServerName(pszServerName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszServerName:
-    :SteamWorks: `SetServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetServerName>`_
-
-.. function:: GameServer.SetMapName(pszMapName)
+.. function:: GameServer.CancelAuthTicket(hAuthTicket)
 
     🤖 **Auto-generated binding**
 
-    :param str pszMapName:
-    :SteamWorks: `SetMapName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMapName>`_
-
-.. function:: GameServer.SetPasswordProtected(bPasswordProtected)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bPasswordProtected:
-    :SteamWorks: `SetPasswordProtected <https://partner.steamgames.com/doc/api/ISteamGameServer#SetPasswordProtected>`_
-
-.. function:: GameServer.SetSpectatorPort(unSpectatorPort)
-
-    🤖 **Auto-generated binding**
-
-    :param int unSpectatorPort:
-    :SteamWorks: `SetSpectatorPort <https://partner.steamgames.com/doc/api/ISteamGameServer#SetSpectatorPort>`_
-
-.. function:: GameServer.SetSpectatorServerName(pszSpectatorServerName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszSpectatorServerName:
-    :SteamWorks: `SetSpectatorServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetSpectatorServerName>`_
+    :param int hAuthTicket:
+    :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#CancelAuthTicket>`_
 
 .. function:: GameServer.ClearAllKeyValues()
 
@@ -200,41 +126,28 @@ Function Reference
 
     :SteamWorks: `ClearAllKeyValues <https://partner.steamgames.com/doc/api/ISteamGameServer#ClearAllKeyValues>`_
 
-.. function:: GameServer.SetKeyValue(pKey, pValue)
+.. function:: GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback)
 
     🤖 **Auto-generated binding**
 
-    :param str pKey:
-    :param str pValue:
-    :SteamWorks: `SetKeyValue <https://partner.steamgames.com/doc/api/ISteamGameServer#SetKeyValue>`_
+    :param uint64 steamIDNewPlayer:
+    :param function callback: CallResult callback receiving struct `ComputeNewPlayerCompatibilityResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
 
-.. function:: GameServer.SetGameTags(pchGameTags)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchGameTags:
-    :SteamWorks: `SetGameTags <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameTags>`_
-
-.. function:: GameServer.SetGameData(pchGameData)
+.. function:: GameServer.CreateUnauthenticatedUserConnection()
 
     🤖 **Auto-generated binding**
 
-    :param str pchGameData:
-    :SteamWorks: `SetGameData <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameData>`_
+    :returns: (uint64) Return value
+    :SteamWorks: `CreateUnauthenticatedUserConnection <https://partner.steamgames.com/doc/api/ISteamGameServer#CreateUnauthenticatedUserConnection>`_
 
-.. function:: GameServer.SetRegion(pszRegion)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszRegion:
-    :SteamWorks: `SetRegion <https://partner.steamgames.com/doc/api/ISteamGameServer#SetRegion>`_
-
-.. function:: GameServer.SetAdvertiseServerActive(bActive)
+.. function:: GameServer.EndAuthSession(steamID)
 
     🤖 **Auto-generated binding**
 
-    :param bool bActive:
-    :SteamWorks: `SetAdvertiseServerActive <https://partner.steamgames.com/doc/api/ISteamGameServer#SetAdvertiseServerActive>`_
+    :param uint64 steamID:
+    :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#EndAuthSession>`_
 
 .. function:: GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid)
 
@@ -252,79 +165,11 @@ Function Reference
     * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
 
-.. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
-
-    🤖 **Auto-generated binding**
-
-    :param str pAuthTicket:
-    :param int cbAuthTicket:
-    :param uint64 steamID:
-    :returns: (int) Return value
-    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
-
-.. function:: GameServer.EndAuthSession(steamID)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#EndAuthSession>`_
-
-.. function:: GameServer.CancelAuthTicket(hAuthTicket)
-
-    🤖 **Auto-generated binding**
-
-    :param int hAuthTicket:
-    :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#CancelAuthTicket>`_
-
-.. function:: GameServer.UserHasLicenseForApp(steamID, appID)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param int appID:
-    :returns: (int) Return value
-    :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
-
-.. function:: GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param uint64 steamIDGroup:
-    :returns: (bool) Return value
-    :SteamWorks: `RequestUserGroupStatus <https://partner.steamgames.com/doc/api/ISteamGameServer#RequestUserGroupStatus>`_
-
 .. function:: GameServer.GetGameplayStats()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `GetGameplayStats <https://partner.steamgames.com/doc/api/ISteamGameServer#GetGameplayStats>`_
-
-.. function:: GameServer.GetServerReputation(callback)
-
-    🤖 **Auto-generated binding**
-
-    :param function callback: CallResult callback receiving struct `GSReputation_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetServerReputation <https://partner.steamgames.com/doc/api/ISteamGameServer#GetServerReputation>`_
-
-.. function:: GameServer.GetPublicIP()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
-    :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
-
-.. function:: GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort)
-
-    🤖 **Auto-generated binding**
-
-    :param str pData:
-    :param int cbData:
-    :param int srcIP:
-    :param int srcPort:
-    :returns: (bool) Return value
-    :SteamWorks: `HandleIncomingPacket <https://partner.steamgames.com/doc/api/ISteamGameServer#HandleIncomingPacket>`_
 
 .. function:: GameServer.GetNextOutgoingPacket(cbMaxOut)
 
@@ -343,40 +188,195 @@ Function Reference
     * Parameter ``pNetAdr`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pPort`` is no longer a paramer, and is instead an additional return value
 
-.. function:: GameServer.AssociateWithClan(steamIDClan, callback)
+.. function:: GameServer.GetPublicIP()
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `AssociateWithClanResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
+    :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
-.. function:: GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback)
+.. function:: GameServer.GetServerReputation(callback)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDNewPlayer:
-    :param function callback: CallResult callback receiving struct `ComputeNewPlayerCompatibilityResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct `GSReputation_t` and a boolean
     :returns: (uint64) Return value
-    :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
+    :SteamWorks: `GetServerReputation <https://partner.steamgames.com/doc/api/ISteamGameServer#GetServerReputation>`_
 
-.. function:: GameServer.CreateUnauthenticatedUserConnection()
+.. function:: GameServer.GetSteamID()
 
     🤖 **Auto-generated binding**
 
     :returns: (uint64) Return value
-    :SteamWorks: `CreateUnauthenticatedUserConnection <https://partner.steamgames.com/doc/api/ISteamGameServer#CreateUnauthenticatedUserConnection>`_
+    :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamGameServer#GetSteamID>`_
 
-.. function:: GameServer.BUpdateUserData(steamIDUser, pchPlayerName, uScore)
+.. function:: GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort)
+
+    🤖 **Auto-generated binding**
+
+    :param str pData:
+    :param int cbData:
+    :param int srcIP:
+    :param int srcPort:
+    :returns: (bool) Return value
+    :SteamWorks: `HandleIncomingPacket <https://partner.steamgames.com/doc/api/ISteamGameServer#HandleIncomingPacket>`_
+
+.. function:: GameServer.LogOff()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `LogOff <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOff>`_
+
+.. function:: GameServer.LogOn(pszToken)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszToken:
+    :SteamWorks: `LogOn <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOn>`_
+
+.. function:: GameServer.LogOnAnonymous()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `LogOnAnonymous <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOnAnonymous>`_
+
+.. function:: GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchPlayerName:
-    :param int uScore:
+    :param uint64 steamIDGroup:
     :returns: (bool) Return value
-    :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
+    :SteamWorks: `RequestUserGroupStatus <https://partner.steamgames.com/doc/api/ISteamGameServer#RequestUserGroupStatus>`_
+
+.. function:: GameServer.SetAdvertiseServerActive(bActive)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bActive:
+    :SteamWorks: `SetAdvertiseServerActive <https://partner.steamgames.com/doc/api/ISteamGameServer#SetAdvertiseServerActive>`_
+
+.. function:: GameServer.SetBotPlayerCount(cBotplayers)
+
+    🤖 **Auto-generated binding**
+
+    :param int cBotplayers:
+    :SteamWorks: `SetBotPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetBotPlayerCount>`_
+
+.. function:: GameServer.SetDedicatedServer(bDedicated)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bDedicated:
+    :SteamWorks: `SetDedicatedServer <https://partner.steamgames.com/doc/api/ISteamGameServer#SetDedicatedServer>`_
+
+.. function:: GameServer.SetGameData(pchGameData)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchGameData:
+    :SteamWorks: `SetGameData <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameData>`_
+
+.. function:: GameServer.SetGameDescription(pszGameDescription)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszGameDescription:
+    :SteamWorks: `SetGameDescription <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameDescription>`_
+
+.. function:: GameServer.SetGameTags(pchGameTags)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchGameTags:
+    :SteamWorks: `SetGameTags <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameTags>`_
+
+.. function:: GameServer.SetKeyValue(pKey, pValue)
+
+    🤖 **Auto-generated binding**
+
+    :param str pKey:
+    :param str pValue:
+    :SteamWorks: `SetKeyValue <https://partner.steamgames.com/doc/api/ISteamGameServer#SetKeyValue>`_
+
+.. function:: GameServer.SetMapName(pszMapName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszMapName:
+    :SteamWorks: `SetMapName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMapName>`_
+
+.. function:: GameServer.SetMaxPlayerCount(cPlayersMax)
+
+    🤖 **Auto-generated binding**
+
+    :param int cPlayersMax:
+    :SteamWorks: `SetMaxPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMaxPlayerCount>`_
+
+.. function:: GameServer.SetModDir(pszModDir)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszModDir:
+    :SteamWorks: `SetModDir <https://partner.steamgames.com/doc/api/ISteamGameServer#SetModDir>`_
+
+.. function:: GameServer.SetPasswordProtected(bPasswordProtected)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bPasswordProtected:
+    :SteamWorks: `SetPasswordProtected <https://partner.steamgames.com/doc/api/ISteamGameServer#SetPasswordProtected>`_
+
+.. function:: GameServer.SetProduct(pszProduct)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszProduct:
+    :SteamWorks: `SetProduct <https://partner.steamgames.com/doc/api/ISteamGameServer#SetProduct>`_
+
+.. function:: GameServer.SetRegion(pszRegion)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszRegion:
+    :SteamWorks: `SetRegion <https://partner.steamgames.com/doc/api/ISteamGameServer#SetRegion>`_
+
+.. function:: GameServer.SetServerName(pszServerName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszServerName:
+    :SteamWorks: `SetServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetServerName>`_
+
+.. function:: GameServer.SetSpectatorPort(unSpectatorPort)
+
+    🤖 **Auto-generated binding**
+
+    :param int unSpectatorPort:
+    :SteamWorks: `SetSpectatorPort <https://partner.steamgames.com/doc/api/ISteamGameServer#SetSpectatorPort>`_
+
+.. function:: GameServer.SetSpectatorServerName(pszSpectatorServerName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszSpectatorServerName:
+    :SteamWorks: `SetSpectatorServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetSpectatorServerName>`_
+
+.. function:: GameServer.UserHasLicenseForApp(steamID, appID)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamID:
+    :param int appID:
+    :returns: (int) Return value
+    :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
+
+.. function:: GameServer.WasRestartRequested()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `WasRestartRequested <https://partner.steamgames.com/doc/api/ISteamGameServer#WasRestartRequested>`_
 
 
 Callbacks

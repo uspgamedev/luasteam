@@ -9,11 +9,11 @@ ISteamNetworkingMessages
 List of Functions
 -----------------
 
-* :func:`NetworkingMessages.SendMessageToUser`
 * :func:`NetworkingMessages.AcceptSessionWithUser`
-* :func:`NetworkingMessages.CloseSessionWithUser`
 * :func:`NetworkingMessages.CloseChannelWithUser`
+* :func:`NetworkingMessages.CloseSessionWithUser`
 * :func:`NetworkingMessages.GetSessionConnectionInfo`
+* :func:`NetworkingMessages.SendMessageToUser`
 
 List of Callbacks
 -----------------
@@ -24,18 +24,6 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel)
-
-    🤖 **Auto-generated binding**
-
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
-    :param str pubData:
-    :param int cubData:
-    :param int nSendFlags:
-    :param int nRemoteChannel:
-    :returns: (int) Return value
-    :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
-
 .. function:: NetworkingMessages.AcceptSessionWithUser(identityRemote)
 
     🤖 **Auto-generated binding**
@@ -43,14 +31,6 @@ Function Reference
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
     :returns: (bool) Return value
     :SteamWorks: `AcceptSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#AcceptSessionWithUser>`_
-
-.. function:: NetworkingMessages.CloseSessionWithUser(identityRemote)
-
-    🤖 **Auto-generated binding**
-
-    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
-    :returns: (bool) Return value
-    :SteamWorks: `CloseSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseSessionWithUser>`_
 
 .. function:: NetworkingMessages.CloseChannelWithUser(identityRemote, nLocalChannel)
 
@@ -60,6 +40,14 @@ Function Reference
     :param int nLocalChannel:
     :returns: (bool) Return value
     :SteamWorks: `CloseChannelWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseChannelWithUser>`_
+
+.. function:: NetworkingMessages.CloseSessionWithUser(identityRemote)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :returns: (bool) Return value
+    :SteamWorks: `CloseSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseSessionWithUser>`_
 
 .. function:: NetworkingMessages.GetSessionConnectionInfo(identityRemote)
 
@@ -75,6 +63,18 @@ Function Reference
 
     * Parameter ``pConnectionInfo`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pQuickStatus`` is no longer a paramer, and is instead an additional return value
+
+.. function:: NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel)
+
+    🤖 **Auto-generated binding**
+
+    :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
+    :param str pubData:
+    :param int cubData:
+    :param int nSendFlags:
+    :param int nRemoteChannel:
+    :returns: (int) Return value
+    :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
 
 
 Unimplemented Methods

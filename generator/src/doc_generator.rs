@@ -29,10 +29,45 @@ pub struct CallbackInterfaceDocInfo {
     pub methods: Vec<CallbackMethodDocInfo>,
 }
 
+#[derive(Debug, Deserialize, Default, Clone)]
+pub struct ManualParamDoc {
+    pub name: String,
+    pub ptype: String,
+    #[serde(default)]
+    pub description: String,
+}
+
+#[derive(Debug, Deserialize, Default, Clone)]
+pub struct ManualReturnDoc {
+    pub ptype: String,
+    #[serde(default)]
+    pub description: String,
+}
+
+#[derive(Debug, Deserialize, Default, Clone)]
+pub struct ManualFunctionDoc {
+    #[serde(default)]
+    pub description: String,
+    #[serde(default)]
+    pub steamworks: String,
+    #[serde(default)]
+    pub params: Vec<ManualParamDoc>,
+    #[serde(default)]
+    pub returns: Vec<ManualReturnDoc>,
+    #[serde(default)]
+    pub signature_differences: Vec<String>,
+    #[serde(default)]
+    pub notes: Vec<String>,
+    #[serde(default)]
+    pub example: Option<String>,
+}
+
 #[derive(Debug, Deserialize, Default)]
 pub struct CustomDocs {
     #[serde(flatten)]
     pub methods: HashMap<String, CustomDoc>,
+    #[serde(default)]
+    pub manual: HashMap<String, HashMap<String, ManualFunctionDoc>>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -54,8 +89,14 @@ pub struct DocGenerator {
 
 impl DocGenerator {
     pub fn new() -> Self {
-        let custom_docs = if let Ok(content) = fs::read_to_string("custom_docs.toml") {
-            toml::from_str(&content).unwrap_or_default()
+        let custom_docs: CustomDocs = if let Ok(content) = fs::read_to_string("custom_docs.toml") {
+            match toml::from_str(&content) {
+                Ok(v) => v,
+                Err(e) => {
+                    eprintln!("Warning: failed to parse custom_docs.toml: {}", e);
+                    CustomDocs::default()
+                }
+            }
         } else {
             CustomDocs::default()
         };
@@ -109,14 +150,31 @@ impl DocGenerator {
             doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
         }
 
-        // List of Functions
+        // Collect manual methods for this interface (if any)
+        let manual_methods: Vec<(&String, &ManualFunctionDoc)> = self
+            .custom_docs
+            .manual
+            .get(&interface.classname)
+            .map(|m| {
+                let mut v: Vec<_> = m.iter().collect();
+                v.sort_by_key(|(k, _)| k.as_str());
+                v
+            })
+            .unwrap_or_default();
+
+        // List of Functions — auto + manual merged and sorted by name
         doc.push_str("List of Functions\n");
         doc.push_str("-----------------\n\n");
-        for (lua_method_name, _) in method_signatures {
-            doc.push_str(&format!(
-                "* :func:`{}.{}`\n",
-                lua_namespace, lua_method_name
-            ));
+        {
+            let mut all_names: Vec<&str> = method_signatures
+                .iter()
+                .map(|(n, _)| n.as_str())
+                .chain(manual_methods.iter().map(|(n, _)| n.as_str()))
+                .collect();
+            all_names.sort_unstable();
+            for name in all_names {
+                doc.push_str(&format!("* :func:`{}.{}`\n", lua_namespace, name));
+            }
         }
         doc.push('\n');
 
@@ -134,17 +192,48 @@ impl DocGenerator {
             doc.push('\n');
         }
 
-        // Function Reference
+        // Function Reference — auto + manual merged and sorted by name
         doc.push_str("Function Reference\n");
         doc.push_str("------------------\n\n");
 
-        for (lua_method_name, signature) in method_signatures {
-            doc.push_str(&self.generate_function_doc_from_signature(
-                lua_method_name,
-                signature,
-                lua_namespace,
-                &interface.classname,
-            ));
+        // Build a merged sorted list: each entry is either auto or manual
+        enum FuncEntry<'a> {
+            Auto(&'a str, &'a crate::lua_type_info::LuaMethodSignature),
+            Manual(&'a str, &'a ManualFunctionDoc),
+        }
+        let mut entries: Vec<FuncEntry> = method_signatures
+            .iter()
+            .map(|(n, s)| FuncEntry::Auto(n.as_str(), s))
+            .chain(
+                manual_methods
+                    .iter()
+                    .map(|(n, d)| FuncEntry::Manual(n.as_str(), d)),
+            )
+            .collect();
+        entries.sort_by_key(|e| match e {
+            FuncEntry::Auto(n, _) => *n,
+            FuncEntry::Manual(n, _) => *n,
+        });
+
+        for entry in entries {
+            match entry {
+                FuncEntry::Auto(name, signature) => {
+                    doc.push_str(&self.generate_function_doc_from_signature(
+                        name,
+                        signature,
+                        lua_namespace,
+                        &interface.classname,
+                    ));
+                }
+                FuncEntry::Manual(name, manual_doc) => {
+                    doc.push_str(&self.generate_manual_function_doc(
+                        name,
+                        manual_doc,
+                        lua_namespace,
+                        &interface.classname,
+                    ));
+                }
+            }
         }
 
         // Struct Reference (only structs used by this interface)
@@ -299,6 +388,98 @@ impl DocGenerator {
         if let Some(custom) = custom_doc
             && let Some(example) = &custom.example
         {
+            doc.push_str("**Example**::\n\n");
+            for line in example.lines() {
+                doc.push_str(&format!("    {}\n", line));
+            }
+            doc.push('\n');
+        }
+
+        doc
+    }
+
+    fn generate_manual_function_doc(
+        &self,
+        method_name: &str,
+        manual_doc: &ManualFunctionDoc,
+        lua_namespace: &str,
+        interface_name: &str,
+    ) -> String {
+        let mut doc = String::new();
+
+        let params: Vec<&str> = manual_doc.params.iter().map(|p| p.name.as_str()).collect();
+        doc.push_str(&format!(
+            ".. function:: {}.{}({})\n\n",
+            lua_namespace,
+            method_name,
+            params.join(", ")
+        ));
+
+        doc.push_str("    ✍️ **Manually implemented**\n\n");
+
+        for param in &manual_doc.params {
+            if param.description.is_empty() {
+                doc.push_str(&format!(
+                    "    :param {} {}:\n",
+                    param.ptype, param.name
+                ));
+            } else {
+                doc.push_str(&format!(
+                    "    :param {} {}: {}\n",
+                    param.ptype, param.name, param.description
+                ));
+            }
+        }
+
+        if manual_doc.returns.is_empty() {
+            doc.push_str("    :returns: nothing\n");
+        } else {
+            for ret in &manual_doc.returns {
+                if ret.description.is_empty() {
+                    doc.push_str(&format!("    :returns: ({})\n", ret.ptype));
+                } else {
+                    doc.push_str(&format!(
+                        "    :returns: ({}) {}\n",
+                        ret.ptype, ret.description
+                    ));
+                }
+            }
+        }
+
+        let steamworks_url = if manual_doc.steamworks.is_empty() {
+            format!(
+                "https://partner.steamgames.com/doc/api/{}#{}",
+                interface_name, method_name
+            )
+        } else {
+            manual_doc.steamworks.clone()
+        };
+        doc.push_str(&format!(
+            "    :SteamWorks: `{} <{}>`_\n\n",
+            method_name, steamworks_url
+        ));
+
+        if !manual_doc.description.is_empty() {
+            doc.push_str(&format!("    {}\n\n", manual_doc.description));
+        }
+
+        if !manual_doc.signature_differences.is_empty() {
+            doc.push_str("    **Signature differences from C++ API:**\n\n");
+            for diff in &manual_doc.signature_differences {
+                doc.push_str(&format!("    * {}\n", diff));
+            }
+            doc.push('\n');
+        }
+
+        if !manual_doc.notes.is_empty() {
+            doc.push_str("    **Notes:**\n\n");
+            for note in &manual_doc.notes {
+                doc.push_str(&format!("    * {}\n", note));
+            }
+            doc.push('\n');
+        }
+
+        if let Some(example) = &manual_doc.example {
             doc.push_str("**Example**::\n\n");
             for line in example.lines() {
                 doc.push_str(&format!("    {}\n", line));

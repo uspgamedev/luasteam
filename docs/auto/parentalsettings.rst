@@ -9,12 +9,12 @@ ISteamParentalSettings
 List of Functions
 -----------------
 
-* :func:`ParentalSettings.BIsParentalLockEnabled`
-* :func:`ParentalSettings.BIsParentalLockLocked`
 * :func:`ParentalSettings.BIsAppBlocked`
 * :func:`ParentalSettings.BIsAppInBlockList`
 * :func:`ParentalSettings.BIsFeatureBlocked`
 * :func:`ParentalSettings.BIsFeatureInBlockList`
+* :func:`ParentalSettings.BIsParentalLockEnabled`
+* :func:`ParentalSettings.BIsParentalLockLocked`
 
 List of Callbacks
 -----------------
@@ -23,20 +23,6 @@ List of Callbacks
 
 Function Reference
 ------------------
-
-.. function:: ParentalSettings.BIsParentalLockEnabled()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BIsParentalLockEnabled <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsParentalLockEnabled>`_
-
-.. function:: ParentalSettings.BIsParentalLockLocked()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BIsParentalLockLocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsParentalLockLocked>`_
 
 .. function:: ParentalSettings.BIsAppBlocked(nAppID)
 
@@ -69,6 +55,20 @@ Function Reference
     :param int eFeature:
     :returns: (bool) Return value
     :SteamWorks: `BIsFeatureInBlockList <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsFeatureInBlockList>`_
+
+.. function:: ParentalSettings.BIsParentalLockEnabled()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsParentalLockEnabled <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsParentalLockEnabled>`_
+
+.. function:: ParentalSettings.BIsParentalLockLocked()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsParentalLockLocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsParentalLockLocked>`_
 
 
 Callbacks

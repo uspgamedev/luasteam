@@ -12,52 +12,52 @@ ISteamInput
 List of Functions
 -----------------
 
-* :func:`Input.Init`
-* :func:`Input.Shutdown`
-* :func:`Input.SetInputActionManifestFilePath`
-* :func:`Input.RunFrame`
-* :func:`Input.BWaitForData`
-* :func:`Input.BNewDataAvailable`
-* :func:`Input.GetConnectedControllers`
-* :func:`Input.EnableDeviceCallbacks`
-* :func:`Input.GetActionSetHandle`
 * :func:`Input.ActivateActionSet`
-* :func:`Input.GetCurrentActionSet`
 * :func:`Input.ActivateActionSetLayer`
+* :func:`Input.BNewDataAvailable`
+* :func:`Input.BWaitForData`
 * :func:`Input.DeactivateActionSetLayer`
 * :func:`Input.DeactivateAllActionSetLayers`
+* :func:`Input.EnableDeviceCallbacks`
+* :func:`Input.GetActionOriginFromXboxOrigin`
+* :func:`Input.GetActionSetHandle`
 * :func:`Input.GetActiveActionSetLayers`
-* :func:`Input.GetDigitalActionHandle`
-* :func:`Input.GetDigitalActionData`
-* :func:`Input.GetDigitalActionOrigins`
-* :func:`Input.GetStringForDigitalActionName`
-* :func:`Input.GetAnalogActionHandle`
 * :func:`Input.GetAnalogActionData`
+* :func:`Input.GetAnalogActionHandle`
 * :func:`Input.GetAnalogActionOrigins`
+* :func:`Input.GetConnectedControllers`
+* :func:`Input.GetControllerForGamepadIndex`
+* :func:`Input.GetCurrentActionSet`
+* :func:`Input.GetDeviceBindingRevision`
+* :func:`Input.GetDigitalActionData`
+* :func:`Input.GetDigitalActionHandle`
+* :func:`Input.GetDigitalActionOrigins`
+* :func:`Input.GetGamepadIndexForController`
+* :func:`Input.GetGlyphForActionOrigin_Legacy`
+* :func:`Input.GetGlyphForXboxOrigin`
 * :func:`Input.GetGlyphPNGForActionOrigin`
 * :func:`Input.GetGlyphSVGForActionOrigin`
-* :func:`Input.GetGlyphForActionOrigin_Legacy`
-* :func:`Input.GetStringForActionOrigin`
-* :func:`Input.GetStringForAnalogActionName`
-* :func:`Input.StopAnalogActionMomentum`
-* :func:`Input.GetMotionData`
-* :func:`Input.TriggerVibration`
-* :func:`Input.TriggerVibrationExtended`
-* :func:`Input.TriggerSimpleHapticEvent`
-* :func:`Input.SetLEDColor`
-* :func:`Input.Legacy_TriggerHapticPulse`
-* :func:`Input.Legacy_TriggerRepeatedHapticPulse`
-* :func:`Input.ShowBindingPanel`
 * :func:`Input.GetInputTypeForHandle`
-* :func:`Input.GetControllerForGamepadIndex`
-* :func:`Input.GetGamepadIndexForController`
-* :func:`Input.GetStringForXboxOrigin`
-* :func:`Input.GetGlyphForXboxOrigin`
-* :func:`Input.GetActionOriginFromXboxOrigin`
-* :func:`Input.TranslateActionOrigin`
-* :func:`Input.GetDeviceBindingRevision`
+* :func:`Input.GetMotionData`
 * :func:`Input.GetRemotePlaySessionID`
 * :func:`Input.GetSessionInputConfigurationSettings`
+* :func:`Input.GetStringForActionOrigin`
+* :func:`Input.GetStringForAnalogActionName`
+* :func:`Input.GetStringForDigitalActionName`
+* :func:`Input.GetStringForXboxOrigin`
+* :func:`Input.Init`
+* :func:`Input.Legacy_TriggerHapticPulse`
+* :func:`Input.Legacy_TriggerRepeatedHapticPulse`
+* :func:`Input.RunFrame`
+* :func:`Input.SetInputActionManifestFilePath`
+* :func:`Input.SetLEDColor`
+* :func:`Input.ShowBindingPanel`
+* :func:`Input.Shutdown`
+* :func:`Input.StopAnalogActionMomentum`
+* :func:`Input.TranslateActionOrigin`
+* :func:`Input.TriggerSimpleHapticEvent`
+* :func:`Input.TriggerVibration`
+* :func:`Input.TriggerVibrationExtended`
 
 List of Callbacks
 -----------------
@@ -70,35 +70,28 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: Input.Init(bExplicitlyCallRunFrame)
+.. function:: Input.ActivateActionSet(inputHandle, actionSetHandle)
 
     🤖 **Auto-generated binding**
 
-    :param bool bExplicitlyCallRunFrame:
+    :param uint64 inputHandle:
+    :param uint64 actionSetHandle:
+    :SteamWorks: `ActivateActionSet <https://partner.steamgames.com/doc/api/ISteamInput#ActivateActionSet>`_
+
+.. function:: Input.ActivateActionSetLayer(inputHandle, actionSetLayerHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :param uint64 actionSetLayerHandle:
+    :SteamWorks: `ActivateActionSetLayer <https://partner.steamgames.com/doc/api/ISteamInput#ActivateActionSetLayer>`_
+
+.. function:: Input.BNewDataAvailable()
+
+    🤖 **Auto-generated binding**
+
     :returns: (bool) Return value
-    :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamInput#Init>`_
-
-.. function:: Input.Shutdown()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamInput#Shutdown>`_
-
-.. function:: Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchInputActionManifestAbsolutePath:
-    :returns: (bool) Return value
-    :SteamWorks: `SetInputActionManifestFilePath <https://partner.steamgames.com/doc/api/ISteamInput#SetInputActionManifestFilePath>`_
-
-.. function:: Input.RunFrame(bReservedValue)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bReservedValue:
-    :SteamWorks: `RunFrame <https://partner.steamgames.com/doc/api/ISteamInput#RunFrame>`_
+    :SteamWorks: `BNewDataAvailable <https://partner.steamgames.com/doc/api/ISteamInput#BNewDataAvailable>`_
 
 .. function:: Input.BWaitForData(bWaitForever, unTimeout)
 
@@ -108,63 +101,6 @@ Function Reference
     :param int unTimeout:
     :returns: (bool) Return value
     :SteamWorks: `BWaitForData <https://partner.steamgames.com/doc/api/ISteamInput#BWaitForData>`_
-
-.. function:: Input.BNewDataAvailable()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BNewDataAvailable <https://partner.steamgames.com/doc/api/ISteamInput#BNewDataAvailable>`_
-
-.. function:: Input.GetConnectedControllers()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :returns: (uint64[]) Value for `handlesOut`
-    :SteamWorks: `GetConnectedControllers <https://partner.steamgames.com/doc/api/ISteamInput#GetConnectedControllers>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Input.EnableDeviceCallbacks()
-
-    🤖 **Auto-generated binding**
-
-    :SteamWorks: `EnableDeviceCallbacks <https://partner.steamgames.com/doc/api/ISteamInput#EnableDeviceCallbacks>`_
-
-.. function:: Input.GetActionSetHandle(pszActionSetName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszActionSetName:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetActionSetHandle>`_
-
-.. function:: Input.ActivateActionSet(inputHandle, actionSetHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param uint64 actionSetHandle:
-    :SteamWorks: `ActivateActionSet <https://partner.steamgames.com/doc/api/ISteamInput#ActivateActionSet>`_
-
-.. function:: Input.GetCurrentActionSet(inputHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetCurrentActionSet <https://partner.steamgames.com/doc/api/ISteamInput#GetCurrentActionSet>`_
-
-.. function:: Input.ActivateActionSetLayer(inputHandle, actionSetLayerHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param uint64 actionSetLayerHandle:
-    :SteamWorks: `ActivateActionSetLayer <https://partner.steamgames.com/doc/api/ISteamInput#ActivateActionSetLayer>`_
 
 .. function:: Input.DeactivateActionSetLayer(inputHandle, actionSetLayerHandle)
 
@@ -181,6 +117,29 @@ Function Reference
     :param uint64 inputHandle:
     :SteamWorks: `DeactivateAllActionSetLayers <https://partner.steamgames.com/doc/api/ISteamInput#DeactivateAllActionSetLayers>`_
 
+.. function:: Input.EnableDeviceCallbacks()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `EnableDeviceCallbacks <https://partner.steamgames.com/doc/api/ISteamInput#EnableDeviceCallbacks>`_
+
+.. function:: Input.GetActionOriginFromXboxOrigin(inputHandle, eOrigin)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :param int eOrigin:
+    :returns: (int) Return value
+    :SteamWorks: `GetActionOriginFromXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetActionOriginFromXboxOrigin>`_
+
+.. function:: Input.GetActionSetHandle(pszActionSetName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszActionSetName:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetActionSetHandle>`_
+
 .. function:: Input.GetActiveActionSetLayers(inputHandle)
 
     🤖 **Auto-generated binding**
@@ -194,13 +153,80 @@ Function Reference
 
     * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Input.GetDigitalActionHandle(pszActionName)
+.. function:: Input.GetAnalogActionData(inputHandle, analogActionHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :param uint64 analogActionHandle:
+    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
+    :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionData>`_
+
+.. function:: Input.GetAnalogActionHandle(pszActionName)
 
     🤖 **Auto-generated binding**
 
     :param str pszActionName:
     :returns: (uint64) Return value
-    :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionHandle>`_
+    :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionHandle>`_
+
+.. function:: Input.GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :param uint64 actionSetHandle:
+    :param uint64 analogActionHandle:
+    :returns: (int) Return value
+    :returns: (int[]) Value for `originsOut`
+    :SteamWorks: `GetAnalogActionOrigins <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionOrigins>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Input.GetConnectedControllers()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :returns: (uint64[]) Value for `handlesOut`
+    :SteamWorks: `GetConnectedControllers <https://partner.steamgames.com/doc/api/ISteamInput#GetConnectedControllers>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Input.GetControllerForGamepadIndex(nIndex)
+
+    🤖 **Auto-generated binding**
+
+    :param int nIndex:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetControllerForGamepadIndex <https://partner.steamgames.com/doc/api/ISteamInput#GetControllerForGamepadIndex>`_
+
+.. function:: Input.GetCurrentActionSet(inputHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetCurrentActionSet <https://partner.steamgames.com/doc/api/ISteamInput#GetCurrentActionSet>`_
+
+.. function:: Input.GetDeviceBindingRevision(inputHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pMajor`
+    :returns: (int) Value for `pMinor`
+    :SteamWorks: `GetDeviceBindingRevision <https://partner.steamgames.com/doc/api/ISteamInput#GetDeviceBindingRevision>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pMajor`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pMinor`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Input.GetDigitalActionData(inputHandle, digitalActionHandle)
 
@@ -210,6 +236,14 @@ Function Reference
     :param uint64 digitalActionHandle:
     :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionData>`_
+
+.. function:: Input.GetDigitalActionHandle(pszActionName)
+
+    🤖 **Auto-generated binding**
+
+    :param str pszActionName:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionHandle>`_
 
 .. function:: Input.GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle)
 
@@ -226,45 +260,29 @@ Function Reference
 
     * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Input.GetStringForDigitalActionName(eActionHandle)
+.. function:: Input.GetGamepadIndexForController(ulinputHandle)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 eActionHandle:
-    :returns: (str) Return value
-    :SteamWorks: `GetStringForDigitalActionName <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForDigitalActionName>`_
-
-.. function:: Input.GetAnalogActionHandle(pszActionName)
-
-    🤖 **Auto-generated binding**
-
-    :param str pszActionName:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionHandle>`_
-
-.. function:: Input.GetAnalogActionData(inputHandle, analogActionHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param uint64 analogActionHandle:
-    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
-    :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionData>`_
-
-.. function:: Input.GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param uint64 actionSetHandle:
-    :param uint64 analogActionHandle:
+    :param uint64 ulinputHandle:
     :returns: (int) Return value
-    :returns: (int[]) Value for `originsOut`
-    :SteamWorks: `GetAnalogActionOrigins <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionOrigins>`_
+    :SteamWorks: `GetGamepadIndexForController <https://partner.steamgames.com/doc/api/ISteamInput#GetGamepadIndexForController>`_
 
-    **Signature differences from C++ API:**
+.. function:: Input.GetGlyphForActionOrigin_Legacy(eOrigin)
 
-    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
+    🤖 **Auto-generated binding**
+
+    :param int eOrigin:
+    :returns: (str) Return value
+    :SteamWorks: `GetGlyphForActionOrigin_Legacy <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForActionOrigin_Legacy>`_
+
+.. function:: Input.GetGlyphForXboxOrigin(eOrigin)
+
+    🤖 **Auto-generated binding**
+
+    :param int eOrigin:
+    :returns: (str) Return value
+    :SteamWorks: `GetGlyphForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForXboxOrigin>`_
 
 .. function:: Input.GetGlyphPNGForActionOrigin(eOrigin, eSize, unFlags)
 
@@ -285,13 +303,36 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetGlyphSVGForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphSVGForActionOrigin>`_
 
-.. function:: Input.GetGlyphForActionOrigin_Legacy(eOrigin)
+.. function:: Input.GetInputTypeForHandle(inputHandle)
 
     🤖 **Auto-generated binding**
 
-    :param int eOrigin:
-    :returns: (str) Return value
-    :SteamWorks: `GetGlyphForActionOrigin_Legacy <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForActionOrigin_Legacy>`_
+    :param uint64 inputHandle:
+    :returns: (int) Return value
+    :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetInputTypeForHandle>`_
+
+.. function:: Input.GetMotionData(inputHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
+    :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamInput#GetMotionData>`_
+
+.. function:: Input.GetRemotePlaySessionID(inputHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :returns: (int) Return value
+    :SteamWorks: `GetRemotePlaySessionID <https://partner.steamgames.com/doc/api/ISteamInput#GetRemotePlaySessionID>`_
+
+.. function:: Input.GetSessionInputConfigurationSettings()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetSessionInputConfigurationSettings <https://partner.steamgames.com/doc/api/ISteamInput#GetSessionInputConfigurationSettings>`_
 
 .. function:: Input.GetStringForActionOrigin(eOrigin)
 
@@ -309,64 +350,29 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetStringForAnalogActionName <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForAnalogActionName>`_
 
-.. function:: Input.StopAnalogActionMomentum(inputHandle, eAction)
+.. function:: Input.GetStringForDigitalActionName(eActionHandle)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 inputHandle:
-    :param uint64 eAction:
-    :SteamWorks: `StopAnalogActionMomentum <https://partner.steamgames.com/doc/api/ISteamInput#StopAnalogActionMomentum>`_
+    :param uint64 eActionHandle:
+    :returns: (str) Return value
+    :SteamWorks: `GetStringForDigitalActionName <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForDigitalActionName>`_
 
-.. function:: Input.GetMotionData(inputHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
-    :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamInput#GetMotionData>`_
-
-.. function:: Input.TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed)
+.. function:: Input.GetStringForXboxOrigin(eOrigin)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 inputHandle:
-    :param int usLeftSpeed:
-    :param int usRightSpeed:
-    :SteamWorks: `TriggerVibration <https://partner.steamgames.com/doc/api/ISteamInput#TriggerVibration>`_
+    :param int eOrigin:
+    :returns: (str) Return value
+    :SteamWorks: `GetStringForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForXboxOrigin>`_
 
-.. function:: Input.TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param int usLeftSpeed:
-    :param int usRightSpeed:
-    :param int usLeftTriggerSpeed:
-    :param int usRightTriggerSpeed:
-    :SteamWorks: `TriggerVibrationExtended <https://partner.steamgames.com/doc/api/ISteamInput#TriggerVibrationExtended>`_
-
-.. function:: Input.TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB)
+.. function:: Input.Init(bExplicitlyCallRunFrame)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 inputHandle:
-    :param int eHapticLocation:
-    :param int nIntensity:
-    :param str nGainDB:
-    :param int nOtherIntensity:
-    :param str nOtherGainDB:
-    :SteamWorks: `TriggerSimpleHapticEvent <https://partner.steamgames.com/doc/api/ISteamInput#TriggerSimpleHapticEvent>`_
-
-.. function:: Input.SetLEDColor(inputHandle, nColorR, nColorG, nColorB, nFlags)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param int nColorR:
-    :param int nColorG:
-    :param int nColorB:
-    :param int nFlags:
-    :SteamWorks: `SetLEDColor <https://partner.steamgames.com/doc/api/ISteamInput#SetLEDColor>`_
+    :param bool bExplicitlyCallRunFrame:
+    :returns: (bool) Return value
+    :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamInput#Init>`_
 
 .. function:: Input.Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec)
 
@@ -389,6 +395,32 @@ Function Reference
     :param int nFlags:
     :SteamWorks: `Legacy_TriggerRepeatedHapticPulse <https://partner.steamgames.com/doc/api/ISteamInput#Legacy_TriggerRepeatedHapticPulse>`_
 
+.. function:: Input.RunFrame(bReservedValue)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bReservedValue:
+    :SteamWorks: `RunFrame <https://partner.steamgames.com/doc/api/ISteamInput#RunFrame>`_
+
+.. function:: Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchInputActionManifestAbsolutePath:
+    :returns: (bool) Return value
+    :SteamWorks: `SetInputActionManifestFilePath <https://partner.steamgames.com/doc/api/ISteamInput#SetInputActionManifestFilePath>`_
+
+.. function:: Input.SetLEDColor(inputHandle, nColorR, nColorG, nColorB, nFlags)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 inputHandle:
+    :param int nColorR:
+    :param int nColorG:
+    :param int nColorB:
+    :param int nFlags:
+    :SteamWorks: `SetLEDColor <https://partner.steamgames.com/doc/api/ISteamInput#SetLEDColor>`_
+
 .. function:: Input.ShowBindingPanel(inputHandle)
 
     🤖 **Auto-generated binding**
@@ -397,54 +429,20 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ShowBindingPanel <https://partner.steamgames.com/doc/api/ISteamInput#ShowBindingPanel>`_
 
-.. function:: Input.GetInputTypeForHandle(inputHandle)
+.. function:: Input.Shutdown()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamInput#Shutdown>`_
+
+.. function:: Input.StopAnalogActionMomentum(inputHandle, eAction)
 
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (int) Return value
-    :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetInputTypeForHandle>`_
-
-.. function:: Input.GetControllerForGamepadIndex(nIndex)
-
-    🤖 **Auto-generated binding**
-
-    :param int nIndex:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetControllerForGamepadIndex <https://partner.steamgames.com/doc/api/ISteamInput#GetControllerForGamepadIndex>`_
-
-.. function:: Input.GetGamepadIndexForController(ulinputHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 ulinputHandle:
-    :returns: (int) Return value
-    :SteamWorks: `GetGamepadIndexForController <https://partner.steamgames.com/doc/api/ISteamInput#GetGamepadIndexForController>`_
-
-.. function:: Input.GetStringForXboxOrigin(eOrigin)
-
-    🤖 **Auto-generated binding**
-
-    :param int eOrigin:
-    :returns: (str) Return value
-    :SteamWorks: `GetStringForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForXboxOrigin>`_
-
-.. function:: Input.GetGlyphForXboxOrigin(eOrigin)
-
-    🤖 **Auto-generated binding**
-
-    :param int eOrigin:
-    :returns: (str) Return value
-    :SteamWorks: `GetGlyphForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForXboxOrigin>`_
-
-.. function:: Input.GetActionOriginFromXboxOrigin(inputHandle, eOrigin)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 inputHandle:
-    :param int eOrigin:
-    :returns: (int) Return value
-    :SteamWorks: `GetActionOriginFromXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetActionOriginFromXboxOrigin>`_
+    :param uint64 eAction:
+    :SteamWorks: `StopAnalogActionMomentum <https://partner.steamgames.com/doc/api/ISteamInput#StopAnalogActionMomentum>`_
 
 .. function:: Input.TranslateActionOrigin(eDestinationInputType, eSourceOrigin)
 
@@ -455,35 +453,37 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `TranslateActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#TranslateActionOrigin>`_
 
-.. function:: Input.GetDeviceBindingRevision(inputHandle)
+.. function:: Input.TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB)
 
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pMajor`
-    :returns: (int) Value for `pMinor`
-    :SteamWorks: `GetDeviceBindingRevision <https://partner.steamgames.com/doc/api/ISteamInput#GetDeviceBindingRevision>`_
+    :param int eHapticLocation:
+    :param int nIntensity:
+    :param str nGainDB:
+    :param int nOtherIntensity:
+    :param str nOtherGainDB:
+    :SteamWorks: `TriggerSimpleHapticEvent <https://partner.steamgames.com/doc/api/ISteamInput#TriggerSimpleHapticEvent>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pMajor`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pMinor`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Input.GetRemotePlaySessionID(inputHandle)
+.. function:: Input.TriggerVibration(inputHandle, usLeftSpeed, usRightSpeed)
 
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (int) Return value
-    :SteamWorks: `GetRemotePlaySessionID <https://partner.steamgames.com/doc/api/ISteamInput#GetRemotePlaySessionID>`_
+    :param int usLeftSpeed:
+    :param int usRightSpeed:
+    :SteamWorks: `TriggerVibration <https://partner.steamgames.com/doc/api/ISteamInput#TriggerVibration>`_
 
-.. function:: Input.GetSessionInputConfigurationSettings()
+.. function:: Input.TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed)
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
-    :SteamWorks: `GetSessionInputConfigurationSettings <https://partner.steamgames.com/doc/api/ISteamInput#GetSessionInputConfigurationSettings>`_
+    :param uint64 inputHandle:
+    :param int usLeftSpeed:
+    :param int usRightSpeed:
+    :param int usLeftTriggerSpeed:
+    :param int usRightTriggerSpeed:
+    :SteamWorks: `TriggerVibrationExtended <https://partner.steamgames.com/doc/api/ISteamInput#TriggerVibrationExtended>`_
 
 
 Unimplemented Methods

@@ -39,12 +39,7 @@ end
 
 [ISteamUserStats.UploadLeaderboardScore]
 description = "Uploads a user score to a specified leaderboard."
-param_descriptions = { 
-    hSteamLeaderboard = "Handle to the leaderboard",
-    eLeaderboardUploadScoreMethod = "Upload method (see ELeaderboardUploadScoreMethod)",
-    nScore = "The score to upload",
-    pScoreDetails = "Optional table of score details (integers)"
-}
+param_descriptions = { hSteamLeaderboard = "Handle to the leaderboard", eLeaderboardUploadScoreMethod = "Upload method (see ELeaderboardUploadScoreMethod)", nScore = "The score to upload", pScoreDetails = "Optional table of score details (integers)" }
 example = """
 local details = {100, 200, 300}  -- Optional score details
 local call = Steam.userStats.uploadLeaderboardScore(
@@ -60,10 +55,7 @@ description = "Gets the current user's persona (display) name."
 
 [ISteamFriends.SetRichPresence]
 description = "Sets a Rich Presence key/value for the current user that is shared with friends."
-param_descriptions = {
-    pchKey = "The Rich Presence key to set",
-    pchValue = "The value to associate with the key"
-}
+param_descriptions = { pchKey = "The Rich Presence key to set", pchValue = "The value to associate with the key" }
 
 [ISteamUser.GetSteamID]
 description = "Returns the CSteamID of the account currently logged in to the Steam client."
@@ -74,12 +66,215 @@ param_descriptions = { appID = "The App ID of the DLC" }
 
 [ISteamUGC.CreateQueryUserUGCRequest]
 description = "Creates a query to retrieve the details for user-generated content (UGC)."
-param_descriptions = {
-    unAccountID = "The account ID to query",
-    eListType = "The type of list to query",
-    eMatchingUGCType = "The type of UGC to match",
-    eSortOrder = "How to sort the results",
-    nCreatorAppID = "The app that created the items",
-    nConsumerAppID = "The app that will consume the items",
-    unPage = "The page number of results to retrieve (starts at 1)"
-}
+param_descriptions = { unAccountID = "The account ID to query", eListType = "The type of list to query", eMatchingUGCType = "The type of UGC to match", eSortOrder = "How to sort the results", nCreatorAppID = "The app that created the items", nConsumerAppID = "The app that will consume the items", unPage = "The page number of results to retrieve (starts at 1)" }
+
+# =============================================================================
+# Manual function documentation
+# Format: [manual.IInterfaceName.MethodName]
+# params/returns are arrays of {name, ptype, description} tables.
+# steamworks: optional URL override; defaults to the standard partner.steamgames.com URL.
+# signature_differences: list of strings describing how the Lua signature differs from C++.
+# =============================================================================
+
+[manual.ISteamClient.SetWarningMessageHook]
+description = "Sets a callback to receive Steam API warning and info messages."
+notes = ["Also available as ``Steam.GameServerClient.SetWarningMessageHook`` with identical signature."]
+steamworks = "https://partner.steamgames.com/doc/api/ISteamClient#SetWarningMessageHook"
+signature_differences = [
+    "The C++ ``SteamAPIWarningMessageHook_t`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the hook."
+]
+
+[[manual.ISteamClient.SetWarningMessageHook.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving ``(severity: integer, message: string)``. Pass ``nil`` to clear the hook."
+
+[manual.ISteamNetworkingUtils.AllocateMessage]
+description = "Allocates a SteamNetworkingMessage_t for use with SendMessages. Set ``m_conn``, ``m_nFlags``, and write to ``m_pData`` before passing to SendMessages."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#AllocateMessage"
+signature_differences = [
+    "The returned ``SteamNetworkingMessage_t *`` pointer is wrapped in a Lua userdata object."
+]
+
+[[manual.ISteamNetworkingUtils.AllocateMessage.params]]
+name = "cbAllocateBuffer"
+ptype = "integer"
+description = "Number of bytes to allocate in the message payload buffer."
+
+[[manual.ISteamNetworkingUtils.AllocateMessage.returns]]
+ptype = "SteamNetworkingMessage_t"
+description = "New message userdata with a pre-allocated payload buffer."
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_FakeIPResult]
+description = "Sets or clears the global callback for fake IP result events."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_FakeIPResult"
+signature_differences = [
+    "The C++ ``FnSteamNetworkingFakeIPResult`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_FakeIPResult.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamNetworkingFakeIPResult_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_FakeIPResult.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionFailed]
+description = "Sets or clears the global callback for messages session failed events."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionFailed"
+signature_differences = [
+    "The C++ ``FnSteamNetworkingMessagesSessionFailed`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionFailed.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamNetworkingMessagesSessionFailed_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionFailed.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionRequest]
+description = "Sets or clears the global callback for messages session request events."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionRequest"
+signature_differences = [
+    "The C++ ``FnSteamNetworkingMessagesSessionRequest`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionRequest.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamNetworkingMessagesSessionRequest_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionRequest.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged]
+description = "Sets or clears the global callback for Steam network authentication status changes."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetAuthenticationStatusChanged"
+signature_differences = [
+    "The C++ ``FnSteamNetAuthenticationStatusChanged`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamNetAuthenticationStatus_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged]
+description = "Sets or clears the global callback for Steam network connection status changes."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetConnectionStatusChanged"
+signature_differences = [
+    "The C++ ``FnSteamNetConnectionStatusChanged`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamNetConnectionStatusChangedCallback_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged]
+description = "Sets or clears the global callback for Steam relay network status changes."
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamRelayNetworkStatusChanged"
+signature_differences = [
+    "The C++ ``FnSteamRelayNetworkStatusChanged`` function pointer is replaced by a Lua function.",
+    "Pass ``nil`` instead of ``nullptr`` to clear the callback."
+]
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged.params]]
+name = "callback"
+ptype = "function or nil"
+description = "Function receiving a SteamRelayNetworkStatus_t table. Pass nil to clear."
+
+[[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged.returns]]
+ptype = "boolean"
+
+[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection]
+description = "Receives messages that have been sent to a connection."
+notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection"
+signature_differences = [
+    "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
+    "The C++ ``int`` return is kept as the first return value."
+]
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.params]]
+name = "hConn"
+ptype = "integer"
+description = "Connection handle."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.params]]
+name = "nMaxMessages"
+ptype = "integer"
+description = "Maximum number of messages to receive."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.returns]]
+ptype = "integer"
+description = "Number of messages received, or a negative EResult on error."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.returns]]
+ptype = "SteamNetworkingMessage_t[]"
+description = "Table of received message userdata objects (length = number of messages received)."
+
+[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup]
+description = "Receives messages that have arrived on any connection in a poll group."
+notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup"
+signature_differences = [
+    "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
+    "The C++ ``int`` return is kept as the first return value."
+]
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.params]]
+name = "hPollGroup"
+ptype = "integer"
+description = "Poll group handle."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.params]]
+name = "nMaxMessages"
+ptype = "integer"
+description = "Maximum number of messages to receive."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.returns]]
+ptype = "integer"
+description = "Number of messages received, or a negative EResult on error."
+
+[[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.returns]]
+ptype = "SteamNetworkingMessage_t[]"
+description = "Table of received message userdata objects (length = number of messages received)."
+
+[manual.ISteamNetworkingSockets.SendMessages]
+description = "Sends one or more messages to one or more connections in a single call."
+notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages"
+signature_differences = [
+    "The C++ output parameter ``pOutMessageNumberOrResult`` is removed; its values are returned as a table instead.",
+    "The C++ return type is ``void``; the message number/result table is the only return value."
+]
+
+[[manual.ISteamNetworkingSockets.SendMessages.params]]
+name = "nMessages"
+ptype = "integer"
+description = "Number of messages to send."
+
+[[manual.ISteamNetworkingSockets.SendMessages.params]]
+name = "pMessages"
+ptype = "SteamNetworkingMessage_t[]"
+description = "Table of SteamNetworkingMessage_t userdata objects to send."
+
+[[manual.ISteamNetworkingSockets.SendMessages.returns]]
+ptype = "integer[]"
+description = "Table of per-message results: positive = message number assigned, negative = EResult error code."

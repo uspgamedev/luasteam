@@ -9,84 +9,84 @@ ISteamFriends
 List of Functions
 -----------------
 
-* :func:`Friends.GetPersonaName`
-* :func:`Friends.GetPersonaState`
-* :func:`Friends.GetFriendCount`
-* :func:`Friends.GetFriendByIndex`
-* :func:`Friends.GetFriendRelationship`
-* :func:`Friends.GetFriendPersonaState`
-* :func:`Friends.GetFriendPersonaName`
-* :func:`Friends.GetFriendGamePlayed`
-* :func:`Friends.GetFriendPersonaNameHistory`
-* :func:`Friends.GetFriendSteamLevel`
-* :func:`Friends.GetPlayerNickname`
-* :func:`Friends.GetFriendsGroupCount`
-* :func:`Friends.GetFriendsGroupIDByIndex`
-* :func:`Friends.GetFriendsGroupName`
-* :func:`Friends.GetFriendsGroupMembersCount`
-* :func:`Friends.GetFriendsGroupMembersList`
-* :func:`Friends.HasFriend`
-* :func:`Friends.GetClanCount`
-* :func:`Friends.GetClanByIndex`
-* :func:`Friends.GetClanName`
-* :func:`Friends.GetClanTag`
-* :func:`Friends.GetClanActivityCounts`
-* :func:`Friends.DownloadClanActivityCounts`
-* :func:`Friends.GetFriendCountFromSource`
-* :func:`Friends.GetFriendFromSourceByIndex`
-* :func:`Friends.IsUserInSource`
-* :func:`Friends.SetInGameVoiceSpeaking`
 * :func:`Friends.ActivateGameOverlay`
+* :func:`Friends.ActivateGameOverlayInviteDialog`
+* :func:`Friends.ActivateGameOverlayInviteDialogConnectString`
+* :func:`Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog`
+* :func:`Friends.ActivateGameOverlayToStore`
 * :func:`Friends.ActivateGameOverlayToUser`
 * :func:`Friends.ActivateGameOverlayToWebPage`
-* :func:`Friends.ActivateGameOverlayToStore`
-* :func:`Friends.SetPlayedWith`
-* :func:`Friends.ActivateGameOverlayInviteDialog`
-* :func:`Friends.GetSmallFriendAvatar`
-* :func:`Friends.GetMediumFriendAvatar`
-* :func:`Friends.GetLargeFriendAvatar`
-* :func:`Friends.RequestUserInformation`
-* :func:`Friends.RequestClanOfficerList`
-* :func:`Friends.GetClanOwner`
-* :func:`Friends.GetClanOfficerCount`
-* :func:`Friends.GetClanOfficerByIndex`
-* :func:`Friends.SetRichPresence`
-* :func:`Friends.ClearRichPresence`
-* :func:`Friends.GetFriendRichPresence`
-* :func:`Friends.GetFriendRichPresenceKeyCount`
-* :func:`Friends.GetFriendRichPresenceKeyByIndex`
-* :func:`Friends.RequestFriendRichPresence`
-* :func:`Friends.InviteUserToGame`
-* :func:`Friends.GetCoplayFriendCount`
-* :func:`Friends.GetCoplayFriend`
-* :func:`Friends.GetFriendCoplayTime`
-* :func:`Friends.GetFriendCoplayGame`
-* :func:`Friends.JoinClanChatRoom`
-* :func:`Friends.LeaveClanChatRoom`
-* :func:`Friends.GetClanChatMemberCount`
-* :func:`Friends.GetChatMemberByIndex`
-* :func:`Friends.SendClanChatMessage`
-* :func:`Friends.GetClanChatMessage`
-* :func:`Friends.IsClanChatAdmin`
-* :func:`Friends.IsClanChatWindowOpenInSteam`
-* :func:`Friends.OpenClanChatWindowInSteam`
-* :func:`Friends.CloseClanChatWindowInSteam`
-* :func:`Friends.SetListenForFriendsMessages`
-* :func:`Friends.ReplyToFriendMessage`
-* :func:`Friends.GetFriendMessage`
-* :func:`Friends.GetFollowerCount`
-* :func:`Friends.IsFollowing`
-* :func:`Friends.EnumerateFollowingList`
-* :func:`Friends.IsClanPublic`
-* :func:`Friends.IsClanOfficialGameGroup`
-* :func:`Friends.GetNumChatsWithUnreadPriorityMessages`
-* :func:`Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog`
-* :func:`Friends.RegisterProtocolInOverlayBrowser`
-* :func:`Friends.ActivateGameOverlayInviteDialogConnectString`
-* :func:`Friends.RequestEquippedProfileItems`
 * :func:`Friends.BHasEquippedProfileItem`
+* :func:`Friends.ClearRichPresence`
+* :func:`Friends.CloseClanChatWindowInSteam`
+* :func:`Friends.DownloadClanActivityCounts`
+* :func:`Friends.EnumerateFollowingList`
+* :func:`Friends.GetChatMemberByIndex`
+* :func:`Friends.GetClanActivityCounts`
+* :func:`Friends.GetClanByIndex`
+* :func:`Friends.GetClanChatMemberCount`
+* :func:`Friends.GetClanChatMessage`
+* :func:`Friends.GetClanCount`
+* :func:`Friends.GetClanName`
+* :func:`Friends.GetClanOfficerByIndex`
+* :func:`Friends.GetClanOfficerCount`
+* :func:`Friends.GetClanOwner`
+* :func:`Friends.GetClanTag`
+* :func:`Friends.GetCoplayFriend`
+* :func:`Friends.GetCoplayFriendCount`
+* :func:`Friends.GetFollowerCount`
+* :func:`Friends.GetFriendByIndex`
+* :func:`Friends.GetFriendCoplayGame`
+* :func:`Friends.GetFriendCoplayTime`
+* :func:`Friends.GetFriendCount`
+* :func:`Friends.GetFriendCountFromSource`
+* :func:`Friends.GetFriendFromSourceByIndex`
+* :func:`Friends.GetFriendGamePlayed`
+* :func:`Friends.GetFriendMessage`
+* :func:`Friends.GetFriendPersonaName`
+* :func:`Friends.GetFriendPersonaNameHistory`
+* :func:`Friends.GetFriendPersonaState`
+* :func:`Friends.GetFriendRelationship`
+* :func:`Friends.GetFriendRichPresence`
+* :func:`Friends.GetFriendRichPresenceKeyByIndex`
+* :func:`Friends.GetFriendRichPresenceKeyCount`
+* :func:`Friends.GetFriendSteamLevel`
+* :func:`Friends.GetFriendsGroupCount`
+* :func:`Friends.GetFriendsGroupIDByIndex`
+* :func:`Friends.GetFriendsGroupMembersCount`
+* :func:`Friends.GetFriendsGroupMembersList`
+* :func:`Friends.GetFriendsGroupName`
+* :func:`Friends.GetLargeFriendAvatar`
+* :func:`Friends.GetMediumFriendAvatar`
+* :func:`Friends.GetNumChatsWithUnreadPriorityMessages`
+* :func:`Friends.GetPersonaName`
+* :func:`Friends.GetPersonaState`
+* :func:`Friends.GetPlayerNickname`
 * :func:`Friends.GetProfileItemPropertyString`
 * :func:`Friends.GetProfileItemPropertyUint`
+* :func:`Friends.GetSmallFriendAvatar`
+* :func:`Friends.HasFriend`
+* :func:`Friends.InviteUserToGame`
+* :func:`Friends.IsClanChatAdmin`
+* :func:`Friends.IsClanChatWindowOpenInSteam`
+* :func:`Friends.IsClanOfficialGameGroup`
+* :func:`Friends.IsClanPublic`
+* :func:`Friends.IsFollowing`
+* :func:`Friends.IsUserInSource`
+* :func:`Friends.JoinClanChatRoom`
+* :func:`Friends.LeaveClanChatRoom`
+* :func:`Friends.OpenClanChatWindowInSteam`
+* :func:`Friends.RegisterProtocolInOverlayBrowser`
+* :func:`Friends.ReplyToFriendMessage`
+* :func:`Friends.RequestClanOfficerList`
+* :func:`Friends.RequestEquippedProfileItems`
+* :func:`Friends.RequestFriendRichPresence`
+* :func:`Friends.RequestUserInformation`
+* :func:`Friends.SendClanChatMessage`
+* :func:`Friends.SetInGameVoiceSpeaking`
+* :func:`Friends.SetListenForFriendsMessages`
+* :func:`Friends.SetPlayedWith`
+* :func:`Friends.SetRichPresence`
 
 List of Callbacks
 -----------------
@@ -116,27 +116,236 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: Friends.GetPersonaName()
+.. function:: Friends.ActivateGameOverlay(pchDialog)
 
     🤖 **Auto-generated binding**
 
+    :param str pchDialog:
+    :SteamWorks: `ActivateGameOverlay <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlay>`_
+
+.. function:: Friends.ActivateGameOverlayInviteDialog(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :SteamWorks: `ActivateGameOverlayInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialog>`_
+
+.. function:: Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchConnectString:
+    :SteamWorks: `ActivateGameOverlayInviteDialogConnectString <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialogConnectString>`_
+
+.. function:: Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog(steamIDLobby)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDLobby:
+    :SteamWorks: `ActivateGameOverlayRemotePlayTogetherInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayRemotePlayTogetherInviteDialog>`_
+
+.. function:: Friends.ActivateGameOverlayToStore(nAppID, eFlag)
+
+    🤖 **Auto-generated binding**
+
+    :param int nAppID:
+    :param int eFlag:
+    :SteamWorks: `ActivateGameOverlayToStore <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToStore>`_
+
+.. function:: Friends.ActivateGameOverlayToUser(pchDialog, steamID)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchDialog:
+    :param uint64 steamID:
+    :SteamWorks: `ActivateGameOverlayToUser <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToUser>`_
+
+.. function:: Friends.ActivateGameOverlayToWebPage(pchURL, eMode)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchURL:
+    :param int eMode:
+    :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
+
+.. function:: Friends.BHasEquippedProfileItem(steamID, itemType)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamID:
+    :param int itemType:
+    :returns: (bool) Return value
+    :SteamWorks: `BHasEquippedProfileItem <https://partner.steamgames.com/doc/api/ISteamFriends#BHasEquippedProfileItem>`_
+
+.. function:: Friends.ClearRichPresence()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `ClearRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#ClearRichPresence>`_
+
+.. function:: Friends.CloseClanChatWindowInSteam(steamIDClanChat)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :returns: (bool) Return value
+    :SteamWorks: `CloseClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#CloseClanChatWindowInSteam>`_
+
+.. function:: Friends.DownloadClanActivityCounts(cClansToRequest, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int cClansToRequest:
+    :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean
+    :returns: (uint64) Return value
+    :returns: (uint64[]) Value for `psteamIDClans`
+    :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``psteamIDClans`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Friends.EnumerateFollowingList(unStartIndex, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int unStartIndex:
+    :param function callback: CallResult callback receiving struct `FriendsEnumerateFollowingList_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `EnumerateFollowingList <https://partner.steamgames.com/doc/api/ISteamFriends#EnumerateFollowingList>`_
+
+.. function:: Friends.GetChatMemberByIndex(steamIDClan, iUser)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :param int iUser:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetChatMemberByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetChatMemberByIndex>`_
+
+.. function:: Friends.GetClanActivityCounts(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pnOnline`
+    :returns: (int) Value for `pnInGame`
+    :returns: (int) Value for `pnChatting`
+    :SteamWorks: `GetClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanActivityCounts>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnOnline`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnInGame`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnChatting`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Friends.GetClanByIndex(iClan)
+
+    🤖 **Auto-generated binding**
+
+    :param int iClan:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetClanByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanByIndex>`_
+
+.. function:: Friends.GetClanChatMemberCount(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (int) Return value
+    :SteamWorks: `GetClanChatMemberCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMemberCount>`_
+
+.. function:: Friends.GetClanChatMessage(steamIDClanChat, iMessage, cchTextMax)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :param int iMessage:
+    :param int cchTextMax:
+    :returns: (int) Return value
+    :returns: (str) Value for `prgchText`
+    :returns: (int) Value for `peChatEntryType`
+    :returns: (uint64) Value for `psteamidChatter`
+    :SteamWorks: `GetClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMessage>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``prgchText`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``psteamidChatter`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Friends.GetClanCount()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetClanCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanCount>`_
+
+.. function:: Friends.GetClanName(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
     :returns: (str) Return value
-    :SteamWorks: `GetPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaName>`_
+    :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
 
-.. function:: Friends.GetPersonaState()
+.. function:: Friends.GetClanOfficerByIndex(steamIDClan, iOfficer)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :param int iOfficer:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetClanOfficerByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerByIndex>`_
+
+.. function:: Friends.GetClanOfficerCount(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (int) Return value
+    :SteamWorks: `GetClanOfficerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerCount>`_
+
+.. function:: Friends.GetClanOwner(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetClanOwner <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOwner>`_
+
+.. function:: Friends.GetClanTag(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (str) Return value
+    :SteamWorks: `GetClanTag <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanTag>`_
+
+.. function:: Friends.GetCoplayFriend(iCoplayFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param int iCoplayFriend:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetCoplayFriend <https://partner.steamgames.com/doc/api/ISteamFriends#GetCoplayFriend>`_
+
+.. function:: Friends.GetCoplayFriendCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
-    :SteamWorks: `GetPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaState>`_
+    :SteamWorks: `GetCoplayFriendCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetCoplayFriendCount>`_
 
-.. function:: Friends.GetFriendCount(iFriendFlags)
+.. function:: Friends.GetFollowerCount(steamID, callback)
 
     🤖 **Auto-generated binding**
 
-    :param int iFriendFlags:
-    :returns: (int) Return value
-    :SteamWorks: `GetFriendCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCount>`_
+    :param uint64 steamID:
+    :param function callback: CallResult callback receiving struct `FriendsGetFollowerCount_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
 
 .. function:: Friends.GetFriendByIndex(iFriend, iFriendFlags)
 
@@ -147,29 +356,46 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetFriendByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendByIndex>`_
 
-.. function:: Friends.GetFriendRelationship(steamIDFriend)
+.. function:: Friends.GetFriendCoplayGame(steamIDFriend)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
     :returns: (int) Return value
-    :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
+    :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
 
-.. function:: Friends.GetFriendPersonaState(steamIDFriend)
+.. function:: Friends.GetFriendCoplayTime(steamIDFriend)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
     :returns: (int) Return value
-    :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
+    :SteamWorks: `GetFriendCoplayTime <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayTime>`_
 
-.. function:: Friends.GetFriendPersonaName(steamIDFriend)
+.. function:: Friends.GetFriendCount(iFriendFlags)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
-    :returns: (str) Return value
-    :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
+    :param int iFriendFlags:
+    :returns: (int) Return value
+    :SteamWorks: `GetFriendCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCount>`_
+
+.. function:: Friends.GetFriendCountFromSource(steamIDSource)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDSource:
+    :returns: (int) Return value
+    :SteamWorks: `GetFriendCountFromSource <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCountFromSource>`_
+
+.. function:: Friends.GetFriendFromSourceByIndex(steamIDSource, iFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDSource:
+    :param int iFriend:
+    :returns: (uint64) Return value
+    :SteamWorks: `GetFriendFromSourceByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendFromSourceByIndex>`_
 
 .. function:: Friends.GetFriendGamePlayed(steamIDFriend)
 
@@ -184,6 +410,31 @@ Function Reference
 
     * Parameter ``pFriendGameInfo`` is no longer a paramer, and is instead an additional return value
 
+.. function:: Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param int iMessageID:
+    :param int cubData:
+    :returns: (int) Return value
+    :returns: (str) Value for `pvData`
+    :returns: (int) Value for `peChatEntryType`
+    :SteamWorks: `GetFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendMessage>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Friends.GetFriendPersonaName(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :returns: (str) Return value
+    :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
+
 .. function:: Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName)
 
     🤖 **Auto-generated binding**
@@ -193,6 +444,48 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaNameHistory <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaNameHistory>`_
 
+.. function:: Friends.GetFriendPersonaState(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :returns: (int) Return value
+    :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
+
+.. function:: Friends.GetFriendRelationship(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :returns: (int) Return value
+    :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
+
+.. function:: Friends.GetFriendRichPresence(steamIDFriend, pchKey)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param str pchKey:
+    :returns: (str) Return value
+    :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
+
+.. function:: Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param int iKey:
+    :returns: (str) Return value
+    :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
+
+.. function:: Friends.GetFriendRichPresenceKeyCount(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :returns: (int) Return value
+    :SteamWorks: `GetFriendRichPresenceKeyCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyCount>`_
+
 .. function:: Friends.GetFriendSteamLevel(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -200,14 +493,6 @@ Function Reference
     :param uint64 steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendSteamLevel <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendSteamLevel>`_
-
-.. function:: Friends.GetPlayerNickname(steamIDPlayer)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDPlayer:
-    :returns: (str) Return value
-    :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
 
 .. function:: Friends.GetFriendsGroupCount()
 
@@ -223,14 +508,6 @@ Function Reference
     :param int iFG:
     :returns: (int) Return value
     :SteamWorks: `GetFriendsGroupIDByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupIDByIndex>`_
-
-.. function:: Friends.GetFriendsGroupName(friendsGroupID)
-
-    🤖 **Auto-generated binding**
-
-    :param int friendsGroupID:
-    :returns: (str) Return value
-    :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
 .. function:: Friends.GetFriendsGroupMembersCount(friendsGroupID)
 
@@ -253,171 +530,13 @@ Function Reference
 
     * Parameter ``pOutSteamIDMembers`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Friends.HasFriend(steamIDFriend, iFriendFlags)
+.. function:: Friends.GetFriendsGroupName(friendsGroupID)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
-    :param int iFriendFlags:
-    :returns: (bool) Return value
-    :SteamWorks: `HasFriend <https://partner.steamgames.com/doc/api/ISteamFriends#HasFriend>`_
-
-.. function:: Friends.GetClanCount()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetClanCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanCount>`_
-
-.. function:: Friends.GetClanByIndex(iClan)
-
-    🤖 **Auto-generated binding**
-
-    :param int iClan:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetClanByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanByIndex>`_
-
-.. function:: Friends.GetClanName(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
+    :param int friendsGroupID:
     :returns: (str) Return value
-    :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
-
-.. function:: Friends.GetClanTag(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (str) Return value
-    :SteamWorks: `GetClanTag <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanTag>`_
-
-.. function:: Friends.GetClanActivityCounts(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pnOnline`
-    :returns: (int) Value for `pnInGame`
-    :returns: (int) Value for `pnChatting`
-    :SteamWorks: `GetClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanActivityCounts>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnOnline`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnInGame`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnChatting`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Friends.DownloadClanActivityCounts(cClansToRequest, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int cClansToRequest:
-    :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean
-    :returns: (uint64) Return value
-    :returns: (uint64[]) Value for `psteamIDClans`
-    :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``psteamIDClans`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Friends.GetFriendCountFromSource(steamIDSource)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDSource:
-    :returns: (int) Return value
-    :SteamWorks: `GetFriendCountFromSource <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCountFromSource>`_
-
-.. function:: Friends.GetFriendFromSourceByIndex(steamIDSource, iFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDSource:
-    :param int iFriend:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetFriendFromSourceByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendFromSourceByIndex>`_
-
-.. function:: Friends.IsUserInSource(steamIDUser, steamIDSource)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param uint64 steamIDSource:
-    :returns: (bool) Return value
-    :SteamWorks: `IsUserInSource <https://partner.steamgames.com/doc/api/ISteamFriends#IsUserInSource>`_
-
-.. function:: Friends.SetInGameVoiceSpeaking(steamIDUser, bSpeaking)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param bool bSpeaking:
-    :SteamWorks: `SetInGameVoiceSpeaking <https://partner.steamgames.com/doc/api/ISteamFriends#SetInGameVoiceSpeaking>`_
-
-.. function:: Friends.ActivateGameOverlay(pchDialog)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchDialog:
-    :SteamWorks: `ActivateGameOverlay <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlay>`_
-
-.. function:: Friends.ActivateGameOverlayToUser(pchDialog, steamID)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchDialog:
-    :param uint64 steamID:
-    :SteamWorks: `ActivateGameOverlayToUser <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToUser>`_
-
-.. function:: Friends.ActivateGameOverlayToWebPage(pchURL, eMode)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchURL:
-    :param int eMode:
-    :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
-
-.. function:: Friends.ActivateGameOverlayToStore(nAppID, eFlag)
-
-    🤖 **Auto-generated binding**
-
-    :param int nAppID:
-    :param int eFlag:
-    :SteamWorks: `ActivateGameOverlayToStore <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToStore>`_
-
-.. function:: Friends.SetPlayedWith(steamIDUserPlayedWith)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUserPlayedWith:
-    :SteamWorks: `SetPlayedWith <https://partner.steamgames.com/doc/api/ISteamFriends#SetPlayedWith>`_
-
-.. function:: Friends.ActivateGameOverlayInviteDialog(steamIDLobby)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDLobby:
-    :SteamWorks: `ActivateGameOverlayInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialog>`_
-
-.. function:: Friends.GetSmallFriendAvatar(steamIDFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :returns: (int) Return value
-    :SteamWorks: `GetSmallFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetSmallFriendAvatar>`_
-
-.. function:: Friends.GetMediumFriendAvatar(steamIDFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :returns: (int) Return value
-    :SteamWorks: `GetMediumFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetMediumFriendAvatar>`_
+    :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
 .. function:: Friends.GetLargeFriendAvatar(steamIDFriend)
 
@@ -427,308 +546,13 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLargeFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetLargeFriendAvatar>`_
 
-.. function:: Friends.RequestUserInformation(steamIDUser, bRequireNameOnly)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDUser:
-    :param bool bRequireNameOnly:
-    :returns: (bool) Return value
-    :SteamWorks: `RequestUserInformation <https://partner.steamgames.com/doc/api/ISteamFriends#RequestUserInformation>`_
-
-.. function:: Friends.RequestClanOfficerList(steamIDClan, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `ClanOfficerListResponse_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
-
-.. function:: Friends.GetClanOwner(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetClanOwner <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOwner>`_
-
-.. function:: Friends.GetClanOfficerCount(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (int) Return value
-    :SteamWorks: `GetClanOfficerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerCount>`_
-
-.. function:: Friends.GetClanOfficerByIndex(steamIDClan, iOfficer)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :param int iOfficer:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetClanOfficerByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerByIndex>`_
-
-.. function:: Friends.SetRichPresence(pchKey, pchValue)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchKey:
-    :param str pchValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_
-
-.. function:: Friends.ClearRichPresence()
-
-    🤖 **Auto-generated binding**
-
-    :SteamWorks: `ClearRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#ClearRichPresence>`_
-
-.. function:: Friends.GetFriendRichPresence(steamIDFriend, pchKey)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :param str pchKey:
-    :returns: (str) Return value
-    :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
-
-.. function:: Friends.GetFriendRichPresenceKeyCount(steamIDFriend)
+.. function:: Friends.GetMediumFriendAvatar(steamIDFriend)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
     :returns: (int) Return value
-    :SteamWorks: `GetFriendRichPresenceKeyCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyCount>`_
-
-.. function:: Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :param int iKey:
-    :returns: (str) Return value
-    :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
-
-.. function:: Friends.RequestFriendRichPresence(steamIDFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :SteamWorks: `RequestFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#RequestFriendRichPresence>`_
-
-.. function:: Friends.InviteUserToGame(steamIDFriend, pchConnectString)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :param str pchConnectString:
-    :returns: (bool) Return value
-    :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
-
-.. function:: Friends.GetCoplayFriendCount()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetCoplayFriendCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetCoplayFriendCount>`_
-
-.. function:: Friends.GetCoplayFriend(iCoplayFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param int iCoplayFriend:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetCoplayFriend <https://partner.steamgames.com/doc/api/ISteamFriends#GetCoplayFriend>`_
-
-.. function:: Friends.GetFriendCoplayTime(steamIDFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :returns: (int) Return value
-    :SteamWorks: `GetFriendCoplayTime <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayTime>`_
-
-.. function:: Friends.GetFriendCoplayGame(steamIDFriend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :returns: (int) Return value
-    :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
-
-.. function:: Friends.JoinClanChatRoom(steamIDClan, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
-
-.. function:: Friends.LeaveClanChatRoom(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (bool) Return value
-    :SteamWorks: `LeaveClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#LeaveClanChatRoom>`_
-
-.. function:: Friends.GetClanChatMemberCount(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (int) Return value
-    :SteamWorks: `GetClanChatMemberCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMemberCount>`_
-
-.. function:: Friends.GetChatMemberByIndex(steamIDClan, iUser)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :param int iUser:
-    :returns: (uint64) Return value
-    :SteamWorks: `GetChatMemberByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetChatMemberByIndex>`_
-
-.. function:: Friends.SendClanChatMessage(steamIDClanChat, pchText)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :param str pchText:
-    :returns: (bool) Return value
-    :SteamWorks: `SendClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#SendClanChatMessage>`_
-
-.. function:: Friends.GetClanChatMessage(steamIDClanChat, iMessage, cchTextMax)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :param int iMessage:
-    :param int cchTextMax:
-    :returns: (int) Return value
-    :returns: (str) Value for `prgchText`
-    :returns: (int) Value for `peChatEntryType`
-    :returns: (uint64) Value for `psteamidChatter`
-    :SteamWorks: `GetClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMessage>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``prgchText`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``psteamidChatter`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Friends.IsClanChatAdmin(steamIDClanChat, steamIDUser)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :param uint64 steamIDUser:
-    :returns: (bool) Return value
-    :SteamWorks: `IsClanChatAdmin <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatAdmin>`_
-
-.. function:: Friends.IsClanChatWindowOpenInSteam(steamIDClanChat)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :returns: (bool) Return value
-    :SteamWorks: `IsClanChatWindowOpenInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatWindowOpenInSteam>`_
-
-.. function:: Friends.OpenClanChatWindowInSteam(steamIDClanChat)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :returns: (bool) Return value
-    :SteamWorks: `OpenClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#OpenClanChatWindowInSteam>`_
-
-.. function:: Friends.CloseClanChatWindowInSteam(steamIDClanChat)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClanChat:
-    :returns: (bool) Return value
-    :SteamWorks: `CloseClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#CloseClanChatWindowInSteam>`_
-
-.. function:: Friends.SetListenForFriendsMessages(bInterceptEnabled)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bInterceptEnabled:
-    :returns: (bool) Return value
-    :SteamWorks: `SetListenForFriendsMessages <https://partner.steamgames.com/doc/api/ISteamFriends#SetListenForFriendsMessages>`_
-
-.. function:: Friends.ReplyToFriendMessage(steamIDFriend, pchMsgToSend)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :param str pchMsgToSend:
-    :returns: (bool) Return value
-    :SteamWorks: `ReplyToFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#ReplyToFriendMessage>`_
-
-.. function:: Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDFriend:
-    :param int iMessageID:
-    :param int cubData:
-    :returns: (int) Return value
-    :returns: (str) Value for `pvData`
-    :returns: (int) Value for `peChatEntryType`
-    :SteamWorks: `GetFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendMessage>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Friends.GetFollowerCount(steamID, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsGetFollowerCount_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
-
-.. function:: Friends.IsFollowing(steamID, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsIsFollowing_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
-
-.. function:: Friends.EnumerateFollowingList(unStartIndex, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `FriendsEnumerateFollowingList_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `EnumerateFollowingList <https://partner.steamgames.com/doc/api/ISteamFriends#EnumerateFollowingList>`_
-
-.. function:: Friends.IsClanPublic(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (bool) Return value
-    :SteamWorks: `IsClanPublic <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanPublic>`_
-
-.. function:: Friends.IsClanOfficialGameGroup(steamIDClan)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDClan:
-    :returns: (bool) Return value
-    :SteamWorks: `IsClanOfficialGameGroup <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanOfficialGameGroup>`_
+    :SteamWorks: `GetMediumFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetMediumFriendAvatar>`_
 
 .. function:: Friends.GetNumChatsWithUnreadPriorityMessages()
 
@@ -737,45 +561,27 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetNumChatsWithUnreadPriorityMessages <https://partner.steamgames.com/doc/api/ISteamFriends#GetNumChatsWithUnreadPriorityMessages>`_
 
-.. function:: Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog(steamIDLobby)
+.. function:: Friends.GetPersonaName()
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :SteamWorks: `ActivateGameOverlayRemotePlayTogetherInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayRemotePlayTogetherInviteDialog>`_
+    :returns: (str) Return value
+    :SteamWorks: `GetPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaName>`_
 
-.. function:: Friends.RegisterProtocolInOverlayBrowser(pchProtocol)
-
-    🤖 **Auto-generated binding**
-
-    :param str pchProtocol:
-    :returns: (bool) Return value
-    :SteamWorks: `RegisterProtocolInOverlayBrowser <https://partner.steamgames.com/doc/api/ISteamFriends#RegisterProtocolInOverlayBrowser>`_
-
-.. function:: Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString)
+.. function:: Friends.GetPersonaState()
 
     🤖 **Auto-generated binding**
 
-    :param str pchConnectString:
-    :SteamWorks: `ActivateGameOverlayInviteDialogConnectString <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialogConnectString>`_
+    :returns: (int) Return value
+    :SteamWorks: `GetPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaState>`_
 
-.. function:: Friends.RequestEquippedProfileItems(steamID, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `EquippedProfileItems_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
-
-.. function:: Friends.BHasEquippedProfileItem(steamID, itemType)
+.. function:: Friends.GetPlayerNickname(steamIDPlayer)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
-    :param int itemType:
-    :returns: (bool) Return value
-    :SteamWorks: `BHasEquippedProfileItem <https://partner.steamgames.com/doc/api/ISteamFriends#BHasEquippedProfileItem>`_
+    :param uint64 steamIDPlayer:
+    :returns: (str) Return value
+    :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
 
 .. function:: Friends.GetProfileItemPropertyString(steamID, itemType, prop)
 
@@ -796,6 +602,200 @@ Function Reference
     :param int prop:
     :returns: (int) Return value
     :SteamWorks: `GetProfileItemPropertyUint <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyUint>`_
+
+.. function:: Friends.GetSmallFriendAvatar(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :returns: (int) Return value
+    :SteamWorks: `GetSmallFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetSmallFriendAvatar>`_
+
+.. function:: Friends.HasFriend(steamIDFriend, iFriendFlags)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param int iFriendFlags:
+    :returns: (bool) Return value
+    :SteamWorks: `HasFriend <https://partner.steamgames.com/doc/api/ISteamFriends#HasFriend>`_
+
+.. function:: Friends.InviteUserToGame(steamIDFriend, pchConnectString)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param str pchConnectString:
+    :returns: (bool) Return value
+    :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
+
+.. function:: Friends.IsClanChatAdmin(steamIDClanChat, steamIDUser)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :param uint64 steamIDUser:
+    :returns: (bool) Return value
+    :SteamWorks: `IsClanChatAdmin <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatAdmin>`_
+
+.. function:: Friends.IsClanChatWindowOpenInSteam(steamIDClanChat)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :returns: (bool) Return value
+    :SteamWorks: `IsClanChatWindowOpenInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatWindowOpenInSteam>`_
+
+.. function:: Friends.IsClanOfficialGameGroup(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (bool) Return value
+    :SteamWorks: `IsClanOfficialGameGroup <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanOfficialGameGroup>`_
+
+.. function:: Friends.IsClanPublic(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (bool) Return value
+    :SteamWorks: `IsClanPublic <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanPublic>`_
+
+.. function:: Friends.IsFollowing(steamID, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamID:
+    :param function callback: CallResult callback receiving struct `FriendsIsFollowing_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
+
+.. function:: Friends.IsUserInSource(steamIDUser, steamIDSource)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param uint64 steamIDSource:
+    :returns: (bool) Return value
+    :SteamWorks: `IsUserInSource <https://partner.steamgames.com/doc/api/ISteamFriends#IsUserInSource>`_
+
+.. function:: Friends.JoinClanChatRoom(steamIDClan, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
+
+.. function:: Friends.LeaveClanChatRoom(steamIDClan)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :returns: (bool) Return value
+    :SteamWorks: `LeaveClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#LeaveClanChatRoom>`_
+
+.. function:: Friends.OpenClanChatWindowInSteam(steamIDClanChat)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :returns: (bool) Return value
+    :SteamWorks: `OpenClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#OpenClanChatWindowInSteam>`_
+
+.. function:: Friends.RegisterProtocolInOverlayBrowser(pchProtocol)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchProtocol:
+    :returns: (bool) Return value
+    :SteamWorks: `RegisterProtocolInOverlayBrowser <https://partner.steamgames.com/doc/api/ISteamFriends#RegisterProtocolInOverlayBrowser>`_
+
+.. function:: Friends.ReplyToFriendMessage(steamIDFriend, pchMsgToSend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :param str pchMsgToSend:
+    :returns: (bool) Return value
+    :SteamWorks: `ReplyToFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#ReplyToFriendMessage>`_
+
+.. function:: Friends.RequestClanOfficerList(steamIDClan, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClan:
+    :param function callback: CallResult callback receiving struct `ClanOfficerListResponse_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
+
+.. function:: Friends.RequestEquippedProfileItems(steamID, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamID:
+    :param function callback: CallResult callback receiving struct `EquippedProfileItems_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
+
+.. function:: Friends.RequestFriendRichPresence(steamIDFriend)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDFriend:
+    :SteamWorks: `RequestFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#RequestFriendRichPresence>`_
+
+.. function:: Friends.RequestUserInformation(steamIDUser, bRequireNameOnly)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param bool bRequireNameOnly:
+    :returns: (bool) Return value
+    :SteamWorks: `RequestUserInformation <https://partner.steamgames.com/doc/api/ISteamFriends#RequestUserInformation>`_
+
+.. function:: Friends.SendClanChatMessage(steamIDClanChat, pchText)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDClanChat:
+    :param str pchText:
+    :returns: (bool) Return value
+    :SteamWorks: `SendClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#SendClanChatMessage>`_
+
+.. function:: Friends.SetInGameVoiceSpeaking(steamIDUser, bSpeaking)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUser:
+    :param bool bSpeaking:
+    :SteamWorks: `SetInGameVoiceSpeaking <https://partner.steamgames.com/doc/api/ISteamFriends#SetInGameVoiceSpeaking>`_
+
+.. function:: Friends.SetListenForFriendsMessages(bInterceptEnabled)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bInterceptEnabled:
+    :returns: (bool) Return value
+    :SteamWorks: `SetListenForFriendsMessages <https://partner.steamgames.com/doc/api/ISteamFriends#SetListenForFriendsMessages>`_
+
+.. function:: Friends.SetPlayedWith(steamIDUserPlayedWith)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 steamIDUserPlayedWith:
+    :SteamWorks: `SetPlayedWith <https://partner.steamgames.com/doc/api/ISteamFriends#SetPlayedWith>`_
+
+.. function:: Friends.SetRichPresence(pchKey, pchValue)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchKey:
+    :param str pchValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_
 
 
 Callbacks

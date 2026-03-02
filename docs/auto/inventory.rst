@@ -9,42 +9,42 @@ ISteamInventory
 List of Functions
 -----------------
 
-* :func:`Inventory.GetResultStatus`
-* :func:`Inventory.GetResultItems`
-* :func:`Inventory.GetResultItemProperty`
-* :func:`Inventory.GetResultTimestamp`
-* :func:`Inventory.CheckResultSteamID`
-* :func:`Inventory.DestroyResult`
-* :func:`Inventory.GetAllItems`
-* :func:`Inventory.GetItemsByID`
-* :func:`Inventory.DeserializeResult`
-* :func:`Inventory.GenerateItems`
-* :func:`Inventory.GrantPromoItems`
 * :func:`Inventory.AddPromoItem`
 * :func:`Inventory.AddPromoItems`
+* :func:`Inventory.CheckResultSteamID`
 * :func:`Inventory.ConsumeItem`
+* :func:`Inventory.DeserializeResult`
+* :func:`Inventory.DestroyResult`
 * :func:`Inventory.ExchangeItems`
-* :func:`Inventory.TransferItemQuantity`
-* :func:`Inventory.SendItemDropHeartbeat`
-* :func:`Inventory.TriggerItemDrop`
-* :func:`Inventory.TradeItems`
-* :func:`Inventory.LoadItemDefinitions`
+* :func:`Inventory.GenerateItems`
+* :func:`Inventory.GetAllItems`
+* :func:`Inventory.GetEligiblePromoItemDefinitionIDs`
 * :func:`Inventory.GetItemDefinitionIDs`
 * :func:`Inventory.GetItemDefinitionProperty`
-* :func:`Inventory.RequestEligiblePromoItemDefinitionsIDs`
-* :func:`Inventory.GetEligiblePromoItemDefinitionIDs`
-* :func:`Inventory.StartPurchase`
-* :func:`Inventory.RequestPrices`
-* :func:`Inventory.GetNumItemsWithPrices`
 * :func:`Inventory.GetItemPrice`
-* :func:`Inventory.StartUpdateProperties`
-* :func:`Inventory.RemoveProperty`
-* :func:`Inventory.SetPropertyString`
-* :func:`Inventory.SetPropertyBool`
-* :func:`Inventory.SetPropertyInt64`
-* :func:`Inventory.SetPropertyFloat`
-* :func:`Inventory.SubmitUpdateProperties`
+* :func:`Inventory.GetItemsByID`
+* :func:`Inventory.GetNumItemsWithPrices`
+* :func:`Inventory.GetResultItemProperty`
+* :func:`Inventory.GetResultItems`
+* :func:`Inventory.GetResultStatus`
+* :func:`Inventory.GetResultTimestamp`
+* :func:`Inventory.GrantPromoItems`
 * :func:`Inventory.InspectItem`
+* :func:`Inventory.LoadItemDefinitions`
+* :func:`Inventory.RemoveProperty`
+* :func:`Inventory.RequestEligiblePromoItemDefinitionsIDs`
+* :func:`Inventory.RequestPrices`
+* :func:`Inventory.SendItemDropHeartbeat`
+* :func:`Inventory.SetPropertyBool`
+* :func:`Inventory.SetPropertyFloat`
+* :func:`Inventory.SetPropertyInt64`
+* :func:`Inventory.SetPropertyString`
+* :func:`Inventory.StartPurchase`
+* :func:`Inventory.StartUpdateProperties`
+* :func:`Inventory.SubmitUpdateProperties`
+* :func:`Inventory.TradeItems`
+* :func:`Inventory.TransferItemQuantity`
+* :func:`Inventory.TriggerItemDrop`
 
 List of Callbacks
 -----------------
@@ -58,140 +58,6 @@ List of Callbacks
 
 Function Reference
 ------------------
-
-.. function:: Inventory.GetResultStatus(resultHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :returns: (int) Return value
-    :SteamWorks: `GetResultStatus <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultStatus>`_
-
-.. function:: Inventory.GetResultItems(resultHandle, punOutItemsArraySize)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :param int punOutItemsArraySize:
-    :returns: (bool) Return value
-    :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`[]) Value for `pOutItemsArray`
-    :returns: (int) Value for `punOutItemsArraySize`
-    :SteamWorks: `GetResultItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItems>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pOutItemsArray`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punOutItemsArraySize`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, punValueBufferSizeOut)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :param int unItemIndex:
-    :param str pchPropertyName:
-    :param int punValueBufferSizeOut:
-    :returns: (bool) Return value
-    :returns: (str) Value for `pchValueBuffer`
-    :returns: (int) Value for `punValueBufferSizeOut`
-    :SteamWorks: `GetResultItemProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItemProperty>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.GetResultTimestamp(resultHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :returns: (int) Return value
-    :SteamWorks: `GetResultTimestamp <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultTimestamp>`_
-
-.. function:: Inventory.CheckResultSteamID(resultHandle, steamIDExpected)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :param uint64 steamIDExpected:
-    :returns: (bool) Return value
-    :SteamWorks: `CheckResultSteamID <https://partner.steamgames.com/doc/api/ISteamInventory#CheckResultSteamID>`_
-
-.. function:: Inventory.DestroyResult(resultHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param int resultHandle:
-    :SteamWorks: `DestroyResult <https://partner.steamgames.com/doc/api/ISteamInventory#DestroyResult>`_
-
-.. function:: Inventory.GetAllItems()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `GetAllItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetAllItems>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64[] pInstanceIDs:
-    :param int unCountInstanceIDs:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `GetItemsByID <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsByID>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.DeserializeResult(pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE)
-
-    🤖 **Auto-generated binding**
-
-    :param str pBuffer:
-    :param int unBufferSize:
-    :param bool bRESERVED_MUST_BE_FALSE:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pOutResultHandle`
-    :SteamWorks: `DeserializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#DeserializeResult>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pOutResultHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
-
-    🤖 **Auto-generated binding**
-
-    :param int[] pArrayItemDefs:
-    :param int unArrayLength:
-    :param int[] punArrayQuantity:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `GenerateItems <https://partner.steamgames.com/doc/api/ISteamInventory#GenerateItems>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.GrantPromoItems()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `GrantPromoItems <https://partner.steamgames.com/doc/api/ISteamInventory#GrantPromoItems>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.AddPromoItem(itemDef)
 
@@ -220,6 +86,15 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
+.. function:: Inventory.CheckResultSteamID(resultHandle, steamIDExpected)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :param uint64 steamIDExpected:
+    :returns: (bool) Return value
+    :SteamWorks: `CheckResultSteamID <https://partner.steamgames.com/doc/api/ISteamInventory#CheckResultSteamID>`_
+
 .. function:: Inventory.ConsumeItem(itemConsume, unQuantity)
 
     🤖 **Auto-generated binding**
@@ -233,6 +108,28 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.DeserializeResult(pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE)
+
+    🤖 **Auto-generated binding**
+
+    :param str pBuffer:
+    :param int unBufferSize:
+    :param bool bRESERVED_MUST_BE_FALSE:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pOutResultHandle`
+    :SteamWorks: `DeserializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#DeserializeResult>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pOutResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.DestroyResult(resultHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :SteamWorks: `DestroyResult <https://partner.steamgames.com/doc/api/ISteamInventory#DestroyResult>`_
 
 .. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
 
@@ -252,65 +149,48 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest)
+.. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 itemIdSource:
-    :param int unQuantity:
-    :param uint64 itemIdDest:
+    :param int[] pArrayItemDefs:
+    :param int unArrayLength:
+    :param int[] punArrayQuantity:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `TransferItemQuantity <https://partner.steamgames.com/doc/api/ISteamInventory#TransferItemQuantity>`_
+    :SteamWorks: `GenerateItems <https://partner.steamgames.com/doc/api/ISteamInventory#GenerateItems>`_
 
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.SendItemDropHeartbeat()
+.. function:: Inventory.GetAllItems()
 
     🤖 **Auto-generated binding**
 
-    :SteamWorks: `SendItemDropHeartbeat <https://partner.steamgames.com/doc/api/ISteamInventory#SendItemDropHeartbeat>`_
-
-.. function:: Inventory.TriggerItemDrop(dropListDefinition)
-
-    🤖 **Auto-generated binding**
-
-    :param int dropListDefinition:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `TriggerItemDrop <https://partner.steamgames.com/doc/api/ISteamInventory#TriggerItemDrop>`_
+    :SteamWorks: `GetAllItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetAllItems>`_
 
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
+.. function:: Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArraySize)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDTradePartner:
-    :param uint64[] pArrayGive:
-    :param int nArrayGiveLength:
-    :param int[] pArrayGiveQuantity:
-    :param uint64[] pArrayGet:
-    :param int nArrayGetLength:
-    :param int[] pArrayGetQuantity:
+    :param uint64 steamID:
+    :param int punItemDefIDsArraySize:
     :returns: (bool) Return value
-    :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `TradeItems <https://partner.steamgames.com/doc/api/ISteamInventory#TradeItems>`_
+    :returns: (int[]) Value for `pItemDefIDs`
+    :returns: (int) Value for `punItemDefIDsArraySize`
+    :SteamWorks: `GetEligiblePromoItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetEligiblePromoItemDefinitionIDs>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.LoadItemDefinitions()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `LoadItemDefinitions <https://partner.steamgames.com/doc/api/ISteamInventory#LoadItemDefinitions>`_
+    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize)
 
@@ -344,57 +224,6 @@ Function Reference
     * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `SteamInventoryEligiblePromoItemDefIDs_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestEligiblePromoItemDefinitionsIDs <https://partner.steamgames.com/doc/api/ISteamInventory#RequestEligiblePromoItemDefinitionsIDs>`_
-
-.. function:: Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArraySize)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param int punItemDefIDsArraySize:
-    :returns: (bool) Return value
-    :returns: (int[]) Value for `pItemDefIDs`
-    :returns: (int) Value for `punItemDefIDsArraySize`
-    :SteamWorks: `GetEligiblePromoItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetEligiblePromoItemDefinitionIDs>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
-
-.. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param int[] pArrayItemDefs:
-    :param int unArrayLength:
-    :param int[] punArrayQuantity:
-    :param function callback: CallResult callback receiving struct `SteamInventoryStartPurchaseResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
-
-.. function:: Inventory.RequestPrices(callback)
-
-    🤖 **Auto-generated binding**
-
-    :param function callback: CallResult callback receiving struct `SteamInventoryRequestPricesResult_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `RequestPrices <https://partner.steamgames.com/doc/api/ISteamInventory#RequestPrices>`_
-
-.. function:: Inventory.GetNumItemsWithPrices()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (int) Return value
-    :SteamWorks: `GetNumItemsWithPrices <https://partner.steamgames.com/doc/api/ISteamInventory#GetNumItemsWithPrices>`_
-
 .. function:: Inventory.GetItemPrice(iDefinition)
 
     🤖 **Auto-generated binding**
@@ -410,12 +239,108 @@ Function Reference
     * Parameter ``pCurrentPrice`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pBasePrice`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.StartUpdateProperties()
+.. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
-    :SteamWorks: `StartUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#StartUpdateProperties>`_
+    :param uint64[] pInstanceIDs:
+    :param int unCountInstanceIDs:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pResultHandle`
+    :SteamWorks: `GetItemsByID <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsByID>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.GetNumItemsWithPrices()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetNumItemsWithPrices <https://partner.steamgames.com/doc/api/ISteamInventory#GetNumItemsWithPrices>`_
+
+.. function:: Inventory.GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, punValueBufferSizeOut)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :param int unItemIndex:
+    :param str pchPropertyName:
+    :param int punValueBufferSizeOut:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pchValueBuffer`
+    :returns: (int) Value for `punValueBufferSizeOut`
+    :SteamWorks: `GetResultItemProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItemProperty>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.GetResultItems(resultHandle, punOutItemsArraySize)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :param int punOutItemsArraySize:
+    :returns: (bool) Return value
+    :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`[]) Value for `pOutItemsArray`
+    :returns: (int) Value for `punOutItemsArraySize`
+    :SteamWorks: `GetResultItems <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultItems>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pOutItemsArray`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punOutItemsArraySize`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.GetResultStatus(resultHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :returns: (int) Return value
+    :SteamWorks: `GetResultStatus <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultStatus>`_
+
+.. function:: Inventory.GetResultTimestamp(resultHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int resultHandle:
+    :returns: (int) Return value
+    :SteamWorks: `GetResultTimestamp <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultTimestamp>`_
+
+.. function:: Inventory.GrantPromoItems()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :returns: (int) Value for `pResultHandle`
+    :SteamWorks: `GrantPromoItems <https://partner.steamgames.com/doc/api/ISteamInventory#GrantPromoItems>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.InspectItem(pchItemToken)
+
+    🤖 **Auto-generated binding**
+
+    :param str pchItemToken:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pResultHandle`
+    :SteamWorks: `InspectItem <https://partner.steamgames.com/doc/api/ISteamInventory#InspectItem>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.LoadItemDefinitions()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `LoadItemDefinitions <https://partner.steamgames.com/doc/api/ISteamInventory#LoadItemDefinitions>`_
 
 .. function:: Inventory.RemoveProperty(handle, nItemID, pchPropertyName)
 
@@ -427,16 +352,28 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `RemoveProperty <https://partner.steamgames.com/doc/api/ISteamInventory#RemoveProperty>`_
 
-.. function:: Inventory.SetPropertyString(handle, nItemID, pchPropertyName, pchPropertyValue)
+.. function:: Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param uint64 nItemID:
-    :param str pchPropertyName:
-    :param str pchPropertyValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetPropertyString <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyString>`_
+    :param uint64 steamID:
+    :param function callback: CallResult callback receiving struct `SteamInventoryEligiblePromoItemDefIDs_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestEligiblePromoItemDefinitionsIDs <https://partner.steamgames.com/doc/api/ISteamInventory#RequestEligiblePromoItemDefinitionsIDs>`_
+
+.. function:: Inventory.RequestPrices(callback)
+
+    🤖 **Auto-generated binding**
+
+    :param function callback: CallResult callback receiving struct `SteamInventoryRequestPricesResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestPrices <https://partner.steamgames.com/doc/api/ISteamInventory#RequestPrices>`_
+
+.. function:: Inventory.SendItemDropHeartbeat()
+
+    🤖 **Auto-generated binding**
+
+    :SteamWorks: `SendItemDropHeartbeat <https://partner.steamgames.com/doc/api/ISteamInventory#SendItemDropHeartbeat>`_
 
 .. function:: Inventory.SetPropertyBool(handle, nItemID, pchPropertyName, bValue)
 
@@ -449,6 +386,17 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetPropertyBool <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyBool>`_
 
+.. function:: Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 handle:
+    :param uint64 nItemID:
+    :param str pchPropertyName:
+    :param float flValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetPropertyFloat <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyFloat>`_
+
 .. function:: Inventory.SetPropertyInt64(handle, nItemID, pchPropertyName, nValue)
 
     🤖 **Auto-generated binding**
@@ -460,16 +408,34 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetPropertyInt64 <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyInt64>`_
 
-.. function:: Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue)
+.. function:: Inventory.SetPropertyString(handle, nItemID, pchPropertyName, pchPropertyValue)
 
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
     :param uint64 nItemID:
     :param str pchPropertyName:
-    :param float flValue:
+    :param str pchPropertyValue:
     :returns: (bool) Return value
-    :SteamWorks: `SetPropertyFloat <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyFloat>`_
+    :SteamWorks: `SetPropertyString <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyString>`_
+
+.. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int[] pArrayItemDefs:
+    :param int unArrayLength:
+    :param int[] punArrayQuantity:
+    :param function callback: CallResult callback receiving struct `SteamInventoryStartPurchaseResult_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
+
+.. function:: Inventory.StartUpdateProperties()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (uint64) Return value
+    :SteamWorks: `StartUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#StartUpdateProperties>`_
 
 .. function:: Inventory.SubmitUpdateProperties(handle)
 
@@ -484,14 +450,48 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
-.. function:: Inventory.InspectItem(pchItemToken)
+.. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
 
     🤖 **Auto-generated binding**
 
-    :param str pchItemToken:
+    :param uint64 steamIDTradePartner:
+    :param uint64[] pArrayGive:
+    :param int nArrayGiveLength:
+    :param int[] pArrayGiveQuantity:
+    :param uint64[] pArrayGet:
+    :param int nArrayGetLength:
+    :param int[] pArrayGetQuantity:
     :returns: (bool) Return value
     :returns: (int) Value for `pResultHandle`
-    :SteamWorks: `InspectItem <https://partner.steamgames.com/doc/api/ISteamInventory#InspectItem>`_
+    :SteamWorks: `TradeItems <https://partner.steamgames.com/doc/api/ISteamInventory#TradeItems>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 itemIdSource:
+    :param int unQuantity:
+    :param uint64 itemIdDest:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pResultHandle`
+    :SteamWorks: `TransferItemQuantity <https://partner.steamgames.com/doc/api/ISteamInventory#TransferItemQuantity>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Inventory.TriggerItemDrop(dropListDefinition)
+
+    🤖 **Auto-generated binding**
+
+    :param int dropListDefinition:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pResultHandle`
+    :SteamWorks: `TriggerItemDrop <https://partner.steamgames.com/doc/api/ISteamInventory#TriggerItemDrop>`_
 
     **Signature differences from C++ API:**
 

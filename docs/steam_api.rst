@@ -7,6 +7,9 @@ List of Functions
 * :func:`Init`
 * :func:`Shutdown`
 * :func:`RunCallbacks`
+* :func:`GameServerInit`
+* :func:`GameServerShutdown`
+* :func:`GameServerRunCallbacks`
 
 
 Function Reference
@@ -74,3 +77,34 @@ Function Reference
     function myGameLoop(dt)
         Steam.RunCallbacks()
     end
+
+.. function:: GameServerInit(ip, usGamePort, usQueryPort, eServerMode, version)
+
+    :param ip: IP address to bind to (as integer, 0 = all interfaces)
+    :type ip: integer
+    :param usGamePort: Port that clients will connect to for gameplay
+    :type usGamePort: integer
+    :param usQueryPort: Port for Steam master server browser queries
+    :type usQueryPort: integer
+    :param eServerMode: Authentication and VAC mode. Use :data:`EServerMode` constants.
+    :type eServerMode: integer
+    :param version: String of the form x.x.x.x, where x is a digit, describing the server version
+    :type version: string
+    :returns: (`boolean`) **true** if the game server was initialized successfully.
+    :SteamWorks: `SteamGameServer_Init <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_Init>`_
+
+    Initializes the Steamworks game server API. Call this before using any Steam game server interfaces.
+
+.. function:: GameServerShutdown()
+
+    :returns: nothing
+    :SteamWorks: `SteamGameServer_Shutdown <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_Shutdown>`_
+
+    Shuts down the Steamworks game server API. Call this when the game server is shutting down.
+
+.. function:: GameServerRunCallbacks()
+
+    :returns: nothing
+    :SteamWorks: `SteamGameServer_RunCallbacks <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_RunCallbacks>`_
+
+    Dispatches callbacks for the game server. Call this regularly (e.g. once per frame) while the game server is running.

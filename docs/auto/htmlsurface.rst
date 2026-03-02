@@ -9,42 +9,42 @@ ISteamHTMLSurface
 List of Functions
 -----------------
 
-* :func:`HTMLSurface.Init`
-* :func:`HTMLSurface.Shutdown`
+* :func:`HTMLSurface.AddHeader`
+* :func:`HTMLSurface.AllowStartRequest`
+* :func:`HTMLSurface.CopyToClipboard`
 * :func:`HTMLSurface.CreateBrowser`
-* :func:`HTMLSurface.RemoveBrowser`
-* :func:`HTMLSurface.LoadURL`
-* :func:`HTMLSurface.SetSize`
-* :func:`HTMLSurface.StopLoad`
-* :func:`HTMLSurface.Reload`
+* :func:`HTMLSurface.ExecuteJavascript`
+* :func:`HTMLSurface.Find`
+* :func:`HTMLSurface.GetLinkAtPosition`
 * :func:`HTMLSurface.GoBack`
 * :func:`HTMLSurface.GoForward`
-* :func:`HTMLSurface.AddHeader`
-* :func:`HTMLSurface.ExecuteJavascript`
-* :func:`HTMLSurface.MouseUp`
-* :func:`HTMLSurface.MouseDown`
-* :func:`HTMLSurface.MouseDoubleClick`
-* :func:`HTMLSurface.MouseMove`
-* :func:`HTMLSurface.MouseWheel`
+* :func:`HTMLSurface.Init`
+* :func:`HTMLSurface.JSDialogResponse`
+* :func:`HTMLSurface.KeyChar`
 * :func:`HTMLSurface.KeyDown`
 * :func:`HTMLSurface.KeyUp`
-* :func:`HTMLSurface.KeyChar`
-* :func:`HTMLSurface.SetHorizontalScroll`
-* :func:`HTMLSurface.SetVerticalScroll`
-* :func:`HTMLSurface.SetKeyFocus`
-* :func:`HTMLSurface.ViewSource`
-* :func:`HTMLSurface.CopyToClipboard`
-* :func:`HTMLSurface.PasteFromClipboard`
-* :func:`HTMLSurface.Find`
-* :func:`HTMLSurface.StopFind`
-* :func:`HTMLSurface.GetLinkAtPosition`
-* :func:`HTMLSurface.SetCookie`
-* :func:`HTMLSurface.SetPageScaleFactor`
-* :func:`HTMLSurface.SetBackgroundMode`
-* :func:`HTMLSurface.SetDPIScalingFactor`
+* :func:`HTMLSurface.LoadURL`
+* :func:`HTMLSurface.MouseDoubleClick`
+* :func:`HTMLSurface.MouseDown`
+* :func:`HTMLSurface.MouseMove`
+* :func:`HTMLSurface.MouseUp`
+* :func:`HTMLSurface.MouseWheel`
 * :func:`HTMLSurface.OpenDeveloperTools`
-* :func:`HTMLSurface.AllowStartRequest`
-* :func:`HTMLSurface.JSDialogResponse`
+* :func:`HTMLSurface.PasteFromClipboard`
+* :func:`HTMLSurface.Reload`
+* :func:`HTMLSurface.RemoveBrowser`
+* :func:`HTMLSurface.SetBackgroundMode`
+* :func:`HTMLSurface.SetCookie`
+* :func:`HTMLSurface.SetDPIScalingFactor`
+* :func:`HTMLSurface.SetHorizontalScroll`
+* :func:`HTMLSurface.SetKeyFocus`
+* :func:`HTMLSurface.SetPageScaleFactor`
+* :func:`HTMLSurface.SetSize`
+* :func:`HTMLSurface.SetVerticalScroll`
+* :func:`HTMLSurface.Shutdown`
+* :func:`HTMLSurface.StopFind`
+* :func:`HTMLSurface.StopLoad`
+* :func:`HTMLSurface.ViewSource`
 
 List of Callbacks
 -----------------
@@ -76,19 +76,29 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: HTMLSurface.Init()
+.. function:: HTMLSurface.AddHeader(unBrowserHandle, pchKey, pchValue)
 
     🤖 **Auto-generated binding**
 
-    :returns: (bool) Return value
-    :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Init>`_
+    :param int unBrowserHandle:
+    :param str pchKey:
+    :param str pchValue:
+    :SteamWorks: `AddHeader <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AddHeader>`_
 
-.. function:: HTMLSurface.Shutdown()
+.. function:: HTMLSurface.AllowStartRequest(unBrowserHandle, bAllowed)
 
     🤖 **Auto-generated binding**
 
-    :returns: (bool) Return value
-    :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Shutdown>`_
+    :param int unBrowserHandle:
+    :param bool bAllowed:
+    :SteamWorks: `AllowStartRequest <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AllowStartRequest>`_
+
+.. function:: HTMLSurface.CopyToClipboard(unBrowserHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :SteamWorks: `CopyToClipboard <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CopyToClipboard>`_
 
 .. function:: HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback)
 
@@ -100,44 +110,32 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `CreateBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CreateBrowser>`_
 
-.. function:: HTMLSurface.RemoveBrowser(unBrowserHandle)
+.. function:: HTMLSurface.ExecuteJavascript(unBrowserHandle, pchScript)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `RemoveBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#RemoveBrowser>`_
+    :param str pchScript:
+    :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
 
-.. function:: HTMLSurface.LoadURL(unBrowserHandle, pchURL, pchPostData)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param str pchURL:
-    :param str pchPostData:
-    :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
-
-.. function:: HTMLSurface.SetSize(unBrowserHandle, unWidth, unHeight)
+.. function:: HTMLSurface.Find(unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param int unWidth:
-    :param int unHeight:
-    :SteamWorks: `SetSize <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetSize>`_
+    :param str pchSearchStr:
+    :param bool bCurrentlyInFind:
+    :param bool bReverse:
+    :SteamWorks: `Find <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Find>`_
 
-.. function:: HTMLSurface.StopLoad(unBrowserHandle)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :SteamWorks: `StopLoad <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopLoad>`_
-
-.. function:: HTMLSurface.Reload(unBrowserHandle)
+.. function:: HTMLSurface.GetLinkAtPosition(unBrowserHandle, x, y)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `Reload <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Reload>`_
+    :param int x:
+    :param int y:
+    :SteamWorks: `GetLinkAtPosition <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GetLinkAtPosition>`_
 
 .. function:: HTMLSurface.GoBack(unBrowserHandle)
 
@@ -153,63 +151,29 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `GoForward <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GoForward>`_
 
-.. function:: HTMLSurface.AddHeader(unBrowserHandle, pchKey, pchValue)
+.. function:: HTMLSurface.Init()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Init>`_
+
+.. function:: HTMLSurface.JSDialogResponse(unBrowserHandle, bResult)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchKey:
-    :param str pchValue:
-    :SteamWorks: `AddHeader <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AddHeader>`_
+    :param bool bResult:
+    :SteamWorks: `JSDialogResponse <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#JSDialogResponse>`_
 
-.. function:: HTMLSurface.ExecuteJavascript(unBrowserHandle, pchScript)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param str pchScript:
-    :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
-
-.. function:: HTMLSurface.MouseUp(unBrowserHandle, eMouseButton)
+.. function:: HTMLSurface.KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param int eMouseButton:
-    :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
-
-.. function:: HTMLSurface.MouseDown(unBrowserHandle, eMouseButton)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param int eMouseButton:
-    :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
-
-.. function:: HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param int eMouseButton:
-    :SteamWorks: `MouseDoubleClick <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDoubleClick>`_
-
-.. function:: HTMLSurface.MouseMove(unBrowserHandle, x, y)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param int x:
-    :param int y:
-    :SteamWorks: `MouseMove <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseMove>`_
-
-.. function:: HTMLSurface.MouseWheel(unBrowserHandle, nDelta)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param int nDelta:
-    :SteamWorks: `MouseWheel <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseWheel>`_
+    :param int cUnicodeChar:
+    :param int eHTMLKeyModifiers:
+    :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
 
 .. function:: HTMLSurface.KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey)
 
@@ -230,52 +194,62 @@ Function Reference
     :param int eHTMLKeyModifiers:
     :SteamWorks: `KeyUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyUp>`_
 
-.. function:: HTMLSurface.KeyChar(unBrowserHandle, cUnicodeChar, eHTMLKeyModifiers)
+.. function:: HTMLSurface.LoadURL(unBrowserHandle, pchURL, pchPostData)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param int cUnicodeChar:
-    :param int eHTMLKeyModifiers:
-    :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
+    :param str pchURL:
+    :param str pchPostData:
+    :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
 
-.. function:: HTMLSurface.SetHorizontalScroll(unBrowserHandle, nAbsolutePixelScroll)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param int nAbsolutePixelScroll:
-    :SteamWorks: `SetHorizontalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetHorizontalScroll>`_
-
-.. function:: HTMLSurface.SetVerticalScroll(unBrowserHandle, nAbsolutePixelScroll)
+.. function:: HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param int nAbsolutePixelScroll:
-    :SteamWorks: `SetVerticalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetVerticalScroll>`_
+    :param int eMouseButton:
+    :SteamWorks: `MouseDoubleClick <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDoubleClick>`_
 
-.. function:: HTMLSurface.SetKeyFocus(unBrowserHandle, bHasKeyFocus)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param bool bHasKeyFocus:
-    :SteamWorks: `SetKeyFocus <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetKeyFocus>`_
-
-.. function:: HTMLSurface.ViewSource(unBrowserHandle)
+.. function:: HTMLSurface.MouseDown(unBrowserHandle, eMouseButton)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `ViewSource <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ViewSource>`_
+    :param int eMouseButton:
+    :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
 
-.. function:: HTMLSurface.CopyToClipboard(unBrowserHandle)
+.. function:: HTMLSurface.MouseMove(unBrowserHandle, x, y)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `CopyToClipboard <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CopyToClipboard>`_
+    :param int x:
+    :param int y:
+    :SteamWorks: `MouseMove <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseMove>`_
+
+.. function:: HTMLSurface.MouseUp(unBrowserHandle, eMouseButton)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int eMouseButton:
+    :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
+
+.. function:: HTMLSurface.MouseWheel(unBrowserHandle, nDelta)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int nDelta:
+    :SteamWorks: `MouseWheel <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseWheel>`_
+
+.. function:: HTMLSurface.OpenDeveloperTools(unBrowserHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :SteamWorks: `OpenDeveloperTools <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#OpenDeveloperTools>`_
 
 .. function:: HTMLSurface.PasteFromClipboard(unBrowserHandle)
 
@@ -284,31 +258,27 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `PasteFromClipboard <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#PasteFromClipboard>`_
 
-.. function:: HTMLSurface.Find(unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse)
+.. function:: HTMLSurface.Reload(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchSearchStr:
-    :param bool bCurrentlyInFind:
-    :param bool bReverse:
-    :SteamWorks: `Find <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Find>`_
+    :SteamWorks: `Reload <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Reload>`_
 
-.. function:: HTMLSurface.StopFind(unBrowserHandle)
+.. function:: HTMLSurface.RemoveBrowser(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `StopFind <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopFind>`_
+    :SteamWorks: `RemoveBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#RemoveBrowser>`_
 
-.. function:: HTMLSurface.GetLinkAtPosition(unBrowserHandle, x, y)
+.. function:: HTMLSurface.SetBackgroundMode(unBrowserHandle, bBackgroundMode)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param int x:
-    :param int y:
-    :SteamWorks: `GetLinkAtPosition <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GetLinkAtPosition>`_
+    :param bool bBackgroundMode:
+    :SteamWorks: `SetBackgroundMode <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetBackgroundMode>`_
 
 .. function:: HTMLSurface.SetCookie(pchHostname, pchKey, pchValue, pchPath, nExpires, bSecure, bHTTPOnly)
 
@@ -323,6 +293,30 @@ Function Reference
     :param bool bHTTPOnly:
     :SteamWorks: `SetCookie <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetCookie>`_
 
+.. function:: HTMLSurface.SetDPIScalingFactor(unBrowserHandle, flDPIScaling)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param float flDPIScaling:
+    :SteamWorks: `SetDPIScalingFactor <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetDPIScalingFactor>`_
+
+.. function:: HTMLSurface.SetHorizontalScroll(unBrowserHandle, nAbsolutePixelScroll)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param int nAbsolutePixelScroll:
+    :SteamWorks: `SetHorizontalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetHorizontalScroll>`_
+
+.. function:: HTMLSurface.SetKeyFocus(unBrowserHandle, bHasKeyFocus)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :param bool bHasKeyFocus:
+    :SteamWorks: `SetKeyFocus <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetKeyFocus>`_
+
 .. function:: HTMLSurface.SetPageScaleFactor(unBrowserHandle, flZoom, nPointX, nPointY)
 
     🤖 **Auto-generated binding**
@@ -333,44 +327,50 @@ Function Reference
     :param int nPointY:
     :SteamWorks: `SetPageScaleFactor <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetPageScaleFactor>`_
 
-.. function:: HTMLSurface.SetBackgroundMode(unBrowserHandle, bBackgroundMode)
+.. function:: HTMLSurface.SetSize(unBrowserHandle, unWidth, unHeight)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param bool bBackgroundMode:
-    :SteamWorks: `SetBackgroundMode <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetBackgroundMode>`_
+    :param int unWidth:
+    :param int unHeight:
+    :SteamWorks: `SetSize <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetSize>`_
 
-.. function:: HTMLSurface.SetDPIScalingFactor(unBrowserHandle, flDPIScaling)
-
-    🤖 **Auto-generated binding**
-
-    :param int unBrowserHandle:
-    :param float flDPIScaling:
-    :SteamWorks: `SetDPIScalingFactor <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetDPIScalingFactor>`_
-
-.. function:: HTMLSurface.OpenDeveloperTools(unBrowserHandle)
+.. function:: HTMLSurface.SetVerticalScroll(unBrowserHandle, nAbsolutePixelScroll)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :SteamWorks: `OpenDeveloperTools <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#OpenDeveloperTools>`_
+    :param int nAbsolutePixelScroll:
+    :SteamWorks: `SetVerticalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetVerticalScroll>`_
 
-.. function:: HTMLSurface.AllowStartRequest(unBrowserHandle, bAllowed)
+.. function:: HTMLSurface.Shutdown()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Shutdown>`_
+
+.. function:: HTMLSurface.StopFind(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param bool bAllowed:
-    :SteamWorks: `AllowStartRequest <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AllowStartRequest>`_
+    :SteamWorks: `StopFind <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopFind>`_
 
-.. function:: HTMLSurface.JSDialogResponse(unBrowserHandle, bResult)
+.. function:: HTMLSurface.StopLoad(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param bool bResult:
-    :SteamWorks: `JSDialogResponse <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#JSDialogResponse>`_
+    :SteamWorks: `StopLoad <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopLoad>`_
+
+.. function:: HTMLSurface.ViewSource(unBrowserHandle)
+
+    🤖 **Auto-generated binding**
+
+    :param int unBrowserHandle:
+    :SteamWorks: `ViewSource <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ViewSource>`_
 
 
 Unimplemented Methods

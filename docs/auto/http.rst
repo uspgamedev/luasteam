@@ -9,31 +9,31 @@ ISteamHTTP
 List of Functions
 -----------------
 
+* :func:`HTTP.CreateCookieContainer`
 * :func:`HTTP.CreateHTTPRequest`
-* :func:`HTTP.SetHTTPRequestContextValue`
-* :func:`HTTP.SetHTTPRequestNetworkActivityTimeout`
-* :func:`HTTP.SetHTTPRequestHeaderValue`
-* :func:`HTTP.SetHTTPRequestGetOrPostParameter`
-* :func:`HTTP.SendHTTPRequest`
-* :func:`HTTP.SendHTTPRequestAndStreamResponse`
 * :func:`HTTP.DeferHTTPRequest`
-* :func:`HTTP.PrioritizeHTTPRequest`
+* :func:`HTTP.GetHTTPDownloadProgressPct`
+* :func:`HTTP.GetHTTPRequestWasTimedOut`
+* :func:`HTTP.GetHTTPResponseBodyData`
+* :func:`HTTP.GetHTTPResponseBodySize`
 * :func:`HTTP.GetHTTPResponseHeaderSize`
 * :func:`HTTP.GetHTTPResponseHeaderValue`
-* :func:`HTTP.GetHTTPResponseBodySize`
-* :func:`HTTP.GetHTTPResponseBodyData`
 * :func:`HTTP.GetHTTPStreamingResponseBodyData`
-* :func:`HTTP.ReleaseHTTPRequest`
-* :func:`HTTP.GetHTTPDownloadProgressPct`
-* :func:`HTTP.SetHTTPRequestRawPostBody`
-* :func:`HTTP.CreateCookieContainer`
+* :func:`HTTP.PrioritizeHTTPRequest`
 * :func:`HTTP.ReleaseCookieContainer`
+* :func:`HTTP.ReleaseHTTPRequest`
+* :func:`HTTP.SendHTTPRequest`
+* :func:`HTTP.SendHTTPRequestAndStreamResponse`
 * :func:`HTTP.SetCookie`
-* :func:`HTTP.SetHTTPRequestCookieContainer`
-* :func:`HTTP.SetHTTPRequestUserAgentInfo`
-* :func:`HTTP.SetHTTPRequestRequiresVerifiedCertificate`
 * :func:`HTTP.SetHTTPRequestAbsoluteTimeoutMS`
-* :func:`HTTP.GetHTTPRequestWasTimedOut`
+* :func:`HTTP.SetHTTPRequestContextValue`
+* :func:`HTTP.SetHTTPRequestCookieContainer`
+* :func:`HTTP.SetHTTPRequestGetOrPostParameter`
+* :func:`HTTP.SetHTTPRequestHeaderValue`
+* :func:`HTTP.SetHTTPRequestNetworkActivityTimeout`
+* :func:`HTTP.SetHTTPRequestRawPostBody`
+* :func:`HTTP.SetHTTPRequestRequiresVerifiedCertificate`
+* :func:`HTTP.SetHTTPRequestUserAgentInfo`
 
 List of Callbacks
 -----------------
@@ -45,6 +45,14 @@ List of Callbacks
 Function Reference
 ------------------
 
+.. function:: HTTP.CreateCookieContainer(bAllowResponsesToModify)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bAllowResponsesToModify:
+    :returns: (int) Return value
+    :SteamWorks: `CreateCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateCookieContainer>`_
+
 .. function:: HTTP.CreateHTTPRequest(eHTTPRequestMethod, pchAbsoluteURL)
 
     🤖 **Auto-generated binding**
@@ -54,70 +62,6 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `CreateHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateHTTPRequest>`_
 
-.. function:: HTTP.SetHTTPRequestContextValue(hRequest, ulContextValue)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param uint64 ulContextValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestContextValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestContextValue>`_
-
-.. function:: HTTP.SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param int unTimeoutSeconds:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestNetworkActivityTimeout <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestNetworkActivityTimeout>`_
-
-.. function:: HTTP.SetHTTPRequestHeaderValue(hRequest, pchHeaderName, pchHeaderValue)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param str pchHeaderName:
-    :param str pchHeaderValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestHeaderValue>`_
-
-.. function:: HTTP.SetHTTPRequestGetOrPostParameter(hRequest, pchParamName, pchParamValue)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param str pchParamName:
-    :param str pchParamValue:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestGetOrPostParameter <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestGetOrPostParameter>`_
-
-.. function:: HTTP.SendHTTPRequest(hRequest)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :returns: (bool) Return value
-    :returns: (uint64) Value for `pCallHandle`
-    :SteamWorks: `SendHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequest>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
-
-.. function:: HTTP.SendHTTPRequestAndStreamResponse(hRequest)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :returns: (bool) Return value
-    :returns: (uint64) Value for `pCallHandle`
-    :SteamWorks: `SendHTTPRequestAndStreamResponse <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequestAndStreamResponse>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
-
 .. function:: HTTP.DeferHTTPRequest(hRequest)
 
     🤖 **Auto-generated binding**
@@ -126,13 +70,58 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `DeferHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#DeferHTTPRequest>`_
 
-.. function:: HTTP.PrioritizeHTTPRequest(hRequest)
+.. function:: HTTP.GetHTTPDownloadProgressPct(hRequest)
 
     🤖 **Auto-generated binding**
 
     :param int hRequest:
     :returns: (bool) Return value
-    :SteamWorks: `PrioritizeHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#PrioritizeHTTPRequest>`_
+    :returns: (float) Value for `pflPercentOut`
+    :SteamWorks: `GetHTTPDownloadProgressPct <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPDownloadProgressPct>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pflPercentOut`` is no longer a paramer, and is instead an additional return value
+
+.. function:: HTTP.GetHTTPRequestWasTimedOut(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :returns: (bool) Return value
+    :returns: (bool) Value for `pbWasTimedOut`
+    :SteamWorks: `GetHTTPRequestWasTimedOut <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPRequestWasTimedOut>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pbWasTimedOut`` is no longer a paramer, and is instead an additional return value
+
+.. function:: HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param int unBufferSize:
+    :returns: (bool) Return value
+    :returns: (int) Value for `pBodyDataBuffer`
+    :SteamWorks: `GetHTTPResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodyData>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
+
+.. function:: HTTP.GetHTTPResponseBodySize(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :returns: (bool) Return value
+    :returns: (int) Value for `unBodySize`
+    :SteamWorks: `GetHTTPResponseBodySize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodySize>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``unBodySize`` is no longer a paramer, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseHeaderSize(hRequest, pchHeaderName)
 
@@ -163,33 +152,6 @@ Function Reference
 
     * Parameter ``pHeaderValueBuffer`` is no longer a paramer, and is instead an additional return value
 
-.. function:: HTTP.GetHTTPResponseBodySize(hRequest)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :returns: (bool) Return value
-    :returns: (int) Value for `unBodySize`
-    :SteamWorks: `GetHTTPResponseBodySize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodySize>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``unBodySize`` is no longer a paramer, and is instead an additional return value
-
-.. function:: HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param int unBufferSize:
-    :returns: (bool) Return value
-    :returns: (int) Value for `pBodyDataBuffer`
-    :SteamWorks: `GetHTTPResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodyData>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
-
 .. function:: HTTP.GetHTTPStreamingResponseBodyData(hRequest, cOffset, unBufferSize)
 
     🤖 **Auto-generated binding**
@@ -205,6 +167,22 @@ Function Reference
 
     * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
 
+.. function:: HTTP.PrioritizeHTTPRequest(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :returns: (bool) Return value
+    :SteamWorks: `PrioritizeHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#PrioritizeHTTPRequest>`_
+
+.. function:: HTTP.ReleaseCookieContainer(hCookieContainer)
+
+    🤖 **Auto-generated binding**
+
+    :param int hCookieContainer:
+    :returns: (bool) Return value
+    :SteamWorks: `ReleaseCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseCookieContainer>`_
+
 .. function:: HTTP.ReleaseHTTPRequest(hRequest)
 
     🤖 **Auto-generated binding**
@@ -213,18 +191,98 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ReleaseHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseHTTPRequest>`_
 
-.. function:: HTTP.GetHTTPDownloadProgressPct(hRequest)
+.. function:: HTTP.SendHTTPRequest(hRequest)
 
     🤖 **Auto-generated binding**
 
     :param int hRequest:
     :returns: (bool) Return value
-    :returns: (float) Value for `pflPercentOut`
-    :SteamWorks: `GetHTTPDownloadProgressPct <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPDownloadProgressPct>`_
+    :returns: (uint64) Value for `pCallHandle`
+    :SteamWorks: `SendHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequest>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercentOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: HTTP.SendHTTPRequestAndStreamResponse(hRequest)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :returns: (bool) Return value
+    :returns: (uint64) Value for `pCallHandle`
+    :SteamWorks: `SendHTTPRequestAndStreamResponse <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequestAndStreamResponse>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
+
+.. function:: HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie)
+
+    🤖 **Auto-generated binding**
+
+    :param int hCookieContainer:
+    :param str pchHost:
+    :param str pchUrl:
+    :param str pchCookie:
+    :returns: (bool) Return value
+    :SteamWorks: `SetCookie <https://partner.steamgames.com/doc/api/ISteamHTTP#SetCookie>`_
+
+.. function:: HTTP.SetHTTPRequestAbsoluteTimeoutMS(hRequest, unMilliseconds)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param int unMilliseconds:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestAbsoluteTimeoutMS <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestAbsoluteTimeoutMS>`_
+
+.. function:: HTTP.SetHTTPRequestContextValue(hRequest, ulContextValue)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param uint64 ulContextValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestContextValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestContextValue>`_
+
+.. function:: HTTP.SetHTTPRequestCookieContainer(hRequest, hCookieContainer)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param int hCookieContainer:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestCookieContainer>`_
+
+.. function:: HTTP.SetHTTPRequestGetOrPostParameter(hRequest, pchParamName, pchParamValue)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param str pchParamName:
+    :param str pchParamValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestGetOrPostParameter <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestGetOrPostParameter>`_
+
+.. function:: HTTP.SetHTTPRequestHeaderValue(hRequest, pchHeaderName, pchHeaderValue)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param str pchHeaderName:
+    :param str pchHeaderValue:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestHeaderValue>`_
+
+.. function:: HTTP.SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds)
+
+    🤖 **Auto-generated binding**
+
+    :param int hRequest:
+    :param int unTimeoutSeconds:
+    :returns: (bool) Return value
+    :SteamWorks: `SetHTTPRequestNetworkActivityTimeout <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestNetworkActivityTimeout>`_
 
 .. function:: HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, unBodyLen)
 
@@ -241,51 +299,6 @@ Function Reference
 
     * Parameter ``pubBody`` is no longer a paramer, and is instead an additional return value
 
-.. function:: HTTP.CreateCookieContainer(bAllowResponsesToModify)
-
-    🤖 **Auto-generated binding**
-
-    :param bool bAllowResponsesToModify:
-    :returns: (int) Return value
-    :SteamWorks: `CreateCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateCookieContainer>`_
-
-.. function:: HTTP.ReleaseCookieContainer(hCookieContainer)
-
-    🤖 **Auto-generated binding**
-
-    :param int hCookieContainer:
-    :returns: (bool) Return value
-    :SteamWorks: `ReleaseCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseCookieContainer>`_
-
-.. function:: HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie)
-
-    🤖 **Auto-generated binding**
-
-    :param int hCookieContainer:
-    :param str pchHost:
-    :param str pchUrl:
-    :param str pchCookie:
-    :returns: (bool) Return value
-    :SteamWorks: `SetCookie <https://partner.steamgames.com/doc/api/ISteamHTTP#SetCookie>`_
-
-.. function:: HTTP.SetHTTPRequestCookieContainer(hRequest, hCookieContainer)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param int hCookieContainer:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestCookieContainer>`_
-
-.. function:: HTTP.SetHTTPRequestUserAgentInfo(hRequest, pchUserAgentInfo)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :param str pchUserAgentInfo:
-    :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestUserAgentInfo <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestUserAgentInfo>`_
-
 .. function:: HTTP.SetHTTPRequestRequiresVerifiedCertificate(hRequest, bRequireVerifiedCertificate)
 
     🤖 **Auto-generated binding**
@@ -295,27 +308,14 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestRequiresVerifiedCertificate <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestRequiresVerifiedCertificate>`_
 
-.. function:: HTTP.SetHTTPRequestAbsoluteTimeoutMS(hRequest, unMilliseconds)
+.. function:: HTTP.SetHTTPRequestUserAgentInfo(hRequest, pchUserAgentInfo)
 
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param int unMilliseconds:
+    :param str pchUserAgentInfo:
     :returns: (bool) Return value
-    :SteamWorks: `SetHTTPRequestAbsoluteTimeoutMS <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestAbsoluteTimeoutMS>`_
-
-.. function:: HTTP.GetHTTPRequestWasTimedOut(hRequest)
-
-    🤖 **Auto-generated binding**
-
-    :param int hRequest:
-    :returns: (bool) Return value
-    :returns: (bool) Value for `pbWasTimedOut`
-    :SteamWorks: `GetHTTPRequestWasTimedOut <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPRequestWasTimedOut>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pbWasTimedOut`` is no longer a paramer, and is instead an additional return value
+    :SteamWorks: `SetHTTPRequestUserAgentInfo <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestUserAgentInfo>`_
 
 
 Callbacks

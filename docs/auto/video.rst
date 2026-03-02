@@ -9,10 +9,10 @@ ISteamVideo
 List of Functions
 -----------------
 
-* :func:`Video.GetVideoURL`
-* :func:`Video.IsBroadcasting`
 * :func:`Video.GetOPFSettings`
 * :func:`Video.GetOPFStringForApp`
+* :func:`Video.GetVideoURL`
+* :func:`Video.IsBroadcasting`
 
 List of Callbacks
 -----------------
@@ -24,25 +24,6 @@ List of Callbacks
 
 Function Reference
 ------------------
-
-.. function:: Video.GetVideoURL(unVideoAppID)
-
-    🤖 **Auto-generated binding**
-
-    :param int unVideoAppID:
-    :SteamWorks: `GetVideoURL <https://partner.steamgames.com/doc/api/ISteamVideo#GetVideoURL>`_
-
-.. function:: Video.IsBroadcasting()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :returns: (int) Value for `pnNumViewers`
-    :SteamWorks: `IsBroadcasting <https://partner.steamgames.com/doc/api/ISteamVideo#IsBroadcasting>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pnNumViewers`` is no longer a paramer, and is instead an additional return value
 
 .. function:: Video.GetOPFSettings(unVideoAppID)
 
@@ -66,6 +47,25 @@ Function Reference
 
     * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pnBufferSize`` is no longer a paramer, and is instead an additional return value
+
+.. function:: Video.GetVideoURL(unVideoAppID)
+
+    🤖 **Auto-generated binding**
+
+    :param int unVideoAppID:
+    :SteamWorks: `GetVideoURL <https://partner.steamgames.com/doc/api/ISteamVideo#GetVideoURL>`_
+
+.. function:: Video.IsBroadcasting()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :returns: (int) Value for `pnNumViewers`
+    :SteamWorks: `IsBroadcasting <https://partner.steamgames.com/doc/api/ISteamVideo#IsBroadcasting>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnNumViewers`` is no longer a paramer, and is instead an additional return value
 
 
 Callbacks

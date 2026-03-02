@@ -9,37 +9,37 @@ ISteamUser
 List of Functions
 -----------------
 
-* :func:`User.GetHSteamUser`
-* :func:`User.BLoggedOn`
-* :func:`User.GetSteamID`
-* :func:`User.TrackAppUsageEvent`
-* :func:`User.GetUserDataFolder`
-* :func:`User.StartVoiceRecording`
-* :func:`User.StopVoiceRecording`
-* :func:`User.GetAvailableVoice`
-* :func:`User.GetVoice`
-* :func:`User.DecompressVoice`
-* :func:`User.GetVoiceOptimalSampleRate`
-* :func:`User.GetAuthSessionTicket`
-* :func:`User.GetAuthTicketForWebApi`
-* :func:`User.BeginAuthSession`
-* :func:`User.EndAuthSession`
-* :func:`User.CancelAuthTicket`
-* :func:`User.UserHasLicenseForApp`
-* :func:`User.BIsBehindNAT`
 * :func:`User.AdvertiseGame`
-* :func:`User.RequestEncryptedAppTicket`
-* :func:`User.GetEncryptedAppTicket`
-* :func:`User.GetGameBadgeLevel`
-* :func:`User.GetPlayerSteamLevel`
-* :func:`User.RequestStoreAuthURL`
-* :func:`User.BIsPhoneVerified`
-* :func:`User.BIsTwoFactorEnabled`
+* :func:`User.BIsBehindNAT`
 * :func:`User.BIsPhoneIdentifying`
 * :func:`User.BIsPhoneRequiringVerification`
-* :func:`User.GetMarketEligibility`
-* :func:`User.GetDurationControl`
+* :func:`User.BIsPhoneVerified`
+* :func:`User.BIsTwoFactorEnabled`
+* :func:`User.BLoggedOn`
 * :func:`User.BSetDurationControlOnlineState`
+* :func:`User.BeginAuthSession`
+* :func:`User.CancelAuthTicket`
+* :func:`User.DecompressVoice`
+* :func:`User.EndAuthSession`
+* :func:`User.GetAuthSessionTicket`
+* :func:`User.GetAuthTicketForWebApi`
+* :func:`User.GetAvailableVoice`
+* :func:`User.GetDurationControl`
+* :func:`User.GetEncryptedAppTicket`
+* :func:`User.GetGameBadgeLevel`
+* :func:`User.GetHSteamUser`
+* :func:`User.GetMarketEligibility`
+* :func:`User.GetPlayerSteamLevel`
+* :func:`User.GetSteamID`
+* :func:`User.GetUserDataFolder`
+* :func:`User.GetVoice`
+* :func:`User.GetVoiceOptimalSampleRate`
+* :func:`User.RequestEncryptedAppTicket`
+* :func:`User.RequestStoreAuthURL`
+* :func:`User.StartVoiceRecording`
+* :func:`User.StopVoiceRecording`
+* :func:`User.TrackAppUsageEvent`
+* :func:`User.UserHasLicenseForApp`
 
 List of Callbacks
 -----------------
@@ -64,12 +64,49 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: User.GetHSteamUser()
+.. function:: User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer)
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
-    :SteamWorks: `GetHSteamUser <https://partner.steamgames.com/doc/api/ISteamUser#GetHSteamUser>`_
+    :param uint64 steamIDGameServer:
+    :param int unIPServer:
+    :param int usPortServer:
+    :SteamWorks: `AdvertiseGame <https://partner.steamgames.com/doc/api/ISteamUser#AdvertiseGame>`_
+
+.. function:: User.BIsBehindNAT()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsBehindNAT <https://partner.steamgames.com/doc/api/ISteamUser#BIsBehindNAT>`_
+
+.. function:: User.BIsPhoneIdentifying()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsPhoneIdentifying <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneIdentifying>`_
+
+.. function:: User.BIsPhoneRequiringVerification()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsPhoneRequiringVerification <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneRequiringVerification>`_
+
+.. function:: User.BIsPhoneVerified()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsPhoneVerified <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneVerified>`_
+
+.. function:: User.BIsTwoFactorEnabled()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `BIsTwoFactorEnabled <https://partner.steamgames.com/doc/api/ISteamUser#BIsTwoFactorEnabled>`_
 
 .. function:: User.BLoggedOn()
 
@@ -78,74 +115,30 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BLoggedOn <https://partner.steamgames.com/doc/api/ISteamUser#BLoggedOn>`_
 
-.. function:: User.GetSteamID()
+.. function:: User.BSetDurationControlOnlineState(eNewState)
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
-    :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamUser#GetSteamID>`_
-
-.. function:: User.TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 gameID:
-    :param int eAppUsageEvent:
-    :param str pchExtraInfo:
-    :SteamWorks: `TrackAppUsageEvent <https://partner.steamgames.com/doc/api/ISteamUser#TrackAppUsageEvent>`_
-
-.. function:: User.GetUserDataFolder(cubBuffer)
-
-    🤖 **Auto-generated binding**
-
-    :param int cubBuffer:
+    :param int eNewState:
     :returns: (bool) Return value
-    :returns: (str) Value for `pchBuffer`
-    :SteamWorks: `GetUserDataFolder <https://partner.steamgames.com/doc/api/ISteamUser#GetUserDataFolder>`_
+    :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
-
-.. function:: User.StartVoiceRecording()
+.. function:: User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
 
     🤖 **Auto-generated binding**
 
-    :SteamWorks: `StartVoiceRecording <https://partner.steamgames.com/doc/api/ISteamUser#StartVoiceRecording>`_
-
-.. function:: User.StopVoiceRecording()
-
-    🤖 **Auto-generated binding**
-
-    :SteamWorks: `StopVoiceRecording <https://partner.steamgames.com/doc/api/ISteamUser#StopVoiceRecording>`_
-
-.. function:: User.GetAvailableVoice()
-
-    🤖 **Auto-generated binding**
-
+    :param str pAuthTicket:
+    :param int cbAuthTicket:
+    :param uint64 steamID:
     :returns: (int) Return value
-    :returns: (int) Value for `pcbCompressed`
-    :SteamWorks: `GetAvailableVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetAvailableVoice>`_
+    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
 
-    **Signature differences from C++ API:**
-
-    * Parameter ``pcbCompressed`` is no longer a paramer, and is instead an additional return value
-
-.. function:: User.GetVoice(bWantCompressed, cbDestBufferSize)
+.. function:: User.CancelAuthTicket(hAuthTicket)
 
     🤖 **Auto-generated binding**
 
-    :param bool bWantCompressed:
-    :param int cbDestBufferSize:
-    :returns: (int) Return value
-    :returns: (str) Value for `pDestBuffer`
-    :returns: (int) Value for `nBytesWritten`
-    :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
+    :param int hAuthTicket:
+    :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamUser#CancelAuthTicket>`_
 
 .. function:: User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate)
 
@@ -165,12 +158,12 @@ Function Reference
     * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
 
-.. function:: User.GetVoiceOptimalSampleRate()
+.. function:: User.EndAuthSession(steamID)
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
-    :SteamWorks: `GetVoiceOptimalSampleRate <https://partner.steamgames.com/doc/api/ISteamUser#GetVoiceOptimalSampleRate>`_
+    :param uint64 steamID:
+    :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#EndAuthSession>`_
 
 .. function:: User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity)
 
@@ -196,64 +189,25 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetAuthTicketForWebApi <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthTicketForWebApi>`_
 
-.. function:: User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
+.. function:: User.GetAvailableVoice()
 
     🤖 **Auto-generated binding**
 
-    :param str pAuthTicket:
-    :param int cbAuthTicket:
-    :param uint64 steamID:
     :returns: (int) Return value
-    :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
+    :returns: (int) Value for `pcbCompressed`
+    :SteamWorks: `GetAvailableVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetAvailableVoice>`_
 
-.. function:: User.EndAuthSession(steamID)
+    **Signature differences from C++ API:**
 
-    🤖 **Auto-generated binding**
+    * Parameter ``pcbCompressed`` is no longer a paramer, and is instead an additional return value
 
-    :param uint64 steamID:
-    :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#EndAuthSession>`_
-
-.. function:: User.CancelAuthTicket(hAuthTicket)
+.. function:: User.GetDurationControl(callback)
 
     🤖 **Auto-generated binding**
 
-    :param int hAuthTicket:
-    :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamUser#CancelAuthTicket>`_
-
-.. function:: User.UserHasLicenseForApp(steamID, appID)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamID:
-    :param int appID:
-    :returns: (int) Return value
-    :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
-
-.. function:: User.BIsBehindNAT()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BIsBehindNAT <https://partner.steamgames.com/doc/api/ISteamUser#BIsBehindNAT>`_
-
-.. function:: User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer)
-
-    🤖 **Auto-generated binding**
-
-    :param uint64 steamIDGameServer:
-    :param int unIPServer:
-    :param int usPortServer:
-    :SteamWorks: `AdvertiseGame <https://partner.steamgames.com/doc/api/ISteamUser#AdvertiseGame>`_
-
-.. function:: User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback)
-
-    🤖 **Auto-generated binding**
-
-    :param str pDataToInclude:
-    :param int cbDataToInclude:
-    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
+    :param function callback: CallResult callback receiving struct `DurationControl_t` and a boolean
     :returns: (uint64) Return value
-    :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
+    :SteamWorks: `GetDurationControl <https://partner.steamgames.com/doc/api/ISteamUser#GetDurationControl>`_
 
 .. function:: User.GetEncryptedAppTicket(cbMaxTicket)
 
@@ -279,12 +233,80 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetGameBadgeLevel <https://partner.steamgames.com/doc/api/ISteamUser#GetGameBadgeLevel>`_
 
+.. function:: User.GetHSteamUser()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetHSteamUser <https://partner.steamgames.com/doc/api/ISteamUser#GetHSteamUser>`_
+
+.. function:: User.GetMarketEligibility(callback)
+
+    🤖 **Auto-generated binding**
+
+    :param function callback: CallResult callback receiving struct `MarketEligibilityResponse_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `GetMarketEligibility <https://partner.steamgames.com/doc/api/ISteamUser#GetMarketEligibility>`_
+
 .. function:: User.GetPlayerSteamLevel()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetPlayerSteamLevel <https://partner.steamgames.com/doc/api/ISteamUser#GetPlayerSteamLevel>`_
+
+.. function:: User.GetSteamID()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (uint64) Return value
+    :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamUser#GetSteamID>`_
+
+.. function:: User.GetUserDataFolder(cubBuffer)
+
+    🤖 **Auto-generated binding**
+
+    :param int cubBuffer:
+    :returns: (bool) Return value
+    :returns: (str) Value for `pchBuffer`
+    :SteamWorks: `GetUserDataFolder <https://partner.steamgames.com/doc/api/ISteamUser#GetUserDataFolder>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
+
+.. function:: User.GetVoice(bWantCompressed, cbDestBufferSize)
+
+    🤖 **Auto-generated binding**
+
+    :param bool bWantCompressed:
+    :param int cbDestBufferSize:
+    :returns: (int) Return value
+    :returns: (str) Value for `pDestBuffer`
+    :returns: (int) Value for `nBytesWritten`
+    :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
+
+.. function:: User.GetVoiceOptimalSampleRate()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetVoiceOptimalSampleRate <https://partner.steamgames.com/doc/api/ISteamUser#GetVoiceOptimalSampleRate>`_
+
+.. function:: User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param str pDataToInclude:
+    :param int cbDataToInclude:
+    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
+    :returns: (uint64) Return value
+    :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
 .. function:: User.RequestStoreAuthURL(pchRedirectURL, callback)
 
@@ -295,57 +317,35 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `RequestStoreAuthURL <https://partner.steamgames.com/doc/api/ISteamUser#RequestStoreAuthURL>`_
 
-.. function:: User.BIsPhoneVerified()
+.. function:: User.StartVoiceRecording()
 
     🤖 **Auto-generated binding**
 
-    :returns: (bool) Return value
-    :SteamWorks: `BIsPhoneVerified <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneVerified>`_
+    :SteamWorks: `StartVoiceRecording <https://partner.steamgames.com/doc/api/ISteamUser#StartVoiceRecording>`_
 
-.. function:: User.BIsTwoFactorEnabled()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BIsTwoFactorEnabled <https://partner.steamgames.com/doc/api/ISteamUser#BIsTwoFactorEnabled>`_
-
-.. function:: User.BIsPhoneIdentifying()
+.. function:: User.StopVoiceRecording()
 
     🤖 **Auto-generated binding**
 
-    :returns: (bool) Return value
-    :SteamWorks: `BIsPhoneIdentifying <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneIdentifying>`_
+    :SteamWorks: `StopVoiceRecording <https://partner.steamgames.com/doc/api/ISteamUser#StopVoiceRecording>`_
 
-.. function:: User.BIsPhoneRequiringVerification()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `BIsPhoneRequiringVerification <https://partner.steamgames.com/doc/api/ISteamUser#BIsPhoneRequiringVerification>`_
-
-.. function:: User.GetMarketEligibility(callback)
+.. function:: User.TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo)
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `MarketEligibilityResponse_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetMarketEligibility <https://partner.steamgames.com/doc/api/ISteamUser#GetMarketEligibility>`_
+    :param uint64 gameID:
+    :param int eAppUsageEvent:
+    :param str pchExtraInfo:
+    :SteamWorks: `TrackAppUsageEvent <https://partner.steamgames.com/doc/api/ISteamUser#TrackAppUsageEvent>`_
 
-.. function:: User.GetDurationControl(callback)
-
-    🤖 **Auto-generated binding**
-
-    :param function callback: CallResult callback receiving struct `DurationControl_t` and a boolean
-    :returns: (uint64) Return value
-    :SteamWorks: `GetDurationControl <https://partner.steamgames.com/doc/api/ISteamUser#GetDurationControl>`_
-
-.. function:: User.BSetDurationControlOnlineState(eNewState)
+.. function:: User.UserHasLicenseForApp(steamID, appID)
 
     🤖 **Auto-generated binding**
 
-    :param int eNewState:
-    :returns: (bool) Return value
-    :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
+    :param uint64 steamID:
+    :param int appID:
+    :returns: (int) Return value
+    :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
 
 
 Callbacks
