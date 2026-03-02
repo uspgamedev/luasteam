@@ -18,8 +18,8 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`NetworkingMessages.onSteamNetworkingMessagesSessionRequest`
-* :func:`NetworkingMessages.onSteamNetworkingMessagesSessionFailed`
+* :func:`NetworkingMessages.OnSteamNetworkingMessagesSessionRequest`
+* :func:`NetworkingMessages.OnSteamNetworkingMessagesSessionFailed`
 
 Function Reference
 ------------------
@@ -31,6 +31,12 @@ Function Reference
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
     :returns: (bool) Return value
     :SteamWorks: `AcceptSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#AcceptSessionWithUser>`_
+
+**Example**::
+
+    function Steam.NetworkingMessages.OnSteamNetworkingMessagesSessionRequest(data)
+        Steam.NetworkingMessages.AcceptSessionWithUser(data.m_identityRemote)
+    end
 
 .. function:: NetworkingMessages.CloseChannelWithUser(identityRemote, nLocalChannel)
 
@@ -48,6 +54,11 @@ Function Reference
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
     :returns: (bool) Return value
     :SteamWorks: `CloseSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#CloseSessionWithUser>`_
+
+**Example**::
+
+    -- Clean up when a player leaves
+    Steam.NetworkingMessages.CloseSessionWithUser(tostring(playerSteamID))
 
 .. function:: NetworkingMessages.GetSessionConnectionInfo(identityRemote)
 
@@ -76,6 +87,15 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
 
+**Example**::
+
+    local data = serializePacket(packet)
+    local result = Steam.NetworkingMessages.SendMessageToUser(
+        tostring(targetSteamID), data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
+    if result ~= Steam.k_EResultOK then
+        print('Send failed:', result)
+    end
+
 
 Unimplemented Methods
 ---------------------
@@ -90,7 +110,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: NetworkingMessages.onSteamNetworkingMessagesSessionRequest
+.. function:: NetworkingMessages.OnSteamNetworkingMessagesSessionRequest
 
     Callback for `SteamNetworkingMessagesSessionRequest_t <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SteamNetworkingMessagesSessionRequest_t>`_
 
@@ -98,11 +118,21 @@ Callbacks
 
     * **data.m_identityRemote** -- m_identityRemote
 
-.. function:: NetworkingMessages.onSteamNetworkingMessagesSessionFailed
+**Example**::
+
+    See :func:`NetworkingMessages.AcceptSessionWithUser`'s example.
+
+.. function:: NetworkingMessages.OnSteamNetworkingMessagesSessionFailed
 
     Callback for `SteamNetworkingMessagesSessionFailed_t <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SteamNetworkingMessagesSessionFailed_t>`_
 
     **callback(data)** receives:
 
     * **data.m_info** -- m_info
+
+**Example**::
+
+    function Steam.NetworkingMessages.OnSteamNetworkingMessagesSessionFailed(data)
+        print('Messages session failed:', data.m_info.m_eEndReason)
+    end
 

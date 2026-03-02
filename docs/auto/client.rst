@@ -30,12 +30,20 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BReleaseSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#BReleaseSteamPipe>`_
 
+**Example**::
+
+    Steam.Client.BReleaseSteamPipe(hPipe)
+
 .. function:: Client.BShutdownIfAllPipesClosed()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `BShutdownIfAllPipesClosed <https://partner.steamgames.com/doc/api/ISteamClient#BShutdownIfAllPipesClosed>`_
+
+**Example**::
+
+    Steam.Client.BShutdownIfAllPipesClosed()
 
 .. function:: Client.ConnectToGlobalUser(hSteamPipe)
 
@@ -44,6 +52,10 @@ Function Reference
     :param int hSteamPipe:
     :returns: (int) Return value
     :SteamWorks: `ConnectToGlobalUser <https://partner.steamgames.com/doc/api/ISteamClient#ConnectToGlobalUser>`_
+
+**Example**::
+
+    local hUser = Steam.Client.ConnectToGlobalUser(hPipe)
 
 .. function:: Client.CreateLocalUser(eAccountType)
 
@@ -58,12 +70,20 @@ Function Reference
 
     * Parameter ``phSteamPipe`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local hUser = Steam.Client.CreateLocalUser(hPipe, 'k_EAccountTypeIndividual')
+
 .. function:: Client.CreateSteamPipe()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `CreateSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#CreateSteamPipe>`_
+
+**Example**::
+
+    local hPipe = Steam.Client.CreateSteamPipe()
 
 .. function:: Client.GetIPCCallCount()
 
@@ -79,6 +99,10 @@ Function Reference
     :param int hSteamPipe:
     :param int hUser:
     :SteamWorks: `ReleaseUser <https://partner.steamgames.com/doc/api/ISteamClient#ReleaseUser>`_
+
+**Example**::
+
+    Steam.Client.ReleaseUser(hPipe, hUser)
 
 .. function:: Client.SetLocalIPBinding(unIP, usPort)
 
@@ -97,11 +121,6 @@ Function Reference
     :SteamWorks: `SetWarningMessageHook <https://partner.steamgames.com/doc/api/ISteamClient#SetWarningMessageHook>`_
 
     Sets a callback to receive Steam API warning and info messages.
-
-    **Signature differences from C++ API:**
-
-    * The C++ ``SteamAPIWarningMessageHook_t`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the hook.
 
     **Notes:**
 

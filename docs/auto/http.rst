@@ -38,9 +38,9 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`HTTP.onHTTPRequestCompleted`
-* :func:`HTTP.onHTTPRequestHeadersReceived`
-* :func:`HTTP.onHTTPRequestDataReceived`
+* :func:`HTTP.OnHTTPRequestCompleted`
+* :func:`HTTP.OnHTTPRequestHeadersReceived`
+* :func:`HTTP.OnHTTPRequestDataReceived`
 
 Function Reference
 ------------------
@@ -62,6 +62,12 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `CreateHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateHTTPRequest>`_
 
+**Example**::
+
+    local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://api.example.com/leaderboard')
+    Steam.HTTP.SetHTTPRequestHeaderValue(hReq, 'Accept', 'application/json')
+    Steam.HTTP.SendHTTPRequest(hReq)
+
 .. function:: HTTP.DeferHTTPRequest(hRequest)
 
     🤖 **Auto-generated binding**
@@ -82,6 +88,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pflPercentOut`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    -- Poll progress for a large download
+    local pct = Steam.HTTP.GetHTTPDownloadProgressPct(hReq)
+    print(string.format('Download: %.1f%%', pct * 100))
 
 .. function:: HTTP.GetHTTPRequestWasTimedOut(hRequest)
 
@@ -110,6 +122,10 @@ Function Reference
 
     * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    See :func:`HTTP.GetHTTPResponseBodySize`'s example.
+
 .. function:: HTTP.GetHTTPResponseBodySize(hRequest)
 
     🤖 **Auto-generated binding**
@@ -122,6 +138,17 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``unBodySize`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    function Steam.HTTP.OnHTTPRequestCompleted(data)
+        if data.m_eStatusCode == 200 then
+            local size = Steam.HTTP.GetHTTPResponseBodySize(data.m_hRequest)
+            local body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
+            handleResponse(body)
+        end
+        Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
+    end
 
 .. function:: HTTP.GetHTTPResponseHeaderSize(hRequest, pchHeaderName)
 
@@ -151,6 +178,17 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pHeaderValueBuffer`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    function Steam.HTTP.OnHTTPRequestCompleted(data)
+        local size = Steam.HTTP.GetHTTPResponseHeaderSize(data.m_hRequest, 'Content-Type')
+        if size > 0 then
+            local ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
+            print('Content-Type:', ct)
+        end
+        Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
+    end
 
 .. function:: HTTP.GetHTTPStreamingResponseBodyData(hRequest, cOffset, unBufferSize)
 
@@ -191,6 +229,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ReleaseHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseHTTPRequest>`_
 
+**Example**::
+
+    -- Always release the request handle when done
+    Steam.HTTP.ReleaseHTTPRequest(hReq)
+
 .. function:: HTTP.SendHTTPRequest(hRequest)
 
     🤖 **Auto-generated binding**
@@ -203,6 +246,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://example.com/data.json')
+    Steam.HTTP.SetHTTPRequestNetworkActivityTimeout(hReq, 10)
+    Steam.HTTP.SendHTTPRequest(hReq)
 
 .. function:: HTTP.SendHTTPRequestAndStreamResponse(hRequest)
 
@@ -265,6 +314,13 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestGetOrPostParameter <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestGetOrPostParameter>`_
 
+**Example**::
+
+    local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/score')
+    Steam.HTTP.SetHTTPRequestGetOrPostParameter(hReq, 'score', tostring(playerScore))
+    Steam.HTTP.SetHTTPRequestGetOrPostParameter(hReq, 'player', playerName)
+    Steam.HTTP.SendHTTPRequest(hReq)
+
 .. function:: HTTP.SetHTTPRequestHeaderValue(hRequest, pchHeaderName, pchHeaderValue)
 
     🤖 **Auto-generated binding**
@@ -275,6 +331,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestHeaderValue>`_
 
+**Example**::
+
+    See :func:`HTTP.CreateHTTPRequest`'s example.
+
 .. function:: HTTP.SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds)
 
     🤖 **Auto-generated binding**
@@ -283,6 +343,12 @@ Function Reference
     :param int unTimeoutSeconds:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestNetworkActivityTimeout <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestNetworkActivityTimeout>`_
+
+**Example**::
+
+    local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://example.com/ping')
+    Steam.HTTP.SetHTTPRequestNetworkActivityTimeout(hReq, 5)
+    Steam.HTTP.SendHTTPRequest(hReq)
 
 .. function:: HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, unBodyLen)
 
@@ -298,6 +364,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pubBody`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local json = '{"action":"submit","data":"value"}'
+    local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/action')
+    Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', #json)
+    Steam.HTTP.SendHTTPRequest(hReq)
 
 .. function:: HTTP.SetHTTPRequestRequiresVerifiedCertificate(hRequest, bRequireVerifiedCertificate)
 
@@ -321,7 +394,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: HTTP.onHTTPRequestCompleted
+.. function:: HTTP.OnHTTPRequestCompleted
 
     Callback for `HTTPRequestCompleted_t <https://partner.steamgames.com/doc/api/ISteamHTTP#HTTPRequestCompleted_t>`_
 
@@ -333,7 +406,11 @@ Callbacks
     * **data.m_eStatusCode** -- m_eStatusCode
     * **data.m_unBodySize** -- m_unBodySize
 
-.. function:: HTTP.onHTTPRequestHeadersReceived
+**Example**::
+
+    See :func:`HTTP.GetHTTPResponseBodySize`'s example.
+
+.. function:: HTTP.OnHTTPRequestHeadersReceived
 
     Callback for `HTTPRequestHeadersReceived_t <https://partner.steamgames.com/doc/api/ISteamHTTP#HTTPRequestHeadersReceived_t>`_
 
@@ -342,7 +419,7 @@ Callbacks
     * **data.m_hRequest** -- m_hRequest
     * **data.m_ulContextValue** -- m_ulContextValue
 
-.. function:: HTTP.onHTTPRequestDataReceived
+.. function:: HTTP.OnHTTPRequestDataReceived
 
     Callback for `HTTPRequestDataReceived_t <https://partner.steamgames.com/doc/api/ISteamHTTP#HTTPRequestDataReceived_t>`_
 

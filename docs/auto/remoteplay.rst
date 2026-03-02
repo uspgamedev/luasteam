@@ -28,9 +28,9 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`RemotePlay.onSteamRemotePlaySessionConnected`
-* :func:`RemotePlay.onSteamRemotePlaySessionDisconnected`
-* :func:`RemotePlay.onSteamRemotePlayTogetherGuestInvite`
+* :func:`RemotePlay.OnSteamRemotePlaySessionConnected`
+* :func:`RemotePlay.OnSteamRemotePlaySessionDisconnected`
+* :func:`RemotePlay.OnSteamRemotePlayTogetherGuestInvite`
 
 Function Reference
 ------------------
@@ -64,6 +64,12 @@ Function Reference
     :param uint64 steamIDFriend:
     :returns: (bool) Return value
     :SteamWorks: `BSendRemotePlayTogetherInvite <https://partner.steamgames.com/doc/api/ISteamRemotePlay#BSendRemotePlayTogetherInvite>`_
+
+**Example**::
+
+    if Steam.RemotePlay.BSendRemotePlayTogetherInvite(friendSteamID) then
+        print('Remote Play Together invite sent')
+    end
 
 .. function:: RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch)
 
@@ -105,6 +111,13 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetSessionClientFormFactor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientFormFactor>`_
 
+**Example**::
+
+    local formFactor = Steam.RemotePlay.GetSessionClientFormFactor(sessionID)
+    if formFactor == Steam.k_ESteamDeviceFormFactor_Phone then
+        print('Client is on a mobile device')
+    end
+
 .. function:: RemotePlay.GetSessionClientName(unSessionID)
 
     🤖 **Auto-generated binding**
@@ -113,12 +126,21 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetSessionClientName <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientName>`_
 
+**Example**::
+
+    See :func:`RemotePlay.GetSessionID`'s example.
+
 .. function:: RemotePlay.GetSessionCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetSessionCount <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionCount>`_
+
+**Example**::
+
+    local count = Steam.RemotePlay.GetSessionCount()
+    print('Active Remote Play sessions:', count)
 
 .. function:: RemotePlay.GetSessionID(iSessionIndex)
 
@@ -128,6 +150,15 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetSessionID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionID>`_
 
+**Example**::
+
+    local count = Steam.RemotePlay.GetSessionCount()
+    for i = 0, count - 1 do
+        local sessionID = Steam.RemotePlay.GetSessionID(i)
+        local name = Steam.RemotePlay.GetSessionClientName(sessionID)
+        print('Remote Play client:', name)
+    end
+
 .. function:: RemotePlay.GetSessionSteamID(unSessionID)
 
     🤖 **Auto-generated binding**
@@ -135,6 +166,11 @@ Function Reference
     :param int unSessionID:
     :returns: (uint64) Return value
     :SteamWorks: `GetSessionSteamID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionSteamID>`_
+
+**Example**::
+
+    local steamID = Steam.RemotePlay.GetSessionSteamID(sessionID)
+    print('Remote player:', Steam.Friends.GetFriendPersonaName(steamID))
 
 .. function:: RemotePlay.SetMouseCursor(unSessionID, unCursorID)
 
@@ -172,7 +208,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: RemotePlay.onSteamRemotePlaySessionConnected
+.. function:: RemotePlay.OnSteamRemotePlaySessionConnected
 
     Callback for `SteamRemotePlaySessionConnected_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlaySessionConnected_t>`_
 
@@ -180,7 +216,14 @@ Callbacks
 
     * **data.m_unSessionID** -- m_unSessionID
 
-.. function:: RemotePlay.onSteamRemotePlaySessionDisconnected
+**Example**::
+
+    function Steam.RemotePlay.OnSteamRemotePlaySessionConnected(data)
+        local name = Steam.RemotePlay.GetSessionClientName(data.m_unSessionID)
+        print('Remote Play session connected:', name)
+    end
+
+.. function:: RemotePlay.OnSteamRemotePlaySessionDisconnected
 
     Callback for `SteamRemotePlaySessionDisconnected_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlaySessionDisconnected_t>`_
 
@@ -188,7 +231,13 @@ Callbacks
 
     * **data.m_unSessionID** -- m_unSessionID
 
-.. function:: RemotePlay.onSteamRemotePlayTogetherGuestInvite
+**Example**::
+
+    function Steam.RemotePlay.OnSteamRemotePlaySessionDisconnected(data)
+        print('Remote Play session disconnected:', data.m_unSessionID)
+    end
+
+.. function:: RemotePlay.OnSteamRemotePlayTogetherGuestInvite
 
     Callback for `SteamRemotePlayTogetherGuestInvite_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlayTogetherGuestInvite_t>`_
 

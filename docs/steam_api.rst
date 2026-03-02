@@ -95,6 +95,13 @@ Function Reference
 
     Initializes the Steamworks game server API. Call this before using any Steam game server interfaces.
 
+**Example**::
+
+    local result = Steam.GameServerInit(0, gamePort, queryPort, Steam.eServerModeAuthentication, '0.0.0.1')
+    if not result then
+        error("Game server couldn't initialize")
+    end
+
 .. function:: GameServerShutdown()
 
     :returns: nothing
@@ -102,9 +109,19 @@ Function Reference
 
     Shuts down the Steamworks game server API. Call this when the game server is shutting down.
 
+**Example**::
+
+    Steam.GameServerShutdown()
+
 .. function:: GameServerRunCallbacks()
 
     :returns: nothing
     :SteamWorks: `SteamGameServer_RunCallbacks <https://partner.steamgames.com/doc/api/steam_gameserver#SteamGameServer_RunCallbacks>`_
 
     Dispatches callbacks for the game server. Call this regularly (e.g. once per frame) while the game server is running.
+
+**Example**::
+
+    function serverLoop(dt)
+        Steam.GameServerRunCallbacks()
+    end

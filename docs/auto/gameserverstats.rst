@@ -23,8 +23,8 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`GameServerStats.onGSStatsReceived`
-* :func:`GameServerStats.onGSStatsStored`
+* :func:`GameServerStats.OnGSStatsReceived`
+* :func:`GameServerStats.OnGSStatsStored`
 
 Function Reference
 ------------------
@@ -51,6 +51,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, achieved = Steam.GameServerStats.GetUserAchievement(playerSteamID, 'first_blood')
+    if ok and not achieved then
+        Steam.GameServerStats.SetUserAchievement(playerSteamID, 'first_blood')
+    end
 
 .. function:: GameServerStats.GetUserStatFloat(steamIDUser, pchName)
 
@@ -80,6 +87,13 @@ Function Reference
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, value = Steam.GameServerStats.GetUserStatInt32(playerSteamID, 'kills')
+    if ok then
+        print('Kills:', value)
+    end
+
 .. function:: GameServerStats.RequestUserStats(steamIDUser, callback)
 
     🤖 **Auto-generated binding**
@@ -88,6 +102,15 @@ Function Reference
     :param function callback: CallResult callback receiving struct `GSStatsReceived_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
+
+**Example**::
+
+    Steam.GameServerStats.RequestUserStats(playerSteamID, function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            local ok, kills = Steam.GameServerStats.GetUserStatInt32(playerSteamID, 'kills')
+            print('Player kills:', kills)
+        end
+    end)
 
 .. function:: GameServerStats.SetUserAchievement(steamIDUser, pchName)
 
@@ -118,6 +141,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatInt32>`_
 
+**Example**::
+
+    Steam.GameServerStats.SetUserStatInt32(playerSteamID, 'kills', newKillCount)
+    Steam.GameServerStats.StoreUserStats(playerSteamID, function(data, err) end)
+
 .. function:: GameServerStats.StoreUserStats(steamIDUser, callback)
 
     🤖 **Auto-generated binding**
@@ -126,6 +154,14 @@ Function Reference
     :param function callback: CallResult callback receiving struct `GSStatsStored_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
+
+**Example**::
+
+    Steam.GameServerStats.StoreUserStats(playerSteamID, function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            print('Stats saved for player:', tostring(data.m_steamIDUser))
+        end
+    end)
 
 .. function:: GameServerStats.UpdateUserAvgRateStat(steamIDUser, pchName, flCountThisSession, dSessionLength)
 
@@ -142,7 +178,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: GameServerStats.onGSStatsReceived
+.. function:: GameServerStats.OnGSStatsReceived
 
     Callback for `GSStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GSStatsReceived_t>`_
 
@@ -151,7 +187,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_steamIDUser** -- m_steamIDUser
 
-.. function:: GameServerStats.onGSStatsStored
+.. function:: GameServerStats.OnGSStatsStored
 
     Callback for `GSStatsStored_t <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GSStatsStored_t>`_
 

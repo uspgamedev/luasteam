@@ -49,12 +49,12 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Inventory.onSteamInventoryResultReady`
-* :func:`Inventory.onSteamInventoryFullUpdate`
-* :func:`Inventory.onSteamInventoryDefinitionUpdate`
-* :func:`Inventory.onSteamInventoryEligiblePromoItemDefIDs`
-* :func:`Inventory.onSteamInventoryStartPurchaseResult`
-* :func:`Inventory.onSteamInventoryRequestPricesResult`
+* :func:`Inventory.OnSteamInventoryResultReady`
+* :func:`Inventory.OnSteamInventoryFullUpdate`
+* :func:`Inventory.OnSteamInventoryDefinitionUpdate`
+* :func:`Inventory.OnSteamInventoryEligiblePromoItemDefIDs`
+* :func:`Inventory.OnSteamInventoryStartPurchaseResult`
+* :func:`Inventory.OnSteamInventoryRequestPricesResult`
 
 Function Reference
 ------------------
@@ -71,6 +71,11 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, resultHandle = Steam.Inventory.AddPromoItem(promoItemDefID)
+    -- Grants a promo item if the trigger conditions are met
 
 .. function:: Inventory.AddPromoItems(pArrayItemDefs, unArrayLength)
 
@@ -109,6 +114,11 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, resultHandle = Steam.Inventory.ConsumeItem(itemInstanceID, 1)
+    -- Wait for OnSteamInventoryResultReady to confirm
+
 .. function:: Inventory.DeserializeResult(pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE)
 
     🤖 **Auto-generated binding**
@@ -130,6 +140,10 @@ Function Reference
 
     :param int resultHandle:
     :SteamWorks: `DestroyResult <https://partner.steamgames.com/doc/api/ISteamInventory#DestroyResult>`_
+
+**Example**::
+
+    See :func:`Inventory.GetResultItems`'s example.
 
 .. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
 
@@ -176,6 +190,12 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    -- Request all items the current user owns
+    local ok, resultHandle = Steam.Inventory.GetAllItems()
+    -- Wait for OnSteamInventoryResultReady callback
+
 .. function:: Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArraySize)
 
     🤖 **Auto-generated binding**
@@ -207,6 +227,14 @@ Function Reference
     * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ids = Steam.Inventory.GetItemDefinitionIDs(256)
+    for _, defID in ipairs(ids) do
+        local ok, name = Steam.Inventory.GetItemDefinitionProperty(defID, 'name', 128)
+        print('Item def:', defID, name)
+    end
+
 .. function:: Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punValueBufferSizeOut)
 
     🤖 **Auto-generated binding**
@@ -223,6 +251,10 @@ Function Reference
 
     * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    See :func:`Inventory.GetItemDefinitionIDs`'s example.
 
 .. function:: Inventory.GetItemPrice(iDefinition)
 
@@ -252,6 +284,11 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, resultHandle = Steam.Inventory.GetItemsByID({itemInstanceID1, itemInstanceID2}, 2)
+    -- Wait for OnSteamInventoryResultReady
 
 .. function:: Inventory.GetNumItemsWithPrices()
 
@@ -294,6 +331,17 @@ Function Reference
     * Parameter ``pOutItemsArray`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punOutItemsArraySize`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    function Steam.Inventory.OnSteamInventoryResultReady(data)
+        if data.m_result ~= Steam.k_EResultOK then return end
+        local items = Steam.Inventory.GetResultItems(data.m_handle, 256)
+        for _, item in ipairs(items) do
+            print('Item:', item.m_iDefinition, 'Qty:', item.m_unQuantity)
+        end
+        Steam.Inventory.DestroyResult(data.m_handle)
+    end
+
 .. function:: Inventory.GetResultStatus(resultHandle)
 
     🤖 **Auto-generated binding**
@@ -301,6 +349,13 @@ Function Reference
     :param int resultHandle:
     :returns: (int) Return value
     :SteamWorks: `GetResultStatus <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultStatus>`_
+
+**Example**::
+
+    local status = Steam.Inventory.GetResultStatus(resultHandle)
+    if status == Steam.k_EResultOK then
+        processInventoryResult(resultHandle)
+    end
 
 .. function:: Inventory.GetResultTimestamp(resultHandle)
 
@@ -342,6 +397,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `LoadItemDefinitions <https://partner.steamgames.com/doc/api/ISteamInventory#LoadItemDefinitions>`_
 
+**Example**::
+
+    -- Trigger loading of item definitions; wait for OnSteamInventoryDefinitionUpdate
+    Steam.Inventory.LoadItemDefinitions()
+
 .. function:: Inventory.RemoveProperty(handle, nItemID, pchPropertyName)
 
     🤖 **Auto-generated binding**
@@ -368,6 +428,19 @@ Function Reference
     :param function callback: CallResult callback receiving struct `SteamInventoryRequestPricesResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestPrices <https://partner.steamgames.com/doc/api/ISteamInventory#RequestPrices>`_
+
+**Example**::
+
+    Steam.Inventory.RequestPrices(function(data, err)
+        if not err and data.m_result == Steam.k_EResultOK then
+            local numItems = Steam.Inventory.GetNumItemsWithPrices()
+            local items = Steam.Inventory.getItemsWithPrices(numItems)
+            for _, item in ipairs(items) do
+                print('Item', item.m_iDefinition, 'costs',
+                      item.m_flCurrentPrice, item.m_rgchCurrencyCode)
+            end
+        end
+    end)
 
 .. function:: Inventory.SendItemDropHeartbeat()
 
@@ -430,6 +503,14 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
 
+**Example**::
+
+    Steam.Inventory.StartPurchase({itemDefID}, 1, {1}, function(data, err)
+        if not err and data.m_result == Steam.k_EResultOK then
+            print('Purchase started, orderID:', tostring(data.m_ulOrderID))
+        end
+    end)
+
 .. function:: Inventory.StartUpdateProperties()
 
     🤖 **Auto-generated binding**
@@ -484,6 +565,11 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    -- Split a stack: move 5 units to a new stack
+    local ok, resultHandle = Steam.Inventory.TransferItemQuantity(sourceItemID, 5, 0)
+
 .. function:: Inventory.TriggerItemDrop(dropListDefinition)
 
     🤖 **Auto-generated binding**
@@ -496,6 +582,11 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, resultHandle = Steam.Inventory.TriggerItemDrop(dropListDefinitionID)
+    -- Triggers a potential item drop for playtime rewards
 
 
 Unimplemented Methods
@@ -517,7 +608,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: Inventory.onSteamInventoryResultReady
+.. function:: Inventory.OnSteamInventoryResultReady
 
     Callback for `SteamInventoryResultReady_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryResultReady_t>`_
 
@@ -526,7 +617,11 @@ Callbacks
     * **data.m_handle** -- m_handle
     * **data.m_result** -- m_result
 
-.. function:: Inventory.onSteamInventoryFullUpdate
+**Example**::
+
+    See :func:`Inventory.GetResultItems`'s example.
+
+.. function:: Inventory.OnSteamInventoryFullUpdate
 
     Callback for `SteamInventoryFullUpdate_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryFullUpdate_t>`_
 
@@ -534,14 +629,22 @@ Callbacks
 
     * **data.m_handle** -- m_handle
 
-.. function:: Inventory.onSteamInventoryDefinitionUpdate
+.. function:: Inventory.OnSteamInventoryDefinitionUpdate
 
     Callback for `SteamInventoryDefinitionUpdate_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryDefinitionUpdate_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Inventory.onSteamInventoryEligiblePromoItemDefIDs
+**Example**::
+
+    function Steam.Inventory.OnSteamInventoryDefinitionUpdate()
+        print('Item definitions updated')
+        local ids = Steam.Inventory.GetItemDefinitionIDs(256)
+        print('Loaded', #ids, 'item definitions')
+    end
+
+.. function:: Inventory.OnSteamInventoryEligiblePromoItemDefIDs
 
     Callback for `SteamInventoryEligiblePromoItemDefIDs_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryEligiblePromoItemDefIDs_t>`_
 
@@ -552,7 +655,7 @@ Callbacks
     * **data.m_numEligiblePromoItemDefs** -- m_numEligiblePromoItemDefs
     * **data.m_bCachedData** -- m_bCachedData
 
-.. function:: Inventory.onSteamInventoryStartPurchaseResult
+.. function:: Inventory.OnSteamInventoryStartPurchaseResult
 
     Callback for `SteamInventoryStartPurchaseResult_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryStartPurchaseResult_t>`_
 
@@ -562,7 +665,7 @@ Callbacks
     * **data.m_ulOrderID** -- m_ulOrderID
     * **data.m_ulTransID** -- m_ulTransID
 
-.. function:: Inventory.onSteamInventoryRequestPricesResult
+.. function:: Inventory.OnSteamInventoryRequestPricesResult
 
     Callback for `SteamInventoryRequestPricesResult_t <https://partner.steamgames.com/doc/api/ISteamInventory#SteamInventoryRequestPricesResult_t>`_
 
@@ -570,4 +673,12 @@ Callbacks
 
     * **data.m_result** -- m_result
     * **data.m_rgchCurrency** -- m_rgchCurrency
+
+**Example**::
+
+    function Steam.Inventory.OnSteamInventoryRequestPricesResult(data)
+        if data.m_result == Steam.k_EResultOK then
+            print('Currency:', data.m_rgchCurrency)
+        end
+    end
 

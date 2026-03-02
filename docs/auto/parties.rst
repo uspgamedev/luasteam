@@ -24,12 +24,12 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Parties.onJoinPartyCallback`
-* :func:`Parties.onCreateBeaconCallback`
-* :func:`Parties.onReservationNotificationCallback`
-* :func:`Parties.onChangeNumOpenSlotsCallback`
-* :func:`Parties.onAvailableBeaconLocationsUpdated`
-* :func:`Parties.onActiveBeaconsUpdated`
+* :func:`Parties.OnJoinPartyCallback`
+* :func:`Parties.OnCreateBeaconCallback`
+* :func:`Parties.OnReservationNotificationCallback`
+* :func:`Parties.OnChangeNumOpenSlotsCallback`
+* :func:`Parties.OnAvailableBeaconLocationsUpdated`
+* :func:`Parties.OnActiveBeaconsUpdated`
 
 Function Reference
 ------------------
@@ -41,6 +41,11 @@ Function Reference
     :param uint64 ulBeacon:
     :param uint64 steamIDUser:
     :SteamWorks: `CancelReservation <https://partner.steamgames.com/doc/api/ISteamParties#CancelReservation>`_
+
+**Example**::
+
+    -- Called by beacon owner when a reserved player cancels
+    Steam.Parties.CancelReservation(beaconHandle, playerSteamID)
 
 .. function:: Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback)
 
@@ -81,6 +86,10 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetBeaconByIndex <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconByIndex>`_
 
+**Example**::
+
+    See :func:`Parties.GetNumActiveBeacons`'s example.
+
 .. function:: Parties.GetBeaconDetails(ulBeaconID, cchMetadata)
 
     🤖 **Auto-generated binding**
@@ -98,6 +107,10 @@ Function Reference
     * Parameter ``pSteamIDBeaconOwner`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pLocation`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    See :func:`Parties.GetNumActiveBeacons`'s example.
 
 .. function:: Parties.GetBeaconLocationData(BeaconLocation, eData, cchDataStringOut)
 
@@ -121,6 +134,17 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetNumActiveBeacons <https://partner.steamgames.com/doc/api/ISteamParties#GetNumActiveBeacons>`_
 
+**Example**::
+
+    local count = Steam.Parties.GetNumActiveBeacons()
+    for i = 0, count - 1 do
+        local beaconID = Steam.Parties.GetBeaconByIndex(i)
+        local ok, ownerID, loc, meta = Steam.Parties.GetBeaconDetails(beaconID, 256)
+        if ok then
+            print('Beacon owner:', Steam.Friends.GetFriendPersonaName(ownerID))
+        end
+    end
+
 .. function:: Parties.GetNumAvailableBeaconLocations()
 
     🤖 **Auto-generated binding**
@@ -133,6 +157,14 @@ Function Reference
 
     * Parameter ``puNumLocations`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local count = Steam.Parties.GetNumAvailableBeaconLocations()
+    local locations = Steam.Parties.GetAvailableBeaconLocations(count)
+    for _, loc in ipairs(locations) do
+        print('Beacon location type:', loc.m_eType)
+    end
+
 .. function:: Parties.JoinParty(ulBeaconID, callback)
 
     🤖 **Auto-generated binding**
@@ -141,6 +173,15 @@ Function Reference
     :param function callback: CallResult callback receiving struct `JoinPartyCallback_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
+
+**Example**::
+
+    Steam.Parties.JoinParty(beaconID, function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            print('Joined party, connect string:', data.m_rgchConnectString)
+            connectToGame(data.m_rgchConnectString)
+        end
+    end)
 
 .. function:: Parties.OnReservationCompleted(ulBeacon, steamIDUser)
 
@@ -164,7 +205,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: Parties.onJoinPartyCallback
+.. function:: Parties.OnJoinPartyCallback
 
     Callback for `JoinPartyCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#JoinPartyCallback_t>`_
 
@@ -175,7 +216,15 @@ Callbacks
     * **data.m_SteamIDBeaconOwner** -- m_SteamIDBeaconOwner
     * **data.m_rgchConnectString** -- m_rgchConnectString
 
-.. function:: Parties.onCreateBeaconCallback
+**Example**::
+
+    function Steam.Parties.OnJoinPartyCallback(data)
+        if data.m_eResult == Steam.k_EResultOK then
+            connectToGame(data.m_rgchConnectString)
+        end
+    end
+
+.. function:: Parties.OnCreateBeaconCallback
 
     Callback for `CreateBeaconCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeaconCallback_t>`_
 
@@ -184,7 +233,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_ulBeaconID** -- m_ulBeaconID
 
-.. function:: Parties.onReservationNotificationCallback
+.. function:: Parties.OnReservationNotificationCallback
 
     Callback for `ReservationNotificationCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#ReservationNotificationCallback_t>`_
 
@@ -193,7 +242,7 @@ Callbacks
     * **data.m_ulBeaconID** -- m_ulBeaconID
     * **data.m_steamIDJoiner** -- m_steamIDJoiner
 
-.. function:: Parties.onChangeNumOpenSlotsCallback
+.. function:: Parties.OnChangeNumOpenSlotsCallback
 
     Callback for `ChangeNumOpenSlotsCallback_t <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlotsCallback_t>`_
 
@@ -201,17 +250,24 @@ Callbacks
 
     * **data.m_eResult** -- m_eResult
 
-.. function:: Parties.onAvailableBeaconLocationsUpdated
+.. function:: Parties.OnAvailableBeaconLocationsUpdated
 
     Callback for `AvailableBeaconLocationsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#AvailableBeaconLocationsUpdated_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Parties.onActiveBeaconsUpdated
+.. function:: Parties.OnActiveBeaconsUpdated
 
     Callback for `ActiveBeaconsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#ActiveBeaconsUpdated_t>`_
 
     **callback(data)** receives:
 
+
+**Example**::
+
+    function Steam.Parties.OnActiveBeaconsUpdated()
+        local count = Steam.Parties.GetNumActiveBeacons()
+        print('Active beacons updated, count:', count)
+    end
 

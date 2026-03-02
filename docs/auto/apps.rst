@@ -46,11 +46,11 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Apps.onDlcInstalled`
-* :func:`Apps.onNewUrlLaunchParameters`
-* :func:`Apps.onAppProofOfPurchaseKeyResponse`
-* :func:`Apps.onFileDetailsResult`
-* :func:`Apps.onTimedTrialStatus`
+* :func:`Apps.OnDlcInstalled`
+* :func:`Apps.OnNewUrlLaunchParameters`
+* :func:`Apps.OnAppProofOfPurchaseKeyResponse`
+* :func:`Apps.OnFileDetailsResult`
+* :func:`Apps.OnTimedTrialStatus`
 
 Function Reference
 ------------------
@@ -81,6 +81,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BIsAppInstalled <https://partner.steamgames.com/doc/api/ISteamApps#BIsAppInstalled>`_
 
+**Example**::
+
+    if Steam.Apps.BIsAppInstalled(440) then
+        print('Team Fortress 2 is installed')
+    end
+
 .. function:: Apps.BIsCybercafe()
 
     🤖 **Auto-generated binding**
@@ -95,6 +101,12 @@ Function Reference
     :param int appID:
     :returns: (bool) Return value
     :SteamWorks: `BIsDlcInstalled <https://partner.steamgames.com/doc/api/ISteamApps#BIsDlcInstalled>`_
+
+**Example**::
+
+    if Steam.Apps.BIsDlcInstalled(12345) then
+        -- Unlock game content
+    end
 
 .. function:: Apps.BIsLowViolence()
 
@@ -114,9 +126,17 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int appID:
+    :param int appID: The App ID of the DLC
     :returns: (bool) Return value
     :SteamWorks: `BIsSubscribedApp <https://partner.steamgames.com/doc/api/ISteamApps#BIsSubscribedApp>`_
+
+    Checks if the user owns a specific piece of Downloadable Content (DLC).
+
+**Example**::
+
+    if Steam.Apps.BIsSubscribedApp(dlcAppID) then
+        unlockDLCContent()
+    end
 
 .. function:: Apps.BIsSubscribedFromFamilySharing()
 
@@ -124,6 +144,12 @@ Function Reference
 
     :returns: (bool) Return value
     :SteamWorks: `BIsSubscribedFromFamilySharing <https://partner.steamgames.com/doc/api/ISteamApps#BIsSubscribedFromFamilySharing>`_
+
+**Example**::
+
+    if Steam.Apps.BIsSubscribedFromFamilySharing() then
+        print('Playing via Family Sharing')
+    end
 
 .. function:: Apps.BIsSubscribedFromFreeWeekend()
 
@@ -146,6 +172,13 @@ Function Reference
     * Parameter ``punSecondsAllowed`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punSecondsPlayed`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local isTrial, secondsAllowed, secondsPlayed = Steam.Apps.BIsTimedTrial()
+    if isTrial then
+        print(string.format('Trial: %d/%d seconds played', secondsPlayed, secondsAllowed))
+    end
+
 .. function:: Apps.BIsVACBanned()
 
     🤖 **Auto-generated binding**
@@ -159,6 +192,10 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `GetAppBuildId <https://partner.steamgames.com/doc/api/ISteamApps#GetAppBuildId>`_
+
+**Example**::
+
+    print('Current build ID: ' .. Steam.Apps.GetAppBuildId())
 
 .. function:: Apps.GetAppInstallDir(appID, cchFolderBufferSize)
 
@@ -174,6 +211,13 @@ Function Reference
 
     * Parameter ``pchFolder`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local size, path = Steam.Apps.GetAppInstallDir(Steam.Utils.GetAppID(), 512)
+    if size > 0 then
+        print('Game installed at: ' .. path)
+    end
+
 .. function:: Apps.GetAppOwner()
 
     🤖 **Auto-generated binding**
@@ -181,12 +225,25 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetAppOwner <https://partner.steamgames.com/doc/api/ISteamApps#GetAppOwner>`_
 
+**Example**::
+
+    local ownerID = Steam.Apps.GetAppOwner()
+    local myID = Steam.User.GetSteamID()
+    if ownerID ~= myID then
+        print('Playing via Family Sharing from: ' .. tostring(ownerID))
+    end
+
 .. function:: Apps.GetAvailableGameLanguages()
 
     🤖 **Auto-generated binding**
 
     :returns: (str) Return value
     :SteamWorks: `GetAvailableGameLanguages <https://partner.steamgames.com/doc/api/ISteamApps#GetAvailableGameLanguages>`_
+
+**Example**::
+
+    local langs = Steam.Apps.GetAvailableGameLanguages()
+    print('Supported languages: ' .. langs)
 
 .. function:: Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription)
 
@@ -229,12 +286,26 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetCurrentGameLanguage <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentGameLanguage>`_
 
+**Example**::
+
+    print("The game's current language is " .. Steam.Apps.GetCurrentGameLanguage())
+
 .. function:: Apps.GetDLCCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetDLCCount <https://partner.steamgames.com/doc/api/ISteamApps#GetDLCCount>`_
+
+**Example**::
+
+    local count = Steam.Apps.GetDLCCount()
+    for i = 0, count - 1 do
+        local appID, available, name = Steam.Apps.BGetDLCDataByIndex(i, 256)
+        if available then
+            print('DLC: ' .. name .. ' (' .. appID .. ')')
+        end
+    end
 
 .. function:: Apps.GetDlcDownloadProgress(nAppID)
 
@@ -259,6 +330,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetEarliestPurchaseUnixTime <https://partner.steamgames.com/doc/api/ISteamApps#GetEarliestPurchaseUnixTime>`_
 
+**Example**::
+
+    local ts = Steam.Apps.GetEarliestPurchaseUnixTime(Steam.Utils.GetAppID())
+    print('Game purchased at unix time: ' .. ts)
+
 .. function:: Apps.GetFileDetails(pszFileName, callback)
 
     🤖 **Auto-generated binding**
@@ -282,6 +358,13 @@ Function Reference
 
     * Parameter ``pvecDepots`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local depots = Steam.Apps.GetInstalledDepots(Steam.Utils.GetAppID(), 16)
+    for _, depotID in ipairs(depots) do
+        print('Installed depot: ' .. depotID)
+    end
+
 .. function:: Apps.GetLaunchCommandLine(cubCommandLine)
 
     🤖 **Auto-generated binding**
@@ -295,6 +378,14 @@ Function Reference
 
     * Parameter ``pszCommandLine`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local params = Steam.Apps.GetLaunchCommandLine(1024)
+    local connect_string = tryParseConnectString(params)
+    if connect_string then
+        initiateJoinGame(connect_string)
+    end
+
 .. function:: Apps.GetLaunchQueryParam(pchKey)
 
     🤖 **Auto-generated binding**
@@ -302,6 +393,13 @@ Function Reference
     :param str pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLaunchQueryParam <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchQueryParam>`_
+
+**Example**::
+
+    local connect = Steam.Apps.GetLaunchQueryParam('connect')
+    if connect ~= '' then
+        connectToServer(connect)
+    end
 
 .. function:: Apps.GetNumBetas()
 
@@ -331,6 +429,11 @@ Function Reference
     :param bool bMissingFilesOnly:
     :returns: (bool) Return value
     :SteamWorks: `MarkContentCorrupt <https://partner.steamgames.com/doc/api/ISteamApps#MarkContentCorrupt>`_
+
+**Example**::
+
+    -- Trigger a Steam file integrity check
+    Steam.Apps.MarkContentCorrupt(false)
 
 .. function:: Apps.RequestAllProofOfPurchaseKeys()
 
@@ -372,7 +475,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: Apps.onDlcInstalled
+.. function:: Apps.OnDlcInstalled
 
     Callback for `DlcInstalled_t <https://partner.steamgames.com/doc/api/ISteamApps#DlcInstalled_t>`_
 
@@ -380,14 +483,28 @@ Callbacks
 
     * **data.m_nAppID** -- m_nAppID
 
-.. function:: Apps.onNewUrlLaunchParameters
+**Example**::
+
+    function Steam.Apps.OnDlcInstalled(data)
+        print('DLC installed: appID =', data.m_nAppID)
+        unlockDLCContent(data.m_nAppID)
+    end
+
+.. function:: Apps.OnNewUrlLaunchParameters
 
     Callback for `NewUrlLaunchParameters_t <https://partner.steamgames.com/doc/api/ISteamApps#NewUrlLaunchParameters_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Apps.onAppProofOfPurchaseKeyResponse
+**Example**::
+
+    function Steam.Apps.OnNewUrlLaunchParameters()
+        local params = Steam.Apps.GetLaunchCommandLine(1024)
+        handleLaunchParams(params)
+    end
+
+.. function:: Apps.OnAppProofOfPurchaseKeyResponse
 
     Callback for `AppProofOfPurchaseKeyResponse_t <https://partner.steamgames.com/doc/api/ISteamApps#AppProofOfPurchaseKeyResponse_t>`_
 
@@ -398,7 +515,7 @@ Callbacks
     * **data.m_cchKeyLength** -- m_cchKeyLength
     * **data.m_rgchKey** -- m_rgchKey
 
-.. function:: Apps.onFileDetailsResult
+.. function:: Apps.OnFileDetailsResult
 
     Callback for `FileDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamApps#FileDetailsResult_t>`_
 
@@ -409,7 +526,7 @@ Callbacks
     * **data.m_FileSHA** -- m_FileSHA
     * **data.m_unFlags** -- m_unFlags
 
-.. function:: Apps.onTimedTrialStatus
+.. function:: Apps.OnTimedTrialStatus
 
     Callback for `TimedTrialStatus_t <https://partner.steamgames.com/doc/api/ISteamApps#TimedTrialStatus_t>`_
 
@@ -419,4 +536,12 @@ Callbacks
     * **data.m_bIsOffline** -- m_bIsOffline
     * **data.m_unSecondsAllowed** -- m_unSecondsAllowed
     * **data.m_unSecondsPlayed** -- m_unSecondsPlayed
+
+**Example**::
+
+    function Steam.Apps.OnTimedTrialStatus(data)
+        if data.m_bIsOffline ~= 0 then return end
+        local remaining = data.m_unSecondsAllowed - data.m_unSecondsPlayed
+        print('Trial time remaining: ' .. remaining .. 's')
+    end
 

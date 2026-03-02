@@ -22,8 +22,8 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Music.onPlaybackStatusHasChanged`
-* :func:`Music.onVolumeHasChanged`
+* :func:`Music.OnPlaybackStatusHasChanged`
+* :func:`Music.OnVolumeHasChanged`
 
 Function Reference
 ------------------
@@ -35,6 +35,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BIsEnabled <https://partner.steamgames.com/doc/api/ISteamMusic#BIsEnabled>`_
 
+**Example**::
+
+    if Steam.Music.BIsEnabled() then
+        print('Steam Music is enabled')
+    end
+
 .. function:: Music.BIsPlaying()
 
     🤖 **Auto-generated binding**
@@ -42,12 +48,26 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BIsPlaying <https://partner.steamgames.com/doc/api/ISteamMusic#BIsPlaying>`_
 
+**Example**::
+
+    if Steam.Music.BIsPlaying() then
+        print('Current status: ' .. Steam.Music.GetPlaybackStatus())
+    end
+
 .. function:: Music.GetPlaybackStatus()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetPlaybackStatus <https://partner.steamgames.com/doc/api/ISteamMusic#GetPlaybackStatus>`_
+
+**Example**::
+
+    local status = Steam.Music.GetPlaybackStatus()
+    -- 0=Undefined, 1=Playing, 2=Paused, 3=Idle
+    if status == 1 then
+        print('Music is playing')
+    end
 
 .. function:: Music.GetVolume()
 
@@ -62,17 +82,33 @@ Function Reference
 
     :SteamWorks: `Pause <https://partner.steamgames.com/doc/api/ISteamMusic#Pause>`_
 
+**Example**::
+
+    if Steam.Music.BIsPlaying() then
+        Steam.Music.Pause()
+    end
+
 .. function:: Music.Play()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `Play <https://partner.steamgames.com/doc/api/ISteamMusic#Play>`_
 
+**Example**::
+
+    if not Steam.Music.BIsPlaying() then
+        Steam.Music.Play()
+    end
+
 .. function:: Music.PlayNext()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `PlayNext <https://partner.steamgames.com/doc/api/ISteamMusic#PlayNext>`_
+
+**Example**::
+
+    Steam.Music.PlayNext()
 
 .. function:: Music.PlayPrevious()
 
@@ -87,22 +123,39 @@ Function Reference
     :param float flVolume:
     :SteamWorks: `SetVolume <https://partner.steamgames.com/doc/api/ISteamMusic#SetVolume>`_
 
+**Example**::
+
+    Steam.Music.SetVolume(0.5)  -- Set to 50%
+
 
 Callbacks
 ---------
 
-.. function:: Music.onPlaybackStatusHasChanged
+.. function:: Music.OnPlaybackStatusHasChanged
 
     Callback for `PlaybackStatusHasChanged_t <https://partner.steamgames.com/doc/api/ISteamMusic#PlaybackStatusHasChanged_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Music.onVolumeHasChanged
+**Example**::
+
+    function Steam.Music.OnPlaybackStatusHasChanged()
+        local status = Steam.Music.GetPlaybackStatus()
+        print('Music status changed:', status)
+    end
+
+.. function:: Music.OnVolumeHasChanged
 
     Callback for `VolumeHasChanged_t <https://partner.steamgames.com/doc/api/ISteamMusic#VolumeHasChanged_t>`_
 
     **callback(data)** receives:
 
     * **data.m_flNewVolume** -- m_flNewVolume
+
+**Example**::
+
+    function Steam.Music.OnVolumeHasChanged(data)
+        print('Music volume changed to:', data.m_flNewVolume)
+    end
 

@@ -91,27 +91,27 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Friends.onPersonaStateChange`
-* :func:`Friends.onGameOverlayActivated`
-* :func:`Friends.onGameServerChangeRequested`
-* :func:`Friends.onGameLobbyJoinRequested`
-* :func:`Friends.onAvatarImageLoaded`
-* :func:`Friends.onClanOfficerListResponse`
-* :func:`Friends.onFriendRichPresenceUpdate`
-* :func:`Friends.onGameRichPresenceJoinRequested`
-* :func:`Friends.onGameConnectedClanChatMsg`
-* :func:`Friends.onGameConnectedChatJoin`
-* :func:`Friends.onGameConnectedChatLeave`
-* :func:`Friends.onDownloadClanActivityCountsResult`
-* :func:`Friends.onJoinClanChatRoomCompletionResult`
-* :func:`Friends.onGameConnectedFriendChatMsg`
-* :func:`Friends.onFriendsGetFollowerCount`
-* :func:`Friends.onFriendsIsFollowing`
-* :func:`Friends.onFriendsEnumerateFollowingList`
-* :func:`Friends.onUnreadChatMessagesChanged`
-* :func:`Friends.onOverlayBrowserProtocolNavigation`
-* :func:`Friends.onEquippedProfileItemsChanged`
-* :func:`Friends.onEquippedProfileItems`
+* :func:`Friends.OnPersonaStateChange`
+* :func:`Friends.OnGameOverlayActivated`
+* :func:`Friends.OnGameServerChangeRequested`
+* :func:`Friends.OnGameLobbyJoinRequested`
+* :func:`Friends.OnAvatarImageLoaded`
+* :func:`Friends.OnClanOfficerListResponse`
+* :func:`Friends.OnFriendRichPresenceUpdate`
+* :func:`Friends.OnGameRichPresenceJoinRequested`
+* :func:`Friends.OnGameConnectedClanChatMsg`
+* :func:`Friends.OnGameConnectedChatJoin`
+* :func:`Friends.OnGameConnectedChatLeave`
+* :func:`Friends.OnDownloadClanActivityCountsResult`
+* :func:`Friends.OnJoinClanChatRoomCompletionResult`
+* :func:`Friends.OnGameConnectedFriendChatMsg`
+* :func:`Friends.OnFriendsGetFollowerCount`
+* :func:`Friends.OnFriendsIsFollowing`
+* :func:`Friends.OnFriendsEnumerateFollowingList`
+* :func:`Friends.OnUnreadChatMessagesChanged`
+* :func:`Friends.OnOverlayBrowserProtocolNavigation`
+* :func:`Friends.OnEquippedProfileItemsChanged`
+* :func:`Friends.OnEquippedProfileItems`
 
 Function Reference
 ------------------
@@ -123,12 +123,21 @@ Function Reference
     :param str pchDialog:
     :SteamWorks: `ActivateGameOverlay <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlay>`_
 
+**Example**::
+
+    Steam.Friends.ActivateGameOverlay('stats')
+
 .. function:: Friends.ActivateGameOverlayInviteDialog(steamIDLobby)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
     :SteamWorks: `ActivateGameOverlayInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialog>`_
+
+**Example**::
+
+    -- Open the Steam overlay invite dialog for a lobby
+    Steam.Friends.ActivateGameOverlayInviteDialog(lobbyID)
 
 .. function:: Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString)
 
@@ -152,6 +161,10 @@ Function Reference
     :param int eFlag:
     :SteamWorks: `ActivateGameOverlayToStore <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToStore>`_
 
+**Example**::
+
+    Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), 'None')
+
 .. function:: Friends.ActivateGameOverlayToUser(pchDialog, steamID)
 
     🤖 **Auto-generated binding**
@@ -160,6 +173,10 @@ Function Reference
     :param uint64 steamID:
     :SteamWorks: `ActivateGameOverlayToUser <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToUser>`_
 
+**Example**::
+
+    Steam.Friends.ActivateGameOverlayToUser('steamid', friendSteamID)
+
 .. function:: Friends.ActivateGameOverlayToWebPage(pchURL, eMode)
 
     🤖 **Auto-generated binding**
@@ -167,6 +184,10 @@ Function Reference
     :param str pchURL:
     :param int eMode:
     :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
+
+**Example**::
+
+    Steam.Friends.ActivateGameOverlayToWebPage('https://www.google.com')
 
 .. function:: Friends.BHasEquippedProfileItem(steamID, itemType)
 
@@ -182,6 +203,10 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :SteamWorks: `ClearRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#ClearRichPresence>`_
+
+**Example**::
+
+    Steam.Friends.ClearRichPresence()
 
 .. function:: Friends.CloseClanChatWindowInSteam(steamIDClanChat)
 
@@ -248,6 +273,10 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetClanByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanByIndex>`_
 
+**Example**::
+
+    See :func:`Friends.GetClanCount`'s example.
+
 .. function:: Friends.GetClanChatMemberCount(steamIDClan)
 
     🤖 **Auto-generated binding**
@@ -282,6 +311,14 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetClanCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanCount>`_
 
+**Example**::
+
+    local count = Steam.Friends.GetClanCount()
+    for i = 0, count - 1 do
+        local clanID = Steam.Friends.GetClanByIndex(i)
+        print('Clan: ' .. Steam.Friends.GetClanName(clanID))
+    end
+
 .. function:: Friends.GetClanName(steamIDClan)
 
     🤖 **Auto-generated binding**
@@ -289,6 +326,10 @@ Function Reference
     :param uint64 steamIDClan:
     :returns: (str) Return value
     :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
+
+**Example**::
+
+    See :func:`Friends.GetClanCount`'s example.
 
 .. function:: Friends.GetClanOfficerByIndex(steamIDClan, iOfficer)
 
@@ -307,6 +348,14 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetClanOfficerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerCount>`_
 
+**Example**::
+
+    local count = Steam.Friends.GetClanOfficerCount(clanID)
+    for i = 0, count - 1 do
+        local officerID = Steam.Friends.GetClanOfficerByIndex(clanID, i)
+        print('Officer:', Steam.Friends.GetFriendPersonaName(officerID))
+    end
+
 .. function:: Friends.GetClanOwner(steamIDClan)
 
     🤖 **Auto-generated binding**
@@ -314,6 +363,11 @@ Function Reference
     :param uint64 steamIDClan:
     :returns: (uint64) Return value
     :SteamWorks: `GetClanOwner <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOwner>`_
+
+**Example**::
+
+    local ownerID = Steam.Friends.GetClanOwner(clanID)
+    print('Clan owner:', Steam.Friends.GetFriendPersonaName(ownerID))
 
 .. function:: Friends.GetClanTag(steamIDClan)
 
@@ -347,6 +401,14 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
 
+**Example**::
+
+    Steam.Friends.GetFollowerCount(playerID, function(data, err)
+        if not err then
+            print('Follower count:', data.m_nCount)
+        end
+    end)
+
 .. function:: Friends.GetFriendByIndex(iFriend, iFriendFlags)
 
     🤖 **Auto-generated binding**
@@ -356,6 +418,14 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetFriendByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendByIndex>`_
 
+**Example**::
+
+    local count = Steam.Friends.GetFriendCount(Steam.k_EFriendFlagAll)
+    for i = 0, count - 1 do
+        local friend_id = Steam.Friends.GetFriendByIndex(i, Steam.k_EFriendFlagAll)
+        print(Steam.Friends.GetFriendPersonaName(friend_id))
+    end
+
 .. function:: Friends.GetFriendCoplayGame(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -363,6 +433,11 @@ Function Reference
     :param uint64 steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
+
+**Example**::
+
+    local gameID = Steam.Friends.GetFriendCoplayGame(friendID)
+    print('Friend last co-op game:', tostring(gameID))
 
 .. function:: Friends.GetFriendCoplayTime(steamIDFriend)
 
@@ -379,6 +454,11 @@ Function Reference
     :param int iFriendFlags:
     :returns: (int) Return value
     :SteamWorks: `GetFriendCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCount>`_
+
+**Example**::
+
+    local count = Steam.Friends.GetFriendCount(Steam.k_EFriendFlagAll)
+    print('You have ' .. count .. ' friends')
 
 .. function:: Friends.GetFriendCountFromSource(steamIDSource)
 
@@ -410,6 +490,13 @@ Function Reference
 
     * Parameter ``pFriendGameInfo`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local playing, gameID, ip, port, queryPort = Steam.Friends.GetFriendGamePlayed(friendID)
+    if playing then
+        print('Friend is playing game:', tostring(gameID))
+    end
+
 .. function:: Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData)
 
     🤖 **Auto-generated binding**
@@ -435,6 +522,11 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
 
+**Example**::
+
+    local friend_id = getSteamIdSomehow()
+    print("Friend's name is: " .. Steam.Friends.GetFriendPersonaName(friend_id))
+
 .. function:: Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName)
 
     🤖 **Auto-generated binding**
@@ -452,6 +544,13 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
 
+**Example**::
+
+    local state = Steam.Friends.GetFriendPersonaState(friendID)
+    if state == Steam.k_EPersonaStateOnline then
+        print('Friend is online')
+    end
+
 .. function:: Friends.GetFriendRelationship(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -459,6 +558,13 @@ Function Reference
     :param uint64 steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
+
+**Example**::
+
+    local rel = Steam.Friends.GetFriendRelationship(playerID)
+    if rel == Steam.k_EFriendRelationshipFriend then
+        print('This player is your friend')
+    end
 
 .. function:: Friends.GetFriendRichPresence(steamIDFriend, pchKey)
 
@@ -468,6 +574,11 @@ Function Reference
     :param str pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
+
+**Example**::
+
+    local value = Steam.Friends.GetFriendRichPresence(friend_id, 'steam_display')
+    print('Rich presence: ' .. value)
 
 .. function:: Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey)
 
@@ -486,6 +597,15 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFriendRichPresenceKeyCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyCount>`_
 
+**Example**::
+
+    local count = Steam.Friends.GetFriendRichPresenceKeyCount(friendID)
+    for i = 0, count - 1 do
+        local key = Steam.Friends.GetFriendRichPresenceKeyByIndex(friendID, i)
+        local val = Steam.Friends.GetFriendRichPresence(friendID, key)
+        print(key .. ' = ' .. val)
+    end
+
 .. function:: Friends.GetFriendSteamLevel(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -494,12 +614,25 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFriendSteamLevel <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendSteamLevel>`_
 
+**Example**::
+
+    local level = Steam.Friends.GetFriendSteamLevel(friendID)
+    print('Friend Steam level:', level)
+
 .. function:: Friends.GetFriendsGroupCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetFriendsGroupCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupCount>`_
+
+**Example**::
+
+    local groupCount = Steam.Friends.GetFriendsGroupCount()
+    for i = 0, groupCount - 1 do
+        local groupID = Steam.Friends.GetFriendsGroupIDByIndex(i)
+        print('Group: ' .. Steam.Friends.GetFriendsGroupName(groupID))
+    end
 
 .. function:: Friends.GetFriendsGroupIDByIndex(iFG)
 
@@ -554,6 +687,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetMediumFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetMediumFriendAvatar>`_
 
+**Example**::
+
+    -- Returns an image handle; use Utils.GetImageRGBA to get pixel data
+    local imageHandle = Steam.Friends.GetMediumFriendAvatar(friendID)
+
 .. function:: Friends.GetNumChatsWithUnreadPriorityMessages()
 
     🤖 **Auto-generated binding**
@@ -568,12 +706,25 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaName>`_
 
+    Gets the current user's persona (display) name.
+
+**Example**::
+
+    print('My name is: ' .. Steam.Friends.GetPersonaName())
+
 .. function:: Friends.GetPersonaState()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaState>`_
+
+**Example**::
+
+    local state = Steam.Friends.GetPersonaState()
+    if state == Steam.k_EPersonaStateOnline then
+        print('User is online')
+    end
 
 .. function:: Friends.GetPlayerNickname(steamIDPlayer)
 
@@ -582,6 +733,13 @@ Function Reference
     :param uint64 steamIDPlayer:
     :returns: (str) Return value
     :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
+
+**Example**::
+
+    local nick = Steam.Friends.GetPlayerNickname(friendID)
+    if nick then
+        print('Your nickname for this friend: ' .. nick)
+    end
 
 .. function:: Friends.GetProfileItemPropertyString(steamID, itemType, prop)
 
@@ -611,6 +769,15 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetSmallFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetSmallFriendAvatar>`_
 
+**Example**::
+
+    local imageHandle = Steam.Friends.GetSmallFriendAvatar(friendID)
+    if imageHandle > 0 then
+        local w, h = Steam.Utils.GetImageSize(imageHandle)
+        local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+        renderAvatar(rgba, w, h)
+    end
+
 .. function:: Friends.HasFriend(steamIDFriend, iFriendFlags)
 
     🤖 **Auto-generated binding**
@@ -620,6 +787,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `HasFriend <https://partner.steamgames.com/doc/api/ISteamFriends#HasFriend>`_
 
+**Example**::
+
+    if Steam.Friends.HasFriend(playerID, Steam.k_EFriendFlagImmediate) then
+        print('This player is a direct friend')
+    end
+
 .. function:: Friends.InviteUserToGame(steamIDFriend, pchConnectString)
 
     🤖 **Auto-generated binding**
@@ -628,6 +801,11 @@ Function Reference
     :param str pchConnectString:
     :returns: (bool) Return value
     :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
+
+**Example**::
+
+    -- Invite a friend to your server
+    Steam.Friends.InviteUserToGame(friend_id, '+connect 1.2.3.4:27015')
 
 .. function:: Friends.IsClanChatAdmin(steamIDClanChat, steamIDUser)
 
@@ -671,6 +849,14 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
 
+**Example**::
+
+    Steam.Friends.IsFollowing(playerID, function(data, err)
+        if not err then
+            print('Following:', data.m_bIsFollowing ~= 0)
+        end
+    end)
+
 .. function:: Friends.IsUserInSource(steamIDUser, steamIDSource)
 
     🤖 **Auto-generated binding**
@@ -688,6 +874,14 @@ Function Reference
     :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
+
+**Example**::
+
+    Steam.Friends.JoinClanChatRoom(clanID, function(data, err)
+        if not err and data.m_eChatRoomEnterResponse == 1 then
+            print('Joined clan chat')
+        end
+    end)
 
 .. function:: Friends.LeaveClanChatRoom(steamIDClan)
 
@@ -747,6 +941,11 @@ Function Reference
     :param uint64 steamIDFriend:
     :SteamWorks: `RequestFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#RequestFriendRichPresence>`_
 
+**Example**::
+
+    -- Request fresh rich presence data for a friend
+    Steam.Friends.RequestFriendRichPresence(friendID)
+
 .. function:: Friends.RequestUserInformation(steamIDUser, bRequireNameOnly)
 
     🤖 **Auto-generated binding**
@@ -755,6 +954,14 @@ Function Reference
     :param bool bRequireNameOnly:
     :returns: (bool) Return value
     :SteamWorks: `RequestUserInformation <https://partner.steamgames.com/doc/api/ISteamFriends#RequestUserInformation>`_
+
+**Example**::
+
+    -- Request the player name and avatar; returns true if data needs to be fetched
+    local needsData = Steam.Friends.RequestUserInformation(playerID, true)
+    if needsData then
+        -- Wait for OnPersonaStateChange callback
+    end
 
 .. function:: Friends.SendClanChatMessage(steamIDClanChat, pchText)
 
@@ -765,6 +972,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SendClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#SendClanChatMessage>`_
 
+**Example**::
+
+    Steam.Friends.SendClanChatMessage(clanChatID, 'Hello clan!')
+
 .. function:: Friends.SetInGameVoiceSpeaking(steamIDUser, bSpeaking)
 
     🤖 **Auto-generated binding**
@@ -772,6 +983,11 @@ Function Reference
     :param uint64 steamIDUser:
     :param bool bSpeaking:
     :SteamWorks: `SetInGameVoiceSpeaking <https://partner.steamgames.com/doc/api/ISteamFriends#SetInGameVoiceSpeaking>`_
+
+**Example**::
+
+    -- Notify Steam that this user is speaking in-game
+    Steam.Friends.SetInGameVoiceSpeaking(Steam.User.GetSteamID(), true)
 
 .. function:: Friends.SetListenForFriendsMessages(bInterceptEnabled)
 
@@ -781,6 +997,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetListenForFriendsMessages <https://partner.steamgames.com/doc/api/ISteamFriends#SetListenForFriendsMessages>`_
 
+**Example**::
+
+    -- Enable friend message interception
+    Steam.Friends.SetListenForFriendsMessages(true)
+
 .. function:: Friends.SetPlayedWith(steamIDUserPlayedWith)
 
     🤖 **Auto-generated binding**
@@ -788,20 +1009,33 @@ Function Reference
     :param uint64 steamIDUserPlayedWith:
     :SteamWorks: `SetPlayedWith <https://partner.steamgames.com/doc/api/ISteamFriends#SetPlayedWith>`_
 
+**Example**::
+
+    for _, playerID in ipairs(currentPlayers) do
+        Steam.Friends.SetPlayedWith(playerID)
+    end
+
 .. function:: Friends.SetRichPresence(pchKey, pchValue)
 
     🤖 **Auto-generated binding**
 
-    :param str pchKey:
-    :param str pchValue:
+    :param str pchKey: The Rich Presence key to set
+    :param str pchValue: The value to associate with the key
     :returns: (bool) Return value
     :SteamWorks: `SetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_
+
+    Sets a Rich Presence key/value for the current user that is shared with friends.
+
+**Example**::
+
+    Steam.Friends.SetRichPresence('steam_display', '#StatusWithScore')
+    Steam.Friends.SetRichPresence('score', tostring(myScore))
 
 
 Callbacks
 ---------
 
-.. function:: Friends.onPersonaStateChange
+.. function:: Friends.OnPersonaStateChange
 
     Callback for `PersonaStateChange_t <https://partner.steamgames.com/doc/api/ISteamFriends#PersonaStateChange_t>`_
 
@@ -810,7 +1044,14 @@ Callbacks
     * **data.m_ulSteamID** -- m_ulSteamID
     * **data.m_nChangeFlags** -- m_nChangeFlags
 
-.. function:: Friends.onGameOverlayActivated
+**Example**::
+
+    function Steam.Friends.OnPersonaStateChange(data)
+        local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamID)
+        print('Persona changed for:', name)
+    end
+
+.. function:: Friends.OnGameOverlayActivated
 
     Callback for `GameOverlayActivated_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameOverlayActivated_t>`_
 
@@ -821,7 +1062,17 @@ Callbacks
     * **data.m_nAppID** -- m_nAppID
     * **data.m_dwOverlayPID** -- m_dwOverlayPID
 
-.. function:: Friends.onGameServerChangeRequested
+**Example**::
+
+    function Steam.Friends.OnGameOverlayActivated(data)
+        if data.m_bActive == 1 then
+            print('Game overlay opened, pausing game')
+        else
+            print('Game overlay closed, resuming game')
+        end
+    end
+
+.. function:: Friends.OnGameServerChangeRequested
 
     Callback for `GameServerChangeRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameServerChangeRequested_t>`_
 
@@ -830,7 +1081,14 @@ Callbacks
     * **data.m_rgchServer** -- m_rgchServer
     * **data.m_rgchPassword** -- m_rgchPassword
 
-.. function:: Friends.onGameLobbyJoinRequested
+**Example**::
+
+    function Steam.Friends.OnGameServerChangeRequested(data)
+        print('Friend invites you to server:', data.m_rgchServer)
+        connectToServer(data.m_rgchServer, data.m_rgchPassword)
+    end
+
+.. function:: Friends.OnGameLobbyJoinRequested
 
     Callback for `GameLobbyJoinRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameLobbyJoinRequested_t>`_
 
@@ -839,7 +1097,17 @@ Callbacks
     * **data.m_steamIDLobby** -- m_steamIDLobby
     * **data.m_steamIDFriend** -- m_steamIDFriend
 
-.. function:: Friends.onAvatarImageLoaded
+**Example**::
+
+    function Steam.Friends.OnGameLobbyJoinRequested(data)
+        Steam.Matchmaking.JoinLobby(data.m_steamIDLobby, function(result, err)
+            if not err and result.m_EChatRoomEnterResponse == 1 then
+                print('Joined lobby from friend invite')
+            end
+        end)
+    end
+
+.. function:: Friends.OnAvatarImageLoaded
 
     Callback for `AvatarImageLoaded_t <https://partner.steamgames.com/doc/api/ISteamFriends#AvatarImageLoaded_t>`_
 
@@ -850,7 +1118,15 @@ Callbacks
     * **data.m_iWide** -- m_iWide
     * **data.m_iTall** -- m_iTall
 
-.. function:: Friends.onClanOfficerListResponse
+**Example**::
+
+    function Steam.Friends.OnAvatarImageLoaded(data)
+        local w, h = Steam.Utils.GetImageSize(data.m_iImage)
+        local rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
+        updateAvatarTexture(data.m_steamID, rgba, w, h)
+    end
+
+.. function:: Friends.OnClanOfficerListResponse
 
     Callback for `ClanOfficerListResponse_t <https://partner.steamgames.com/doc/api/ISteamFriends#ClanOfficerListResponse_t>`_
 
@@ -860,7 +1136,7 @@ Callbacks
     * **data.m_cOfficers** -- m_cOfficers
     * **data.m_bSuccess** -- m_bSuccess
 
-.. function:: Friends.onFriendRichPresenceUpdate
+.. function:: Friends.OnFriendRichPresenceUpdate
 
     Callback for `FriendRichPresenceUpdate_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendRichPresenceUpdate_t>`_
 
@@ -869,7 +1145,14 @@ Callbacks
     * **data.m_steamIDFriend** -- m_steamIDFriend
     * **data.m_nAppID** -- m_nAppID
 
-.. function:: Friends.onGameRichPresenceJoinRequested
+**Example**::
+
+    function Steam.Friends.OnFriendRichPresenceUpdate(data)
+        local status = Steam.Friends.GetFriendRichPresence(data.m_steamIDFriend, 'status')
+        print('Friend presence updated:', status)
+    end
+
+.. function:: Friends.OnGameRichPresenceJoinRequested
 
     Callback for `GameRichPresenceJoinRequested_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameRichPresenceJoinRequested_t>`_
 
@@ -878,7 +1161,14 @@ Callbacks
     * **data.m_steamIDFriend** -- m_steamIDFriend
     * **data.m_rgchConnect** -- m_rgchConnect
 
-.. function:: Friends.onGameConnectedClanChatMsg
+**Example**::
+
+    function Steam.Friends.OnGameRichPresenceJoinRequested(data)
+        local connect_string = data.m_rgchConnect
+        initiateJoinGame(connect_string)
+    end
+
+.. function:: Friends.OnGameConnectedClanChatMsg
 
     Callback for `GameConnectedClanChatMsg_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedClanChatMsg_t>`_
 
@@ -888,7 +1178,7 @@ Callbacks
     * **data.m_steamIDUser** -- m_steamIDUser
     * **data.m_iMessageID** -- m_iMessageID
 
-.. function:: Friends.onGameConnectedChatJoin
+.. function:: Friends.OnGameConnectedChatJoin
 
     Callback for `GameConnectedChatJoin_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedChatJoin_t>`_
 
@@ -897,7 +1187,7 @@ Callbacks
     * **data.m_steamIDClanChat** -- m_steamIDClanChat
     * **data.m_steamIDUser** -- m_steamIDUser
 
-.. function:: Friends.onGameConnectedChatLeave
+.. function:: Friends.OnGameConnectedChatLeave
 
     Callback for `GameConnectedChatLeave_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedChatLeave_t>`_
 
@@ -908,7 +1198,7 @@ Callbacks
     * **data.m_bKicked** -- m_bKicked
     * **data.m_bDropped** -- m_bDropped
 
-.. function:: Friends.onDownloadClanActivityCountsResult
+.. function:: Friends.OnDownloadClanActivityCountsResult
 
     Callback for `DownloadClanActivityCountsResult_t <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCountsResult_t>`_
 
@@ -916,7 +1206,7 @@ Callbacks
 
     * **data.m_bSuccess** -- m_bSuccess
 
-.. function:: Friends.onJoinClanChatRoomCompletionResult
+.. function:: Friends.OnJoinClanChatRoomCompletionResult
 
     Callback for `JoinClanChatRoomCompletionResult_t <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoomCompletionResult_t>`_
 
@@ -925,7 +1215,7 @@ Callbacks
     * **data.m_steamIDClanChat** -- m_steamIDClanChat
     * **data.m_eChatRoomEnterResponse** -- m_eChatRoomEnterResponse
 
-.. function:: Friends.onGameConnectedFriendChatMsg
+.. function:: Friends.OnGameConnectedFriendChatMsg
 
     Callback for `GameConnectedFriendChatMsg_t <https://partner.steamgames.com/doc/api/ISteamFriends#GameConnectedFriendChatMsg_t>`_
 
@@ -934,7 +1224,14 @@ Callbacks
     * **data.m_steamIDUser** -- m_steamIDUser
     * **data.m_iMessageID** -- m_iMessageID
 
-.. function:: Friends.onFriendsGetFollowerCount
+**Example**::
+
+    function Steam.Friends.OnGameConnectedFriendChatMsg(data)
+        local msg, chatType = Steam.Friends.GetFriendMessage(data.m_steamIDUser, data.m_iMessageID, 512)
+        print('Friend chat:', msg)
+    end
+
+.. function:: Friends.OnFriendsGetFollowerCount
 
     Callback for `FriendsGetFollowerCount_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsGetFollowerCount_t>`_
 
@@ -944,7 +1241,7 @@ Callbacks
     * **data.m_steamID** -- m_steamID
     * **data.m_nCount** -- m_nCount
 
-.. function:: Friends.onFriendsIsFollowing
+.. function:: Friends.OnFriendsIsFollowing
 
     Callback for `FriendsIsFollowing_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsIsFollowing_t>`_
 
@@ -954,7 +1251,7 @@ Callbacks
     * **data.m_steamID** -- m_steamID
     * **data.m_bIsFollowing** -- m_bIsFollowing
 
-.. function:: Friends.onFriendsEnumerateFollowingList
+.. function:: Friends.OnFriendsEnumerateFollowingList
 
     Callback for `FriendsEnumerateFollowingList_t <https://partner.steamgames.com/doc/api/ISteamFriends#FriendsEnumerateFollowingList_t>`_
 
@@ -965,14 +1262,23 @@ Callbacks
     * **data.m_nResultsReturned** -- m_nResultsReturned
     * **data.m_nTotalResultCount** -- m_nTotalResultCount
 
-.. function:: Friends.onUnreadChatMessagesChanged
+.. function:: Friends.OnUnreadChatMessagesChanged
 
     Callback for `UnreadChatMessagesChanged_t <https://partner.steamgames.com/doc/api/ISteamFriends#UnreadChatMessagesChanged_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Friends.onOverlayBrowserProtocolNavigation
+**Example**::
+
+    function Steam.Friends.OnUnreadChatMessagesChanged()
+        local count = Steam.Friends.GetNumChatsWithUnreadPriorityMessages()
+        if count > 0 then
+            print('You have', count, 'unread priority messages')
+        end
+    end
+
+.. function:: Friends.OnOverlayBrowserProtocolNavigation
 
     Callback for `OverlayBrowserProtocolNavigation_t <https://partner.steamgames.com/doc/api/ISteamFriends#OverlayBrowserProtocolNavigation_t>`_
 
@@ -980,7 +1286,7 @@ Callbacks
 
     * **data.rgchURI** -- rgchURI
 
-.. function:: Friends.onEquippedProfileItemsChanged
+.. function:: Friends.OnEquippedProfileItemsChanged
 
     Callback for `EquippedProfileItemsChanged_t <https://partner.steamgames.com/doc/api/ISteamFriends#EquippedProfileItemsChanged_t>`_
 
@@ -988,7 +1294,7 @@ Callbacks
 
     * **data.m_steamID** -- m_steamID
 
-.. function:: Friends.onEquippedProfileItems
+.. function:: Friends.OnEquippedProfileItems
 
     Callback for `EquippedProfileItems_t <https://partner.steamgames.com/doc/api/ISteamFriends#EquippedProfileItems_t>`_
 

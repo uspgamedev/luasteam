@@ -52,20 +52,20 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`GameServer.onSteamServersConnected`
-* :func:`GameServer.onSteamServerConnectFailure`
-* :func:`GameServer.onSteamServersDisconnected`
-* :func:`GameServer.onValidateAuthTicketResponse`
-* :func:`GameServer.onGSClientApprove`
-* :func:`GameServer.onGSClientDeny`
-* :func:`GameServer.onGSClientKick`
-* :func:`GameServer.onGSClientAchievementStatus`
-* :func:`GameServer.onGSPolicyResponse`
-* :func:`GameServer.onGSGameplayStats`
-* :func:`GameServer.onGSClientGroupStatus`
-* :func:`GameServer.onGSReputation`
-* :func:`GameServer.onAssociateWithClanResult`
-* :func:`GameServer.onComputeNewPlayerCompatibilityResult`
+* :func:`GameServer.OnSteamServersConnected`
+* :func:`GameServer.OnSteamServerConnectFailure`
+* :func:`GameServer.OnSteamServersDisconnected`
+* :func:`GameServer.OnValidateAuthTicketResponse`
+* :func:`GameServer.OnGSClientApprove`
+* :func:`GameServer.OnGSClientDeny`
+* :func:`GameServer.OnGSClientKick`
+* :func:`GameServer.OnGSClientAchievementStatus`
+* :func:`GameServer.OnGSPolicyResponse`
+* :func:`GameServer.OnGSGameplayStats`
+* :func:`GameServer.OnGSClientGroupStatus`
+* :func:`GameServer.OnGSReputation`
+* :func:`GameServer.OnAssociateWithClanResult`
+* :func:`GameServer.OnComputeNewPlayerCompatibilityResult`
 
 Function Reference
 ------------------
@@ -86,12 +86,23 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BLoggedOn <https://partner.steamgames.com/doc/api/ISteamGameServer#BLoggedOn>`_
 
+**Example**::
+
+    local loggedOn = Steam.GameServer.BLoggedOn()
+
 .. function:: GameServer.BSecure()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `BSecure <https://partner.steamgames.com/doc/api/ISteamGameServer#BSecure>`_
+
+**Example**::
+
+    local secure = Steam.GameServer.BSecure()
+    if secure then
+        print('Server is VAC-secured')
+    end
 
 .. function:: GameServer.BUpdateUserData(steamIDUser, pchPlayerName, uScore)
 
@@ -103,6 +114,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
 
+**Example**::
+
+    -- Update a connected player's display name and score
+    Steam.GameServer.BUpdateUserData(playerSteamID, playerName, playerScore)
+
 .. function:: GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID)
 
     🤖 **Auto-generated binding**
@@ -112,6 +128,11 @@ Function Reference
     :param uint64 steamID:
     :returns: (int) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
+
+**Example**::
+
+    -- Validate an auth ticket received from a client
+    Steam.GameServer.BeginAuthSession(authTicket, steamID)
 
 .. function:: GameServer.CancelAuthTicket(hAuthTicket)
 
@@ -125,6 +146,12 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :SteamWorks: `ClearAllKeyValues <https://partner.steamgames.com/doc/api/ISteamGameServer#ClearAllKeyValues>`_
+
+**Example**::
+
+    Steam.GameServer.ClearAllKeyValues()
+    -- Reset and re-add updated values
+    Steam.GameServer.SetKeyValue('version', '1.6.0')
 
 .. function:: GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback)
 
@@ -148,6 +175,10 @@ Function Reference
 
     :param uint64 steamID:
     :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#EndAuthSession>`_
+
+**Example**::
+
+    Steam.GameServer.EndAuthSession(steamID)
 
 .. function:: GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid)
 
@@ -195,6 +226,11 @@ Function Reference
     :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
     :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
+**Example**::
+
+    local ip = Steam.GameServer.GetPublicIP()
+    print('Server public IP:', ip)
+
 .. function:: GameServer.GetServerReputation(callback)
 
     🤖 **Auto-generated binding**
@@ -209,6 +245,11 @@ Function Reference
 
     :returns: (uint64) Return value
     :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamGameServer#GetSteamID>`_
+
+**Example**::
+
+    local server_id = Steam.GameServer.GetSteamID()
+    print('Server Steam ID:', tostring(server_id))
 
 .. function:: GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort)
 
@@ -227,6 +268,10 @@ Function Reference
 
     :SteamWorks: `LogOff <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOff>`_
 
+**Example**::
+
+    Steam.GameServer.LogOff()
+
 .. function:: GameServer.LogOn(pszToken)
 
     🤖 **Auto-generated binding**
@@ -234,11 +279,20 @@ Function Reference
     :param str pszToken:
     :SteamWorks: `LogOn <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOn>`_
 
+**Example**::
+
+    local accessToken = 'abcdef123456'  -- Access token from Steam partner site
+    Steam.GameServer.LogOn(accessToken)
+
 .. function:: GameServer.LogOnAnonymous()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `LogOnAnonymous <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOnAnonymous>`_
+
+**Example**::
+
+    Steam.GameServer.LogOnAnonymous()
 
 .. function:: GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup)
 
@@ -249,12 +303,22 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `RequestUserGroupStatus <https://partner.steamgames.com/doc/api/ISteamGameServer#RequestUserGroupStatus>`_
 
+**Example**::
+
+    -- Check if a player is in a Steam group (e.g. for whitelist)
+    Steam.GameServer.RequestUserGroupStatus(playerSteamID, groupSteamID)
+
 .. function:: GameServer.SetAdvertiseServerActive(bActive)
 
     🤖 **Auto-generated binding**
 
     :param bool bActive:
     :SteamWorks: `SetAdvertiseServerActive <https://partner.steamgames.com/doc/api/ISteamGameServer#SetAdvertiseServerActive>`_
+
+**Example**::
+
+    -- Make the server visible in the server browser
+    Steam.GameServer.SetAdvertiseServerActive(true)
 
 .. function:: GameServer.SetBotPlayerCount(cBotplayers)
 
@@ -263,12 +327,20 @@ Function Reference
     :param int cBotplayers:
     :SteamWorks: `SetBotPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetBotPlayerCount>`_
 
+**Example**::
+
+    Steam.GameServer.SetBotPlayerCount(0)
+
 .. function:: GameServer.SetDedicatedServer(bDedicated)
 
     🤖 **Auto-generated binding**
 
     :param bool bDedicated:
     :SteamWorks: `SetDedicatedServer <https://partner.steamgames.com/doc/api/ISteamGameServer#SetDedicatedServer>`_
+
+**Example**::
+
+    Steam.GameServer.SetDedicatedServer(true)
 
 .. function:: GameServer.SetGameData(pchGameData)
 
@@ -284,12 +356,20 @@ Function Reference
     :param str pszGameDescription:
     :SteamWorks: `SetGameDescription <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameDescription>`_
 
+**Example**::
+
+    Steam.GameServer.SetGameDescription('A competitive FPS game')
+
 .. function:: GameServer.SetGameTags(pchGameTags)
 
     🤖 **Auto-generated binding**
 
     :param str pchGameTags:
     :SteamWorks: `SetGameTags <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameTags>`_
+
+**Example**::
+
+    Steam.GameServer.SetGameTags('ranked,competitive')
 
 .. function:: GameServer.SetKeyValue(pKey, pValue)
 
@@ -299,6 +379,12 @@ Function Reference
     :param str pValue:
     :SteamWorks: `SetKeyValue <https://partner.steamgames.com/doc/api/ISteamGameServer#SetKeyValue>`_
 
+**Example**::
+
+    -- Set server rules visible in the server browser
+    Steam.GameServer.SetKeyValue('version', '1.5.0')
+    Steam.GameServer.SetKeyValue('region', 'us-east')
+
 .. function:: GameServer.SetMapName(pszMapName)
 
     🤖 **Auto-generated binding**
@@ -306,12 +392,20 @@ Function Reference
     :param str pszMapName:
     :SteamWorks: `SetMapName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMapName>`_
 
+**Example**::
+
+    Steam.GameServer.SetMapName('de_dust2')
+
 .. function:: GameServer.SetMaxPlayerCount(cPlayersMax)
 
     🤖 **Auto-generated binding**
 
     :param int cPlayersMax:
     :SteamWorks: `SetMaxPlayerCount <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMaxPlayerCount>`_
+
+**Example**::
+
+    Steam.GameServer.SetMaxPlayerCount(16)
 
 .. function:: GameServer.SetModDir(pszModDir)
 
@@ -326,6 +420,10 @@ Function Reference
 
     :param bool bPasswordProtected:
     :SteamWorks: `SetPasswordProtected <https://partner.steamgames.com/doc/api/ISteamGameServer#SetPasswordProtected>`_
+
+**Example**::
+
+    Steam.GameServer.SetPasswordProtected(false)
 
 .. function:: GameServer.SetProduct(pszProduct)
 
@@ -347,6 +445,10 @@ Function Reference
 
     :param str pszServerName:
     :SteamWorks: `SetServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetServerName>`_
+
+**Example**::
+
+    Steam.GameServer.SetServerName('My Awesome Server')
 
 .. function:: GameServer.SetSpectatorPort(unSpectatorPort)
 
@@ -378,18 +480,31 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `WasRestartRequested <https://partner.steamgames.com/doc/api/ISteamGameServer#WasRestartRequested>`_
 
+**Example**::
+
+    if Steam.GameServer.WasRestartRequested() then
+        print('Steam requested server restart for update')
+        scheduleRestart()
+    end
+
 
 Callbacks
 ---------
 
-.. function:: GameServer.onSteamServersConnected
+.. function:: GameServer.OnSteamServersConnected
 
     Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServersConnected_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: GameServer.onSteamServerConnectFailure
+**Example**::
+
+    function Steam.GameServer.OnSteamServersConnected()
+        print('Connected to Steam servers')
+    end
+
+.. function:: GameServer.OnSteamServerConnectFailure
 
     Callback for `SteamServerConnectFailure_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServerConnectFailure_t>`_
 
@@ -398,7 +513,13 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_bStillRetrying** -- m_bStillRetrying
 
-.. function:: GameServer.onSteamServersDisconnected
+**Example**::
+
+    function Steam.GameServer.OnSteamServerConnectFailure(data)
+        print('Connection to Steam failed:', data.m_eResult, 'retrying:', data.m_bStillRetrying)
+    end
+
+.. function:: GameServer.OnSteamServersDisconnected
 
     Callback for `SteamServersDisconnected_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServersDisconnected_t>`_
 
@@ -406,7 +527,13 @@ Callbacks
 
     * **data.m_eResult** -- m_eResult
 
-.. function:: GameServer.onValidateAuthTicketResponse
+**Example**::
+
+    function Steam.GameServer.OnSteamServersDisconnected(data)
+        print('Disconnected from Steam servers:', data.m_eResult)
+    end
+
+.. function:: GameServer.OnValidateAuthTicketResponse
 
     Callback for `ValidateAuthTicketResponse_t <https://partner.steamgames.com/doc/api/ISteamGameServer#ValidateAuthTicketResponse_t>`_
 
@@ -416,7 +543,17 @@ Callbacks
     * **data.m_eAuthSessionResponse** -- m_eAuthSessionResponse
     * **data.m_OwnerSteamID** -- m_OwnerSteamID
 
-.. function:: GameServer.onGSClientApprove
+**Example**::
+
+    function Steam.GameServer.OnValidateAuthTicketResponse(data)
+        if data.m_eAuthSessionResponse == Steam.k_EAuthSessionResponseOK then
+            print('User authenticated:', tostring(data.m_SteamID))
+        else
+            print('Authentication failed:', data.m_eAuthSessionResponse)
+        end
+    end
+
+.. function:: GameServer.OnGSClientApprove
 
     Callback for `GSClientApprove_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientApprove_t>`_
 
@@ -425,7 +562,14 @@ Callbacks
     * **data.m_SteamID** -- m_SteamID
     * **data.m_OwnerSteamID** -- m_OwnerSteamID
 
-.. function:: GameServer.onGSClientDeny
+**Example**::
+
+    function Steam.GameServer.OnGSClientApprove(data)
+        print('Client approved:', tostring(data.m_SteamID))
+        allowPlayerToJoin(data.m_SteamID)
+    end
+
+.. function:: GameServer.OnGSClientDeny
 
     Callback for `GSClientDeny_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientDeny_t>`_
 
@@ -435,7 +579,14 @@ Callbacks
     * **data.m_eDenyReason** -- m_eDenyReason
     * **data.m_rgchOptionalText** -- m_rgchOptionalText
 
-.. function:: GameServer.onGSClientKick
+**Example**::
+
+    function Steam.GameServer.OnGSClientDeny(data)
+        print('Client denied:', tostring(data.m_SteamID), 'reason:', data.m_eDenyReason)
+        kickPlayer(data.m_SteamID)
+    end
+
+.. function:: GameServer.OnGSClientKick
 
     Callback for `GSClientKick_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientKick_t>`_
 
@@ -444,7 +595,7 @@ Callbacks
     * **data.m_SteamID** -- m_SteamID
     * **data.m_eDenyReason** -- m_eDenyReason
 
-.. function:: GameServer.onGSClientAchievementStatus
+.. function:: GameServer.OnGSClientAchievementStatus
 
     Callback for `GSClientAchievementStatus_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientAchievementStatus_t>`_
 
@@ -454,7 +605,7 @@ Callbacks
     * **data.m_pchAchievement** -- m_pchAchievement
     * **data.m_bUnlocked** -- m_bUnlocked
 
-.. function:: GameServer.onGSPolicyResponse
+.. function:: GameServer.OnGSPolicyResponse
 
     Callback for `GSPolicyResponse_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSPolicyResponse_t>`_
 
@@ -462,7 +613,15 @@ Callbacks
 
     * **data.m_bSecure** -- m_bSecure
 
-.. function:: GameServer.onGSGameplayStats
+**Example**::
+
+    function Steam.GameServer.OnGSPolicyResponse(data)
+        if Steam.GameServer.BSecure() then
+            print('Server is VAC secured')
+        end
+    end
+
+.. function:: GameServer.OnGSGameplayStats
 
     Callback for `GSGameplayStats_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSGameplayStats_t>`_
 
@@ -473,7 +632,7 @@ Callbacks
     * **data.m_unTotalConnects** -- m_unTotalConnects
     * **data.m_unTotalMinutesPlayed** -- m_unTotalMinutesPlayed
 
-.. function:: GameServer.onGSClientGroupStatus
+.. function:: GameServer.OnGSClientGroupStatus
 
     Callback for `GSClientGroupStatus_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSClientGroupStatus_t>`_
 
@@ -484,7 +643,15 @@ Callbacks
     * **data.m_bMember** -- m_bMember
     * **data.m_bOfficer** -- m_bOfficer
 
-.. function:: GameServer.onGSReputation
+**Example**::
+
+    function Steam.GameServer.OnGSClientGroupStatus(data)
+        if data.m_bMember ~= 0 then
+            print('Player is a member of the required group:', tostring(data.m_SteamIDUser))
+        end
+    end
+
+.. function:: GameServer.OnGSReputation
 
     Callback for `GSReputation_t <https://partner.steamgames.com/doc/api/ISteamGameServer#GSReputation_t>`_
 
@@ -498,7 +665,7 @@ Callbacks
     * **data.m_ulBannedGameID** -- m_ulBannedGameID
     * **data.m_unBanExpires** -- m_unBanExpires
 
-.. function:: GameServer.onAssociateWithClanResult
+.. function:: GameServer.OnAssociateWithClanResult
 
     Callback for `AssociateWithClanResult_t <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClanResult_t>`_
 
@@ -506,7 +673,7 @@ Callbacks
 
     * **data.m_eResult** -- m_eResult
 
-.. function:: GameServer.onComputeNewPlayerCompatibilityResult
+.. function:: GameServer.OnComputeNewPlayerCompatibilityResult
 
     Callback for `ComputeNewPlayerCompatibilityResult_t <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibilityResult_t>`_
 

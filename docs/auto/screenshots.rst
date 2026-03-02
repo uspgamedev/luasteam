@@ -22,8 +22,8 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Screenshots.onScreenshotReady`
-* :func:`Screenshots.onScreenshotRequested`
+* :func:`Screenshots.OnScreenshotReady`
+* :func:`Screenshots.OnScreenshotRequested`
 
 Function Reference
 ------------------
@@ -38,6 +38,13 @@ Function Reference
     :param int nHeight:
     :returns: (int) Return value
     :SteamWorks: `AddScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddScreenshotToLibrary>`_
+
+**Example**::
+
+    local handle = Steam.Screenshots.AddScreenshotToLibrary('screenshot.png', nil, 1920, 1080)
+    if handle ~= 0 then
+        Steam.Screenshots.SetLocation(handle, 'Main Menu')
+    end
 
 .. function:: Screenshots.AddVRScreenshotToLibrary(eType, pchFilename, pchVRFilename)
 
@@ -56,6 +63,11 @@ Function Reference
     :param bool bHook:
     :SteamWorks: `HookScreenshots <https://partner.steamgames.com/doc/api/ISteamScreenshots#HookScreenshots>`_
 
+**Example**::
+
+    -- Intercept F12 screenshots to add game UI before saving
+    Steam.Screenshots.HookScreenshots(true)
+
 .. function:: Screenshots.IsScreenshotsHooked()
 
     🤖 **Auto-generated binding**
@@ -71,6 +83,10 @@ Function Reference
     :param str pchLocation:
     :returns: (bool) Return value
     :SteamWorks: `SetLocation <https://partner.steamgames.com/doc/api/ISteamScreenshots#SetLocation>`_
+
+**Example**::
+
+    Steam.Screenshots.SetLocation(screenshotHandle, 'Boss Arena Level 5')
 
 .. function:: Screenshots.TagPublishedFile(hScreenshot, unPublishedFileID)
 
@@ -96,6 +112,11 @@ Function Reference
 
     :SteamWorks: `TriggerScreenshot <https://partner.steamgames.com/doc/api/ISteamScreenshots#TriggerScreenshot>`_
 
+**Example**::
+
+    -- Programmatically take a Steam screenshot
+    Steam.Screenshots.TriggerScreenshot()
+
 .. function:: Screenshots.WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight)
 
     🤖 **Auto-generated binding**
@@ -107,11 +128,17 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `WriteScreenshot <https://partner.steamgames.com/doc/api/ISteamScreenshots#WriteScreenshot>`_
 
+**Example**::
+
+    -- Capture the current framebuffer and add to Steam library
+    local rgbData = captureFramebuffer()
+    local handle = Steam.Screenshots.WriteScreenshot(rgbData, #rgbData, screenWidth, screenHeight)
+
 
 Callbacks
 ---------
 
-.. function:: Screenshots.onScreenshotReady
+.. function:: Screenshots.OnScreenshotReady
 
     Callback for `ScreenshotReady_t <https://partner.steamgames.com/doc/api/ISteamScreenshots#ScreenshotReady_t>`_
 
@@ -120,10 +147,26 @@ Callbacks
     * **data.m_hLocal** -- m_hLocal
     * **data.m_eResult** -- m_eResult
 
-.. function:: Screenshots.onScreenshotRequested
+**Example**::
+
+    function Steam.Screenshots.OnScreenshotReady(data)
+        if data.m_eResult == Steam.k_EResultOK then
+            print('Screenshot saved, handle:', data.m_hLocal)
+        end
+    end
+
+.. function:: Screenshots.OnScreenshotRequested
 
     Callback for `ScreenshotRequested_t <https://partner.steamgames.com/doc/api/ISteamScreenshots#ScreenshotRequested_t>`_
 
     **callback(data)** receives:
 
+
+**Example**::
+
+    function Steam.Screenshots.OnScreenshotRequested()
+        -- User pressed F12; capture game state and submit
+        local rgbData = captureFramebuffer()
+        Steam.Screenshots.WriteScreenshot(rgbData, #rgbData, screenWidth, screenHeight)
+    end
 

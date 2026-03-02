@@ -49,7 +49,7 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`NetworkingUtils.onSteamRelayNetworkStatus`
+* :func:`NetworkingUtils.OnSteamRelayNetworkStatus`
 
 Function Reference
 ------------------
@@ -75,6 +75,13 @@ Function Reference
     :param float flMaxAgeSeconds:
     :returns: (bool) Return value
     :SteamWorks: `CheckPingDataUpToDate <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#CheckPingDataUpToDate>`_
+
+**Example**::
+
+    local ok = Steam.NetworkingUtils.CheckPingDataUpToDate(60.0)
+    if not ok then
+        print('Ping data is stale; refreshing...')
+    end
 
 .. function:: NetworkingUtils.ConvertPingLocationToString(location, cchBufSize)
 
@@ -129,6 +136,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetDirectPingToPOP <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetDirectPingToPOP>`_
 
+**Example**::
+
+    local ping = Steam.NetworkingUtils.GetDirectPingToPOP(popID)
+    print('Ping to POP:', ping, 'ms')
+
 .. function:: NetworkingUtils.GetIPv4FakeIPType(nIPv4)
 
     🤖 **Auto-generated binding**
@@ -143,6 +155,11 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `GetPOPCount <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetPOPCount>`_
+
+**Example**::
+
+    local count = Steam.NetworkingUtils.GetPOPCount()
+    print('Steam relay POPs available:', count)
 
 .. function:: NetworkingUtils.GetPOPList(nListSz)
 
@@ -195,11 +212,22 @@ Function Reference
 
     * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local status = Steam.NetworkingUtils.GetRelayNetworkStatus()
+    if status == Steam.k_ESteamNetworkingAvailability_Current then
+        print('Relay network ready')
+    end
+
 .. function:: NetworkingUtils.InitRelayNetworkAccess()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `InitRelayNetworkAccess <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#InitRelayNetworkAccess>`_
+
+**Example**::
+
+    Steam.NetworkingUtils.InitRelayNetworkAccess()
 
 .. function:: NetworkingUtils.IsFakeIPv4(nIPv4)
 
@@ -237,6 +265,12 @@ Function Reference
     :param int val:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionConfigValueInt32 <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConnectionConfigValueInt32>`_
+
+**Example**::
+
+    -- Override timeout for a specific connection
+    Steam.NetworkingUtils.SetConnectionConfigValueInt32(
+        hConn, Steam.k_ESteamNetworkingConfig_TimeoutConnected, 60000)
 
 .. function:: NetworkingUtils.SetConnectionConfigValueString(hConn, eValue, val)
 
@@ -356,6 +390,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetGlobalConfigValueInt32 <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValueInt32>`_
 
+**Example**::
+
+    -- Set send buffer size globally
+    Steam.NetworkingUtils.SetGlobalConfigValueInt32(
+        Steam.k_ESteamNetworkingConfig_SendBufferSize, 524288)
+
 .. function:: NetworkingUtils.SetGlobalConfigValueString(eValue, val)
 
     🤖 **Auto-generated binding**
@@ -386,6 +426,13 @@ Function Reference
 
     * Parameter ``pAddr`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, addr = Steam.NetworkingUtils.SteamNetworkingIPAddr_ParseString('192.168.1.100:27015')
+    if ok then
+        print('Parsed IP address successfully')
+    end
+
 .. function:: NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort)
 
     🤖 **Auto-generated binding**
@@ -400,6 +447,11 @@ Function Reference
 
     * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local str = Steam.NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, 64, true)
+    print('Address:', str)
+
 .. function:: NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr)
 
     🤖 **Auto-generated binding**
@@ -413,6 +465,13 @@ Function Reference
 
     * Parameter ``pIdentity`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, identity = Steam.NetworkingUtils.SteamNetworkingIdentity_ParseString('steamid:76561197960287930')
+    if ok then
+        print('Parsed identity successfully')
+    end
+
 .. function:: NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf)
 
     🤖 **Auto-generated binding**
@@ -425,6 +484,11 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local str = Steam.NetworkingUtils.SteamNetworkingIdentity_ToString(identity, 128)
+    print('Identity:', str)
 
 
 Unimplemented Methods
@@ -482,7 +546,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: NetworkingUtils.onSteamRelayNetworkStatus
+.. function:: NetworkingUtils.OnSteamRelayNetworkStatus
 
     Callback for `SteamRelayNetworkStatus_t <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamRelayNetworkStatus_t>`_
 
@@ -493,4 +557,12 @@ Callbacks
     * **data.m_eAvailNetworkConfig** -- m_eAvailNetworkConfig
     * **data.m_eAvailAnyRelay** -- m_eAvailAnyRelay
     * **data.m_debugMsg** -- m_debugMsg
+
+**Example**::
+
+    function Steam.NetworkingUtils.OnSteamRelayNetworkStatus(data)
+        if data.m_eAvail == Steam.k_ESteamNetworkingAvailability_Current then
+            print('Relay network is ready')
+        end
+    end
 

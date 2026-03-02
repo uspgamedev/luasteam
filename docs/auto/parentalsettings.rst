@@ -19,7 +19,7 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`ParentalSettings.onSteamParentalSettingsChanged`
+* :func:`ParentalSettings.OnSteamParentalSettingsChanged`
 
 Function Reference
 ------------------
@@ -31,6 +31,12 @@ Function Reference
     :param int nAppID:
     :returns: (bool) Return value
     :SteamWorks: `BIsAppBlocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsAppBlocked>`_
+
+**Example**::
+
+    if Steam.ParentalSettings.BIsAppBlocked(targetAppID) then
+        print('This app is blocked by parental controls')
+    end
 
 .. function:: ParentalSettings.BIsAppInBlockList(nAppID)
 
@@ -48,6 +54,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BIsFeatureBlocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsFeatureBlocked>`_
 
+**Example**::
+
+    if Steam.ParentalSettings.BIsFeatureBlocked(Steam.k_EParentalFeature_OnlineMultiplayer) then
+        print('Online multiplayer is restricted')
+    end
+
 .. function:: ParentalSettings.BIsFeatureInBlockList(eFeature)
 
     🤖 **Auto-generated binding**
@@ -63,6 +75,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `BIsParentalLockEnabled <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsParentalLockEnabled>`_
 
+**Example**::
+
+    if Steam.ParentalSettings.BIsParentalLockEnabled() then
+        print('Parental controls are active')
+    end
+
 .. function:: ParentalSettings.BIsParentalLockLocked()
 
     🤖 **Auto-generated binding**
@@ -74,10 +92,16 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: ParentalSettings.onSteamParentalSettingsChanged
+.. function:: ParentalSettings.OnSteamParentalSettingsChanged
 
     Callback for `SteamParentalSettingsChanged_t <https://partner.steamgames.com/doc/api/ISteamParentalSettings#SteamParentalSettingsChanged_t>`_
 
     **callback(data)** receives:
 
+
+**Example**::
+
+    function Steam.ParentalSettings.OnSteamParentalSettingsChanged()
+        updateFeatureAvailability()
+    end
 

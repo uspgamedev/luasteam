@@ -31,8 +31,8 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Timeline.onSteamTimelineGamePhaseRecordingExists`
-* :func:`Timeline.onSteamTimelineEventRecordingExists`
+* :func:`Timeline.OnSteamTimelineGamePhaseRecordingExists`
+* :func:`Timeline.OnSteamTimelineEventRecordingExists`
 
 Function Reference
 ------------------
@@ -60,6 +60,12 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `AddInstantaneousTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddInstantaneousTimelineEvent>`_
 
+**Example**::
+
+    -- Mark when player gets an achievement
+    Steam.Timeline.AddInstantaneousTimelineEvent(
+        'Achievement Unlocked', 'First Blood', 'achievement_icon', 1, 0, 'RecordAtFarther')
+
 .. function:: Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, flDuration, ePossibleClip)
 
     🤖 **Auto-generated binding**
@@ -74,12 +80,22 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `AddRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddRangeTimelineEvent>`_
 
+**Example**::
+
+    -- Mark an entire boss fight after it ends
+    Steam.Timeline.AddRangeTimelineEvent(
+        'Boss Fight', 'Dragon Battle', 'sword_icon', 1, -bossFightDuration, bossFightDuration, 'RecordAtFarther')
+
 .. function:: Timeline.ClearTimelineTooltip(flTimeDelta)
 
     🤖 **Auto-generated binding**
 
     :param float flTimeDelta:
     :SteamWorks: `ClearTimelineTooltip <https://partner.steamgames.com/doc/api/ISteamTimeline#ClearTimelineTooltip>`_
+
+**Example**::
+
+    Steam.Timeline.ClearTimelineTooltip(0)
 
 .. function:: Timeline.DoesEventRecordingExist(ulEvent, callback)
 
@@ -105,6 +121,10 @@ Function Reference
 
     :SteamWorks: `EndGamePhase <https://partner.steamgames.com/doc/api/ISteamTimeline#EndGamePhase>`_
 
+**Example**::
+
+    Steam.Timeline.EndGamePhase()
+
 .. function:: Timeline.EndRangeTimelineEvent(ulEvent, flEndOffsetSeconds)
 
     🤖 **Auto-generated binding**
@@ -112,6 +132,10 @@ Function Reference
     :param uint64 ulEvent:
     :param float flEndOffsetSeconds:
     :SteamWorks: `EndRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#EndRangeTimelineEvent>`_
+
+**Example**::
+
+    Steam.Timeline.EndRangeTimelineEvent(eventHandle, 0)
 
 .. function:: Timeline.OpenOverlayToGamePhase(pchPhaseID)
 
@@ -126,6 +150,11 @@ Function Reference
 
     :param uint64 ulEvent:
     :SteamWorks: `OpenOverlayToTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#OpenOverlayToTimelineEvent>`_
+
+**Example**::
+
+    -- Let the player review the clip for this event
+    Steam.Timeline.OpenOverlayToTimelineEvent(eventHandle)
 
 .. function:: Timeline.RemoveTimelineEvent(ulEvent)
 
@@ -150,12 +179,21 @@ Function Reference
     :param str pchPhaseID:
     :SteamWorks: `SetGamePhaseID <https://partner.steamgames.com/doc/api/ISteamTimeline#SetGamePhaseID>`_
 
+**Example**::
+
+    See :func:`Timeline.StartGamePhase`'s example.
+
 .. function:: Timeline.SetTimelineGameMode(eMode)
 
     🤖 **Auto-generated binding**
 
     :param int eMode:
     :SteamWorks: `SetTimelineGameMode <https://partner.steamgames.com/doc/api/ISteamTimeline#SetTimelineGameMode>`_
+
+**Example**::
+
+    -- Set mode to show what the player is doing
+    Steam.Timeline.SetTimelineGameMode('Playing')
 
 .. function:: Timeline.SetTimelineTooltip(pchDescription, flTimeDelta)
 
@@ -165,11 +203,20 @@ Function Reference
     :param float flTimeDelta:
     :SteamWorks: `SetTimelineTooltip <https://partner.steamgames.com/doc/api/ISteamTimeline#SetTimelineTooltip>`_
 
+**Example**::
+
+    Steam.Timeline.SetTimelineTooltip('Fighting the final boss', 0)
+
 .. function:: Timeline.StartGamePhase()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `StartGamePhase <https://partner.steamgames.com/doc/api/ISteamTimeline#StartGamePhase>`_
+
+**Example**::
+
+    Steam.Timeline.StartGamePhase()
+    Steam.Timeline.SetGamePhaseID('level_3')
 
 .. function:: Timeline.StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unPriority, flStartOffsetSeconds, ePossibleClip)
 
@@ -183,6 +230,12 @@ Function Reference
     :param int ePossibleClip:
     :returns: (uint64) Return value
     :SteamWorks: `StartRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#StartRangeTimelineEvent>`_
+
+**Example**::
+
+    -- Start tracking a ranged event
+    local eventHandle = Steam.Timeline.StartRangeTimelineEvent(
+        'Boss Fight', 'Dragon Battle', 'sword_icon', 1, 0, 'RecordAtFarther')
 
 .. function:: Timeline.UpdateRangeTimelineEvent(ulEvent, pchTitle, pchDescription, pchIcon, unPriority, ePossibleClip)
 
@@ -200,7 +253,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: Timeline.onSteamTimelineGamePhaseRecordingExists
+.. function:: Timeline.OnSteamTimelineGamePhaseRecordingExists
 
     Callback for `SteamTimelineGamePhaseRecordingExists_t <https://partner.steamgames.com/doc/api/ISteamTimeline#SteamTimelineGamePhaseRecordingExists_t>`_
 
@@ -212,7 +265,7 @@ Callbacks
     * **data.m_unClipCount** -- m_unClipCount
     * **data.m_unScreenshotCount** -- m_unScreenshotCount
 
-.. function:: Timeline.onSteamTimelineEventRecordingExists
+.. function:: Timeline.OnSteamTimelineEventRecordingExists
 
     Callback for `SteamTimelineEventRecordingExists_t <https://partner.steamgames.com/doc/api/ISteamTimeline#SteamTimelineEventRecordingExists_t>`_
 

@@ -55,6 +55,10 @@ Function Reference
     :param uint64 actionSetHandle:
     :SteamWorks: `ActivateActionSet <https://partner.steamgames.com/doc/api/ISteamController#ActivateActionSet>`_
 
+**Example**::
+
+    Steam.Controller.ActivateActionSet(controllerHandle, actionSetHandle)
+
 .. function:: Controller.ActivateActionSetLayer(controllerHandle, actionSetLayerHandle)
 
     🤖 **Auto-generated binding**
@@ -95,6 +99,10 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamController#GetActionSetHandle>`_
 
+**Example**::
+
+    local gameplaySet = Steam.Controller.GetActionSetHandle('GameControls')
+
 .. function:: Controller.GetActiveActionSetLayers(controllerHandle)
 
     🤖 **Auto-generated binding**
@@ -117,6 +125,11 @@ Function Reference
     :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
     :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamController#GetAnalogActionData>`_
 
+**Example**::
+
+    local data = Steam.Controller.GetAnalogActionData(controllerHandle, moveHandle)
+    player.setVelocity(data.x * speed, data.y * speed)
+
 .. function:: Controller.GetAnalogActionHandle(pszActionName)
 
     🤖 **Auto-generated binding**
@@ -124,6 +137,10 @@ Function Reference
     :param str pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamController#GetAnalogActionHandle>`_
+
+**Example**::
+
+    local moveHandle = Steam.Controller.GetAnalogActionHandle('Move')
 
 .. function:: Controller.GetAnalogActionOrigins(controllerHandle, actionSetHandle, analogActionHandle)
 
@@ -151,6 +168,11 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local controllers = Steam.Controller.GetConnectedControllers()
+    print('Connected controllers:', #controllers)
 
 .. function:: Controller.GetControllerBindingRevision(controllerHandle)
 
@@ -192,6 +214,13 @@ Function Reference
     :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamController#GetDigitalActionData>`_
 
+**Example**::
+
+    local data = Steam.Controller.GetDigitalActionData(controllerHandle, jumpHandle)
+    if data.bState ~= 0 then
+        player.jump()
+    end
+
 .. function:: Controller.GetDigitalActionHandle(pszActionName)
 
     🤖 **Auto-generated binding**
@@ -199,6 +228,10 @@ Function Reference
     :param str pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamController#GetDigitalActionHandle>`_
+
+**Example**::
+
+    local jumpHandle = Steam.Controller.GetDigitalActionHandle('Jump')
 
 .. function:: Controller.GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle)
 
@@ -247,6 +280,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamController#GetInputTypeForHandle>`_
 
+**Example**::
+
+    local inputType = Steam.Controller.GetInputTypeForHandle(controllerHandle)
+
 .. function:: Controller.GetMotionData(controllerHandle)
 
     🤖 **Auto-generated binding**
@@ -278,11 +315,20 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamController#Init>`_
 
+**Example**::
+
+    Steam.Controller.Init()
+
 .. function:: Controller.RunFrame()
 
     🤖 **Auto-generated binding**
 
     :SteamWorks: `RunFrame <https://partner.steamgames.com/doc/api/ISteamController#RunFrame>`_
+
+**Example**::
+
+    -- Call once per frame in your game loop
+    Steam.Controller.RunFrame()
 
 .. function:: Controller.SetLEDColor(controllerHandle, nColorR, nColorG, nColorB, nFlags)
 
@@ -295,6 +341,11 @@ Function Reference
     :param int nFlags:
     :SteamWorks: `SetLEDColor <https://partner.steamgames.com/doc/api/ISteamController#SetLEDColor>`_
 
+**Example**::
+
+    -- Red LED for low health
+    Steam.Controller.SetLEDColor(controllerHandle, 255, 0, 0, 0)
+
 .. function:: Controller.ShowBindingPanel(controllerHandle)
 
     🤖 **Auto-generated binding**
@@ -303,12 +354,20 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ShowBindingPanel <https://partner.steamgames.com/doc/api/ISteamController#ShowBindingPanel>`_
 
+**Example**::
+
+    Steam.Controller.ShowBindingPanel(controllerHandle)
+
 .. function:: Controller.Shutdown()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamController#Shutdown>`_
+
+**Example**::
+
+    Steam.Controller.Shutdown()
 
 .. function:: Controller.StopAnalogActionMomentum(controllerHandle, eAction)
 
@@ -336,6 +395,10 @@ Function Reference
     :param int usDurationMicroSec:
     :SteamWorks: `TriggerHapticPulse <https://partner.steamgames.com/doc/api/ISteamController#TriggerHapticPulse>`_
 
+**Example**::
+
+    Steam.Controller.TriggerHapticPulse(controllerHandle, 'Right', 1000)
+
 .. function:: Controller.TriggerRepeatedHapticPulse(controllerHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags)
 
     🤖 **Auto-generated binding**
@@ -356,4 +419,8 @@ Function Reference
     :param int usLeftSpeed:
     :param int usRightSpeed:
     :SteamWorks: `TriggerVibration <https://partner.steamgames.com/doc/api/ISteamController#TriggerVibration>`_
+
+**Example**::
+
+    Steam.Controller.TriggerVibration(controllerHandle, 16000, 16000)
 

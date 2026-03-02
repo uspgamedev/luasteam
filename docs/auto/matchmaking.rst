@@ -51,17 +51,17 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Matchmaking.onFavoritesListChanged`
-* :func:`Matchmaking.onLobbyInvite`
-* :func:`Matchmaking.onLobbyEnter`
-* :func:`Matchmaking.onLobbyDataUpdate`
-* :func:`Matchmaking.onLobbyChatUpdate`
-* :func:`Matchmaking.onLobbyChatMsg`
-* :func:`Matchmaking.onLobbyGameCreated`
-* :func:`Matchmaking.onLobbyMatchList`
-* :func:`Matchmaking.onLobbyKicked`
-* :func:`Matchmaking.onLobbyCreated`
-* :func:`Matchmaking.onFavoritesListAccountsUpdated`
+* :func:`Matchmaking.OnFavoritesListChanged`
+* :func:`Matchmaking.OnLobbyInvite`
+* :func:`Matchmaking.OnLobbyEnter`
+* :func:`Matchmaking.OnLobbyDataUpdate`
+* :func:`Matchmaking.OnLobbyChatUpdate`
+* :func:`Matchmaking.OnLobbyChatMsg`
+* :func:`Matchmaking.OnLobbyGameCreated`
+* :func:`Matchmaking.OnLobbyMatchList`
+* :func:`Matchmaking.OnLobbyKicked`
+* :func:`Matchmaking.OnLobbyCreated`
+* :func:`Matchmaking.OnFavoritesListAccountsUpdated`
 
 Function Reference
 ------------------
@@ -143,6 +143,18 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `CreateLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#CreateLobby>`_
 
+**Example**::
+
+    Steam.Matchmaking.CreateLobby('Public', 8, function(data, err)
+        if err or data.m_eResult ~= Steam.k_EResultOK then
+            print('Failed to create lobby')
+            return
+        end
+        local lobbyID = data.m_ulSteamIDLobby
+        Steam.Matchmaking.SetLobbyData(lobbyID, 'map', 'level_01')
+        Steam.Matchmaking.SetLobbyData(lobbyID, 'mode', 'deathmatch')
+    end)
+
 .. function:: Matchmaking.DeleteLobbyData(steamIDLobby, pchKey)
 
     🤖 **Auto-generated binding**
@@ -218,6 +230,11 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
 
+**Example**::
+
+    local map = Steam.Matchmaking.GetLobbyData(lobbyID, 'map')
+    print('Current map:', map)
+
 .. function:: Matchmaking.GetLobbyDataByIndex(steamIDLobby, iLobbyData, cchKeyBufferSize, cchValueBufferSize)
 
     🤖 **Auto-generated binding**
@@ -261,6 +278,13 @@ Function Reference
     * Parameter ``punGameServerPort`` is no longer a paramer, and is instead an additional return value
     * Parameter ``psteamIDGameServer`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local hasServer, ip, port, steamID = Steam.Matchmaking.GetLobbyGameServer(lobbyID)
+    if hasServer then
+        connectToGameServer(ip, port)
+    end
+
 .. function:: Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember)
 
     🤖 **Auto-generated binding**
@@ -280,6 +304,11 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
 
+**Example**::
+
+    local team = Steam.Matchmaking.GetLobbyMemberData(lobbyID, memberSteamID, 'team')
+    print('Member team:', team)
+
 .. function:: Matchmaking.GetLobbyMemberLimit(steamIDLobby)
 
     🤖 **Auto-generated binding**
@@ -296,6 +325,11 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyOwner>`_
 
+**Example**::
+
+    local ownerID = Steam.Matchmaking.GetLobbyOwner(lobbyID)
+    local isOwner = ownerID == Steam.User.GetSteamID()
+
 .. function:: Matchmaking.GetNumLobbyMembers(steamIDLobby)
 
     🤖 **Auto-generated binding**
@@ -303,6 +337,14 @@ Function Reference
     :param uint64 steamIDLobby:
     :returns: (int) Return value
     :SteamWorks: `GetNumLobbyMembers <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetNumLobbyMembers>`_
+
+**Example**::
+
+    local count = Steam.Matchmaking.GetNumLobbyMembers(lobbyID)
+    for i = 0, count - 1 do
+        local memberID = Steam.Matchmaking.GetLobbyMemberByIndex(lobbyID, i)
+        print('Member:', Steam.Friends.GetFriendPersonaName(memberID))
+    end
 
 .. function:: Matchmaking.InviteUserToLobby(steamIDLobby, steamIDInvitee)
 
@@ -313,6 +355,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `InviteUserToLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#InviteUserToLobby>`_
 
+**Example**::
+
+    Steam.Matchmaking.InviteUserToLobby(lobbyID, friendSteamID)
+
 .. function:: Matchmaking.JoinLobby(steamIDLobby, callback)
 
     🤖 **Auto-generated binding**
@@ -322,12 +368,26 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
 
+**Example**::
+
+    Steam.Matchmaking.JoinLobby(lobbyID, function(data, err)
+        if err or data.m_EChatRoomEnterResponse ~= 1 then
+            print('Failed to join lobby')
+        else
+            print('Joined lobby:', tostring(data.m_ulSteamIDLobby))
+        end
+    end)
+
 .. function:: Matchmaking.LeaveLobby(steamIDLobby)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
     :SteamWorks: `LeaveLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LeaveLobby>`_
+
+**Example**::
+
+    Steam.Matchmaking.LeaveLobby(lobbyID)
 
 .. function:: Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags)
 
@@ -357,6 +417,20 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `RequestLobbyList <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyList>`_
 
+**Example**::
+
+    Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', 'EqualToOrLessThan')
+    Steam.Matchmaking.AddRequestLobbyListResultCountFilter(20)
+    Steam.Matchmaking.RequestLobbyList(function(data, err)
+        if not err then
+            for i = 0, data.m_nLobbiesMatching - 1 do
+                local id = Steam.Matchmaking.GetLobbyByIndex(i)
+                local map = Steam.Matchmaking.GetLobbyData(id, 'map')
+                print('Lobby: ' .. map .. ' (' .. Steam.Matchmaking.GetNumLobbyMembers(id) .. ' players)')
+            end
+        end
+    end)
+
 .. function:: Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody)
 
     🤖 **Auto-generated binding**
@@ -366,6 +440,11 @@ Function Reference
     :param int cubMsgBody:
     :returns: (bool) Return value
     :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
+
+**Example**::
+
+    local msg = 'Ready!'
+    Steam.Matchmaking.SendLobbyChatMsg(lobbyID, msg, #msg)
 
 .. function:: Matchmaking.SetLinkedLobby(steamIDLobby, steamIDLobbyDependent)
 
@@ -386,6 +465,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyData>`_
 
+**Example**::
+
+    Steam.Matchmaking.SetLobbyData(lobbyID, 'map', 'dungeon_01')
+    Steam.Matchmaking.SetLobbyData(lobbyID, 'players', tostring(playerCount))
+
 .. function:: Matchmaking.SetLobbyGameServer(steamIDLobby, unGameServerIP, unGameServerPort, steamIDGameServer)
 
     🤖 **Auto-generated binding**
@@ -396,6 +480,10 @@ Function Reference
     :param uint64 steamIDGameServer:
     :SteamWorks: `SetLobbyGameServer <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyGameServer>`_
 
+**Example**::
+
+    Steam.Matchmaking.SetLobbyGameServer(lobbyID, serverIP, serverPort, Steam.GameServer.GetSteamID())
+
 .. function:: Matchmaking.SetLobbyJoinable(steamIDLobby, bLobbyJoinable)
 
     🤖 **Auto-generated binding**
@@ -405,6 +493,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyJoinable <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyJoinable>`_
 
+**Example**::
+
+    -- Lock the lobby when the game starts
+    Steam.Matchmaking.SetLobbyJoinable(lobbyID, false)
+
 .. function:: Matchmaking.SetLobbyMemberData(steamIDLobby, pchKey, pchValue)
 
     🤖 **Auto-generated binding**
@@ -413,6 +506,12 @@ Function Reference
     :param str pchKey:
     :param str pchValue:
     :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
+
+**Example**::
+
+    -- Set per-player data visible to other lobby members
+    Steam.Matchmaking.SetLobbyMemberData(lobbyID, 'team', 'blue')
+    Steam.Matchmaking.SetLobbyMemberData(lobbyID, 'ready', '1')
 
 .. function:: Matchmaking.SetLobbyMemberLimit(steamIDLobby, cMaxMembers)
 
@@ -445,7 +544,7 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: Matchmaking.onFavoritesListChanged
+.. function:: Matchmaking.OnFavoritesListChanged
 
     Callback for `FavoritesListChanged_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#FavoritesListChanged_t>`_
 
@@ -459,7 +558,7 @@ Callbacks
     * **data.m_bAdd** -- m_bAdd
     * **data.m_unAccountId** -- m_unAccountId
 
-.. function:: Matchmaking.onLobbyInvite
+.. function:: Matchmaking.OnLobbyInvite
 
     Callback for `LobbyInvite_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyInvite_t>`_
 
@@ -469,7 +568,15 @@ Callbacks
     * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
     * **data.m_ulGameID** -- m_ulGameID
 
-.. function:: Matchmaking.onLobbyEnter
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyInvite(data)
+        local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamIDUser)
+        print(name .. ' invited you to a lobby')
+        showJoinPrompt(data.m_ulSteamIDLobby)
+    end
+
+.. function:: Matchmaking.OnLobbyEnter
 
     Callback for `LobbyEnter_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyEnter_t>`_
 
@@ -480,7 +587,16 @@ Callbacks
     * **data.m_bLocked** -- m_bLocked
     * **data.m_EChatRoomEnterResponse** -- m_EChatRoomEnterResponse
 
-.. function:: Matchmaking.onLobbyDataUpdate
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyEnter(data)
+        if data.m_EChatRoomEnterResponse == 1 then
+            print('Entered lobby:', tostring(data.m_ulSteamIDLobby))
+            updateLobbyUI(data.m_ulSteamIDLobby)
+        end
+    end
+
+.. function:: Matchmaking.OnLobbyDataUpdate
 
     Callback for `LobbyDataUpdate_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyDataUpdate_t>`_
 
@@ -490,7 +606,16 @@ Callbacks
     * **data.m_ulSteamIDMember** -- m_ulSteamIDMember
     * **data.m_bSuccess** -- m_bSuccess
 
-.. function:: Matchmaking.onLobbyChatUpdate
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyDataUpdate(data)
+        if data.m_bSuccess ~= 0 then
+            local map = Steam.Matchmaking.GetLobbyData(data.m_ulSteamIDLobby, 'map')
+            print('Lobby data updated, map:', map)
+        end
+    end
+
+.. function:: Matchmaking.OnLobbyChatUpdate
 
     Callback for `LobbyChatUpdate_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyChatUpdate_t>`_
 
@@ -501,7 +626,14 @@ Callbacks
     * **data.m_ulSteamIDMakingChange** -- m_ulSteamIDMakingChange
     * **data.m_rgfChatMemberStateChange** -- m_rgfChatMemberStateChange
 
-.. function:: Matchmaking.onLobbyChatMsg
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyChatUpdate(data)
+        local count = Steam.Matchmaking.GetNumLobbyMembers(data.m_ulSteamIDLobby)
+        print('Lobby membership changed, now', count, 'players')
+    end
+
+.. function:: Matchmaking.OnLobbyChatMsg
 
     Callback for `LobbyChatMsg_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyChatMsg_t>`_
 
@@ -512,7 +644,17 @@ Callbacks
     * **data.m_eChatEntryType** -- m_eChatEntryType
     * **data.m_iChatID** -- m_iChatID
 
-.. function:: Matchmaking.onLobbyGameCreated
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyChatMsg(data)
+        local msg, chatType = Steam.Matchmaking.GetLobbyChatEntry(data.m_ulSteamIDLobby, data.m_iChatID, 512)
+        if msg then
+            local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamIDUser)
+            print(name .. ': ' .. msg)
+        end
+    end
+
+.. function:: Matchmaking.OnLobbyGameCreated
 
     Callback for `LobbyGameCreated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyGameCreated_t>`_
 
@@ -523,7 +665,14 @@ Callbacks
     * **data.m_unIP** -- m_unIP
     * **data.m_usPort** -- m_usPort
 
-.. function:: Matchmaking.onLobbyMatchList
+**Example**::
+
+    function Steam.Matchmaking.OnLobbyGameCreated(data)
+        print('Game server created:', data.m_ulSteamIDGameServer)
+        connectToGameServer(data.m_unIP, data.m_usPort)
+    end
+
+.. function:: Matchmaking.OnLobbyMatchList
 
     Callback for `LobbyMatchList_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyMatchList_t>`_
 
@@ -531,7 +680,7 @@ Callbacks
 
     * **data.m_nLobbiesMatching** -- m_nLobbiesMatching
 
-.. function:: Matchmaking.onLobbyKicked
+.. function:: Matchmaking.OnLobbyKicked
 
     Callback for `LobbyKicked_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyKicked_t>`_
 
@@ -541,7 +690,7 @@ Callbacks
     * **data.m_ulSteamIDAdmin** -- m_ulSteamIDAdmin
     * **data.m_bKickedDueToDisconnect** -- m_bKickedDueToDisconnect
 
-.. function:: Matchmaking.onLobbyCreated
+.. function:: Matchmaking.OnLobbyCreated
 
     Callback for `LobbyCreated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LobbyCreated_t>`_
 
@@ -550,7 +699,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
 
-.. function:: Matchmaking.onFavoritesListAccountsUpdated
+.. function:: Matchmaking.OnFavoritesListAccountsUpdated
 
     Callback for `FavoritesListAccountsUpdated_t <https://partner.steamgames.com/doc/api/ISteamMatchmaking#FavoritesListAccountsUpdated_t>`_
 

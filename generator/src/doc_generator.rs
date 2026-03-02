@@ -65,7 +65,7 @@ pub struct ManualFunctionDoc {
 #[derive(Debug, Deserialize, Default)]
 pub struct CustomDocs {
     #[serde(flatten)]
-    pub methods: HashMap<String, CustomDoc>,
+    pub methods: HashMap<String, HashMap<String, CustomDoc>>,
     #[serde(default)]
     pub manual: HashMap<String, HashMap<String, ManualFunctionDoc>>,
 }
@@ -185,7 +185,7 @@ impl DocGenerator {
             for callback in callbacks {
                 let callback_name = &callback.name.replace("_t", "");
                 doc.push_str(&format!(
-                    "* :func:`{}.on{}`\n",
+                    "* :func:`{}.On{}`\n",
                     lua_namespace, callback_name
                 ));
             }
@@ -273,7 +273,11 @@ impl DocGenerator {
             doc.push_str("\nCallbacks\n");
             doc.push_str("---------\n\n");
             for callback in callbacks {
-                doc.push_str(&self.generate_callback_doc(callback, lua_namespace));
+                doc.push_str(&self.generate_callback_doc(
+                    callback,
+                    lua_namespace,
+                    &interface.classname,
+                ));
             }
         }
 
@@ -287,8 +291,11 @@ impl DocGenerator {
         lua_namespace: &str,
         interface_name: &str,
     ) -> String {
-        let custom_key = format!("{}.{}", interface_name, lua_method_name);
-        let custom_doc = self.custom_docs.methods.get(&custom_key);
+        let custom_doc = self
+            .custom_docs
+            .methods
+            .get(interface_name)
+            .and_then(|m| m.get(lua_method_name));
 
         let mut doc = String::new();
 
@@ -490,12 +497,23 @@ impl DocGenerator {
         doc
     }
 
-    fn generate_callback_doc(&self, callback: &CallbackStruct, lua_namespace: &str) -> String {
+    fn generate_callback_doc(
+        &self,
+        callback: &CallbackStruct,
+        lua_namespace: &str,
+        interface_name: &str,
+    ) -> String {
         let callback_name = &callback.name.replace("_t", "");
         let mut doc = String::new();
 
+        let custom_doc = self
+            .custom_docs
+            .methods
+            .get(interface_name)
+            .and_then(|m| m.get(&format!("On{}", callback_name)));
+
         doc.push_str(&format!(
-            ".. function:: {}.on{}\n\n",
+            ".. function:: {}.On{}\n\n",
             lua_namespace, callback_name
         ));
         doc.push_str(&format!(
@@ -511,6 +529,16 @@ impl DocGenerator {
             ));
         }
         doc.push('\n');
+
+        if let Some(custom) = custom_doc
+            && let Some(example) = &custom.example
+        {
+            doc.push_str("**Example**::\n\n");
+            for line in example.lines() {
+                doc.push_str(&format!("    {}\n", line));
+            }
+            doc.push('\n');
+        }
 
         doc
     }
@@ -715,6 +743,19 @@ impl DocGenerator {
             "   These are pure-virtual C++ interfaces that you implement in Lua by providing\n",
         );
         doc.push_str("   a table of callback functions to the constructor.\n\n");
+        doc.push_str("**Example** — browsing LAN servers with :func:`MatchmakingServers.RequestLANServerList`:\n\n");
+        doc.push_str(".. code-block:: lua\n\n");
+        doc.push_str("    local response_iface = Steam.newISteamMatchmakingServerListResponse {\n");
+        doc.push_str("        ServerResponded = function(hRequest, iServer)\n");
+        doc.push_str("            local info = Steam.MatchmakingServers.GetServerDetails(hRequest, iServer)\n");
+        doc.push_str("            print('Found server:', info.m_szServerName, info.m_nPlayers .. '/' .. info.m_nMaxPlayers)\n");
+        doc.push_str("        end,\n");
+        doc.push_str("        ServerFailedToRespond = function(hRequest, iServer) end,\n");
+        doc.push_str("        RefreshComplete = function(hRequest, response)\n");
+        doc.push_str("            print('Server list refresh complete, response:', response)\n");
+        doc.push_str("        end,\n");
+        doc.push_str("    )\n");
+        doc.push_str("    local hRequest = Steam.MatchmakingServers.RequestLANServerList(Steam.Utils.GetAppID(), response_iface)\n\n");
 
         for iface in interfaces {
             let name = &iface.name;

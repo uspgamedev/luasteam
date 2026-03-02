@@ -6,6 +6,22 @@ Callback Interfaces
    These are pure-virtual C++ interfaces that you implement in Lua by providing
    a table of callback functions to the constructor.
 
+**Example** — browsing LAN servers with :func:`MatchmakingServers.RequestLANServerList`:
+
+.. code-block:: lua
+
+    local response_iface = Steam.newISteamMatchmakingServerListResponse {
+        ServerResponded = function(hRequest, iServer)
+            local info = Steam.MatchmakingServers.GetServerDetails(hRequest, iServer)
+            print('Found server:', info.m_szServerName, info.m_nPlayers .. '/' .. info.m_nMaxPlayers)
+        end,
+        ServerFailedToRespond = function(hRequest, iServer) end,
+        RefreshComplete = function(hRequest, response)
+            print('Server list refresh complete, response:', response)
+        end,
+    )
+    local hRequest = Steam.MatchmakingServers.RequestLANServerList(Steam.Utils.GetAppID(), response_iface)
+
 .. _struct-ISteamMatchmakingServerListResponse:
 
 -----------------------------------

@@ -38,9 +38,9 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Networking.onP2PSessionRequest`
-* :func:`Networking.onP2PSessionConnectFail`
-* :func:`Networking.onSocketStatusCallback`
+* :func:`Networking.OnP2PSessionRequest`
+* :func:`Networking.OnP2PSessionConnectFail`
+* :func:`Networking.OnSocketStatusCallback`
 
 Function Reference
 ------------------
@@ -53,6 +53,15 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `AcceptP2PSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworking#AcceptP2PSessionWithUser>`_
 
+**Example**::
+
+    function Steam.Networking.OnP2PSessionRequest(data)
+        -- Accept connection from known players only
+        if isKnownPlayer(data.m_steamIDRemote) then
+            Steam.Networking.AcceptP2PSessionWithUser(data.m_steamIDRemote)
+        end
+    end
+
 .. function:: Networking.AllowP2PPacketRelay(bAllow)
 
     🤖 **Auto-generated binding**
@@ -60,6 +69,10 @@ Function Reference
     :param bool bAllow:
     :returns: (bool) Return value
     :SteamWorks: `AllowP2PPacketRelay <https://partner.steamgames.com/doc/api/ISteamNetworking#AllowP2PPacketRelay>`_
+
+**Example**::
+
+    Steam.Networking.AllowP2PPacketRelay(true)
 
 .. function:: Networking.CloseP2PChannelWithUser(steamIDRemote, nChannel)
 
@@ -77,6 +90,11 @@ Function Reference
     :param uint64 steamIDRemote:
     :returns: (bool) Return value
     :SteamWorks: `CloseP2PSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworking#CloseP2PSessionWithUser>`_
+
+**Example**::
+
+    -- Clean up when a player leaves
+    Steam.Networking.CloseP2PSessionWithUser(playerSteamID)
 
 .. function:: Networking.CreateConnectionSocket(nIP, nPort, nTimeoutSec)
 
@@ -164,6 +182,14 @@ Function Reference
 
     * Parameter ``pConnectionState`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, state = Steam.Networking.GetP2PSessionState(playerSteamID)
+    if ok then
+        print('Connecting:', state.m_bConnecting ~= 0)
+        print('Connected:', state.m_bConnectionActive ~= 0)
+    end
+
 .. function:: Networking.GetSocketConnectionType(hSocket)
 
     🤖 **Auto-generated binding**
@@ -232,6 +258,15 @@ Function Reference
 
     * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    while Steam.Networking.IsP2PPacketAvailable(0) do
+        local data, senderID = Steam.Networking.ReadP2PPacket(4096, 0)
+        if data then
+            handlePacket(senderID, data)
+        end
+    end
+
 .. function:: Networking.ReadP2PPacket(cubDest, nChannel)
 
     🤖 **Auto-generated binding**
@@ -249,6 +284,10 @@ Function Reference
     * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
     * Parameter ``psteamIDRemote`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    See :func:`Networking.IsP2PPacketAvailable`'s example.
 
 .. function:: Networking.RetrieveData(hListenSocket, cubDest)
 
@@ -307,11 +346,16 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SendP2PPacket <https://partner.steamgames.com/doc/api/ISteamNetworking#SendP2PPacket>`_
 
+**Example**::
+
+    local data = serializeGamePacket(packet)
+    Steam.Networking.SendP2PPacket(targetSteamID, data, #data, 'Reliable', 0)
+
 
 Callbacks
 ---------
 
-.. function:: Networking.onP2PSessionRequest
+.. function:: Networking.OnP2PSessionRequest
 
     Callback for `P2PSessionRequest_t <https://partner.steamgames.com/doc/api/ISteamNetworking#P2PSessionRequest_t>`_
 
@@ -319,7 +363,11 @@ Callbacks
 
     * **data.m_steamIDRemote** -- m_steamIDRemote
 
-.. function:: Networking.onP2PSessionConnectFail
+**Example**::
+
+    See :func:`Networking.AcceptP2PSessionWithUser`'s example.
+
+.. function:: Networking.OnP2PSessionConnectFail
 
     Callback for `P2PSessionConnectFail_t <https://partner.steamgames.com/doc/api/ISteamNetworking#P2PSessionConnectFail_t>`_
 
@@ -328,7 +376,14 @@ Callbacks
     * **data.m_steamIDRemote** -- m_steamIDRemote
     * **data.m_eP2PSessionError** -- m_eP2PSessionError
 
-.. function:: Networking.onSocketStatusCallback
+**Example**::
+
+    function Steam.Networking.OnP2PSessionConnectFail(data)
+        print('P2P connection failed with', tostring(data.m_steamIDRemote),
+              'error:', data.m_eP2PSessionError)
+    end
+
+.. function:: Networking.OnSocketStatusCallback
 
     Callback for `SocketStatusCallback_t <https://partner.steamgames.com/doc/api/ISteamNetworking#SocketStatusCallback_t>`_
 

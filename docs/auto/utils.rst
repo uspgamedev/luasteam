@@ -49,15 +49,15 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Utils.onIPCountry`
-* :func:`Utils.onLowBatteryPower`
-* :func:`Utils.onSteamAPICallCompleted`
-* :func:`Utils.onSteamShutdown`
-* :func:`Utils.onCheckFileSignature`
-* :func:`Utils.onGamepadTextInputDismissed`
-* :func:`Utils.onAppResumingFromSuspend`
-* :func:`Utils.onFloatingGamepadTextInputDismissed`
-* :func:`Utils.onFilterTextDictionaryChanged`
+* :func:`Utils.OnIPCountry`
+* :func:`Utils.OnLowBatteryPower`
+* :func:`Utils.OnSteamAPICallCompleted`
+* :func:`Utils.OnSteamShutdown`
+* :func:`Utils.OnCheckFileSignature`
+* :func:`Utils.OnGamepadTextInputDismissed`
+* :func:`Utils.OnAppResumingFromSuspend`
+* :func:`Utils.OnFloatingGamepadTextInputDismissed`
+* :func:`Utils.OnFilterTextDictionaryChanged`
 
 Function Reference
 ------------------
@@ -68,6 +68,13 @@ Function Reference
 
     :returns: (bool) Return value
     :SteamWorks: `BOverlayNeedsPresent <https://partner.steamgames.com/doc/api/ISteamUtils#BOverlayNeedsPresent>`_
+
+**Example**::
+
+    -- Call after rendering your frame
+    if Steam.Utils.BOverlayNeedsPresent() then
+        presentFrame()
+    end
 
 .. function:: Utils.CheckFileSignature(szFileName, callback)
 
@@ -108,6 +115,13 @@ Function Reference
 
     * Parameter ``pchOutFilteredText`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, filtered = Steam.Utils.FilterText('Chat', Steam.User.GetSteamID(), userInput, #userInput + 1)
+    if ok then
+        displayMessage(filtered)
+    end
+
 .. function:: Utils.GetAPICallFailureReason(hSteamAPICall)
 
     🤖 **Auto-generated binding**
@@ -140,6 +154,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetAppID <https://partner.steamgames.com/doc/api/ISteamUtils#GetAppID>`_
 
+**Example**::
+
+    print("My app id is " .. Steam.Utils.GetAppID())
+
 .. function:: Utils.GetConnectedUniverse()
 
     🤖 **Auto-generated binding**
@@ -153,6 +171,13 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `GetCurrentBatteryPower <https://partner.steamgames.com/doc/api/ISteamUtils#GetCurrentBatteryPower>`_
+
+**Example**::
+
+    local power = Steam.Utils.GetCurrentBatteryPower()
+    if power < 20 then
+        print('Low battery: ' .. power .. '%')
+    end
 
 .. function:: Utils.GetEnteredGamepadTextInput(cchText)
 
@@ -188,6 +213,11 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetIPCountry <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPCountry>`_
 
+**Example**::
+
+    local country = Steam.Utils.GetIPCountry()
+    print('Player is from: ' .. country)
+
 .. function:: Utils.GetIPv6ConnectivityState(eProtocol)
 
     🤖 **Auto-generated binding**
@@ -210,6 +240,13 @@ Function Reference
 
     * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local w, h = Steam.Utils.GetImageSize(imageHandle)
+    local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+    -- rgba is a string of raw RGBA bytes; upload to a texture
+    uploadTexture(rgba, w, h)
+
 .. function:: Utils.GetImageSize(iImage)
 
     🤖 **Auto-generated binding**
@@ -225,12 +262,22 @@ Function Reference
     * Parameter ``pnWidth`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pnHeight`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local w, h = Steam.Utils.GetImageSize(imageHandle)
+    print(string.format('Image: %dx%d', w, h))
+
 .. function:: Utils.GetSecondsSinceAppActive()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetSecondsSinceAppActive <https://partner.steamgames.com/doc/api/ISteamUtils#GetSecondsSinceAppActive>`_
+
+**Example**::
+
+    local seconds = Steam.Utils.GetSecondsSinceAppActive()
+    print('App active for ' .. seconds .. ' seconds')
 
 .. function:: Utils.GetSecondsSinceComputerActive()
 
@@ -246,12 +293,22 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetServerRealTime <https://partner.steamgames.com/doc/api/ISteamUtils#GetServerRealTime>`_
 
+**Example**::
+
+    local realTime = Steam.Utils.GetServerRealTime()
+    print('Steam server time: ' .. realTime)
+
 .. function:: Utils.GetSteamUILanguage()
 
     🤖 **Auto-generated binding**
 
     :returns: (str) Return value
     :SteamWorks: `GetSteamUILanguage <https://partner.steamgames.com/doc/api/ISteamUtils#GetSteamUILanguage>`_
+
+**Example**::
+
+    local lang = Steam.Utils.GetSteamUILanguage()
+    print('Steam UI language: ' .. lang)
 
 .. function:: Utils.InitFilterText(unFilterOptions)
 
@@ -281,6 +338,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `IsOverlayEnabled <https://partner.steamgames.com/doc/api/ISteamUtils#IsOverlayEnabled>`_
 
+**Example**::
+
+    if not Steam.Utils.IsOverlayEnabled() then
+        print('Steam overlay is disabled')
+    end
+
 .. function:: Utils.IsSteamChinaLauncher()
 
     🤖 **Auto-generated binding**
@@ -295,6 +358,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `IsSteamInBigPictureMode <https://partner.steamgames.com/doc/api/ISteamUtils#IsSteamInBigPictureMode>`_
 
+**Example**::
+
+    if Steam.Utils.IsSteamInBigPictureMode() then
+        -- Use controller-friendly UI
+    end
+
 .. function:: Utils.IsSteamRunningInVR()
 
     🤖 **Auto-generated binding**
@@ -302,12 +371,24 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `IsSteamRunningInVR <https://partner.steamgames.com/doc/api/ISteamUtils#IsSteamRunningInVR>`_
 
+**Example**::
+
+    if Steam.Utils.IsSteamRunningInVR() then
+        enableVRMode()
+    end
+
 .. function:: Utils.IsSteamRunningOnSteamDeck()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `IsSteamRunningOnSteamDeck <https://partner.steamgames.com/doc/api/ISteamUtils#IsSteamRunningOnSteamDeck>`_
+
+**Example**::
+
+    if Steam.Utils.IsSteamRunningOnSteamDeck() then
+        -- Enable Steam Deck specific controls
+    end
 
 .. function:: Utils.IsVRHeadsetStreamingEnabled()
 
@@ -331,12 +412,20 @@ Function Reference
     :param int nVerticalInset:
     :SteamWorks: `SetOverlayNotificationInset <https://partner.steamgames.com/doc/api/ISteamUtils#SetOverlayNotificationInset>`_
 
+**Example**::
+
+    Steam.Utils.SetOverlayNotificationInset(10, 10)
+
 .. function:: Utils.SetOverlayNotificationPosition(eNotificationPosition)
 
     🤖 **Auto-generated binding**
 
     :param int eNotificationPosition:
     :SteamWorks: `SetOverlayNotificationPosition <https://partner.steamgames.com/doc/api/ISteamUtils#SetOverlayNotificationPosition>`_
+
+**Example**::
+
+    Steam.Utils.SetOverlayNotificationPosition(Steam.k_EPositionTopRight)
 
 .. function:: Utils.SetVRHeadsetStreamingEnabled(bEnabled)
 
@@ -357,6 +446,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ShowFloatingGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowFloatingGamepadTextInput>`_
 
+**Example**::
+
+    -- For bottom of window use 0,0,0,0
+    -- For top of window use 0,windowHeight/2,windowWidth,windowHeight/2
+    Steam.Utils.ShowFloatingGamepadTextInput('SingleLine', x, y, w, h)
+
 .. function:: Utils.ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText)
 
     🤖 **Auto-generated binding**
@@ -369,6 +464,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ShowGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowGamepadTextInput>`_
 
+**Example**::
+
+    Steam.Utils.ShowGamepadTextInput('Normal', 'SingleLine', 'Enter your name', 64, existing_name)
+
 .. function:: Utils.StartVRDashboard()
 
     🤖 **Auto-generated binding**
@@ -379,14 +478,20 @@ Function Reference
 Callbacks
 ---------
 
-.. function:: Utils.onIPCountry
+.. function:: Utils.OnIPCountry
 
     Callback for `IPCountry_t <https://partner.steamgames.com/doc/api/ISteamUtils#IPCountry_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Utils.onLowBatteryPower
+**Example**::
+
+    function Steam.Utils.OnIPCountry()
+        print('IP country changed to: ' .. Steam.Utils.GetIPCountry())
+    end
+
+.. function:: Utils.OnLowBatteryPower
 
     Callback for `LowBatteryPower_t <https://partner.steamgames.com/doc/api/ISteamUtils#LowBatteryPower_t>`_
 
@@ -394,7 +499,13 @@ Callbacks
 
     * **data.m_nMinutesBatteryLeft** -- m_nMinutesBatteryLeft
 
-.. function:: Utils.onSteamAPICallCompleted
+**Example**::
+
+    function Steam.Utils.OnLowBatteryPower(data)
+        print('Low battery warning: ' .. data.m_nMinutesBatteryLeft .. ' minutes left')
+    end
+
+.. function:: Utils.OnSteamAPICallCompleted
 
     Callback for `SteamAPICallCompleted_t <https://partner.steamgames.com/doc/api/ISteamUtils#SteamAPICallCompleted_t>`_
 
@@ -404,14 +515,21 @@ Callbacks
     * **data.m_iCallback** -- m_iCallback
     * **data.m_cubParam** -- m_cubParam
 
-.. function:: Utils.onSteamShutdown
+.. function:: Utils.OnSteamShutdown
 
     Callback for `SteamShutdown_t <https://partner.steamgames.com/doc/api/ISteamUtils#SteamShutdown_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Utils.onCheckFileSignature
+**Example**::
+
+    function Steam.Utils.OnSteamShutdown()
+        print('Steam is shutting down, saving game...')
+        saveGame()
+    end
+
+.. function:: Utils.OnCheckFileSignature
 
     Callback for `CheckFileSignature_t <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature_t>`_
 
@@ -419,7 +537,7 @@ Callbacks
 
     * **data.m_eCheckFileSignature** -- m_eCheckFileSignature
 
-.. function:: Utils.onGamepadTextInputDismissed
+.. function:: Utils.OnGamepadTextInputDismissed
 
     Callback for `GamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/ISteamUtils#GamepadTextInputDismissed_t>`_
 
@@ -429,21 +547,36 @@ Callbacks
     * **data.m_unSubmittedText** -- m_unSubmittedText
     * **data.m_unAppID** -- m_unAppID
 
-.. function:: Utils.onAppResumingFromSuspend
+**Example**::
+
+    function Steam.Utils.OnGamepadTextInputDismissed(data)
+        if not data.m_bSubmitted then return end  -- User canceled
+        local length = Steam.Utils.GetEnteredGamepadTextLength()
+        local newstring = Steam.Utils.GetEnteredGamepadTextInput(length)
+        -- Use the string entered by the user
+    end
+
+.. function:: Utils.OnAppResumingFromSuspend
 
     Callback for `AppResumingFromSuspend_t <https://partner.steamgames.com/doc/api/ISteamUtils#AppResumingFromSuspend_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Utils.onFloatingGamepadTextInputDismissed
+.. function:: Utils.OnFloatingGamepadTextInputDismissed
 
     Callback for `FloatingGamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/ISteamUtils#FloatingGamepadTextInputDismissed_t>`_
 
     **callback(data)** receives:
 
 
-.. function:: Utils.onFilterTextDictionaryChanged
+**Example**::
+
+    function Steam.Utils.OnFloatingGamepadTextInputDismissed()
+        -- Floating keyboard was closed
+    end
+
+.. function:: Utils.OnFilterTextDictionaryChanged
 
     Callback for `FilterTextDictionaryChanged_t <https://partner.steamgames.com/doc/api/ISteamUtils#FilterTextDictionaryChanged_t>`_
 

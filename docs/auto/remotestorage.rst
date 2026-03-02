@@ -71,31 +71,31 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`RemoteStorage.onRemoteStorageFileShareResult`
-* :func:`RemoteStorage.onRemoteStoragePublishFileResult`
-* :func:`RemoteStorage.onRemoteStorageDeletePublishedFileResult`
-* :func:`RemoteStorage.onRemoteStorageEnumerateUserPublishedFilesResult`
-* :func:`RemoteStorage.onRemoteStorageSubscribePublishedFileResult`
-* :func:`RemoteStorage.onRemoteStorageEnumerateUserSubscribedFilesResult`
-* :func:`RemoteStorage.onRemoteStorageUnsubscribePublishedFileResult`
-* :func:`RemoteStorage.onRemoteStorageUpdatePublishedFileResult`
-* :func:`RemoteStorage.onRemoteStorageDownloadUGCResult`
-* :func:`RemoteStorage.onRemoteStorageGetPublishedFileDetailsResult`
-* :func:`RemoteStorage.onRemoteStorageEnumerateWorkshopFilesResult`
-* :func:`RemoteStorage.onRemoteStorageGetPublishedItemVoteDetailsResult`
-* :func:`RemoteStorage.onRemoteStoragePublishedFileSubscribed`
-* :func:`RemoteStorage.onRemoteStoragePublishedFileUnsubscribed`
-* :func:`RemoteStorage.onRemoteStoragePublishedFileDeleted`
-* :func:`RemoteStorage.onRemoteStorageUpdateUserPublishedItemVoteResult`
-* :func:`RemoteStorage.onRemoteStorageUserVoteDetails`
-* :func:`RemoteStorage.onRemoteStorageEnumerateUserSharedWorkshopFilesResult`
-* :func:`RemoteStorage.onRemoteStorageSetUserPublishedFileActionResult`
-* :func:`RemoteStorage.onRemoteStorageEnumeratePublishedFilesByUserActionResult`
-* :func:`RemoteStorage.onRemoteStoragePublishFileProgress`
-* :func:`RemoteStorage.onRemoteStoragePublishedFileUpdated`
-* :func:`RemoteStorage.onRemoteStorageFileWriteAsyncComplete`
-* :func:`RemoteStorage.onRemoteStorageFileReadAsyncComplete`
-* :func:`RemoteStorage.onRemoteStorageLocalFileChange`
+* :func:`RemoteStorage.OnRemoteStorageFileShareResult`
+* :func:`RemoteStorage.OnRemoteStoragePublishFileResult`
+* :func:`RemoteStorage.OnRemoteStorageDeletePublishedFileResult`
+* :func:`RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult`
+* :func:`RemoteStorage.OnRemoteStorageSubscribePublishedFileResult`
+* :func:`RemoteStorage.OnRemoteStorageEnumerateUserSubscribedFilesResult`
+* :func:`RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult`
+* :func:`RemoteStorage.OnRemoteStorageUpdatePublishedFileResult`
+* :func:`RemoteStorage.OnRemoteStorageDownloadUGCResult`
+* :func:`RemoteStorage.OnRemoteStorageGetPublishedFileDetailsResult`
+* :func:`RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult`
+* :func:`RemoteStorage.OnRemoteStorageGetPublishedItemVoteDetailsResult`
+* :func:`RemoteStorage.OnRemoteStoragePublishedFileSubscribed`
+* :func:`RemoteStorage.OnRemoteStoragePublishedFileUnsubscribed`
+* :func:`RemoteStorage.OnRemoteStoragePublishedFileDeleted`
+* :func:`RemoteStorage.OnRemoteStorageUpdateUserPublishedItemVoteResult`
+* :func:`RemoteStorage.OnRemoteStorageUserVoteDetails`
+* :func:`RemoteStorage.OnRemoteStorageEnumerateUserSharedWorkshopFilesResult`
+* :func:`RemoteStorage.OnRemoteStorageSetUserPublishedFileActionResult`
+* :func:`RemoteStorage.OnRemoteStorageEnumeratePublishedFilesByUserActionResult`
+* :func:`RemoteStorage.OnRemoteStoragePublishFileProgress`
+* :func:`RemoteStorage.OnRemoteStoragePublishedFileUpdated`
+* :func:`RemoteStorage.OnRemoteStorageFileWriteAsyncComplete`
+* :func:`RemoteStorage.OnRemoteStorageFileReadAsyncComplete`
+* :func:`RemoteStorage.OnRemoteStorageLocalFileChange`
 
 Function Reference
 ------------------
@@ -106,6 +106,13 @@ Function Reference
 
     :returns: (bool) Return value
     :SteamWorks: `BeginFileWriteBatch <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#BeginFileWriteBatch>`_
+
+**Example**::
+
+    Steam.RemoteStorage.BeginFileWriteBatch()
+    Steam.RemoteStorage.FileWrite('config.dat', configData, #configData)
+    Steam.RemoteStorage.FileWrite('progress.dat', progressData, #progressData)
+    Steam.RemoteStorage.EndFileWriteBatch()
 
 .. function:: RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback)
 
@@ -212,6 +219,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `FileDelete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileDelete>`_
 
+**Example**::
+
+    if Steam.RemoteStorage.FileDelete('old_save.txt') then
+        print('Cloud file deleted')
+    end
+
 .. function:: RemoteStorage.FileExists(pchFile)
 
     🤖 **Auto-generated binding**
@@ -219,6 +232,14 @@ Function Reference
     :param str pchFile:
     :returns: (bool) Return value
     :SteamWorks: `FileExists <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileExists>`_
+
+**Example**::
+
+    if Steam.RemoteStorage.FileExists('savegame.txt') then
+        loadCloudSave()
+    else
+        createNewSave()
+    end
 
 .. function:: RemoteStorage.FileForget(pchFile)
 
@@ -236,6 +257,12 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `FilePersisted <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FilePersisted>`_
 
+**Example**::
+
+    if Steam.RemoteStorage.FilePersisted('savegame.txt') then
+        print('File is synchronized to the cloud')
+    end
+
 .. function:: RemoteStorage.FileRead(pchFile, cubDataToRead)
 
     🤖 **Auto-generated binding**
@@ -250,6 +277,14 @@ Function Reference
 
     * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
+    local data = Steam.RemoteStorage.FileRead('savegame.txt', size)
+    if data then
+        loadSaveData(data)
+    end
+
 .. function:: RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback)
 
     🤖 **Auto-generated binding**
@@ -260,6 +295,15 @@ Function Reference
     :param function callback: CallResult callback receiving struct `RemoteStorageFileReadAsyncComplete_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FileReadAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsync>`_
+
+**Example**::
+
+    Steam.RemoteStorage.FileReadAsync('savegame.dat', 0, fileSize, function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            local fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
+            loadSaveData(fileData)
+        end
+    end)
 
 .. function:: RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead)
 
@@ -294,6 +338,16 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
 
+**Example**::
+
+    local data = 'player_name=Alice
+    level=42
+    '
+    local ok = Steam.RemoteStorage.FileWrite('savegame.txt', data, #data)
+    if not ok then
+        print('Failed to write cloud save')
+    end
+
 .. function:: RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback)
 
     🤖 **Auto-generated binding**
@@ -304,6 +358,16 @@ Function Reference
     :param function callback: CallResult callback receiving struct `RemoteStorageFileWriteAsyncComplete_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
+
+**Example**::
+
+    Steam.RemoteStorage.FileWriteAsync('autosave.dat', saveData, #saveData, function(data, err)
+        if err or data.m_eResult ~= Steam.k_EResultOK then
+            print('Async write failed')
+        else
+            print('Cloud save written asynchronously')
+        end
+    end)
 
 .. function:: RemoteStorage.FileWriteStreamCancel(writeHandle)
 
@@ -361,6 +425,14 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFileCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileCount>`_
 
+**Example**::
+
+    local count = Steam.RemoteStorage.GetFileCount()
+    for i = 0, count - 1 do
+        local name, size = Steam.RemoteStorage.GetFileNameAndSize(i)
+        print(name .. ' (' .. size .. ' bytes)')
+    end
+
 .. function:: RemoteStorage.GetFileNameAndSize(iFile)
 
     🤖 **Auto-generated binding**
@@ -374,6 +446,10 @@ Function Reference
 
     * Parameter ``pnFileSizeInBytes`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    See :func:`RemoteStorage.GetFileCount`'s example.
+
 .. function:: RemoteStorage.GetFileSize(pchFile)
 
     🤖 **Auto-generated binding**
@@ -382,6 +458,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFileSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileSize>`_
 
+**Example**::
+
+    local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
+    print('Save file size: ' .. size .. ' bytes')
+
 .. function:: RemoteStorage.GetFileTimestamp(pchFile)
 
     🤖 **Auto-generated binding**
@@ -389,6 +470,11 @@ Function Reference
     :param str pchFile:
     :returns: (uint64) Return value
     :SteamWorks: `GetFileTimestamp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileTimestamp>`_
+
+**Example**::
+
+    local timestamp = Steam.RemoteStorage.GetFileTimestamp('savegame.txt')
+    print('Last modified: ' .. os.date('%c', timestamp))
 
 .. function:: RemoteStorage.GetLocalFileChange(iFile)
 
@@ -411,6 +497,15 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `GetLocalFileChangeCount <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetLocalFileChangeCount>`_
+
+**Example**::
+
+    -- Check for external changes (e.g. from another PC)
+    local count = Steam.RemoteStorage.GetLocalFileChangeCount()
+    for i = 0, count - 1 do
+        local name, changeType = Steam.RemoteStorage.GetLocalFileChange(i)
+        print('Cloud file changed:', name, changeType)
+    end
 
 .. function:: RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback)
 
@@ -444,6 +539,11 @@ Function Reference
 
     * Parameter ``pnTotalBytes`` is no longer a paramer, and is instead an additional return value
     * Parameter ``puAvailableBytes`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local total, available = Steam.RemoteStorage.GetQuota()
+    print(string.format('Cloud storage: %d/%d bytes used', total - available, total))
 
 .. function:: RemoteStorage.GetSyncPlatforms(pchFile)
 
@@ -490,6 +590,12 @@ Function Reference
 
     :returns: (bool) Return value
     :SteamWorks: `IsCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#IsCloudEnabledForApp>`_
+
+**Example**::
+
+    if Steam.RemoteStorage.IsCloudEnabledForApp() then
+        syncCloudSaves()
+    end
 
 .. function:: RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback)
 
@@ -538,6 +644,11 @@ Function Reference
 
     :param bool bEnabled:
     :SteamWorks: `SetCloudEnabledForApp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetCloudEnabledForApp>`_
+
+**Example**::
+
+    -- Allow user to toggle cloud saves
+    Steam.RemoteStorage.SetCloudEnabledForApp(userWantsCloud)
 
 .. function:: RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform)
 
@@ -704,7 +815,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: RemoteStorage.onRemoteStorageFileShareResult
+.. function:: RemoteStorage.OnRemoteStorageFileShareResult
 
     Callback for `RemoteStorageFileShareResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileShareResult_t>`_
 
@@ -714,7 +825,7 @@ Callbacks
     * **data.m_hFile** -- m_hFile
     * **data.m_rgchFilename** -- m_rgchFilename
 
-.. function:: RemoteStorage.onRemoteStoragePublishFileResult
+.. function:: RemoteStorage.OnRemoteStoragePublishFileResult
 
     Callback for `RemoteStoragePublishFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishFileResult_t>`_
 
@@ -724,7 +835,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
 
-.. function:: RemoteStorage.onRemoteStorageDeletePublishedFileResult
+.. function:: RemoteStorage.OnRemoteStorageDeletePublishedFileResult
 
     Callback for `RemoteStorageDeletePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageDeletePublishedFileResult_t>`_
 
@@ -733,7 +844,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageEnumerateUserPublishedFilesResult
+.. function:: RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult
 
     Callback for `RemoteStorageEnumerateUserPublishedFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserPublishedFilesResult_t>`_
 
@@ -744,7 +855,7 @@ Callbacks
     * **data.m_nTotalResultCount** -- m_nTotalResultCount
     * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageSubscribePublishedFileResult
+.. function:: RemoteStorage.OnRemoteStorageSubscribePublishedFileResult
 
     Callback for `RemoteStorageSubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageSubscribePublishedFileResult_t>`_
 
@@ -753,7 +864,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageEnumerateUserSubscribedFilesResult
+.. function:: RemoteStorage.OnRemoteStorageEnumerateUserSubscribedFilesResult
 
     Callback for `RemoteStorageEnumerateUserSubscribedFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserSubscribedFilesResult_t>`_
 
@@ -765,7 +876,7 @@ Callbacks
     * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
     * **data.m_rgRTimeSubscribed** -- m_rgRTimeSubscribed
 
-.. function:: RemoteStorage.onRemoteStorageUnsubscribePublishedFileResult
+.. function:: RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult
 
     Callback for `RemoteStorageUnsubscribePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUnsubscribePublishedFileResult_t>`_
 
@@ -774,7 +885,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageUpdatePublishedFileResult
+.. function:: RemoteStorage.OnRemoteStorageUpdatePublishedFileResult
 
     Callback for `RemoteStorageUpdatePublishedFileResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUpdatePublishedFileResult_t>`_
 
@@ -784,7 +895,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
 
-.. function:: RemoteStorage.onRemoteStorageDownloadUGCResult
+.. function:: RemoteStorage.OnRemoteStorageDownloadUGCResult
 
     Callback for `RemoteStorageDownloadUGCResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageDownloadUGCResult_t>`_
 
@@ -797,7 +908,7 @@ Callbacks
     * **data.m_pchFileName** -- m_pchFileName
     * **data.m_ulSteamIDOwner** -- m_ulSteamIDOwner
 
-.. function:: RemoteStorage.onRemoteStorageGetPublishedFileDetailsResult
+.. function:: RemoteStorage.OnRemoteStorageGetPublishedFileDetailsResult
 
     Callback for `RemoteStorageGetPublishedFileDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageGetPublishedFileDetailsResult_t>`_
 
@@ -825,7 +936,7 @@ Callbacks
     * **data.m_eFileType** -- m_eFileType
     * **data.m_bAcceptedForUse** -- m_bAcceptedForUse
 
-.. function:: RemoteStorage.onRemoteStorageEnumerateWorkshopFilesResult
+.. function:: RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult
 
     Callback for `RemoteStorageEnumerateWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateWorkshopFilesResult_t>`_
 
@@ -839,7 +950,7 @@ Callbacks
     * **data.m_nAppId** -- m_nAppId
     * **data.m_unStartIndex** -- m_unStartIndex
 
-.. function:: RemoteStorage.onRemoteStorageGetPublishedItemVoteDetailsResult
+.. function:: RemoteStorage.OnRemoteStorageGetPublishedItemVoteDetailsResult
 
     Callback for `RemoteStorageGetPublishedItemVoteDetailsResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageGetPublishedItemVoteDetailsResult_t>`_
 
@@ -852,7 +963,7 @@ Callbacks
     * **data.m_nReports** -- m_nReports
     * **data.m_fScore** -- m_fScore
 
-.. function:: RemoteStorage.onRemoteStoragePublishedFileSubscribed
+.. function:: RemoteStorage.OnRemoteStoragePublishedFileSubscribed
 
     Callback for `RemoteStoragePublishedFileSubscribed_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileSubscribed_t>`_
 
@@ -861,7 +972,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_nAppID** -- m_nAppID
 
-.. function:: RemoteStorage.onRemoteStoragePublishedFileUnsubscribed
+.. function:: RemoteStorage.OnRemoteStoragePublishedFileUnsubscribed
 
     Callback for `RemoteStoragePublishedFileUnsubscribed_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileUnsubscribed_t>`_
 
@@ -870,7 +981,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_nAppID** -- m_nAppID
 
-.. function:: RemoteStorage.onRemoteStoragePublishedFileDeleted
+.. function:: RemoteStorage.OnRemoteStoragePublishedFileDeleted
 
     Callback for `RemoteStoragePublishedFileDeleted_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileDeleted_t>`_
 
@@ -879,7 +990,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_nAppID** -- m_nAppID
 
-.. function:: RemoteStorage.onRemoteStorageUpdateUserPublishedItemVoteResult
+.. function:: RemoteStorage.OnRemoteStorageUpdateUserPublishedItemVoteResult
 
     Callback for `RemoteStorageUpdateUserPublishedItemVoteResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUpdateUserPublishedItemVoteResult_t>`_
 
@@ -888,7 +999,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageUserVoteDetails
+.. function:: RemoteStorage.OnRemoteStorageUserVoteDetails
 
     Callback for `RemoteStorageUserVoteDetails_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageUserVoteDetails_t>`_
 
@@ -898,7 +1009,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_eVote** -- m_eVote
 
-.. function:: RemoteStorage.onRemoteStorageEnumerateUserSharedWorkshopFilesResult
+.. function:: RemoteStorage.OnRemoteStorageEnumerateUserSharedWorkshopFilesResult
 
     Callback for `RemoteStorageEnumerateUserSharedWorkshopFilesResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumerateUserSharedWorkshopFilesResult_t>`_
 
@@ -909,7 +1020,7 @@ Callbacks
     * **data.m_nTotalResultCount** -- m_nTotalResultCount
     * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
 
-.. function:: RemoteStorage.onRemoteStorageSetUserPublishedFileActionResult
+.. function:: RemoteStorage.OnRemoteStorageSetUserPublishedFileActionResult
 
     Callback for `RemoteStorageSetUserPublishedFileActionResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageSetUserPublishedFileActionResult_t>`_
 
@@ -919,7 +1030,7 @@ Callbacks
     * **data.m_nPublishedFileId** -- m_nPublishedFileId
     * **data.m_eAction** -- m_eAction
 
-.. function:: RemoteStorage.onRemoteStorageEnumeratePublishedFilesByUserActionResult
+.. function:: RemoteStorage.OnRemoteStorageEnumeratePublishedFilesByUserActionResult
 
     Callback for `RemoteStorageEnumeratePublishedFilesByUserActionResult_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageEnumeratePublishedFilesByUserActionResult_t>`_
 
@@ -932,7 +1043,7 @@ Callbacks
     * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
     * **data.m_rgRTimeUpdated** -- m_rgRTimeUpdated
 
-.. function:: RemoteStorage.onRemoteStoragePublishFileProgress
+.. function:: RemoteStorage.OnRemoteStoragePublishFileProgress
 
     Callback for `RemoteStoragePublishFileProgress_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishFileProgress_t>`_
 
@@ -941,7 +1052,7 @@ Callbacks
     * **data.m_dPercentFile** -- m_dPercentFile
     * **data.m_bPreview** -- m_bPreview
 
-.. function:: RemoteStorage.onRemoteStoragePublishedFileUpdated
+.. function:: RemoteStorage.OnRemoteStoragePublishedFileUpdated
 
     Callback for `RemoteStoragePublishedFileUpdated_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStoragePublishedFileUpdated_t>`_
 
@@ -951,7 +1062,7 @@ Callbacks
     * **data.m_nAppID** -- m_nAppID
     * **data.m_ulUnused** -- m_ulUnused
 
-.. function:: RemoteStorage.onRemoteStorageFileWriteAsyncComplete
+.. function:: RemoteStorage.OnRemoteStorageFileWriteAsyncComplete
 
     Callback for `RemoteStorageFileWriteAsyncComplete_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileWriteAsyncComplete_t>`_
 
@@ -959,7 +1070,7 @@ Callbacks
 
     * **data.m_eResult** -- m_eResult
 
-.. function:: RemoteStorage.onRemoteStorageFileReadAsyncComplete
+.. function:: RemoteStorage.OnRemoteStorageFileReadAsyncComplete
 
     Callback for `RemoteStorageFileReadAsyncComplete_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageFileReadAsyncComplete_t>`_
 
@@ -970,10 +1081,18 @@ Callbacks
     * **data.m_nOffset** -- m_nOffset
     * **data.m_cubRead** -- m_cubRead
 
-.. function:: RemoteStorage.onRemoteStorageLocalFileChange
+.. function:: RemoteStorage.OnRemoteStorageLocalFileChange
 
     Callback for `RemoteStorageLocalFileChange_t <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#RemoteStorageLocalFileChange_t>`_
 
     **callback(data)** receives:
 
+
+**Example**::
+
+    function Steam.RemoteStorage.OnRemoteStorageLocalFileChange()
+        local count = Steam.RemoteStorage.GetLocalFileChangeCount()
+        print('Cloud file changes detected:', count)
+        reloadCloudSaves()
+    end
 

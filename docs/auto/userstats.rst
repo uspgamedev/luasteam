@@ -57,19 +57,19 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`UserStats.onUserStatsReceived`
-* :func:`UserStats.onUserStatsStored`
-* :func:`UserStats.onUserAchievementStored`
-* :func:`UserStats.onLeaderboardFindResult`
-* :func:`UserStats.onLeaderboardScoresDownloaded`
-* :func:`UserStats.onLeaderboardScoreUploaded`
-* :func:`UserStats.onNumberOfCurrentPlayers`
-* :func:`UserStats.onUserStatsUnloaded`
-* :func:`UserStats.onUserAchievementIconFetched`
-* :func:`UserStats.onGlobalAchievementPercentagesReady`
-* :func:`UserStats.onLeaderboardUGCSet`
-* :func:`UserStats.onGlobalStatsReceived`
-* :func:`UserStats.onGSStatsUnloaded`
+* :func:`UserStats.OnUserStatsReceived`
+* :func:`UserStats.OnUserStatsStored`
+* :func:`UserStats.OnUserAchievementStored`
+* :func:`UserStats.OnLeaderboardFindResult`
+* :func:`UserStats.OnLeaderboardScoresDownloaded`
+* :func:`UserStats.OnLeaderboardScoreUploaded`
+* :func:`UserStats.OnNumberOfCurrentPlayers`
+* :func:`UserStats.OnUserStatsUnloaded`
+* :func:`UserStats.OnUserAchievementIconFetched`
+* :func:`UserStats.OnGlobalAchievementPercentagesReady`
+* :func:`UserStats.OnLeaderboardUGCSet`
+* :func:`UserStats.OnGlobalStatsReceived`
+* :func:`UserStats.OnGSStatsUnloaded`
 
 Function Reference
 ------------------
@@ -92,6 +92,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ClearAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#ClearAchievement>`_
 
+**Example**::
+
+    Steam.UserStats.ClearAchievement('ach_name')
+    Steam.UserStats.StoreStats()
+
 .. function:: UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback)
 
     🤖 **Auto-generated binding**
@@ -104,6 +109,23 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntries <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntries>`_
 
+**Example**::
+
+    -- Download global entries 1-100
+    Steam.UserStats.DownloadLeaderboardEntries(handle, 'Global', 1, 100, function(data, err)
+        if err then
+            print('Error happened')
+        else
+            for i = 0, data.m_cEntryCount - 1 do
+                local ok, entry = Steam.UserStats.GetDownloadedLeaderboardEntry(data.m_hSteamLeaderboardEntries, i, 0)
+                if ok then
+                    local name = Steam.Friends.GetFriendPersonaName(entry.m_steamIDUser)
+                    print('Rank #' .. entry.m_nGlobalRank .. ': ' .. name .. ' - ' .. entry.m_nScore)
+                end
+            end
+        end
+    end)
+
 .. function:: UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback)
 
     🤖 **Auto-generated binding**
@@ -115,6 +137,20 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
 
+**Example**::
+
+    local friends = {friend1ID, friend2ID}
+    Steam.UserStats.DownloadLeaderboardEntriesForUsers(handle, friends, #friends, function(data, err)
+        if not err then
+            for i = 0, data.m_cEntryCount - 1 do
+                local ok, entry = Steam.UserStats.GetDownloadedLeaderboardEntry(data.m_hSteamLeaderboardEntries, i, 0)
+                if ok then
+                    print(tostring(entry.m_steamIDUser) .. ': ' .. entry.m_nScore)
+                end
+            end
+        end
+    end)
+
 .. function:: UserStats.FindLeaderboard(pchLeaderboardName, callback)
 
     🤖 **Auto-generated binding**
@@ -123,6 +159,18 @@ Function Reference
     :param function callback: CallResult callback receiving struct `LeaderboardFindResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
+
+    Asynchronously finds a leaderboard by name.
+
+**Example**::
+
+    Steam.UserStats.FindLeaderboard('TopScores', function(data, err)
+        if err or data.m_bLeaderboardFound == 0 then
+            print('Leaderboard not found')
+        else
+            uploadScoresHelper(data.m_hSteamLeaderboard)
+        end
+    end)
 
 .. function:: UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback)
 
@@ -135,18 +183,37 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
 
+**Example**::
+
+    Steam.UserStats.FindOrCreateLeaderboard('TopScores', 'Descending', 'Numeric', function(data, err)
+        if err or data.m_bLeaderboardFound == 0 then
+            print('Something happened')
+        else
+            uploadScoresHelper(data.m_hSteamLeaderboard)
+        end
+    end)
+
 .. function:: UserStats.GetAchievement(pchName)
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str pchName: The 'API Name' of the achievement
     :returns: (bool) Return value
     :returns: (bool) Value for `pbAchieved`
     :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
 
+    Gets the unlock status of an Achievement.
+
     **Signature differences from C++ API:**
 
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local success, achieved = Steam.UserStats.GetAchievement('ach_name')
+    if success and achieved then
+        print('Yep, you have the achievement')
+    end
 
 .. function:: UserStats.GetAchievementAchievedPercent(pchName)
 
@@ -176,6 +243,13 @@ Function Reference
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punUnlockTime`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, achieved, unlockTime = Steam.UserStats.GetAchievementAndUnlockTime('ach_name')
+    if ok and achieved then
+        print('Unlocked at:', unlockTime)
+    end
+
 .. function:: UserStats.GetAchievementDisplayAttribute(pchName, pchKey)
 
     🤖 **Auto-generated binding**
@@ -184,6 +258,12 @@ Function Reference
     :param str pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
+
+**Example**::
+
+    local name = Steam.UserStats.GetAchievementDisplayAttribute('ach_name', 'name')
+    local desc = Steam.UserStats.GetAchievementDisplayAttribute('ach_name', 'desc')
+    print(name .. ': ' .. desc)
 
 .. function:: UserStats.GetAchievementIcon(pchName)
 
@@ -200,6 +280,10 @@ Function Reference
     :param int iAchievement:
     :returns: (str) Return value
     :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
+
+**Example**::
+
+    See :func:`UserStats.GetNumAchievements`'s example.
 
 .. function:: UserStats.GetAchievementProgressLimitsFloat(pchName)
 
@@ -231,6 +315,13 @@ Function Reference
     * Parameter ``pnMinProgress`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pnMaxProgress`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, minVal, maxVal = Steam.UserStats.GetAchievementProgressLimitsInt32('ach_progress')
+    if ok then
+        print(string.format('Progress range: %d - %d', minVal, maxVal))
+    end
+
 .. function:: UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, cDetailsMax)
 
     🤖 **Auto-generated binding**
@@ -260,6 +351,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, total = Steam.UserStats.GetGlobalStatDouble('total_playtime_hours')
+    if ok then
+        print('Total playtime hours worldwide:', total)
+    end
 
 .. function:: UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData)
 
@@ -302,6 +400,13 @@ Function Reference
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, total = Steam.UserStats.GetGlobalStatInt64('total_kills')
+    if ok then
+        print('Total kills across all players:', total)
+    end
+
 .. function:: UserStats.GetLeaderboardDisplayType(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
@@ -309,6 +414,10 @@ Function Reference
     :param uint64 hSteamLeaderboard:
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
+
+**Example**::
+
+    See :func:`UserStats.GetLeaderboardName`'s example.
 
 .. function:: UserStats.GetLeaderboardEntryCount(hSteamLeaderboard)
 
@@ -318,6 +427,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
 
+**Example**::
+
+    See :func:`UserStats.GetLeaderboardName`'s example.
+
 .. function:: UserStats.GetLeaderboardName(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
@@ -326,6 +439,15 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
 
+**Example**::
+
+    local function printLeaderboardInfo(handle)
+        print('Leaderboard name: ' .. Steam.UserStats.GetLeaderboardName(handle))
+        print('Entries: ' .. Steam.UserStats.GetLeaderboardEntryCount(handle))
+        print('Sort Method: ' .. Steam.UserStats.GetLeaderboardSortMethod(handle))
+        print('Display Type: ' .. Steam.UserStats.GetLeaderboardDisplayType(handle))
+    end
+
 .. function:: UserStats.GetLeaderboardSortMethod(hSteamLeaderboard)
 
     🤖 **Auto-generated binding**
@@ -333,6 +455,10 @@ Function Reference
     :param uint64 hSteamLeaderboard:
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
+
+**Example**::
+
+    See :func:`UserStats.GetLeaderboardName`'s example.
 
 .. function:: UserStats.GetMostAchievedAchievementInfo(unNameBufLen)
 
@@ -350,6 +476,14 @@ Function Reference
     * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pflPercent`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local iter, name, percent, achieved = Steam.UserStats.GetMostAchievedAchievementInfo(256)
+    while iter ~= -1 do
+        print(string.format('%s: %.1f%%', name, percent))
+        iter, name, percent, achieved = Steam.UserStats.GetNextMostAchievedAchievementInfo(iter, 256)
+    end
 
 .. function:: UserStats.GetNextMostAchievedAchievementInfo(iIteratorPrevious, unNameBufLen)
 
@@ -376,6 +510,15 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetNumAchievements <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumAchievements>`_
 
+**Example**::
+
+    local count = Steam.UserStats.GetNumAchievements()
+    for i = 0, count - 1 do
+        local name = Steam.UserStats.GetAchievementName(i)
+        local ok, achieved = Steam.UserStats.GetAchievement(name)
+        print(name .. ': ' .. (achieved and 'unlocked' or 'locked'))
+    end
+
 .. function:: UserStats.GetNumberOfCurrentPlayers(callback)
 
     🤖 **Auto-generated binding**
@@ -383,6 +526,14 @@ Function Reference
     :param function callback: CallResult callback receiving struct `NumberOfCurrentPlayers_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetNumberOfCurrentPlayers <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumberOfCurrentPlayers>`_
+
+**Example**::
+
+    Steam.UserStats.GetNumberOfCurrentPlayers(function(data, err)
+        if not err and data.m_bSuccess ~= 0 then
+            print('Players online right now:', data.m_cPlayers)
+        end
+    end)
 
 .. function:: UserStats.GetStatFloat(pchName)
 
@@ -397,6 +548,13 @@ Function Reference
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local success, value = Steam.UserStats.GetStatFloat('accuracy')
+    if success then
+        print('Accuracy: ' .. value)
+    end
+
 .. function:: UserStats.GetStatInt32(pchName)
 
     🤖 **Auto-generated binding**
@@ -409,6 +567,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local success, value = Steam.UserStats.GetStatInt32('kills')
+    if success then
+        print('Kills: ' .. value)
+    end
 
 .. function:: UserStats.GetUserAchievement(steamIDUser, pchName)
 
@@ -423,6 +588,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, achieved = Steam.UserStats.GetUserAchievement(playerSteamID, 'ach_name')
+    if ok then
+        print('Achievement status:', achieved)
+    end
 
 .. function:: UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName)
 
@@ -468,6 +640,13 @@ Function Reference
 
     * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, value = Steam.UserStats.GetUserStatInt32(playerSteamID, 'kills')
+    if ok then
+        print('Player kills:', value)
+    end
+
 .. function:: UserStats.IndicateAchievementProgress(pchName, nCurProgress, nMaxProgress)
 
     🤖 **Auto-generated binding**
@@ -478,6 +657,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `IndicateAchievementProgress <https://partner.steamgames.com/doc/api/ISteamUserStats#IndicateAchievementProgress>`_
 
+**Example**::
+
+    -- Show progress notification without unlocking yet
+    Steam.UserStats.IndicateAchievementProgress('ach_kills', currentKills, 100)
+
 .. function:: UserStats.RequestGlobalAchievementPercentages(callback)
 
     🤖 **Auto-generated binding**
@@ -485,6 +669,15 @@ Function Reference
     :param function callback: CallResult callback receiving struct `GlobalAchievementPercentagesReady_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestGlobalAchievementPercentages <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalAchievementPercentages>`_
+
+**Example**::
+
+    Steam.UserStats.RequestGlobalAchievementPercentages(function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            local ok, pct = Steam.UserStats.GetAchievementAchievedPercent('ach_name')
+            print('Worldwide unlock rate:', pct .. '%')
+        end
+    end)
 
 .. function:: UserStats.RequestGlobalStats(nHistoryDays, callback)
 
@@ -495,6 +688,15 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `RequestGlobalStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalStats>`_
 
+**Example**::
+
+    Steam.UserStats.RequestGlobalStats(7, function(data, err)
+        if not err and data.m_eResult == Steam.k_EResultOK then
+            local ok, total = Steam.UserStats.GetGlobalStatInt64('total_kills')
+            print('Global kills (last 7 days):', total)
+        end
+    end)
+
 .. function:: UserStats.RequestUserStats(steamIDUser, callback)
 
     🤖 **Auto-generated binding**
@@ -504,6 +706,17 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
 
+**Example**::
+
+    Steam.UserStats.RequestUserStats(playerSteamID, function(data, err)
+        if err or data.m_eResult ~= Steam.k_EResultOK then
+            print('Failed to get user stats')
+            return
+        end
+        local ok, kills = Steam.UserStats.GetUserStatInt32(playerSteamID, 'kills')
+        print('Player kills:', kills)
+    end)
+
 .. function:: UserStats.ResetAllStats(bAchievementsToo)
 
     🤖 **Auto-generated binding**
@@ -512,13 +725,28 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ResetAllStats <https://partner.steamgames.com/doc/api/ISteamUserStats#ResetAllStats>`_
 
+**Example**::
+
+    if dev_mode and keypressed('f10') then
+        Steam.UserStats.ResetAllStats(true)
+    end
+
 .. function:: UserStats.SetAchievement(pchName)
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str pchName: The 'API Name' of the achievement
     :returns: (bool) Return value
     :SteamWorks: `SetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#SetAchievement>`_
+
+    Unlocks an achievement. Call StoreStats() to persist.
+
+**Example**::
+
+    if achievementConditionSatisfied() then
+        Steam.UserStats.SetAchievement('ach_name')
+        Steam.UserStats.StoreStats()  -- shows overlay notification
+    end
 
 .. function:: UserStats.SetStatFloat(pchName, fData)
 
@@ -529,6 +757,11 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetStatFloat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatFloat>`_
 
+**Example**::
+
+    Steam.UserStats.SetStatFloat('accuracy', 0.75)
+    Steam.UserStats.StoreStats()
+
 .. function:: UserStats.SetStatInt32(pchName, nData)
 
     🤖 **Auto-generated binding**
@@ -538,12 +771,24 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetStatInt32 <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStatInt32>`_
 
+**Example**::
+
+    Steam.UserStats.SetStatInt32('kills', 43)
+    Steam.UserStats.StoreStats()
+
 .. function:: UserStats.StoreStats()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `StoreStats <https://partner.steamgames.com/doc/api/ISteamUserStats#StoreStats>`_
+
+    Stores the current stats and achievements on the server. This will cause a callback when complete.
+
+**Example**::
+
+    Steam.UserStats.SetStatInt32('kills', 100)
+    Steam.UserStats.StoreStats()
 
 .. function:: UserStats.UpdateAvgRateStat(pchName, flCountThisSession, dSessionLength)
 
@@ -554,6 +799,12 @@ Function Reference
     :param float dSessionLength:
     :returns: (bool) Return value
     :SteamWorks: `UpdateAvgRateStat <https://partner.steamgames.com/doc/api/ISteamUserStats#UpdateAvgRateStat>`_
+
+**Example**::
+
+    -- Track rolling average of score per session length
+    Steam.UserStats.UpdateAvgRateStat('avg_score_per_hour', sessionScore, sessionSeconds / 3600)
+    Steam.UserStats.StoreStats()
 
 .. function:: UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback)
 
@@ -568,11 +819,26 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_
 
+    Uploads a user score to a specified leaderboard.
+
+**Example**::
+
+    local function uploadScoresHelper(handle)
+        local score = getScore()
+        Steam.UserStats.UploadLeaderboardScore(handle, 'KeepBest', score, nil, function(data, err)
+            if err or data.m_bSuccess == 0 then
+                print('Upload score failed')
+            else
+                print('Upload score success. New rank is: ' .. data.m_nGlobalRankNew)
+            end
+        end)
+    end
+
 
 Callbacks
 ---------
 
-.. function:: UserStats.onUserStatsReceived
+.. function:: UserStats.OnUserStatsReceived
 
     Callback for `UserStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsReceived_t>`_
 
@@ -582,7 +848,15 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_steamIDUser** -- m_steamIDUser
 
-.. function:: UserStats.onUserStatsStored
+**Example**::
+
+    function Steam.UserStats.OnUserStatsReceived(data)
+        if data.m_eResult == Steam.k_EResultOK then
+            print('Stats loaded for user:', tostring(data.m_steamIDUser))
+        end
+    end
+
+.. function:: UserStats.OnUserStatsStored
 
     Callback for `UserStatsStored_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsStored_t>`_
 
@@ -591,7 +865,17 @@ Callbacks
     * **data.m_nGameID** -- m_nGameID
     * **data.m_eResult** -- m_eResult
 
-.. function:: UserStats.onUserAchievementStored
+**Example**::
+
+    function Steam.UserStats.OnUserStatsStored(data)
+        if data.m_eResult == Steam.k_EResultOK then
+            print('Stats saved successfully')
+        else
+            print('Stats save failed:', data.m_eResult)
+        end
+    end
+
+.. function:: UserStats.OnUserAchievementStored
 
     Callback for `UserAchievementStored_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserAchievementStored_t>`_
 
@@ -603,7 +887,16 @@ Callbacks
     * **data.m_nCurProgress** -- m_nCurProgress
     * **data.m_nMaxProgress** -- m_nMaxProgress
 
-.. function:: UserStats.onLeaderboardFindResult
+**Example**::
+
+    function Steam.UserStats.OnUserAchievementStored(data)
+        print('Achievement stored:', data.m_rgchAchievementName)
+        if data.m_nMaxProgress > 0 then
+            print(data.m_nCurProgress .. '/' .. data.m_nMaxProgress)
+        end
+    end
+
+.. function:: UserStats.OnLeaderboardFindResult
 
     Callback for `LeaderboardFindResult_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardFindResult_t>`_
 
@@ -612,7 +905,15 @@ Callbacks
     * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
     * **data.m_bLeaderboardFound** -- m_bLeaderboardFound
 
-.. function:: UserStats.onLeaderboardScoresDownloaded
+**Example**::
+
+    function Steam.UserStats.OnLeaderboardFindResult(data)
+        if data.m_bLeaderboardFound then
+            print('Leaderboard handle:', tostring(data.m_hSteamLeaderboard))
+        end
+    end
+
+.. function:: UserStats.OnLeaderboardScoresDownloaded
 
     Callback for `LeaderboardScoresDownloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardScoresDownloaded_t>`_
 
@@ -622,7 +923,7 @@ Callbacks
     * **data.m_hSteamLeaderboardEntries** -- m_hSteamLeaderboardEntries
     * **data.m_cEntryCount** -- m_cEntryCount
 
-.. function:: UserStats.onLeaderboardScoreUploaded
+.. function:: UserStats.OnLeaderboardScoreUploaded
 
     Callback for `LeaderboardScoreUploaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardScoreUploaded_t>`_
 
@@ -635,7 +936,15 @@ Callbacks
     * **data.m_nGlobalRankNew** -- m_nGlobalRankNew
     * **data.m_nGlobalRankPrevious** -- m_nGlobalRankPrevious
 
-.. function:: UserStats.onNumberOfCurrentPlayers
+**Example**::
+
+    function Steam.UserStats.OnLeaderboardScoreUploaded(data)
+        if data.m_bSuccess ~= 0 then
+            print('New rank:', data.m_nGlobalRankNew)
+        end
+    end
+
+.. function:: UserStats.OnNumberOfCurrentPlayers
 
     Callback for `NumberOfCurrentPlayers_t <https://partner.steamgames.com/doc/api/ISteamUserStats#NumberOfCurrentPlayers_t>`_
 
@@ -644,7 +953,7 @@ Callbacks
     * **data.m_bSuccess** -- m_bSuccess
     * **data.m_cPlayers** -- m_cPlayers
 
-.. function:: UserStats.onUserStatsUnloaded
+.. function:: UserStats.OnUserStatsUnloaded
 
     Callback for `UserStatsUnloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserStatsUnloaded_t>`_
 
@@ -652,7 +961,7 @@ Callbacks
 
     * **data.m_steamIDUser** -- m_steamIDUser
 
-.. function:: UserStats.onUserAchievementIconFetched
+.. function:: UserStats.OnUserAchievementIconFetched
 
     Callback for `UserAchievementIconFetched_t <https://partner.steamgames.com/doc/api/ISteamUserStats#UserAchievementIconFetched_t>`_
 
@@ -663,7 +972,7 @@ Callbacks
     * **data.m_bAchieved** -- m_bAchieved
     * **data.m_nIconHandle** -- m_nIconHandle
 
-.. function:: UserStats.onGlobalAchievementPercentagesReady
+.. function:: UserStats.OnGlobalAchievementPercentagesReady
 
     Callback for `GlobalAchievementPercentagesReady_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GlobalAchievementPercentagesReady_t>`_
 
@@ -672,7 +981,16 @@ Callbacks
     * **data.m_nGameID** -- m_nGameID
     * **data.m_eResult** -- m_eResult
 
-.. function:: UserStats.onLeaderboardUGCSet
+**Example**::
+
+    function Steam.UserStats.OnGlobalAchievementPercentagesReady(data)
+        if data.m_eResult == Steam.k_EResultOK then
+            local ok, pct = Steam.UserStats.GetAchievementAchievedPercent('first_kill')
+            print('First kill achievement: ' .. pct .. '% of players')
+        end
+    end
+
+.. function:: UserStats.OnLeaderboardUGCSet
 
     Callback for `LeaderboardUGCSet_t <https://partner.steamgames.com/doc/api/ISteamUserStats#LeaderboardUGCSet_t>`_
 
@@ -681,7 +999,7 @@ Callbacks
     * **data.m_eResult** -- m_eResult
     * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
 
-.. function:: UserStats.onGlobalStatsReceived
+.. function:: UserStats.OnGlobalStatsReceived
 
     Callback for `GlobalStatsReceived_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GlobalStatsReceived_t>`_
 
@@ -690,7 +1008,7 @@ Callbacks
     * **data.m_nGameID** -- m_nGameID
     * **data.m_eResult** -- m_eResult
 
-.. function:: UserStats.onGSStatsUnloaded
+.. function:: UserStats.OnGSStatsUnloaded
 
     Callback for `GSStatsUnloaded_t <https://partner.steamgames.com/doc/api/ISteamUserStats#GSStatsUnloaded_t>`_
 

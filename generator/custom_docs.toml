@@ -1,72 +1,607 @@
 # Custom documentation for Steam API methods
 # Format: [InterfaceName.MethodName]
 
+# =============================================================================
+# ISteamApps
+# =============================================================================
+
+[ISteamApps.BIsSubscribedApp]
+description = "Checks if the user owns a specific piece of Downloadable Content (DLC)."
+param_descriptions = { appID = "The App ID of the DLC" }
+example = """
+if Steam.Apps.BIsSubscribedApp(dlcAppID) then
+    unlockDLCContent()
+end
+"""
+
+[ISteamApps.BIsDlcInstalled]
+example = """
+if Steam.Apps.BIsDlcInstalled(12345) then
+    -- Unlock game content
+end
+"""
+
+[ISteamApps.GetCurrentGameLanguage]
+example = """
+print("The game's current language is " .. Steam.Apps.GetCurrentGameLanguage())
+"""
+
+[ISteamApps.GetLaunchCommandLine]
+example = """
+local params = Steam.Apps.GetLaunchCommandLine(1024)
+local connect_string = tryParseConnectString(params)
+if connect_string then
+    initiateJoinGame(connect_string)
+end
+"""
+
+# =============================================================================
+# ISteamFriends
+# =============================================================================
+
+[ISteamFriends.ActivateGameOverlay]
+example = """
+Steam.Friends.ActivateGameOverlay('stats')
+"""
+
+[ISteamFriends.ActivateGameOverlayToWebPage]
+example = """
+Steam.Friends.ActivateGameOverlayToWebPage('https://www.google.com')
+"""
+
+[ISteamFriends.GetFriendByIndex]
+example = """
+local count = Steam.Friends.GetFriendCount(Steam.k_EFriendFlagAll)
+for i = 0, count - 1 do
+    local friend_id = Steam.Friends.GetFriendByIndex(i, Steam.k_EFriendFlagAll)
+    print(Steam.Friends.GetFriendPersonaName(friend_id))
+end
+"""
+
+[ISteamFriends.GetFriendCount]
+example = """
+local count = Steam.Friends.GetFriendCount(Steam.k_EFriendFlagAll)
+print('You have ' .. count .. ' friends')
+"""
+
+[ISteamFriends.GetFriendPersonaName]
+example = """
+local friend_id = getSteamIdSomehow()
+print("Friend's name is: " .. Steam.Friends.GetFriendPersonaName(friend_id))
+"""
+
+[ISteamFriends.GetFriendRichPresence]
+example = """
+local value = Steam.Friends.GetFriendRichPresence(friend_id, 'steam_display')
+print('Rich presence: ' .. value)
+"""
+
+[ISteamFriends.GetPersonaName]
+description = "Gets the current user's persona (display) name."
+example = """
+print('My name is: ' .. Steam.Friends.GetPersonaName())
+"""
+
+[ISteamFriends.InviteUserToGame]
+example = """
+-- Invite a friend to your server
+Steam.Friends.InviteUserToGame(friend_id, '+connect 1.2.3.4:27015')
+"""
+
+[ISteamFriends.SetRichPresence]
+description = "Sets a Rich Presence key/value for the current user that is shared with friends."
+param_descriptions = { pchKey = "The Rich Presence key to set", pchValue = "The value to associate with the key" }
+example = """
+Steam.Friends.SetRichPresence('steam_display', '#StatusWithScore')
+Steam.Friends.SetRichPresence('score', tostring(myScore))
+"""
+
+[ISteamFriends.OnGameOverlayActivated]
+example = """
+function Steam.Friends.OnGameOverlayActivated(data)
+    if data.m_bActive == 1 then
+        print('Game overlay opened, pausing game')
+    else
+        print('Game overlay closed, resuming game')
+    end
+end
+"""
+
+[ISteamFriends.OnGameRichPresenceJoinRequested]
+example = """
+function Steam.Friends.OnGameRichPresenceJoinRequested(data)
+    local connect_string = data.m_rgchConnect
+    initiateJoinGame(connect_string)
+end
+"""
+
+# =============================================================================
+# ISteamUser
+# =============================================================================
+
+[ISteamUser.GetSteamID]
+description = "Returns the CSteamID of the account currently logged in to the Steam client."
+example = """
+local my_id = Steam.User.GetSteamID()
+local function isSteamIDFromUser(steam_id)
+    return steam_id == my_id
+end
+"""
+
+[ISteamUser.GetPlayerSteamLevel]
+example = """
+print('Let me show you some magic')
+print('Your Steam Level is...')
+print(tostring(Steam.User.GetPlayerSteamLevel()) .. '!!!')
+"""
+
+[ISteamUser.GetAuthSessionTicket]
+example = """
+local data = Steam.User.GetAuthSessionTicket('webapi:myservice')
+if data then
+    local ticketHandle = data.m_hAuthTicket
+    local ticketData = data.hexTicket
+    -- Send ticketData to your server for verification
+end
+"""
+
+[ISteamUser.CancelAuthTicket]
+example = """
+Steam.User.CancelAuthTicket(ticketHandle)
+"""
+
+[ISteamUser.OnGetAuthSessionTicketResponse]
+example = """
+function Steam.User.OnGetAuthSessionTicketResponse(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Auth ticket ready, handle:', tostring(data.m_hAuthTicket))
+    else
+        print('Auth ticket failed:', data.m_eResult)
+    end
+end
+"""
+
+# =============================================================================
+# ISteamUserStats
+# =============================================================================
+
 [ISteamUserStats.GetStat]
 description = "Gets the current value of a stat. The stat must be set as an integer. For float stats, use GetStatFloat."
 notes = [
     "The stat 'API Name' must exist in App Admin on Steamworks",
     "For other users' stats, use GetUserStat (currently not implemented)"
 ]
+example = "See :func:`UserStats.GetStatInt32`'s example."
 
-[ISteamUserStats.SetStat]
-description = "Sets the value of a stat for the current user. This only modifies in-memory state - call StoreStats() to persist."
-
-[ISteamUserStats.StoreStats]
-description = "Stores the current stats and achievements on the server. This will cause a callback when complete."
+[ISteamUserStats.GetStatInt32]
 example = """
-Steam.userStats.setStatInt('kills', 100)
-Steam.userStats.storeStats()
+local success, value = Steam.UserStats.GetStatInt32('kills')
+if success then
+    print('Kills: ' .. value)
+end
+"""
+
+[ISteamUserStats.GetStatFloat]
+example = """
+local success, value = Steam.UserStats.GetStatFloat('accuracy')
+if success then
+    print('Accuracy: ' .. value)
+end
+"""
+
+[ISteamUserStats.SetStatInt32]
+example = """
+Steam.UserStats.SetStatInt32('kills', 43)
+Steam.UserStats.StoreStats()
+"""
+
+[ISteamUserStats.SetStatFloat]
+example = """
+Steam.UserStats.SetStatFloat('accuracy', 0.75)
+Steam.UserStats.StoreStats()
 """
 
 [ISteamUserStats.GetAchievement]
 description = "Gets the unlock status of an Achievement."
 param_descriptions = { pchName = "The 'API Name' of the achievement" }
+example = """
+local success, achieved = Steam.UserStats.GetAchievement('ach_name')
+if success and achieved then
+    print('Yep, you have the achievement')
+end
+"""
 
 [ISteamUserStats.SetAchievement]
 description = "Unlocks an achievement. Call StoreStats() to persist."
 param_descriptions = { pchName = "The 'API Name' of the achievement" }
+example = """
+if achievementConditionSatisfied() then
+    Steam.UserStats.SetAchievement('ach_name')
+    Steam.UserStats.StoreStats()  -- shows overlay notification
+end
+"""
+
+[ISteamUserStats.ClearAchievement]
+example = """
+Steam.UserStats.ClearAchievement('ach_name')
+Steam.UserStats.StoreStats()
+"""
+
+[ISteamUserStats.ResetAllStats]
+example = """
+if dev_mode and keypressed('f10') then
+    Steam.UserStats.ResetAllStats(true)
+end
+"""
+
+[ISteamUserStats.StoreStats]
+description = "Stores the current stats and achievements on the server. This will cause a callback when complete."
+example = """
+Steam.UserStats.SetStatInt32('kills', 100)
+Steam.UserStats.StoreStats()
+"""
 
 [ISteamUserStats.FindLeaderboard]
 description = "Asynchronously finds a leaderboard by name."
 example = """
-local call = Steam.userStats.findLeaderboard('TopScores')
-Steam.userStats.onLeaderboardFindResult = function(data)
-    if data.m_bLeaderboardFound == 1 then
-        print('Found leaderboard:', data.m_hSteamLeaderboard)
+Steam.UserStats.FindLeaderboard('TopScores', function(data, err)
+    if err or data.m_bLeaderboardFound == 0 then
+        print('Leaderboard not found')
+    else
+        uploadScoresHelper(data.m_hSteamLeaderboard)
+    end
+end)
+"""
+
+[ISteamUserStats.FindOrCreateLeaderboard]
+example = """
+Steam.UserStats.FindOrCreateLeaderboard('TopScores', 'Descending', 'Numeric', function(data, err)
+    if err or data.m_bLeaderboardFound == 0 then
+        print('Something happened')
+    else
+        uploadScoresHelper(data.m_hSteamLeaderboard)
+    end
+end)
+"""
+
+[ISteamUserStats.GetLeaderboardName]
+example = """
+local function printLeaderboardInfo(handle)
+    print('Leaderboard name: ' .. Steam.UserStats.GetLeaderboardName(handle))
+    print('Entries: ' .. Steam.UserStats.GetLeaderboardEntryCount(handle))
+    print('Sort Method: ' .. Steam.UserStats.GetLeaderboardSortMethod(handle))
+    print('Display Type: ' .. Steam.UserStats.GetLeaderboardDisplayType(handle))
+end
+"""
+
+[ISteamUserStats.GetLeaderboardEntryCount]
+example = "See :func:`UserStats.GetLeaderboardName`'s example."
+
+[ISteamUserStats.GetLeaderboardSortMethod]
+example = "See :func:`UserStats.GetLeaderboardName`'s example."
+
+[ISteamUserStats.GetLeaderboardDisplayType]
+example = "See :func:`UserStats.GetLeaderboardName`'s example."
+
+[ISteamUserStats.UploadLeaderboardScore]
+description = "Uploads a user score to a specified leaderboard."
+example = """
+local function uploadScoresHelper(handle)
+    local score = getScore()
+    Steam.UserStats.UploadLeaderboardScore(handle, 'KeepBest', score, nil, function(data, err)
+        if err or data.m_bSuccess == 0 then
+            print('Upload score failed')
+        else
+            print('Upload score success. New rank is: ' .. data.m_nGlobalRankNew)
+        end
+    end)
+end
+"""
+
+[ISteamUserStats.DownloadLeaderboardEntries]
+example = """
+-- Download global entries 1-100
+Steam.UserStats.DownloadLeaderboardEntries(handle, 'Global', 1, 100, function(data, err)
+    if err then
+        print('Error happened')
+    else
+        for i = 0, data.m_cEntryCount - 1 do
+            local ok, entry = Steam.UserStats.GetDownloadedLeaderboardEntry(data.m_hSteamLeaderboardEntries, i, 0)
+            if ok then
+                local name = Steam.Friends.GetFriendPersonaName(entry.m_steamIDUser)
+                print('Rank #' .. entry.m_nGlobalRank .. ': ' .. name .. ' - ' .. entry.m_nScore)
+            end
+        end
+    end
+end)
+"""
+
+[ISteamUserStats.RequestCurrentStats]
+example = """
+Steam.UserStats.RequestCurrentStats()
+"""
+
+[ISteamUserStats.OnUserStatsReceived]
+example = """
+function Steam.UserStats.OnUserStatsReceived(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Stats loaded for user:', tostring(data.m_steamIDUser))
     end
 end
 """
 
-[ISteamUserStats.UploadLeaderboardScore]
-description = "Uploads a user score to a specified leaderboard."
-param_descriptions = { hSteamLeaderboard = "Handle to the leaderboard", eLeaderboardUploadScoreMethod = "Upload method (see ELeaderboardUploadScoreMethod)", nScore = "The score to upload", pScoreDetails = "Optional table of score details (integers)" }
+[ISteamUserStats.OnLeaderboardFindResult]
 example = """
-local details = {100, 200, 300}  -- Optional score details
-local call = Steam.userStats.uploadLeaderboardScore(
-    leaderboardHandle,
-    Steam.k_ELeaderboardUploadScoreMethodKeepBest,
-    9999,
-    details
-)
+function Steam.UserStats.OnLeaderboardFindResult(data)
+    if data.m_bLeaderboardFound then
+        print('Leaderboard handle:', tostring(data.m_hSteamLeaderboard))
+    end
+end
 """
 
-[ISteamFriends.GetPersonaName]
-description = "Gets the current user's persona (display) name."
+[ISteamUserStats.OnLeaderboardScoreUploaded]
+example = """
+function Steam.UserStats.OnLeaderboardScoreUploaded(data)
+    if data.m_bSuccess ~= 0 then
+        print('New rank:', data.m_nGlobalRankNew)
+    end
+end
+"""
 
-[ISteamFriends.SetRichPresence]
-description = "Sets a Rich Presence key/value for the current user that is shared with friends."
-param_descriptions = { pchKey = "The Rich Presence key to set", pchValue = "The value to associate with the key" }
+# =============================================================================
+# ISteamUtils
+# =============================================================================
 
-[ISteamUser.GetSteamID]
-description = "Returns the CSteamID of the account currently logged in to the Steam client."
+[ISteamUtils.GetAppID]
+example = """
+print("My app id is " .. Steam.Utils.GetAppID())
+"""
 
-[ISteamApps.BIsSubscribedApp]
-description = "Checks if the user owns a specific piece of Downloadable Content (DLC)."
-param_descriptions = { appID = "The App ID of the DLC" }
+[ISteamUtils.IsSteamRunningOnSteamDeck]
+example = """
+if Steam.Utils.IsSteamRunningOnSteamDeck() then
+    -- Enable Steam Deck specific controls
+end
+"""
+
+[ISteamUtils.ShowGamepadTextInput]
+example = """
+Steam.Utils.ShowGamepadTextInput('Normal', 'SingleLine', 'Enter your name', 64, existing_name)
+"""
+
+[ISteamUtils.ShowFloatingGamepadTextInput]
+example = """
+-- For bottom of window use 0,0,0,0
+-- For top of window use 0,windowHeight/2,windowWidth,windowHeight/2
+Steam.Utils.ShowFloatingGamepadTextInput('SingleLine', x, y, w, h)
+"""
+
+[ISteamUtils.OnGamepadTextInputDismissed]
+example = """
+function Steam.Utils.OnGamepadTextInputDismissed(data)
+    if not data.m_bSubmitted then return end  -- User canceled
+    local length = Steam.Utils.GetEnteredGamepadTextLength()
+    local newstring = Steam.Utils.GetEnteredGamepadTextInput(length)
+    -- Use the string entered by the user
+end
+"""
+
+[ISteamUtils.OnFloatingGamepadTextInputDismissed]
+example = """
+function Steam.Utils.OnFloatingGamepadTextInputDismissed()
+    -- Floating keyboard was closed
+end
+"""
+
+# =============================================================================
+# ISteamGameServer
+# =============================================================================
+
+[ISteamGameServer.LogOn]
+example = """
+local accessToken = 'abcdef123456'  -- Access token from Steam partner site
+Steam.GameServer.LogOn(accessToken)
+"""
+
+[ISteamGameServer.LogOnAnonymous]
+example = """
+Steam.GameServer.LogOnAnonymous()
+"""
+
+[ISteamGameServer.LogOff]
+example = """
+Steam.GameServer.LogOff()
+"""
+
+[ISteamGameServer.BLoggedOn]
+example = """
+local loggedOn = Steam.GameServer.BLoggedOn()
+"""
+
+[ISteamGameServer.BSecure]
+example = """
+local secure = Steam.GameServer.BSecure()
+if secure then
+    print('Server is VAC-secured')
+end
+"""
+
+[ISteamGameServer.GetSteamID]
+example = """
+local server_id = Steam.GameServer.GetSteamID()
+print('Server Steam ID:', tostring(server_id))
+"""
+
+[ISteamGameServer.SetDedicatedServer]
+example = """
+Steam.GameServer.SetDedicatedServer(true)
+"""
+
+[ISteamGameServer.BeginAuthSession]
+example = """
+-- Validate an auth ticket received from a client
+Steam.GameServer.BeginAuthSession(authTicket, steamID)
+"""
+
+[ISteamGameServer.EndAuthSession]
+example = """
+Steam.GameServer.EndAuthSession(steamID)
+"""
+
+[ISteamGameServer.OnValidateAuthTicketResponse]
+example = """
+function Steam.GameServer.OnValidateAuthTicketResponse(data)
+    if data.m_eAuthSessionResponse == Steam.k_EAuthSessionResponseOK then
+        print('User authenticated:', tostring(data.m_SteamID))
+    else
+        print('Authentication failed:', data.m_eAuthSessionResponse)
+    end
+end
+"""
+
+[ISteamGameServer.OnSteamServersConnected]
+example = """
+function Steam.GameServer.OnSteamServersConnected()
+    print('Connected to Steam servers')
+end
+"""
+
+[ISteamGameServer.OnSteamServersDisconnected]
+example = """
+function Steam.GameServer.OnSteamServersDisconnected(data)
+    print('Disconnected from Steam servers:', data.m_eResult)
+end
+"""
+
+[ISteamGameServer.OnSteamServerConnectFailure]
+example = """
+function Steam.GameServer.OnSteamServerConnectFailure(data)
+    print('Connection to Steam failed:', data.m_eResult, 'retrying:', data.m_bStillRetrying)
+end
+"""
+
+# =============================================================================
+# ISteamNetworkingUtils
+# =============================================================================
+
+[ISteamNetworkingUtils.InitRelayNetworkAccess]
+example = """
+Steam.NetworkingUtils.InitRelayNetworkAccess()
+"""
+
+[ISteamNetworkingUtils.GetRelayNetworkStatus]
+example = """
+local status = Steam.NetworkingUtils.GetRelayNetworkStatus()
+if status == Steam.k_ESteamNetworkingAvailability_Current then
+    print('Relay network ready')
+end
+"""
+
+# =============================================================================
+# ISteamUGC
+# =============================================================================
 
 [ISteamUGC.CreateQueryUserUGCRequest]
 description = "Creates a query to retrieve the details for user-generated content (UGC)."
 param_descriptions = { unAccountID = "The account ID to query", eListType = "The type of list to query", eMatchingUGCType = "The type of UGC to match", eSortOrder = "How to sort the results", nCreatorAppID = "The app that created the items", nConsumerAppID = "The app that will consume the items", unPage = "The page number of results to retrieve (starts at 1)" }
+example = """
+local appID = Steam.Utils.GetAppID()
+local myAccountID = Steam.User.GetSteamID()
+local handle = Steam.UGC.CreateQueryUserUGCRequest(myAccountID, 'Published', 'Items', 'CreationOrderDesc', appID, appID, 1)
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
+    if not err and data.m_eResultCode == Steam.k_EResultOK then
+        for i = 0, data.m_unNumResultsReturned - 1 do
+            local details = Steam.UGC.GetQueryUGCResult(handle, i)
+            print('My item:', details.m_rgchTitle)
+        end
+    end
+    Steam.UGC.ReleaseQueryUGCRequest(handle)
+end)
+"""
+
+[ISteamUGC.CreateItem]
+example = """
+Steam.UGC.CreateItem(Steam.Utils.GetAppID(), 'Community', function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Failure when creating item')
+    else
+        populateItem(data.m_nPublishedFileId)
+    end
+end)
+"""
+
+[ISteamUGC.StartItemUpdate]
+example = """
+local function populateItem(id)
+    local handle = Steam.UGC.StartItemUpdate(Steam.Utils.GetAppID(), id)
+    Steam.UGC.SetItemContent(handle, rootFolder)
+    Steam.UGC.SetItemTitle(handle, 'My Item')
+    Steam.UGC.SetItemDescription(handle, 'A Workshop item')
+    Steam.UGC.SetItemPreview(handle, rootFolder .. '/preview.png')
+    Steam.UGC.SubmitItemUpdate(handle, 'First Revision', function(data, err)
+        if err or data.m_eResult ~= Steam.k_EResultOK then
+            print('Failure when submitting item')
+        else
+            print('Item submitted successfully:', tostring(data.m_nPublishedFileId))
+        end
+    end)
+end
+"""
+
+[ISteamUGC.SetItemTitle]
+example = "See :func:`UGC.StartItemUpdate`'s example."
+
+[ISteamUGC.SetItemDescription]
+example = "See :func:`UGC.StartItemUpdate`'s example."
+
+[ISteamUGC.SetItemContent]
+example = "See :func:`UGC.StartItemUpdate`'s example."
+
+[ISteamUGC.SetItemPreview]
+example = "See :func:`UGC.StartItemUpdate`'s example."
+
+[ISteamUGC.SubmitItemUpdate]
+example = "See :func:`UGC.StartItemUpdate`'s example."
+
+[ISteamUGC.GetNumSubscribedItems]
+example = """
+local count = Steam.UGC.GetNumSubscribedItems(false)
+print('You are subscribed to ' .. count .. ' workshop items')
+"""
+
+[ISteamUGC.GetSubscribedItems]
+example = """
+local count = Steam.UGC.GetNumSubscribedItems(false)
+local items = Steam.UGC.GetSubscribedItems(count, false)
+for _, item_id in ipairs(items) do
+    print('Subscribed item:', tostring(item_id))
+end
+"""
+
+[ISteamUGC.GetItemState]
+example = """
+local state = Steam.UGC.GetItemState(item_id)
+local installed = bit.band(state, Steam.k_EItemStateInstalled) ~= 0
+"""
+
+[ISteamUGC.GetItemInstallInfo]
+example = """
+local success, sizeOnDisk, folder, timestamp = Steam.UGC.GetItemInstallInfo(item_id, 512)
+if success then
+    print('Item installed at:', folder)
+    loadMod(folder)
+end
+"""
+
+[ISteamUGC.GetItemUpdateProgress]
+example = """
+local status, processed, total = Steam.UGC.GetItemUpdateProgress(updateHandle)
+if total > 0 then
+    print(string.format('Download progress: %.1f%%', processed / total * 100))
+end
+"""
+
+
 
 # =============================================================================
 # Manual function documentation
@@ -80,10 +615,6 @@ param_descriptions = { unAccountID = "The account ID to query", eListType = "The
 description = "Sets a callback to receive Steam API warning and info messages."
 notes = ["Also available as ``Steam.GameServerClient.SetWarningMessageHook`` with identical signature."]
 steamworks = "https://partner.steamgames.com/doc/api/ISteamClient#SetWarningMessageHook"
-signature_differences = [
-    "The C++ ``SteamAPIWarningMessageHook_t`` function pointer is replaced by a Lua function.",
-    "Pass ``nil`` instead of ``nullptr`` to clear the hook."
-]
 
 [[manual.ISteamClient.SetWarningMessageHook.params]]
 name = "callback"
@@ -210,6 +741,14 @@ signature_differences = [
     "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
     "The C++ ``int`` return is kept as the first return value."
 ]
+example = """
+local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnConnection(hConn, 32)
+for i = 1, count do
+    local msg = msgs[i]
+    processMessage(msg.m_pData, msg.m_cbSize)
+    msg:Release()
+end
+"""
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.params]]
 name = "hConn"
@@ -237,6 +776,14 @@ signature_differences = [
     "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
     "The C++ ``int`` return is kept as the first return value."
 ]
+example = """
+local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnPollGroup(hPollGroup, 64)
+for i = 1, count do
+    local msg = msgs[i]
+    handleMessage(msg.m_conn, msg.m_pData, msg.m_cbSize)
+    msg:Release()
+end
+"""
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.params]]
 name = "hPollGroup"
@@ -264,6 +811,16 @@ signature_differences = [
     "The C++ output parameter ``pOutMessageNumberOrResult`` is removed; its values are returned as a table instead.",
     "The C++ return type is ``void``; the message number/result table is the only return value."
 ]
+example = """
+local msg = Steam.NetworkingUtils.AllocateMessage(#payload)
+msg.m_conn = hConn
+msg.m_nFlags = Steam.k_nSteamNetworkingSend_Reliable
+msg.m_pData = payload
+local results = Steam.NetworkingSockets.SendMessages(1, {msg})
+if results[1] < 0 then
+    print('Send failed, EResult:', results[1])
+end
+"""
 
 [[manual.ISteamNetworkingSockets.SendMessages.params]]
 name = "nMessages"
@@ -278,3 +835,3022 @@ description = "Table of SteamNetworkingMessage_t userdata objects to send."
 [[manual.ISteamNetworkingSockets.SendMessages.returns]]
 ptype = "integer[]"
 description = "Table of per-message results: positive = message number assigned, negative = EResult error code."
+
+# =============================================================================
+# ISteamApps (additional examples)
+# =============================================================================
+
+[ISteamApps.BIsAppInstalled]
+example = """
+if Steam.Apps.BIsAppInstalled(440) then
+    print('Team Fortress 2 is installed')
+end
+"""
+
+[ISteamApps.BIsSubscribedFromFamilySharing]
+example = """
+if Steam.Apps.BIsSubscribedFromFamilySharing() then
+    print('Playing via Family Sharing')
+end
+"""
+
+[ISteamApps.BIsTimedTrial]
+example = """
+local isTrial, secondsAllowed, secondsPlayed = Steam.Apps.BIsTimedTrial()
+if isTrial then
+    print(string.format('Trial: %d/%d seconds played', secondsPlayed, secondsAllowed))
+end
+"""
+
+[ISteamApps.GetAppBuildId]
+example = """
+print('Current build ID: ' .. Steam.Apps.GetAppBuildId())
+"""
+
+[ISteamApps.GetAppOwner]
+example = """
+local ownerID = Steam.Apps.GetAppOwner()
+local myID = Steam.User.GetSteamID()
+if ownerID ~= myID then
+    print('Playing via Family Sharing from: ' .. tostring(ownerID))
+end
+"""
+
+[ISteamApps.GetAppInstallDir]
+example = """
+local size, path = Steam.Apps.GetAppInstallDir(Steam.Utils.GetAppID(), 512)
+if size > 0 then
+    print('Game installed at: ' .. path)
+end
+"""
+
+[ISteamApps.GetAvailableGameLanguages]
+example = """
+local langs = Steam.Apps.GetAvailableGameLanguages()
+print('Supported languages: ' .. langs)
+"""
+
+[ISteamApps.GetDLCCount]
+example = """
+local count = Steam.Apps.GetDLCCount()
+for i = 0, count - 1 do
+    local appID, available, name = Steam.Apps.BGetDLCDataByIndex(i, 256)
+    if available then
+        print('DLC: ' .. name .. ' (' .. appID .. ')')
+    end
+end
+"""
+
+[ISteamApps.GetEarliestPurchaseUnixTime]
+example = """
+local ts = Steam.Apps.GetEarliestPurchaseUnixTime(Steam.Utils.GetAppID())
+print('Game purchased at unix time: ' .. ts)
+"""
+
+[ISteamApps.GetInstalledDepots]
+example = """
+local depots = Steam.Apps.GetInstalledDepots(Steam.Utils.GetAppID(), 16)
+for _, depotID in ipairs(depots) do
+    print('Installed depot: ' .. depotID)
+end
+"""
+
+[ISteamApps.GetLaunchQueryParam]
+example = """
+local connect = Steam.Apps.GetLaunchQueryParam('connect')
+if connect ~= '' then
+    connectToServer(connect)
+end
+"""
+
+[ISteamApps.MarkContentCorrupt]
+example = """
+-- Trigger a Steam file integrity check
+Steam.Apps.MarkContentCorrupt(false)
+"""
+
+[ISteamApps.OnDlcInstalled]
+example = """
+function Steam.Apps.OnDlcInstalled(data)
+    print('DLC installed: appID =', data.m_nAppID)
+    unlockDLCContent(data.m_nAppID)
+end
+"""
+
+[ISteamApps.OnNewUrlLaunchParameters]
+example = """
+function Steam.Apps.OnNewUrlLaunchParameters()
+    local params = Steam.Apps.GetLaunchCommandLine(1024)
+    handleLaunchParams(params)
+end
+"""
+
+[ISteamApps.OnTimedTrialStatus]
+example = """
+function Steam.Apps.OnTimedTrialStatus(data)
+    if data.m_bIsOffline ~= 0 then return end
+    local remaining = data.m_unSecondsAllowed - data.m_unSecondsPlayed
+    print('Trial time remaining: ' .. remaining .. 's')
+end
+"""
+
+# =============================================================================
+# ISteamUser (additional examples)
+# =============================================================================
+
+[ISteamUser.BLoggedOn]
+example = """
+if not Steam.User.BLoggedOn() then
+    print('User is not logged in to Steam')
+end
+"""
+
+[ISteamUser.BIsTwoFactorEnabled]
+example = """
+if Steam.User.BIsTwoFactorEnabled() then
+    print('Steam Guard Mobile Authenticator is enabled')
+end
+"""
+
+[ISteamUser.StartVoiceRecording]
+example = """
+-- Call when push-to-talk key is pressed
+Steam.User.StartVoiceRecording()
+"""
+
+[ISteamUser.StopVoiceRecording]
+example = """
+-- Call when push-to-talk key is released
+Steam.User.StopVoiceRecording()
+"""
+
+[ISteamUser.GetAvailableVoice]
+example = """
+local compressed, raw, sampleRate = Steam.User.GetAvailableVoice()
+if compressed > 0 then
+    local data = Steam.User.GetVoice(true, compressed)
+    sendVoiceToNetwork(data)
+end
+"""
+
+[ISteamUser.GetVoice]
+example = """
+local available, _, _ = Steam.User.GetAvailableVoice()
+if available > 0 then
+    local voiceData = Steam.User.GetVoice(true, available)
+    if voiceData then
+        sendVoiceToNetwork(voiceData)
+    end
+end
+"""
+
+[ISteamUser.DecompressVoice]
+example = """
+local SAMPLE_RATE = 24000
+local decompressed = Steam.User.DecompressVoice(compressedData, #compressedData, 65536, SAMPLE_RATE)
+if decompressed then
+    playAudio(decompressed, SAMPLE_RATE)
+end
+"""
+
+[ISteamUser.GetVoiceOptimalSampleRate]
+example = """
+local sampleRate = Steam.User.GetVoiceOptimalSampleRate()
+print('Optimal voice sample rate: ' .. sampleRate .. ' Hz')
+"""
+
+[ISteamUser.BeginAuthSession]
+example = """
+-- Server-side: validate a ticket received from a client
+local result = Steam.User.BeginAuthSession(authTicketData, #authTicketData, clientSteamID)
+if result ~= Steam.k_EBeginAuthSessionResultOK then
+    print('Auth session failed to start:', result)
+end
+"""
+
+[ISteamUser.EndAuthSession]
+example = """
+-- End auth session when client disconnects
+Steam.User.EndAuthSession(clientSteamID)
+"""
+
+[ISteamUser.GetUserDataFolder]
+example = """
+local success, path = Steam.User.GetUserDataFolder(512)
+if success then
+    print('User data folder: ' .. path)
+end
+"""
+
+[ISteamUser.UserHasLicenseForApp]
+example = """
+local status = Steam.User.UserHasLicenseForApp(playerSteamID, dlcAppID)
+if status == Steam.k_EUserHasLicenseResultHasLicense then
+    print('Player owns the DLC')
+end
+"""
+
+[ISteamUser.GetGameBadgeLevel]
+example = """
+local level = Steam.User.GetGameBadgeLevel(1, false)
+print('Badge level:', level)
+"""
+
+[ISteamUser.RequestEncryptedAppTicket]
+example = """
+local userData = 'extra_data'
+Steam.User.RequestEncryptedAppTicket(userData, #userData, function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Failed to get encrypted app ticket')
+    end
+end)
+"""
+
+[ISteamUser.OnSteamServersConnected]
+example = """
+function Steam.User.OnSteamServersConnected()
+    print('Connected to Steam servers')
+end
+"""
+
+[ISteamUser.OnSteamServersDisconnected]
+example = """
+function Steam.User.OnSteamServersDisconnected(data)
+    print('Disconnected from Steam servers, result:', data.m_eResult)
+end
+"""
+
+[ISteamUser.OnValidateAuthTicketResponse]
+example = """
+function Steam.User.OnValidateAuthTicketResponse(data)
+    if data.m_eAuthSessionResponse == Steam.k_EAuthSessionResponseOK then
+        print('User validated:', tostring(data.m_SteamID))
+    else
+        kickPlayer(data.m_SteamID)
+    end
+end
+"""
+
+[ISteamUser.OnMicroTxnAuthorizationResponse]
+example = """
+function Steam.User.OnMicroTxnAuthorizationResponse(data)
+    if data.m_bAuthorized ~= 0 then
+        print('Purchase authorized, orderID:', tostring(data.m_ulOrderID))
+        completePurchase(data.m_ulOrderID)
+    else
+        print('Purchase cancelled by user')
+    end
+end
+"""
+
+[ISteamUser.OnEncryptedAppTicketResponse]
+example = """
+function Steam.User.OnEncryptedAppTicketResponse(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        local ticket = Steam.User.GetEncryptedAppTicket(1024)
+        sendTicketToServer(ticket)
+    end
+end
+"""
+
+# =============================================================================
+# ISteamFriends (additional examples)
+# =============================================================================
+
+[ISteamFriends.ActivateGameOverlayInviteDialog]
+example = """
+-- Open the Steam overlay invite dialog for a lobby
+Steam.Friends.ActivateGameOverlayInviteDialog(lobbyID)
+"""
+
+[ISteamFriends.ActivateGameOverlayToStore]
+example = """
+Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), 'None')
+"""
+
+[ISteamFriends.ActivateGameOverlayToUser]
+example = """
+Steam.Friends.ActivateGameOverlayToUser('steamid', friendSteamID)
+"""
+
+[ISteamFriends.ClearRichPresence]
+example = """
+Steam.Friends.ClearRichPresence()
+"""
+
+[ISteamFriends.GetPersonaState]
+example = """
+local state = Steam.Friends.GetPersonaState()
+if state == Steam.k_EPersonaStateOnline then
+    print('User is online')
+end
+"""
+
+[ISteamFriends.GetFriendPersonaState]
+example = """
+local state = Steam.Friends.GetFriendPersonaState(friendID)
+if state == Steam.k_EPersonaStateOnline then
+    print('Friend is online')
+end
+"""
+
+[ISteamFriends.GetFriendRelationship]
+example = """
+local rel = Steam.Friends.GetFriendRelationship(playerID)
+if rel == Steam.k_EFriendRelationshipFriend then
+    print('This player is your friend')
+end
+"""
+
+[ISteamFriends.GetFriendSteamLevel]
+example = """
+local level = Steam.Friends.GetFriendSteamLevel(friendID)
+print('Friend Steam level:', level)
+"""
+
+[ISteamFriends.GetFriendGamePlayed]
+example = """
+local playing, gameID, ip, port, queryPort = Steam.Friends.GetFriendGamePlayed(friendID)
+if playing then
+    print('Friend is playing game:', tostring(gameID))
+end
+"""
+
+[ISteamFriends.GetSmallFriendAvatar]
+example = """
+local imageHandle = Steam.Friends.GetSmallFriendAvatar(friendID)
+if imageHandle > 0 then
+    local w, h = Steam.Utils.GetImageSize(imageHandle)
+    local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+    renderAvatar(rgba, w, h)
+end
+"""
+
+[ISteamFriends.GetMediumFriendAvatar]
+example = """
+-- Returns an image handle; use Utils.GetImageRGBA to get pixel data
+local imageHandle = Steam.Friends.GetMediumFriendAvatar(friendID)
+"""
+
+[ISteamFriends.HasFriend]
+example = """
+if Steam.Friends.HasFriend(playerID, Steam.k_EFriendFlagImmediate) then
+    print('This player is a direct friend')
+end
+"""
+
+[ISteamFriends.RequestUserInformation]
+example = """
+-- Request the player name and avatar; returns true if data needs to be fetched
+local needsData = Steam.Friends.RequestUserInformation(playerID, true)
+if needsData then
+    -- Wait for OnPersonaStateChange callback
+end
+"""
+
+[ISteamFriends.SetPlayedWith]
+example = """
+for _, playerID in ipairs(currentPlayers) do
+    Steam.Friends.SetPlayedWith(playerID)
+end
+"""
+
+[ISteamFriends.GetPlayerNickname]
+example = """
+local nick = Steam.Friends.GetPlayerNickname(friendID)
+if nick then
+    print('Your nickname for this friend: ' .. nick)
+end
+"""
+
+[ISteamFriends.GetFriendsGroupCount]
+example = """
+local groupCount = Steam.Friends.GetFriendsGroupCount()
+for i = 0, groupCount - 1 do
+    local groupID = Steam.Friends.GetFriendsGroupIDByIndex(i)
+    print('Group: ' .. Steam.Friends.GetFriendsGroupName(groupID))
+end
+"""
+
+[ISteamFriends.GetClanCount]
+example = """
+local count = Steam.Friends.GetClanCount()
+for i = 0, count - 1 do
+    local clanID = Steam.Friends.GetClanByIndex(i)
+    print('Clan: ' .. Steam.Friends.GetClanName(clanID))
+end
+"""
+
+[ISteamFriends.GetClanByIndex]
+example = "See :func:`Friends.GetClanCount`'s example."
+
+[ISteamFriends.GetClanName]
+example = "See :func:`Friends.GetClanCount`'s example."
+
+[ISteamFriends.GetClanOwner]
+example = """
+local ownerID = Steam.Friends.GetClanOwner(clanID)
+print('Clan owner:', Steam.Friends.GetFriendPersonaName(ownerID))
+"""
+
+[ISteamFriends.GetClanOfficerCount]
+example = """
+local count = Steam.Friends.GetClanOfficerCount(clanID)
+for i = 0, count - 1 do
+    local officerID = Steam.Friends.GetClanOfficerByIndex(clanID, i)
+    print('Officer:', Steam.Friends.GetFriendPersonaName(officerID))
+end
+"""
+
+[ISteamFriends.IsFollowing]
+example = """
+Steam.Friends.IsFollowing(playerID, function(data, err)
+    if not err then
+        print('Following:', data.m_bIsFollowing ~= 0)
+    end
+end)
+"""
+
+[ISteamFriends.GetFollowerCount]
+example = """
+Steam.Friends.GetFollowerCount(playerID, function(data, err)
+    if not err then
+        print('Follower count:', data.m_nCount)
+    end
+end)
+"""
+
+[ISteamFriends.RequestFriendRichPresence]
+example = """
+-- Request fresh rich presence data for a friend
+Steam.Friends.RequestFriendRichPresence(friendID)
+"""
+
+[ISteamFriends.GetFriendRichPresenceKeyCount]
+example = """
+local count = Steam.Friends.GetFriendRichPresenceKeyCount(friendID)
+for i = 0, count - 1 do
+    local key = Steam.Friends.GetFriendRichPresenceKeyByIndex(friendID, i)
+    local val = Steam.Friends.GetFriendRichPresence(friendID, key)
+    print(key .. ' = ' .. val)
+end
+"""
+
+[ISteamFriends.GetFriendCoplayGame]
+example = """
+local gameID = Steam.Friends.GetFriendCoplayGame(friendID)
+print('Friend last co-op game:', tostring(gameID))
+"""
+
+[ISteamFriends.SetInGameVoiceSpeaking]
+example = """
+-- Notify Steam that this user is speaking in-game
+Steam.Friends.SetInGameVoiceSpeaking(Steam.User.GetSteamID(), true)
+"""
+
+[ISteamFriends.SetListenForFriendsMessages]
+example = """
+-- Enable friend message interception
+Steam.Friends.SetListenForFriendsMessages(true)
+"""
+
+[ISteamFriends.OnPersonaStateChange]
+example = """
+function Steam.Friends.OnPersonaStateChange(data)
+    local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamID)
+    print('Persona changed for:', name)
+end
+"""
+
+[ISteamFriends.OnAvatarImageLoaded]
+example = """
+function Steam.Friends.OnAvatarImageLoaded(data)
+    local w, h = Steam.Utils.GetImageSize(data.m_iImage)
+    local rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
+    updateAvatarTexture(data.m_steamID, rgba, w, h)
+end
+"""
+
+[ISteamFriends.OnFriendRichPresenceUpdate]
+example = """
+function Steam.Friends.OnFriendRichPresenceUpdate(data)
+    local status = Steam.Friends.GetFriendRichPresence(data.m_steamIDFriend, 'status')
+    print('Friend presence updated:', status)
+end
+"""
+
+[ISteamFriends.OnGameLobbyJoinRequested]
+example = """
+function Steam.Friends.OnGameLobbyJoinRequested(data)
+    Steam.Matchmaking.JoinLobby(data.m_steamIDLobby, function(result, err)
+        if not err and result.m_EChatRoomEnterResponse == 1 then
+            print('Joined lobby from friend invite')
+        end
+    end)
+end
+"""
+
+[ISteamFriends.OnGameServerChangeRequested]
+example = """
+function Steam.Friends.OnGameServerChangeRequested(data)
+    print('Friend invites you to server:', data.m_rgchServer)
+    connectToServer(data.m_rgchServer, data.m_rgchPassword)
+end
+"""
+
+[ISteamFriends.OnGameConnectedFriendChatMsg]
+example = """
+function Steam.Friends.OnGameConnectedFriendChatMsg(data)
+    local msg, chatType = Steam.Friends.GetFriendMessage(data.m_steamIDUser, data.m_iMessageID, 512)
+    print('Friend chat:', msg)
+end
+"""
+
+[ISteamFriends.OnUnreadChatMessagesChanged]
+example = """
+function Steam.Friends.OnUnreadChatMessagesChanged()
+    local count = Steam.Friends.GetNumChatsWithUnreadPriorityMessages()
+    if count > 0 then
+        print('You have', count, 'unread priority messages')
+    end
+end
+"""
+
+[ISteamFriends.JoinClanChatRoom]
+example = """
+Steam.Friends.JoinClanChatRoom(clanID, function(data, err)
+    if not err and data.m_eChatRoomEnterResponse == 1 then
+        print('Joined clan chat')
+    end
+end)
+"""
+
+[ISteamFriends.SendClanChatMessage]
+example = """
+Steam.Friends.SendClanChatMessage(clanChatID, 'Hello clan!')
+"""
+
+# =============================================================================
+# ISteamUserStats (additional examples)
+# =============================================================================
+
+[ISteamUserStats.GetNumAchievements]
+example = """
+local count = Steam.UserStats.GetNumAchievements()
+for i = 0, count - 1 do
+    local name = Steam.UserStats.GetAchievementName(i)
+    local ok, achieved = Steam.UserStats.GetAchievement(name)
+    print(name .. ': ' .. (achieved and 'unlocked' or 'locked'))
+end
+"""
+
+[ISteamUserStats.GetAchievementName]
+example = "See :func:`UserStats.GetNumAchievements`'s example."
+
+[ISteamUserStats.GetAchievementAndUnlockTime]
+example = """
+local ok, achieved, unlockTime = Steam.UserStats.GetAchievementAndUnlockTime('ach_name')
+if ok and achieved then
+    print('Unlocked at:', unlockTime)
+end
+"""
+
+[ISteamUserStats.GetAchievementDisplayAttribute]
+example = """
+local name = Steam.UserStats.GetAchievementDisplayAttribute('ach_name', 'name')
+local desc = Steam.UserStats.GetAchievementDisplayAttribute('ach_name', 'desc')
+print(name .. ': ' .. desc)
+"""
+
+[ISteamUserStats.GetAchievementProgressLimitsInt32]
+example = """
+local ok, minVal, maxVal = Steam.UserStats.GetAchievementProgressLimitsInt32('ach_progress')
+if ok then
+    print(string.format('Progress range: %d - %d', minVal, maxVal))
+end
+"""
+
+[ISteamUserStats.IndicateAchievementProgress]
+example = """
+-- Show progress notification without unlocking yet
+Steam.UserStats.IndicateAchievementProgress('ach_kills', currentKills, 100)
+"""
+
+[ISteamUserStats.GetUserAchievement]
+example = """
+local ok, achieved = Steam.UserStats.GetUserAchievement(playerSteamID, 'ach_name')
+if ok then
+    print('Achievement status:', achieved)
+end
+"""
+
+[ISteamUserStats.GetUserStatInt32]
+example = """
+local ok, value = Steam.UserStats.GetUserStatInt32(playerSteamID, 'kills')
+if ok then
+    print('Player kills:', value)
+end
+"""
+
+[ISteamUserStats.RequestUserStats]
+example = """
+Steam.UserStats.RequestUserStats(playerSteamID, function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Failed to get user stats')
+        return
+    end
+    local ok, kills = Steam.UserStats.GetUserStatInt32(playerSteamID, 'kills')
+    print('Player kills:', kills)
+end)
+"""
+
+[ISteamUserStats.GetNumberOfCurrentPlayers]
+example = """
+Steam.UserStats.GetNumberOfCurrentPlayers(function(data, err)
+    if not err and data.m_bSuccess ~= 0 then
+        print('Players online right now:', data.m_cPlayers)
+    end
+end)
+"""
+
+[ISteamUserStats.GetGlobalStatInt64]
+example = """
+local ok, total = Steam.UserStats.GetGlobalStatInt64('total_kills')
+if ok then
+    print('Total kills across all players:', total)
+end
+"""
+
+[ISteamUserStats.GetGlobalStatDouble]
+example = """
+local ok, total = Steam.UserStats.GetGlobalStatDouble('total_playtime_hours')
+if ok then
+    print('Total playtime hours worldwide:', total)
+end
+"""
+
+[ISteamUserStats.RequestGlobalStats]
+example = """
+Steam.UserStats.RequestGlobalStats(7, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        local ok, total = Steam.UserStats.GetGlobalStatInt64('total_kills')
+        print('Global kills (last 7 days):', total)
+    end
+end)
+"""
+
+[ISteamUserStats.RequestGlobalAchievementPercentages]
+example = """
+Steam.UserStats.RequestGlobalAchievementPercentages(function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        local ok, pct = Steam.UserStats.GetAchievementAchievedPercent('ach_name')
+        print('Worldwide unlock rate:', pct .. '%')
+    end
+end)
+"""
+
+[ISteamUserStats.GetMostAchievedAchievementInfo]
+example = """
+local iter, name, percent, achieved = Steam.UserStats.GetMostAchievedAchievementInfo(256)
+while iter ~= -1 do
+    print(string.format('%s: %.1f%%', name, percent))
+    iter, name, percent, achieved = Steam.UserStats.GetNextMostAchievedAchievementInfo(iter, 256)
+end
+"""
+
+[ISteamUserStats.UpdateAvgRateStat]
+example = """
+-- Track rolling average of score per session length
+Steam.UserStats.UpdateAvgRateStat('avg_score_per_hour', sessionScore, sessionSeconds / 3600)
+Steam.UserStats.StoreStats()
+"""
+
+[ISteamUserStats.DownloadLeaderboardEntriesForUsers]
+example = """
+local friends = {friend1ID, friend2ID}
+Steam.UserStats.DownloadLeaderboardEntriesForUsers(handle, friends, #friends, function(data, err)
+    if not err then
+        for i = 0, data.m_cEntryCount - 1 do
+            local ok, entry = Steam.UserStats.GetDownloadedLeaderboardEntry(data.m_hSteamLeaderboardEntries, i, 0)
+            if ok then
+                print(tostring(entry.m_steamIDUser) .. ': ' .. entry.m_nScore)
+            end
+        end
+    end
+end)
+"""
+
+[ISteamUserStats.OnUserStatsStored]
+example = """
+function Steam.UserStats.OnUserStatsStored(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Stats saved successfully')
+    else
+        print('Stats save failed:', data.m_eResult)
+    end
+end
+"""
+
+[ISteamUserStats.OnUserAchievementStored]
+example = """
+function Steam.UserStats.OnUserAchievementStored(data)
+    print('Achievement stored:', data.m_rgchAchievementName)
+    if data.m_nMaxProgress > 0 then
+        print(data.m_nCurProgress .. '/' .. data.m_nMaxProgress)
+    end
+end
+"""
+
+[ISteamUserStats.OnGlobalAchievementPercentagesReady]
+example = """
+function Steam.UserStats.OnGlobalAchievementPercentagesReady(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        local ok, pct = Steam.UserStats.GetAchievementAchievedPercent('first_kill')
+        print('First kill achievement: ' .. pct .. '% of players')
+    end
+end
+"""
+
+# =============================================================================
+# ISteamUtils (additional examples)
+# =============================================================================
+
+[ISteamUtils.IsOverlayEnabled]
+example = """
+if not Steam.Utils.IsOverlayEnabled() then
+    print('Steam overlay is disabled')
+end
+"""
+
+[ISteamUtils.BOverlayNeedsPresent]
+example = """
+-- Call after rendering your frame
+if Steam.Utils.BOverlayNeedsPresent() then
+    presentFrame()
+end
+"""
+
+[ISteamUtils.GetIPCountry]
+example = """
+local country = Steam.Utils.GetIPCountry()
+print('Player is from: ' .. country)
+"""
+
+[ISteamUtils.GetServerRealTime]
+example = """
+local realTime = Steam.Utils.GetServerRealTime()
+print('Steam server time: ' .. realTime)
+"""
+
+[ISteamUtils.GetSteamUILanguage]
+example = """
+local lang = Steam.Utils.GetSteamUILanguage()
+print('Steam UI language: ' .. lang)
+"""
+
+[ISteamUtils.IsSteamInBigPictureMode]
+example = """
+if Steam.Utils.IsSteamInBigPictureMode() then
+    -- Use controller-friendly UI
+end
+"""
+
+[ISteamUtils.IsSteamRunningInVR]
+example = """
+if Steam.Utils.IsSteamRunningInVR() then
+    enableVRMode()
+end
+"""
+
+[ISteamUtils.GetCurrentBatteryPower]
+example = """
+local power = Steam.Utils.GetCurrentBatteryPower()
+if power < 20 then
+    print('Low battery: ' .. power .. '%')
+end
+"""
+
+[ISteamUtils.GetImageSize]
+example = """
+local w, h = Steam.Utils.GetImageSize(imageHandle)
+print(string.format('Image: %dx%d', w, h))
+"""
+
+[ISteamUtils.GetImageRGBA]
+example = """
+local w, h = Steam.Utils.GetImageSize(imageHandle)
+local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+-- rgba is a string of raw RGBA bytes; upload to a texture
+uploadTexture(rgba, w, h)
+"""
+
+[ISteamUtils.GetSecondsSinceAppActive]
+example = """
+local seconds = Steam.Utils.GetSecondsSinceAppActive()
+print('App active for ' .. seconds .. ' seconds')
+"""
+
+[ISteamUtils.SetOverlayNotificationPosition]
+example = """
+Steam.Utils.SetOverlayNotificationPosition(Steam.k_EPositionTopRight)
+"""
+
+[ISteamUtils.SetOverlayNotificationInset]
+example = """
+Steam.Utils.SetOverlayNotificationInset(10, 10)
+"""
+
+[ISteamUtils.FilterText]
+example = """
+local ok, filtered = Steam.Utils.FilterText('Chat', Steam.User.GetSteamID(), userInput, #userInput + 1)
+if ok then
+    displayMessage(filtered)
+end
+"""
+
+[ISteamUtils.OnIPCountry]
+example = """
+function Steam.Utils.OnIPCountry()
+    print('IP country changed to: ' .. Steam.Utils.GetIPCountry())
+end
+"""
+
+[ISteamUtils.OnLowBatteryPower]
+example = """
+function Steam.Utils.OnLowBatteryPower(data)
+    print('Low battery warning: ' .. data.m_nMinutesBatteryLeft .. ' minutes left')
+end
+"""
+
+[ISteamUtils.OnSteamShutdown]
+example = """
+function Steam.Utils.OnSteamShutdown()
+    print('Steam is shutting down, saving game...')
+    saveGame()
+end
+"""
+
+# =============================================================================
+# ISteamUGC (additional examples)
+# =============================================================================
+
+[ISteamUGC.SubscribeItem]
+example = """
+Steam.UGC.SubscribeItem(publishedFileID, function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Subscribe failed')
+    else
+        print('Subscribed to item:', tostring(data.m_nPublishedFileId))
+    end
+end)
+"""
+
+[ISteamUGC.UnsubscribeItem]
+example = """
+Steam.UGC.UnsubscribeItem(publishedFileID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Unsubscribed from item')
+    end
+end)
+"""
+
+[ISteamUGC.DownloadItem]
+example = """
+local queued = Steam.UGC.DownloadItem(publishedFileID, true)
+if queued then
+    print('Download queued with high priority')
+end
+"""
+
+[ISteamUGC.GetItemDownloadInfo]
+example = """
+local ok, downloaded, total = Steam.UGC.GetItemDownloadInfo(publishedFileID)
+if ok and total > 0 then
+    print(string.format('Download: %.0f%%', downloaded / total * 100))
+end
+"""
+
+[ISteamUGC.DeleteItem]
+example = """
+Steam.UGC.DeleteItem(publishedFileID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Item deleted')
+    end
+end)
+"""
+
+[ISteamUGC.SetItemTags]
+example = """
+local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
+Steam.UGC.SetItemTags(handle, {'rpg', 'adventure', 'fantasy'}, false)
+Steam.UGC.SubmitItemUpdate(handle, 'Updated tags', function(data, err) end)
+"""
+
+[ISteamUGC.SetItemMetadata]
+example = """
+local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
+Steam.UGC.SetItemMetadata(handle, '{"version":"1.2","requires":"dlc1"}')
+Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
+"""
+
+[ISteamUGC.SetItemVisibility]
+example = """
+local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
+Steam.UGC.SetItemVisibility(handle, 'Public')
+Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
+"""
+
+[ISteamUGC.SetItemUpdateLanguage]
+example = """
+local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
+Steam.UGC.SetItemUpdateLanguage(handle, 'english')
+Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
+"""
+
+[ISteamUGC.SendQueryUGCRequest]
+example = """
+Steam.UGC.SendQueryUGCRequest(queryHandle, function(data, err)
+    if err or data.m_eResultCode ~= Steam.k_EResultOK then
+        print('Query failed')
+        Steam.UGC.ReleaseQueryUGCRequest(queryHandle)
+        return
+    end
+    for i = 0, data.m_unNumResultsReturned - 1 do
+        local details = Steam.UGC.GetQueryUGCResult(queryHandle, i)
+        print('Item:', tostring(details.m_nPublishedFileId), details.m_rgchTitle)
+    end
+    Steam.UGC.ReleaseQueryUGCRequest(queryHandle)
+end)
+"""
+
+[ISteamUGC.GetQueryUGCResult]
+example = "See :func:`UGC.SendQueryUGCRequest`'s example."
+
+[ISteamUGC.ReleaseQueryUGCRequest]
+example = "See :func:`UGC.SendQueryUGCRequest`'s example."
+
+[ISteamUGC.CreateQueryAllUGCRequestPage]
+example = """
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+Steam.UGC.SetReturnLongDescription(handle, true)
+Steam.UGC.SetReturnMetadata(handle, true)
+-- Then call SendQueryUGCRequest
+"""
+
+[ISteamUGC.CreateQueryUGCDetailsRequest]
+example = """
+local fileIDs = {id1, id2, id3}
+local handle = Steam.UGC.CreateQueryUGCDetailsRequest(fileIDs, #fileIDs)
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
+    if not err then
+        local details = Steam.UGC.GetQueryUGCResult(handle, 0)
+        print('Title:', details.m_rgchTitle)
+    end
+    Steam.UGC.ReleaseQueryUGCRequest(handle)
+end)
+"""
+
+[ISteamUGC.AddRequiredTag]
+example = """
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+Steam.UGC.AddRequiredTag(handle, 'multiplayer')
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
+"""
+
+[ISteamUGC.AddExcludedTag]
+example = """
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+Steam.UGC.AddExcludedTag(handle, 'deprecated')
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
+"""
+
+[ISteamUGC.SetSearchText]
+example = """
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+Steam.UGC.SetSearchText(handle, 'dungeon')
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
+"""
+
+[ISteamUGC.SetRankedByTrendDays]
+example = """
+-- Query items trending in the last 7 days
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByTrend', 'Items', appID, appID, 1)
+Steam.UGC.SetRankedByTrendDays(handle, 7)
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
+"""
+
+[ISteamUGC.SetReturnMetadata]
+example = """
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+Steam.UGC.SetReturnMetadata(handle, true)
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
+    if not err then
+        local meta = Steam.UGC.GetQueryUGCMetadata(handle, 0, 256)
+        print('Metadata:', meta)
+    end
+    Steam.UGC.ReleaseQueryUGCRequest(handle)
+end)
+"""
+
+[ISteamUGC.GetQueryUGCPreviewURL]
+example = """
+local ok, url = Steam.UGC.GetQueryUGCPreviewURL(handle, index, 512)
+if ok then
+    downloadPreviewImage(url)
+end
+"""
+
+[ISteamUGC.SetUserItemVote]
+example = """
+Steam.UGC.SetUserItemVote(publishedFileID, true, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Vote recorded')
+    end
+end)
+"""
+
+[ISteamUGC.GetUserItemVote]
+example = """
+Steam.UGC.GetUserItemVote(publishedFileID, function(data, err)
+    if not err then
+        print('Voted up:', data.m_bVotedUp ~= 0)
+        print('Voted down:', data.m_bVotedDown ~= 0)
+    end
+end)
+"""
+
+[ISteamUGC.AddItemToFavorites]
+example = """
+Steam.UGC.AddItemToFavorites(appID, publishedFileID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Added to favorites')
+    end
+end)
+"""
+
+[ISteamUGC.RemoveItemFromFavorites]
+example = """
+Steam.UGC.RemoveItemFromFavorites(appID, publishedFileID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Removed from favorites')
+    end
+end)
+"""
+
+[ISteamUGC.StartPlaytimeTracking]
+example = """
+local ids = {mod1ID, mod2ID}
+Steam.UGC.StartPlaytimeTracking(ids, #ids, function(data, err)
+    print('Playtime tracking started')
+end)
+"""
+
+[ISteamUGC.StopPlaytimeTrackingForAllItems]
+example = """
+Steam.UGC.StopPlaytimeTrackingForAllItems(function(data, err)
+    print('Playtime tracking stopped for all items')
+end)
+"""
+
+[ISteamUGC.SuspendDownloads]
+example = """
+-- Pause all workshop downloads during gameplay
+Steam.UGC.SuspendDownloads(true)
+-- Resume when at main menu
+Steam.UGC.SuspendDownloads(false)
+"""
+
+[ISteamUGC.AddItemKeyValueTag]
+example = """
+local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
+Steam.UGC.AddItemKeyValueTag(handle, 'game_version', '1.5')
+Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
+"""
+
+[ISteamUGC.SetReturnKeyValueTags]
+example = """
+local handle = Steam.UGC.CreateQueryUGCDetailsRequest({publishedFileID}, 1)
+Steam.UGC.SetReturnKeyValueTags(handle, true)
+Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
+    if not err then
+        local count = Steam.UGC.GetQueryUGCNumKeyValueTags(handle, 0)
+        for i = 0, count - 1 do
+            local ok, k, v = Steam.UGC.GetQueryUGCKeyValueTag(handle, 0, i, 64, 256)
+            if ok then print(k .. '=' .. v) end
+        end
+    end
+    Steam.UGC.ReleaseQueryUGCRequest(handle)
+end)
+"""
+
+[ISteamUGC.RequestUGCDetails]
+example = """
+Steam.UGC.RequestUGCDetails(publishedFileID, 0, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Title:', data.m_details.m_rgchTitle)
+    end
+end)
+"""
+
+[ISteamUGC.OnItemInstalled]
+example = """
+function Steam.UGC.OnItemInstalled(data)
+    local ok, size, folder, ts = Steam.UGC.GetItemInstallInfo(data.m_nPublishedFileId, 512)
+    if ok then
+        print('Mod installed at:', folder)
+        loadMod(folder)
+    end
+end
+"""
+
+[ISteamUGC.OnDownloadItemResult]
+example = """
+function Steam.UGC.OnDownloadItemResult(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Item downloaded:', tostring(data.m_nPublishedFileId))
+    else
+        print('Download failed:', data.m_eResult)
+    end
+end
+"""
+
+[ISteamUGC.OnSteamUGCQueryCompleted]
+example = """
+function Steam.UGC.OnSteamUGCQueryCompleted(data)
+    if data.m_eResultCode == Steam.k_EResultOK then
+        print('Query returned', data.m_unNumResultsReturned, 'results')
+    end
+end
+"""
+
+# =============================================================================
+# ISteamRemoteStorage (additional examples)
+# =============================================================================
+
+[ISteamRemoteStorage.FileWrite]
+example = """
+local data = 'player_name=Alice\nlevel=42\n'
+local ok = Steam.RemoteStorage.FileWrite('savegame.txt', data, #data)
+if not ok then
+    print('Failed to write cloud save')
+end
+"""
+
+[ISteamRemoteStorage.FileRead]
+example = """
+local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
+local data = Steam.RemoteStorage.FileRead('savegame.txt', size)
+if data then
+    loadSaveData(data)
+end
+"""
+
+[ISteamRemoteStorage.FileExists]
+example = """
+if Steam.RemoteStorage.FileExists('savegame.txt') then
+    loadCloudSave()
+else
+    createNewSave()
+end
+"""
+
+[ISteamRemoteStorage.FileDelete]
+example = """
+if Steam.RemoteStorage.FileDelete('old_save.txt') then
+    print('Cloud file deleted')
+end
+"""
+
+[ISteamRemoteStorage.GetFileSize]
+example = """
+local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
+print('Save file size: ' .. size .. ' bytes')
+"""
+
+[ISteamRemoteStorage.GetFileCount]
+example = """
+local count = Steam.RemoteStorage.GetFileCount()
+for i = 0, count - 1 do
+    local name, size = Steam.RemoteStorage.GetFileNameAndSize(i)
+    print(name .. ' (' .. size .. ' bytes)')
+end
+"""
+
+[ISteamRemoteStorage.GetFileNameAndSize]
+example = "See :func:`RemoteStorage.GetFileCount`'s example."
+
+[ISteamRemoteStorage.GetQuota]
+example = """
+local total, available = Steam.RemoteStorage.GetQuota()
+print(string.format('Cloud storage: %d/%d bytes used', total - available, total))
+"""
+
+[ISteamRemoteStorage.IsCloudEnabledForApp]
+example = """
+if Steam.RemoteStorage.IsCloudEnabledForApp() then
+    syncCloudSaves()
+end
+"""
+
+[ISteamRemoteStorage.SetCloudEnabledForApp]
+example = """
+-- Allow user to toggle cloud saves
+Steam.RemoteStorage.SetCloudEnabledForApp(userWantsCloud)
+"""
+
+[ISteamRemoteStorage.FileWriteAsync]
+example = """
+Steam.RemoteStorage.FileWriteAsync('autosave.dat', saveData, #saveData, function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Async write failed')
+    else
+        print('Cloud save written asynchronously')
+    end
+end)
+"""
+
+[ISteamRemoteStorage.FileReadAsync]
+example = """
+Steam.RemoteStorage.FileReadAsync('savegame.dat', 0, fileSize, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        local fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
+        loadSaveData(fileData)
+    end
+end)
+"""
+
+[ISteamRemoteStorage.BeginFileWriteBatch]
+example = """
+Steam.RemoteStorage.BeginFileWriteBatch()
+Steam.RemoteStorage.FileWrite('config.dat', configData, #configData)
+Steam.RemoteStorage.FileWrite('progress.dat', progressData, #progressData)
+Steam.RemoteStorage.EndFileWriteBatch()
+"""
+
+[ISteamRemoteStorage.GetFileTimestamp]
+example = """
+local timestamp = Steam.RemoteStorage.GetFileTimestamp('savegame.txt')
+print('Last modified: ' .. os.date('%c', timestamp))
+"""
+
+[ISteamRemoteStorage.FilePersisted]
+example = """
+if Steam.RemoteStorage.FilePersisted('savegame.txt') then
+    print('File is synchronized to the cloud')
+end
+"""
+
+[ISteamRemoteStorage.GetLocalFileChangeCount]
+example = """
+-- Check for external changes (e.g. from another PC)
+local count = Steam.RemoteStorage.GetLocalFileChangeCount()
+for i = 0, count - 1 do
+    local name, changeType = Steam.RemoteStorage.GetLocalFileChange(i)
+    print('Cloud file changed:', name, changeType)
+end
+"""
+
+[ISteamRemoteStorage.OnRemoteStorageLocalFileChange]
+example = """
+function Steam.RemoteStorage.OnRemoteStorageLocalFileChange()
+    local count = Steam.RemoteStorage.GetLocalFileChangeCount()
+    print('Cloud file changes detected:', count)
+    reloadCloudSaves()
+end
+"""
+
+# =============================================================================
+# ISteamMatchmaking (additional examples)
+# =============================================================================
+
+[ISteamMatchmaking.CreateLobby]
+example = """
+Steam.Matchmaking.CreateLobby('Public', 8, function(data, err)
+    if err or data.m_eResult ~= Steam.k_EResultOK then
+        print('Failed to create lobby')
+        return
+    end
+    local lobbyID = data.m_ulSteamIDLobby
+    Steam.Matchmaking.SetLobbyData(lobbyID, 'map', 'level_01')
+    Steam.Matchmaking.SetLobbyData(lobbyID, 'mode', 'deathmatch')
+end)
+"""
+
+[ISteamMatchmaking.JoinLobby]
+example = """
+Steam.Matchmaking.JoinLobby(lobbyID, function(data, err)
+    if err or data.m_EChatRoomEnterResponse ~= 1 then
+        print('Failed to join lobby')
+    else
+        print('Joined lobby:', tostring(data.m_ulSteamIDLobby))
+    end
+end)
+"""
+
+[ISteamMatchmaking.LeaveLobby]
+example = """
+Steam.Matchmaking.LeaveLobby(lobbyID)
+"""
+
+[ISteamMatchmaking.SetLobbyData]
+example = """
+Steam.Matchmaking.SetLobbyData(lobbyID, 'map', 'dungeon_01')
+Steam.Matchmaking.SetLobbyData(lobbyID, 'players', tostring(playerCount))
+"""
+
+[ISteamMatchmaking.GetLobbyData]
+example = """
+local map = Steam.Matchmaking.GetLobbyData(lobbyID, 'map')
+print('Current map:', map)
+"""
+
+[ISteamMatchmaking.SetLobbyMemberData]
+example = """
+-- Set per-player data visible to other lobby members
+Steam.Matchmaking.SetLobbyMemberData(lobbyID, 'team', 'blue')
+Steam.Matchmaking.SetLobbyMemberData(lobbyID, 'ready', '1')
+"""
+
+[ISteamMatchmaking.GetLobbyMemberData]
+example = """
+local team = Steam.Matchmaking.GetLobbyMemberData(lobbyID, memberSteamID, 'team')
+print('Member team:', team)
+"""
+
+[ISteamMatchmaking.GetNumLobbyMembers]
+example = """
+local count = Steam.Matchmaking.GetNumLobbyMembers(lobbyID)
+for i = 0, count - 1 do
+    local memberID = Steam.Matchmaking.GetLobbyMemberByIndex(lobbyID, i)
+    print('Member:', Steam.Friends.GetFriendPersonaName(memberID))
+end
+"""
+
+[ISteamMatchmaking.GetLobbyOwner]
+example = """
+local ownerID = Steam.Matchmaking.GetLobbyOwner(lobbyID)
+local isOwner = ownerID == Steam.User.GetSteamID()
+"""
+
+[ISteamMatchmaking.RequestLobbyList]
+example = """
+Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', 'EqualToOrLessThan')
+Steam.Matchmaking.AddRequestLobbyListResultCountFilter(20)
+Steam.Matchmaking.RequestLobbyList(function(data, err)
+    if not err then
+        for i = 0, data.m_nLobbiesMatching - 1 do
+            local id = Steam.Matchmaking.GetLobbyByIndex(i)
+            local map = Steam.Matchmaking.GetLobbyData(id, 'map')
+            print('Lobby: ' .. map .. ' (' .. Steam.Matchmaking.GetNumLobbyMembers(id) .. ' players)')
+        end
+    end
+end)
+"""
+
+[ISteamMatchmaking.InviteUserToLobby]
+example = """
+Steam.Matchmaking.InviteUserToLobby(lobbyID, friendSteamID)
+"""
+
+[ISteamMatchmaking.SetLobbyJoinable]
+example = """
+-- Lock the lobby when the game starts
+Steam.Matchmaking.SetLobbyJoinable(lobbyID, false)
+"""
+
+[ISteamMatchmaking.SetLobbyGameServer]
+example = """
+Steam.Matchmaking.SetLobbyGameServer(lobbyID, serverIP, serverPort, Steam.GameServer.GetSteamID())
+"""
+
+[ISteamMatchmaking.GetLobbyGameServer]
+example = """
+local hasServer, ip, port, steamID = Steam.Matchmaking.GetLobbyGameServer(lobbyID)
+if hasServer then
+    connectToGameServer(ip, port)
+end
+"""
+
+[ISteamMatchmaking.SendLobbyChatMsg]
+example = """
+local msg = 'Ready!'
+Steam.Matchmaking.SendLobbyChatMsg(lobbyID, msg, #msg)
+"""
+
+[ISteamMatchmaking.OnLobbyEnter]
+example = """
+function Steam.Matchmaking.OnLobbyEnter(data)
+    if data.m_EChatRoomEnterResponse == 1 then
+        print('Entered lobby:', tostring(data.m_ulSteamIDLobby))
+        updateLobbyUI(data.m_ulSteamIDLobby)
+    end
+end
+"""
+
+[ISteamMatchmaking.OnLobbyDataUpdate]
+example = """
+function Steam.Matchmaking.OnLobbyDataUpdate(data)
+    if data.m_bSuccess ~= 0 then
+        local map = Steam.Matchmaking.GetLobbyData(data.m_ulSteamIDLobby, 'map')
+        print('Lobby data updated, map:', map)
+    end
+end
+"""
+
+[ISteamMatchmaking.OnLobbyChatMsg]
+example = """
+function Steam.Matchmaking.OnLobbyChatMsg(data)
+    local msg, chatType = Steam.Matchmaking.GetLobbyChatEntry(data.m_ulSteamIDLobby, data.m_iChatID, 512)
+    if msg then
+        local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamIDUser)
+        print(name .. ': ' .. msg)
+    end
+end
+"""
+
+[ISteamMatchmaking.OnLobbyGameCreated]
+example = """
+function Steam.Matchmaking.OnLobbyGameCreated(data)
+    print('Game server created:', data.m_ulSteamIDGameServer)
+    connectToGameServer(data.m_unIP, data.m_usPort)
+end
+"""
+
+[ISteamMatchmaking.OnLobbyInvite]
+example = """
+function Steam.Matchmaking.OnLobbyInvite(data)
+    local name = Steam.Friends.GetFriendPersonaName(data.m_ulSteamIDUser)
+    print(name .. ' invited you to a lobby')
+    showJoinPrompt(data.m_ulSteamIDLobby)
+end
+"""
+
+[ISteamMatchmaking.OnLobbyChatUpdate]
+example = """
+function Steam.Matchmaking.OnLobbyChatUpdate(data)
+    local count = Steam.Matchmaking.GetNumLobbyMembers(data.m_ulSteamIDLobby)
+    print('Lobby membership changed, now', count, 'players')
+end
+"""
+
+# =============================================================================
+# ISteamMatchmakingServers (additional examples)
+# =============================================================================
+
+[ISteamMatchmakingServers.RequestInternetServerList]
+example = """
+local filters = {{'gamedir', 'mygame'}, {'map', 'de_dust2'}}
+local callbacks = Steam.newISteamMatchmakingServerListResponse({
+    ServerResponded = function(request, index)
+        local info = Steam.MatchmakingServers.getServerDetails(request, index)
+        print(info.m_szServerName .. ' - ' .. info.m_nPlayers .. '/' .. info.m_nMaxPlayers)
+    end,
+    RefreshComplete = function(request, response)
+        print('Server list refresh complete')
+        Steam.MatchmakingServers.ReleaseRequest(request)
+    end,
+})
+local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, callbacks)
+"""
+
+[ISteamMatchmakingServers.RequestFriendsServerList]
+example = """
+local callbacks = Steam.newISteamMatchmakingServerListResponse({
+    ServerResponded = function(req, idx)
+        local info = Steam.MatchmakingServers.getServerDetails(req, idx)
+        print('Friend server:', info.m_szServerName)
+    end,
+    RefreshComplete = function(req, resp)
+        Steam.MatchmakingServers.ReleaseRequest(req)
+    end,
+})
+local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, callbacks)
+"""
+
+[ISteamMatchmakingServers.GetServerCount]
+example = """
+local count = Steam.MatchmakingServers.GetServerCount(serverListRequest)
+print('Found', count, 'servers')
+"""
+
+[ISteamMatchmakingServers.IsRefreshing]
+example = """
+if Steam.MatchmakingServers.IsRefreshing(serverListRequest) then
+    showLoadingSpinner()
+end
+"""
+
+[ISteamMatchmakingServers.RefreshQuery]
+example = """
+Steam.MatchmakingServers.RefreshQuery(serverListRequest)
+"""
+
+[ISteamMatchmakingServers.ReleaseRequest]
+example = """
+Steam.MatchmakingServers.ReleaseRequest(serverListRequest)
+serverListRequest = nil
+"""
+
+[ISteamMatchmakingServers.CancelQuery]
+example = """
+Steam.MatchmakingServers.CancelQuery(serverListRequest)
+"""
+
+[ISteamMatchmakingServers.PingServer]
+example = """
+local pingCallbacks = Steam.newISteamMatchmakingPingResponse({
+    ServerResponded = function(server)
+        print('Server:', server.m_szServerName, 'Ping:', server.m_nPing)
+    end,
+    ServerFailedToRespond = function()
+        print('Server did not respond to ping')
+    end,
+})
+Steam.MatchmakingServers.PingServer(serverIP, serverPort, pingCallbacks)
+"""
+
+# =============================================================================
+# ISteamNetworkingSockets (additional examples)
+# =============================================================================
+
+[ISteamNetworkingSockets.CreateListenSocketP2P]
+example = """
+-- Create a P2P listen socket on virtual port 0
+local hSocket = Steam.NetworkingSockets.CreateListenSocketP2P(0, 0, nil)
+"""
+
+[ISteamNetworkingSockets.ConnectP2P]
+example = """
+-- Connect to another player using their Steam identity
+local hConn = Steam.NetworkingSockets.ConnectP2P(tostring(friendSteamID), 0, 0, nil)
+"""
+
+[ISteamNetworkingSockets.AcceptConnection]
+example = """
+local result = Steam.NetworkingSockets.AcceptConnection(hConn)
+if result ~= Steam.k_EResultOK then
+    print('Failed to accept connection:', result)
+end
+"""
+
+[ISteamNetworkingSockets.CloseConnection]
+example = """
+Steam.NetworkingSockets.CloseConnection(hConn, 0, 'Player left', false)
+"""
+
+[ISteamNetworkingSockets.CloseListenSocket]
+example = """
+Steam.NetworkingSockets.CloseListenSocket(hListenSocket)
+"""
+
+[ISteamNetworkingSockets.SendMessageToConnection]
+example = """
+local data = serializePacket(packet)
+local result = Steam.NetworkingSockets.SendMessageToConnection(
+    hConn, data, #data, Steam.k_nSteamNetworkingSend_Reliable)
+if result < 0 then
+    print('Send failed:', result)
+end
+"""
+
+[ISteamNetworkingSockets.CreateListenSocketIP]
+example = """
+-- Listen on all interfaces, port 27015
+local hSocket = Steam.NetworkingSockets.CreateListenSocketIP('0.0.0.0:27015', 0, nil)
+"""
+
+[ISteamNetworkingSockets.ConnectByIPAddress]
+example = """
+local hConn = Steam.NetworkingSockets.ConnectByIPAddress('192.168.1.100:27015', 0, nil)
+"""
+
+[ISteamNetworkingSockets.CreatePollGroup]
+example = """
+local hPollGroup = Steam.NetworkingSockets.CreatePollGroup()
+-- Add connections to the poll group
+Steam.NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
+"""
+
+[ISteamNetworkingSockets.DestroyPollGroup]
+example = """
+Steam.NetworkingSockets.DestroyPollGroup(hPollGroup)
+"""
+
+[ISteamNetworkingSockets.SetConnectionPollGroup]
+example = """
+Steam.NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
+"""
+
+[ISteamNetworkingSockets.GetConnectionInfo]
+example = """
+local ok, info = Steam.NetworkingSockets.GetConnectionInfo(hConn)
+if ok then
+    print('Connection state:', info.m_eState)
+end
+"""
+
+[ISteamNetworkingSockets.GetIdentity]
+example = """
+local ok, identity = Steam.NetworkingSockets.GetIdentity()
+if ok then
+    print('Local identity:', identity)
+end
+"""
+
+[ISteamNetworkingSockets.FlushMessagesOnConnection]
+example = """
+Steam.NetworkingSockets.FlushMessagesOnConnection(hConn)
+"""
+
+[ISteamNetworkingSockets.SetConnectionName]
+example = """
+Steam.NetworkingSockets.SetConnectionName(hConn, 'Player_' .. playerName)
+"""
+
+[ISteamNetworkingSockets.SetConnectionUserData]
+example = """
+-- Associate a player index with this connection for quick lookup
+Steam.NetworkingSockets.SetConnectionUserData(hConn, playerIndex)
+"""
+
+[ISteamNetworkingSockets.GetConnectionUserData]
+example = """
+local playerIndex = Steam.NetworkingSockets.GetConnectionUserData(hConn)
+"""
+
+[ISteamNetworkingSockets.RunCallbacks]
+example = """
+-- Call once per frame to process networking callbacks
+Steam.NetworkingSockets.RunCallbacks()
+"""
+
+[ISteamNetworkingSockets.InitAuthentication]
+example = """
+local status = Steam.NetworkingSockets.InitAuthentication()
+print('Auth init status:', status)
+"""
+
+[ISteamNetworkingSockets.OnSteamNetConnectionStatusChangedCallback]
+example = """
+function Steam.NetworkingSockets.OnSteamNetConnectionStatusChangedCallback(data)
+    local state = data.m_info.m_eState
+    if state == Steam.k_ESteamNetworkingConnectionState_Connected then
+        print('Connected:', data.m_hConn)
+    elseif state == Steam.k_ESteamNetworkingConnectionState_ClosedByPeer then
+        print('Disconnected:', data.m_hConn)
+        Steam.NetworkingSockets.CloseConnection(data.m_hConn, 0, nil, false)
+    end
+end
+"""
+
+# =============================================================================
+# ISteamNetworking (legacy P2P - additional examples)
+# =============================================================================
+
+[ISteamNetworking.SendP2PPacket]
+example = """
+local data = serializeGamePacket(packet)
+Steam.Networking.SendP2PPacket(targetSteamID, data, #data, 'Reliable', 0)
+"""
+
+[ISteamNetworking.IsP2PPacketAvailable]
+example = """
+while Steam.Networking.IsP2PPacketAvailable(0) do
+    local data, senderID = Steam.Networking.ReadP2PPacket(4096, 0)
+    if data then
+        handlePacket(senderID, data)
+    end
+end
+"""
+
+[ISteamNetworking.ReadP2PPacket]
+example = "See :func:`Networking.IsP2PPacketAvailable`'s example."
+
+[ISteamNetworking.AcceptP2PSessionWithUser]
+example = """
+function Steam.Networking.OnP2PSessionRequest(data)
+    -- Accept connection from known players only
+    if isKnownPlayer(data.m_steamIDRemote) then
+        Steam.Networking.AcceptP2PSessionWithUser(data.m_steamIDRemote)
+    end
+end
+"""
+
+[ISteamNetworking.CloseP2PSessionWithUser]
+example = """
+-- Clean up when a player leaves
+Steam.Networking.CloseP2PSessionWithUser(playerSteamID)
+"""
+
+[ISteamNetworking.GetP2PSessionState]
+example = """
+local ok, state = Steam.Networking.GetP2PSessionState(playerSteamID)
+if ok then
+    print('Connecting:', state.m_bConnecting ~= 0)
+    print('Connected:', state.m_bConnectionActive ~= 0)
+end
+"""
+
+[ISteamNetworking.AllowP2PPacketRelay]
+example = """
+Steam.Networking.AllowP2PPacketRelay(true)
+"""
+
+[ISteamNetworking.OnP2PSessionRequest]
+example = "See :func:`Networking.AcceptP2PSessionWithUser`'s example."
+
+[ISteamNetworking.OnP2PSessionConnectFail]
+example = """
+function Steam.Networking.OnP2PSessionConnectFail(data)
+    print('P2P connection failed with', tostring(data.m_steamIDRemote),
+          'error:', data.m_eP2PSessionError)
+end
+"""
+
+# =============================================================================
+# ISteamInventory (additional examples)
+# =============================================================================
+
+[ISteamInventory.GetAllItems]
+example = """
+-- Request all items the current user owns
+local ok, resultHandle = Steam.Inventory.GetAllItems()
+-- Wait for OnSteamInventoryResultReady callback
+"""
+
+[ISteamInventory.GetResultItems]
+example = """
+function Steam.Inventory.OnSteamInventoryResultReady(data)
+    if data.m_result ~= Steam.k_EResultOK then return end
+    local items = Steam.Inventory.GetResultItems(data.m_handle, 256)
+    for _, item in ipairs(items) do
+        print('Item:', item.m_iDefinition, 'Qty:', item.m_unQuantity)
+    end
+    Steam.Inventory.DestroyResult(data.m_handle)
+end
+"""
+
+[ISteamInventory.GetResultStatus]
+example = """
+local status = Steam.Inventory.GetResultStatus(resultHandle)
+if status == Steam.k_EResultOK then
+    processInventoryResult(resultHandle)
+end
+"""
+
+[ISteamInventory.DestroyResult]
+example = "See :func:`Inventory.GetResultItems`'s example."
+
+[ISteamInventory.LoadItemDefinitions]
+example = """
+-- Trigger loading of item definitions; wait for OnSteamInventoryDefinitionUpdate
+Steam.Inventory.LoadItemDefinitions()
+"""
+
+[ISteamInventory.GetItemDefinitionIDs]
+example = """
+local ids = Steam.Inventory.GetItemDefinitionIDs(256)
+for _, defID in ipairs(ids) do
+    local ok, name = Steam.Inventory.GetItemDefinitionProperty(defID, 'name', 128)
+    print('Item def:', defID, name)
+end
+"""
+
+[ISteamInventory.GetItemDefinitionProperty]
+example = "See :func:`Inventory.GetItemDefinitionIDs`'s example."
+
+[ISteamInventory.GetItemsByID]
+example = """
+local ok, resultHandle = Steam.Inventory.GetItemsByID({itemInstanceID1, itemInstanceID2}, 2)
+-- Wait for OnSteamInventoryResultReady
+"""
+
+[ISteamInventory.ConsumeItem]
+example = """
+local ok, resultHandle = Steam.Inventory.ConsumeItem(itemInstanceID, 1)
+-- Wait for OnSteamInventoryResultReady to confirm
+"""
+
+[ISteamInventory.TriggerItemDrop]
+example = """
+local ok, resultHandle = Steam.Inventory.TriggerItemDrop(dropListDefinitionID)
+-- Triggers a potential item drop for playtime rewards
+"""
+
+[ISteamInventory.AddPromoItem]
+example = """
+local ok, resultHandle = Steam.Inventory.AddPromoItem(promoItemDefID)
+-- Grants a promo item if the trigger conditions are met
+"""
+
+[ISteamInventory.TransferItemQuantity]
+example = """
+-- Split a stack: move 5 units to a new stack
+local ok, resultHandle = Steam.Inventory.TransferItemQuantity(sourceItemID, 5, 0)
+"""
+
+[ISteamInventory.RequestPrices]
+example = """
+Steam.Inventory.RequestPrices(function(data, err)
+    if not err and data.m_result == Steam.k_EResultOK then
+        local numItems = Steam.Inventory.GetNumItemsWithPrices()
+        local items = Steam.Inventory.getItemsWithPrices(numItems)
+        for _, item in ipairs(items) do
+            print('Item', item.m_iDefinition, 'costs',
+                  item.m_flCurrentPrice, item.m_rgchCurrencyCode)
+        end
+    end
+end)
+"""
+
+[ISteamInventory.StartPurchase]
+example = """
+Steam.Inventory.StartPurchase({itemDefID}, 1, {1}, function(data, err)
+    if not err and data.m_result == Steam.k_EResultOK then
+        print('Purchase started, orderID:', tostring(data.m_ulOrderID))
+    end
+end)
+"""
+
+[ISteamInventory.OnSteamInventoryResultReady]
+example = "See :func:`Inventory.GetResultItems`'s example."
+
+[ISteamInventory.OnSteamInventoryDefinitionUpdate]
+example = """
+function Steam.Inventory.OnSteamInventoryDefinitionUpdate()
+    print('Item definitions updated')
+    local ids = Steam.Inventory.GetItemDefinitionIDs(256)
+    print('Loaded', #ids, 'item definitions')
+end
+"""
+
+[ISteamInventory.OnSteamInventoryRequestPricesResult]
+example = """
+function Steam.Inventory.OnSteamInventoryRequestPricesResult(data)
+    if data.m_result == Steam.k_EResultOK then
+        print('Currency:', data.m_rgchCurrency)
+    end
+end
+"""
+
+# =============================================================================
+# ISteamGameServer (additional examples)
+# =============================================================================
+
+[ISteamGameServer.SetServerName]
+example = """
+Steam.GameServer.SetServerName('My Awesome Server')
+"""
+
+[ISteamGameServer.SetMapName]
+example = """
+Steam.GameServer.SetMapName('de_dust2')
+"""
+
+[ISteamGameServer.SetMaxPlayerCount]
+example = """
+Steam.GameServer.SetMaxPlayerCount(16)
+"""
+
+[ISteamGameServer.SetBotPlayerCount]
+example = """
+Steam.GameServer.SetBotPlayerCount(0)
+"""
+
+[ISteamGameServer.SetPasswordProtected]
+example = """
+Steam.GameServer.SetPasswordProtected(false)
+"""
+
+[ISteamGameServer.SetGameDescription]
+example = """
+Steam.GameServer.SetGameDescription('A competitive FPS game')
+"""
+
+[ISteamGameServer.SetGameTags]
+example = """
+Steam.GameServer.SetGameTags('ranked,competitive')
+"""
+
+[ISteamGameServer.SetKeyValue]
+example = """
+-- Set server rules visible in the server browser
+Steam.GameServer.SetKeyValue('version', '1.5.0')
+Steam.GameServer.SetKeyValue('region', 'us-east')
+"""
+
+[ISteamGameServer.ClearAllKeyValues]
+example = """
+Steam.GameServer.ClearAllKeyValues()
+-- Reset and re-add updated values
+Steam.GameServer.SetKeyValue('version', '1.6.0')
+"""
+
+[ISteamGameServer.SetAdvertiseServerActive]
+example = """
+-- Make the server visible in the server browser
+Steam.GameServer.SetAdvertiseServerActive(true)
+"""
+
+[ISteamGameServer.WasRestartRequested]
+example = """
+if Steam.GameServer.WasRestartRequested() then
+    print('Steam requested server restart for update')
+    scheduleRestart()
+end
+"""
+
+[ISteamGameServer.GetPublicIP]
+example = """
+local ip = Steam.GameServer.GetPublicIP()
+print('Server public IP:', ip)
+"""
+
+[ISteamGameServer.BUpdateUserData]
+example = """
+-- Update a connected player's display name and score
+Steam.GameServer.BUpdateUserData(playerSteamID, playerName, playerScore)
+"""
+
+[ISteamGameServer.RequestUserGroupStatus]
+example = """
+-- Check if a player is in a Steam group (e.g. for whitelist)
+Steam.GameServer.RequestUserGroupStatus(playerSteamID, groupSteamID)
+"""
+
+[ISteamGameServer.OnGSClientApprove]
+example = """
+function Steam.GameServer.OnGSClientApprove(data)
+    print('Client approved:', tostring(data.m_SteamID))
+    allowPlayerToJoin(data.m_SteamID)
+end
+"""
+
+[ISteamGameServer.OnGSClientDeny]
+example = """
+function Steam.GameServer.OnGSClientDeny(data)
+    print('Client denied:', tostring(data.m_SteamID), 'reason:', data.m_eDenyReason)
+    kickPlayer(data.m_SteamID)
+end
+"""
+
+[ISteamGameServer.OnGSPolicyResponse]
+example = """
+function Steam.GameServer.OnGSPolicyResponse(data)
+    if Steam.GameServer.BSecure() then
+        print('Server is VAC secured')
+    end
+end
+"""
+
+[ISteamGameServer.OnGSClientGroupStatus]
+example = """
+function Steam.GameServer.OnGSClientGroupStatus(data)
+    if data.m_bMember ~= 0 then
+        print('Player is a member of the required group:', tostring(data.m_SteamIDUser))
+    end
+end
+"""
+
+# =============================================================================
+# ISteamGameServerStats (additional examples)
+# =============================================================================
+
+[ISteamGameServerStats.RequestUserStats]
+example = """
+Steam.GameServerStats.RequestUserStats(playerSteamID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        local ok, kills = Steam.GameServerStats.GetUserStatInt32(playerSteamID, 'kills')
+        print('Player kills:', kills)
+    end
+end)
+"""
+
+[ISteamGameServerStats.GetUserStatInt32]
+example = """
+local ok, value = Steam.GameServerStats.GetUserStatInt32(playerSteamID, 'kills')
+if ok then
+    print('Kills:', value)
+end
+"""
+
+[ISteamGameServerStats.SetUserStatInt32]
+example = """
+Steam.GameServerStats.SetUserStatInt32(playerSteamID, 'kills', newKillCount)
+Steam.GameServerStats.StoreUserStats(playerSteamID, function(data, err) end)
+"""
+
+[ISteamGameServerStats.GetUserAchievement]
+example = """
+local ok, achieved = Steam.GameServerStats.GetUserAchievement(playerSteamID, 'first_blood')
+if ok and not achieved then
+    Steam.GameServerStats.SetUserAchievement(playerSteamID, 'first_blood')
+end
+"""
+
+[ISteamGameServerStats.StoreUserStats]
+example = """
+Steam.GameServerStats.StoreUserStats(playerSteamID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Stats saved for player:', tostring(data.m_steamIDUser))
+    end
+end)
+"""
+
+# =============================================================================
+# ISteamHTTP (additional examples)
+# =============================================================================
+
+[ISteamHTTP.CreateHTTPRequest]
+example = """
+local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://api.example.com/leaderboard')
+Steam.HTTP.SetHTTPRequestHeaderValue(hReq, 'Accept', 'application/json')
+Steam.HTTP.SendHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.SetHTTPRequestGetOrPostParameter]
+example = """
+local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/score')
+Steam.HTTP.SetHTTPRequestGetOrPostParameter(hReq, 'score', tostring(playerScore))
+Steam.HTTP.SetHTTPRequestGetOrPostParameter(hReq, 'player', playerName)
+Steam.HTTP.SendHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.SetHTTPRequestHeaderValue]
+example = "See :func:`HTTP.CreateHTTPRequest`'s example."
+
+[ISteamHTTP.SendHTTPRequest]
+example = """
+local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://example.com/data.json')
+Steam.HTTP.SetHTTPRequestNetworkActivityTimeout(hReq, 10)
+Steam.HTTP.SendHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.ReleaseHTTPRequest]
+example = """
+-- Always release the request handle when done
+Steam.HTTP.ReleaseHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.GetHTTPResponseBodySize]
+example = """
+function Steam.HTTP.OnHTTPRequestCompleted(data)
+    if data.m_eStatusCode == 200 then
+        local size = Steam.HTTP.GetHTTPResponseBodySize(data.m_hRequest)
+        local body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
+        handleResponse(body)
+    end
+    Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
+end
+"""
+
+[ISteamHTTP.GetHTTPResponseBodyData]
+example = "See :func:`HTTP.GetHTTPResponseBodySize`'s example."
+
+[ISteamHTTP.OnHTTPRequestCompleted]
+example = "See :func:`HTTP.GetHTTPResponseBodySize`'s example."
+
+[ISteamHTTP.SetHTTPRequestNetworkActivityTimeout]
+example = """
+local hReq = Steam.HTTP.CreateHTTPRequest('GET', 'https://example.com/ping')
+Steam.HTTP.SetHTTPRequestNetworkActivityTimeout(hReq, 5)
+Steam.HTTP.SendHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.GetHTTPDownloadProgressPct]
+example = """
+-- Poll progress for a large download
+local pct = Steam.HTTP.GetHTTPDownloadProgressPct(hReq)
+print(string.format('Download: %.1f%%', pct * 100))
+"""
+
+[ISteamHTTP.SetHTTPRequestRawPostBody]
+example = """
+local json = '{"action":"submit","data":"value"}'
+local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/action')
+Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', #json)
+Steam.HTTP.SendHTTPRequest(hReq)
+"""
+
+[ISteamHTTP.GetHTTPResponseHeaderValue]
+example = """
+function Steam.HTTP.OnHTTPRequestCompleted(data)
+    local size = Steam.HTTP.GetHTTPResponseHeaderSize(data.m_hRequest, 'Content-Type')
+    if size > 0 then
+        local ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
+        print('Content-Type:', ct)
+    end
+    Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
+end
+"""
+
+# =============================================================================
+# ISteamMusic (additional examples)
+# =============================================================================
+
+[ISteamMusic.BIsEnabled]
+example = """
+if Steam.Music.BIsEnabled() then
+    print('Steam Music is enabled')
+end
+"""
+
+[ISteamMusic.BIsPlaying]
+example = """
+if Steam.Music.BIsPlaying() then
+    print('Current status: ' .. Steam.Music.GetPlaybackStatus())
+end
+"""
+
+[ISteamMusic.GetPlaybackStatus]
+example = """
+local status = Steam.Music.GetPlaybackStatus()
+-- 0=Undefined, 1=Playing, 2=Paused, 3=Idle
+if status == 1 then
+    print('Music is playing')
+end
+"""
+
+[ISteamMusic.SetVolume]
+example = """
+Steam.Music.SetVolume(0.5)  -- Set to 50%
+"""
+
+[ISteamMusic.Play]
+example = """
+if not Steam.Music.BIsPlaying() then
+    Steam.Music.Play()
+end
+"""
+
+[ISteamMusic.Pause]
+example = """
+if Steam.Music.BIsPlaying() then
+    Steam.Music.Pause()
+end
+"""
+
+[ISteamMusic.PlayNext]
+example = """
+Steam.Music.PlayNext()
+"""
+
+[ISteamMusic.OnPlaybackStatusHasChanged]
+example = """
+function Steam.Music.OnPlaybackStatusHasChanged()
+    local status = Steam.Music.GetPlaybackStatus()
+    print('Music status changed:', status)
+end
+"""
+
+[ISteamMusic.OnVolumeHasChanged]
+example = """
+function Steam.Music.OnVolumeHasChanged(data)
+    print('Music volume changed to:', data.m_flNewVolume)
+end
+"""
+
+# =============================================================================
+# ISteamScreenshots (additional examples)
+# =============================================================================
+
+[ISteamScreenshots.TriggerScreenshot]
+example = """
+-- Programmatically take a Steam screenshot
+Steam.Screenshots.TriggerScreenshot()
+"""
+
+[ISteamScreenshots.HookScreenshots]
+example = """
+-- Intercept F12 screenshots to add game UI before saving
+Steam.Screenshots.HookScreenshots(true)
+"""
+
+[ISteamScreenshots.AddScreenshotToLibrary]
+example = """
+local handle = Steam.Screenshots.AddScreenshotToLibrary('screenshot.png', nil, 1920, 1080)
+if handle ~= 0 then
+    Steam.Screenshots.SetLocation(handle, 'Main Menu')
+end
+"""
+
+[ISteamScreenshots.WriteScreenshot]
+example = """
+-- Capture the current framebuffer and add to Steam library
+local rgbData = captureFramebuffer()
+local handle = Steam.Screenshots.WriteScreenshot(rgbData, #rgbData, screenWidth, screenHeight)
+"""
+
+[ISteamScreenshots.SetLocation]
+example = """
+Steam.Screenshots.SetLocation(screenshotHandle, 'Boss Arena Level 5')
+"""
+
+[ISteamScreenshots.OnScreenshotReady]
+example = """
+function Steam.Screenshots.OnScreenshotReady(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Screenshot saved, handle:', data.m_hLocal)
+    end
+end
+"""
+
+[ISteamScreenshots.OnScreenshotRequested]
+example = """
+function Steam.Screenshots.OnScreenshotRequested()
+    -- User pressed F12; capture game state and submit
+    local rgbData = captureFramebuffer()
+    Steam.Screenshots.WriteScreenshot(rgbData, #rgbData, screenWidth, screenHeight)
+end
+"""
+
+# =============================================================================
+# ISteamRemotePlay (additional examples)
+# =============================================================================
+
+[ISteamRemotePlay.GetSessionCount]
+example = """
+local count = Steam.RemotePlay.GetSessionCount()
+print('Active Remote Play sessions:', count)
+"""
+
+[ISteamRemotePlay.GetSessionID]
+example = """
+local count = Steam.RemotePlay.GetSessionCount()
+for i = 0, count - 1 do
+    local sessionID = Steam.RemotePlay.GetSessionID(i)
+    local name = Steam.RemotePlay.GetSessionClientName(sessionID)
+    print('Remote Play client:', name)
+end
+"""
+
+[ISteamRemotePlay.GetSessionSteamID]
+example = """
+local steamID = Steam.RemotePlay.GetSessionSteamID(sessionID)
+print('Remote player:', Steam.Friends.GetFriendPersonaName(steamID))
+"""
+
+[ISteamRemotePlay.GetSessionClientName]
+example = "See :func:`RemotePlay.GetSessionID`'s example."
+
+[ISteamRemotePlay.GetSessionClientFormFactor]
+example = """
+local formFactor = Steam.RemotePlay.GetSessionClientFormFactor(sessionID)
+if formFactor == Steam.k_ESteamDeviceFormFactor_Phone then
+    print('Client is on a mobile device')
+end
+"""
+
+[ISteamRemotePlay.BSendRemotePlayTogetherInvite]
+example = """
+if Steam.RemotePlay.BSendRemotePlayTogetherInvite(friendSteamID) then
+    print('Remote Play Together invite sent')
+end
+"""
+
+[ISteamRemotePlay.OnSteamRemotePlaySessionConnected]
+example = """
+function Steam.RemotePlay.OnSteamRemotePlaySessionConnected(data)
+    local name = Steam.RemotePlay.GetSessionClientName(data.m_unSessionID)
+    print('Remote Play session connected:', name)
+end
+"""
+
+[ISteamRemotePlay.OnSteamRemotePlaySessionDisconnected]
+example = """
+function Steam.RemotePlay.OnSteamRemotePlaySessionDisconnected(data)
+    print('Remote Play session disconnected:', data.m_unSessionID)
+end
+"""
+
+# =============================================================================
+# ISteamTimeline (additional examples)
+# =============================================================================
+
+[ISteamTimeline.SetTimelineGameMode]
+example = """
+-- Set mode to show what the player is doing
+Steam.Timeline.SetTimelineGameMode('Playing')
+"""
+
+[ISteamTimeline.SetTimelineTooltip]
+example = """
+Steam.Timeline.SetTimelineTooltip('Fighting the final boss', 0)
+"""
+
+[ISteamTimeline.ClearTimelineTooltip]
+example = """
+Steam.Timeline.ClearTimelineTooltip(0)
+"""
+
+[ISteamTimeline.AddInstantaneousTimelineEvent]
+example = """
+-- Mark when player gets an achievement
+Steam.Timeline.AddInstantaneousTimelineEvent(
+    'Achievement Unlocked', 'First Blood', 'achievement_icon', 1, 0, 'RecordAtFarther')
+"""
+
+[ISteamTimeline.AddRangeTimelineEvent]
+example = """
+-- Mark an entire boss fight after it ends
+Steam.Timeline.AddRangeTimelineEvent(
+    'Boss Fight', 'Dragon Battle', 'sword_icon', 1, -bossFightDuration, bossFightDuration, 'RecordAtFarther')
+"""
+
+[ISteamTimeline.StartRangeTimelineEvent]
+example = """
+-- Start tracking a ranged event
+local eventHandle = Steam.Timeline.StartRangeTimelineEvent(
+    'Boss Fight', 'Dragon Battle', 'sword_icon', 1, 0, 'RecordAtFarther')
+"""
+
+[ISteamTimeline.EndRangeTimelineEvent]
+example = """
+Steam.Timeline.EndRangeTimelineEvent(eventHandle, 0)
+"""
+
+[ISteamTimeline.StartGamePhase]
+example = """
+Steam.Timeline.StartGamePhase()
+Steam.Timeline.SetGamePhaseID('level_3')
+"""
+
+[ISteamTimeline.EndGamePhase]
+example = """
+Steam.Timeline.EndGamePhase()
+"""
+
+[ISteamTimeline.SetGamePhaseID]
+example = "See :func:`Timeline.StartGamePhase`'s example."
+
+[ISteamTimeline.OpenOverlayToTimelineEvent]
+example = """
+-- Let the player review the clip for this event
+Steam.Timeline.OpenOverlayToTimelineEvent(eventHandle)
+"""
+
+# =============================================================================
+# ISteamInput (additional examples)
+# =============================================================================
+
+[ISteamInput.Init]
+example = """
+Steam.Input.Init(false)
+"""
+
+[ISteamInput.RunFrame]
+example = """
+-- Call once per game frame to process input
+Steam.Input.RunFrame(false)
+"""
+
+[ISteamInput.GetConnectedControllers]
+example = """
+local controllers = Steam.Input.GetConnectedControllers()
+for _, handle in ipairs(controllers) do
+    local inputType = Steam.Input.GetInputTypeForHandle(handle)
+    print('Controller type:', inputType)
+end
+"""
+
+[ISteamInput.GetActionSetHandle]
+example = """
+local menuActionSet = Steam.Input.GetActionSetHandle('MenuControls')
+local gameActionSet = Steam.Input.GetActionSetHandle('GameControls')
+"""
+
+[ISteamInput.ActivateActionSet]
+example = """
+-- Switch to gameplay controls when game starts
+Steam.Input.ActivateActionSet(controllerHandle, gameActionSetHandle)
+"""
+
+[ISteamInput.GetDigitalActionHandle]
+example = """
+local jumpAction = Steam.Input.GetDigitalActionHandle('Jump')
+local attackAction = Steam.Input.GetDigitalActionHandle('Attack')
+"""
+
+[ISteamInput.GetDigitalActionData]
+example = """
+local actionData = Steam.Input.GetDigitalActionData(controllerHandle, jumpActionHandle)
+if actionData.bState ~= 0 then
+    player.jump()
+end
+"""
+
+[ISteamInput.GetAnalogActionHandle]
+example = """
+local moveAction = Steam.Input.GetAnalogActionHandle('Move')
+local aimAction = Steam.Input.GetAnalogActionHandle('Aim')
+"""
+
+[ISteamInput.GetAnalogActionData]
+example = """
+local data = Steam.Input.GetAnalogActionData(controllerHandle, moveActionHandle)
+player.move(data.x, data.y)
+"""
+
+[ISteamInput.GetCurrentActionSet]
+example = """
+local currentSet = Steam.Input.GetCurrentActionSet(controllerHandle)
+"""
+
+[ISteamInput.TriggerVibration]
+example = """
+-- Brief vibration feedback on hit
+Steam.Input.TriggerVibration(controllerHandle, 32000, 32000)
+"""
+
+[ISteamInput.SetLEDColor]
+example = """
+-- Set controller LED to red when player is low on health
+Steam.Input.SetLEDColor(controllerHandle, 255, 0, 0, 0)
+"""
+
+[ISteamInput.ShowBindingPanel]
+example = """
+Steam.Input.ShowBindingPanel(controllerHandle)
+"""
+
+[ISteamInput.GetInputTypeForHandle]
+example = "See :func:`Input.GetConnectedControllers`'s example."
+
+[ISteamInput.GetStringForActionOrigin]
+example = """
+local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
+if #origins > 0 then
+    local label = Steam.Input.GetStringForActionOrigin(origins[1])
+    print('Press ' .. label .. ' to jump')
+end
+"""
+
+[ISteamInput.GetGlyphPNGForActionOrigin]
+example = """
+local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
+if #origins > 0 then
+    local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], 'Medium', 0)
+    loadButtonIcon(glyphPath)
+end
+"""
+
+[ISteamInput.GetMotionData]
+example = """
+local data = Steam.Input.GetMotionData(controllerHandle)
+-- Use quaternion fields for gyro aiming
+updateGyroAiming(data.rotQuatX, data.rotQuatY, data.rotQuatZ, data.rotQuatW)
+"""
+
+[ISteamInput.OnSteamInputDeviceConnected]
+example = """
+function Steam.Input.OnSteamInputDeviceConnected(data)
+    print('Controller connected:', data.m_ulConnectedDeviceHandle)
+    rebuildControllerList()
+end
+"""
+
+[ISteamInput.OnSteamInputDeviceDisconnected]
+example = """
+function Steam.Input.OnSteamInputDeviceDisconnected(data)
+    print('Controller disconnected:', data.m_ulDisconnectedDeviceHandle)
+    rebuildControllerList()
+end
+"""
+
+# =============================================================================
+# ISteamController (additional examples)
+# =============================================================================
+
+[ISteamController.Init]
+example = """
+Steam.Controller.Init()
+"""
+
+[ISteamController.RunFrame]
+example = """
+-- Call once per frame in your game loop
+Steam.Controller.RunFrame()
+"""
+
+[ISteamController.GetConnectedControllers]
+example = """
+local controllers = Steam.Controller.GetConnectedControllers()
+print('Connected controllers:', #controllers)
+"""
+
+[ISteamController.GetActionSetHandle]
+example = """
+local gameplaySet = Steam.Controller.GetActionSetHandle('GameControls')
+"""
+
+[ISteamController.ActivateActionSet]
+example = """
+Steam.Controller.ActivateActionSet(controllerHandle, actionSetHandle)
+"""
+
+[ISteamController.GetDigitalActionHandle]
+example = """
+local jumpHandle = Steam.Controller.GetDigitalActionHandle('Jump')
+"""
+
+[ISteamController.GetDigitalActionData]
+example = """
+local data = Steam.Controller.GetDigitalActionData(controllerHandle, jumpHandle)
+if data.bState ~= 0 then
+    player.jump()
+end
+"""
+
+[ISteamController.GetAnalogActionHandle]
+example = """
+local moveHandle = Steam.Controller.GetAnalogActionHandle('Move')
+"""
+
+[ISteamController.GetAnalogActionData]
+example = """
+local data = Steam.Controller.GetAnalogActionData(controllerHandle, moveHandle)
+player.setVelocity(data.x * speed, data.y * speed)
+"""
+
+[ISteamController.TriggerVibration]
+example = """
+Steam.Controller.TriggerVibration(controllerHandle, 16000, 16000)
+"""
+
+[ISteamController.TriggerHapticPulse]
+example = """
+Steam.Controller.TriggerHapticPulse(controllerHandle, 'Right', 1000)
+"""
+
+[ISteamController.SetLEDColor]
+example = """
+-- Red LED for low health
+Steam.Controller.SetLEDColor(controllerHandle, 255, 0, 0, 0)
+"""
+
+[ISteamController.Shutdown]
+example = """
+Steam.Controller.Shutdown()
+"""
+
+[ISteamController.GetInputTypeForHandle]
+example = """
+local inputType = Steam.Controller.GetInputTypeForHandle(controllerHandle)
+"""
+
+[ISteamController.ShowBindingPanel]
+example = """
+Steam.Controller.ShowBindingPanel(controllerHandle)
+"""
+
+# =============================================================================
+# ISteamVideo (additional examples)
+# =============================================================================
+
+[ISteamVideo.GetVideoURL]
+example = """
+Steam.Video.GetVideoURL(videoAppID)
+-- Wait for OnGetVideoURLResult callback
+"""
+
+[ISteamVideo.IsBroadcasting]
+example = """
+local broadcasting, viewers = Steam.Video.IsBroadcasting()
+if broadcasting then
+    print('Broadcasting to', viewers, 'viewers')
+end
+"""
+
+[ISteamVideo.OnGetVideoURLResult]
+example = """
+function Steam.Video.OnGetVideoURLResult(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        print('Video URL:', data.m_rgchURL)
+        openVideoPlayer(data.m_rgchURL)
+    end
+end
+"""
+
+[ISteamVideo.OnBroadcastUploadStart]
+example = """
+function Steam.Video.OnBroadcastUploadStart()
+    print('Broadcast started')
+end
+"""
+
+# =============================================================================
+# ISteamParentalSettings (additional examples)
+# =============================================================================
+
+[ISteamParentalSettings.BIsParentalLockEnabled]
+example = """
+if Steam.ParentalSettings.BIsParentalLockEnabled() then
+    print('Parental controls are active')
+end
+"""
+
+[ISteamParentalSettings.BIsAppBlocked]
+example = """
+if Steam.ParentalSettings.BIsAppBlocked(targetAppID) then
+    print('This app is blocked by parental controls')
+end
+"""
+
+[ISteamParentalSettings.BIsFeatureBlocked]
+example = """
+if Steam.ParentalSettings.BIsFeatureBlocked(Steam.k_EParentalFeature_OnlineMultiplayer) then
+    print('Online multiplayer is restricted')
+end
+"""
+
+[ISteamParentalSettings.OnSteamParentalSettingsChanged]
+example = """
+function Steam.ParentalSettings.OnSteamParentalSettingsChanged()
+    updateFeatureAvailability()
+end
+"""
+
+# =============================================================================
+# ISteamParties (additional examples)
+# =============================================================================
+
+[ISteamParties.GetNumAvailableBeaconLocations]
+example = """
+local count = Steam.Parties.GetNumAvailableBeaconLocations()
+local locations = Steam.Parties.GetAvailableBeaconLocations(count)
+for _, loc in ipairs(locations) do
+    print('Beacon location type:', loc.m_eType)
+end
+"""
+
+[ISteamParties.GetNumActiveBeacons]
+example = """
+local count = Steam.Parties.GetNumActiveBeacons()
+for i = 0, count - 1 do
+    local beaconID = Steam.Parties.GetBeaconByIndex(i)
+    local ok, ownerID, loc, meta = Steam.Parties.GetBeaconDetails(beaconID, 256)
+    if ok then
+        print('Beacon owner:', Steam.Friends.GetFriendPersonaName(ownerID))
+    end
+end
+"""
+
+[ISteamParties.GetBeaconByIndex]
+example = "See :func:`Parties.GetNumActiveBeacons`'s example."
+
+[ISteamParties.GetBeaconDetails]
+example = "See :func:`Parties.GetNumActiveBeacons`'s example."
+
+[ISteamParties.JoinParty]
+example = """
+Steam.Parties.JoinParty(beaconID, function(data, err)
+    if not err and data.m_eResult == Steam.k_EResultOK then
+        print('Joined party, connect string:', data.m_rgchConnectString)
+        connectToGame(data.m_rgchConnectString)
+    end
+end)
+"""
+
+[ISteamParties.CancelReservation]
+example = """
+-- Called by beacon owner when a reserved player cancels
+Steam.Parties.CancelReservation(beaconHandle, playerSteamID)
+"""
+
+[ISteamParties.OnJoinPartyCallback]
+example = """
+function Steam.Parties.OnJoinPartyCallback(data)
+    if data.m_eResult == Steam.k_EResultOK then
+        connectToGame(data.m_rgchConnectString)
+    end
+end
+"""
+
+[ISteamParties.OnActiveBeaconsUpdated]
+example = """
+function Steam.Parties.OnActiveBeaconsUpdated()
+    local count = Steam.Parties.GetNumActiveBeacons()
+    print('Active beacons updated, count:', count)
+end
+"""
+
+# =============================================================================
+# ISteamClient (additional examples)
+# =============================================================================
+
+[ISteamClient.SetWarningMessageHook]
+example = """
+Steam.Client.SetWarningMessageHook(function(severity, message)
+    if severity >= 1 then
+        print('[Steam Warning] ' .. message)
+    end
+end)
+"""
+
+[ISteamClient.CreateSteamPipe]
+example = """
+local hPipe = Steam.Client.CreateSteamPipe()
+"""
+
+[ISteamClient.BReleaseSteamPipe]
+example = """
+Steam.Client.BReleaseSteamPipe(hPipe)
+"""
+
+[ISteamClient.CreateLocalUser]
+example = """
+local hUser = Steam.Client.CreateLocalUser(hPipe, 'k_EAccountTypeIndividual')
+"""
+
+[ISteamClient.ConnectToGlobalUser]
+example = """
+local hUser = Steam.Client.ConnectToGlobalUser(hPipe)
+"""
+
+[ISteamClient.ReleaseUser]
+example = """
+Steam.Client.ReleaseUser(hPipe, hUser)
+"""
+
+[ISteamClient.BShutdownIfAllPipesClosed]
+example = """
+Steam.Client.BShutdownIfAllPipesClosed()
+"""
+
+# =============================================================================
+# ISteamHTMLSurface (additional examples)
+# =============================================================================
+
+[ISteamHTMLSurface.Init]
+example = """
+Steam.HTMLSurface.Init()
+"""
+
+[ISteamHTMLSurface.CreateBrowser]
+example = """
+Steam.HTMLSurface.CreateBrowser(nil, nil, function(data, err)
+    if not err then
+        local hBrowser = data.m_unBrowserHandle
+        Steam.HTMLSurface.SetSize(hBrowser, 1280, 720)
+        Steam.HTMLSurface.LoadURL(hBrowser, 'https://store.steampowered.com', nil)
+    end
+end)
+"""
+
+[ISteamHTMLSurface.LoadURL]
+example = "See :func:`HTMLSurface.CreateBrowser`'s example."
+
+[ISteamHTMLSurface.SetSize]
+example = "See :func:`HTMLSurface.CreateBrowser`'s example."
+
+[ISteamHTMLSurface.RemoveBrowser]
+example = """
+Steam.HTMLSurface.RemoveBrowser(hBrowser)
+"""
+
+[ISteamHTMLSurface.Shutdown]
+example = """
+Steam.HTMLSurface.Shutdown()
+"""
+
+[ISteamHTMLSurface.ExecuteJavascript]
+example = """
+Steam.HTMLSurface.ExecuteJavascript(hBrowser, 'document.title = "Hello from Lua";')
+"""
+
+[ISteamHTMLSurface.GoBack]
+example = """
+Steam.HTMLSurface.GoBack(hBrowser)
+"""
+
+[ISteamHTMLSurface.GoForward]
+example = """
+Steam.HTMLSurface.GoForward(hBrowser)
+"""
+
+[ISteamHTMLSurface.Reload]
+example = """
+Steam.HTMLSurface.Reload(hBrowser)
+"""
+
+[ISteamHTMLSurface.StopLoad]
+example = """
+Steam.HTMLSurface.StopLoad(hBrowser)
+"""
+
+[ISteamHTMLSurface.MouseMove]
+example = """
+-- Pass mouse events to the HTML surface
+Steam.HTMLSurface.MouseMove(hBrowser, mouseX, mouseY)
+"""
+
+[ISteamHTMLSurface.MouseDown]
+example = """
+Steam.HTMLSurface.MouseDown(hBrowser, 'eHTMLMouseButton_Left')
+"""
+
+[ISteamHTMLSurface.MouseUp]
+example = """
+Steam.HTMLSurface.MouseUp(hBrowser, 'eHTMLMouseButton_Left')
+"""
+
+[ISteamHTMLSurface.MouseWheel]
+example = """
+Steam.HTMLSurface.MouseWheel(hBrowser, -120)  -- scroll down
+"""
+
+[ISteamHTMLSurface.KeyDown]
+example = """
+Steam.HTMLSurface.KeyDown(hBrowser, nativeKeyCode, 0, false)
+"""
+
+[ISteamHTMLSurface.KeyUp]
+example = """
+Steam.HTMLSurface.KeyUp(hBrowser, nativeKeyCode, 0)
+"""
+
+[ISteamHTMLSurface.KeyChar]
+example = """
+Steam.HTMLSurface.KeyChar(hBrowser, string.byte(char), 0)
+"""
+
+[ISteamHTMLSurface.Find]
+example = """
+Steam.HTMLSurface.Find(hBrowser, 'search term', false, false)
+"""
+
+[ISteamHTMLSurface.StopFind]
+example = """
+Steam.HTMLSurface.StopFind(hBrowser)
+"""
+
+[ISteamHTMLSurface.SetHorizontalScroll]
+example = """
+Steam.HTMLSurface.SetHorizontalScroll(hBrowser, 0)
+"""
+
+[ISteamHTMLSurface.SetVerticalScroll]
+example = """
+Steam.HTMLSurface.SetVerticalScroll(hBrowser, scrollPos)
+"""
+
+[ISteamHTMLSurface.OnHTML_NeedsPaint]
+example = """
+function Steam.HTMLSurface.OnHTML_NeedsPaint(data)
+    -- data.m_pBGRA contains raw BGRA pixel data
+    -- data.m_unWide, data.m_unTall = dimensions
+    updateBrowserTexture(data.m_pBGRA, data.m_unWide, data.m_unTall)
+end
+"""
+
+[ISteamHTMLSurface.OnHTML_StartRequest]
+example = """
+function Steam.HTMLSurface.OnHTML_StartRequest(data)
+    print('Navigating to:', data.m_pchURL)
+    -- Call AllowStartRequest to allow or block navigation
+    Steam.HTMLSurface.AllowStartRequest(data.m_unBrowserHandle, true)
+end
+"""
+
+[ISteamHTMLSurface.OnHTML_URLChanged]
+example = """
+function Steam.HTMLSurface.OnHTML_URLChanged(data)
+    print('URL changed to:', data.m_pchURL)
+    updateAddressBar(data.m_pchURL)
+end
+"""
+
+[ISteamHTMLSurface.OnHTML_FinishedRequest]
+example = """
+function Steam.HTMLSurface.OnHTML_FinishedRequest(data)
+    print('Page loaded:', data.m_pchURL)
+    hideLoadingSpinner()
+end
+"""
+
+[ISteamHTMLSurface.OnHTML_ChangedTitle]
+example = """
+function Steam.HTMLSurface.OnHTML_ChangedTitle(data)
+    windowTitle = data.m_pchTitle
+end
+"""
+
+[ISteamHTMLSurface.OnHTML_JSAlert]
+example = """
+function Steam.HTMLSurface.OnHTML_JSAlert(data)
+    showAlertDialog(data.m_pchMessage)
+    Steam.HTMLSurface.JSDialogResponse(data.m_unBrowserHandle, true)
+end
+"""
+
+# =============================================================================
+# ISteamNetworkingMessages (additional examples)
+# =============================================================================
+
+[ISteamNetworkingMessages.SendMessageToUser]
+example = """
+local data = serializePacket(packet)
+local result = Steam.NetworkingMessages.SendMessageToUser(
+    tostring(targetSteamID), data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
+if result ~= Steam.k_EResultOK then
+    print('Send failed:', result)
+end
+"""
+
+[ISteamNetworkingMessages.AcceptSessionWithUser]
+example = """
+function Steam.NetworkingMessages.OnSteamNetworkingMessagesSessionRequest(data)
+    Steam.NetworkingMessages.AcceptSessionWithUser(data.m_identityRemote)
+end
+"""
+
+[ISteamNetworkingMessages.CloseSessionWithUser]
+example = """
+-- Clean up when a player leaves
+Steam.NetworkingMessages.CloseSessionWithUser(tostring(playerSteamID))
+"""
+
+[ISteamNetworkingMessages.OnSteamNetworkingMessagesSessionRequest]
+example = "See :func:`NetworkingMessages.AcceptSessionWithUser`'s example."
+
+[ISteamNetworkingMessages.OnSteamNetworkingMessagesSessionFailed]
+example = """
+function Steam.NetworkingMessages.OnSteamNetworkingMessagesSessionFailed(data)
+    print('Messages session failed:', data.m_info.m_eEndReason)
+end
+"""
+
+# =============================================================================
+# ISteamNetworkingUtils (additional examples)
+# =============================================================================
+
+[ISteamNetworkingUtils.CheckPingDataUpToDate]
+example = """
+local ok = Steam.NetworkingUtils.CheckPingDataUpToDate(60.0)
+if not ok then
+    print('Ping data is stale; refreshing...')
+end
+"""
+
+[ISteamNetworkingUtils.GetPOPCount]
+example = """
+local count = Steam.NetworkingUtils.GetPOPCount()
+print('Steam relay POPs available:', count)
+"""
+
+[ISteamNetworkingUtils.GetDirectPingToPOP]
+example = """
+local ping = Steam.NetworkingUtils.GetDirectPingToPOP(popID)
+print('Ping to POP:', ping, 'ms')
+"""
+
+[ISteamNetworkingUtils.SteamNetworkingIPAddr_ParseString]
+example = """
+local ok, addr = Steam.NetworkingUtils.SteamNetworkingIPAddr_ParseString('192.168.1.100:27015')
+if ok then
+    print('Parsed IP address successfully')
+end
+"""
+
+[ISteamNetworkingUtils.SteamNetworkingIPAddr_ToString]
+example = """
+local str = Steam.NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, 64, true)
+print('Address:', str)
+"""
+
+[ISteamNetworkingUtils.SteamNetworkingIdentity_ParseString]
+example = """
+local ok, identity = Steam.NetworkingUtils.SteamNetworkingIdentity_ParseString('steamid:76561197960287930')
+if ok then
+    print('Parsed identity successfully')
+end
+"""
+
+[ISteamNetworkingUtils.SteamNetworkingIdentity_ToString]
+example = """
+local str = Steam.NetworkingUtils.SteamNetworkingIdentity_ToString(identity, 128)
+print('Identity:', str)
+"""
+
+[ISteamNetworkingUtils.SetGlobalConfigValueInt32]
+example = """
+-- Set send buffer size globally
+Steam.NetworkingUtils.SetGlobalConfigValueInt32(
+    Steam.k_ESteamNetworkingConfig_SendBufferSize, 524288)
+"""
+
+[ISteamNetworkingUtils.SetConnectionConfigValueInt32]
+example = """
+-- Override timeout for a specific connection
+Steam.NetworkingUtils.SetConnectionConfigValueInt32(
+    hConn, Steam.k_ESteamNetworkingConfig_TimeoutConnected, 60000)
+"""
+
+[ISteamNetworkingUtils.OnSteamRelayNetworkStatus]
+example = """
+function Steam.NetworkingUtils.OnSteamRelayNetworkStatus(data)
+    if data.m_eAvail == Steam.k_ESteamNetworkingAvailability_Current then
+        print('Relay network is ready')
+    end
+end
+"""

@@ -49,29 +49,29 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`HTMLSurface.onHTML_BrowserReady`
-* :func:`HTMLSurface.onHTML_NeedsPaint`
-* :func:`HTMLSurface.onHTML_StartRequest`
-* :func:`HTMLSurface.onHTML_CloseBrowser`
-* :func:`HTMLSurface.onHTML_URLChanged`
-* :func:`HTMLSurface.onHTML_FinishedRequest`
-* :func:`HTMLSurface.onHTML_OpenLinkInNewTab`
-* :func:`HTMLSurface.onHTML_ChangedTitle`
-* :func:`HTMLSurface.onHTML_SearchResults`
-* :func:`HTMLSurface.onHTML_CanGoBackAndForward`
-* :func:`HTMLSurface.onHTML_HorizontalScroll`
-* :func:`HTMLSurface.onHTML_VerticalScroll`
-* :func:`HTMLSurface.onHTML_LinkAtPosition`
-* :func:`HTMLSurface.onHTML_JSAlert`
-* :func:`HTMLSurface.onHTML_JSConfirm`
-* :func:`HTMLSurface.onHTML_FileOpenDialog`
-* :func:`HTMLSurface.onHTML_NewWindow`
-* :func:`HTMLSurface.onHTML_SetCursor`
-* :func:`HTMLSurface.onHTML_StatusText`
-* :func:`HTMLSurface.onHTML_ShowToolTip`
-* :func:`HTMLSurface.onHTML_UpdateToolTip`
-* :func:`HTMLSurface.onHTML_HideToolTip`
-* :func:`HTMLSurface.onHTML_BrowserRestarted`
+* :func:`HTMLSurface.OnHTML_BrowserReady`
+* :func:`HTMLSurface.OnHTML_NeedsPaint`
+* :func:`HTMLSurface.OnHTML_StartRequest`
+* :func:`HTMLSurface.OnHTML_CloseBrowser`
+* :func:`HTMLSurface.OnHTML_URLChanged`
+* :func:`HTMLSurface.OnHTML_FinishedRequest`
+* :func:`HTMLSurface.OnHTML_OpenLinkInNewTab`
+* :func:`HTMLSurface.OnHTML_ChangedTitle`
+* :func:`HTMLSurface.OnHTML_SearchResults`
+* :func:`HTMLSurface.OnHTML_CanGoBackAndForward`
+* :func:`HTMLSurface.OnHTML_HorizontalScroll`
+* :func:`HTMLSurface.OnHTML_VerticalScroll`
+* :func:`HTMLSurface.OnHTML_LinkAtPosition`
+* :func:`HTMLSurface.OnHTML_JSAlert`
+* :func:`HTMLSurface.OnHTML_JSConfirm`
+* :func:`HTMLSurface.OnHTML_FileOpenDialog`
+* :func:`HTMLSurface.OnHTML_NewWindow`
+* :func:`HTMLSurface.OnHTML_SetCursor`
+* :func:`HTMLSurface.OnHTML_StatusText`
+* :func:`HTMLSurface.OnHTML_ShowToolTip`
+* :func:`HTMLSurface.OnHTML_UpdateToolTip`
+* :func:`HTMLSurface.OnHTML_HideToolTip`
+* :func:`HTMLSurface.OnHTML_BrowserRestarted`
 
 Function Reference
 ------------------
@@ -110,6 +110,16 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `CreateBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CreateBrowser>`_
 
+**Example**::
+
+    Steam.HTMLSurface.CreateBrowser(nil, nil, function(data, err)
+        if not err then
+            local hBrowser = data.m_unBrowserHandle
+            Steam.HTMLSurface.SetSize(hBrowser, 1280, 720)
+            Steam.HTMLSurface.LoadURL(hBrowser, 'https://store.steampowered.com', nil)
+        end
+    end)
+
 .. function:: HTMLSurface.ExecuteJavascript(unBrowserHandle, pchScript)
 
     🤖 **Auto-generated binding**
@@ -117,6 +127,10 @@ Function Reference
     :param int unBrowserHandle:
     :param str pchScript:
     :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
+
+**Example**::
+
+    Steam.HTMLSurface.ExecuteJavascript(hBrowser, 'document.title = "Hello from Lua";')
 
 .. function:: HTMLSurface.Find(unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse)
 
@@ -127,6 +141,10 @@ Function Reference
     :param bool bCurrentlyInFind:
     :param bool bReverse:
     :SteamWorks: `Find <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Find>`_
+
+**Example**::
+
+    Steam.HTMLSurface.Find(hBrowser, 'search term', false, false)
 
 .. function:: HTMLSurface.GetLinkAtPosition(unBrowserHandle, x, y)
 
@@ -144,6 +162,10 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `GoBack <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GoBack>`_
 
+**Example**::
+
+    Steam.HTMLSurface.GoBack(hBrowser)
+
 .. function:: HTMLSurface.GoForward(unBrowserHandle)
 
     🤖 **Auto-generated binding**
@@ -151,12 +173,20 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `GoForward <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GoForward>`_
 
+**Example**::
+
+    Steam.HTMLSurface.GoForward(hBrowser)
+
 .. function:: HTMLSurface.Init()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Init>`_
+
+**Example**::
+
+    Steam.HTMLSurface.Init()
 
 .. function:: HTMLSurface.JSDialogResponse(unBrowserHandle, bResult)
 
@@ -175,6 +205,10 @@ Function Reference
     :param int eHTMLKeyModifiers:
     :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
 
+**Example**::
+
+    Steam.HTMLSurface.KeyChar(hBrowser, string.byte(char), 0)
+
 .. function:: HTMLSurface.KeyDown(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers, bIsSystemKey)
 
     🤖 **Auto-generated binding**
@@ -185,6 +219,10 @@ Function Reference
     :param bool bIsSystemKey:
     :SteamWorks: `KeyDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyDown>`_
 
+**Example**::
+
+    Steam.HTMLSurface.KeyDown(hBrowser, nativeKeyCode, 0, false)
+
 .. function:: HTMLSurface.KeyUp(unBrowserHandle, nNativeKeyCode, eHTMLKeyModifiers)
 
     🤖 **Auto-generated binding**
@@ -194,6 +232,10 @@ Function Reference
     :param int eHTMLKeyModifiers:
     :SteamWorks: `KeyUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyUp>`_
 
+**Example**::
+
+    Steam.HTMLSurface.KeyUp(hBrowser, nativeKeyCode, 0)
+
 .. function:: HTMLSurface.LoadURL(unBrowserHandle, pchURL, pchPostData)
 
     🤖 **Auto-generated binding**
@@ -202,6 +244,10 @@ Function Reference
     :param str pchURL:
     :param str pchPostData:
     :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
+
+**Example**::
+
+    See :func:`HTMLSurface.CreateBrowser`'s example.
 
 .. function:: HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton)
 
@@ -219,6 +265,10 @@ Function Reference
     :param int eMouseButton:
     :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
 
+**Example**::
+
+    Steam.HTMLSurface.MouseDown(hBrowser, 'eHTMLMouseButton_Left')
+
 .. function:: HTMLSurface.MouseMove(unBrowserHandle, x, y)
 
     🤖 **Auto-generated binding**
@@ -228,6 +278,11 @@ Function Reference
     :param int y:
     :SteamWorks: `MouseMove <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseMove>`_
 
+**Example**::
+
+    -- Pass mouse events to the HTML surface
+    Steam.HTMLSurface.MouseMove(hBrowser, mouseX, mouseY)
+
 .. function:: HTMLSurface.MouseUp(unBrowserHandle, eMouseButton)
 
     🤖 **Auto-generated binding**
@@ -236,6 +291,10 @@ Function Reference
     :param int eMouseButton:
     :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
 
+**Example**::
+
+    Steam.HTMLSurface.MouseUp(hBrowser, 'eHTMLMouseButton_Left')
+
 .. function:: HTMLSurface.MouseWheel(unBrowserHandle, nDelta)
 
     🤖 **Auto-generated binding**
@@ -243,6 +302,10 @@ Function Reference
     :param int unBrowserHandle:
     :param int nDelta:
     :SteamWorks: `MouseWheel <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseWheel>`_
+
+**Example**::
+
+    Steam.HTMLSurface.MouseWheel(hBrowser, -120)  -- scroll down
 
 .. function:: HTMLSurface.OpenDeveloperTools(unBrowserHandle)
 
@@ -265,12 +328,20 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `Reload <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Reload>`_
 
+**Example**::
+
+    Steam.HTMLSurface.Reload(hBrowser)
+
 .. function:: HTMLSurface.RemoveBrowser(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
     :SteamWorks: `RemoveBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#RemoveBrowser>`_
+
+**Example**::
+
+    Steam.HTMLSurface.RemoveBrowser(hBrowser)
 
 .. function:: HTMLSurface.SetBackgroundMode(unBrowserHandle, bBackgroundMode)
 
@@ -309,6 +380,10 @@ Function Reference
     :param int nAbsolutePixelScroll:
     :SteamWorks: `SetHorizontalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetHorizontalScroll>`_
 
+**Example**::
+
+    Steam.HTMLSurface.SetHorizontalScroll(hBrowser, 0)
+
 .. function:: HTMLSurface.SetKeyFocus(unBrowserHandle, bHasKeyFocus)
 
     🤖 **Auto-generated binding**
@@ -336,6 +411,10 @@ Function Reference
     :param int unHeight:
     :SteamWorks: `SetSize <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetSize>`_
 
+**Example**::
+
+    See :func:`HTMLSurface.CreateBrowser`'s example.
+
 .. function:: HTMLSurface.SetVerticalScroll(unBrowserHandle, nAbsolutePixelScroll)
 
     🤖 **Auto-generated binding**
@@ -344,12 +423,20 @@ Function Reference
     :param int nAbsolutePixelScroll:
     :SteamWorks: `SetVerticalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetVerticalScroll>`_
 
+**Example**::
+
+    Steam.HTMLSurface.SetVerticalScroll(hBrowser, scrollPos)
+
 .. function:: HTMLSurface.Shutdown()
 
     🤖 **Auto-generated binding**
 
     :returns: (bool) Return value
     :SteamWorks: `Shutdown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Shutdown>`_
+
+**Example**::
+
+    Steam.HTMLSurface.Shutdown()
 
 .. function:: HTMLSurface.StopFind(unBrowserHandle)
 
@@ -358,12 +445,20 @@ Function Reference
     :param int unBrowserHandle:
     :SteamWorks: `StopFind <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopFind>`_
 
+**Example**::
+
+    Steam.HTMLSurface.StopFind(hBrowser)
+
 .. function:: HTMLSurface.StopLoad(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
     :SteamWorks: `StopLoad <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopLoad>`_
+
+**Example**::
+
+    Steam.HTMLSurface.StopLoad(hBrowser)
 
 .. function:: HTMLSurface.ViewSource(unBrowserHandle)
 
@@ -386,7 +481,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: HTMLSurface.onHTML_BrowserReady
+.. function:: HTMLSurface.OnHTML_BrowserReady
 
     Callback for `HTML_BrowserReady_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_BrowserReady_t>`_
 
@@ -394,7 +489,7 @@ Callbacks
 
     * **data.unBrowserHandle** -- unBrowserHandle
 
-.. function:: HTMLSurface.onHTML_NeedsPaint
+.. function:: HTMLSurface.OnHTML_NeedsPaint
 
     Callback for `HTML_NeedsPaint_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_NeedsPaint_t>`_
 
@@ -413,7 +508,15 @@ Callbacks
     * **data.flPageScale** -- flPageScale
     * **data.unPageSerial** -- unPageSerial
 
-.. function:: HTMLSurface.onHTML_StartRequest
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_NeedsPaint(data)
+        -- data.m_pBGRA contains raw BGRA pixel data
+        -- data.m_unWide, data.m_unTall = dimensions
+        updateBrowserTexture(data.m_pBGRA, data.m_unWide, data.m_unTall)
+    end
+
+.. function:: HTMLSurface.OnHTML_StartRequest
 
     Callback for `HTML_StartRequest_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_StartRequest_t>`_
 
@@ -425,7 +528,15 @@ Callbacks
     * **data.pchPostData** -- pchPostData
     * **data.bIsRedirect** -- bIsRedirect
 
-.. function:: HTMLSurface.onHTML_CloseBrowser
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_StartRequest(data)
+        print('Navigating to:', data.m_pchURL)
+        -- Call AllowStartRequest to allow or block navigation
+        Steam.HTMLSurface.AllowStartRequest(data.m_unBrowserHandle, true)
+    end
+
+.. function:: HTMLSurface.OnHTML_CloseBrowser
 
     Callback for `HTML_CloseBrowser_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_CloseBrowser_t>`_
 
@@ -433,7 +544,7 @@ Callbacks
 
     * **data.unBrowserHandle** -- unBrowserHandle
 
-.. function:: HTMLSurface.onHTML_URLChanged
+.. function:: HTMLSurface.OnHTML_URLChanged
 
     Callback for `HTML_URLChanged_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_URLChanged_t>`_
 
@@ -446,7 +557,14 @@ Callbacks
     * **data.pchPageTitle** -- pchPageTitle
     * **data.bNewNavigation** -- bNewNavigation
 
-.. function:: HTMLSurface.onHTML_FinishedRequest
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_URLChanged(data)
+        print('URL changed to:', data.m_pchURL)
+        updateAddressBar(data.m_pchURL)
+    end
+
+.. function:: HTMLSurface.OnHTML_FinishedRequest
 
     Callback for `HTML_FinishedRequest_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_FinishedRequest_t>`_
 
@@ -456,7 +574,14 @@ Callbacks
     * **data.pchURL** -- pchURL
     * **data.pchPageTitle** -- pchPageTitle
 
-.. function:: HTMLSurface.onHTML_OpenLinkInNewTab
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_FinishedRequest(data)
+        print('Page loaded:', data.m_pchURL)
+        hideLoadingSpinner()
+    end
+
+.. function:: HTMLSurface.OnHTML_OpenLinkInNewTab
 
     Callback for `HTML_OpenLinkInNewTab_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_OpenLinkInNewTab_t>`_
 
@@ -465,7 +590,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchURL** -- pchURL
 
-.. function:: HTMLSurface.onHTML_ChangedTitle
+.. function:: HTMLSurface.OnHTML_ChangedTitle
 
     Callback for `HTML_ChangedTitle_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_ChangedTitle_t>`_
 
@@ -474,7 +599,13 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchTitle** -- pchTitle
 
-.. function:: HTMLSurface.onHTML_SearchResults
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_ChangedTitle(data)
+        windowTitle = data.m_pchTitle
+    end
+
+.. function:: HTMLSurface.OnHTML_SearchResults
 
     Callback for `HTML_SearchResults_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_SearchResults_t>`_
 
@@ -484,7 +615,7 @@ Callbacks
     * **data.unResults** -- unResults
     * **data.unCurrentMatch** -- unCurrentMatch
 
-.. function:: HTMLSurface.onHTML_CanGoBackAndForward
+.. function:: HTMLSurface.OnHTML_CanGoBackAndForward
 
     Callback for `HTML_CanGoBackAndForward_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_CanGoBackAndForward_t>`_
 
@@ -494,7 +625,7 @@ Callbacks
     * **data.bCanGoBack** -- bCanGoBack
     * **data.bCanGoForward** -- bCanGoForward
 
-.. function:: HTMLSurface.onHTML_HorizontalScroll
+.. function:: HTMLSurface.OnHTML_HorizontalScroll
 
     Callback for `HTML_HorizontalScroll_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_HorizontalScroll_t>`_
 
@@ -507,7 +638,7 @@ Callbacks
     * **data.bVisible** -- bVisible
     * **data.unPageSize** -- unPageSize
 
-.. function:: HTMLSurface.onHTML_VerticalScroll
+.. function:: HTMLSurface.OnHTML_VerticalScroll
 
     Callback for `HTML_VerticalScroll_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_VerticalScroll_t>`_
 
@@ -520,7 +651,7 @@ Callbacks
     * **data.bVisible** -- bVisible
     * **data.unPageSize** -- unPageSize
 
-.. function:: HTMLSurface.onHTML_LinkAtPosition
+.. function:: HTMLSurface.OnHTML_LinkAtPosition
 
     Callback for `HTML_LinkAtPosition_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_LinkAtPosition_t>`_
 
@@ -533,7 +664,7 @@ Callbacks
     * **data.bInput** -- bInput
     * **data.bLiveLink** -- bLiveLink
 
-.. function:: HTMLSurface.onHTML_JSAlert
+.. function:: HTMLSurface.OnHTML_JSAlert
 
     Callback for `HTML_JSAlert_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_JSAlert_t>`_
 
@@ -542,7 +673,14 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchMessage** -- pchMessage
 
-.. function:: HTMLSurface.onHTML_JSConfirm
+**Example**::
+
+    function Steam.HTMLSurface.OnHTML_JSAlert(data)
+        showAlertDialog(data.m_pchMessage)
+        Steam.HTMLSurface.JSDialogResponse(data.m_unBrowserHandle, true)
+    end
+
+.. function:: HTMLSurface.OnHTML_JSConfirm
 
     Callback for `HTML_JSConfirm_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_JSConfirm_t>`_
 
@@ -551,7 +689,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchMessage** -- pchMessage
 
-.. function:: HTMLSurface.onHTML_FileOpenDialog
+.. function:: HTMLSurface.OnHTML_FileOpenDialog
 
     Callback for `HTML_FileOpenDialog_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_FileOpenDialog_t>`_
 
@@ -561,7 +699,7 @@ Callbacks
     * **data.pchTitle** -- pchTitle
     * **data.pchInitialFile** -- pchInitialFile
 
-.. function:: HTMLSurface.onHTML_NewWindow
+.. function:: HTMLSurface.OnHTML_NewWindow
 
     Callback for `HTML_NewWindow_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_NewWindow_t>`_
 
@@ -575,7 +713,7 @@ Callbacks
     * **data.unTall** -- unTall
     * **data.unNewWindow_BrowserHandle_IGNORE** -- unNewWindow_BrowserHandle_IGNORE
 
-.. function:: HTMLSurface.onHTML_SetCursor
+.. function:: HTMLSurface.OnHTML_SetCursor
 
     Callback for `HTML_SetCursor_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_SetCursor_t>`_
 
@@ -584,7 +722,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.eMouseCursor** -- eMouseCursor
 
-.. function:: HTMLSurface.onHTML_StatusText
+.. function:: HTMLSurface.OnHTML_StatusText
 
     Callback for `HTML_StatusText_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_StatusText_t>`_
 
@@ -593,7 +731,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchMsg** -- pchMsg
 
-.. function:: HTMLSurface.onHTML_ShowToolTip
+.. function:: HTMLSurface.OnHTML_ShowToolTip
 
     Callback for `HTML_ShowToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_ShowToolTip_t>`_
 
@@ -602,7 +740,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchMsg** -- pchMsg
 
-.. function:: HTMLSurface.onHTML_UpdateToolTip
+.. function:: HTMLSurface.OnHTML_UpdateToolTip
 
     Callback for `HTML_UpdateToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_UpdateToolTip_t>`_
 
@@ -611,7 +749,7 @@ Callbacks
     * **data.unBrowserHandle** -- unBrowserHandle
     * **data.pchMsg** -- pchMsg
 
-.. function:: HTMLSurface.onHTML_HideToolTip
+.. function:: HTMLSurface.OnHTML_HideToolTip
 
     Callback for `HTML_HideToolTip_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_HideToolTip_t>`_
 
@@ -619,7 +757,7 @@ Callbacks
 
     * **data.unBrowserHandle** -- unBrowserHandle
 
-.. function:: HTMLSurface.onHTML_BrowserRestarted
+.. function:: HTMLSurface.OnHTML_BrowserRestarted
 
     Callback for `HTML_BrowserRestarted_t <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#HTML_BrowserRestarted_t>`_
 

@@ -4,6 +4,7 @@
 #include "../sdk/public/steam/steam_api.h"
 #include "../sdk/public/steam/steam_gameserver.h"
 #include "../sdk/public/steam/steamnetworkingfakeip.h"
+#include "../sdk/public/steam_api_flat.h"
 extern "C" {
 #include <lauxlib.h>
 #include <lua.h>

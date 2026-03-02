@@ -54,9 +54,9 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`NetworkingSockets.onSteamNetConnectionStatusChangedCallback`
-* :func:`NetworkingSockets.onSteamNetAuthenticationStatus`
-* :func:`NetworkingSockets.onSteamNetworkingFakeIPResult`
+* :func:`NetworkingSockets.OnSteamNetConnectionStatusChangedCallback`
+* :func:`NetworkingSockets.OnSteamNetAuthenticationStatus`
+* :func:`NetworkingSockets.OnSteamNetworkingFakeIPResult`
 
 Function Reference
 ------------------
@@ -68,6 +68,13 @@ Function Reference
     :param int hConn:
     :returns: (int) Return value
     :SteamWorks: `AcceptConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#AcceptConnection>`_
+
+**Example**::
+
+    local result = Steam.NetworkingSockets.AcceptConnection(hConn)
+    if result ~= Steam.k_EResultOK then
+        print('Failed to accept connection:', result)
+    end
 
 .. function:: NetworkingSockets.BeginAsyncRequestFakeIP(nNumPorts)
 
@@ -88,6 +95,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `CloseConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CloseConnection>`_
 
+**Example**::
+
+    Steam.NetworkingSockets.CloseConnection(hConn, 0, 'Player left', false)
+
 .. function:: NetworkingSockets.CloseListenSocket(hSocket)
 
     🤖 **Auto-generated binding**
@@ -95,6 +106,10 @@ Function Reference
     :param int hSocket:
     :returns: (bool) Return value
     :SteamWorks: `CloseListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CloseListenSocket>`_
+
+**Example**::
+
+    Steam.NetworkingSockets.CloseListenSocket(hListenSocket)
 
 .. function:: NetworkingSockets.ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities, pLaneWeights)
 
@@ -117,6 +132,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
+**Example**::
+
+    local hConn = Steam.NetworkingSockets.ConnectByIPAddress('192.168.1.100:27015', 0, nil)
+
 .. function:: NetworkingSockets.ConnectP2P(identityRemote, nRemoteVirtualPort, nOptions, pOptions)
 
     🤖 **Auto-generated binding**
@@ -127,6 +146,11 @@ Function Reference
     :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
     :returns: (int) Return value
     :SteamWorks: `ConnectP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectP2P>`_
+
+**Example**::
+
+    -- Connect to another player using their Steam identity
+    local hConn = Steam.NetworkingSockets.ConnectP2P(tostring(friendSteamID), 0, 0, nil)
 
 .. function:: NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget, nRemoteVirtualPort, nOptions, pOptions)
 
@@ -159,6 +183,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `CreateListenSocketIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketIP>`_
 
+**Example**::
+
+    -- Listen on all interfaces, port 27015
+    local hSocket = Steam.NetworkingSockets.CreateListenSocketIP('0.0.0.0:27015', 0, nil)
+
 .. function:: NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort, nOptions, pOptions)
 
     🤖 **Auto-generated binding**
@@ -168,6 +197,11 @@ Function Reference
     :param :ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>` pOptions:
     :returns: (int) Return value
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
+
+**Example**::
+
+    -- Create a P2P listen socket on virtual port 0
+    local hSocket = Steam.NetworkingSockets.CreateListenSocketP2P(0, 0, nil)
 
 .. function:: NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort, nOptions, pOptions)
 
@@ -185,6 +219,12 @@ Function Reference
 
     :returns: (int) Return value
     :SteamWorks: `CreatePollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreatePollGroup>`_
+
+**Example**::
+
+    local hPollGroup = Steam.NetworkingSockets.CreatePollGroup()
+    -- Add connections to the poll group
+    Steam.NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
 
 .. function:: NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2)
 
@@ -211,6 +251,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `DestroyPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#DestroyPollGroup>`_
 
+**Example**::
+
+    Steam.NetworkingSockets.DestroyPollGroup(hPollGroup)
+
 .. function:: NetworkingSockets.FlushMessagesOnConnection(hConn)
 
     🤖 **Auto-generated binding**
@@ -218,6 +262,10 @@ Function Reference
     :param int hConn:
     :returns: (int) Return value
     :SteamWorks: `FlushMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#FlushMessagesOnConnection>`_
+
+**Example**::
+
+    Steam.NetworkingSockets.FlushMessagesOnConnection(hConn)
 
 .. function:: NetworkingSockets.GetAuthenticationStatus()
 
@@ -243,6 +291,13 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pInfo`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local ok, info = Steam.NetworkingSockets.GetConnectionInfo(hConn)
+    if ok then
+        print('Connection state:', info.m_eState)
+    end
 
 .. function:: NetworkingSockets.GetConnectionName(hPeer, nMaxLen)
 
@@ -281,6 +336,10 @@ Function Reference
     :param int hPeer:
     :returns: (uint64) Return value
     :SteamWorks: `GetConnectionUserData <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionUserData>`_
+
+**Example**::
+
+    local playerIndex = Steam.NetworkingSockets.GetConnectionUserData(hConn)
 
 .. function:: NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf)
 
@@ -334,6 +393,13 @@ Function Reference
 
     * Parameter ``pIdentity`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local ok, identity = Steam.NetworkingSockets.GetIdentity()
+    if ok then
+        print('Local identity:', identity)
+    end
+
 .. function:: NetworkingSockets.GetListenSocketAddress(hSocket)
 
     🤖 **Auto-generated binding**
@@ -367,6 +433,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `InitAuthentication <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#InitAuthentication>`_
 
+**Example**::
+
+    local status = Steam.NetworkingSockets.InitAuthentication()
+    print('Auth init status:', status)
+
 .. function:: NetworkingSockets.ReceiveMessagesOnConnection(hConn, nMaxMessages)
 
     ✍️ **Manually implemented**
@@ -387,6 +458,15 @@ Function Reference
     **Notes:**
 
     * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
+
+**Example**::
+
+    local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnConnection(hConn, 32)
+    for i = 1, count do
+        local msg = msgs[i]
+        processMessage(msg.m_pData, msg.m_cbSize)
+        msg:Release()
+    end
 
 .. function:: NetworkingSockets.ReceiveMessagesOnPollGroup(hPollGroup, nMaxMessages)
 
@@ -409,6 +489,15 @@ Function Reference
 
     * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
 
+**Example**::
+
+    local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnPollGroup(hPollGroup, 64)
+    for i = 1, count do
+        local msg = msgs[i]
+        handleMessage(msg.m_conn, msg.m_pData, msg.m_cbSize)
+        msg:Release()
+    end
+
 .. function:: NetworkingSockets.ResetIdentity(pIdentity)
 
     🤖 **Auto-generated binding**
@@ -421,6 +510,11 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :SteamWorks: `RunCallbacks <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#RunCallbacks>`_
+
+**Example**::
+
+    -- Call once per frame to process networking callbacks
+    Steam.NetworkingSockets.RunCallbacks()
 
 .. function:: NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags)
 
@@ -437,6 +531,15 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pOutMessageNumber`` is no longer a paramer, and is instead an additional return value
+
+**Example**::
+
+    local data = serializePacket(packet)
+    local result = Steam.NetworkingSockets.SendMessageToConnection(
+        hConn, data, #data, Steam.k_nSteamNetworkingSend_Reliable)
+    if result < 0 then
+        print('Send failed:', result)
+    end
 
 .. function:: NetworkingSockets.SendMessages(nMessages, pMessages)
 
@@ -458,6 +561,17 @@ Function Reference
 
     * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
 
+**Example**::
+
+    local msg = Steam.NetworkingUtils.AllocateMessage(#payload)
+    msg.m_conn = hConn
+    msg.m_nFlags = Steam.k_nSteamNetworkingSend_Reliable
+    msg.m_pData = payload
+    local results = Steam.NetworkingSockets.SendMessages(1, {msg})
+    if results[1] < 0 then
+        print('Send failed, EResult:', results[1])
+    end
+
 .. function:: NetworkingSockets.SetConnectionName(hPeer, pszName)
 
     🤖 **Auto-generated binding**
@@ -465,6 +579,10 @@ Function Reference
     :param int hPeer:
     :param str pszName:
     :SteamWorks: `SetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionName>`_
+
+**Example**::
+
+    Steam.NetworkingSockets.SetConnectionName(hConn, 'Player_' .. playerName)
 
 .. function:: NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
 
@@ -475,6 +593,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionPollGroup>`_
 
+**Example**::
+
+    Steam.NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
+
 .. function:: NetworkingSockets.SetConnectionUserData(hPeer, nUserData)
 
     🤖 **Auto-generated binding**
@@ -483,6 +605,11 @@ Function Reference
     :param uint64 nUserData:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionUserData <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionUserData>`_
+
+**Example**::
+
+    -- Associate a player index with this connection for quick lookup
+    Steam.NetworkingSockets.SetConnectionUserData(hConn, playerIndex)
 
 
 Unimplemented Methods
@@ -546,7 +673,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: NetworkingSockets.onSteamNetConnectionStatusChangedCallback
+.. function:: NetworkingSockets.OnSteamNetConnectionStatusChangedCallback
 
     Callback for `SteamNetConnectionStatusChangedCallback_t <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetConnectionStatusChangedCallback_t>`_
 
@@ -556,7 +683,19 @@ Callbacks
     * **data.m_info** -- m_info
     * **data.m_eOldState** -- m_eOldState
 
-.. function:: NetworkingSockets.onSteamNetAuthenticationStatus
+**Example**::
+
+    function Steam.NetworkingSockets.OnSteamNetConnectionStatusChangedCallback(data)
+        local state = data.m_info.m_eState
+        if state == Steam.k_ESteamNetworkingConnectionState_Connected then
+            print('Connected:', data.m_hConn)
+        elseif state == Steam.k_ESteamNetworkingConnectionState_ClosedByPeer then
+            print('Disconnected:', data.m_hConn)
+            Steam.NetworkingSockets.CloseConnection(data.m_hConn, 0, nil, false)
+        end
+    end
+
+.. function:: NetworkingSockets.OnSteamNetAuthenticationStatus
 
     Callback for `SteamNetAuthenticationStatus_t <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetAuthenticationStatus_t>`_
 
@@ -565,7 +704,7 @@ Callbacks
     * **data.m_eAvail** -- m_eAvail
     * **data.m_debugMsg** -- m_debugMsg
 
-.. function:: NetworkingSockets.onSteamNetworkingFakeIPResult
+.. function:: NetworkingSockets.OnSteamNetworkingFakeIPResult
 
     Callback for `SteamNetworkingFakeIPResult_t <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetworkingFakeIPResult_t>`_
 

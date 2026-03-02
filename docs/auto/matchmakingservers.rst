@@ -36,6 +36,10 @@ Function Reference
     :param HServerListRequest hRequest:
     :SteamWorks: `CancelQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#CancelQuery>`_
 
+**Example**::
+
+    Steam.MatchmakingServers.CancelQuery(serverListRequest)
+
 .. function:: MatchmakingServers.CancelServerQuery(hServerQuery)
 
     🤖 **Auto-generated binding**
@@ -51,6 +55,11 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetServerCount <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#GetServerCount>`_
 
+**Example**::
+
+    local count = Steam.MatchmakingServers.GetServerCount(serverListRequest)
+    print('Found', count, 'servers')
+
 .. function:: MatchmakingServers.IsRefreshing(hRequest)
 
     🤖 **Auto-generated binding**
@@ -58,6 +67,12 @@ Function Reference
     :param HServerListRequest hRequest:
     :returns: (bool) Return value
     :SteamWorks: `IsRefreshing <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#IsRefreshing>`_
+
+**Example**::
+
+    if Steam.MatchmakingServers.IsRefreshing(serverListRequest) then
+        showLoadingSpinner()
+    end
 
 .. function:: MatchmakingServers.PingServer(unIP, usPort, pRequestServersResponse)
 
@@ -68,6 +83,18 @@ Function Reference
     :param :ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>` pRequestServersResponse:
     :returns: (int) Return value
     :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
+
+**Example**::
+
+    local pingCallbacks = Steam.newISteamMatchmakingPingResponse({
+        ServerResponded = function(server)
+            print('Server:', server.m_szServerName, 'Ping:', server.m_nPing)
+        end,
+        ServerFailedToRespond = function()
+            print('Server did not respond to ping')
+        end,
+    })
+    Steam.MatchmakingServers.PingServer(serverIP, serverPort, pingCallbacks)
 
 .. function:: MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse)
 
@@ -86,6 +113,10 @@ Function Reference
     :param HServerListRequest hRequest:
     :SteamWorks: `RefreshQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RefreshQuery>`_
 
+**Example**::
+
+    Steam.MatchmakingServers.RefreshQuery(serverListRequest)
+
 .. function:: MatchmakingServers.RefreshServer(hRequest, iServer)
 
     🤖 **Auto-generated binding**
@@ -100,6 +131,11 @@ Function Reference
 
     :param HServerListRequest hServerListRequest:
     :SteamWorks: `ReleaseRequest <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ReleaseRequest>`_
+
+**Example**::
+
+    Steam.MatchmakingServers.ReleaseRequest(serverListRequest)
+    serverListRequest = nil
 
 .. function:: MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, pRequestServersResponse)
 
@@ -121,6 +157,19 @@ Function Reference
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
 
+**Example**::
+
+    local callbacks = Steam.newISteamMatchmakingServerListResponse({
+        ServerResponded = function(req, idx)
+            local info = Steam.MatchmakingServers.getServerDetails(req, idx)
+            print('Friend server:', info.m_szServerName)
+        end,
+        RefreshComplete = function(req, resp)
+            Steam.MatchmakingServers.ReleaseRequest(req)
+        end,
+    })
+    local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, callbacks)
+
 .. function:: MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
@@ -140,6 +189,21 @@ Function Reference
     :param :ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>` pRequestServersResponse:
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
+
+**Example**::
+
+    local filters = {{'gamedir', 'mygame'}, {'map', 'de_dust2'}}
+    local callbacks = Steam.newISteamMatchmakingServerListResponse({
+        ServerResponded = function(request, index)
+            local info = Steam.MatchmakingServers.getServerDetails(request, index)
+            print(info.m_szServerName .. ' - ' .. info.m_nPlayers .. '/' .. info.m_nMaxPlayers)
+        end,
+        RefreshComplete = function(request, response)
+            print('Server list refresh complete')
+            Steam.MatchmakingServers.ReleaseRequest(request)
+        end,
+    })
+    local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, callbacks)
 
 .. function:: MatchmakingServers.RequestLANServerList(iApp, pRequestServersResponse)
 

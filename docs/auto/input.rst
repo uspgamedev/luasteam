@@ -62,10 +62,10 @@ List of Functions
 List of Callbacks
 -----------------
 
-* :func:`Input.onSteamInputDeviceConnected`
-* :func:`Input.onSteamInputDeviceDisconnected`
-* :func:`Input.onSteamInputConfigurationLoaded`
-* :func:`Input.onSteamInputGamepadSlotChange`
+* :func:`Input.OnSteamInputDeviceConnected`
+* :func:`Input.OnSteamInputDeviceDisconnected`
+* :func:`Input.OnSteamInputConfigurationLoaded`
+* :func:`Input.OnSteamInputGamepadSlotChange`
 
 Function Reference
 ------------------
@@ -77,6 +77,11 @@ Function Reference
     :param uint64 inputHandle:
     :param uint64 actionSetHandle:
     :SteamWorks: `ActivateActionSet <https://partner.steamgames.com/doc/api/ISteamInput#ActivateActionSet>`_
+
+**Example**::
+
+    -- Switch to gameplay controls when game starts
+    Steam.Input.ActivateActionSet(controllerHandle, gameActionSetHandle)
 
 .. function:: Input.ActivateActionSetLayer(inputHandle, actionSetLayerHandle)
 
@@ -140,6 +145,11 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetActionSetHandle>`_
 
+**Example**::
+
+    local menuActionSet = Steam.Input.GetActionSetHandle('MenuControls')
+    local gameActionSet = Steam.Input.GetActionSetHandle('GameControls')
+
 .. function:: Input.GetActiveActionSetLayers(inputHandle)
 
     🤖 **Auto-generated binding**
@@ -162,6 +172,11 @@ Function Reference
     :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
     :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionData>`_
 
+**Example**::
+
+    local data = Steam.Input.GetAnalogActionData(controllerHandle, moveActionHandle)
+    player.move(data.x, data.y)
+
 .. function:: Input.GetAnalogActionHandle(pszActionName)
 
     🤖 **Auto-generated binding**
@@ -169,6 +184,11 @@ Function Reference
     :param str pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionHandle>`_
+
+**Example**::
+
+    local moveAction = Steam.Input.GetAnalogActionHandle('Move')
+    local aimAction = Steam.Input.GetAnalogActionHandle('Aim')
 
 .. function:: Input.GetAnalogActionOrigins(inputHandle, actionSetHandle, analogActionHandle)
 
@@ -197,6 +217,14 @@ Function Reference
 
     * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
 
+**Example**::
+
+    local controllers = Steam.Input.GetConnectedControllers()
+    for _, handle in ipairs(controllers) do
+        local inputType = Steam.Input.GetInputTypeForHandle(handle)
+        print('Controller type:', inputType)
+    end
+
 .. function:: Input.GetControllerForGamepadIndex(nIndex)
 
     🤖 **Auto-generated binding**
@@ -212,6 +240,10 @@ Function Reference
     :param uint64 inputHandle:
     :returns: (uint64) Return value
     :SteamWorks: `GetCurrentActionSet <https://partner.steamgames.com/doc/api/ISteamInput#GetCurrentActionSet>`_
+
+**Example**::
+
+    local currentSet = Steam.Input.GetCurrentActionSet(controllerHandle)
 
 .. function:: Input.GetDeviceBindingRevision(inputHandle)
 
@@ -237,6 +269,13 @@ Function Reference
     :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionData>`_
 
+**Example**::
+
+    local actionData = Steam.Input.GetDigitalActionData(controllerHandle, jumpActionHandle)
+    if actionData.bState ~= 0 then
+        player.jump()
+    end
+
 .. function:: Input.GetDigitalActionHandle(pszActionName)
 
     🤖 **Auto-generated binding**
@@ -244,6 +283,11 @@ Function Reference
     :param str pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionHandle>`_
+
+**Example**::
+
+    local jumpAction = Steam.Input.GetDigitalActionHandle('Jump')
+    local attackAction = Steam.Input.GetDigitalActionHandle('Attack')
 
 .. function:: Input.GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActionHandle)
 
@@ -294,6 +338,14 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetGlyphPNGForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphPNGForActionOrigin>`_
 
+**Example**::
+
+    local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
+    if #origins > 0 then
+        local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], 'Medium', 0)
+        loadButtonIcon(glyphPath)
+    end
+
 .. function:: Input.GetGlyphSVGForActionOrigin(eOrigin, unFlags)
 
     🤖 **Auto-generated binding**
@@ -311,6 +363,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetInputTypeForHandle>`_
 
+**Example**::
+
+    See :func:`Input.GetConnectedControllers`'s example.
+
 .. function:: Input.GetMotionData(inputHandle)
 
     🤖 **Auto-generated binding**
@@ -318,6 +374,12 @@ Function Reference
     :param uint64 inputHandle:
     :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
     :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamInput#GetMotionData>`_
+
+**Example**::
+
+    local data = Steam.Input.GetMotionData(controllerHandle)
+    -- Use quaternion fields for gyro aiming
+    updateGyroAiming(data.rotQuatX, data.rotQuatY, data.rotQuatZ, data.rotQuatW)
 
 .. function:: Input.GetRemotePlaySessionID(inputHandle)
 
@@ -341,6 +403,14 @@ Function Reference
     :param int eOrigin:
     :returns: (str) Return value
     :SteamWorks: `GetStringForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForActionOrigin>`_
+
+**Example**::
+
+    local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
+    if #origins > 0 then
+        local label = Steam.Input.GetStringForActionOrigin(origins[1])
+        print('Press ' .. label .. ' to jump')
+    end
 
 .. function:: Input.GetStringForAnalogActionName(eActionHandle)
 
@@ -374,6 +444,10 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `Init <https://partner.steamgames.com/doc/api/ISteamInput#Init>`_
 
+**Example**::
+
+    Steam.Input.Init(false)
+
 .. function:: Input.Legacy_TriggerHapticPulse(inputHandle, eTargetPad, usDurationMicroSec)
 
     🤖 **Auto-generated binding**
@@ -402,6 +476,11 @@ Function Reference
     :param bool bReservedValue:
     :SteamWorks: `RunFrame <https://partner.steamgames.com/doc/api/ISteamInput#RunFrame>`_
 
+**Example**::
+
+    -- Call once per game frame to process input
+    Steam.Input.RunFrame(false)
+
 .. function:: Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath)
 
     🤖 **Auto-generated binding**
@@ -421,6 +500,11 @@ Function Reference
     :param int nFlags:
     :SteamWorks: `SetLEDColor <https://partner.steamgames.com/doc/api/ISteamInput#SetLEDColor>`_
 
+**Example**::
+
+    -- Set controller LED to red when player is low on health
+    Steam.Input.SetLEDColor(controllerHandle, 255, 0, 0, 0)
+
 .. function:: Input.ShowBindingPanel(inputHandle)
 
     🤖 **Auto-generated binding**
@@ -428,6 +512,10 @@ Function Reference
     :param uint64 inputHandle:
     :returns: (bool) Return value
     :SteamWorks: `ShowBindingPanel <https://partner.steamgames.com/doc/api/ISteamInput#ShowBindingPanel>`_
+
+**Example**::
+
+    Steam.Input.ShowBindingPanel(controllerHandle)
 
 .. function:: Input.Shutdown()
 
@@ -474,6 +562,11 @@ Function Reference
     :param int usRightSpeed:
     :SteamWorks: `TriggerVibration <https://partner.steamgames.com/doc/api/ISteamInput#TriggerVibration>`_
 
+**Example**::
+
+    -- Brief vibration feedback on hit
+    Steam.Input.TriggerVibration(controllerHandle, 32000, 32000)
+
 .. function:: Input.TriggerVibrationExtended(inputHandle, usLeftSpeed, usRightSpeed, usLeftTriggerSpeed, usRightTriggerSpeed)
 
     🤖 **Auto-generated binding**
@@ -505,7 +598,7 @@ Unimplemented Methods
 Callbacks
 ---------
 
-.. function:: Input.onSteamInputDeviceConnected
+.. function:: Input.OnSteamInputDeviceConnected
 
     Callback for `SteamInputDeviceConnected_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputDeviceConnected_t>`_
 
@@ -513,7 +606,14 @@ Callbacks
 
     * **data.m_ulConnectedDeviceHandle** -- m_ulConnectedDeviceHandle
 
-.. function:: Input.onSteamInputDeviceDisconnected
+**Example**::
+
+    function Steam.Input.OnSteamInputDeviceConnected(data)
+        print('Controller connected:', data.m_ulConnectedDeviceHandle)
+        rebuildControllerList()
+    end
+
+.. function:: Input.OnSteamInputDeviceDisconnected
 
     Callback for `SteamInputDeviceDisconnected_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputDeviceDisconnected_t>`_
 
@@ -521,7 +621,14 @@ Callbacks
 
     * **data.m_ulDisconnectedDeviceHandle** -- m_ulDisconnectedDeviceHandle
 
-.. function:: Input.onSteamInputConfigurationLoaded
+**Example**::
+
+    function Steam.Input.OnSteamInputDeviceDisconnected(data)
+        print('Controller disconnected:', data.m_ulDisconnectedDeviceHandle)
+        rebuildControllerList()
+    end
+
+.. function:: Input.OnSteamInputConfigurationLoaded
 
     Callback for `SteamInputConfigurationLoaded_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputConfigurationLoaded_t>`_
 
@@ -535,7 +642,7 @@ Callbacks
     * **data.m_bUsesSteamInputAPI** -- m_bUsesSteamInputAPI
     * **data.m_bUsesGamepadAPI** -- m_bUsesGamepadAPI
 
-.. function:: Input.onSteamInputGamepadSlotChange
+.. function:: Input.OnSteamInputGamepadSlotChange
 
     Callback for `SteamInputGamepadSlotChange_t <https://partner.steamgames.com/doc/api/ISteamInput#SteamInputGamepadSlotChange_t>`_
 
