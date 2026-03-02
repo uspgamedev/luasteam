@@ -85,6 +85,9 @@ pub struct LuaTypeInfo {
     pub ltype: LType,
     /// The name of the parameter
     pub name: String,
+    /// If this param is a size/count for another array param, stores (array_param_name, is_output).
+    /// is_output=true: sizes an output buffer (return value); is_output=false: sizes an input array.
+    pub size_of: Option<(String, bool)>,
 }
 
 /// Signature metadata for a Lua method, capturing type information determined during C++ generation.
@@ -100,14 +103,20 @@ pub struct LuaMethodSignature {
 
 impl LuaMethodSignature {
     pub fn add_param(&mut self, name: String, ltype: LType) {
-        self.params.push(LuaTypeInfo { name, ltype });
+        self.params.push(LuaTypeInfo { name, ltype, size_of: None });
     }
     pub fn set_return_type(&mut self, ltype: LType) {
         assert!(self.return_type.is_none(), "Return type already set");
         self.return_type = Some(ltype);
     }
     pub fn add_output_param(&mut self, name: String, ltype: LType) {
-        self.output_params.push(LuaTypeInfo { name, ltype });
+        self.output_params.push(LuaTypeInfo { name, ltype, size_of: None });
+    }
+    /// Add a size/count parameter that describes the length of another array param.
+    /// `array_name`: the name of the array param this sizes.
+    /// `is_output`: true if the array is an output (return value), false if input.
+    pub fn add_size_param(&mut self, name: String, ltype: LType, array_name: String, is_output: bool) {
+        self.params.push(LuaTypeInfo { name, ltype, size_of: Some((array_name, is_output)) });
     }
 
     /// Formats the Lua method signature as a comment string, e.g.

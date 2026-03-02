@@ -32,7 +32,7 @@ function Utils.GetIPCountry() end
 function Utils.GetImageSize(iImage) end
 
 ---@param iImage integer
----@param nDestBufferSize integer
+---@param nDestBufferSize integer size of the buffer to allocate for return value pubDest
 ---@return boolean
 ---@return string -- Value of: pubDest
 function Utils.GetImageRGBA(iImage, nDestBufferSize) end
@@ -56,7 +56,7 @@ function Utils.IsAPICallCompleted(hSteamAPICall) end
 function Utils.GetAPICallFailureReason(hSteamAPICall) end
 
 ---@param hSteamAPICall uint64
----@param cubCallback integer
+---@param cubCallback integer size of the buffer to allocate for return value pCallback
 ---@param iCallbackExpected integer
 ---@return boolean
 ---@return string -- Value of: pCallback
@@ -88,7 +88,7 @@ function Utils.ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, 
 ---@return integer
 function Utils.GetEnteredGamepadTextLength() end
 
----@param cchText integer
+---@param cchText integer size of the buffer to allocate for return value pchText
 ---@return boolean
 ---@return string -- Value of: pchText
 function Utils.GetEnteredGamepadTextInput(cchText) end
@@ -124,7 +124,7 @@ function Utils.InitFilterText(unFilterOptions) end
 ---@param eContext integer
 ---@param sourceSteamID uint64
 ---@param pchInputMessage string
----@param nByteSizeOutFilteredText integer
+---@param nByteSizeOutFilteredText integer size of the buffer to allocate for return value pchOutFilteredText
 ---@return integer
 ---@return string -- Value of: pchOutFilteredText
 function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOutFilteredText) end

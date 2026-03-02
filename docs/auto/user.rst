@@ -140,7 +140,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pAuthTicket:
-    :param int cbAuthTicket:
+    :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
     :returns: (int) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
@@ -169,8 +169,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pCompressed:
-    :param int cbCompressed:
-    :param int cbDestBufferSize:
+    :param int cbCompressed: size of the input array ``pCompressed``
+    :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
     :param int nDesiredSampleRate:
     :returns: (int) Return value
     :returns: (str) Value for `pDestBuffer`
@@ -206,7 +206,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket:
+    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSteamNetworkingIdentity:
     :returns: (int) Return value
     :returns: (str) Value for `pTicket`
@@ -267,7 +267,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket:
+    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
     :returns: (bool) Return value
     :returns: (str) Value for `pTicket`
     :returns: (int) Value for `pcbTicket`
@@ -340,7 +340,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubBuffer:
+    :param int cubBuffer: size of the buffer to be allocated to hold the return value ``pchBuffer``
     :returns: (bool) Return value
     :returns: (str) Value for `pchBuffer`
     :SteamWorks: `GetUserDataFolder <https://partner.steamgames.com/doc/api/ISteamUser#GetUserDataFolder>`_
@@ -361,7 +361,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param bool bWantCompressed:
-    :param int cbDestBufferSize:
+    :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
     :returns: (int) Return value
     :returns: (str) Value for `pDestBuffer`
     :returns: (int) Value for `nBytesWritten`
@@ -399,7 +399,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pDataToInclude:
-    :param int cbDataToInclude:
+    :param int cbDataToInclude: size of the input array ``pDataToInclude``
     :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_

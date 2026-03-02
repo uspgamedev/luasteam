@@ -321,18 +321,30 @@ impl DocGenerator {
 
             if let LType::CallresultCallback { struct_t } = &param.ltype {
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
-            } else if param_desc.is_empty() {
-                doc.push_str(&format!(
-                    "    :param {} {}:\n",
-                    param.ltype.to_rst_link(&self.structs),
-                    param.name
-                ));
-            } else {
+            } else if !param_desc.is_empty() {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
                     param.ltype.to_rst_link(&self.structs),
                     param.name,
                     param_desc
+                ));
+            } else if let Some((array_name, is_output)) = &param.size_of {
+                let auto_desc = if *is_output {
+                    format!("size of the buffer to be allocated to hold the return value ``{}``", array_name)
+                } else {
+                    format!("size of the input array ``{}``", array_name)
+                };
+                doc.push_str(&format!(
+                    "    :param {} {}: {}\n",
+                    param.ltype.to_rst_link(&self.structs),
+                    param.name,
+                    auto_desc
+                ));
+            } else {
+                doc.push_str(&format!(
+                    "    :param {} {}:\n",
+                    param.ltype.to_rst_link(&self.structs),
+                    param.name
                 ));
             }
         }

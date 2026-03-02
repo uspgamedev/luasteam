@@ -39,7 +39,7 @@ function UGC.CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType,
 function UGC.CreateQueryAllUGCRequestPage(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage) end
 
 ---@param pvecPublishedFileID uint64[]
----@param unNumPublishedFileIDs integer
+---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@return uint64
 function UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID, unNumPublishedFileIDs) end
 
@@ -62,7 +62,7 @@ function UGC.GetQueryUGCNumTags(handle, index) end
 ---@param handle uint64
 ---@param index integer
 ---@param indexTag integer
----@param cchValueSize integer
+---@param cchValueSize integer size of the buffer to allocate for return value pchValue
 ---@return boolean
 ---@return string -- Value of: pchValue
 function UGC.GetQueryUGCTag(handle, index, indexTag, cchValueSize) end
@@ -70,21 +70,21 @@ function UGC.GetQueryUGCTag(handle, index, indexTag, cchValueSize) end
 ---@param handle uint64
 ---@param index integer
 ---@param indexTag integer
----@param cchValueSize integer
+---@param cchValueSize integer size of the buffer to allocate for return value pchValue
 ---@return boolean
 ---@return string -- Value of: pchValue
 function UGC.GetQueryUGCTagDisplayName(handle, index, indexTag, cchValueSize) end
 
 ---@param handle uint64
 ---@param index integer
----@param cchURLSize integer
+---@param cchURLSize integer size of the buffer to allocate for return value pchURL
 ---@return boolean
 ---@return string -- Value of: pchURL
 function UGC.GetQueryUGCPreviewURL(handle, index, cchURLSize) end
 
 ---@param handle uint64
 ---@param index integer
----@param cchMetadatasize integer
+---@param cchMetadatasize integer size of the buffer to allocate for return value pchMetadata
 ---@return boolean
 ---@return string -- Value of: pchMetadata
 function UGC.GetQueryUGCMetadata(handle, index, cchMetadatasize) end
@@ -111,8 +111,8 @@ function UGC.GetQueryUGCNumAdditionalPreviews(handle, index) end
 ---@param handle uint64
 ---@param index integer
 ---@param previewIndex integer
----@param cchURLSize integer
----@param cchOriginalFileNameSize integer
+---@param cchURLSize integer size of the buffer to allocate for return value pchURLOrVideoID
+---@param cchOriginalFileNameSize integer size of the buffer to allocate for return value pchOriginalFileName
 ---@return boolean
 ---@return string -- Value of: pchURLOrVideoID
 ---@return string -- Value of: pchOriginalFileName
@@ -127,8 +127,8 @@ function UGC.GetQueryUGCNumKeyValueTags(handle, index) end
 ---@param handle uint64
 ---@param index integer
 ---@param keyValueTagIndex integer
----@param cchKeySize integer
----@param cchValueSize integer
+---@param cchKeySize integer size of the buffer to allocate for return value pchKey
+---@param cchValueSize integer size of the buffer to allocate for return value pchValue
 ---@return boolean
 ---@return string -- Value of: pchKey
 ---@return string -- Value of: pchValue
@@ -142,7 +142,7 @@ function UGC.GetNumSupportedGameVersions(handle, index) end
 ---@param handle uint64
 ---@param index integer
 ---@param versionIndex integer
----@param cchGameBranchSize integer
+---@param cchGameBranchSize integer size of the buffer to allocate for return value pchGameBranchMin
 ---@return boolean
 ---@return string -- Value of: pchGameBranchMin
 ---@return string -- Value of: pchGameBranchMax
@@ -438,7 +438,7 @@ function UGC.UnsubscribeItem(nPublishedFileID, callback) end
 ---@return integer
 function UGC.GetNumSubscribedItems(bIncludeLocallyDisabled) end
 
----@param cMaxEntries integer
+---@param cMaxEntries integer size of the buffer to allocate for return value pvecPublishedFileID
 ---@param bIncludeLocallyDisabled boolean
 ---@return integer
 ---@return uint64[] -- Value of: pvecPublishedFileID
@@ -449,7 +449,7 @@ function UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled) end
 function UGC.GetItemState(nPublishedFileID) end
 
 ---@param nPublishedFileID uint64
----@param cchFolderSize integer
+---@param cchFolderSize integer size of the buffer to allocate for return value pchFolder
 ---@return boolean
 ---@return uint64 -- Value of: punSizeOnDisk
 ---@return string -- Value of: pchFolder
@@ -476,13 +476,13 @@ function UGC.BInitWorkshopForGameServer(unWorkshopDepotID, pszFolder) end
 function UGC.SuspendDownloads(bSuspend) end
 
 ---@param pvecPublishedFileID uint64[]
----@param unNumPublishedFileIDs integer
+---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.StartPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
 
 ---@param pvecPublishedFileID uint64[]
----@param unNumPublishedFileIDs integer
+---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UGC.StopPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
@@ -538,13 +538,13 @@ function UGC.GetWorkshopEULAStatus(callback) end
 function UGC.GetUserContentDescriptorPreferences(cMaxEntries) end
 
 ---@param pvecPublishedFileIDs uint64[]
----@param unNumPublishedFileIDs integer
+---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileIDs
 ---@param bDisabledLocally boolean
 ---@return boolean
 function UGC.SetItemsDisabledLocally(pvecPublishedFileIDs, unNumPublishedFileIDs, bDisabledLocally) end
 
 ---@param pvecPublishedFileIDs uint64[]
----@param unNumPublishedFileIDs integer
+---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileIDs
 ---@return boolean
 function UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs, unNumPublishedFileIDs) end
 

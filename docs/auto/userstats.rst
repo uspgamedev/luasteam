@@ -132,7 +132,7 @@ Function Reference
 
     :param uint64 hSteamLeaderboard:
     :param uint64[] prgUsers:
-    :param int cUsers:
+    :param int cUsers: size of the input array ``prgUsers``
     :param function callback: CallResult callback receiving struct `LeaderboardScoresDownloaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
@@ -328,7 +328,7 @@ Function Reference
 
     :param uint64 hSteamLeaderboardEntries:
     :param int index:
-    :param int cDetailsMax:
+    :param int cDetailsMax: size of the buffer to be allocated to hold the return value ``pDetails``
     :returns: (bool) Return value
     :returns: (:ref:`LeaderboardEntry_t <struct-LeaderboardEntry_t>`) Value for `pLeaderboardEntry`
     :returns: (int[]) Value for `pDetails`
@@ -364,7 +364,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchStatName:
-    :param int cubData:
+    :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
     :returns: (int) Return value
     :returns: (float[]) Value for `pData`
     :SteamWorks: `GetGlobalStatHistoryDouble <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryDouble>`_
@@ -378,7 +378,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchStatName:
-    :param int cubData:
+    :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
     :returns: (int) Return value
     :returns: (uint64[]) Value for `pData`
     :SteamWorks: `GetGlobalStatHistoryInt64 <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistoryInt64>`_
@@ -464,7 +464,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unNameBufLen:
+    :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (int) Return value
     :returns: (str) Value for `pchName`
     :returns: (float) Value for `pflPercent`
@@ -490,7 +490,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iIteratorPrevious:
-    :param int unNameBufLen:
+    :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (int) Return value
     :returns: (str) Value for `pchName`
     :returns: (float) Value for `pflPercent`
@@ -814,7 +814,7 @@ Function Reference
     :param int eLeaderboardUploadScoreMethod:
     :param int nScore:
     :param int[] pScoreDetails:
-    :param int cScoreDetailsCount:
+    :param int cScoreDetailsCount: size of the input array ``pScoreDetails``
     :param function callback: CallResult callback receiving struct `LeaderboardScoreUploaded_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_

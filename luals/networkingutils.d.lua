@@ -18,7 +18,7 @@ function NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location
 function NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation) end
 
 ---@param location SteamNetworkPingLocation_t
----@param cchBufSize integer
+---@param cchBufSize integer size of the buffer to allocate for return value pszBuf
 ---@return string -- Value of: pszBuf
 function NetworkingUtils.ConvertPingLocationToString(location, cchBufSize) end
 
@@ -101,7 +101,7 @@ function NetworkingUtils.GetConfigValueInfo(eValue) end
 function NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars) end
 
 ---@param addr SteamNetworkingIPAddr
----@param cbBuf integer
+---@param cbBuf integer size of the buffer to allocate for return value buf
 ---@param bWithPort boolean
 ---@return string -- Value of: buf
 function NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort) end
@@ -116,7 +116,7 @@ function NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr) end
 function NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr) end
 
 ---@param identity SteamNetworkingIdentity
----@param cbBuf integer
+---@param cbBuf integer size of the buffer to allocate for return value buf
 ---@return string -- Value of: buf
 function NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf) end
 

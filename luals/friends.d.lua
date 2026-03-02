@@ -83,7 +83,7 @@ function Friends.GetFriendsGroupName(friendsGroupID) end
 function Friends.GetFriendsGroupMembersCount(friendsGroupID) end
 
 ---@param friendsGroupID integer
----@param nMembersCount integer
+---@param nMembersCount integer size of the buffer to allocate for return value pOutSteamIDMembers
 ---@return uint64[] -- Value of: pOutSteamIDMembers
 function Friends.GetFriendsGroupMembersList(friendsGroupID, nMembersCount) end
 
@@ -114,7 +114,7 @@ function Friends.GetClanTag(steamIDClan) end
 ---@return integer -- Value of: pnChatting
 function Friends.GetClanActivityCounts(steamIDClan) end
 
----@param cClansToRequest integer
+---@param cClansToRequest integer size of the buffer to allocate for return value psteamIDClans
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 ---@return uint64[] -- Value of: psteamIDClans
@@ -263,7 +263,7 @@ function Friends.SendClanChatMessage(steamIDClanChat, pchText) end
 
 ---@param steamIDClanChat uint64
 ---@param iMessage integer
----@param cchTextMax integer
+---@param cchTextMax integer size of the buffer to allocate for return value prgchText
 ---@return integer
 ---@return string -- Value of: prgchText
 ---@return integer -- Value of: peChatEntryType
@@ -298,7 +298,7 @@ function Friends.ReplyToFriendMessage(steamIDFriend, pchMsgToSend) end
 
 ---@param steamIDFriend uint64
 ---@param iMessageID integer
----@param cubData integer
+---@param cubData integer size of the buffer to allocate for return value pvData
 ---@return integer
 ---@return string -- Value of: pvData
 ---@return integer -- Value of: peChatEntryType

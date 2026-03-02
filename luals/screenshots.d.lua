@@ -4,7 +4,7 @@
 local Screenshots = {}
 
 ---@param pubRGB string
----@param cubRGB integer
+---@param cubRGB integer size of the input array pubRGB
 ---@param nWidth integer
 ---@param nHeight integer
 ---@return integer

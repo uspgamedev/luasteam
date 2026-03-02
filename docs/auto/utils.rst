@@ -106,7 +106,7 @@ Function Reference
     :param int eContext:
     :param uint64 sourceSteamID:
     :param str pchInputMessage:
-    :param int nByteSizeOutFilteredText:
+    :param int nByteSizeOutFilteredText: size of the buffer to be allocated to hold the return value ``pchOutFilteredText``
     :returns: (int) Return value
     :returns: (str) Value for `pchOutFilteredText`
     :SteamWorks: `FilterText <https://partner.steamgames.com/doc/api/ISteamUtils#FilterText>`_
@@ -135,7 +135,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamAPICall:
-    :param int cubCallback:
+    :param int cubCallback: size of the buffer to be allocated to hold the return value ``pCallback``
     :param int iCallbackExpected:
     :returns: (bool) Return value
     :returns: (str) Value for `pCallback`
@@ -183,7 +183,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cchText:
+    :param int cchText: size of the buffer to be allocated to hold the return value ``pchText``
     :returns: (bool) Return value
     :returns: (str) Value for `pchText`
     :SteamWorks: `GetEnteredGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#GetEnteredGamepadTextInput>`_
@@ -231,7 +231,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iImage:
-    :param int nDestBufferSize:
+    :param int nDestBufferSize: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
     :returns: (str) Value for `pubDest`
     :SteamWorks: `GetImageRGBA <https://partner.steamgames.com/doc/api/ISteamUtils#GetImageRGBA>`_

@@ -31,7 +31,7 @@ function User.GetSteamID() end
 ---@param pchExtraInfo string
 function User.TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo) end
 
----@param cubBuffer integer
+---@param cubBuffer integer size of the buffer to allocate for return value pchBuffer
 ---@return boolean
 ---@return string -- Value of: pchBuffer
 function User.GetUserDataFolder(cubBuffer) end
@@ -45,15 +45,15 @@ function User.StopVoiceRecording() end
 function User.GetAvailableVoice() end
 
 ---@param bWantCompressed boolean
----@param cbDestBufferSize integer
+---@param cbDestBufferSize integer size of the buffer to allocate for return value pDestBuffer
 ---@return integer
 ---@return string -- Value of: pDestBuffer
 ---@return integer -- Value of: nBytesWritten
 function User.GetVoice(bWantCompressed, cbDestBufferSize) end
 
 ---@param pCompressed string
----@param cbCompressed integer
----@param cbDestBufferSize integer
+---@param cbCompressed integer size of the input array pCompressed
+---@param cbDestBufferSize integer size of the buffer to allocate for return value pDestBuffer
 ---@param nDesiredSampleRate integer
 ---@return integer
 ---@return string -- Value of: pDestBuffer
@@ -63,7 +63,7 @@ function User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesi
 ---@return integer
 function User.GetVoiceOptimalSampleRate() end
 
----@param cbMaxTicket integer
+---@param cbMaxTicket integer size of the buffer to allocate for return value pTicket
 ---@param pSteamNetworkingIdentity SteamNetworkingIdentity
 ---@return integer
 ---@return string -- Value of: pTicket
@@ -75,7 +75,7 @@ function User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity) end
 function User.GetAuthTicketForWebApi(pchIdentity) end
 
 ---@param pAuthTicket string
----@param cbAuthTicket integer
+---@param cbAuthTicket integer size of the input array pAuthTicket
 ---@param steamID uint64
 ---@return integer
 function User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
@@ -100,12 +100,12 @@ function User.BIsBehindNAT() end
 function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end
 
 ---@param pDataToInclude string
----@param cbDataToInclude integer
+---@param cbDataToInclude integer size of the input array pDataToInclude
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback) end
 
----@param cbMaxTicket integer
+---@param cbMaxTicket integer size of the buffer to allocate for return value pTicket
 ---@return boolean
 ---@return string -- Value of: pTicket
 ---@return integer -- Value of: pcbTicket

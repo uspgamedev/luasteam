@@ -60,7 +60,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iDLC:
-    :param int cchNameBufferSize:
+    :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (bool) Return value
     :returns: (int) Value for `pAppID`
     :returns: (bool) Value for `pbAvailable`
@@ -202,7 +202,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int appID:
-    :param int cchFolderBufferSize:
+    :param int cchFolderBufferSize: size of the buffer to be allocated to hold the return value ``pchFolder``
     :returns: (int) Return value
     :returns: (str) Value for `pchFolder`
     :SteamWorks: `GetAppInstallDir <https://partner.steamgames.com/doc/api/ISteamApps#GetAppInstallDir>`_
@@ -250,8 +250,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iBetaIndex:
-    :param int cchBetaName:
-    :param int cchDescription:
+    :param int cchBetaName: size of the buffer to be allocated to hold the return value ``pchBetaName``
+    :param int cchDescription: size of the buffer to be allocated to hold the return value ``pchDescription``
     :returns: (bool) Return value
     :returns: (int) Value for `punFlags`
     :returns: (int) Value for `punBuildID`
@@ -270,7 +270,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cchNameBufferSize:
+    :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
     :returns: (bool) Return value
     :returns: (str) Value for `pchName`
     :SteamWorks: `GetCurrentBetaName <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentBetaName>`_
@@ -349,7 +349,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int appID:
-    :param int cMaxDepots:
+    :param int cMaxDepots: size of the buffer to be allocated to hold the return value ``pvecDepots``
     :returns: (int) Return value
     :returns: (int[]) Value for `pvecDepots`
     :SteamWorks: `GetInstalledDepots <https://partner.steamgames.com/doc/api/ISteamApps#GetInstalledDepots>`_
@@ -369,7 +369,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubCommandLine:
+    :param int cubCommandLine: size of the buffer to be allocated to hold the return value ``pszCommandLine``
     :returns: (int) Return value
     :returns: (str) Value for `pszCommandLine`
     :SteamWorks: `GetLaunchCommandLine <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchCommandLine>`_

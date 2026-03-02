@@ -268,7 +268,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchFile:
-    :param int cubDataToRead:
+    :param int cubDataToRead: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
     :returns: (str) Value for `pvData`
     :SteamWorks: `FileRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileRead>`_
@@ -310,7 +310,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hReadCall:
-    :param int cubToRead:
+    :param int cubToRead: size of the buffer to be allocated to hold the return value ``pvBuffer``
     :returns: (bool) Return value
     :returns: (str) Value for `pvBuffer`
     :SteamWorks: `FileReadAsyncComplete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsyncComplete>`_
@@ -334,7 +334,7 @@ Function Reference
 
     :param str pchFile:
     :param str pvData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pvData``
     :returns: (bool) Return value
     :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
 
@@ -354,7 +354,7 @@ Function Reference
 
     :param str pchFile:
     :param str pvData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pvData``
     :param function callback: CallResult callback receiving struct `RemoteStorageFileWriteAsyncComplete_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
@@ -399,7 +399,7 @@ Function Reference
 
     :param uint64 writeHandle:
     :param str pvData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pvData``
     :returns: (bool) Return value
     :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
 
@@ -704,7 +704,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hContent:
-    :param int cubDataToRead:
+    :param int cubDataToRead: size of the buffer to be allocated to hold the return value ``pvData``
     :param int cOffset:
     :param int eAction:
     :returns: (int) Return value

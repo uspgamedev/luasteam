@@ -122,7 +122,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pubRGB:
-    :param int cubRGB:
+    :param int cubRGB: size of the input array ``pubRGB``
     :param int nWidth:
     :param int nHeight:
     :returns: (int) Return value

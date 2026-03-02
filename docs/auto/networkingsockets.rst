@@ -304,7 +304,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hPeer:
-    :param int nMaxLen:
+    :param int nMaxLen: size of the buffer to be allocated to hold the return value ``pszName``
     :returns: (bool) Return value
     :returns: (str) Value for `pszName`
     :SteamWorks: `GetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionName>`_
@@ -346,7 +346,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hConn:
-    :param int cbBuf:
+    :param int cbBuf: size of the buffer to be allocated to hold the return value ``pszBuf``
     :returns: (int) Return value
     :returns: (str) Value for `pszBuf`
     :SteamWorks: `GetDetailedConnectionStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetDetailedConnectionStatus>`_
@@ -522,7 +522,7 @@ Function Reference
 
     :param int hConn:
     :param str pData:
-    :param int cbData:
+    :param int cbData: size of the input array ``pData``
     :param int nSendFlags:
     :returns: (int) Return value
     :returns: (uint64) Value for `pOutMessageNumber`

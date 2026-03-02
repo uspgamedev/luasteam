@@ -88,7 +88,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param :ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>` location:
-    :param int cchBufSize:
+    :param int cchBufSize: size of the buffer to be allocated to hold the return value ``pszBuf``
     :returns: (str) Value for `pszBuf`
     :SteamWorks: `ConvertPingLocationToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ConvertPingLocationToString>`_
 
@@ -438,7 +438,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
-    :param int cbBuf:
+    :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
     :param bool bWithPort:
     :returns: (str) Value for `buf`
     :SteamWorks: `SteamNetworkingIPAddr_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ToString>`_
@@ -477,7 +477,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identity:
-    :param int cbBuf:
+    :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
     :returns: (str) Value for `buf`
     :SteamWorks: `SteamNetworkingIdentity_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ToString>`_
 

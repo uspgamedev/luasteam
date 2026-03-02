@@ -220,7 +220,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cClansToRequest:
+    :param int cClansToRequest: size of the buffer to be allocated to hold the return value ``psteamIDClans``
     :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean
     :returns: (uint64) Return value
     :returns: (uint64[]) Value for `psteamIDClans`
@@ -291,7 +291,7 @@ Function Reference
 
     :param uint64 steamIDClanChat:
     :param int iMessage:
-    :param int cchTextMax:
+    :param int cchTextMax: size of the buffer to be allocated to hold the return value ``prgchText``
     :returns: (int) Return value
     :returns: (str) Value for `prgchText`
     :returns: (int) Value for `peChatEntryType`
@@ -507,7 +507,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iMessageID:
-    :param int cubData:
+    :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
     :returns: (str) Value for `pvData`
     :returns: (int) Value for `peChatEntryType`
@@ -667,7 +667,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int friendsGroupID:
-    :param int nMembersCount:
+    :param int nMembersCount: size of the buffer to be allocated to hold the return value ``pOutSteamIDMembers``
     :returns: (uint64[]) Value for `pOutSteamIDMembers`
     :SteamWorks: `GetFriendsGroupMembersList <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersList>`_
 
@@ -875,7 +875,7 @@ Function Reference
 
     Steam.Friends.IsFollowing(playerID, function(data, err)
         if not err then
-            print('Following:', data.m_bIsFollowing ~= 0)
+            print('Following:', data.m_bIsFollowing)
         end
     end)
 
@@ -901,7 +901,7 @@ Function Reference
 
     Steam.Friends.JoinClanChatRoom(clanID, function(data, err)
         if not err and data.m_eChatRoomEnterResponse == 1 then
-            print('Joined clan chat')
+            print('Joined clan chat:', data.m_steamIDClanChat)
         end
     end)
 

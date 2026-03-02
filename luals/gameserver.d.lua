@@ -85,7 +85,7 @@ function GameServer.SetRegion(pszRegion) end
 ---@param bActive boolean
 function GameServer.SetAdvertiseServerActive(bActive) end
 
----@param cbMaxTicket integer
+---@param cbMaxTicket integer size of the buffer to allocate for return value pTicket
 ---@param pSnid SteamNetworkingIdentity
 ---@return integer
 ---@return string -- Value of: pTicket
@@ -93,7 +93,7 @@ function GameServer.SetAdvertiseServerActive(bActive) end
 function GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid) end
 
 ---@param pAuthTicket string
----@param cbAuthTicket integer
+---@param cbAuthTicket integer size of the input array pAuthTicket
 ---@param steamID uint64
 ---@return integer
 function GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
@@ -124,13 +124,13 @@ function GameServer.GetServerReputation(callback) end
 function GameServer.GetPublicIP() end
 
 ---@param pData string
----@param cbData integer
+---@param cbData integer size of the input array pData
 ---@param srcIP integer
 ---@param srcPort integer
 ---@return boolean
 function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 
----@param cbMaxOut integer
+---@param cbMaxOut integer size of the buffer to allocate for return value pOut
 ---@return integer
 ---@return string -- Value of: pOut
 ---@return integer -- Value of: pNetAdr

@@ -81,7 +81,7 @@ Function Reference
 
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` identityRemote:
     :param str pubData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pubData``
     :param int nSendFlags:
     :param int nRemoteChannel:
     :returns: (int) Return value

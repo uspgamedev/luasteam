@@ -94,7 +94,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unMaxEvents:
+    :param int unMaxEvents: size of the buffer to be allocated to hold the return value ``pInput``
     :returns: (int) Return value
     :returns: (:ref:`RemotePlayInput_t <struct-RemotePlayInput_t>`[]) Value for `pInput`
     :SteamWorks: `GetInput <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetInput>`_

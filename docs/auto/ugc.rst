@@ -314,7 +314,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64[] pvecPublishedFileID:
-    :param int unNumPublishedFileIDs:
+    :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :returns: (uint64) Return value
     :SteamWorks: `CreateQueryUGCDetailsRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryUGCDetailsRequest>`_
 
@@ -430,7 +430,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param int cchFolderSize:
+    :param int cchFolderSize: size of the buffer to be allocated to hold the return value ``pchFolder``
     :returns: (bool) Return value
     :returns: (uint64) Value for `punSizeOnDisk`
     :returns: (str) Value for `pchFolder`
@@ -515,8 +515,8 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int previewIndex:
-    :param int cchURLSize:
-    :param int cchOriginalFileNameSize:
+    :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURLOrVideoID``
+    :param int cchOriginalFileNameSize: size of the buffer to be allocated to hold the return value ``pchOriginalFileName``
     :returns: (bool) Return value
     :returns: (str) Value for `pchURLOrVideoID`
     :returns: (str) Value for `pchOriginalFileName`
@@ -566,8 +566,8 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int keyValueTagIndex:
-    :param int cchKeySize:
-    :param int cchValueSize:
+    :param int cchKeySize: size of the buffer to be allocated to hold the return value ``pchKey``
+    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
     :returns: (str) Value for `pchKey`
     :returns: (str) Value for `pchValue`
@@ -584,7 +584,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param int cchMetadatasize:
+    :param int cchMetadatasize: size of the buffer to be allocated to hold the return value ``pchMetadata``
     :returns: (bool) Return value
     :returns: (str) Value for `pchMetadata`
     :SteamWorks: `GetQueryUGCMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCMetadata>`_
@@ -626,7 +626,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param int cchURLSize:
+    :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURL``
     :returns: (bool) Return value
     :returns: (str) Value for `pchURL`
     :SteamWorks: `GetQueryUGCPreviewURL <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCPreviewURL>`_
@@ -682,7 +682,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int indexTag:
-    :param int cchValueSize:
+    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
     :returns: (str) Value for `pchValue`
     :SteamWorks: `GetQueryUGCTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTag>`_
@@ -698,7 +698,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int indexTag:
-    :param int cchValueSize:
+    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
     :returns: (str) Value for `pchValue`
     :SteamWorks: `GetQueryUGCTagDisplayName <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTagDisplayName>`_
@@ -711,7 +711,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cMaxEntries:
+    :param int cMaxEntries: size of the buffer to be allocated to hold the return value ``pvecPublishedFileID``
     :param bool bIncludeLocallyDisabled:
     :returns: (int) Return value
     :returns: (uint64[]) Value for `pvecPublishedFileID`
@@ -736,7 +736,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int versionIndex:
-    :param int cchGameBranchSize:
+    :param int cchGameBranchSize: size of the buffer to be allocated to hold the return value ``pchGameBranchMin``
     :returns: (bool) Return value
     :returns: (str) Value for `pchGameBranchMin`
     :returns: (str) Value for `pchGameBranchMax`
@@ -1067,7 +1067,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64[] pvecPublishedFileIDs:
-    :param int unNumPublishedFileIDs:
+    :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileIDs``
     :param bool bDisabledLocally:
     :returns: (bool) Return value
     :SteamWorks: `SetItemsDisabledLocally <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemsDisabledLocally>`_
@@ -1235,7 +1235,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64[] pvecPublishedFileIDs:
-    :param int unNumPublishedFileIDs:
+    :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileIDs``
     :returns: (bool) Return value
     :SteamWorks: `SetSubscriptionsLoadOrder <https://partner.steamgames.com/doc/api/ISteamUGC#SetSubscriptionsLoadOrder>`_
 
@@ -1315,7 +1315,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64[] pvecPublishedFileID:
-    :param int unNumPublishedFileIDs:
+    :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :param function callback: CallResult callback receiving struct `StartPlaytimeTrackingResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StartPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking>`_
@@ -1332,7 +1332,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64[] pvecPublishedFileID:
-    :param int unNumPublishedFileIDs:
+    :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :param function callback: CallResult callback receiving struct `StopPlaytimeTrackingResult_t` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StopPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking>`_

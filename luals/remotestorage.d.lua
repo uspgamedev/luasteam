@@ -28,19 +28,19 @@ local RemoteStorage = {}
 
 ---@param pchFile string
 ---@param pvData string
----@param cubData integer
+---@param cubData integer size of the input array pvData
 ---@return boolean
 function RemoteStorage.FileWrite(pchFile, pvData, cubData) end
 
 ---@param pchFile string
----@param cubDataToRead integer
+---@param cubDataToRead integer size of the buffer to allocate for return value pvData
 ---@return integer
 ---@return string -- Value of: pvData
 function RemoteStorage.FileRead(pchFile, cubDataToRead) end
 
 ---@param pchFile string
 ---@param pvData string
----@param cubData integer
+---@param cubData integer size of the input array pvData
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
@@ -53,7 +53,7 @@ function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 function RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback) end
 
 ---@param hReadCall uint64
----@param cubToRead integer
+---@param cubToRead integer size of the buffer to allocate for return value pvBuffer
 ---@return boolean
 ---@return string -- Value of: pvBuffer
 function RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead) end
@@ -82,7 +82,7 @@ function RemoteStorage.FileWriteStreamOpen(pchFile) end
 
 ---@param writeHandle uint64
 ---@param pvData string
----@param cubData integer
+---@param cubData integer size of the input array pvData
 ---@return boolean
 function RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData) end
 
@@ -149,7 +149,7 @@ function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 function RemoteStorage.GetUGCDownloadProgress(hContent) end
 
 ---@param hContent uint64
----@param cubDataToRead integer
+---@param cubDataToRead integer size of the buffer to allocate for return value pvData
 ---@param cOffset integer
 ---@param eAction integer
 ---@return integer

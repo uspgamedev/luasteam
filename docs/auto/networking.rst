@@ -271,7 +271,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubDest:
+    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :param int nChannel:
     :returns: (bool) Return value
     :returns: (str) Value for `pubDest`
@@ -294,7 +294,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hListenSocket:
-    :param int cubDest:
+    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
     :returns: (str) Value for `pubDest`
     :returns: (int) Value for `pcubMsgSize`
@@ -312,7 +312,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hSocket:
-    :param int cubDest:
+    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
     :returns: (bool) Return value
     :returns: (str) Value for `pubDest`
     :returns: (int) Value for `pcubMsgSize`
@@ -329,7 +329,7 @@ Function Reference
 
     :param int hSocket:
     :param str pubData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pubData``
     :param bool bReliable:
     :returns: (bool) Return value
     :SteamWorks: `SendDataOnSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#SendDataOnSocket>`_
@@ -340,7 +340,7 @@ Function Reference
 
     :param uint64 steamIDRemote:
     :param str pubData:
-    :param int cubData:
+    :param int cubData: size of the input array ``pubData``
     :param int eP2PSendType:
     :param int nChannel:
     :returns: (bool) Return value

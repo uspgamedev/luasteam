@@ -58,14 +58,14 @@ function NetworkingSockets.GetConnectionUserData(hPeer) end
 function NetworkingSockets.SetConnectionName(hPeer, pszName) end
 
 ---@param hPeer integer
----@param nMaxLen integer
+---@param nMaxLen integer size of the buffer to allocate for return value pszName
 ---@return boolean
 ---@return string -- Value of: pszName
 function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
 
 ---@param hConn integer
 ---@param pData string
----@param cbData integer
+---@param cbData integer size of the input array pData
 ---@param nSendFlags integer
 ---@return integer
 ---@return uint64 -- Value of: pOutMessageNumber
@@ -88,7 +88,7 @@ function NetworkingSockets.GetConnectionInfo(hConn) end
 function NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes) end
 
 ---@param hConn integer
----@param cbBuf integer
+---@param cbBuf integer size of the buffer to allocate for return value pszBuf
 ---@return integer
 ---@return string -- Value of: pszBuf
 function NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf) end

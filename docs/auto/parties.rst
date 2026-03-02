@@ -69,7 +69,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int uMaxNumLocations:
+    :param int uMaxNumLocations: size of the buffer to be allocated to hold the return value ``pLocationList``
     :returns: (bool) Return value
     :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`[]) Value for `pLocationList`
     :SteamWorks: `GetAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetAvailableBeaconLocations>`_
@@ -95,7 +95,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulBeaconID:
-    :param int cchMetadata:
+    :param int cchMetadata: size of the buffer to be allocated to hold the return value ``pchMetadata``
     :returns: (bool) Return value
     :returns: (uint64) Value for `pSteamIDBeaconOwner`
     :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) Value for `pLocation`
@@ -118,7 +118,7 @@ Function Reference
 
     :param :ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>` BeaconLocation:
     :param int eData:
-    :param int cchDataStringOut:
+    :param int cchDataStringOut: size of the buffer to be allocated to hold the return value ``pchDataStringOut``
     :returns: (bool) Return value
     :returns: (str) Value for `pchDataStringOut`
     :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_

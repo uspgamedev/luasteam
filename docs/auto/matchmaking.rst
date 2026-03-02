@@ -208,7 +208,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param int iChatID:
-    :param int cubData:
+    :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
     :returns: (int) Return value
     :returns: (uint64) Value for `pSteamIDUser`
     :returns: (str) Value for `pvData`
@@ -241,8 +241,8 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param int iLobbyData:
-    :param int cchKeyBufferSize:
-    :param int cchValueBufferSize:
+    :param int cchKeyBufferSize: size of the buffer to be allocated to hold the return value ``pchKey``
+    :param int cchValueBufferSize: size of the buffer to be allocated to hold the return value ``pchValue``
     :returns: (bool) Return value
     :returns: (str) Value for `pchKey`
     :returns: (str) Value for `pchValue`
@@ -437,7 +437,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param str pvMsgBody:
-    :param int cubMsgBody:
+    :param int cubMsgBody: size of the input array ``pvMsgBody``
     :returns: (bool) Return value
     :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
 

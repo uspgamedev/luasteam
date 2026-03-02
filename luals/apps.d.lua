@@ -43,7 +43,7 @@ function Apps.BIsSubscribedFromFreeWeekend() end
 function Apps.GetDLCCount() end
 
 ---@param iDLC integer
----@param cchNameBufferSize integer
+---@param cchNameBufferSize integer size of the buffer to allocate for return value pchName
 ---@return boolean
 ---@return integer -- Value of: pAppID
 ---@return boolean -- Value of: pbAvailable
@@ -59,7 +59,7 @@ function Apps.UninstallDLC(nAppID) end
 ---@param nAppID integer
 function Apps.RequestAppProofOfPurchaseKey(nAppID) end
 
----@param cchNameBufferSize integer
+---@param cchNameBufferSize integer size of the buffer to allocate for return value pchName
 ---@return boolean
 ---@return string -- Value of: pchName
 function Apps.GetCurrentBetaName(cchNameBufferSize) end
@@ -69,13 +69,13 @@ function Apps.GetCurrentBetaName(cchNameBufferSize) end
 function Apps.MarkContentCorrupt(bMissingFilesOnly) end
 
 ---@param appID integer
----@param cMaxDepots integer
+---@param cMaxDepots integer size of the buffer to allocate for return value pvecDepots
 ---@return integer
 ---@return integer[] -- Value of: pvecDepots
 function Apps.GetInstalledDepots(appID, cMaxDepots) end
 
 ---@param appID integer
----@param cchFolderBufferSize integer
+---@param cchFolderBufferSize integer size of the buffer to allocate for return value pchFolder
 ---@return integer
 ---@return string -- Value of: pchFolder
 function Apps.GetAppInstallDir(appID, cchFolderBufferSize) end
@@ -107,7 +107,7 @@ function Apps.RequestAllProofOfPurchaseKeys() end
 ---@return uint64
 function Apps.GetFileDetails(pszFileName, callback) end
 
----@param cubCommandLine integer
+---@param cubCommandLine integer size of the buffer to allocate for return value pszCommandLine
 ---@return integer
 ---@return string -- Value of: pszCommandLine
 function Apps.GetLaunchCommandLine(cubCommandLine) end
@@ -130,8 +130,8 @@ function Apps.SetDlcContext(nAppID) end
 function Apps.GetNumBetas() end
 
 ---@param iBetaIndex integer
----@param cchBetaName integer
----@param cchDescription integer
+---@param cchBetaName integer size of the buffer to allocate for return value pchBetaName
+---@param cchDescription integer size of the buffer to allocate for return value pchDescription
 ---@return boolean
 ---@return integer -- Value of: punFlags
 ---@return integer -- Value of: punBuildID

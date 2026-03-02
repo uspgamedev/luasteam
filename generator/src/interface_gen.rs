@@ -843,7 +843,7 @@ impl Generator {
                                     size_param,
                                     lua_idx
                                 ));
-                                sig.add_param(size_param.to_string(), LType::Integer);
+                                sig.add_size_param(size_param.to_string(), LType::Integer, param.paramname.clone(), true);
                                 lua_idx += 1;
                             }
                         } else if let Some(c) =
@@ -972,7 +972,7 @@ impl Generator {
                                     size,
                                     lua_idx
                                 ));
-                                sig.add_param(size.to_string(), LType::Integer);
+                                sig.add_size_param(size.to_string(), LType::Integer, param.paramname.clone(), false);
                                 lua_idx += 1;
                             } else {
                                 assert!(

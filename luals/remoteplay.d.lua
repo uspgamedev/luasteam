@@ -41,7 +41,7 @@ function RemotePlay.BEnableRemotePlayTogetherDirectInput() end
 
 function RemotePlay.DisableRemotePlayTogetherDirectInput() end
 
----@param unMaxEvents integer
+---@param unMaxEvents integer size of the buffer to allocate for return value pInput
 ---@return integer
 ---@return RemotePlayInput_t[] -- Value of: pInput
 function RemotePlay.GetInput(unMaxEvents) end

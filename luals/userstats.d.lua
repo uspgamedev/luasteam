@@ -156,14 +156,14 @@ function UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDat
 
 ---@param hSteamLeaderboard uint64
 ---@param prgUsers uint64[]
----@param cUsers integer
+---@param cUsers integer size of the input array prgUsers
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback) end
 
 ---@param hSteamLeaderboardEntries uint64
 ---@param index integer
----@param cDetailsMax integer
+---@param cDetailsMax integer size of the buffer to allocate for return value pDetails
 ---@return boolean
 ---@return LeaderboardEntry_t -- Value of: pLeaderboardEntry
 ---@return integer[] -- Value of: pDetails
@@ -173,7 +173,7 @@ function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index
 ---@param eLeaderboardUploadScoreMethod integer
 ---@param nScore integer
 ---@param pScoreDetails integer[]
----@param cScoreDetailsCount integer
+---@param cScoreDetailsCount integer size of the input array pScoreDetails
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback) end
@@ -192,7 +192,7 @@ function UserStats.GetNumberOfCurrentPlayers(callback) end
 ---@return uint64
 function UserStats.RequestGlobalAchievementPercentages(callback) end
 
----@param unNameBufLen integer
+---@param unNameBufLen integer size of the buffer to allocate for return value pchName
 ---@return integer
 ---@return string -- Value of: pchName
 ---@return number -- Value of: pflPercent
@@ -200,7 +200,7 @@ function UserStats.RequestGlobalAchievementPercentages(callback) end
 function UserStats.GetMostAchievedAchievementInfo(unNameBufLen) end
 
 ---@param iIteratorPrevious integer
----@param unNameBufLen integer
+---@param unNameBufLen integer size of the buffer to allocate for return value pchName
 ---@return integer
 ---@return string -- Value of: pchName
 ---@return number -- Value of: pflPercent
@@ -228,13 +228,13 @@ function UserStats.GetGlobalStatInt64(pchStatName) end
 function UserStats.GetGlobalStatDouble(pchStatName) end
 
 ---@param pchStatName string
----@param cubData integer
+---@param cubData integer size of the buffer to allocate for return value pData
 ---@return integer
 ---@return uint64[] -- Value of: pData
 function UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData) end
 
 ---@param pchStatName string
----@param cubData integer
+---@param cubData integer size of the buffer to allocate for return value pData
 ---@return integer
 ---@return number[] -- Value of: pData
 function UserStats.GetGlobalStatHistoryDouble(pchStatName, cubData) end

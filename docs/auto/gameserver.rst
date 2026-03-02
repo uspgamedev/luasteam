@@ -124,7 +124,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pAuthTicket:
-    :param int cbAuthTicket:
+    :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
     :returns: (int) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
@@ -184,7 +184,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket:
+    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
     :param :ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>` pSnid:
     :returns: (int) Return value
     :returns: (str) Value for `pTicket`
@@ -206,7 +206,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxOut:
+    :param int cbMaxOut: size of the buffer to be allocated to hold the return value ``pOut``
     :returns: (int) Return value
     :returns: (str) Value for `pOut`
     :returns: (int) Value for `pNetAdr`
@@ -256,7 +256,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pData:
-    :param int cbData:
+    :param int cbData: size of the input array ``pData``
     :param int srcIP:
     :param int srcPort:
     :returns: (bool) Return value
