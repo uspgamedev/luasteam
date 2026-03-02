@@ -72,8 +72,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pConnectionInfo`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pQuickStatus`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pConnectionInfo`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pQuickStatus`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel)
 

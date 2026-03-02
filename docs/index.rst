@@ -17,6 +17,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
     :caption: General Documentation:
 
     Getting Started <getting_started>
+    Migration Guide from v4 <migration>
     Core Functions <steam_api>
     ISteamNetworkingSockets <networking_sockets>
     Extra <extra>

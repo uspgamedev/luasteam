@@ -57,9 +57,9 @@ function HTTP.GetHTTPResponseHeaderSize(hRequest, pchHeaderName) end
 
 ---@param hRequest integer
 ---@param pchHeaderName string
----@param unBufferSize integer
+---@param unBufferSize integer size of the buffer to allocate for return value pHeaderValueBuffer
 ---@return boolean
----@return integer -- Value of: pHeaderValueBuffer
+---@return string -- Value of: pHeaderValueBuffer
 function HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize) end
 
 ---@param hRequest integer
@@ -68,16 +68,16 @@ function HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize) 
 function HTTP.GetHTTPResponseBodySize(hRequest) end
 
 ---@param hRequest integer
----@param unBufferSize integer
+---@param unBufferSize integer size of the buffer to allocate for return value pBodyDataBuffer
 ---@return boolean
----@return integer -- Value of: pBodyDataBuffer
+---@return string -- Value of: pBodyDataBuffer
 function HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize) end
 
 ---@param hRequest integer
 ---@param cOffset integer
----@param unBufferSize integer
+---@param unBufferSize integer size of the buffer to allocate for return value pBodyDataBuffer
 ---@return boolean
----@return integer -- Value of: pBodyDataBuffer
+---@return string -- Value of: pBodyDataBuffer
 function HTTP.GetHTTPStreamingResponseBodyData(hRequest, cOffset, unBufferSize) end
 
 ---@param hRequest integer
@@ -91,10 +91,10 @@ function HTTP.GetHTTPDownloadProgressPct(hRequest) end
 
 ---@param hRequest integer
 ---@param pchContentType string
----@param unBodyLen integer
+---@param pubBody string
+---@param unBodyLen integer size of the input array pubBody
 ---@return boolean
----@return integer -- Value of: pubBody
-function HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, unBodyLen) end
+function HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, pubBody, unBodyLen) end
 
 ---@param bAllowResponsesToModify boolean
 ---@return integer

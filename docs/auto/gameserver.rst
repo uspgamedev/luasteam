@@ -193,8 +193,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pTicket`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a parameter, and is instead an additional return value
 
 .. function:: GameServer.GetGameplayStats()
 
@@ -215,9 +215,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOut`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pNetAdr`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pPort`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOut`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pNetAdr`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pPort`` is no longer a parameter, and is instead an additional return value
 
 .. function:: GameServer.GetPublicIP()
 

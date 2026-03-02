@@ -76,7 +76,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pLocationList`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pLocationList`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Parties.GetBeaconByIndex(unIndex)
 
@@ -104,9 +104,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDBeaconOwner`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pLocation`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pSteamIDBeaconOwner`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pLocation`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchMetadata`` is no longer a parameter, and is instead an additional return value
 
     **Notes:**
 
@@ -125,7 +125,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchDataStringOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchDataStringOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Parties.GetNumActiveBeacons()
 
@@ -155,7 +155,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``puNumLocations`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``puNumLocations`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

@@ -114,7 +114,7 @@ Function Reference
 
     Steam.HTMLSurface.CreateBrowser(nil, nil, function(data, err)
         if not err then
-            local hBrowser = data.m_unBrowserHandle
+            local hBrowser = data.unBrowserHandle
             Steam.HTMLSurface.SetSize(hBrowser, 1280, 720)
             Steam.HTMLSurface.LoadURL(hBrowser, 'https://store.steampowered.com', nil)
         end
@@ -267,7 +267,7 @@ Function Reference
 
 **Example**::
 
-    Steam.HTMLSurface.MouseDown(hBrowser, 'eHTMLMouseButton_Left')
+    Steam.HTMLSurface.MouseDown(hBrowser, Steam.eHTMLMouseButton_Left)
 
 .. function:: HTMLSurface.MouseMove(unBrowserHandle, x, y)
 
@@ -293,7 +293,7 @@ Function Reference
 
 **Example**::
 
-    Steam.HTMLSurface.MouseUp(hBrowser, 'eHTMLMouseButton_Left')
+    Steam.HTMLSurface.MouseUp(hBrowser, Steam.eHTMLMouseButton_Left)
 
 .. function:: HTMLSurface.MouseWheel(unBrowserHandle, nDelta)
 
@@ -511,9 +511,9 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_NeedsPaint(data)
-        -- data.m_pBGRA contains raw BGRA pixel data
-        -- data.m_unWide, data.m_unTall = dimensions
-        updateBrowserTexture(data.m_pBGRA, data.m_unWide, data.m_unTall)
+        -- data.pBGRA contains raw BGRA pixel data
+        -- data.unWide, data.unTall = dimensions
+        updateBrowserTexture(data.pBGRA, data.unWide, data.unTall)
     end
 
 .. function:: HTMLSurface.OnHTML_StartRequest
@@ -531,9 +531,9 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_StartRequest(data)
-        print('Navigating to:', data.m_pchURL)
+        print('Navigating to:', data.pchURL)
         -- Call AllowStartRequest to allow or block navigation
-        Steam.HTMLSurface.AllowStartRequest(data.m_unBrowserHandle, true)
+        Steam.HTMLSurface.AllowStartRequest(data.unBrowserHandle, true)
     end
 
 .. function:: HTMLSurface.OnHTML_CloseBrowser
@@ -560,8 +560,8 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_URLChanged(data)
-        print('URL changed to:', data.m_pchURL)
-        updateAddressBar(data.m_pchURL)
+        print('URL changed to:', data.pchURL)
+        updateAddressBar(data.pchURL)
     end
 
 .. function:: HTMLSurface.OnHTML_FinishedRequest
@@ -577,7 +577,7 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_FinishedRequest(data)
-        print('Page loaded:', data.m_pchURL)
+        print('Page loaded:', data.pchURL)
         hideLoadingSpinner()
     end
 
@@ -602,7 +602,7 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_ChangedTitle(data)
-        windowTitle = data.m_pchTitle
+        windowTitle = data.pchTitle
     end
 
 .. function:: HTMLSurface.OnHTML_SearchResults
@@ -676,8 +676,8 @@ Callbacks
 **Example**::
 
     function Steam.HTMLSurface.OnHTML_JSAlert(data)
-        showAlertDialog(data.m_pchMessage)
-        Steam.HTMLSurface.JSDialogResponse(data.m_unBrowserHandle, true)
+        showAlertDialog(data.pchMessage)
+        Steam.HTMLSurface.JSDialogResponse(data.unBrowserHandle, true)
     end
 
 .. function:: HTMLSurface.OnHTML_JSConfirm

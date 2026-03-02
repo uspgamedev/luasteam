@@ -216,9 +216,8 @@ impl SteamApi {
 
     fn fix_deprecated(&mut self) {
         self.interfaces.iter_mut().for_each(|i| {
-            i.methods.retain_mut(|m| {
-                !m.methodname.ends_with("_DEPRECATED")
-            })
+            i.methods
+                .retain_mut(|m| !m.methodname.ends_with("_DEPRECATED"))
         });
     }
 
@@ -253,6 +252,10 @@ impl SteamApi {
             (
                 "ISteamNetworking",
                 vec![("SendDataOnSocket", vec!["pubData"])],
+            ),
+            (
+                "ISteamHTTP",
+                vec![("SetHTTPRequestRawPostBody", vec!["pubBody"])],
             ),
         ];
 
@@ -512,6 +515,23 @@ impl SteamApi {
             (
                 "ISteamVideo",
                 vec![("GetOPFStringForApp", "pchBuffer", "pnBufferSize")],
+            ),
+            (
+                "ISteamHTTP",
+                vec![
+                    ("SetHTTPRequestRawPostBody", "pubBody", "unBodyLen"),
+                    (
+                        "GetHTTPResponseHeaderValue",
+                        "pHeaderValueBuffer",
+                        "unBufferSize",
+                    ),
+                    ("GetHTTPResponseBodyData", "pBodyDataBuffer", "unBufferSize"),
+                    (
+                        "GetHTTPStreamingResponseBodyData",
+                        "pBodyDataBuffer",
+                        "unBufferSize",
+                    ),
+                ],
             ),
         ];
         for (i_name, data) in to_mark_counters {

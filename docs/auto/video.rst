@@ -45,8 +45,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnBufferSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchBuffer`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnBufferSize`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Video.GetVideoURL(unVideoAppID)
 
@@ -70,7 +70,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnNumViewers`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnNumViewers`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

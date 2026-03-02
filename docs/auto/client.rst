@@ -68,7 +68,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``phSteamPipe`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``phSteamPipe`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

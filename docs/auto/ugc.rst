@@ -6,6 +6,9 @@ ISteamUGC
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
+.. note::
+   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
+
 List of Functions
 -----------------
 
@@ -300,7 +303,11 @@ Function Reference
     :param int nConsumerAppID:
     :param int unPage:
     :returns: (uint64) Return value
-    :SteamWorks: `CreateQueryAllUGCRequestPage <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequestPage>`_
+    :SteamWorks: `CreateQueryAllUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequest>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``CreateQueryAllUGCRequest``. luasteam exposes each overload as a distinct function with a type suffix.
 
 **Example**::
 
@@ -415,8 +422,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesDownloaded`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -439,9 +446,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSizeOnDisk`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchFolder`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punTimeStamp`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punSizeOnDisk`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchFolder`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punTimeStamp`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -476,8 +483,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesProcessed`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesProcessed`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -525,9 +532,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURLOrVideoID`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchOriginalFileName`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pPreviewType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchURLOrVideoID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchOriginalFileName`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pPreviewType`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCChildren(handle, index, cMaxEntries)
 
@@ -542,7 +549,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvecPublishedFileID`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCContentDescriptors(handle, index, cMaxEntries)
 
@@ -557,7 +564,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvecDescriptors`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCKeyValueTag(handle, index, keyValueTagIndex, cchKeySize, cchValueSize)
 
@@ -575,8 +582,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchKey`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCMetadata(handle, index, cchMetadatasize)
 
@@ -591,7 +598,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchMetadata`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCNumAdditionalPreviews(handle, index)
 
@@ -633,7 +640,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURL`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchURL`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -654,7 +661,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pDetails`` is no longer a parameter, and is instead an additional return value
 
     **Notes:**
 
@@ -673,7 +680,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pStatValue`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pStatValue`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCTag(handle, index, indexTag, cchValueSize)
 
@@ -689,7 +696,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetQueryUGCTagDisplayName(handle, index, indexTag, cchValueSize)
 
@@ -705,7 +712,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)
 
@@ -719,7 +726,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvecPublishedFileID`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -744,8 +751,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchGameBranchMin`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchGameBranchMax`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchGameBranchMin`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchGameBranchMax`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetUserContentDescriptorPreferences(cMaxEntries)
 
@@ -758,7 +765,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvecDescriptors`` is no longer a parameter, and is instead an additional return value
 
 .. function:: UGC.GetUserItemVote(nPublishedFileID, callback)
 

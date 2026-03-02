@@ -210,15 +210,15 @@ static int luasteam_HTTP_GetHTTPResponseHeaderSize_gs(lua_State *L) { return lua
 // In C++:
 // bool GetHTTPResponseHeaderValue(HTTPRequestHandle hRequest, const char * pchHeaderName, uint8 * pHeaderValueBuffer, uint32 unBufferSize);
 // In Lua:
-// (bool, pHeaderValueBuffer: int) HTTP.GetHTTPResponseHeaderValue(hRequest: int, pchHeaderName: str, unBufferSize: int)
+// (bool, pHeaderValueBuffer: str) HTTP.GetHTTPResponseHeaderValue(hRequest: int, pchHeaderName: str, unBufferSize: int)
 static int luasteam_HTTP_GetHTTPResponseHeaderValue(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchHeaderName = luaL_checkstring(L, 2);
-	uint8 pHeaderValueBuffer;
-	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseHeaderValue(iface, hRequest, pchHeaderName, &pHeaderValueBuffer, unBufferSize);
+	uint32 unBufferSize = luaL_checkint(L, 3);
+	std::vector<uint8> pHeaderValueBuffer(unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseHeaderValue(iface, hRequest, pchHeaderName, pHeaderValueBuffer.data(), unBufferSize);
 	lua_pushboolean(L, __ret);
-	lua_pushinteger(L, pHeaderValueBuffer);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pHeaderValueBuffer.data()), unBufferSize);
 	return 2;
 }
 static int luasteam_HTTP_GetHTTPResponseHeaderValue_user(lua_State *L) { return luasteam_HTTP_GetHTTPResponseHeaderValue(L, SteamHTTP()); }
@@ -242,14 +242,14 @@ static int luasteam_HTTP_GetHTTPResponseBodySize_gs(lua_State *L) { return luast
 // In C++:
 // bool GetHTTPResponseBodyData(HTTPRequestHandle hRequest, uint8 * pBodyDataBuffer, uint32 unBufferSize);
 // In Lua:
-// (bool, pBodyDataBuffer: int) HTTP.GetHTTPResponseBodyData(hRequest: int, unBufferSize: int)
+// (bool, pBodyDataBuffer: str) HTTP.GetHTTPResponseBodyData(hRequest: int, unBufferSize: int)
 static int luasteam_HTTP_GetHTTPResponseBodyData(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
-	uint8 pBodyDataBuffer;
-	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 2));
-	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseBodyData(iface, hRequest, &pBodyDataBuffer, unBufferSize);
+	uint32 unBufferSize = luaL_checkint(L, 2);
+	std::vector<uint8> pBodyDataBuffer(unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPResponseBodyData(iface, hRequest, pBodyDataBuffer.data(), unBufferSize);
 	lua_pushboolean(L, __ret);
-	lua_pushinteger(L, pBodyDataBuffer);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pBodyDataBuffer.data()), unBufferSize);
 	return 2;
 }
 static int luasteam_HTTP_GetHTTPResponseBodyData_user(lua_State *L) { return luasteam_HTTP_GetHTTPResponseBodyData(L, SteamHTTP()); }
@@ -258,15 +258,15 @@ static int luasteam_HTTP_GetHTTPResponseBodyData_gs(lua_State *L) { return luast
 // In C++:
 // bool GetHTTPStreamingResponseBodyData(HTTPRequestHandle hRequest, uint32 cOffset, uint8 * pBodyDataBuffer, uint32 unBufferSize);
 // In Lua:
-// (bool, pBodyDataBuffer: int) HTTP.GetHTTPStreamingResponseBodyData(hRequest: int, cOffset: int, unBufferSize: int)
+// (bool, pBodyDataBuffer: str) HTTP.GetHTTPStreamingResponseBodyData(hRequest: int, cOffset: int, unBufferSize: int)
 static int luasteam_HTTP_GetHTTPStreamingResponseBodyData(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	uint32 cOffset = static_cast<uint32>(luaL_checkint(L, 2));
-	uint8 pBodyDataBuffer;
-	uint32 unBufferSize = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = SteamAPI_ISteamHTTP_GetHTTPStreamingResponseBodyData(iface, hRequest, cOffset, &pBodyDataBuffer, unBufferSize);
+	uint32 unBufferSize = luaL_checkint(L, 3);
+	std::vector<uint8> pBodyDataBuffer(unBufferSize);
+	bool __ret = SteamAPI_ISteamHTTP_GetHTTPStreamingResponseBodyData(iface, hRequest, cOffset, pBodyDataBuffer.data(), unBufferSize);
 	lua_pushboolean(L, __ret);
-	lua_pushinteger(L, pBodyDataBuffer);
+	lua_pushlstring(L, reinterpret_cast<const char*>(pBodyDataBuffer.data()), unBufferSize);
 	return 2;
 }
 static int luasteam_HTTP_GetHTTPStreamingResponseBodyData_user(lua_State *L) { return luasteam_HTTP_GetHTTPStreamingResponseBodyData(L, SteamHTTP()); }
@@ -301,18 +301,19 @@ static int luasteam_HTTP_GetHTTPDownloadProgressPct_user(lua_State *L) { return 
 static int luasteam_HTTP_GetHTTPDownloadProgressPct_gs(lua_State *L) { return luasteam_HTTP_GetHTTPDownloadProgressPct(L, SteamGameServerHTTP()); }
 
 // In C++:
-// bool SetHTTPRequestRawPostBody(HTTPRequestHandle hRequest, const char * pchContentType, uint8 * pubBody, uint32 unBodyLen);
+// bool SetHTTPRequestRawPostBody(HTTPRequestHandle hRequest, const char * pchContentType, const uint8 * pubBody, uint32 unBodyLen);
 // In Lua:
-// (bool, pubBody: int) HTTP.SetHTTPRequestRawPostBody(hRequest: int, pchContentType: str, unBodyLen: int)
+// bool HTTP.SetHTTPRequestRawPostBody(hRequest: int, pchContentType: str, pubBody: str, unBodyLen: int)
 static int luasteam_HTTP_SetHTTPRequestRawPostBody(lua_State *L, ISteamHTTP *iface) {
 	HTTPRequestHandle hRequest = static_cast<HTTPRequestHandle>(luaL_checkint(L, 1));
 	const char *pchContentType = luaL_checkstring(L, 2);
-	uint8 pubBody;
-	uint32 unBodyLen = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody(iface, hRequest, pchContentType, &pubBody, unBodyLen);
+	uint32 unBodyLen = luaL_checkint(L, 4);
+	size_t _len__tmp0;
+	const char *_tmp0 = luaL_checklstring(L, 3, &_len__tmp0);
+	uint8 *pubBody = const_cast<uint8 *>(reinterpret_cast<const uint8 *>(_tmp0));
+	bool __ret = SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody(iface, hRequest, pchContentType, pubBody, unBodyLen);
 	lua_pushboolean(L, __ret);
-	lua_pushinteger(L, pubBody);
-	return 2;
+	return 1;
 }
 static int luasteam_HTTP_SetHTTPRequestRawPostBody_user(lua_State *L) { return luasteam_HTTP_SetHTTPRequestRawPostBody(L, SteamHTTP()); }
 static int luasteam_HTTP_SetHTTPRequestRawPostBody_gs(lua_State *L) { return luasteam_HTTP_SetHTTPRequestRawPostBody(L, SteamGameServerHTTP()); }

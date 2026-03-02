@@ -87,7 +87,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercentOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pflPercentOut`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -106,21 +106,21 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbWasTimedOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbWasTimedOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize)
 
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param int unBufferSize:
+    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pBodyDataBuffer``
     :returns: (bool) Return value
-    :returns: (int) ``pBodyDataBuffer``
+    :returns: (str) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodyData>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pBodyDataBuffer`` is no longer a parameter, and is instead an additional return value
 
     **Notes:**
 
@@ -137,15 +137,17 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unBodySize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``unBodySize`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
     function Steam.HTTP.OnHTTPRequestCompleted(data)
         if data.m_eStatusCode == 200 then
             local size = Steam.HTTP.GetHTTPResponseBodySize(data.m_hRequest)
-            local body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
-            handleResponse(body)
+            local ok, body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
+            if ok then
+                handleResponse(body)
+            end
         end
         Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
     end
@@ -162,7 +164,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unResponseHeaderSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``unResponseHeaderSize`` is no longer a parameter, and is instead an additional return value
 
 .. function:: HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize)
 
@@ -170,22 +172,24 @@ Function Reference
 
     :param int hRequest:
     :param str pchHeaderName:
-    :param int unBufferSize:
+    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pHeaderValueBuffer``
     :returns: (bool) Return value
-    :returns: (int) ``pHeaderValueBuffer``
+    :returns: (str) ``pHeaderValueBuffer``
     :SteamWorks: `GetHTTPResponseHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseHeaderValue>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pHeaderValueBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pHeaderValueBuffer`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
     function Steam.HTTP.OnHTTPRequestCompleted(data)
         local size = Steam.HTTP.GetHTTPResponseHeaderSize(data.m_hRequest, 'Content-Type')
         if size > 0 then
-            local ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
-            print('Content-Type:', ct)
+            local ok, ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
+            if ok then
+                print('Content-Type:', ct)
+            end
         end
         Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
     end
@@ -196,14 +200,14 @@ Function Reference
 
     :param int hRequest:
     :param int cOffset:
-    :param int unBufferSize:
+    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pBodyDataBuffer``
     :returns: (bool) Return value
-    :returns: (int) ``pBodyDataBuffer``
+    :returns: (str) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPStreamingResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPStreamingResponseBodyData>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pBodyDataBuffer`` is no longer a parameter, and is instead an additional return value
 
 .. function:: HTTP.PrioritizeHTTPRequest(hRequest)
 
@@ -245,7 +249,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pCallHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -264,7 +268,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pCallHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie)
 
@@ -350,26 +354,22 @@ Function Reference
     Steam.HTTP.SetHTTPRequestNetworkActivityTimeout(hReq, 5)
     Steam.HTTP.SendHTTPRequest(hReq)
 
-.. function:: HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, unBodyLen)
+.. function:: HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, pubBody, unBodyLen)
 
     🤖 **Auto-generated binding**
 
     :param int hRequest:
     :param str pchContentType:
-    :param int unBodyLen:
+    :param str pubBody:
+    :param int unBodyLen: size of the input array ``pubBody``
     :returns: (bool) Return value
-    :returns: (int) ``pubBody``
     :SteamWorks: `SetHTTPRequestRawPostBody <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestRawPostBody>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pubBody`` is no longer a paramer, and is instead an additional return value
 
 **Example**::
 
     local json = '{"action":"submit","data":"value"}'
     local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/action')
-    Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', #json)
+    Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', json, #json)
     Steam.HTTP.SendHTTPRequest(hReq)
 
 .. function:: HTTP.SetHTTPRequestRequiresVerifiedCertificate(hRequest, bRequireVerifiedCertificate)

@@ -6,9 +6,6 @@ ISteamNetworkingUtils
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
-.. note::
-   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
-
 List of Functions
 -----------------
 
@@ -94,7 +91,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszBuf`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pszBuf`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location2)
 
@@ -125,8 +122,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutDataType`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pOutScope`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutDataType`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutScope`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingUtils.GetDirectPingToPOP(popID)
 
@@ -172,7 +169,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``list`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``list`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingUtils.GetPingToDataCenter(popID)
 
@@ -185,7 +182,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pViaRelayPoP`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pViaRelayPoP`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingUtils.GetRealIdentityForFakeIP(fakeIP)
 
@@ -198,7 +195,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutRealIdentity`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutRealIdentity`` is no longer a parameter, and is instead an additional return value
 
 .. function:: NetworkingUtils.GetRelayNetworkStatus()
 
@@ -210,7 +207,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pDetails`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -424,7 +421,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAddr`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pAddr`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -445,7 +442,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``buf`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -463,7 +460,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pIdentity`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pIdentity`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -483,7 +480,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``buf`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

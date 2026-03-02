@@ -5,9 +5,11 @@
 
 luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you’re building games with [Love2D](https://love2d.org/).
 
-## Getting Started/Documentation
+## Getting Started / Documentation
 
 This README file is purposefully small, all our documentation is in [luasteam.readthedocs.io](https://luasteam.readthedocs.io).
+
+**Migrating from v4?** See the [Migration Guide](https://luasteam.readthedocs.io/en/stable/migration.html).
 
 ## Contributing
 

@@ -56,7 +56,10 @@ impl Generator {
                     let get = format!("luasteam::checkuint64(L, {})", lua_idx);
                     if is_steam_id && !create_var {
                         // Struct field assignment: wrap so the CSteamID field gets a proper value
-                        out.line(&format!("{}{} = {}({});", type_prefix, value_accessor, type_name, get));
+                        out.line(&format!(
+                            "{}{} = {}({});",
+                            type_prefix, value_accessor, type_name, get
+                        ));
                     } else if is_steam_id {
                         // Local var: use uint64 directly (flat API takes uint64, not CSteamID/CGameID)
                         out.line(&format!("uint64 {} = {};", value_accessor, get));

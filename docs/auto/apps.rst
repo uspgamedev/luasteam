@@ -69,9 +69,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAppID`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pbAvailable`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pAppID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAvailable`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchName`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Apps.BIsAppInstalled(appID)
 
@@ -169,8 +169,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSecondsAllowed`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punSecondsPlayed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punSecondsAllowed`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punSecondsPlayed`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -209,7 +209,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchFolder`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchFolder`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -261,10 +261,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punFlags`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punBuildID`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchBetaName`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchDescription`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punFlags`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBuildID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchBetaName`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchDescription`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Apps.GetCurrentBetaName(cchNameBufferSize)
 
@@ -277,7 +277,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchName`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Apps.GetCurrentGameLanguage()
 
@@ -319,8 +319,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punBytesTotal`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punBytesDownloaded`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBytesTotal`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Apps.GetEarliestPurchaseUnixTime(nAppID)
 
@@ -356,7 +356,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDepots`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pvecDepots`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -376,7 +376,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszCommandLine`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pszCommandLine`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -412,8 +412,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAvailable`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnPrivate`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnAvailable`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnPrivate`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Apps.InstallDLC(nAppID)
 

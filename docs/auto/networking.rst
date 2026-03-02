@@ -6,9 +6,6 @@ ISteamNetworking
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
-.. note::
-   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
-
 List of Functions
 -----------------
 
@@ -158,8 +155,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnIP`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnPort`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnIP`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnPort`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.GetMaxPacketSize(hSocket)
 
@@ -180,7 +177,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pConnectionState`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pConnectionState`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -212,10 +209,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDRemote`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``peSocketStatus`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punIPRemote`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punPortRemote`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pSteamIDRemote`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``peSocketStatus`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punIPRemote`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punPortRemote`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.IsDataAvailable(hListenSocket)
 
@@ -229,8 +226,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``phSocket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``phSocket`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.IsDataAvailableOnSocket(hSocket)
 
@@ -243,7 +240,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.IsP2PPacketAvailable(nChannel)
 
@@ -256,7 +253,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -281,9 +278,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``psteamIDRemote`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``psteamIDRemote`` is no longer a parameter, and is instead an additional return value
 
     **Notes:**
 
@@ -303,9 +300,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``phSocket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``phSocket`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.RetrieveDataFromSocket(hSocket, cubDest)
 
@@ -320,8 +317,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Networking.SendDataOnSocket(hSocket, pubData, cubData, bReliable)
 

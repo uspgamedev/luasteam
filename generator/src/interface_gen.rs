@@ -531,7 +531,11 @@ impl Generator {
                     }
                     cpp.preceeding_blank_line();
                     generated_methods.push((method, lua_method_name.clone()));
-                    method_signatures.push((lua_method_name, signature));
+                    let mut sig = signature;
+                    if lua_method_name != method.methodname {
+                        sig.original_cpp_name = Some(method.methodname.clone());
+                    }
+                    method_signatures.push((lua_method_name, sig));
                     stats.methods_generated += 1;
                     interface_methods_generated += 1;
                 }
@@ -843,7 +847,12 @@ impl Generator {
                                     size_param,
                                     lua_idx
                                 ));
-                                sig.add_size_param(size_param.to_string(), LType::Integer, param.paramname.clone(), true);
+                                sig.add_size_param(
+                                    size_param.to_string(),
+                                    LType::Integer,
+                                    param.paramname.clone(),
+                                    true,
+                                );
                                 lua_idx += 1;
                             }
                         } else if let Some(c) =
@@ -944,7 +953,10 @@ impl Generator {
                                         && param.paramname == "pubRGB")
                                     || (method.methodname_flat
                                         == "SteamAPI_ISteamNetworking_SendDataOnSocket"
-                                        && param.paramname == "pubData"),
+                                        && param.paramname == "pubData")
+                                    || (method.methodname_flat
+                                        == "SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody"
+                                        && param.paramname == "pubBody"),
                             )
                             .ok_or_else(|| {
                                 SkipReason::UnsupportedType(format!(
@@ -972,7 +984,12 @@ impl Generator {
                                     size,
                                     lua_idx
                                 ));
-                                sig.add_size_param(size.to_string(), LType::Integer, param.paramname.clone(), false);
+                                sig.add_size_param(
+                                    size.to_string(),
+                                    LType::Integer,
+                                    param.paramname.clone(),
+                                    false,
+                                );
                                 lua_idx += 1;
                             } else {
                                 assert!(
@@ -1078,7 +1095,12 @@ impl Generator {
         let call = if cpp_call_params.is_empty() {
             format!("{}({})", method.methodname_flat, call_on)
         } else {
-            format!("{}({}, {})", method.methodname_flat, call_on, cpp_call_params.join(", "))
+            format!(
+                "{}({}, {})",
+                method.methodname_flat,
+                call_on,
+                cpp_call_params.join(", ")
+            )
         };
 
         if method.returntype == "void" {
@@ -1173,9 +1195,13 @@ impl Generator {
                             "SteamAPI_ISteamUtils_GetImageRGBA",
                             "SteamAPI_ISteamUtils_GetAPICallResult",
                             "SteamAPI_ISteamGameServer_GetNextOutgoingPacket",
+                            "SteamAPI_ISteamHTTP_GetHTTPResponseHeaderValue",
+                            "SteamAPI_ISteamHTTP_GetHTTPResponseBodyData",
+                            "SteamAPI_ISteamHTTP_GetHTTPStreamingResponseBodyData",
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {
+                            // maintain the same size as sent as argument
                             param.output_array_size_param().unwrap()
                         } else if [
                             "SteamAPI_ISteamRemoteStorage_FileRead",

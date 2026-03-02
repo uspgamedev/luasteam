@@ -2913,8 +2913,10 @@ example = """
 function Steam.HTTP.OnHTTPRequestCompleted(data)
     if data.m_eStatusCode == 200 then
         local size = Steam.HTTP.GetHTTPResponseBodySize(data.m_hRequest)
-        local body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
-        handleResponse(body)
+        local ok, body = Steam.HTTP.GetHTTPResponseBodyData(data.m_hRequest, size)
+        if ok then
+            handleResponse(body)
+        end
     end
     Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
 end
@@ -2944,7 +2946,7 @@ print(string.format('Download: %.1f%%', pct * 100))
 example = """
 local json = '{"action":"submit","data":"value"}'
 local hReq = Steam.HTTP.CreateHTTPRequest('POST', 'https://api.example.com/action')
-Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', #json)
+Steam.HTTP.SetHTTPRequestRawPostBody(hReq, 'application/json', json, #json)
 Steam.HTTP.SendHTTPRequest(hReq)
 """
 
@@ -2953,8 +2955,10 @@ example = """
 function Steam.HTTP.OnHTTPRequestCompleted(data)
     local size = Steam.HTTP.GetHTTPResponseHeaderSize(data.m_hRequest, 'Content-Type')
     if size > 0 then
-        local ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
-        print('Content-Type:', ct)
+        local ok, ct = Steam.HTTP.GetHTTPResponseHeaderValue(data.m_hRequest, 'Content-Type', size)
+        if ok then
+            print('Content-Type:', ct)
+        end
     end
     Steam.HTTP.ReleaseHTTPRequest(data.m_hRequest)
 end
@@ -3221,7 +3225,7 @@ Steam.Input.RunFrame(false)
 
 [ISteamInput.GetConnectedControllers]
 example = """
-local controllers = Steam.Input.GetConnectedControllers()
+local _, controllers = Steam.Input.GetConnectedControllers()
 for _, handle in ipairs(controllers) do
     local inputType = Steam.Input.GetInputTypeForHandle(handle)
     print('Controller type:', inputType)
@@ -3236,8 +3240,8 @@ local gameActionSet = Steam.Input.GetActionSetHandle('GameControls')
 
 [ISteamInput.ActivateActionSet]
 example = """
--- Switch to gameplay controls when game starts
-Steam.Input.ActivateActionSet(controllerHandle, gameActionSetHandle)
+local menuActionSet = Steam.Input.GetActionSetHandle('MenuControls')
+Steam.Input.ActivateActionSet(Steam.STEAM_INPUT_HANDLE_ALL_CONTROLLERS, menuActionSet)
 """
 
 [ISteamInput.GetDigitalActionHandle]
@@ -3249,7 +3253,7 @@ local attackAction = Steam.Input.GetDigitalActionHandle('Attack')
 [ISteamInput.GetDigitalActionData]
 example = """
 local actionData = Steam.Input.GetDigitalActionData(controllerHandle, jumpActionHandle)
-if actionData.bState ~= 0 then
+if actionData.bState then
     player.jump()
 end
 """
@@ -3293,7 +3297,7 @@ notes = ["See :func:`Input.GetConnectedControllers`'s example."]
 
 [ISteamInput.GetStringForActionOrigin]
 example = """
-local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
+local _, origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
 if #origins > 0 then
     local label = Steam.Input.GetStringForActionOrigin(origins[1])
     print('Press ' .. label .. ' to jump')
@@ -3302,9 +3306,9 @@ end
 
 [ISteamInput.GetGlyphPNGForActionOrigin]
 example = """
-local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
+local _, origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
 if #origins > 0 then
-    local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], 'Medium', 0)
+    local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], Steam.k_ESteamInputGlyphSize_Medium, 0)
     loadButtonIcon(glyphPath)
 end
 """
@@ -3611,7 +3615,7 @@ Steam.HTMLSurface.Init()
 example = """
 Steam.HTMLSurface.CreateBrowser(nil, nil, function(data, err)
     if not err then
-        local hBrowser = data.m_unBrowserHandle
+        local hBrowser = data.unBrowserHandle
         Steam.HTMLSurface.SetSize(hBrowser, 1280, 720)
         Steam.HTMLSurface.LoadURL(hBrowser, 'https://store.steampowered.com', nil)
     end
@@ -3667,12 +3671,12 @@ Steam.HTMLSurface.MouseMove(hBrowser, mouseX, mouseY)
 
 [ISteamHTMLSurface.MouseDown]
 example = """
-Steam.HTMLSurface.MouseDown(hBrowser, 'eHTMLMouseButton_Left')
+Steam.HTMLSurface.MouseDown(hBrowser, Steam.eHTMLMouseButton_Left)
 """
 
 [ISteamHTMLSurface.MouseUp]
 example = """
-Steam.HTMLSurface.MouseUp(hBrowser, 'eHTMLMouseButton_Left')
+Steam.HTMLSurface.MouseUp(hBrowser, Steam.eHTMLMouseButton_Left)
 """
 
 [ISteamHTMLSurface.MouseWheel]
@@ -3718,33 +3722,33 @@ Steam.HTMLSurface.SetVerticalScroll(hBrowser, scrollPos)
 [ISteamHTMLSurface.OnHTML_NeedsPaint]
 example = """
 function Steam.HTMLSurface.OnHTML_NeedsPaint(data)
-    -- data.m_pBGRA contains raw BGRA pixel data
-    -- data.m_unWide, data.m_unTall = dimensions
-    updateBrowserTexture(data.m_pBGRA, data.m_unWide, data.m_unTall)
+    -- data.pBGRA contains raw BGRA pixel data
+    -- data.unWide, data.unTall = dimensions
+    updateBrowserTexture(data.pBGRA, data.unWide, data.unTall)
 end
 """
 
 [ISteamHTMLSurface.OnHTML_StartRequest]
 example = """
 function Steam.HTMLSurface.OnHTML_StartRequest(data)
-    print('Navigating to:', data.m_pchURL)
+    print('Navigating to:', data.pchURL)
     -- Call AllowStartRequest to allow or block navigation
-    Steam.HTMLSurface.AllowStartRequest(data.m_unBrowserHandle, true)
+    Steam.HTMLSurface.AllowStartRequest(data.unBrowserHandle, true)
 end
 """
 
 [ISteamHTMLSurface.OnHTML_URLChanged]
 example = """
 function Steam.HTMLSurface.OnHTML_URLChanged(data)
-    print('URL changed to:', data.m_pchURL)
-    updateAddressBar(data.m_pchURL)
+    print('URL changed to:', data.pchURL)
+    updateAddressBar(data.pchURL)
 end
 """
 
 [ISteamHTMLSurface.OnHTML_FinishedRequest]
 example = """
 function Steam.HTMLSurface.OnHTML_FinishedRequest(data)
-    print('Page loaded:', data.m_pchURL)
+    print('Page loaded:', data.pchURL)
     hideLoadingSpinner()
 end
 """
@@ -3752,15 +3756,15 @@ end
 [ISteamHTMLSurface.OnHTML_ChangedTitle]
 example = """
 function Steam.HTMLSurface.OnHTML_ChangedTitle(data)
-    windowTitle = data.m_pchTitle
+    windowTitle = data.pchTitle
 end
 """
 
 [ISteamHTMLSurface.OnHTML_JSAlert]
 example = """
 function Steam.HTMLSurface.OnHTML_JSAlert(data)
-    showAlertDialog(data.m_pchMessage)
-    Steam.HTMLSurface.JSDialogResponse(data.m_unBrowserHandle, true)
+    showAlertDialog(data.pchMessage)
+    Steam.HTMLSurface.JSDialogResponse(data.unBrowserHandle, true)
 end
 """
 

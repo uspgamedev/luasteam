@@ -180,12 +180,12 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAppID`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnIP`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnConnPort`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnQueryPort`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punFlags`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pRTime32LastPlayedOnServer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnAppID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnIP`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnConnPort`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnQueryPort`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punFlags`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pRTime32LastPlayedOnServer`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Matchmaking.GetFavoriteGameCount()
 
@@ -217,9 +217,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDUser`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pvData`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``peChatEntryType`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pSteamIDUser`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``peChatEntryType`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Matchmaking.GetLobbyData(steamIDLobby, pchKey)
 
@@ -250,8 +250,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pchValue`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchKey`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Matchmaking.GetLobbyDataCount(steamIDLobby)
 
@@ -274,9 +274,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punGameServerIP`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punGameServerPort`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``psteamIDGameServer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``punGameServerIP`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punGameServerPort`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``psteamIDGameServer`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

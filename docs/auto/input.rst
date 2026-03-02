@@ -6,9 +6,6 @@ ISteamInput
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
-.. note::
-   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
-
 List of Functions
 -----------------
 
@@ -80,8 +77,8 @@ Function Reference
 
 **Example**::
 
-    -- Switch to gameplay controls when game starts
-    Steam.Input.ActivateActionSet(controllerHandle, gameActionSetHandle)
+    local menuActionSet = Steam.Input.GetActionSetHandle('MenuControls')
+    Steam.Input.ActivateActionSet(Steam.STEAM_INPUT_HANDLE_ALL_CONTROLLERS, menuActionSet)
 
 .. function:: Input.ActivateActionSetLayer(inputHandle, actionSetLayerHandle)
 
@@ -161,7 +158,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``handlesOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Input.GetAnalogActionData(inputHandle, analogActionHandle)
 
@@ -203,7 +200,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``originsOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Input.GetConnectedControllers()
 
@@ -215,11 +212,11 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``handlesOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``handlesOut`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
-    local controllers = Steam.Input.GetConnectedControllers()
+    local _, controllers = Steam.Input.GetConnectedControllers()
     for _, handle in ipairs(controllers) do
         local inputType = Steam.Input.GetInputTypeForHandle(handle)
         print('Controller type:', inputType)
@@ -257,8 +254,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pMajor`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pMinor`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pMajor`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pMinor`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Input.GetDigitalActionData(inputHandle, digitalActionHandle)
 
@@ -272,7 +269,7 @@ Function Reference
 **Example**::
 
     local actionData = Steam.Input.GetDigitalActionData(controllerHandle, jumpActionHandle)
-    if actionData.bState ~= 0 then
+    if actionData.bState then
         player.jump()
     end
 
@@ -302,7 +299,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``originsOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``originsOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Input.GetGamepadIndexForController(ulinputHandle)
 

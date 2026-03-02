@@ -113,7 +113,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchOutFilteredText`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchOutFilteredText`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -144,8 +144,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallback`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pbFailed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pCallback`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbFailed`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Utils.GetAppID()
 
@@ -190,7 +190,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchText`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchText`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Utils.GetEnteredGamepadTextLength()
 
@@ -238,7 +238,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -259,8 +259,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnWidth`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pnHeight`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pnWidth`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnHeight`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -329,7 +329,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbFailed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbFailed`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Utils.IsOverlayEnabled()
 

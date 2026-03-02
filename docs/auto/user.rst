@@ -179,8 +179,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pDestBuffer`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -215,8 +215,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pTicket`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -245,7 +245,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcbCompressed`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pcbCompressed`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -275,8 +275,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pcbTicket`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pTicket`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcbTicket`` is no longer a parameter, and is instead an additional return value
 
 .. function:: User.GetGameBadgeLevel(nSeries, bFoil)
 
@@ -347,7 +347,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchBuffer`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -369,8 +369,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``nBytesWritten`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pDestBuffer`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``nBytesWritten`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

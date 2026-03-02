@@ -108,24 +108,45 @@ pub struct LuaMethodSignature {
     pub return_type: Option<LType>,
     /// Which parameters are output parameters (by parameter name)
     pub output_params: Vec<LuaTypeInfo>,
+    /// Original C++ method name, if the Lua name differs (e.g. overload with type suffix).
+    /// e.g. `GetUserStat` when the Lua name is `GetUserStatInt32`.
+    pub original_cpp_name: Option<String>,
 }
 
 impl LuaMethodSignature {
     pub fn add_param(&mut self, name: String, ltype: LType) {
-        self.params.push(LuaTypeInfo { name, ltype, size_of: None });
+        self.params.push(LuaTypeInfo {
+            name,
+            ltype,
+            size_of: None,
+        });
     }
     pub fn set_return_type(&mut self, ltype: LType) {
         assert!(self.return_type.is_none(), "Return type already set");
         self.return_type = Some(ltype);
     }
     pub fn add_output_param(&mut self, name: String, ltype: LType) {
-        self.output_params.push(LuaTypeInfo { name, ltype, size_of: None });
+        self.output_params.push(LuaTypeInfo {
+            name,
+            ltype,
+            size_of: None,
+        });
     }
     /// Add a size/count parameter that describes the length of another array param.
     /// `array_name`: the name of the array param this sizes.
     /// `is_output`: true if the array is an output (return value), false if input.
-    pub fn add_size_param(&mut self, name: String, ltype: LType, array_name: String, is_output: bool) {
-        self.params.push(LuaTypeInfo { name, ltype, size_of: Some((array_name, is_output)) });
+    pub fn add_size_param(
+        &mut self,
+        name: String,
+        ltype: LType,
+        array_name: String,
+        is_output: bool,
+    ) {
+        self.params.push(LuaTypeInfo {
+            name,
+            ltype,
+            size_of: Some((array_name, is_output)),
+        });
     }
 
     /// Formats the Lua method signature as a comment string, e.g.

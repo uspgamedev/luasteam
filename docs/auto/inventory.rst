@@ -6,6 +6,9 @@ ISteamInventory
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
+.. note::
+   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
+
 List of Functions
 -----------------
 
@@ -70,7 +73,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -89,7 +92,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.CheckResultSteamID(resultHandle, steamIDExpected)
 
@@ -112,7 +115,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -132,7 +135,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.DestroyResult(resultHandle)
 
@@ -161,7 +164,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
 
@@ -176,7 +179,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.GetAllItems()
 
@@ -188,7 +191,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -209,8 +212,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pItemDefIDs`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punItemDefIDsArraySize`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize)
 
@@ -224,8 +227,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pItemDefIDs`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punItemDefIDsArraySize`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -249,8 +252,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValueBuffer`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punValueBufferSizeOut`` is no longer a parameter, and is instead an additional return value
 
     **Notes:**
 
@@ -268,8 +271,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCurrentPrice`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``pBasePrice`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pCurrentPrice`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pBasePrice`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
 
@@ -283,7 +286,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -312,8 +315,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pchValueBuffer`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punValueBufferSizeOut`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.GetResultItems(resultHandle, punOutItemsArraySize)
 
@@ -328,8 +331,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutItemsArray`` is no longer a paramer, and is instead an additional return value
-    * Parameter ``punOutItemsArraySize`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pOutItemsArray`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punOutItemsArraySize`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -375,7 +378,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.InspectItem(pchItemToken)
 
@@ -388,7 +391,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.LoadItemDefinitions()
 
@@ -457,7 +460,11 @@ Function Reference
     :param str pchPropertyName:
     :param bool bValue:
     :returns: (bool) Return value
-    :SteamWorks: `SetPropertyBool <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyBool>`_
+    :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetProperty``. luasteam exposes each overload as a distinct function with a type suffix.
 
 .. function:: Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue)
 
@@ -468,7 +475,11 @@ Function Reference
     :param str pchPropertyName:
     :param float flValue:
     :returns: (bool) Return value
-    :SteamWorks: `SetPropertyFloat <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyFloat>`_
+    :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetProperty``. luasteam exposes each overload as a distinct function with a type suffix.
 
 .. function:: Inventory.SetPropertyInt64(handle, nItemID, pchPropertyName, nValue)
 
@@ -479,7 +490,11 @@ Function Reference
     :param str pchPropertyName:
     :param uint64 nValue:
     :returns: (bool) Return value
-    :SteamWorks: `SetPropertyInt64 <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyInt64>`_
+    :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetProperty``. luasteam exposes each overload as a distinct function with a type suffix.
 
 .. function:: Inventory.SetPropertyString(handle, nItemID, pchPropertyName, pchPropertyValue)
 
@@ -490,7 +505,11 @@ Function Reference
     :param str pchPropertyName:
     :param str pchPropertyValue:
     :returns: (bool) Return value
-    :SteamWorks: `SetPropertyString <https://partner.steamgames.com/doc/api/ISteamInventory#SetPropertyString>`_
+    :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetProperty``. luasteam exposes each overload as a distinct function with a type suffix.
 
 .. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
 
@@ -529,7 +548,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
 
@@ -548,7 +567,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 .. function:: Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest)
 
@@ -563,7 +582,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -581,7 +600,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 

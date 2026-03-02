@@ -155,18 +155,9 @@ impl DocGenerator {
         doc.push_str(".. note::\n");
         doc.push_str("   This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.\n");
         doc.push_str("   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.\n\n");
-        // Check if any methods have multiple overloads (detected by searching for similar names)
-        let has_overloads = !method_signatures.is_empty() && {
-            let mut name_counts: HashMap<String, usize> = HashMap::new();
-            for (lua_method_name, _) in method_signatures {
-                let base_name = lua_method_name
-                    .chars()
-                    .take_while(|c| c.is_alphabetic())
-                    .collect::<String>();
-                *name_counts.entry(base_name).or_insert(0) += 1;
-            }
-            name_counts.values().any(|&count| count > 1)
-        };
+        // Check if any methods are overloads (C++ method exposed with a type suffix).
+        // original_cpp_name is set precisely for these cases.
+        let has_overloads = method_signatures.iter().any(|(_, sig)| sig.original_cpp_name.is_some());
         if has_overloads {
             doc.push_str(".. note::\n");
             doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
@@ -354,7 +345,10 @@ impl DocGenerator {
                     param_desc.to_string()
                 } else if let Some((array_name, is_output)) = &param.size_of {
                     if *is_output {
-                        format!("size of the buffer to be allocated to hold the return value ``{}``", array_name)
+                        format!(
+                            "size of the buffer to be allocated to hold the return value ``{}``",
+                            array_name
+                        )
                     } else {
                         format!("size of the input array ``{}``", array_name)
                     }
@@ -382,11 +376,15 @@ impl DocGenerator {
             ));
         }
 
-        // SteamWorks link (extract method name from lua_method_name for URL)
-        let method_name_for_url = lua_method_name;
+        // SteamWorks link — use the original C++ method name for the URL anchor when the
+        // Lua name has a type suffix (e.g. GetUserStatInt32 → #GetUserStat).
+        let cpp_method_name = signature
+            .original_cpp_name
+            .as_deref()
+            .unwrap_or(lua_method_name);
         doc.push_str(&format!(
             "    :SteamWorks: `{} <https://partner.steamgames.com/doc/api/{}#{}>`_\n\n",
-            method_name_for_url, interface_name, method_name_for_url
+            cpp_method_name, interface_name, cpp_method_name
         ));
 
         // Description from custom docs
@@ -397,11 +395,19 @@ impl DocGenerator {
         }
 
         // Signature differences notes
-        if !signature.output_params.is_empty() {
+        let has_sig_diffs =
+            signature.original_cpp_name.is_some() || !signature.output_params.is_empty();
+        if has_sig_diffs {
             doc.push_str("    **Signature differences from C++ API:**\n\n");
+            if let Some(cpp_name) = &signature.original_cpp_name {
+                doc.push_str(&format!(
+                    "    * In C++, this is an overloaded method called ``{}``. luasteam exposes each overload as a distinct function with a type suffix.\n",
+                    cpp_name
+                ));
+            }
             for output_param in &signature.output_params {
                 doc.push_str(&format!(
-                    "    * Parameter ``{}`` is no longer a paramer, and is instead an additional return value\n",
+                    "    * Parameter ``{}`` is no longer a parameter, and is instead an additional return value\n",
                     output_param.name
                 ));
             }
@@ -454,10 +460,7 @@ impl DocGenerator {
 
         for param in &manual_doc.params {
             if param.description.is_empty() {
-                doc.push_str(&format!(
-                    "    :param {} {}:\n",
-                    param.ptype, param.name
-                ));
+                doc.push_str(&format!("    :param {} {}:\n", param.ptype, param.name));
             } else {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
@@ -676,7 +679,8 @@ impl DocGenerator {
     /// breaks the field list parser. In that case the type is placed in the description instead.
     fn format_param_field(type_str: &str, name: &str, desc: &str) -> String {
         // If the type contains RST role markup, embed it in the description
-        if type_str.contains(":ref:") || type_str.contains(":func:") || type_str.contains(":class:") {
+        if type_str.contains(":ref:") || type_str.contains(":func:") || type_str.contains(":class:")
+        {
             if desc.is_empty() {
                 format!("    :param {}: ({})\n", name, type_str)
             } else {
@@ -699,14 +703,24 @@ impl DocGenerator {
             ctype.trim()
         };
         // Strip const and pointer/reference decorators
-        let base = base.trim_start_matches("const ").trim_end_matches(" *").trim_end_matches(" &").trim();
+        let base = base
+            .trim_start_matches("const ")
+            .trim_end_matches(" *")
+            .trim_end_matches(" &")
+            .trim();
         match (base, is_array) {
             // Fixed-size byte/char arrays are pushed as Lua strings
             ("char", true) | ("uint8", true) => "string".to_string(),
             ("bool", _) => "bool".to_string(),
             ("float", _) | ("double", _) => "float".to_string(),
-            ("int8", _) | ("int16", _) | ("int32", _) | ("int", _) | ("unsigned int", _)
-            | ("uint8", _) | ("uint16", _) | ("uint32", _) => "int".to_string(),
+            ("int8", _)
+            | ("int16", _)
+            | ("int32", _)
+            | ("int", _)
+            | ("unsigned int", _)
+            | ("uint8", _)
+            | ("uint16", _)
+            | ("uint32", _) => "int".to_string(),
             ("int64", _) | ("uint64", _) | ("int64_t", _) | ("uint64_t", _) => "uint64".to_string(),
             ("CSteamID", _) => "uint64".to_string(),
             ("char", false) => "string".to_string(),

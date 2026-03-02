@@ -238,7 +238,10 @@ impl LuaLsGenerator {
         for param in signature.params.iter() {
             if let Some((array_name, is_output)) = &param.size_of {
                 let desc = if *is_output {
-                    format!("size of the buffer to allocate for return value {}", array_name)
+                    format!(
+                        "size of the buffer to allocate for return value {}",
+                        array_name
+                    )
                 } else {
                     format!("size of the input array {}", array_name)
                 };
@@ -322,4 +325,3 @@ impl LuaLsGenerator {
         fs::write(path, cb.finish()).expect("Unable to write LuaLS callback_interfaces file");
     }
 }
-

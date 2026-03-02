@@ -6,6 +6,9 @@ ISteamGameServerStats
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
+.. note::
+   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
+
 List of Functions
 -----------------
 
@@ -50,7 +53,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a paramer, and is instead an additional return value
+    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -67,11 +70,12 @@ Function Reference
     :param str pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
-    :SteamWorks: `GetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatFloat>`_
+    :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStat>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+    * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
+    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
 
 .. function:: GameServerStats.GetUserStatInt32(steamIDUser, pchName)
 
@@ -81,11 +85,12 @@ Function Reference
     :param str pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
-    :SteamWorks: `GetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStatInt32>`_
+    :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStat>`_
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pData`` is no longer a paramer, and is instead an additional return value
+    * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
+    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
 
 **Example**::
 
@@ -129,7 +134,11 @@ Function Reference
     :param str pchName:
     :param float fData:
     :returns: (bool) Return value
-    :SteamWorks: `SetUserStatFloat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatFloat>`_
+    :SteamWorks: `SetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStat>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
 
 .. function:: GameServerStats.SetUserStatInt32(steamIDUser, pchName, nData)
 
@@ -139,7 +148,11 @@ Function Reference
     :param str pchName:
     :param int nData:
     :returns: (bool) Return value
-    :SteamWorks: `SetUserStatInt32 <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStatInt32>`_
+    :SteamWorks: `SetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStat>`_
+
+    **Signature differences from C++ API:**
+
+    * In C++, this is an overloaded method called ``SetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
 
 **Example**::
 
