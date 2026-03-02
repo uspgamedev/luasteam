@@ -116,7 +116,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_identityRemote** -- m_identityRemote
+    * **data.m_identityRemote** *(SteamNetworkingIdentity)*
 
 .. function:: NetworkingMessages.OnSteamNetworkingMessagesSessionFailed
 
@@ -124,7 +124,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_info** -- m_info
+    * **data.m_info** *(SteamNetConnectionInfo_t)*
 
 **Example**::
 

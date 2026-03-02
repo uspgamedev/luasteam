@@ -211,10 +211,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_ulBeaconID** -- m_ulBeaconID
-    * **data.m_SteamIDBeaconOwner** -- m_SteamIDBeaconOwner
-    * **data.m_rgchConnectString** -- m_rgchConnectString
+    * **data.m_eResult** *(EResult)*
+    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
+    * **data.m_SteamIDBeaconOwner** *(uint64)*
+    * **data.m_rgchConnectString** *(string)*
 
 **Example**::
 
@@ -230,8 +230,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_ulBeaconID** -- m_ulBeaconID
+    * **data.m_eResult** *(EResult)*
+    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
 
 .. function:: Parties.OnReservationNotificationCallback
 
@@ -239,8 +239,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulBeaconID** -- m_ulBeaconID
-    * **data.m_steamIDJoiner** -- m_steamIDJoiner
+    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
+    * **data.m_steamIDJoiner** *(uint64)*
 
 .. function:: Parties.OnChangeNumOpenSlotsCallback
 
@@ -248,7 +248,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 .. function:: Parties.OnAvailableBeaconLocationsUpdated
 

@@ -1461,12 +1461,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_handle** -- m_handle
-    * **data.m_eResult** -- m_eResult
-    * **data.m_unNumResultsReturned** -- m_unNumResultsReturned
-    * **data.m_unTotalMatchingResults** -- m_unTotalMatchingResults
-    * **data.m_bCachedData** -- m_bCachedData
-    * **data.m_rgchNextCursor** -- m_rgchNextCursor
+    * **data.m_handle** *(UGCQueryHandle_t)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_unNumResultsReturned** *(int)*
+    * **data.m_unTotalMatchingResults** *(int)*
+    * **data.m_bCachedData** *(bool)*
+    * **data.m_rgchNextCursor** *(string)*
 
 **Example**::
 
@@ -1482,8 +1482,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_details** -- m_details
-    * **data.m_bCachedData** -- m_bCachedData
+    * **data.m_details** *(SteamUGCDetails_t)*
+    * **data.m_bCachedData** *(bool)*
 
 .. function:: UGC.OnCreateItemResult
 
@@ -1491,9 +1491,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** *(bool)*
 
 .. function:: UGC.OnSubmitItemUpdateResult
 
@@ -1501,9 +1501,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** *(bool)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: UGC.OnItemInstalled
 
@@ -1511,10 +1511,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_hLegacyContent** -- m_hLegacyContent
-    * **data.m_unManifestID** -- m_unManifestID
+    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_hLegacyContent** *(UGCHandle_t)*
+    * **data.m_unManifestID** *(uint64)*
 
 **Example**::
 
@@ -1532,9 +1532,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eResult** -- m_eResult
+    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -1552,9 +1552,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bWasAddRequest** -- m_bWasAddRequest
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bWasAddRequest** *(bool)*
 
 .. function:: UGC.OnSetUserItemVoteResult
 
@@ -1562,9 +1562,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bVoteUp** -- m_bVoteUp
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bVoteUp** *(bool)*
 
 .. function:: UGC.OnGetUserItemVoteResult
 
@@ -1572,11 +1572,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bVotedUp** -- m_bVotedUp
-    * **data.m_bVotedDown** -- m_bVotedDown
-    * **data.m_bVoteSkipped** -- m_bVoteSkipped
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bVotedUp** *(bool)*
+    * **data.m_bVotedDown** *(bool)*
+    * **data.m_bVoteSkipped** *(bool)*
 
 .. function:: UGC.OnStartPlaytimeTrackingResult
 
@@ -1584,7 +1584,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 .. function:: UGC.OnStopPlaytimeTrackingResult
 
@@ -1592,7 +1592,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 .. function:: UGC.OnAddUGCDependencyResult
 
@@ -1600,9 +1600,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nChildPublishedFileId** -- m_nChildPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nChildPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: UGC.OnRemoveUGCDependencyResult
 
@@ -1610,9 +1610,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nChildPublishedFileId** -- m_nChildPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nChildPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: UGC.OnAddAppDependencyResult
 
@@ -1620,9 +1620,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: UGC.OnRemoveAppDependencyResult
 
@@ -1630,9 +1630,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: UGC.OnGetAppDependenciesResult
 
@@ -1640,11 +1640,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_rgAppIDs** -- m_rgAppIDs
-    * **data.m_nNumAppDependencies** -- m_nNumAppDependencies
-    * **data.m_nTotalNumAppDependencies** -- m_nTotalNumAppDependencies
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_rgAppIDs** *(AppId_t)*
+    * **data.m_nNumAppDependencies** *(int)*
+    * **data.m_nTotalNumAppDependencies** *(int)*
 
 .. function:: UGC.OnDeleteItemResult
 
@@ -1652,8 +1652,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: UGC.OnUserSubscribedItemsListChanged
 
@@ -1661,7 +1661,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: UGC.OnWorkshopEULAStatus
 
@@ -1669,10 +1669,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_unVersion** -- m_unVersion
-    * **data.m_rtAction** -- m_rtAction
-    * **data.m_bAccepted** -- m_bAccepted
-    * **data.m_bNeedsAction** -- m_bNeedsAction
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_unVersion** *(int)*
+    * **data.m_rtAction** *(RTime32)*
+    * **data.m_bAccepted** *(bool)*
+    * **data.m_bNeedsAction** *(bool)*
 

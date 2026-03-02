@@ -497,7 +497,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nMinutesBatteryLeft** -- m_nMinutesBatteryLeft
+    * **data.m_nMinutesBatteryLeft** *(int)*
 
 **Example**::
 
@@ -511,9 +511,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAsyncCall** -- m_hAsyncCall
-    * **data.m_iCallback** -- m_iCallback
-    * **data.m_cubParam** -- m_cubParam
+    * **data.m_hAsyncCall** *(SteamAPICall_t)*
+    * **data.m_iCallback** *(int)*
+    * **data.m_cubParam** *(int)*
 
 .. function:: Utils.OnSteamShutdown
 
@@ -535,7 +535,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eCheckFileSignature** -- m_eCheckFileSignature
+    * **data.m_eCheckFileSignature** *(ECheckFileSignature)*
 
 .. function:: Utils.OnGamepadTextInputDismissed
 
@@ -543,9 +543,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSubmitted** -- m_bSubmitted
-    * **data.m_unSubmittedText** -- m_unSubmittedText
-    * **data.m_unAppID** -- m_unAppID
+    * **data.m_bSubmitted** *(bool)*
+    * **data.m_unSubmittedText** *(int)*
+    * **data.m_unAppID** *(AppId_t)*
 
 **Example**::
 
@@ -582,5 +582,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eLanguage** -- m_eLanguage
+    * **data.m_eLanguage** *(int)*
 

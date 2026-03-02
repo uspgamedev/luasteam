@@ -361,7 +361,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDRemote** -- m_steamIDRemote
+    * **data.m_steamIDRemote** *(uint64)*
 
 .. function:: Networking.OnP2PSessionConnectFail
 
@@ -369,8 +369,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDRemote** -- m_steamIDRemote
-    * **data.m_eP2PSessionError** -- m_eP2PSessionError
+    * **data.m_steamIDRemote** *(uint64)*
+    * **data.m_eP2PSessionError** *(int)*
 
 **Example**::
 
@@ -385,8 +385,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSocket** -- m_hSocket
-    * **data.m_hListenSocket** -- m_hListenSocket
-    * **data.m_steamIDRemote** -- m_steamIDRemote
-    * **data.m_eSNetSocketState** -- m_eSNetSocketState
+    * **data.m_hSocket** *(SNetSocket_t)*
+    * **data.m_hListenSocket** *(SNetListenSocket_t)*
+    * **data.m_steamIDRemote** *(uint64)*
+    * **data.m_eSNetSocketState** *(int)*
 

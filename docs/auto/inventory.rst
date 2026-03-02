@@ -614,8 +614,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_handle** -- m_handle
-    * **data.m_result** -- m_result
+    * **data.m_handle** *(SteamInventoryResult_t)*
+    * **data.m_result** *(EResult)*
 
 .. function:: Inventory.OnSteamInventoryFullUpdate
 
@@ -623,7 +623,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_handle** -- m_handle
+    * **data.m_handle** *(SteamInventoryResult_t)*
 
 .. function:: Inventory.OnSteamInventoryDefinitionUpdate
 
@@ -646,10 +646,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** -- m_result
-    * **data.m_steamID** -- m_steamID
-    * **data.m_numEligiblePromoItemDefs** -- m_numEligiblePromoItemDefs
-    * **data.m_bCachedData** -- m_bCachedData
+    * **data.m_result** *(EResult)*
+    * **data.m_steamID** *(uint64)*
+    * **data.m_numEligiblePromoItemDefs** *(int)*
+    * **data.m_bCachedData** *(bool)*
 
 .. function:: Inventory.OnSteamInventoryStartPurchaseResult
 
@@ -657,9 +657,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** -- m_result
-    * **data.m_ulOrderID** -- m_ulOrderID
-    * **data.m_ulTransID** -- m_ulTransID
+    * **data.m_result** *(EResult)*
+    * **data.m_ulOrderID** *(uint64)*
+    * **data.m_ulTransID** *(uint64)*
 
 .. function:: Inventory.OnSteamInventoryRequestPricesResult
 
@@ -667,8 +667,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** -- m_result
-    * **data.m_rgchCurrency** -- m_rgchCurrency
+    * **data.m_result** *(EResult)*
+    * **data.m_rgchCurrency** *(string)*
 
 **Example**::
 

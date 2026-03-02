@@ -214,7 +214,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unSessionID** -- m_unSessionID
+    * **data.m_unSessionID** *(RemotePlaySessionID_t)*
 
 **Example**::
 
@@ -229,7 +229,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unSessionID** -- m_unSessionID
+    * **data.m_unSessionID** *(RemotePlaySessionID_t)*
 
 **Example**::
 
@@ -243,5 +243,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_szConnectURL** -- m_szConnectURL
+    * **data.m_szConnectURL** *(string)*
 

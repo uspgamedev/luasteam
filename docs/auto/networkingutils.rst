@@ -552,11 +552,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eAvail** -- m_eAvail
-    * **data.m_bPingMeasurementInProgress** -- m_bPingMeasurementInProgress
-    * **data.m_eAvailNetworkConfig** -- m_eAvailNetworkConfig
-    * **data.m_eAvailAnyRelay** -- m_eAvailAnyRelay
-    * **data.m_debugMsg** -- m_debugMsg
+    * **data.m_eAvail** *(ESteamNetworkingAvailability)*
+    * **data.m_bPingMeasurementInProgress** *(int)*
+    * **data.m_eAvailNetworkConfig** *(ESteamNetworkingAvailability)*
+    * **data.m_eAvailAnyRelay** *(ESteamNetworkingAvailability)*
+    * **data.m_debugMsg** *(string)*
 
 **Example**::
 

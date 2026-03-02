@@ -510,8 +510,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bStillRetrying** -- m_bStillRetrying
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bStillRetrying** *(bool)*
 
 **Example**::
 
@@ -525,7 +525,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -539,9 +539,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_eAuthSessionResponse** -- m_eAuthSessionResponse
-    * **data.m_OwnerSteamID** -- m_OwnerSteamID
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_eAuthSessionResponse** *(EAuthSessionResponse)*
+    * **data.m_OwnerSteamID** *(uint64)*
 
 **Example**::
 
@@ -559,8 +559,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_OwnerSteamID** -- m_OwnerSteamID
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_OwnerSteamID** *(uint64)*
 
 **Example**::
 
@@ -575,9 +575,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_eDenyReason** -- m_eDenyReason
-    * **data.m_rgchOptionalText** -- m_rgchOptionalText
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_eDenyReason** *(EDenyReason)*
+    * **data.m_rgchOptionalText** *(string)*
 
 **Example**::
 
@@ -592,8 +592,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_eDenyReason** -- m_eDenyReason
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_eDenyReason** *(EDenyReason)*
 
 .. function:: GameServer.OnGSClientAchievementStatus
 
@@ -601,9 +601,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_pchAchievement** -- m_pchAchievement
-    * **data.m_bUnlocked** -- m_bUnlocked
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_pchAchievement** *(string)*
+    * **data.m_bUnlocked** *(bool)*
 
 .. function:: GameServer.OnGSPolicyResponse
 
@@ -611,7 +611,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSecure** -- m_bSecure
+    * **data.m_bSecure** *(int)*
 
 **Example**::
 
@@ -627,10 +627,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nRank** -- m_nRank
-    * **data.m_unTotalConnects** -- m_unTotalConnects
-    * **data.m_unTotalMinutesPlayed** -- m_unTotalMinutesPlayed
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nRank** *(int)*
+    * **data.m_unTotalConnects** *(int)*
+    * **data.m_unTotalMinutesPlayed** *(int)*
 
 .. function:: GameServer.OnGSClientGroupStatus
 
@@ -638,10 +638,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamIDUser** -- m_SteamIDUser
-    * **data.m_SteamIDGroup** -- m_SteamIDGroup
-    * **data.m_bMember** -- m_bMember
-    * **data.m_bOfficer** -- m_bOfficer
+    * **data.m_SteamIDUser** *(uint64)*
+    * **data.m_SteamIDGroup** *(uint64)*
+    * **data.m_bMember** *(bool)*
+    * **data.m_bOfficer** *(bool)*
 
 **Example**::
 
@@ -657,13 +657,13 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_unReputationScore** -- m_unReputationScore
-    * **data.m_bBanned** -- m_bBanned
-    * **data.m_unBannedIP** -- m_unBannedIP
-    * **data.m_usBannedPort** -- m_usBannedPort
-    * **data.m_ulBannedGameID** -- m_ulBannedGameID
-    * **data.m_unBanExpires** -- m_unBanExpires
+    * **data.m_eResult** *(EResult)*
+    * **data.m_unReputationScore** *(int)*
+    * **data.m_bBanned** *(bool)*
+    * **data.m_unBannedIP** *(int)*
+    * **data.m_usBannedPort** *(int)*
+    * **data.m_ulBannedGameID** *(uint64)*
+    * **data.m_unBanExpires** *(int)*
 
 .. function:: GameServer.OnAssociateWithClanResult
 
@@ -671,7 +671,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 .. function:: GameServer.OnComputeNewPlayerCompatibilityResult
 
@@ -679,9 +679,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_cPlayersThatDontLikeCandidate** -- m_cPlayersThatDontLikeCandidate
-    * **data.m_cPlayersThatCandidateDoesntLike** -- m_cPlayersThatCandidateDoesntLike
-    * **data.m_cClanPlayersThatDontLikeCandidate** -- m_cClanPlayersThatDontLikeCandidate
-    * **data.m_SteamIDCandidate** -- m_SteamIDCandidate
+    * **data.m_eResult** *(EResult)*
+    * **data.m_cPlayersThatDontLikeCandidate** *(int)*
+    * **data.m_cPlayersThatCandidateDoesntLike** *(int)*
+    * **data.m_cClanPlayersThatDontLikeCandidate** *(int)*
+    * **data.m_SteamIDCandidate** *(uint64)*
 

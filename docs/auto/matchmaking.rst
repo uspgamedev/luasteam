@@ -550,13 +550,13 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nIP** -- m_nIP
-    * **data.m_nQueryPort** -- m_nQueryPort
-    * **data.m_nConnPort** -- m_nConnPort
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_nFlags** -- m_nFlags
-    * **data.m_bAdd** -- m_bAdd
-    * **data.m_unAccountId** -- m_unAccountId
+    * **data.m_nIP** *(int)*
+    * **data.m_nQueryPort** *(int)*
+    * **data.m_nConnPort** *(int)*
+    * **data.m_nAppID** *(int)*
+    * **data.m_nFlags** *(int)*
+    * **data.m_bAdd** *(bool)*
+    * **data.m_unAccountId** *(AccountID_t)*
 
 .. function:: Matchmaking.OnLobbyInvite
 
@@ -564,9 +564,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDUser** -- m_ulSteamIDUser
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulGameID** -- m_ulGameID
+    * **data.m_ulSteamIDUser** *(uint64)*
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulGameID** *(uint64)*
 
 **Example**::
 
@@ -582,10 +582,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_rgfChatPermissions** -- m_rgfChatPermissions
-    * **data.m_bLocked** -- m_bLocked
-    * **data.m_EChatRoomEnterResponse** -- m_EChatRoomEnterResponse
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_rgfChatPermissions** *(int)*
+    * **data.m_bLocked** *(bool)*
+    * **data.m_EChatRoomEnterResponse** *(int)*
 
 **Example**::
 
@@ -602,9 +602,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulSteamIDMember** -- m_ulSteamIDMember
-    * **data.m_bSuccess** -- m_bSuccess
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulSteamIDMember** *(uint64)*
+    * **data.m_bSuccess** *(int)*
 
 **Example**::
 
@@ -621,10 +621,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulSteamIDUserChanged** -- m_ulSteamIDUserChanged
-    * **data.m_ulSteamIDMakingChange** -- m_ulSteamIDMakingChange
-    * **data.m_rgfChatMemberStateChange** -- m_rgfChatMemberStateChange
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulSteamIDUserChanged** *(uint64)*
+    * **data.m_ulSteamIDMakingChange** *(uint64)*
+    * **data.m_rgfChatMemberStateChange** *(int)*
 
 **Example**::
 
@@ -639,10 +639,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulSteamIDUser** -- m_ulSteamIDUser
-    * **data.m_eChatEntryType** -- m_eChatEntryType
-    * **data.m_iChatID** -- m_iChatID
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulSteamIDUser** *(uint64)*
+    * **data.m_eChatEntryType** *(int)*
+    * **data.m_iChatID** *(int)*
 
 **Example**::
 
@@ -660,10 +660,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulSteamIDGameServer** -- m_ulSteamIDGameServer
-    * **data.m_unIP** -- m_unIP
-    * **data.m_usPort** -- m_usPort
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulSteamIDGameServer** *(uint64)*
+    * **data.m_unIP** *(int)*
+    * **data.m_usPort** *(int)*
 
 **Example**::
 
@@ -678,7 +678,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nLobbiesMatching** -- m_nLobbiesMatching
+    * **data.m_nLobbiesMatching** *(int)*
 
 .. function:: Matchmaking.OnLobbyKicked
 
@@ -686,9 +686,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
-    * **data.m_ulSteamIDAdmin** -- m_ulSteamIDAdmin
-    * **data.m_bKickedDueToDisconnect** -- m_bKickedDueToDisconnect
+    * **data.m_ulSteamIDLobby** *(uint64)*
+    * **data.m_ulSteamIDAdmin** *(uint64)*
+    * **data.m_bKickedDueToDisconnect** *(int)*
 
 .. function:: Matchmaking.OnLobbyCreated
 
@@ -696,8 +696,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_ulSteamIDLobby** -- m_ulSteamIDLobby
+    * **data.m_eResult** *(EResult)*
+    * **data.m_ulSteamIDLobby** *(uint64)*
 
 .. function:: Matchmaking.OnFavoritesListAccountsUpdated
 
@@ -705,5 +705,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 

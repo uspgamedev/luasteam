@@ -1063,8 +1063,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulSteamID** -- m_ulSteamID
-    * **data.m_nChangeFlags** -- m_nChangeFlags
+    * **data.m_ulSteamID** *(uint64)*
+    * **data.m_nChangeFlags** *(int)*
 
 **Example**::
 
@@ -1079,10 +1079,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bActive** -- m_bActive
-    * **data.m_bUserInitiated** -- m_bUserInitiated
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_dwOverlayPID** -- m_dwOverlayPID
+    * **data.m_bActive** *(int)*
+    * **data.m_bUserInitiated** *(bool)*
+    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_dwOverlayPID** *(int)*
 
 **Example**::
 
@@ -1100,8 +1100,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_rgchServer** -- m_rgchServer
-    * **data.m_rgchPassword** -- m_rgchPassword
+    * **data.m_rgchServer** *(string)*
+    * **data.m_rgchPassword** *(string)*
 
 **Example**::
 
@@ -1116,8 +1116,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDLobby** -- m_steamIDLobby
-    * **data.m_steamIDFriend** -- m_steamIDFriend
+    * **data.m_steamIDLobby** *(uint64)*
+    * **data.m_steamIDFriend** *(uint64)*
 
 **Example**::
 
@@ -1135,16 +1135,16 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamID** -- m_steamID
-    * **data.m_iImage** -- m_iImage
-    * **data.m_iWide** -- m_iWide
-    * **data.m_iTall** -- m_iTall
+    * **data.m_steamID** *(uint64)*
+    * **data.m_iImage** *(int)*
+    * **data.m_iWide** *(int)*
+    * **data.m_iTall** *(int)*
 
 **Example**::
 
     function Steam.Friends.OnAvatarImageLoaded(data)
         local w, h = Steam.Utils.GetImageSize(data.m_iImage)
-        local rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
+        local _, rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
         updateAvatarTexture(data.m_steamID, rgba, w, h)
     end
 
@@ -1154,9 +1154,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClan** -- m_steamIDClan
-    * **data.m_cOfficers** -- m_cOfficers
-    * **data.m_bSuccess** -- m_bSuccess
+    * **data.m_steamIDClan** *(uint64)*
+    * **data.m_cOfficers** *(int)*
+    * **data.m_bSuccess** *(int)*
 
 .. function:: Friends.OnFriendRichPresenceUpdate
 
@@ -1164,8 +1164,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDFriend** -- m_steamIDFriend
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_steamIDFriend** *(uint64)*
+    * **data.m_nAppID** *(AppId_t)*
 
 **Example**::
 
@@ -1180,8 +1180,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDFriend** -- m_steamIDFriend
-    * **data.m_rgchConnect** -- m_rgchConnect
+    * **data.m_steamIDFriend** *(uint64)*
+    * **data.m_rgchConnect** *(string)*
 
 **Example**::
 
@@ -1196,9 +1196,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** -- m_steamIDClanChat
-    * **data.m_steamIDUser** -- m_steamIDUser
-    * **data.m_iMessageID** -- m_iMessageID
+    * **data.m_steamIDClanChat** *(uint64)*
+    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_iMessageID** *(int)*
 
 .. function:: Friends.OnGameConnectedChatJoin
 
@@ -1206,8 +1206,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** -- m_steamIDClanChat
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_steamIDClanChat** *(uint64)*
+    * **data.m_steamIDUser** *(uint64)*
 
 .. function:: Friends.OnGameConnectedChatLeave
 
@@ -1215,10 +1215,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** -- m_steamIDClanChat
-    * **data.m_steamIDUser** -- m_steamIDUser
-    * **data.m_bKicked** -- m_bKicked
-    * **data.m_bDropped** -- m_bDropped
+    * **data.m_steamIDClanChat** *(uint64)*
+    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_bKicked** *(bool)*
+    * **data.m_bDropped** *(bool)*
 
 .. function:: Friends.OnDownloadClanActivityCountsResult
 
@@ -1226,7 +1226,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSuccess** -- m_bSuccess
+    * **data.m_bSuccess** *(bool)*
 
 .. function:: Friends.OnJoinClanChatRoomCompletionResult
 
@@ -1234,8 +1234,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** -- m_steamIDClanChat
-    * **data.m_eChatRoomEnterResponse** -- m_eChatRoomEnterResponse
+    * **data.m_steamIDClanChat** *(uint64)*
+    * **data.m_eChatRoomEnterResponse** *(EChatRoomEnterResponse)*
 
 .. function:: Friends.OnGameConnectedFriendChatMsg
 
@@ -1243,8 +1243,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** -- m_steamIDUser
-    * **data.m_iMessageID** -- m_iMessageID
+    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_iMessageID** *(int)*
 
 **Example**::
 
@@ -1259,9 +1259,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamID** -- m_steamID
-    * **data.m_nCount** -- m_nCount
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamID** *(uint64)*
+    * **data.m_nCount** *(int)*
 
 .. function:: Friends.OnFriendsIsFollowing
 
@@ -1269,9 +1269,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamID** -- m_steamID
-    * **data.m_bIsFollowing** -- m_bIsFollowing
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamID** *(uint64)*
+    * **data.m_bIsFollowing** *(bool)*
 
 .. function:: Friends.OnFriendsEnumerateFollowingList
 
@@ -1279,10 +1279,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_rgSteamID** -- m_rgSteamID
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
+    * **data.m_eResult** *(EResult)*
+    * **data.m_rgSteamID** *(uint64)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
 
 .. function:: Friends.OnUnreadChatMessagesChanged
 
@@ -1306,7 +1306,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.rgchURI** -- rgchURI
+    * **data.rgchURI** *(string)*
 
 .. function:: Friends.OnEquippedProfileItemsChanged
 
@@ -1314,7 +1314,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamID** -- m_steamID
+    * **data.m_steamID** *(uint64)*
 
 .. function:: Friends.OnEquippedProfileItems
 
@@ -1322,12 +1322,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamID** -- m_steamID
-    * **data.m_bHasAnimatedAvatar** -- m_bHasAnimatedAvatar
-    * **data.m_bHasAvatarFrame** -- m_bHasAvatarFrame
-    * **data.m_bHasProfileModifier** -- m_bHasProfileModifier
-    * **data.m_bHasProfileBackground** -- m_bHasProfileBackground
-    * **data.m_bHasMiniProfileBackground** -- m_bHasMiniProfileBackground
-    * **data.m_bFromCache** -- m_bFromCache
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamID** *(uint64)*
+    * **data.m_bHasAnimatedAvatar** *(bool)*
+    * **data.m_bHasAvatarFrame** *(bool)*
+    * **data.m_bHasProfileModifier** *(bool)*
+    * **data.m_bHasProfileBackground** *(bool)*
+    * **data.m_bHasMiniProfileBackground** *(bool)*
+    * **data.m_bFromCache** *(bool)*
 

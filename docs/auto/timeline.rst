@@ -259,11 +259,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_rgchPhaseID** -- m_rgchPhaseID
-    * **data.m_ulRecordingMS** -- m_ulRecordingMS
-    * **data.m_ulLongestClipMS** -- m_ulLongestClipMS
-    * **data.m_unClipCount** -- m_unClipCount
-    * **data.m_unScreenshotCount** -- m_unScreenshotCount
+    * **data.m_rgchPhaseID** *(string)*
+    * **data.m_ulRecordingMS** *(uint64)*
+    * **data.m_ulLongestClipMS** *(uint64)*
+    * **data.m_unClipCount** *(int)*
+    * **data.m_unScreenshotCount** *(int)*
 
 .. function:: Timeline.OnSteamTimelineEventRecordingExists
 
@@ -271,6 +271,6 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulEventID** -- m_ulEventID
-    * **data.m_bRecordingExists** -- m_bRecordingExists
+    * **data.m_ulEventID** *(uint64)*
+    * **data.m_bRecordingExists** *(bool)*
 

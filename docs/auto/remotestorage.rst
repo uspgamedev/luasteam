@@ -821,9 +821,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_hFile** -- m_hFile
-    * **data.m_rgchFilename** -- m_rgchFilename
+    * **data.m_eResult** *(EResult)*
+    * **data.m_hFile** *(UGCHandle_t)*
+    * **data.m_rgchFilename** *(string)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishFileResult
 
@@ -831,9 +831,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** *(bool)*
 
 .. function:: RemoteStorage.OnRemoteStorageDeletePublishedFileResult
 
@@ -841,8 +841,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult
 
@@ -850,10 +850,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
-    * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
+    * **data.m_rgPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageSubscribePublishedFileResult
 
@@ -861,8 +861,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageEnumerateUserSubscribedFilesResult
 
@@ -870,11 +870,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
-    * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
-    * **data.m_rgRTimeSubscribed** -- m_rgRTimeSubscribed
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
+    * **data.m_rgPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_rgRTimeSubscribed** *(int)*
 
 .. function:: RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult
 
@@ -882,8 +882,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageUpdatePublishedFileResult
 
@@ -891,9 +891,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** -- m_bUserNeedsToAcceptWorkshopLegalAgreement
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_bUserNeedsToAcceptWorkshopLegalAgreement** *(bool)*
 
 .. function:: RemoteStorage.OnRemoteStorageDownloadUGCResult
 
@@ -901,12 +901,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_hFile** -- m_hFile
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_nSizeInBytes** -- m_nSizeInBytes
-    * **data.m_pchFileName** -- m_pchFileName
-    * **data.m_ulSteamIDOwner** -- m_ulSteamIDOwner
+    * **data.m_eResult** *(EResult)*
+    * **data.m_hFile** *(UGCHandle_t)*
+    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_nSizeInBytes** *(int)*
+    * **data.m_pchFileName** *(string)*
+    * **data.m_ulSteamIDOwner** *(uint64)*
 
 .. function:: RemoteStorage.OnRemoteStorageGetPublishedFileDetailsResult
 
@@ -914,27 +914,27 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nCreatorAppID** -- m_nCreatorAppID
-    * **data.m_nConsumerAppID** -- m_nConsumerAppID
-    * **data.m_rgchTitle** -- m_rgchTitle
-    * **data.m_rgchDescription** -- m_rgchDescription
-    * **data.m_hFile** -- m_hFile
-    * **data.m_hPreviewFile** -- m_hPreviewFile
-    * **data.m_ulSteamIDOwner** -- m_ulSteamIDOwner
-    * **data.m_rtimeCreated** -- m_rtimeCreated
-    * **data.m_rtimeUpdated** -- m_rtimeUpdated
-    * **data.m_eVisibility** -- m_eVisibility
-    * **data.m_bBanned** -- m_bBanned
-    * **data.m_rgchTags** -- m_rgchTags
-    * **data.m_bTagsTruncated** -- m_bTagsTruncated
-    * **data.m_pchFileName** -- m_pchFileName
-    * **data.m_nFileSize** -- m_nFileSize
-    * **data.m_nPreviewFileSize** -- m_nPreviewFileSize
-    * **data.m_rgchURL** -- m_rgchURL
-    * **data.m_eFileType** -- m_eFileType
-    * **data.m_bAcceptedForUse** -- m_bAcceptedForUse
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nCreatorAppID** *(AppId_t)*
+    * **data.m_nConsumerAppID** *(AppId_t)*
+    * **data.m_rgchTitle** *(string)*
+    * **data.m_rgchDescription** *(string)*
+    * **data.m_hFile** *(UGCHandle_t)*
+    * **data.m_hPreviewFile** *(UGCHandle_t)*
+    * **data.m_ulSteamIDOwner** *(uint64)*
+    * **data.m_rtimeCreated** *(int)*
+    * **data.m_rtimeUpdated** *(int)*
+    * **data.m_eVisibility** *(ERemoteStoragePublishedFileVisibility)*
+    * **data.m_bBanned** *(bool)*
+    * **data.m_rgchTags** *(string)*
+    * **data.m_bTagsTruncated** *(bool)*
+    * **data.m_pchFileName** *(string)*
+    * **data.m_nFileSize** *(int)*
+    * **data.m_nPreviewFileSize** *(int)*
+    * **data.m_rgchURL** *(string)*
+    * **data.m_eFileType** *(EWorkshopFileType)*
+    * **data.m_bAcceptedForUse** *(bool)*
 
 .. function:: RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult
 
@@ -942,13 +942,13 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
-    * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
-    * **data.m_rgScore** -- m_rgScore
-    * **data.m_nAppId** -- m_nAppId
-    * **data.m_unStartIndex** -- m_unStartIndex
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
+    * **data.m_rgPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_rgScore** *(float)*
+    * **data.m_nAppId** *(AppId_t)*
+    * **data.m_unStartIndex** *(int)*
 
 .. function:: RemoteStorage.OnRemoteStorageGetPublishedItemVoteDetailsResult
 
@@ -956,12 +956,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_unPublishedFileId** -- m_unPublishedFileId
-    * **data.m_nVotesFor** -- m_nVotesFor
-    * **data.m_nVotesAgainst** -- m_nVotesAgainst
-    * **data.m_nReports** -- m_nReports
-    * **data.m_fScore** -- m_fScore
+    * **data.m_eResult** *(EResult)*
+    * **data.m_unPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nVotesFor** *(int)*
+    * **data.m_nVotesAgainst** *(int)*
+    * **data.m_nReports** *(int)*
+    * **data.m_fScore** *(float)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishedFileSubscribed
 
@@ -969,8 +969,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishedFileUnsubscribed
 
@@ -978,8 +978,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishedFileDeleted
 
@@ -987,8 +987,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageUpdateUserPublishedItemVoteResult
 
@@ -996,8 +996,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageUserVoteDetails
 
@@ -1005,9 +1005,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eVote** -- m_eVote
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eVote** *(EWorkshopVote)*
 
 .. function:: RemoteStorage.OnRemoteStorageEnumerateUserSharedWorkshopFilesResult
 
@@ -1015,10 +1015,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
-    * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
+    * **data.m_rgPublishedFileId** *(PublishedFileId_t)*
 
 .. function:: RemoteStorage.OnRemoteStorageSetUserPublishedFileActionResult
 
@@ -1026,9 +1026,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_eAction** -- m_eAction
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_eAction** *(EWorkshopFileAction)*
 
 .. function:: RemoteStorage.OnRemoteStorageEnumeratePublishedFilesByUserActionResult
 
@@ -1036,12 +1036,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_eAction** -- m_eAction
-    * **data.m_nResultsReturned** -- m_nResultsReturned
-    * **data.m_nTotalResultCount** -- m_nTotalResultCount
-    * **data.m_rgPublishedFileId** -- m_rgPublishedFileId
-    * **data.m_rgRTimeUpdated** -- m_rgRTimeUpdated
+    * **data.m_eResult** *(EResult)*
+    * **data.m_eAction** *(EWorkshopFileAction)*
+    * **data.m_nResultsReturned** *(int)*
+    * **data.m_nTotalResultCount** *(int)*
+    * **data.m_rgPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_rgRTimeUpdated** *(int)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishFileProgress
 
@@ -1049,8 +1049,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_dPercentFile** -- m_dPercentFile
-    * **data.m_bPreview** -- m_bPreview
+    * **data.m_dPercentFile** *(float)*
+    * **data.m_bPreview** *(bool)*
 
 .. function:: RemoteStorage.OnRemoteStoragePublishedFileUpdated
 
@@ -1058,9 +1058,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nPublishedFileId** -- m_nPublishedFileId
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_ulUnused** -- m_ulUnused
+    * **data.m_nPublishedFileId** *(PublishedFileId_t)*
+    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_ulUnused** *(uint64)*
 
 .. function:: RemoteStorage.OnRemoteStorageFileWriteAsyncComplete
 
@@ -1068,7 +1068,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 .. function:: RemoteStorage.OnRemoteStorageFileReadAsyncComplete
 
@@ -1076,10 +1076,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hFileReadAsync** -- m_hFileReadAsync
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nOffset** -- m_nOffset
-    * **data.m_cubRead** -- m_cubRead
+    * **data.m_hFileReadAsync** *(SteamAPICall_t)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nOffset** *(int)*
+    * **data.m_cubRead** *(int)*
 
 .. function:: RemoteStorage.OnRemoteStorageLocalFileChange
 

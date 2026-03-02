@@ -1342,7 +1342,7 @@ end
 example = """
 function Steam.Friends.OnAvatarImageLoaded(data)
     local w, h = Steam.Utils.GetImageSize(data.m_iImage)
-    local rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
+    local _, rgba = Steam.Utils.GetImageRGBA(data.m_iImage, w * h * 4)
     updateAvatarTexture(data.m_steamID, rgba, w, h)
 end
 """

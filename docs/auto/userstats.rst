@@ -844,9 +844,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_nGameID** *(uint64)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamIDUser** *(uint64)*
 
 **Example**::
 
@@ -862,8 +862,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_eResult** -- m_eResult
+    * **data.m_nGameID** *(uint64)*
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -881,11 +881,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_bGroupAchievement** -- m_bGroupAchievement
-    * **data.m_rgchAchievementName** -- m_rgchAchievementName
-    * **data.m_nCurProgress** -- m_nCurProgress
-    * **data.m_nMaxProgress** -- m_nMaxProgress
+    * **data.m_nGameID** *(uint64)*
+    * **data.m_bGroupAchievement** *(bool)*
+    * **data.m_rgchAchievementName** *(string)*
+    * **data.m_nCurProgress** *(int)*
+    * **data.m_nMaxProgress** *(int)*
 
 **Example**::
 
@@ -902,8 +902,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
-    * **data.m_bLeaderboardFound** -- m_bLeaderboardFound
+    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_bLeaderboardFound** *(int)*
 
 **Example**::
 
@@ -919,9 +919,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
-    * **data.m_hSteamLeaderboardEntries** -- m_hSteamLeaderboardEntries
-    * **data.m_cEntryCount** -- m_cEntryCount
+    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_hSteamLeaderboardEntries** *(SteamLeaderboardEntries_t)*
+    * **data.m_cEntryCount** *(int)*
 
 .. function:: UserStats.OnLeaderboardScoreUploaded
 
@@ -929,12 +929,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSuccess** -- m_bSuccess
-    * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
-    * **data.m_nScore** -- m_nScore
-    * **data.m_bScoreChanged** -- m_bScoreChanged
-    * **data.m_nGlobalRankNew** -- m_nGlobalRankNew
-    * **data.m_nGlobalRankPrevious** -- m_nGlobalRankPrevious
+    * **data.m_bSuccess** *(int)*
+    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_nScore** *(int)*
+    * **data.m_bScoreChanged** *(int)*
+    * **data.m_nGlobalRankNew** *(int)*
+    * **data.m_nGlobalRankPrevious** *(int)*
 
 **Example**::
 
@@ -950,8 +950,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSuccess** -- m_bSuccess
-    * **data.m_cPlayers** -- m_cPlayers
+    * **data.m_bSuccess** *(int)*
+    * **data.m_cPlayers** *(int)*
 
 .. function:: UserStats.OnUserStatsUnloaded
 
@@ -959,7 +959,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_steamIDUser** *(uint64)*
 
 .. function:: UserStats.OnUserAchievementIconFetched
 
@@ -967,10 +967,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_rgchAchievementName** -- m_rgchAchievementName
-    * **data.m_bAchieved** -- m_bAchieved
-    * **data.m_nIconHandle** -- m_nIconHandle
+    * **data.m_nGameID** *(CGameID)*
+    * **data.m_rgchAchievementName** *(string)*
+    * **data.m_bAchieved** *(bool)*
+    * **data.m_nIconHandle** *(int)*
 
 .. function:: UserStats.OnGlobalAchievementPercentagesReady
 
@@ -978,8 +978,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_eResult** -- m_eResult
+    * **data.m_nGameID** *(uint64)*
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -996,8 +996,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_hSteamLeaderboard** -- m_hSteamLeaderboard
+    * **data.m_eResult** *(EResult)*
+    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
 
 .. function:: UserStats.OnGlobalStatsReceived
 
@@ -1005,8 +1005,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** -- m_nGameID
-    * **data.m_eResult** -- m_eResult
+    * **data.m_nGameID** *(uint64)*
+    * **data.m_eResult** *(EResult)*
 
 .. function:: UserStats.OnGSStatsUnloaded
 
@@ -1014,5 +1014,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_steamIDUser** *(uint64)*
 

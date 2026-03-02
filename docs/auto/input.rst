@@ -603,7 +603,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulConnectedDeviceHandle** -- m_ulConnectedDeviceHandle
+    * **data.m_ulConnectedDeviceHandle** *(InputHandle_t)*
 
 **Example**::
 
@@ -618,7 +618,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulDisconnectedDeviceHandle** -- m_ulDisconnectedDeviceHandle
+    * **data.m_ulDisconnectedDeviceHandle** *(InputHandle_t)*
 
 **Example**::
 
@@ -633,13 +633,13 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_ulDeviceHandle** -- m_ulDeviceHandle
-    * **data.m_ulMappingCreator** -- m_ulMappingCreator
-    * **data.m_unMajorRevision** -- m_unMajorRevision
-    * **data.m_unMinorRevision** -- m_unMinorRevision
-    * **data.m_bUsesSteamInputAPI** -- m_bUsesSteamInputAPI
-    * **data.m_bUsesGamepadAPI** -- m_bUsesGamepadAPI
+    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_ulDeviceHandle** *(InputHandle_t)*
+    * **data.m_ulMappingCreator** *(uint64)*
+    * **data.m_unMajorRevision** *(int)*
+    * **data.m_unMinorRevision** *(int)*
+    * **data.m_bUsesSteamInputAPI** *(bool)*
+    * **data.m_bUsesGamepadAPI** *(bool)*
 
 .. function:: Input.OnSteamInputGamepadSlotChange
 
@@ -647,9 +647,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_ulDeviceHandle** -- m_ulDeviceHandle
-    * **data.m_eDeviceType** -- m_eDeviceType
-    * **data.m_nOldGamepadSlot** -- m_nOldGamepadSlot
-    * **data.m_nNewGamepadSlot** -- m_nNewGamepadSlot
+    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_ulDeviceHandle** *(InputHandle_t)*
+    * **data.m_eDeviceType** *(ESteamInputType)*
+    * **data.m_nOldGamepadSlot** *(int)*
+    * **data.m_nNewGamepadSlot** *(int)*
 

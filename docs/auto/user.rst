@@ -492,8 +492,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_bStillRetrying** -- m_bStillRetrying
+    * **data.m_eResult** *(EResult)*
+    * **data.m_bStillRetrying** *(bool)*
 
 .. function:: User.OnSteamServersDisconnected
 
@@ -501,7 +501,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -515,11 +515,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_uAppID** -- m_uAppID
-    * **data.m_unGameServerIP** -- m_unGameServerIP
-    * **data.m_usGameServerPort** -- m_usGameServerPort
-    * **data.m_bSecure** -- m_bSecure
-    * **data.m_uReason** -- m_uReason
+    * **data.m_uAppID** *(int)*
+    * **data.m_unGameServerIP** *(int)*
+    * **data.m_usGameServerPort** *(int)*
+    * **data.m_bSecure** *(int)*
+    * **data.m_uReason** *(int)*
 
 .. function:: User.OnIPCFailure
 
@@ -527,7 +527,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eFailureType** -- m_eFailureType
+    * **data.m_eFailureType** *(int)*
 
 .. function:: User.OnLicensesUpdated
 
@@ -542,9 +542,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** -- m_SteamID
-    * **data.m_eAuthSessionResponse** -- m_eAuthSessionResponse
-    * **data.m_OwnerSteamID** -- m_OwnerSteamID
+    * **data.m_SteamID** *(uint64)*
+    * **data.m_eAuthSessionResponse** *(EAuthSessionResponse)*
+    * **data.m_OwnerSteamID** *(uint64)*
 
 **Example**::
 
@@ -562,9 +562,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_ulOrderID** -- m_ulOrderID
-    * **data.m_bAuthorized** -- m_bAuthorized
+    * **data.m_unAppID** *(int)*
+    * **data.m_ulOrderID** *(uint64)*
+    * **data.m_bAuthorized** *(int)*
 
 **Example**::
 
@@ -583,7 +583,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -600,8 +600,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAuthTicket** -- m_hAuthTicket
-    * **data.m_eResult** -- m_eResult
+    * **data.m_hAuthTicket** *(HAuthTicket)*
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 
@@ -619,7 +619,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_szURL** -- m_szURL
+    * **data.m_szURL** *(string)*
 
 .. function:: User.OnStoreAuthURLResponse
 
@@ -627,7 +627,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_szURL** -- m_szURL
+    * **data.m_szURL** *(string)*
 
 .. function:: User.OnMarketEligibilityResponse
 
@@ -635,11 +635,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bAllowed** -- m_bAllowed
-    * **data.m_eNotAllowedReason** -- m_eNotAllowedReason
-    * **data.m_rtAllowedAtTime** -- m_rtAllowedAtTime
-    * **data.m_cdaySteamGuardRequiredDays** -- m_cdaySteamGuardRequiredDays
-    * **data.m_cdayNewDeviceCooldown** -- m_cdayNewDeviceCooldown
+    * **data.m_bAllowed** *(bool)*
+    * **data.m_eNotAllowedReason** *(EMarketNotAllowedReasonFlags)*
+    * **data.m_rtAllowedAtTime** *(RTime32)*
+    * **data.m_cdaySteamGuardRequiredDays** *(int)*
+    * **data.m_cdayNewDeviceCooldown** *(int)*
 
 .. function:: User.OnDurationControl
 
@@ -647,14 +647,14 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_appid** -- m_appid
-    * **data.m_bApplicable** -- m_bApplicable
-    * **data.m_csecsLast5h** -- m_csecsLast5h
-    * **data.m_progress** -- m_progress
-    * **data.m_notification** -- m_notification
-    * **data.m_csecsToday** -- m_csecsToday
-    * **data.m_csecsRemaining** -- m_csecsRemaining
+    * **data.m_eResult** *(EResult)*
+    * **data.m_appid** *(AppId_t)*
+    * **data.m_bApplicable** *(bool)*
+    * **data.m_csecsLast5h** *(int)*
+    * **data.m_progress** *(EDurationControlProgress)*
+    * **data.m_notification** *(EDurationControlNotification)*
+    * **data.m_csecsToday** *(int)*
+    * **data.m_csecsRemaining** *(int)*
 
 .. function:: User.OnGetTicketForWebApiResponse
 
@@ -662,10 +662,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAuthTicket** -- m_hAuthTicket
-    * **data.m_eResult** -- m_eResult
-    * **data.m_cubTicket** -- m_cubTicket
-    * **data.m_rgubTicket** -- m_rgubTicket
+    * **data.m_hAuthTicket** *(HAuthTicket)*
+    * **data.m_eResult** *(EResult)*
+    * **data.m_cubTicket** *(int)*
+    * **data.m_rgubTicket** *(string)*
 
 .. function:: User.OnGSPolicyResponse
 
@@ -673,5 +673,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_bSecure** -- m_bSecure
+    * **data.m_bSecure** *(int)*
 

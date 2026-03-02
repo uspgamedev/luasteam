@@ -400,11 +400,11 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** -- m_hRequest
-    * **data.m_ulContextValue** -- m_ulContextValue
-    * **data.m_bRequestSuccessful** -- m_bRequestSuccessful
-    * **data.m_eStatusCode** -- m_eStatusCode
-    * **data.m_unBodySize** -- m_unBodySize
+    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_ulContextValue** *(uint64)*
+    * **data.m_bRequestSuccessful** *(bool)*
+    * **data.m_eStatusCode** *(EHTTPStatusCode)*
+    * **data.m_unBodySize** *(int)*
 
 .. function:: HTTP.OnHTTPRequestHeadersReceived
 
@@ -412,8 +412,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** -- m_hRequest
-    * **data.m_ulContextValue** -- m_ulContextValue
+    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_ulContextValue** *(uint64)*
 
 .. function:: HTTP.OnHTTPRequestDataReceived
 
@@ -421,8 +421,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** -- m_hRequest
-    * **data.m_ulContextValue** -- m_ulContextValue
-    * **data.m_cOffset** -- m_cOffset
-    * **data.m_cBytesReceived** -- m_cBytesReceived
+    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_ulContextValue** *(uint64)*
+    * **data.m_cOffset** *(int)*
+    * **data.m_cBytesReceived** *(int)*
 

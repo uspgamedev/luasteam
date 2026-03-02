@@ -481,7 +481,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nAppID** -- m_nAppID
+    * **data.m_nAppID** *(AppId_t)*
 
 **Example**::
 
@@ -510,10 +510,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_nAppID** -- m_nAppID
-    * **data.m_cchKeyLength** -- m_cchKeyLength
-    * **data.m_rgchKey** -- m_rgchKey
+    * **data.m_eResult** *(EResult)*
+    * **data.m_nAppID** *(int)*
+    * **data.m_cchKeyLength** *(int)*
+    * **data.m_rgchKey** *(string)*
 
 .. function:: Apps.OnFileDetailsResult
 
@@ -521,10 +521,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_ulFileSize** -- m_ulFileSize
-    * **data.m_FileSHA** -- m_FileSHA
-    * **data.m_unFlags** -- m_unFlags
+    * **data.m_eResult** *(EResult)*
+    * **data.m_ulFileSize** *(uint64)*
+    * **data.m_FileSHA** *(string)*
+    * **data.m_unFlags** *(int)*
 
 .. function:: Apps.OnTimedTrialStatus
 
@@ -532,10 +532,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** -- m_unAppID
-    * **data.m_bIsOffline** -- m_bIsOffline
-    * **data.m_unSecondsAllowed** -- m_unSecondsAllowed
-    * **data.m_unSecondsPlayed** -- m_unSecondsPlayed
+    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_bIsOffline** *(bool)*
+    * **data.m_unSecondsAllowed** *(int)*
+    * **data.m_unSecondsPlayed** *(int)*
 
 **Example**::
 

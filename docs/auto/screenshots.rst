@@ -144,8 +144,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hLocal** -- m_hLocal
-    * **data.m_eResult** -- m_eResult
+    * **data.m_hLocal** *(ScreenshotHandle)*
+    * **data.m_eResult** *(EResult)*
 
 **Example**::
 

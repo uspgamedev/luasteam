@@ -151,7 +151,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_flNewVolume** -- m_flNewVolume
+    * **data.m_flNewVolume** *(float)*
 
 **Example**::
 

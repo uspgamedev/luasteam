@@ -535,9 +535,10 @@ impl DocGenerator {
         doc.push_str("    **callback(data)** receives:\n\n");
 
         for field in &callback.fields {
+            let type_str = Self::fieldtype_to_doc(&field.fieldtype);
             doc.push_str(&format!(
-                "    * **data.{}** -- {}\n",
-                field.fieldname, field.fieldname
+                "    * **data.{}** *({})*\n",
+                field.fieldname, type_str
             ));
         }
         doc.push('\n');
@@ -649,6 +650,31 @@ impl DocGenerator {
         }
 
         doc
+    }
+
+    /// Convert a raw C++ field type to a human-readable doc type string.
+    fn fieldtype_to_doc(ctype: &str) -> String {
+        // Check for array suffix like [128]
+        let is_array = ctype.contains('[');
+        let base = if let Some(bracket) = ctype.find('[') {
+            ctype[..bracket].trim()
+        } else {
+            ctype.trim()
+        };
+        // Strip const and pointer/reference decorators
+        let base = base.trim_start_matches("const ").trim_end_matches(" *").trim_end_matches(" &").trim();
+        match (base, is_array) {
+            // Fixed-size byte/char arrays are pushed as Lua strings
+            ("char", true) | ("uint8", true) => "string".to_string(),
+            ("bool", _) => "bool".to_string(),
+            ("float", _) | ("double", _) => "float".to_string(),
+            ("int8", _) | ("int16", _) | ("int32", _) | ("int", _) | ("unsigned int", _)
+            | ("uint8", _) | ("uint16", _) | ("uint32", _) => "int".to_string(),
+            ("int64", _) | ("uint64", _) | ("int64_t", _) | ("uint64_t", _) => "uint64".to_string(),
+            ("CSteamID", _) => "uint64".to_string(),
+            ("char", false) => "string".to_string(),
+            (other, _) => other.to_string(),
+        }
     }
 
     fn to_camel_case(s: &str) -> String {

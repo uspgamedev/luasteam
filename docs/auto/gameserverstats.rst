@@ -184,8 +184,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamIDUser** *(uint64)*
 
 .. function:: GameServerStats.OnGSStatsStored
 
@@ -193,6 +193,6 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** -- m_eResult
-    * **data.m_steamIDUser** -- m_steamIDUser
+    * **data.m_eResult** *(EResult)*
+    * **data.m_steamIDUser** *(uint64)*
 
