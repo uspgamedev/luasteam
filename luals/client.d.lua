@@ -1,6 +1,9 @@
 ---@class Steam.Client
 local Client = {}
 
+---@param hook fun(severity: integer, message: string)?
+function Client.SetWarningMessageHook(hook) end
+
 ---@return integer
 function Client.CreateSteamPipe() end
 

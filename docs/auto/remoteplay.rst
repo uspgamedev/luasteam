@@ -126,9 +126,9 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetSessionClientName <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientName>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`RemotePlay.GetSessionID`'s example.
+    * See :func:`RemotePlay.GetSessionID`'s example.
 
 .. function:: RemotePlay.GetSessionCount()
 

@@ -1,4 +1,6 @@
 ---@class Steam.Screenshots
+---@field OnScreenshotReady? fun(data: ScreenshotReady_t)
+---@field OnScreenshotRequested? fun(data: ScreenshotRequested_t)
 local Screenshots = {}
 
 ---@param pubRGB string

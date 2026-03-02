@@ -1,4 +1,18 @@
 ---@class Steam.GameServer
+---@field OnSteamServersConnected? fun(data: SteamServersConnected_t)
+---@field OnSteamServerConnectFailure? fun(data: SteamServerConnectFailure_t)
+---@field OnSteamServersDisconnected? fun(data: SteamServersDisconnected_t)
+---@field OnValidateAuthTicketResponse? fun(data: ValidateAuthTicketResponse_t)
+---@field OnGSClientApprove? fun(data: GSClientApprove_t)
+---@field OnGSClientDeny? fun(data: GSClientDeny_t)
+---@field OnGSClientKick? fun(data: GSClientKick_t)
+---@field OnGSClientAchievementStatus? fun(data: GSClientAchievementStatus_t)
+---@field OnGSPolicyResponse? fun(data: GSPolicyResponse_t)
+---@field OnGSGameplayStats? fun(data: GSGameplayStats_t)
+---@field OnGSClientGroupStatus? fun(data: GSClientGroupStatus_t)
+---@field OnGSReputation? fun(data: GSReputation_t)
+---@field OnAssociateWithClanResult? fun(data: AssociateWithClanResult_t)
+---@field OnComputeNewPlayerCompatibilityResult? fun(data: ComputeNewPlayerCompatibilityResult_t)
 local GameServer = {}
 
 ---@param pszProduct string

@@ -118,10 +118,6 @@ Callbacks
 
     * **data.m_identityRemote** -- m_identityRemote
 
-**Example**::
-
-    See :func:`NetworkingMessages.AcceptSessionWithUser`'s example.
-
 .. function:: NetworkingMessages.OnSteamNetworkingMessagesSessionFailed
 
     Callback for `SteamNetworkingMessagesSessionFailed_t <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SteamNetworkingMessagesSessionFailed_t>`_

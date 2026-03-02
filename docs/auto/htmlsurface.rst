@@ -245,9 +245,9 @@ Function Reference
     :param str pchPostData:
     :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`HTMLSurface.CreateBrowser`'s example.
+    * See :func:`HTMLSurface.CreateBrowser`'s example.
 
 .. function:: HTMLSurface.MouseDoubleClick(unBrowserHandle, eMouseButton)
 
@@ -411,9 +411,9 @@ Function Reference
     :param int unHeight:
     :SteamWorks: `SetSize <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetSize>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`HTMLSurface.CreateBrowser`'s example.
+    * See :func:`HTMLSurface.CreateBrowser`'s example.
 
 .. function:: HTMLSurface.SetVerticalScroll(unBrowserHandle, nAbsolutePixelScroll)
 

@@ -1,4 +1,7 @@
 ---@class Steam.NetworkingSockets
+---@field OnSteamNetConnectionStatusChangedCallback? fun(data: SteamNetConnectionStatusChangedCallback_t)
+---@field OnSteamNetAuthenticationStatus? fun(data: SteamNetAuthenticationStatus_t)
+---@field OnSteamNetworkingFakeIPResult? fun(data: SteamNetworkingFakeIPResult_t)
 local NetworkingSockets = {}
 
 ---@param localAddress SteamNetworkingIPAddr

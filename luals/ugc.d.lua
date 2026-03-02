@@ -1,4 +1,23 @@
 ---@class Steam.UGC
+---@field OnSteamUGCQueryCompleted? fun(data: SteamUGCQueryCompleted_t)
+---@field OnSteamUGCRequestUGCDetailsResult? fun(data: SteamUGCRequestUGCDetailsResult_t)
+---@field OnCreateItemResult? fun(data: CreateItemResult_t)
+---@field OnSubmitItemUpdateResult? fun(data: SubmitItemUpdateResult_t)
+---@field OnItemInstalled? fun(data: ItemInstalled_t)
+---@field OnDownloadItemResult? fun(data: DownloadItemResult_t)
+---@field OnUserFavoriteItemsListChanged? fun(data: UserFavoriteItemsListChanged_t)
+---@field OnSetUserItemVoteResult? fun(data: SetUserItemVoteResult_t)
+---@field OnGetUserItemVoteResult? fun(data: GetUserItemVoteResult_t)
+---@field OnStartPlaytimeTrackingResult? fun(data: StartPlaytimeTrackingResult_t)
+---@field OnStopPlaytimeTrackingResult? fun(data: StopPlaytimeTrackingResult_t)
+---@field OnAddUGCDependencyResult? fun(data: AddUGCDependencyResult_t)
+---@field OnRemoveUGCDependencyResult? fun(data: RemoveUGCDependencyResult_t)
+---@field OnAddAppDependencyResult? fun(data: AddAppDependencyResult_t)
+---@field OnRemoveAppDependencyResult? fun(data: RemoveAppDependencyResult_t)
+---@field OnGetAppDependenciesResult? fun(data: GetAppDependenciesResult_t)
+---@field OnDeleteItemResult? fun(data: DeleteItemResult_t)
+---@field OnUserSubscribedItemsListChanged? fun(data: UserSubscribedItemsListChanged_t)
+---@field OnWorkshopEULAStatus? fun(data: WorkshopEULAStatus_t)
 local UGC = {}
 
 ---@param unAccountID integer

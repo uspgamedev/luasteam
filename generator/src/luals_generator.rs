@@ -4,7 +4,7 @@ use std::path::Path;
 use crate::code_builder::CodeBuilder;
 use crate::doc_generator::{CallbackInterfaceDocInfo, StructDocInfo};
 use crate::lua_type_info::LuaMethodSignature;
-use crate::schema::{CallbackStruct, Interface};
+use crate::schema::{CallbackStruct, Const, Enum, Interface};
 
 pub struct LuaLsGenerator;
 
@@ -35,13 +35,48 @@ impl LuaLsGenerator {
         output_dir: &Path,
         interface: &Interface,
         method_signatures: &[(String, LuaMethodSignature)],
-        _callbacks: &[CallbackStruct],
+        callbacks: &[CallbackStruct],
     ) {
         let name = &interface.classname["ISteam".len()..];
         let file_name = format!("{}.d.lua", name.to_lowercase());
         let path = output_dir.join(file_name);
-        let content = self.generate_interface(name, method_signatures);
+        let content = self.generate_interface(name, method_signatures, callbacks);
         fs::write(path, content).expect("Unable to write LuaLS interface file");
+    }
+
+    /// Write a combined enums + constants file so IDE can autocomplete Steam.k_* values.
+    pub fn write_enums_consts(&self, output_dir: &Path, enums: &[Enum], consts: &[Const]) {
+        let path = output_dir.join("enums_consts.d.lua");
+        let mut cb = CodeBuilder::new();
+
+        // Extend the Steam class with all enum/const fields
+        cb.line("---@class Steam");
+        for enm in enums {
+            for val in &enm.values {
+                cb.line(&format!("---@field {} integer", val.name));
+            }
+        }
+        for c in consts {
+            cb.line(&format!("---@field {} integer", c.constname));
+        }
+        cb.preceeding_blank_line();
+
+        fs::write(path, cb.finish()).expect("Unable to write LuaLS enums_consts file");
+    }
+
+    /// Write the Extra interface definition file.
+    pub fn write_extra(&self, output_dir: &Path) {
+        let path = output_dir.join("extra.d.lua");
+        let mut cb = CodeBuilder::new();
+        cb.line("---@class Steam.Extra");
+        cb.line("local Extra = {}");
+        cb.preceeding_blank_line();
+        cb.line("---@param value integer|string");
+        cb.line("---@return uint64");
+        cb.line("function Extra.ParseUint64(value) end");
+        cb.preceeding_blank_line();
+        cb.line("Steam.Extra = Extra");
+        fs::write(path, cb.finish()).expect("Unable to write LuaLS extra file");
     }
 
     fn generate_index(
@@ -61,6 +96,31 @@ impl LuaLsGenerator {
         cb.preceeding_blank_line();
         cb.line("---@class Steam");
         cb.line("Steam = {}");
+        cb.preceeding_blank_line();
+
+        // Core functions (manually implemented in Core.cpp and GameServer.cpp)
+        cb.line("---@return boolean");
+        cb.line("function Steam.Init() end");
+        cb.preceeding_blank_line();
+        cb.line("function Steam.Shutdown() end");
+        cb.preceeding_blank_line();
+        cb.line("function Steam.RunCallbacks() end");
+        cb.preceeding_blank_line();
+        cb.line("---@param unIP integer");
+        cb.line("---@param usGamePort integer");
+        cb.line("---@param usQueryPort integer");
+        cb.line("---@param eServerMode integer");
+        cb.line("---@param pchVersionString string");
+        cb.line("---@return boolean");
+        cb.line("function Steam.GameServerInit(unIP, usGamePort, usQueryPort, eServerMode, pchVersionString) end");
+        cb.preceeding_blank_line();
+        cb.line("function Steam.GameServerShutdown() end");
+        cb.preceeding_blank_line();
+        cb.line("function Steam.GameServerRunCallbacks() end");
+        cb.preceeding_blank_line();
+
+        // Extra interface (manually implemented)
+        cb.line("Steam.Extra = {}");
         cb.preceeding_blank_line();
 
         for name in interface_names {
@@ -128,12 +188,31 @@ impl LuaLsGenerator {
         &self,
         name: &str,
         method_signatures: &[(String, LuaMethodSignature)],
+        callbacks: &[CallbackStruct],
     ) -> String {
         let mut cb = CodeBuilder::new();
 
         cb.line(&format!("---@class Steam.{}", name));
+
+        // Callback fields: users set these to functions to receive Steam callbacks.
+        // They are optional (nil by default).
+        for cb_struct in callbacks {
+            let lua_name = Self::callback_field_name(&cb_struct.name);
+            cb.line(&format!(
+                "---@field {}? fun(data: {})",
+                lua_name, cb_struct.name
+            ));
+        }
+
         cb.line(&format!("local {} = {{}}", name));
         cb.preceeding_blank_line();
+
+        // Manual extra methods not emitted by the auto-generator
+        if name == "Client" {
+            cb.line("---@param hook fun(severity: integer, message: string)?");
+            cb.line("function Client.SetWarningMessageHook(hook) end");
+            cb.preceeding_blank_line();
+        }
 
         for (lua_method_name, signature) in method_signatures {
             self.write_method(&mut cb, name, lua_method_name, signature);
@@ -141,6 +220,12 @@ impl LuaLsGenerator {
 
         cb.line(&format!("Steam.{} = {}", name, name));
         cb.finish()
+    }
+
+    /// Derive the Lua callback field name from the C++ callback struct name.
+    /// E.g. `GameOverlayActivated_t` → `OnGameOverlayActivated`
+    fn callback_field_name(struct_name: &str) -> String {
+        format!("On{}", &struct_name[..struct_name.len() - 2])
     }
 
     fn write_method(
@@ -223,3 +308,4 @@ impl LuaLsGenerator {
         fs::write(path, cb.finish()).expect("Unable to write LuaLS callback_interfaces file");
     }
 }
+

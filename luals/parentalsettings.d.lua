@@ -1,4 +1,5 @@
 ---@class Steam.ParentalSettings
+---@field OnSteamParentalSettingsChanged? fun(data: SteamParentalSettingsChanged_t)
 local ParentalSettings = {}
 
 ---@return boolean

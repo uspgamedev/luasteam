@@ -1,4 +1,20 @@
 ---@class Steam.User
+---@field OnSteamServersConnected? fun(data: SteamServersConnected_t)
+---@field OnSteamServerConnectFailure? fun(data: SteamServerConnectFailure_t)
+---@field OnSteamServersDisconnected? fun(data: SteamServersDisconnected_t)
+---@field OnClientGameServerDeny? fun(data: ClientGameServerDeny_t)
+---@field OnIPCFailure? fun(data: IPCFailure_t)
+---@field OnLicensesUpdated? fun(data: LicensesUpdated_t)
+---@field OnValidateAuthTicketResponse? fun(data: ValidateAuthTicketResponse_t)
+---@field OnMicroTxnAuthorizationResponse? fun(data: MicroTxnAuthorizationResponse_t)
+---@field OnEncryptedAppTicketResponse? fun(data: EncryptedAppTicketResponse_t)
+---@field OnGetAuthSessionTicketResponse? fun(data: GetAuthSessionTicketResponse_t)
+---@field OnGameWebCallback? fun(data: GameWebCallback_t)
+---@field OnStoreAuthURLResponse? fun(data: StoreAuthURLResponse_t)
+---@field OnMarketEligibilityResponse? fun(data: MarketEligibilityResponse_t)
+---@field OnDurationControl? fun(data: DurationControl_t)
+---@field OnGetTicketForWebApiResponse? fun(data: GetTicketForWebApiResponse_t)
+---@field OnGSPolicyResponse? fun(data: GSPolicyResponse_t)
 local User = {}
 
 ---@return integer

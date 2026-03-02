@@ -86,9 +86,9 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetBeaconByIndex <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconByIndex>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Parties.GetNumActiveBeacons`'s example.
+    * See :func:`Parties.GetNumActiveBeacons`'s example.
 
 .. function:: Parties.GetBeaconDetails(ulBeaconID, cchMetadata)
 
@@ -108,9 +108,9 @@ Function Reference
     * Parameter ``pLocation`` is no longer a paramer, and is instead an additional return value
     * Parameter ``pchMetadata`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`Parties.GetNumActiveBeacons`'s example.
+    * See :func:`Parties.GetNumActiveBeacons`'s example.
 
 .. function:: Parties.GetBeaconLocationData(BeaconLocation, eData, cchDataStringOut)
 

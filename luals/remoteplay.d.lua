@@ -1,4 +1,7 @@
 ---@class Steam.RemotePlay
+---@field OnSteamRemotePlaySessionConnected? fun(data: SteamRemotePlaySessionConnected_t)
+---@field OnSteamRemotePlaySessionDisconnected? fun(data: SteamRemotePlaySessionDisconnected_t)
+---@field OnSteamRemotePlayTogetherGuestInvite? fun(data: SteamRemotePlayTogetherGuestInvite_t)
 local RemotePlay = {}
 
 ---@return integer

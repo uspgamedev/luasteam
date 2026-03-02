@@ -1,4 +1,15 @@
 ---@class Steam.Matchmaking
+---@field OnFavoritesListChanged? fun(data: FavoritesListChanged_t)
+---@field OnLobbyInvite? fun(data: LobbyInvite_t)
+---@field OnLobbyEnter? fun(data: LobbyEnter_t)
+---@field OnLobbyDataUpdate? fun(data: LobbyDataUpdate_t)
+---@field OnLobbyChatUpdate? fun(data: LobbyChatUpdate_t)
+---@field OnLobbyChatMsg? fun(data: LobbyChatMsg_t)
+---@field OnLobbyGameCreated? fun(data: LobbyGameCreated_t)
+---@field OnLobbyMatchList? fun(data: LobbyMatchList_t)
+---@field OnLobbyKicked? fun(data: LobbyKicked_t)
+---@field OnLobbyCreated? fun(data: LobbyCreated_t)
+---@field OnFavoritesListAccountsUpdated? fun(data: FavoritesListAccountsUpdated_t)
 local Matchmaking = {}
 
 ---@return integer

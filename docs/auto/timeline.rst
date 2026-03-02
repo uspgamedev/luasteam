@@ -179,9 +179,9 @@ Function Reference
     :param str pchPhaseID:
     :SteamWorks: `SetGamePhaseID <https://partner.steamgames.com/doc/api/ISteamTimeline#SetGamePhaseID>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Timeline.StartGamePhase`'s example.
+    * See :func:`Timeline.StartGamePhase`'s example.
 
 .. function:: Timeline.SetTimelineGameMode(eMode)
 

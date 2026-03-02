@@ -1,4 +1,8 @@
 ---@class Steam.Input
+---@field OnSteamInputDeviceConnected? fun(data: SteamInputDeviceConnected_t)
+---@field OnSteamInputDeviceDisconnected? fun(data: SteamInputDeviceDisconnected_t)
+---@field OnSteamInputConfigurationLoaded? fun(data: SteamInputConfigurationLoaded_t)
+---@field OnSteamInputGamepadSlotChange? fun(data: SteamInputGamepadSlotChange_t)
 local Input = {}
 
 ---@param bExplicitlyCallRunFrame boolean

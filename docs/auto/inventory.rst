@@ -141,9 +141,9 @@ Function Reference
     :param int resultHandle:
     :SteamWorks: `DestroyResult <https://partner.steamgames.com/doc/api/ISteamInventory#DestroyResult>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Inventory.GetResultItems`'s example.
+    * See :func:`Inventory.GetResultItems`'s example.
 
 .. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
 
@@ -252,9 +252,9 @@ Function Reference
     * Parameter ``pchValueBuffer`` is no longer a paramer, and is instead an additional return value
     * Parameter ``punValueBufferSizeOut`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`Inventory.GetItemDefinitionIDs`'s example.
+    * See :func:`Inventory.GetItemDefinitionIDs`'s example.
 
 .. function:: Inventory.GetItemPrice(iDefinition)
 
@@ -616,10 +616,6 @@ Callbacks
 
     * **data.m_handle** -- m_handle
     * **data.m_result** -- m_result
-
-**Example**::
-
-    See :func:`Inventory.GetResultItems`'s example.
 
 .. function:: Inventory.OnSteamInventoryFullUpdate
 

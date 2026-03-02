@@ -281,9 +281,9 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UserStats.GetNumAchievements`'s example.
+    * See :func:`UserStats.GetNumAchievements`'s example.
 
 .. function:: UserStats.GetAchievementProgressLimitsFloat(pchName)
 
@@ -415,9 +415,9 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UserStats.GetLeaderboardName`'s example.
+    * See :func:`UserStats.GetLeaderboardName`'s example.
 
 .. function:: UserStats.GetLeaderboardEntryCount(hSteamLeaderboard)
 
@@ -427,9 +427,9 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UserStats.GetLeaderboardName`'s example.
+    * See :func:`UserStats.GetLeaderboardName`'s example.
 
 .. function:: UserStats.GetLeaderboardName(hSteamLeaderboard)
 
@@ -456,9 +456,9 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UserStats.GetLeaderboardName`'s example.
+    * See :func:`UserStats.GetLeaderboardName`'s example.
 
 .. function:: UserStats.GetMostAchievedAchievementInfo(unNameBufLen)
 

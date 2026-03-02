@@ -446,9 +446,9 @@ Function Reference
 
     * Parameter ``pnFileSizeInBytes`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`RemoteStorage.GetFileCount`'s example.
+    * See :func:`RemoteStorage.GetFileCount`'s example.
 
 .. function:: RemoteStorage.GetFileSize(pchFile)
 

@@ -1,4 +1,6 @@
 ---@class Steam.GameServerStats
+---@field OnGSStatsReceived? fun(data: GSStatsReceived_t)
+---@field OnGSStatsStored? fun(data: GSStatsStored_t)
 local GameServerStats = {}
 
 ---@param steamIDUser uint64

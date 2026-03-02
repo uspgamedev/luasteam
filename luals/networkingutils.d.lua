@@ -1,4 +1,5 @@
 ---@class Steam.NetworkingUtils
+---@field OnSteamRelayNetworkStatus? fun(data: SteamRelayNetworkStatus_t)
 local NetworkingUtils = {}
 
 function NetworkingUtils.InitRelayNetworkAccess() end

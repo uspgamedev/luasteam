@@ -1,4 +1,7 @@
 ---@class Steam.Networking
+---@field OnP2PSessionRequest? fun(data: P2PSessionRequest_t)
+---@field OnP2PSessionConnectFail? fun(data: P2PSessionConnectFail_t)
+---@field OnSocketStatusCallback? fun(data: SocketStatusCallback_t)
 local Networking = {}
 
 ---@param steamIDRemote uint64

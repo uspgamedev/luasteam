@@ -1,4 +1,6 @@
 ---@class Steam.Timeline
+---@field OnSteamTimelineGamePhaseRecordingExists? fun(data: SteamTimelineGamePhaseRecordingExists_t)
+---@field OnSteamTimelineEventRecordingExists? fun(data: SteamTimelineEventRecordingExists_t)
 local Timeline = {}
 
 ---@param pchDescription string

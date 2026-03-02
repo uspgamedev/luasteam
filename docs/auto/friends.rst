@@ -163,7 +163,7 @@ Function Reference
 
 **Example**::
 
-    Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), 'None')
+    Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), Steam.k_EOverlayToStoreFlag_AddToCartAndShow)
 
 .. function:: Friends.ActivateGameOverlayToUser(pchDialog, steamID)
 
@@ -273,9 +273,9 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetClanByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanByIndex>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Friends.GetClanCount`'s example.
+    * See :func:`Friends.GetClanCount`'s example.
 
 .. function:: Friends.GetClanChatMemberCount(steamIDClan)
 
@@ -327,9 +327,9 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Friends.GetClanCount`'s example.
+    * See :func:`Friends.GetClanCount`'s example.
 
 .. function:: Friends.GetClanOfficerByIndex(steamIDClan, iOfficer)
 
@@ -339,6 +339,10 @@ Function Reference
     :param int iOfficer:
     :returns: (uint64) Return value
     :SteamWorks: `GetClanOfficerByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerByIndex>`_
+
+    **Notes:**
+
+    * See :func:`Friends.GetClanOfficerCount`'s example.
 
 .. function:: Friends.GetClanOfficerCount(steamIDClan)
 
@@ -492,9 +496,9 @@ Function Reference
 
 **Example**::
 
-    local playing, gameID, ip, port, queryPort = Steam.Friends.GetFriendGamePlayed(friendID)
-    if playing then
-        print('Friend is playing game:', tostring(gameID))
+    local is_friend, pFriendGameInfo = Steam.Friends.GetFriendGamePlayed(friendID)
+    if is_friend then
+        print('Friend is playing game:', pFriendGameInfo.m_gameID)
     end
 
 .. function:: Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData)
@@ -589,6 +593,10 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
 
+    **Notes:**
+
+    * See :func:`Friends.GetFriendRichPresenceKeyCount`'s example.
+
 .. function:: Friends.GetFriendRichPresenceKeyCount(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -642,6 +650,10 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetFriendsGroupIDByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupIDByIndex>`_
 
+    **Notes:**
+
+    * See :func:`Friends.GetFriendsGroupCount`'s example.
+
 .. function:: Friends.GetFriendsGroupMembersCount(friendsGroupID)
 
     🤖 **Auto-generated binding**
@@ -671,6 +683,10 @@ Function Reference
     :returns: (str) Return value
     :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
+    **Notes:**
+
+    * See :func:`Friends.GetFriendsGroupCount`'s example.
+
 .. function:: Friends.GetLargeFriendAvatar(steamIDFriend)
 
     🤖 **Auto-generated binding**
@@ -678,6 +694,10 @@ Function Reference
     :param uint64 steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetLargeFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetLargeFriendAvatar>`_
+
+    **Notes:**
+
+    * See :func:`Friends.GetSmallFriendAvatar`'s example.
 
 .. function:: Friends.GetMediumFriendAvatar(steamIDFriend)
 
@@ -687,10 +707,9 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetMediumFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetMediumFriendAvatar>`_
 
-**Example**::
+    **Notes:**
 
-    -- Returns an image handle; use Utils.GetImageRGBA to get pixel data
-    local imageHandle = Steam.Friends.GetMediumFriendAvatar(friendID)
+    * See :func:`Friends.GetSmallFriendAvatar`'s example.
 
 .. function:: Friends.GetNumChatsWithUnreadPriorityMessages()
 
@@ -774,8 +793,11 @@ Function Reference
     local imageHandle = Steam.Friends.GetSmallFriendAvatar(friendID)
     if imageHandle > 0 then
         local w, h = Steam.Utils.GetImageSize(imageHandle)
-        local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
-        renderAvatar(rgba, w, h)
+        local ok, rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+        if ok then
+            -- RGBA is a lua string with binary data of the pixels
+            renderAvatar(rgba, w, h)
+        end
     end
 
 .. function:: Friends.HasFriend(steamIDFriend, iFriendFlags)

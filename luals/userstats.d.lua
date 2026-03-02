@@ -1,4 +1,17 @@
 ---@class Steam.UserStats
+---@field OnUserStatsReceived? fun(data: UserStatsReceived_t)
+---@field OnUserStatsStored? fun(data: UserStatsStored_t)
+---@field OnUserAchievementStored? fun(data: UserAchievementStored_t)
+---@field OnLeaderboardFindResult? fun(data: LeaderboardFindResult_t)
+---@field OnLeaderboardScoresDownloaded? fun(data: LeaderboardScoresDownloaded_t)
+---@field OnLeaderboardScoreUploaded? fun(data: LeaderboardScoreUploaded_t)
+---@field OnNumberOfCurrentPlayers? fun(data: NumberOfCurrentPlayers_t)
+---@field OnUserStatsUnloaded? fun(data: UserStatsUnloaded_t)
+---@field OnUserAchievementIconFetched? fun(data: UserAchievementIconFetched_t)
+---@field OnGlobalAchievementPercentagesReady? fun(data: GlobalAchievementPercentagesReady_t)
+---@field OnLeaderboardUGCSet? fun(data: LeaderboardUGCSet_t)
+---@field OnGlobalStatsReceived? fun(data: GlobalStatsReceived_t)
+---@field OnGSStatsUnloaded? fun(data: GSStatsUnloaded_t)
 local UserStats = {}
 
 ---@param pchName string

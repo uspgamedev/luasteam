@@ -363,9 +363,9 @@ Function Reference
     :returns: (int) Return value
     :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetInputTypeForHandle>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`Input.GetConnectedControllers`'s example.
+    * See :func:`Input.GetConnectedControllers`'s example.
 
 .. function:: Input.GetMotionData(inputHandle)
 
@@ -478,7 +478,6 @@ Function Reference
 
 **Example**::
 
-    -- Call once per game frame to process input
     Steam.Input.RunFrame(false)
 
 .. function:: Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath)

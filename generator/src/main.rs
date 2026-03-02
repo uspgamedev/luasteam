@@ -373,6 +373,9 @@ impl Generator {
         );
         self.luals_generator
             .write_index(&luals_dir, &interface_names, &self.opaque_handles);
+        self.luals_generator
+            .write_enums_consts(&luals_dir, &self.api.enums, &self.api.consts);
+        self.luals_generator.write_extra(&luals_dir);
         stats.print_summary();
     }
 

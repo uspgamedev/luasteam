@@ -1,4 +1,10 @@
 ---@class Steam.Inventory
+---@field OnSteamInventoryResultReady? fun(data: SteamInventoryResultReady_t)
+---@field OnSteamInventoryFullUpdate? fun(data: SteamInventoryFullUpdate_t)
+---@field OnSteamInventoryDefinitionUpdate? fun(data: SteamInventoryDefinitionUpdate_t)
+---@field OnSteamInventoryEligiblePromoItemDefIDs? fun(data: SteamInventoryEligiblePromoItemDefIDs_t)
+---@field OnSteamInventoryStartPurchaseResult? fun(data: SteamInventoryStartPurchaseResult_t)
+---@field OnSteamInventoryRequestPricesResult? fun(data: SteamInventoryRequestPricesResult_t)
 local Inventory = {}
 
 ---@param resultHandle integer

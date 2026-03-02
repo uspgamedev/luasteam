@@ -1,4 +1,6 @@
 ---@class Steam.NetworkingMessages
+---@field OnSteamNetworkingMessagesSessionRequest? fun(data: SteamNetworkingMessagesSessionRequest_t)
+---@field OnSteamNetworkingMessagesSessionFailed? fun(data: SteamNetworkingMessagesSessionFailed_t)
 local NetworkingMessages = {}
 
 ---@param identityRemote SteamNetworkingIdentity

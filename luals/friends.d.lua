@@ -1,4 +1,25 @@
 ---@class Steam.Friends
+---@field OnPersonaStateChange? fun(data: PersonaStateChange_t)
+---@field OnGameOverlayActivated? fun(data: GameOverlayActivated_t)
+---@field OnGameServerChangeRequested? fun(data: GameServerChangeRequested_t)
+---@field OnGameLobbyJoinRequested? fun(data: GameLobbyJoinRequested_t)
+---@field OnAvatarImageLoaded? fun(data: AvatarImageLoaded_t)
+---@field OnClanOfficerListResponse? fun(data: ClanOfficerListResponse_t)
+---@field OnFriendRichPresenceUpdate? fun(data: FriendRichPresenceUpdate_t)
+---@field OnGameRichPresenceJoinRequested? fun(data: GameRichPresenceJoinRequested_t)
+---@field OnGameConnectedClanChatMsg? fun(data: GameConnectedClanChatMsg_t)
+---@field OnGameConnectedChatJoin? fun(data: GameConnectedChatJoin_t)
+---@field OnGameConnectedChatLeave? fun(data: GameConnectedChatLeave_t)
+---@field OnDownloadClanActivityCountsResult? fun(data: DownloadClanActivityCountsResult_t)
+---@field OnJoinClanChatRoomCompletionResult? fun(data: JoinClanChatRoomCompletionResult_t)
+---@field OnGameConnectedFriendChatMsg? fun(data: GameConnectedFriendChatMsg_t)
+---@field OnFriendsGetFollowerCount? fun(data: FriendsGetFollowerCount_t)
+---@field OnFriendsIsFollowing? fun(data: FriendsIsFollowing_t)
+---@field OnFriendsEnumerateFollowingList? fun(data: FriendsEnumerateFollowingList_t)
+---@field OnUnreadChatMessagesChanged? fun(data: UnreadChatMessagesChanged_t)
+---@field OnOverlayBrowserProtocolNavigation? fun(data: OverlayBrowserProtocolNavigation_t)
+---@field OnEquippedProfileItemsChanged? fun(data: EquippedProfileItemsChanged_t)
+---@field OnEquippedProfileItems? fun(data: EquippedProfileItems_t)
 local Friends = {}
 
 ---@return string

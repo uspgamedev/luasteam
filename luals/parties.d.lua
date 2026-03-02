@@ -1,4 +1,10 @@
 ---@class Steam.Parties
+---@field OnJoinPartyCallback? fun(data: JoinPartyCallback_t)
+---@field OnCreateBeaconCallback? fun(data: CreateBeaconCallback_t)
+---@field OnReservationNotificationCallback? fun(data: ReservationNotificationCallback_t)
+---@field OnChangeNumOpenSlotsCallback? fun(data: ChangeNumOpenSlotsCallback_t)
+---@field OnAvailableBeaconLocationsUpdated? fun(data: AvailableBeaconLocationsUpdated_t)
+---@field OnActiveBeaconsUpdated? fun(data: ActiveBeaconsUpdated_t)
 local Parties = {}
 
 ---@return integer

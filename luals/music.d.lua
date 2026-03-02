@@ -1,4 +1,6 @@
 ---@class Steam.Music
+---@field OnPlaybackStatusHasChanged? fun(data: PlaybackStatusHasChanged_t)
+---@field OnVolumeHasChanged? fun(data: VolumeHasChanged_t)
 local Music = {}
 
 ---@return boolean

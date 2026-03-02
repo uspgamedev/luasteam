@@ -169,9 +169,9 @@ end
 description = "Gets the current value of a stat. The stat must be set as an integer. For float stats, use GetStatFloat."
 notes = [
     "The stat 'API Name' must exist in App Admin on Steamworks",
-    "For other users' stats, use GetUserStat (currently not implemented)"
+    "For other users' stats, use GetUserStat (currently not implemented)",
+    "See :func:`UserStats.GetStatInt32`'s example."
 ]
-example = "See :func:`UserStats.GetStatInt32`'s example."
 
 [ISteamUserStats.GetStatInt32]
 example = """
@@ -275,13 +275,13 @@ end
 """
 
 [ISteamUserStats.GetLeaderboardEntryCount]
-example = "See :func:`UserStats.GetLeaderboardName`'s example."
+notes = ["See :func:`UserStats.GetLeaderboardName`'s example."]
 
 [ISteamUserStats.GetLeaderboardSortMethod]
-example = "See :func:`UserStats.GetLeaderboardName`'s example."
+notes = ["See :func:`UserStats.GetLeaderboardName`'s example."]
 
 [ISteamUserStats.GetLeaderboardDisplayType]
-example = "See :func:`UserStats.GetLeaderboardName`'s example."
+notes = ["See :func:`UserStats.GetLeaderboardName`'s example."]
 
 [ISteamUserStats.UploadLeaderboardScore]
 description = "Uploads a user score to a specified leaderboard."
@@ -549,19 +549,19 @@ end
 """
 
 [ISteamUGC.SetItemTitle]
-example = "See :func:`UGC.StartItemUpdate`'s example."
+notes = ["See :func:`UGC.StartItemUpdate`'s example."]
 
 [ISteamUGC.SetItemDescription]
-example = "See :func:`UGC.StartItemUpdate`'s example."
+notes = ["See :func:`UGC.StartItemUpdate`'s example."]
 
 [ISteamUGC.SetItemContent]
-example = "See :func:`UGC.StartItemUpdate`'s example."
+notes = ["See :func:`UGC.StartItemUpdate`'s example."]
 
 [ISteamUGC.SetItemPreview]
-example = "See :func:`UGC.StartItemUpdate`'s example."
+notes = ["See :func:`UGC.StartItemUpdate`'s example."]
 
 [ISteamUGC.SubmitItemUpdate]
-example = "See :func:`UGC.StartItemUpdate`'s example."
+notes = ["See :func:`UGC.StartItemUpdate`'s example."]
 
 [ISteamUGC.GetNumSubscribedItems]
 example = """
@@ -1125,7 +1125,7 @@ Steam.Friends.ActivateGameOverlayInviteDialog(lobbyID)
 
 [ISteamFriends.ActivateGameOverlayToStore]
 example = """
-Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), 'None')
+Steam.Friends.ActivateGameOverlayToStore(Steam.Utils.GetAppID(), Steam.k_EOverlayToStoreFlag_AddToCartAndShow)
 """
 
 [ISteamFriends.ActivateGameOverlayToUser]
@@ -1170,9 +1170,9 @@ print('Friend Steam level:', level)
 
 [ISteamFriends.GetFriendGamePlayed]
 example = """
-local playing, gameID, ip, port, queryPort = Steam.Friends.GetFriendGamePlayed(friendID)
-if playing then
-    print('Friend is playing game:', tostring(gameID))
+local is_friend, pFriendGameInfo = Steam.Friends.GetFriendGamePlayed(friendID)
+if is_friend then
+    print('Friend is playing game:', pFriendGameInfo.m_gameID)
 end
 """
 
@@ -1181,16 +1181,20 @@ example = """
 local imageHandle = Steam.Friends.GetSmallFriendAvatar(friendID)
 if imageHandle > 0 then
     local w, h = Steam.Utils.GetImageSize(imageHandle)
-    local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
-    renderAvatar(rgba, w, h)
+    local ok, rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+    if ok then
+        -- RGBA is a lua string with binary data of the pixels
+        renderAvatar(rgba, w, h)
+    end
 end
 """
 
+[ISteamFriends.GetLargeFriendAvatar]
+notes = ["See :func:`Friends.GetSmallFriendAvatar`'s example."]
+
 [ISteamFriends.GetMediumFriendAvatar]
-example = """
--- Returns an image handle; use Utils.GetImageRGBA to get pixel data
-local imageHandle = Steam.Friends.GetMediumFriendAvatar(friendID)
-"""
+notes = ["See :func:`Friends.GetSmallFriendAvatar`'s example."]
+
 
 [ISteamFriends.HasFriend]
 example = """
@@ -1232,6 +1236,12 @@ for i = 0, groupCount - 1 do
 end
 """
 
+[ISteamFriends.GetFriendsGroupIDByIndex]
+notes = ["See :func:`Friends.GetFriendsGroupCount`'s example."]
+
+[ISteamFriends.GetFriendsGroupName]
+notes = ["See :func:`Friends.GetFriendsGroupCount`'s example."]
+
 [ISteamFriends.GetClanCount]
 example = """
 local count = Steam.Friends.GetClanCount()
@@ -1242,16 +1252,19 @@ end
 """
 
 [ISteamFriends.GetClanByIndex]
-example = "See :func:`Friends.GetClanCount`'s example."
+notes = ["See :func:`Friends.GetClanCount`'s example."]
 
 [ISteamFriends.GetClanName]
-example = "See :func:`Friends.GetClanCount`'s example."
+notes = ["See :func:`Friends.GetClanCount`'s example."]
 
 [ISteamFriends.GetClanOwner]
 example = """
 local ownerID = Steam.Friends.GetClanOwner(clanID)
 print('Clan owner:', Steam.Friends.GetFriendPersonaName(ownerID))
 """
+
+[ISteamFriends.GetClanOfficerByIndex]
+notes = ["See :func:`Friends.GetClanOfficerCount`'s example."]
 
 [ISteamFriends.GetClanOfficerCount]
 example = """
@@ -1285,6 +1298,9 @@ example = """
 -- Request fresh rich presence data for a friend
 Steam.Friends.RequestFriendRichPresence(friendID)
 """
+
+[ISteamFriends.GetFriendRichPresenceKeyByIndex]
+notes = ["See :func:`Friends.GetFriendRichPresenceKeyCount`'s example."]
 
 [ISteamFriends.GetFriendRichPresenceKeyCount]
 example = """
@@ -1405,7 +1421,7 @@ end
 """
 
 [ISteamUserStats.GetAchievementName]
-example = "See :func:`UserStats.GetNumAchievements`'s example."
+notes = ["See :func:`UserStats.GetNumAchievements`'s example."]
 
 [ISteamUserStats.GetAchievementAndUnlockTime]
 example = """
@@ -1784,10 +1800,10 @@ end)
 """
 
 [ISteamUGC.GetQueryUGCResult]
-example = "See :func:`UGC.SendQueryUGCRequest`'s example."
+notes = ["See :func:`UGC.SendQueryUGCRequest`'s example."]
 
 [ISteamUGC.ReleaseQueryUGCRequest]
-example = "See :func:`UGC.SendQueryUGCRequest`'s example."
+notes = ["See :func:`UGC.SendQueryUGCRequest`'s example."]
 
 [ISteamUGC.CreateQueryAllUGCRequestPage]
 example = """
@@ -2037,7 +2053,7 @@ end
 """
 
 [ISteamRemoteStorage.GetFileNameAndSize]
-example = "See :func:`RemoteStorage.GetFileCount`'s example."
+notes = ["See :func:`RemoteStorage.GetFileCount`'s example."]
 
 [ISteamRemoteStorage.GetQuota]
 example = """
@@ -2524,7 +2540,7 @@ end
 """
 
 [ISteamNetworking.ReadP2PPacket]
-example = "See :func:`Networking.IsP2PPacketAvailable`'s example."
+notes = ["See :func:`Networking.IsP2PPacketAvailable`'s example."]
 
 [ISteamNetworking.AcceptP2PSessionWithUser]
 example = """
@@ -2557,7 +2573,7 @@ Steam.Networking.AllowP2PPacketRelay(true)
 """
 
 [ISteamNetworking.OnP2PSessionRequest]
-example = "See :func:`Networking.AcceptP2PSessionWithUser`'s example."
+notes = ["See :func:`Networking.AcceptP2PSessionWithUser`'s example."]
 
 [ISteamNetworking.OnP2PSessionConnectFail]
 example = """
@@ -2599,7 +2615,7 @@ end
 """
 
 [ISteamInventory.DestroyResult]
-example = "See :func:`Inventory.GetResultItems`'s example."
+notes = ["See :func:`Inventory.GetResultItems`'s example."]
 
 [ISteamInventory.LoadItemDefinitions]
 example = """
@@ -2617,7 +2633,7 @@ end
 """
 
 [ISteamInventory.GetItemDefinitionProperty]
-example = "See :func:`Inventory.GetItemDefinitionIDs`'s example."
+notes = ["See :func:`Inventory.GetItemDefinitionIDs`'s example."]
 
 [ISteamInventory.GetItemsByID]
 example = """
@@ -2673,7 +2689,7 @@ end)
 """
 
 [ISteamInventory.OnSteamInventoryResultReady]
-example = "See :func:`Inventory.GetResultItems`'s example."
+notes = ["See :func:`Inventory.GetResultItems`'s example."]
 
 [ISteamInventory.OnSteamInventoryDefinitionUpdate]
 example = """
@@ -2877,7 +2893,7 @@ Steam.HTTP.SendHTTPRequest(hReq)
 """
 
 [ISteamHTTP.SetHTTPRequestHeaderValue]
-example = "See :func:`HTTP.CreateHTTPRequest`'s example."
+notes = ["See :func:`HTTP.CreateHTTPRequest`'s example."]
 
 [ISteamHTTP.SendHTTPRequest]
 example = """
@@ -2905,10 +2921,10 @@ end
 """
 
 [ISteamHTTP.GetHTTPResponseBodyData]
-example = "See :func:`HTTP.GetHTTPResponseBodySize`'s example."
+notes = ["See :func:`HTTP.GetHTTPResponseBodySize`'s example."]
 
 [ISteamHTTP.OnHTTPRequestCompleted]
-example = "See :func:`HTTP.GetHTTPResponseBodySize`'s example."
+notes = ["See :func:`HTTP.GetHTTPResponseBodySize`'s example."]
 
 [ISteamHTTP.SetHTTPRequestNetworkActivityTimeout]
 example = """
@@ -3091,7 +3107,7 @@ print('Remote player:', Steam.Friends.GetFriendPersonaName(steamID))
 """
 
 [ISteamRemotePlay.GetSessionClientName]
-example = "See :func:`RemotePlay.GetSessionID`'s example."
+notes = ["See :func:`RemotePlay.GetSessionID`'s example."]
 
 [ISteamRemotePlay.GetSessionClientFormFactor]
 example = """
@@ -3181,7 +3197,7 @@ Steam.Timeline.EndGamePhase()
 """
 
 [ISteamTimeline.SetGamePhaseID]
-example = "See :func:`Timeline.StartGamePhase`'s example."
+notes = ["See :func:`Timeline.StartGamePhase`'s example."]
 
 [ISteamTimeline.OpenOverlayToTimelineEvent]
 example = """
@@ -3200,7 +3216,6 @@ Steam.Input.Init(false)
 
 [ISteamInput.RunFrame]
 example = """
--- Call once per game frame to process input
 Steam.Input.RunFrame(false)
 """
 
@@ -3274,7 +3289,7 @@ Steam.Input.ShowBindingPanel(controllerHandle)
 """
 
 [ISteamInput.GetInputTypeForHandle]
-example = "See :func:`Input.GetConnectedControllers`'s example."
+notes = ["See :func:`Input.GetConnectedControllers`'s example."]
 
 [ISteamInput.GetStringForActionOrigin]
 example = """
@@ -3334,7 +3349,7 @@ Steam.Controller.RunFrame()
 
 [ISteamController.GetConnectedControllers]
 example = """
-local controllers = Steam.Controller.GetConnectedControllers()
+local _, controllers = Steam.Controller.GetConnectedControllers()
 print('Connected controllers:', #controllers)
 """
 
@@ -3356,8 +3371,9 @@ local jumpHandle = Steam.Controller.GetDigitalActionHandle('Jump')
 
 [ISteamController.GetDigitalActionData]
 example = """
+local jumpHandle = Steam.Controller.GetDigitalActionHandle('Jump')
 local data = Steam.Controller.GetDigitalActionData(controllerHandle, jumpHandle)
-if data.bState ~= 0 then
+if data.bState then
     player.jump()
 end
 """
@@ -3381,7 +3397,7 @@ Steam.Controller.TriggerVibration(controllerHandle, 16000, 16000)
 
 [ISteamController.TriggerHapticPulse]
 example = """
-Steam.Controller.TriggerHapticPulse(controllerHandle, 'Right', 1000)
+Steam.Controller.TriggerHapticPulse(controllerHandle, Steam.k_ESteamControllerPad_Right, 1000)
 """
 
 [ISteamController.SetLEDColor]
@@ -3398,6 +3414,9 @@ Steam.Controller.Shutdown()
 [ISteamController.GetInputTypeForHandle]
 example = """
 local inputType = Steam.Controller.GetInputTypeForHandle(controllerHandle)
+if inputType == Steam.k_ESteamInputType_PS4Controller then
+    print("PS4 controller!")
+end
 """
 
 [ISteamController.ShowBindingPanel]
@@ -3498,10 +3517,10 @@ end
 """
 
 [ISteamParties.GetBeaconByIndex]
-example = "See :func:`Parties.GetNumActiveBeacons`'s example."
+notes = ["See :func:`Parties.GetNumActiveBeacons`'s example."]
 
 [ISteamParties.GetBeaconDetails]
-example = "See :func:`Parties.GetNumActiveBeacons`'s example."
+notes = ["See :func:`Parties.GetNumActiveBeacons`'s example."]
 
 [ISteamParties.JoinParty]
 example = """
@@ -3600,10 +3619,10 @@ end)
 """
 
 [ISteamHTMLSurface.LoadURL]
-example = "See :func:`HTMLSurface.CreateBrowser`'s example."
+notes = ["See :func:`HTMLSurface.CreateBrowser`'s example."]
 
 [ISteamHTMLSurface.SetSize]
-example = "See :func:`HTMLSurface.CreateBrowser`'s example."
+notes = ["See :func:`HTMLSurface.CreateBrowser`'s example."]
 
 [ISteamHTMLSurface.RemoveBrowser]
 example = """
@@ -3773,7 +3792,7 @@ Steam.NetworkingMessages.CloseSessionWithUser(tostring(playerSteamID))
 """
 
 [ISteamNetworkingMessages.OnSteamNetworkingMessagesSessionRequest]
-example = "See :func:`NetworkingMessages.AcceptSessionWithUser`'s example."
+notes = ["See :func:`NetworkingMessages.AcceptSessionWithUser`'s example."]
 
 [ISteamNetworkingMessages.OnSteamNetworkingMessagesSessionFailed]
 example = """

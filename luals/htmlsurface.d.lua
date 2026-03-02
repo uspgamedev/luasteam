@@ -1,4 +1,27 @@
 ---@class Steam.HTMLSurface
+---@field OnHTML_BrowserReady? fun(data: HTML_BrowserReady_t)
+---@field OnHTML_NeedsPaint? fun(data: HTML_NeedsPaint_t)
+---@field OnHTML_StartRequest? fun(data: HTML_StartRequest_t)
+---@field OnHTML_CloseBrowser? fun(data: HTML_CloseBrowser_t)
+---@field OnHTML_URLChanged? fun(data: HTML_URLChanged_t)
+---@field OnHTML_FinishedRequest? fun(data: HTML_FinishedRequest_t)
+---@field OnHTML_OpenLinkInNewTab? fun(data: HTML_OpenLinkInNewTab_t)
+---@field OnHTML_ChangedTitle? fun(data: HTML_ChangedTitle_t)
+---@field OnHTML_SearchResults? fun(data: HTML_SearchResults_t)
+---@field OnHTML_CanGoBackAndForward? fun(data: HTML_CanGoBackAndForward_t)
+---@field OnHTML_HorizontalScroll? fun(data: HTML_HorizontalScroll_t)
+---@field OnHTML_VerticalScroll? fun(data: HTML_VerticalScroll_t)
+---@field OnHTML_LinkAtPosition? fun(data: HTML_LinkAtPosition_t)
+---@field OnHTML_JSAlert? fun(data: HTML_JSAlert_t)
+---@field OnHTML_JSConfirm? fun(data: HTML_JSConfirm_t)
+---@field OnHTML_FileOpenDialog? fun(data: HTML_FileOpenDialog_t)
+---@field OnHTML_NewWindow? fun(data: HTML_NewWindow_t)
+---@field OnHTML_SetCursor? fun(data: HTML_SetCursor_t)
+---@field OnHTML_StatusText? fun(data: HTML_StatusText_t)
+---@field OnHTML_ShowToolTip? fun(data: HTML_ShowToolTip_t)
+---@field OnHTML_UpdateToolTip? fun(data: HTML_UpdateToolTip_t)
+---@field OnHTML_HideToolTip? fun(data: HTML_HideToolTip_t)
+---@field OnHTML_BrowserRestarted? fun(data: HTML_BrowserRestarted_t)
 local HTMLSurface = {}
 
 ---@return boolean

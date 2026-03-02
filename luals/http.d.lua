@@ -1,4 +1,7 @@
 ---@class Steam.HTTP
+---@field OnHTTPRequestCompleted? fun(data: HTTPRequestCompleted_t)
+---@field OnHTTPRequestHeadersReceived? fun(data: HTTPRequestHeadersReceived_t)
+---@field OnHTTPRequestDataReceived? fun(data: HTTPRequestDataReceived_t)
 local HTTP = {}
 
 ---@param eHTTPRequestMethod integer

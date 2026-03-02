@@ -656,9 +656,9 @@ Function Reference
 
     * Parameter ``pDetails`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.SendQueryUGCRequest`'s example.
+    * See :func:`UGC.SendQueryUGCRequest`'s example.
 
 .. function:: UGC.GetQueryUGCStatistic(handle, index, eStatType)
 
@@ -794,9 +794,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `ReleaseQueryUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#ReleaseQueryUGCRequest>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.SendQueryUGCRequest`'s example.
+    * See :func:`UGC.SendQueryUGCRequest`'s example.
 
 .. function:: UGC.RemoveAllItemKeyValueTags(handle)
 
@@ -958,9 +958,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetItemContent <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemContent>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.StartItemUpdate`'s example.
+    * See :func:`UGC.StartItemUpdate`'s example.
 
 .. function:: UGC.SetItemDescription(handle, pchDescription)
 
@@ -971,9 +971,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetItemDescription <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemDescription>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.StartItemUpdate`'s example.
+    * See :func:`UGC.StartItemUpdate`'s example.
 
 .. function:: UGC.SetItemMetadata(handle, pchMetaData)
 
@@ -999,9 +999,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetItemPreview <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemPreview>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.StartItemUpdate`'s example.
+    * See :func:`UGC.StartItemUpdate`'s example.
 
 .. function:: UGC.SetItemTags(updateHandle, pTags, bAllowAdminTags)
 
@@ -1028,9 +1028,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetItemTitle <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTitle>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.StartItemUpdate`'s example.
+    * See :func:`UGC.StartItemUpdate`'s example.
 
 .. function:: UGC.SetItemUpdateLanguage(handle, pchLanguage)
 
@@ -1361,9 +1361,9 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `SubmitItemUpdate <https://partner.steamgames.com/doc/api/ISteamUGC#SubmitItemUpdate>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`UGC.StartItemUpdate`'s example.
+    * See :func:`UGC.StartItemUpdate`'s example.
 
 .. function:: UGC.SubscribeItem(nPublishedFileID, callback)
 

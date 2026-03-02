@@ -285,9 +285,9 @@ Function Reference
     * Parameter ``pcubMsgSize`` is no longer a paramer, and is instead an additional return value
     * Parameter ``psteamIDRemote`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`Networking.IsP2PPacketAvailable`'s example.
+    * See :func:`Networking.IsP2PPacketAvailable`'s example.
 
 .. function:: Networking.RetrieveData(hListenSocket, cubDest)
 
@@ -362,10 +362,6 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_steamIDRemote** -- m_steamIDRemote
-
-**Example**::
-
-    See :func:`Networking.AcceptP2PSessionWithUser`'s example.
 
 .. function:: Networking.OnP2PSessionConnectFail
 

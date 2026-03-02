@@ -1,4 +1,9 @@
 ---@class Steam.Apps
+---@field OnDlcInstalled? fun(data: DlcInstalled_t)
+---@field OnNewUrlLaunchParameters? fun(data: NewUrlLaunchParameters_t)
+---@field OnAppProofOfPurchaseKeyResponse? fun(data: AppProofOfPurchaseKeyResponse_t)
+---@field OnFileDetailsResult? fun(data: FileDetailsResult_t)
+---@field OnTimedTrialStatus? fun(data: TimedTrialStatus_t)
 local Apps = {}
 
 ---@return boolean

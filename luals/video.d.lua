@@ -1,4 +1,8 @@
 ---@class Steam.Video
+---@field OnGetVideoURLResult? fun(data: GetVideoURLResult_t)
+---@field OnGetOPFSettingsResult? fun(data: GetOPFSettingsResult_t)
+---@field OnBroadcastUploadStart? fun(data: BroadcastUploadStart_t)
+---@field OnBroadcastUploadStop? fun(data: BroadcastUploadStop_t)
 local Video = {}
 
 ---@param unVideoAppID integer

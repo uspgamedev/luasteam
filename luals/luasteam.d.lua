@@ -5,6 +5,27 @@
 ---@class Steam
 Steam = {}
 
+---@return boolean
+function Steam.Init() end
+
+function Steam.Shutdown() end
+
+function Steam.RunCallbacks() end
+
+---@param unIP integer
+---@param usGamePort integer
+---@param usQueryPort integer
+---@param eServerMode integer
+---@param pchVersionString string
+---@return boolean
+function Steam.GameServerInit(unIP, usGamePort, usQueryPort, eServerMode, pchVersionString) end
+
+function Steam.GameServerShutdown() end
+
+function Steam.GameServerRunCallbacks() end
+
+Steam.Extra = {}
+
 Steam.Client = {}
 Steam.User = {}
 Steam.Friends = {}

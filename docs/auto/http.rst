@@ -122,9 +122,9 @@ Function Reference
 
     * Parameter ``pBodyDataBuffer`` is no longer a paramer, and is instead an additional return value
 
-**Example**::
+    **Notes:**
 
-    See :func:`HTTP.GetHTTPResponseBodySize`'s example.
+    * See :func:`HTTP.GetHTTPResponseBodySize`'s example.
 
 .. function:: HTTP.GetHTTPResponseBodySize(hRequest)
 
@@ -331,9 +331,9 @@ Function Reference
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestHeaderValue>`_
 
-**Example**::
+    **Notes:**
 
-    See :func:`HTTP.CreateHTTPRequest`'s example.
+    * See :func:`HTTP.CreateHTTPRequest`'s example.
 
 .. function:: HTTP.SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds)
 
@@ -405,10 +405,6 @@ Callbacks
     * **data.m_bRequestSuccessful** -- m_bRequestSuccessful
     * **data.m_eStatusCode** -- m_eStatusCode
     * **data.m_unBodySize** -- m_unBodySize
-
-**Example**::
-
-    See :func:`HTTP.GetHTTPResponseBodySize`'s example.
 
 .. function:: HTTP.OnHTTPRequestHeadersReceived
 

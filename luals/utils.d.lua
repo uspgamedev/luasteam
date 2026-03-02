@@ -1,4 +1,13 @@
 ---@class Steam.Utils
+---@field OnIPCountry? fun(data: IPCountry_t)
+---@field OnLowBatteryPower? fun(data: LowBatteryPower_t)
+---@field OnSteamAPICallCompleted? fun(data: SteamAPICallCompleted_t)
+---@field OnSteamShutdown? fun(data: SteamShutdown_t)
+---@field OnCheckFileSignature? fun(data: CheckFileSignature_t)
+---@field OnGamepadTextInputDismissed? fun(data: GamepadTextInputDismissed_t)
+---@field OnAppResumingFromSuspend? fun(data: AppResumingFromSuspend_t)
+---@field OnFloatingGamepadTextInputDismissed? fun(data: FloatingGamepadTextInputDismissed_t)
+---@field OnFilterTextDictionaryChanged? fun(data: FilterTextDictionaryChanged_t)
 local Utils = {}
 
 ---@return integer

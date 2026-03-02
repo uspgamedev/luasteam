@@ -173,7 +173,7 @@ Function Reference
 
 **Example**::
 
-    local controllers = Steam.Controller.GetConnectedControllers()
+    local _, controllers = Steam.Controller.GetConnectedControllers()
     print('Connected controllers:', #controllers)
 
 .. function:: Controller.GetControllerBindingRevision(controllerHandle)
@@ -218,8 +218,9 @@ Function Reference
 
 **Example**::
 
+    local jumpHandle = Steam.Controller.GetDigitalActionHandle('Jump')
     local data = Steam.Controller.GetDigitalActionData(controllerHandle, jumpHandle)
-    if data.bState ~= 0 then
+    if data.bState then
         player.jump()
     end
 
@@ -285,6 +286,9 @@ Function Reference
 **Example**::
 
     local inputType = Steam.Controller.GetInputTypeForHandle(controllerHandle)
+    if inputType == Steam.k_ESteamInputType_PS4Controller then
+        print("PS4 controller!")
+    end
 
 .. function:: Controller.GetMotionData(controllerHandle)
 
@@ -399,7 +403,7 @@ Function Reference
 
 **Example**::
 
-    Steam.Controller.TriggerHapticPulse(controllerHandle, 'Right', 1000)
+    Steam.Controller.TriggerHapticPulse(controllerHandle, Steam.k_ESteamControllerPad_Right, 1000)
 
 .. function:: Controller.TriggerRepeatedHapticPulse(controllerHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags)
 
