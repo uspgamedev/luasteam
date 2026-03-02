@@ -53,7 +53,7 @@ Function Reference
 
     :param uint64 ulBeacon:
     :param int unOpenSlots:
-    :param function callback: CallResult callback receiving struct `ChangeNumOpenSlotsCallback_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`ChangeNumOpenSlotsCallback_t <Parties.OnChangeNumOpenSlotsCallback>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `ChangeNumOpenSlots <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlots>`_
 
@@ -170,7 +170,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulBeaconID:
-    :param function callback: CallResult callback receiving struct `JoinPartyCallback_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`JoinPartyCallback_t <Parties.OnJoinPartyCallback>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
 
@@ -254,15 +254,13 @@ Callbacks
 
     Callback for `AvailableBeaconLocationsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#AvailableBeaconLocationsUpdated_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 .. function:: Parties.OnActiveBeaconsUpdated
 
     Callback for `ActiveBeaconsUpdated_t <https://partner.steamgames.com/doc/api/ISteamParties#ActiveBeaconsUpdated_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

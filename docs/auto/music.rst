@@ -135,8 +135,7 @@ Callbacks
 
     Callback for `PlaybackStatusHasChanged_t <https://partner.steamgames.com/doc/api/ISteamMusic#PlaybackStatusHasChanged_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

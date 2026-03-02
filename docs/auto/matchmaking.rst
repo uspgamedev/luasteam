@@ -139,7 +139,7 @@ Function Reference
 
     :param int eLobbyType:
     :param int cMaxMembers:
-    :param function callback: CallResult callback receiving struct `LobbyCreated_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`LobbyCreated_t <Matchmaking.OnLobbyCreated>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CreateLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#CreateLobby>`_
 
@@ -364,7 +364,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param function callback: CallResult callback receiving struct `LobbyEnter_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`LobbyEnter_t <Matchmaking.OnLobbyEnter>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
 
@@ -413,7 +413,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `LobbyMatchList_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`LobbyMatchList_t <Matchmaking.OnLobbyMatchList>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestLobbyList <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyList>`_
 

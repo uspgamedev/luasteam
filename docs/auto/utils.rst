@@ -81,7 +81,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str szFileName:
-    :param function callback: CallResult callback receiving struct `CheckFileSignature_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`CheckFileSignature_t <Utils.OnCheckFileSignature>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CheckFileSignature <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature>`_
 
@@ -482,8 +482,7 @@ Callbacks
 
     Callback for `IPCountry_t <https://partner.steamgames.com/doc/api/ISteamUtils#IPCountry_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 
@@ -519,8 +518,7 @@ Callbacks
 
     Callback for `SteamShutdown_t <https://partner.steamgames.com/doc/api/ISteamUtils#SteamShutdown_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 
@@ -560,15 +558,13 @@ Callbacks
 
     Callback for `AppResumingFromSuspend_t <https://partner.steamgames.com/doc/api/ISteamUtils#AppResumingFromSuspend_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 .. function:: Utils.OnFloatingGamepadTextInputDismissed
 
     Callback for `FloatingGamepadTextInputDismissed_t <https://partner.steamgames.com/doc/api/ISteamUtils#FloatingGamepadTextInputDismissed_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

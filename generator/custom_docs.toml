@@ -2779,7 +2779,7 @@ end
 [ISteamGameServer.GetPublicIP]
 example = """
 local ip = Steam.GameServer.GetPublicIP()
-print('Server public IP:', ip)
+print('Server public IP:', ip.m_rgubIPv6)
 """
 
 [ISteamGameServer.BUpdateUserData]

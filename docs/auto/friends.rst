@@ -221,7 +221,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int cClansToRequest: size of the buffer to be allocated to hold the return value ``psteamIDClans``
-    :param function callback: CallResult callback receiving struct `DownloadClanActivityCountsResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`DownloadClanActivityCountsResult_t <Friends.OnDownloadClanActivityCountsResult>` and a boolean
     :returns: (uint64) Return value
     :returns: (uint64[]) Value for `psteamIDClans`
     :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
@@ -235,7 +235,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unStartIndex:
-    :param function callback: CallResult callback receiving struct `FriendsEnumerateFollowingList_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`FriendsEnumerateFollowingList_t <Friends.OnFriendsEnumerateFollowingList>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `EnumerateFollowingList <https://partner.steamgames.com/doc/api/ISteamFriends#EnumerateFollowingList>`_
 
@@ -401,7 +401,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsGetFollowerCount_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`FriendsGetFollowerCount_t <Friends.OnFriendsGetFollowerCount>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
 
@@ -867,7 +867,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `FriendsIsFollowing_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`FriendsIsFollowing_t <Friends.OnFriendsIsFollowing>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
 
@@ -893,7 +893,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `JoinClanChatRoomCompletionResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`JoinClanChatRoomCompletionResult_t <Friends.OnJoinClanChatRoomCompletionResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
 
@@ -943,7 +943,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `ClanOfficerListResponse_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`ClanOfficerListResponse_t <Friends.OnClanOfficerListResponse>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
 
@@ -952,7 +952,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param function callback: CallResult callback receiving struct `EquippedProfileItems_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`EquippedProfileItems_t <Friends.OnEquippedProfileItems>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
 
@@ -1288,8 +1288,7 @@ Callbacks
 
     Callback for `UnreadChatMessagesChanged_t <https://partner.steamgames.com/doc/api/ISteamFriends#UnreadChatMessagesChanged_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

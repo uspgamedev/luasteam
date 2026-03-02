@@ -259,7 +259,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `DurationControl_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`DurationControl_t <User.OnDurationControl>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetDurationControl <https://partner.steamgames.com/doc/api/ISteamUser#GetDurationControl>`_
 
@@ -303,7 +303,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `MarketEligibilityResponse_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`MarketEligibilityResponse_t <User.OnMarketEligibilityResponse>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetMarketEligibility <https://partner.steamgames.com/doc/api/ISteamUser#GetMarketEligibility>`_
 
@@ -400,7 +400,7 @@ Function Reference
 
     :param str pDataToInclude:
     :param int cbDataToInclude: size of the input array ``pDataToInclude``
-    :param function callback: CallResult callback receiving struct `EncryptedAppTicketResponse_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`EncryptedAppTicketResponse_t <User.OnEncryptedAppTicketResponse>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
@@ -418,7 +418,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pchRedirectURL:
-    :param function callback: CallResult callback receiving struct `StoreAuthURLResponse_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`StoreAuthURLResponse_t <User.OnStoreAuthURLResponse>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestStoreAuthURL <https://partner.steamgames.com/doc/api/ISteamUser#RequestStoreAuthURL>`_
 
@@ -477,8 +477,7 @@ Callbacks
 
     Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/ISteamUser#SteamServersConnected_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 
@@ -533,8 +532,7 @@ Callbacks
 
     Callback for `LicensesUpdated_t <https://partner.steamgames.com/doc/api/ISteamUser#LicensesUpdated_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 .. function:: User.OnValidateAuthTicketResponse
 

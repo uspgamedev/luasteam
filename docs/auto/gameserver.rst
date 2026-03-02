@@ -75,7 +75,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :param function callback: CallResult callback receiving struct `AssociateWithClanResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`AssociateWithClanResult_t <GameServer.OnAssociateWithClanResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
 
@@ -158,7 +158,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDNewPlayer:
-    :param function callback: CallResult callback receiving struct `ComputeNewPlayerCompatibilityResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`ComputeNewPlayerCompatibilityResult_t <GameServer.OnComputeNewPlayerCompatibilityResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
 
@@ -229,13 +229,13 @@ Function Reference
 **Example**::
 
     local ip = Steam.GameServer.GetPublicIP()
-    print('Server public IP:', ip)
+    print('Server public IP:', ip.m_rgubIPv6)
 
 .. function:: GameServer.GetServerReputation(callback)
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `GSReputation_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`GSReputation_t <GameServer.OnGSReputation>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetServerReputation <https://partner.steamgames.com/doc/api/ISteamGameServer#GetServerReputation>`_
 
@@ -495,8 +495,7 @@ Callbacks
 
     Callback for `SteamServersConnected_t <https://partner.steamgames.com/doc/api/ISteamGameServer#SteamServersConnected_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

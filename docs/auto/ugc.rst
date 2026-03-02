@@ -136,7 +136,7 @@ Function Reference
 
     :param uint64 nPublishedFileID:
     :param int nAppID:
-    :param function callback: CallResult callback receiving struct `AddAppDependencyResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`AddAppDependencyResult_t <UGC.OnAddAppDependencyResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AddAppDependency <https://partner.steamgames.com/doc/api/ISteamUGC#AddAppDependency>`_
 
@@ -155,7 +155,7 @@ Function Reference
 
     :param uint64 nParentPublishedFileID:
     :param uint64 nChildPublishedFileID:
-    :param function callback: CallResult callback receiving struct `AddUGCDependencyResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`AddUGCDependencyResult_t <UGC.OnAddUGCDependencyResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AddDependency <https://partner.steamgames.com/doc/api/ISteamUGC#AddDependency>`_
 
@@ -215,7 +215,7 @@ Function Reference
 
     :param int nAppId:
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `UserFavoriteItemsListChanged_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`UserFavoriteItemsListChanged_t <UGC.OnUserFavoriteItemsListChanged>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `AddItemToFavorites <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemToFavorites>`_
 
@@ -276,7 +276,7 @@ Function Reference
 
     :param int nConsumerAppId:
     :param int eFileType:
-    :param function callback: CallResult callback receiving struct `CreateItemResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`CreateItemResult_t <UGC.OnCreateItemResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CreateItem <https://partner.steamgames.com/doc/api/ISteamUGC#CreateItem>`_
 
@@ -366,7 +366,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `DeleteItemResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`DeleteItemResult_t <UGC.OnDeleteItemResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DeleteItem <https://partner.steamgames.com/doc/api/ISteamUGC#DeleteItem>`_
 
@@ -399,7 +399,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `GetAppDependenciesResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`GetAppDependenciesResult_t <UGC.OnGetAppDependenciesResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetAppDependencies <https://partner.steamgames.com/doc/api/ISteamUGC#GetAppDependencies>`_
 
@@ -765,7 +765,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `GetUserItemVoteResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`GetUserItemVoteResult_t <UGC.OnGetUserItemVoteResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetUserItemVote <https://partner.steamgames.com/doc/api/ISteamUGC#GetUserItemVote>`_
 
@@ -782,7 +782,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `WorkshopEULAStatus_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`WorkshopEULAStatus_t <UGC.OnWorkshopEULAStatus>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetWorkshopEULAStatus <https://partner.steamgames.com/doc/api/ISteamUGC#GetWorkshopEULAStatus>`_
 
@@ -812,7 +812,7 @@ Function Reference
 
     :param uint64 nPublishedFileID:
     :param int nAppID:
-    :param function callback: CallResult callback receiving struct `RemoveAppDependencyResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`RemoveAppDependencyResult_t <UGC.OnRemoveAppDependencyResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RemoveAppDependency <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveAppDependency>`_
 
@@ -831,7 +831,7 @@ Function Reference
 
     :param uint64 nParentPublishedFileID:
     :param uint64 nChildPublishedFileID:
-    :param function callback: CallResult callback receiving struct `RemoveUGCDependencyResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`RemoveUGCDependencyResult_t <UGC.OnRemoveUGCDependencyResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RemoveDependency <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveDependency>`_
 
@@ -841,7 +841,7 @@ Function Reference
 
     :param int nAppId:
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `UserFavoriteItemsListChanged_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`UserFavoriteItemsListChanged_t <UGC.OnUserFavoriteItemsListChanged>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RemoveItemFromFavorites <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveItemFromFavorites>`_
 
@@ -877,7 +877,7 @@ Function Reference
 
     :param uint64 nPublishedFileID:
     :param int unMaxAgeSeconds:
-    :param function callback: CallResult callback receiving struct `SteamUGCRequestUGCDetailsResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`SteamUGCRequestUGCDetailsResult_t <UGC.OnSteamUGCRequestUGCDetailsResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestUGCDetails <https://partner.steamgames.com/doc/api/ISteamUGC#RequestUGCDetails>`_
 
@@ -894,7 +894,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param function callback: CallResult callback receiving struct `SteamUGCQueryCompleted_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`SteamUGCQueryCompleted_t <UGC.OnSteamUGCQueryCompleted>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `SendQueryUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#SendQueryUGCRequest>`_
 
@@ -1265,7 +1265,7 @@ Function Reference
 
     :param uint64 nPublishedFileID:
     :param bool bVoteUp:
-    :param function callback: CallResult callback receiving struct `SetUserItemVoteResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`SetUserItemVoteResult_t <UGC.OnSetUserItemVoteResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `SetUserItemVote <https://partner.steamgames.com/doc/api/ISteamUGC#SetUserItemVote>`_
 
@@ -1316,7 +1316,7 @@ Function Reference
 
     :param uint64[] pvecPublishedFileID:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
-    :param function callback: CallResult callback receiving struct `StartPlaytimeTrackingResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`StartPlaytimeTrackingResult_t <UGC.OnStartPlaytimeTrackingResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StartPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking>`_
 
@@ -1333,7 +1333,7 @@ Function Reference
 
     :param uint64[] pvecPublishedFileID:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
-    :param function callback: CallResult callback receiving struct `StopPlaytimeTrackingResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`StopPlaytimeTrackingResult_t <UGC.OnStopPlaytimeTrackingResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StopPlaytimeTracking <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking>`_
 
@@ -1341,7 +1341,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param function callback: CallResult callback receiving struct `StopPlaytimeTrackingResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`StopPlaytimeTrackingResult_t <UGC.OnStopPlaytimeTrackingResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StopPlaytimeTrackingForAllItems <https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTrackingForAllItems>`_
 
@@ -1357,7 +1357,7 @@ Function Reference
 
     :param uint64 handle:
     :param str pchChangeNote:
-    :param function callback: CallResult callback receiving struct `SubmitItemUpdateResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`SubmitItemUpdateResult_t <UGC.OnSubmitItemUpdateResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `SubmitItemUpdate <https://partner.steamgames.com/doc/api/ISteamUGC#SubmitItemUpdate>`_
 
@@ -1370,7 +1370,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `RemoteStorageSubscribePublishedFileResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`RemoteStorageSubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageSubscribePublishedFileResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `SubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#SubscribeItem>`_
 
@@ -1403,7 +1403,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param function callback: CallResult callback receiving struct `RemoteStorageUnsubscribePublishedFileResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`RemoteStorageUnsubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `UnsubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#UnsubscribeItem>`_
 

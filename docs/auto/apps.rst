@@ -340,7 +340,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str pszFileName:
-    :param function callback: CallResult callback receiving struct `FileDetailsResult_t` and a boolean
+    :param function callback: CallResult callback receiving struct :func:`FileDetailsResult_t <Apps.OnFileDetailsResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetFileDetails <https://partner.steamgames.com/doc/api/ISteamApps#GetFileDetails>`_
 
@@ -494,8 +494,7 @@ Callbacks
 
     Callback for `NewUrlLaunchParameters_t <https://partner.steamgames.com/doc/api/ISteamApps#NewUrlLaunchParameters_t>`_
 
-    **callback(data)** receives:
-
+    **callback(data)** receives no fields (notification only).
 
 **Example**::
 

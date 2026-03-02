@@ -85,6 +85,8 @@ pub struct CustomDoc {
 pub struct DocGenerator {
     custom_docs: CustomDocs,
     structs: Vec<Struct>,
+    /// Maps C++ callback struct name (e.g. "FooResult_t") → RST :func: label (e.g. "Foo.OnFooResult")
+    callresult_to_func: HashMap<String, String>,
 }
 
 impl DocGenerator {
@@ -104,11 +106,31 @@ impl DocGenerator {
         Self {
             custom_docs,
             structs: Vec::new(),
+            callresult_to_func: HashMap::new(),
         }
     }
 
     pub fn with_structs(mut self, structs: Vec<Struct>) -> Self {
         self.structs = structs;
+        self
+    }
+
+    /// Pre-populate the callresult → RST label map from all interface callbacks.
+    /// Must be called before generating interface docs.
+    pub fn with_interface_callbacks(
+        mut self,
+        interface_callbacks: &HashMap<String, Vec<CallbackStruct>>,
+    ) -> Self {
+        for (classname, callbacks) in interface_callbacks {
+            // "ISteamGameServer" → "GameServer"
+            let namespace = &classname["ISteam".len()..];
+            for cb in callbacks {
+                // "ComputeNewPlayerCompatibilityResult_t" → strip "_t" → prepend "On"
+                let lua_cb_name = format!("On{}", &cb.name[..cb.name.len() - 2]);
+                let label = format!("{}.{}", namespace, lua_cb_name);
+                self.callresult_to_func.insert(cb.name.clone(), label);
+            }
+        }
         self
     }
 
@@ -320,7 +342,12 @@ impl DocGenerator {
                 .unwrap_or("");
 
             if let LType::CallresultCallback { struct_t } = &param.ltype {
-                doc.push_str(&format!("    :param function {}: CallResult callback receiving struct `{struct_t}` and a boolean\n", param.name));
+                let struct_ref = if let Some(label) = self.callresult_to_func.get(struct_t) {
+                    format!(":func:`{struct_t} <{label}>`")
+                } else {
+                    format!("`{struct_t}`")
+                };
+                doc.push_str(&format!("    :param function {}: CallResult callback receiving struct {} and a boolean\n", param.name, struct_ref));
             } else if !param_desc.is_empty() {
                 doc.push_str(&format!(
                     "    :param {} {}: {}\n",
@@ -532,16 +559,19 @@ impl DocGenerator {
             "    Callback for `{} <https://partner.steamgames.com/doc/api/ISteam{}#{}>`_\n\n",
             callback.name, lua_namespace, callback.name
         ));
-        doc.push_str("    **callback(data)** receives:\n\n");
-
-        for field in &callback.fields {
-            let type_str = Self::fieldtype_to_doc(&field.fieldtype);
-            doc.push_str(&format!(
-                "    * **data.{}** *({})*\n",
-                field.fieldname, type_str
-            ));
+        if callback.fields.is_empty() {
+            doc.push_str("    **callback(data)** receives no fields (notification only).\n\n");
+        } else {
+            doc.push_str("    **callback(data)** receives:\n\n");
+            for field in &callback.fields {
+                let type_str = Self::fieldtype_to_doc(&field.fieldtype);
+                doc.push_str(&format!(
+                    "    * **data.{}** *({})*\n",
+                    field.fieldname, type_str
+                ));
+            }
+            doc.push('\n');
         }
-        doc.push('\n');
 
         if let Some(custom) = custom_doc
             && let Some(example) = &custom.example

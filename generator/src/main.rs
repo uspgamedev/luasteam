@@ -87,7 +87,9 @@ impl Generator {
             }
         }
 
-        let doc_generator = DocGenerator::new().with_structs(api.structs.clone());
+        let doc_generator = DocGenerator::new()
+            .with_structs(api.structs.clone())
+            .with_interface_callbacks(&interface_callbacks);
         let luals_generator = LuaLsGenerator::new();
         let opaque_handles = type_resolver.opaque_handles().clone();
 
