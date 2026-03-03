@@ -103,6 +103,14 @@ Function Reference
 
     * Parameter ``pInput`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
+**Example**::
+
+    local nInputs = Steam.RemotePlay.GetInput(nil)
+    local _, inputs = Steam.RemotePlay.GetInput(nInputs)
+    for _, input in ipairs(inputs) do
+        processInput(input)
+    end
+
 .. function:: RemotePlay.GetSessionClientFormFactor(unSessionID)
 
     🤖 **Auto-generated binding**

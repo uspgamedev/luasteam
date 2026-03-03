@@ -3144,6 +3144,15 @@ end
 # ISteamRemotePlay (additional examples)
 # =============================================================================
 
+[ISteamRemotePlay.GetInput]
+example = """
+local nInputs = Steam.RemotePlay.GetInput(nil)
+local _, inputs = Steam.RemotePlay.GetInput(nInputs)
+for _, input in ipairs(inputs) do
+    processInput(input)
+end
+"""
+
 [ISteamRemotePlay.GetSessionCount]
 example = """
 local count = Steam.RemotePlay.GetSessionCount()
