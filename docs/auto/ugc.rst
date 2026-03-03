@@ -1446,13 +1446,13 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: UGC.createQueryAllUGCRequest
+.. function:: UGC.CreateQueryAllUGCRequest
 
     ✋ **Not implemented** - blocklist: cursor method is not used
     
     :SteamWorks: `CreateQueryAllUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequest>`_
 
-.. function:: UGC.getQueryUGCKeyValueTag
+.. function:: UGC.GetQueryUGCKeyValueTag
 
     ✋ **Not implemented** - blocklist: unused, not even in API Reference
     

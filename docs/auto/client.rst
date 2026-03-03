@@ -130,145 +130,145 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: Client.getISteamUser
+.. function:: Client.GetISteamUser
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamUser <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamUser>`_
 
-.. function:: Client.getISteamGameServer
+.. function:: Client.GetISteamGameServer
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamGameServer <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamGameServer>`_
 
-.. function:: Client.getISteamFriends
+.. function:: Client.GetISteamFriends
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamFriends <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamFriends>`_
 
-.. function:: Client.getISteamUtils
+.. function:: Client.GetISteamUtils
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamUtils <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamUtils>`_
 
-.. function:: Client.getISteamMatchmaking
+.. function:: Client.GetISteamMatchmaking
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamMatchmaking <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamMatchmaking>`_
 
-.. function:: Client.getISteamMatchmakingServers
+.. function:: Client.GetISteamMatchmakingServers
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamMatchmakingServers <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamMatchmakingServers>`_
 
-.. function:: Client.getISteamGenericInterface
+.. function:: Client.GetISteamGenericInterface
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamGenericInterface <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamGenericInterface>`_
 
-.. function:: Client.getISteamUserStats
+.. function:: Client.GetISteamUserStats
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamUserStats <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamUserStats>`_
 
-.. function:: Client.getISteamGameServerStats
+.. function:: Client.GetISteamGameServerStats
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamGameServerStats <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamGameServerStats>`_
 
-.. function:: Client.getISteamApps
+.. function:: Client.GetISteamApps
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamApps <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamApps>`_
 
-.. function:: Client.getISteamNetworking
+.. function:: Client.GetISteamNetworking
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamNetworking <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamNetworking>`_
 
-.. function:: Client.getISteamRemoteStorage
+.. function:: Client.GetISteamRemoteStorage
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamRemoteStorage <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamRemoteStorage>`_
 
-.. function:: Client.getISteamScreenshots
+.. function:: Client.GetISteamScreenshots
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamScreenshots <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamScreenshots>`_
 
-.. function:: Client.getISteamHTTP
+.. function:: Client.GetISteamHTTP
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamHTTP <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamHTTP>`_
 
-.. function:: Client.getISteamController
+.. function:: Client.GetISteamController
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamController <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamController>`_
 
-.. function:: Client.getISteamUGC
+.. function:: Client.GetISteamUGC
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamUGC <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamUGC>`_
 
-.. function:: Client.getISteamMusic
+.. function:: Client.GetISteamMusic
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamMusic <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamMusic>`_
 
-.. function:: Client.getISteamHTMLSurface
+.. function:: Client.GetISteamHTMLSurface
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamHTMLSurface <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamHTMLSurface>`_
 
-.. function:: Client.getISteamInventory
+.. function:: Client.GetISteamInventory
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamInventory <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamInventory>`_
 
-.. function:: Client.getISteamVideo
+.. function:: Client.GetISteamVideo
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamVideo <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamVideo>`_
 
-.. function:: Client.getISteamParentalSettings
+.. function:: Client.GetISteamParentalSettings
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamParentalSettings <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamParentalSettings>`_
 
-.. function:: Client.getISteamInput
+.. function:: Client.GetISteamInput
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamInput <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamInput>`_
 
-.. function:: Client.getISteamParties
+.. function:: Client.GetISteamParties
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     
     :SteamWorks: `GetISteamParties <https://partner.steamgames.com/doc/api/ISteamClient#GetISteamParties>`_
 
-.. function:: Client.getISteamRemotePlay
+.. function:: Client.GetISteamRemotePlay
 
     ✋ **Not implemented** - blocklist: Custom acessors are not supported
     

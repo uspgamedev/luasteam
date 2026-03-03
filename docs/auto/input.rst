@@ -578,13 +578,13 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: Input.enableActionEventCallbacks
+.. function:: Input.EnableActionEventCallbacks
 
     ✋ **Not implemented** - unsupported type: SteamInputActionEventCallbackPointer
     
     :SteamWorks: `EnableActionEventCallbacks <https://partner.steamgames.com/doc/api/ISteamInput#EnableActionEventCallbacks>`_
 
-.. function:: Input.setDualSenseTriggerEffect
+.. function:: Input.SetDualSenseTriggerEffect
 
     ✋ **Not implemented** - unsupported type: const ScePadTriggerEffectParam *
     

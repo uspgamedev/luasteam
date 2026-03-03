@@ -598,55 +598,55 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingSockets.receivedRelayAuthTicket
+.. function:: NetworkingSockets.ReceivedRelayAuthTicket
 
     ✋ **Not implemented** - unsupported type: SteamDatagramRelayAuthTicket *
     
     :SteamWorks: `ReceivedRelayAuthTicket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceivedRelayAuthTicket>`_
 
-.. function:: NetworkingSockets.findRelayAuthTicketForServer
+.. function:: NetworkingSockets.FindRelayAuthTicketForServer
 
     ✋ **Not implemented** - unsupported type: SteamDatagramRelayAuthTicket *
     
     :SteamWorks: `FindRelayAuthTicketForServer <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#FindRelayAuthTicketForServer>`_
 
-.. function:: NetworkingSockets.getHostedDedicatedServerAddress
+.. function:: NetworkingSockets.GetHostedDedicatedServerAddress
 
     ✋ **Not implemented** - unsupported type: SteamDatagramHostedAddress *
     
     :SteamWorks: `GetHostedDedicatedServerAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetHostedDedicatedServerAddress>`_
 
-.. function:: NetworkingSockets.getGameCoordinatorServerLogin
+.. function:: NetworkingSockets.GetGameCoordinatorServerLogin
 
     ✋ **Not implemented** - unsupported type: SteamDatagramGameCoordinatorServerLogin *
     
     :SteamWorks: `GetGameCoordinatorServerLogin <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetGameCoordinatorServerLogin>`_
 
-.. function:: NetworkingSockets.connectP2PCustomSignaling
+.. function:: NetworkingSockets.ConnectP2PCustomSignaling
 
     ✋ **Not implemented** - unsupported type: ISteamNetworkingConnectionSignaling *
     
     :SteamWorks: `ConnectP2PCustomSignaling <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectP2PCustomSignaling>`_
 
-.. function:: NetworkingSockets.receivedP2PCustomSignal
+.. function:: NetworkingSockets.ReceivedP2PCustomSignal
 
     ✋ **Not implemented** - unsupported type: ISteamNetworkingSignalingRecvContext *
     
     :SteamWorks: `ReceivedP2PCustomSignal <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceivedP2PCustomSignal>`_
 
-.. function:: NetworkingSockets.getCertificateRequest
+.. function:: NetworkingSockets.GetCertificateRequest
 
     ✋ **Not implemented** - unsupported type: SteamNetworkingErrMsg &
     
     :SteamWorks: `GetCertificateRequest <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetCertificateRequest>`_
 
-.. function:: NetworkingSockets.setCertificate
+.. function:: NetworkingSockets.SetCertificate
 
     ✋ **Not implemented** - unsupported type: SteamNetworkingErrMsg &
     
     :SteamWorks: `SetCertificate <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetCertificate>`_
 
-.. function:: NetworkingSockets.createFakeUDPPort
+.. function:: NetworkingSockets.CreateFakeUDPPort
 
     ✋ **Not implemented** - unsupported type: ISteamNetworkingFakeUDPPort *
     

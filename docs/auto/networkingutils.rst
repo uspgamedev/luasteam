@@ -488,49 +488,49 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingUtils.getLocalPingLocation
+.. function:: NetworkingUtils.GetLocalPingLocation
 
     ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &
     
     :SteamWorks: `GetLocalPingLocation <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetLocalPingLocation>`_
 
-.. function:: NetworkingUtils.parsePingLocationString
+.. function:: NetworkingUtils.ParsePingLocationString
 
     ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &
     
     :SteamWorks: `ParsePingLocationString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ParsePingLocationString>`_
 
-.. function:: NetworkingUtils.getLocalTimestamp
+.. function:: NetworkingUtils.GetLocalTimestamp
 
     ✋ **Not implemented** - unsupported type: SteamNetworkingMicroseconds
     
     :SteamWorks: `GetLocalTimestamp <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetLocalTimestamp>`_
 
-.. function:: NetworkingUtils.setDebugOutputFunction
+.. function:: NetworkingUtils.SetDebugOutputFunction
 
     ✋ **Not implemented** - unsupported type: FSteamNetworkingSocketsDebugOutput
     
     :SteamWorks: `SetDebugOutputFunction <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetDebugOutputFunction>`_
 
-.. function:: NetworkingUtils.setGlobalConfigValuePtr
+.. function:: NetworkingUtils.SetGlobalConfigValuePtr
 
     ✋ **Not implemented** - unsupported type: void *
     
     :SteamWorks: `SetGlobalConfigValuePtr <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValuePtr>`_
 
-.. function:: NetworkingUtils.setConfigValue
+.. function:: NetworkingUtils.SetConfigValue
 
     ✋ **Not implemented** - blocklist: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValue <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValue>`_
 
-.. function:: NetworkingUtils.setConfigValueStruct
+.. function:: NetworkingUtils.SetConfigValueStruct
 
     ✋ **Not implemented** - blocklist: Needs careful dealing with void*
     
     :SteamWorks: `SetConfigValueStruct <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConfigValueStruct>`_
 
-.. function:: NetworkingUtils.getConfigValue
+.. function:: NetworkingUtils.GetConfigValue
 
     ✋ **Not implemented** - unsupported type: void *
     

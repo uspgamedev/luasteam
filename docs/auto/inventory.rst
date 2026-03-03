@@ -633,7 +633,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: Inventory.serializeResult
+.. function:: Inventory.SerializeResult
 
     ✋ **Not implemented** - blocklist: Uses nullptr as input, we don't support it
     

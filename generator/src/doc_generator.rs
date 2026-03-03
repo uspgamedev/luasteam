@@ -269,10 +269,9 @@ impl DocGenerator {
             for (method_name, reason) in skipped_methods {
                 // Extract just the method name without interface prefix
                 let method_name_only = method_name.split("::").last().unwrap_or(method_name);
-                let lua_method = Self::to_camel_case(method_name_only);
                 doc.push_str(&format!(
                     ".. function:: {}.{}\n\n",
-                    lua_namespace, lua_method
+                    lua_namespace, method_name_only
                 ));
                 doc.push_str(&format!(
                     "    ✋ **Not implemented** - {}\n",
@@ -783,32 +782,6 @@ impl DocGenerator {
             ("char", false) => "string".to_string(),
             (other, _) => other.to_string(),
         }
-    }
-
-    fn to_camel_case(s: &str) -> String {
-        if s.is_empty() {
-            return String::new();
-        }
-
-        let mut result = String::new();
-        let mut capitalize_next = false;
-        let mut first_char = true;
-
-        for c in s.chars() {
-            if c == '_' {
-                capitalize_next = true;
-            } else if first_char {
-                result.push(c.to_lowercase().next().unwrap());
-                first_char = false;
-            } else if capitalize_next {
-                result.push(c.to_uppercase().next().unwrap());
-                capitalize_next = false;
-            } else {
-                result.push(c);
-            }
-        }
-
-        result
     }
 
     pub fn generate_structs_doc(&self, structs: &[StructDocInfo<'_>]) -> String {

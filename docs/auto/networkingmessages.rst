@@ -129,7 +129,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: NetworkingMessages.receiveMessagesOnChannel
+.. function:: NetworkingMessages.ReceiveMessagesOnChannel
 
     ✋ **Not implemented** - blocklist: SteamNetworkingMessage_t out-array; not yet implemented
     

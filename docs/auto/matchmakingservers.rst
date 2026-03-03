@@ -243,7 +243,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: MatchmakingServers.getServerDetails
+.. function:: MatchmakingServers.GetServerDetails
 
     ✋ **Not implemented** - unsupported type: gameserveritem_t *
     

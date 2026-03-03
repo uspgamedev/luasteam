@@ -195,7 +195,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: Parties.createBeacon
+.. function:: Parties.CreateBeacon
 
     ✋ **Not implemented** - blocklist: requires custom implementation
     

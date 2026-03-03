@@ -805,7 +805,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: RemoteStorage.getUGCDetails
+.. function:: RemoteStorage.GetUGCDetails
 
     ✋ **Not implemented** - blocklist: char** output semantics unclear
     

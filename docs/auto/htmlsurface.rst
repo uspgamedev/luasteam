@@ -471,7 +471,7 @@ Function Reference
 Unimplemented Methods
 ---------------------
 
-.. function:: HTMLSurface.fileLoadDialogResponse
+.. function:: HTMLSurface.FileLoadDialogResponse
 
     ✋ **Not implemented** - unsupported type: const char **
     
