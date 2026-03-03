@@ -1029,7 +1029,7 @@ static int luasteam_UGC_GetSupportedGameVersionData(lua_State *L, ISteamUGC *ifa
 	uint32 cchGameBranchSize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchGameBranchMin(cchGameBranchSize);
 	std::vector<char> pchGameBranchMax(cchGameBranchSize);
-	bool __ret = SteamAPI_ISteamUGC_GetSupportedGameVersionData(iface, handle, index, versionIndex, lua_isnil(L, 4) ? nullptr : pchGameBranchMin.data(), pchGameBranchMax.data(), cchGameBranchSize);
+	bool __ret = SteamAPI_ISteamUGC_GetSupportedGameVersionData(iface, handle, index, versionIndex, lua_isnil(L, 4) ? nullptr : pchGameBranchMin.data(), lua_isnil(L, 4) ? nullptr : pchGameBranchMax.data(), cchGameBranchSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchGameBranchMin.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchGameBranchMax.data()));

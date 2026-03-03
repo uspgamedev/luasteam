@@ -1,8 +1,8 @@
 use super::Generator;
+use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::lua_type_info::LType;
-use crate::COUNTER;
 
 impl Generator {
     /// Generate code to check a lua value and convert it to a C++ type, returning the generated code and the Lua type info.

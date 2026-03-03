@@ -126,7 +126,10 @@ impl LuaMethodSignature {
     }
     /// Mark the most recently added parameter as optional (accepts nil → nullptr/0).
     pub fn mark_last_param_optional(&mut self) {
-        self.params.last_mut().expect("No params added yet").is_optional = true;
+        self.params
+            .last_mut()
+            .expect("No params added yet")
+            .is_optional = true;
     }
     pub fn set_return_type(&mut self, ltype: LType) {
         assert!(self.return_type.is_none(), "Return type already set");
@@ -156,6 +159,12 @@ impl LuaMethodSignature {
             size_of: Some((array_names, is_output)),
             is_optional: false,
         });
+    }
+
+    /// Append an array name to an already-registered size param (for output arrays sharing a size).
+    pub fn append_to_size_param(&mut self, size_name: &str, array_name: String) {
+        let p = self.params.iter_mut().find(|p| p.name == size_name).expect("size param not found");
+        p.size_of.as_mut().expect("not a size param").0.push(array_name);
     }
 
     /// Formats the Lua method signature as a comment string, e.g.

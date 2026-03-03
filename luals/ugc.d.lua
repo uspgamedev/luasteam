@@ -142,7 +142,7 @@ function UGC.GetNumSupportedGameVersions(handle, index) end
 ---@param handle uint64
 ---@param index integer
 ---@param versionIndex integer
----@param cchGameBranchSize integer? size of the buffer for pchGameBranchMin; if nil then the buffer will be NULL
+---@param cchGameBranchSize integer? size of the buffer for pchGameBranchMin, pchGameBranchMax; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchGameBranchMin
 ---@return string -- Value of: pchGameBranchMax

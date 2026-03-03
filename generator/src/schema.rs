@@ -337,6 +337,15 @@ impl SteamApi {
             .param_mut("pBuffer");
         assert!(param.array_count == Some("punOutBufferSize".to_string()));
         param.array_count = Some("unBufferSize".to_string());
+        // The parameters have incorrect out_array_count, but correct array_count
+        let m = self
+            .interface_mut("ISteamInventory")
+            .method_mut("GetItemsWithPrices");
+        for p_name in ["pArrayItemDefs", "pCurrentPrices", "pBasePrices"] {
+            let p = m.param_mut(p_name);
+            assert!(p.out_array_count.is_some() && p.array_count.is_some());
+            p.out_array_count = p.array_count.take();
+        }
         let to_mark_counters = [
             (
                 "ISteamApps",

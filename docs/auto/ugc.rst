@@ -743,7 +743,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int versionIndex:
-    :param int? cchGameBranchSize: size of the buffer to allocate for ``pchGameBranchMin``. If ``nil`` then the buffer will be ``NULL``.
+    :param int? cchGameBranchSize: size of the buffer to allocate for the output arrays ``pchGameBranchMin``, ``pchGameBranchMax``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchGameBranchMin``
     :returns: (str) ``pchGameBranchMax``

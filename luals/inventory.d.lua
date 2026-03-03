@@ -162,6 +162,13 @@ function Inventory.RequestPrices(callback) end
 ---@return integer
 function Inventory.GetNumItemsWithPrices() end
 
+---@param unArrayLength integer? size of the buffer for pArrayItemDefs, pCurrentPrices, pBasePrices; if nil then the buffer will be NULL
+---@return boolean
+---@return integer[] -- Value of: pArrayItemDefs
+---@return uint64[] -- Value of: pCurrentPrices
+---@return uint64[] -- Value of: pBasePrices
+function Inventory.GetItemsWithPrices(unArrayLength) end
+
 ---@param iDefinition integer
 ---@return boolean
 ---@return uint64 -- Value of: pCurrentPrice

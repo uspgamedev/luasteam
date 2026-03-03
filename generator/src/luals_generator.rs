@@ -243,15 +243,20 @@ impl LuaLsGenerator {
             };
             if let Some((array_names, is_output)) = &param.size_of {
                 let desc = if *is_output {
+                    let names_str = if array_names.len() == 1 {
+                        array_names[0].clone()
+                    } else {
+                        array_names.join(", ")
+                    };
                     if param.is_optional {
                         format!(
                             "size of the buffer for {}; if nil then the buffer will be NULL",
-                            array_names[0]
+                            names_str
                         )
                     } else {
                         format!(
                             "size of the buffer to allocate for return value {}",
-                            array_names[0]
+                            names_str
                         )
                     }
                 } else if array_names.len() == 1 {

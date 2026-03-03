@@ -769,6 +769,40 @@ static int luasteam_Inventory_GetNumItemsWithPrices_user(lua_State *L) { return 
 static int luasteam_Inventory_GetNumItemsWithPrices_gs(lua_State *L) { return luasteam_Inventory_GetNumItemsWithPrices(L, SteamGameServerInventory()); }
 
 // In C++:
+// bool GetItemsWithPrices(SteamItemDef_t * pArrayItemDefs, uint64 * pCurrentPrices, uint64 * pBasePrices, uint32 unArrayLength);
+// In Lua:
+// (bool, pArrayItemDefs: int[], pCurrentPrices: uint64[], pBasePrices: uint64[]) Inventory.GetItemsWithPrices(unArrayLength: int)
+static int luasteam_Inventory_GetItemsWithPrices(lua_State *L, ISteamInventory *iface) {
+	uint32 unArrayLength = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
+	std::vector<SteamItemDef_t> pArrayItemDefs(unArrayLength);
+	std::vector<uint64> pCurrentPrices(unArrayLength);
+	std::vector<uint64> pBasePrices(unArrayLength);
+	bool __ret = SteamAPI_ISteamInventory_GetItemsWithPrices(iface, lua_isnil(L, 1) ? nullptr : pArrayItemDefs.data(), lua_isnil(L, 1) ? nullptr : pCurrentPrices.data(), lua_isnil(L, 1) ? nullptr : pBasePrices.data(), unArrayLength);
+	lua_pushboolean(L, __ret);
+	lua_createtable(L, unArrayLength, 0);
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
+		lua_pushinteger(L, pArrayItemDefs[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
+	lua_createtable(L, unArrayLength, 0);
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
+		luasteam::pushuint64(L, pCurrentPrices[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
+	lua_createtable(L, unArrayLength, 0);
+	for(decltype(unArrayLength) i = 0; i < unArrayLength; i++) {
+		luasteam::pushuint64(L, pBasePrices[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
+	return 4;
+}
+static int luasteam_Inventory_GetItemsWithPrices_user(lua_State *L) { return luasteam_Inventory_GetItemsWithPrices(L, SteamInventory()); }
+static int luasteam_Inventory_GetItemsWithPrices_gs(lua_State *L) { return luasteam_Inventory_GetItemsWithPrices(L, SteamGameServerInventory()); }
+
+// In C++:
 // bool GetItemPrice(SteamItemDef_t iDefinition, uint64 * pCurrentPrice, uint64 * pBasePrice);
 // In Lua:
 // (bool, pCurrentPrice: uint64, pBasePrice: uint64) Inventory.GetItemPrice(iDefinition: int)
@@ -934,6 +968,7 @@ void register_Inventory_auto(lua_State *L, bool is_gs) {
 	add_func(L, "StartPurchase", is_gs ? luasteam_Inventory_StartPurchase_gs : luasteam_Inventory_StartPurchase_user);
 	add_func(L, "RequestPrices", is_gs ? luasteam_Inventory_RequestPrices_gs : luasteam_Inventory_RequestPrices_user);
 	add_func(L, "GetNumItemsWithPrices", is_gs ? luasteam_Inventory_GetNumItemsWithPrices_gs : luasteam_Inventory_GetNumItemsWithPrices_user);
+	add_func(L, "GetItemsWithPrices", is_gs ? luasteam_Inventory_GetItemsWithPrices_gs : luasteam_Inventory_GetItemsWithPrices_user);
 	add_func(L, "GetItemPrice", is_gs ? luasteam_Inventory_GetItemPrice_gs : luasteam_Inventory_GetItemPrice_user);
 	add_func(L, "StartUpdateProperties", is_gs ? luasteam_Inventory_StartUpdateProperties_gs : luasteam_Inventory_StartUpdateProperties_user);
 	add_func(L, "RemoveProperty", is_gs ? luasteam_Inventory_RemoveProperty_gs : luasteam_Inventory_RemoveProperty_user);
@@ -946,7 +981,7 @@ void register_Inventory_auto(lua_State *L, bool is_gs) {
 }
 
 void add_Inventory_auto(lua_State *L) {
-	lua_createtable(L, 0, 36);
+	lua_createtable(L, 0, 37);
 	register_Inventory_auto(L, false);
 	lua_pushvalue(L, -1);
 	Inventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -1060,7 +1095,7 @@ void shutdown_GameServerInventory_auto(lua_State *L) {
 }
 
 void add_GameServerInventory_auto(lua_State *L) {
-	lua_createtable(L, 0, 36);
+	lua_createtable(L, 0, 37);
 	register_Inventory_auto(L, true);
 	lua_pushvalue(L, -1);
 	GameServerInventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);

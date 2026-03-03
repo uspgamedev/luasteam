@@ -157,7 +157,9 @@ impl DocGenerator {
         doc.push_str("   Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.\n\n");
         // Check if any methods are overloads (C++ method exposed with a type suffix).
         // original_cpp_name is set precisely for these cases.
-        let has_overloads = method_signatures.iter().any(|(_, sig)| sig.original_cpp_name.is_some());
+        let has_overloads = method_signatures
+            .iter()
+            .any(|(_, sig)| sig.original_cpp_name.is_some());
         if has_overloads {
             doc.push_str(".. note::\n");
             doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
@@ -349,15 +351,25 @@ impl DocGenerator {
                     param_desc.to_string()
                 } else if let Some((array_names, is_output)) = &param.size_of {
                     if *is_output {
+                        let names_str = if array_names.len() == 1 {
+                            format!("``{}``", array_names[0])
+                        } else {
+                            let joined = array_names
+                                .iter()
+                                .map(|n| format!("``{}``", n))
+                                .collect::<Vec<_>>()
+                                .join(", ");
+                            format!("the output arrays {}", joined)
+                        };
                         if param.is_optional {
                             format!(
-                                "size of the buffer to allocate for ``{}``. If ``nil`` then the buffer will be ``NULL``.",
-                                array_names[0]
+                                "size of the buffer to allocate for {}. If ``nil`` then the buffer will be ``NULL``.",
+                                names_str
                             )
                         } else {
                             format!(
-                                "size of the buffer to be allocated to hold the return value ``{}``",
-                                array_names[0]
+                                "size of the buffer to be allocated to hold the return value {}",
+                                names_str
                             )
                         }
                     } else if array_names.len() == 1 {

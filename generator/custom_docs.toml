@@ -2686,7 +2686,7 @@ end)
 
 [ISteamInventory.StartPurchase]
 example = """
-Steam.Inventory.StartPurchase({itemDefID}, 1, {1}, function(data, err)
+Steam.Inventory.StartPurchase({itemDefID}, {1}, 1, function(data, err)
     if not err and data.m_result == Steam.k_EResultOK then
         print('Purchase started, orderID:', tostring(data.m_ulOrderID))
     end

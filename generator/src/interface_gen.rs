@@ -703,6 +703,9 @@ impl Generator {
         // Pointer params that are returned as output: (param_info, custom_push_code)
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
+        // Maps size_name -> lua stack index where the user provides the size.
+        // Used for nil checks on subsequent arrays sharing the same output size.
+        let mut output_size_lua_idx: HashMap<String, String> = HashMap::new();
         // Maps size_name -> (last_array_cpp_idx, all_array_names_so_far).
         // Used to defer sig.add_size_param until all arrays sharing that size are processed.
         let mut deferred_size_sig: HashMap<String, (usize, Vec<String>)> = HashMap::new();
@@ -846,6 +849,7 @@ impl Generator {
                             if !size_params_to_ignore.contains(size_param) {
                                 size_params_to_ignore.insert(size_param.to_string());
                                 size_lua_idx = Some(lua_idx.to_string());
+                                output_size_lua_idx.insert(size_param.to_string(), lua_idx.to_string());
                                 // If the user passes nil for the size, pass nullptr as the buffer
                                 // so Steam fills in the required size (returned as output).
                                 s.line(&format!(
@@ -862,6 +866,11 @@ impl Generator {
                                 );
                                 sig.mark_last_param_optional();
                                 lua_idx += 1;
+                            } else {
+                                // Size already registered for a prior array; append this array's name
+                                // and recover the lua index for the nil check below.
+                                sig.append_to_size_param(size_param, param.paramname.clone());
+                                size_lua_idx = output_size_lua_idx.get(size_param).cloned();
                             }
                         } else if let Some(c) =
                             self.api.consts.iter().find(|c| c.constname == size_param)
@@ -905,17 +914,27 @@ impl Generator {
                             .paramtype
                             .strip_suffix(" *")
                             .expect("Malformed pointer type");
-                        let elem_type = if pointee_type != "void" { pointee_type } else { "unsigned char" };
+                        let elem_type = if pointee_type != "void" {
+                            pointee_type
+                        } else {
+                            "unsigned char"
+                        };
                         if let Some(ref slua) = size_lua_idx {
                             // Size comes from Lua: allocate only when size is non-nil
-                            s.line(&format!("std::vector<{}> {}({});", elem_type, param.paramname, size_param));
+                            s.line(&format!(
+                                "std::vector<{}> {}({});",
+                                elem_type, param.paramname, size_param
+                            ));
                             cpp_call_params.push(format!(
                                 "lua_isnil(L, {}) ? nullptr : {}.data()",
                                 slua, param.paramname
                             ));
                         } else {
                             // Size from a compile-time constant: always allocate
-                            s.line(&format!("std::vector<{}> {}({});", elem_type, param.paramname, size_param));
+                            s.line(&format!(
+                                "std::vector<{}> {}({});",
+                                elem_type, param.paramname, size_param
+                            ));
                             cpp_call_params.push(format!("{}.data()", param.paramname));
                         }
                         pointer_params.push((param, true));
@@ -1001,7 +1020,9 @@ impl Generator {
                                     // Size Lua slot is right after all arrays that share it
                                     s.line(&format!(
                                         "{} {} = luaL_checkint(L, {});",
-                                        p.paramtype.strip_suffix(" *").unwrap_or(p.paramtype.as_str()),
+                                        p.paramtype
+                                            .strip_suffix(" *")
+                                            .unwrap_or(p.paramtype.as_str()),
                                         size,
                                         lua_idx + sharing.len()
                                     ));
@@ -1017,12 +1038,16 @@ impl Generator {
                                     } else {
                                         deferred_size_sig.insert(
                                             size.to_string(),
-                                            (*sharing.last().unwrap(), vec![param.paramname.clone()]),
+                                            (
+                                                *sharing.last().unwrap(),
+                                                vec![param.paramname.clone()],
+                                            ),
                                         );
                                     }
                                 }
                                 // else: size was already read as a Normal input param before this array
-                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size) {
+                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size)
+                            {
                                 names.push(param.paramname.clone());
                                 if *last_idx == i {
                                     let names = deferred_size_sig.remove(size).unwrap().1;
@@ -1301,6 +1326,7 @@ impl Generator {
                             "SteamAPI_ISteamFriends_DownloadClanActivityCounts",
                             "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
                             "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
+                            "SteamAPI_ISteamInventory_GetItemsWithPrices",
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {

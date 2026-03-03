@@ -26,6 +26,7 @@ List of Functions
 * :func:`Inventory.GetItemDefinitionProperty`
 * :func:`Inventory.GetItemPrice`
 * :func:`Inventory.GetItemsByID`
+* :func:`Inventory.GetItemsWithPrices`
 * :func:`Inventory.GetNumItemsWithPrices`
 * :func:`Inventory.GetResultItemProperty`
 * :func:`Inventory.GetResultItems`
@@ -296,6 +297,23 @@ Function Reference
     local ok, resultHandle = Steam.Inventory.GetItemsByID({itemInstanceID1, itemInstanceID2}, 2)
     -- Wait for OnSteamInventoryResultReady
 
+.. function:: Inventory.GetItemsWithPrices(unArrayLength)
+
+    🤖 **Auto-generated binding**
+
+    :param int? unArrayLength: size of the buffer to allocate for the output arrays ``pArrayItemDefs``, ``pCurrentPrices``, ``pBasePrices``. If ``nil`` then the buffer will be ``NULL``.
+    :returns: (bool) Return value
+    :returns: (int[]) ``pArrayItemDefs``
+    :returns: (uint64[]) ``pCurrentPrices``
+    :returns: (uint64[]) ``pBasePrices``
+    :SteamWorks: `GetItemsWithPrices <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsWithPrices>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pArrayItemDefs`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pCurrentPrices`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pBasePrices`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
 .. function:: Inventory.GetNumItemsWithPrices()
 
     🤖 **Auto-generated binding**
@@ -528,7 +546,7 @@ Function Reference
 
 **Example**::
 
-    Steam.Inventory.StartPurchase({itemDefID}, 1, {1}, function(data, err)
+    Steam.Inventory.StartPurchase({itemDefID}, {1}, 1, function(data, err)
         if not err and data.m_result == Steam.k_EResultOK then
             print('Purchase started, orderID:', tostring(data.m_ulOrderID))
         end
@@ -620,12 +638,6 @@ Unimplemented Methods
     ✋ **Not implemented** - blocklist: Uses nullptr as input, we don't support it
     
     :SteamWorks: `SerializeResult <https://partner.steamgames.com/doc/api/ISteamInventory#SerializeResult>`_
-
-.. function:: Inventory.getItemsWithPrices
-
-    ✋ **Not implemented** - blocklist: out_array_count seems to be wrong
-    
-    :SteamWorks: `GetItemsWithPrices <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemsWithPrices>`_
 
 
 Callbacks

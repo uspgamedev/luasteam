@@ -154,12 +154,6 @@ impl Generator {
             SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()),
         );
 
-        // Very weird, out_array_count seems to be all wrong
-        blocklist.insert(
-            "SteamAPI_ISteamInventory_GetItemsWithPrices".to_string(),
-            SkipReason::ManualBlocklist("out_array_count seems to be wrong".to_string()),
-        );
-
         // char** output semantics unclear (Steam sets internal pointer; lifetime is unknown)
         blocklist.insert(
             "SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(),
