@@ -186,9 +186,10 @@ static int SteamNetworkingMessage_t_newindex(lua_State *L) {
     if (strcmp(key, "m_pData") == 0) {
         size_t len;
         const char *data = luaL_checklstring(L, 3, &len);
-        luaL_argcheck(L, (int)len <= self->m_cbSize, 3, "string too long for pre-allocated buffer (use AllocateMessage with the correct size)");
+        if (self->m_pData != nullptr)
+            delete[] static_cast<char *>(self->m_pData);
+        self->m_pData = new char[len];
         memcpy(self->m_pData, data, len);
-        self->m_cbSize = (int)len;
         return 0;
     }
     if (strcmp(key, "m_cbSize") == 0) {

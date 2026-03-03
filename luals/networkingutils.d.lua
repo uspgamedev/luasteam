@@ -38,9 +38,9 @@ function NetworkingUtils.GetDirectPingToPOP(popID) end
 ---@return integer
 function NetworkingUtils.GetPOPCount() end
 
----@param nListSz integer
+---@param nListSz integer? size of the buffer for list; if nil then the buffer will be NULL
 ---@return integer
----@return integer -- Value of: list
+---@return integer[] -- Value of: list
 function NetworkingUtils.GetPOPList(nListSz) end
 
 ---@param nIPv4 integer

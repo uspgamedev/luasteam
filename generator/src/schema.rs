@@ -397,6 +397,7 @@ impl SteamApi {
                     ("ConvertPingLocationToString", "pszBuf", "cchBufSize"),
                     ("SteamNetworkingIPAddr_ToString", "buf", "cbBuf"),
                     ("SteamNetworkingIdentity_ToString", "buf", "cbBuf"),
+                    ("GetPOPList", "list", "nListSz"),
                 ],
             ),
             (

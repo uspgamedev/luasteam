@@ -11,9 +11,22 @@ use std::path::Path;
 
 /// C++ primitive types that don't need a "cpp type" annotation in docs.
 const PRIMITIVES: &[&str] = &[
-    "bool", "int", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
-    "float", "double", "void", "CSteamID", "CGameID", "SteamAPICall_t",
-    "const char *", "char *",
+    "bool",
+    "int",
+    "int32",
+    "int64",
+    "uint8",
+    "uint16",
+    "uint32",
+    "uint64",
+    "float",
+    "double",
+    "void",
+    "CSteamID",
+    "CGameID",
+    "SteamAPICall_t",
+    "const char *",
+    "char *",
 ];
 
 impl Generator {
@@ -769,7 +782,12 @@ impl Generator {
                         LType::Array(Box::new(LType::Userdata(struct_name))),
                     );
                     lua_idx += 1; // advance past the array
-                    sig.add_size_param(sz.clone(), LType::Integer, vec![param.paramname.clone()], false);
+                    sig.add_size_param(
+                        sz.clone(),
+                        LType::Integer,
+                        vec![param.paramname.clone()],
+                        false,
+                    );
                     lua_idx += 1; // advance past the size
                     // Mark sz so the outer loop skips adding it to sig again (just pushes to cpp_call_params).
                     size_params_to_ignore.insert(sz);
@@ -826,7 +844,10 @@ impl Generator {
                             cpp_call_params.push(param.paramname.clone());
                             sig.add_param(param.paramname.clone(), ltype);
                             if !PRIMITIVES.contains(&param.paramtype.as_str())
-                                && !matches!(sig.params.last().unwrap().ltype, LType::LightUserdata(_))
+                                && !matches!(
+                                    sig.params.last().unwrap().ltype,
+                                    LType::LightUserdata(_)
+                                )
                             {
                                 sig.mark_last_param_cpp_type(param.paramtype.clone());
                             }
@@ -865,7 +886,8 @@ impl Generator {
                             if !size_params_to_ignore.contains(size_param) {
                                 size_params_to_ignore.insert(size_param.to_string());
                                 size_lua_idx = Some(lua_idx.to_string());
-                                output_size_lua_idx.insert(size_param.to_string(), lua_idx.to_string());
+                                output_size_lua_idx
+                                    .insert(size_param.to_string(), lua_idx.to_string());
                                 // If the user passes nil for the size, pass nullptr as the buffer
                                 // so Steam fills in the required size (returned as output).
                                 s.line(&format!(
@@ -1065,7 +1087,8 @@ impl Generator {
                                     // Update its description to note it sizes this array.
                                     sig.mark_param_as_size_for(size, param.paramname.clone());
                                 }
-                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size) {
+                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size)
+                            {
                                 names.push(param.paramname.clone());
                                 if *last_idx == i {
                                     let names = deferred_size_sig.remove(size).unwrap().1;
@@ -1312,11 +1335,12 @@ impl Generator {
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {
+                            // The new size is returned as an argument
                             "__ret"
                         } else {
-                            return Err(SkipReason::UnsupportedType(
-                                "void* with unknown size".to_string(),
-                            ));
+                            unreachable!(
+                                "I don't know how to calculate the size of the output void*"
+                            )
                         };
                         // A buffer with fixed size
                         s.line(&format!(
@@ -1336,10 +1360,11 @@ impl Generator {
                         "SteamAPI_ISteamInput_GetActiveActionSetLayers",
                         "SteamAPI_ISteamInput_GetAnalogActionOrigins",
                         "SteamAPI_ISteamInput_GetDigitalActionOrigins",
+                        "SteamAPI_ISteamNetworkingUtils_GetPOPList",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {
-                        // Some special case where the size is returned
+                        // The new size is returned as an argument
                         "__ret"
                     } else if let Some(oac) = param.output_array_size_param() {
                         if self.api.consts.iter().any(|c| c.constname == oac) {
@@ -1362,10 +1387,9 @@ impl Generator {
                             // Some special case where the size is returned in a parameter that is not the one you sent
                             oac
                         } else {
-                            return Err(SkipReason::UnsupportedType(format!(
-                                "unknown array size: {}",
-                                param.paramtype
-                            )));
+                            unreachable!(
+                                "I don't know how to calculate the size of the output array"
+                            )
                         }
                     } else {
                         // Not sure about the size, will it always be the one you sent?

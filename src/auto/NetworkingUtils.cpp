@@ -147,14 +147,19 @@ static int luasteam_NetworkingUtils_GetPOPCount(lua_State *L) {
 // In C++:
 // int GetPOPList(SteamNetworkingPOPID * list, int nListSz);
 // In Lua:
-// (int, list: int) NetworkingUtils.GetPOPList(nListSz: int)
+// (int, list: int[]) NetworkingUtils.GetPOPList(nListSz: int)
 static int luasteam_NetworkingUtils_GetPOPList(lua_State *L) {
 	auto *iface = SteamNetworkingUtils_SteamAPI();
-	SteamNetworkingPOPID list;
-	int nListSz = static_cast<int>(luaL_checkint(L, 1));
-	int __ret = SteamAPI_ISteamNetworkingUtils_GetPOPList(iface, &list, nListSz);
+	int nListSz = lua_isnil(L, 1) ? 0 : (int)luaL_checkint(L, 1);
+	std::vector<SteamNetworkingPOPID> list(nListSz);
+	int __ret = SteamAPI_ISteamNetworkingUtils_GetPOPList(iface, lua_isnil(L, 1) ? nullptr : list.data(), nListSz);
 	lua_pushinteger(L, __ret);
-	lua_pushinteger(L, list);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i = 0; i < __ret; i++) {
+		lua_pushinteger(L, list[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 

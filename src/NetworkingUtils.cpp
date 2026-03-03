@@ -56,8 +56,7 @@ DEFINE_SET_GLOBAL_CALLBACK(luasteam_NetworkingUtils_SetGlobalCallback_MessagesSe
 // SteamNetworkingUtils::AllocateMessage — create an outbound message with a pre-allocated buffer.
 // Returns: SteamNetworkingMessage_t userdata. Set m_conn, m_nFlags, m_pData before passing to SendMessages.
 EXTERN int luasteam_networkingUtils_AllocateMessage(lua_State *L) {
-    int cbAllocateBuffer = (int)luaL_checkinteger(L, 1);
-    SteamNetworkingMessage_t *msg = SteamNetworkingUtils_SteamAPI()->AllocateMessage(cbAllocateBuffer);
+    SteamNetworkingMessage_t *msg = SteamNetworkingUtils_SteamAPI()->AllocateMessage(0);
     luasteam::push_SteamNetworkingMessage_t(L, msg);
     return 1;
 }

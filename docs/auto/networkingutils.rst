@@ -51,19 +51,22 @@ List of Callbacks
 Function Reference
 ------------------
 
-.. function:: NetworkingUtils.AllocateMessage(cbAllocateBuffer)
+.. function:: NetworkingUtils.AllocateMessage()
 
     ✍️ **Manually implemented**
 
-    :param int cbAllocateBuffer: Number of bytes to allocate in the message payload buffer.
-    :returns: (SteamNetworkingMessage_t) New message userdata with a pre-allocated payload buffer.
+    :returns: (SteamNetworkingMessage_t) New message userdata with an empty payload buffer.
     :SteamWorks: `AllocateMessage <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#AllocateMessage>`_
 
-    Allocates a SteamNetworkingMessage_t for use with SendMessages. Set ``m_conn``, ``m_nFlags``, and write to ``m_pData`` before passing to SendMessages.
+    Allocates a SteamNetworkingMessage_t for use with SendMessages.
 
     **Signature differences from C++ API:**
 
-    * The returned ``SteamNetworkingMessage_t *`` pointer is wrapped in a Lua userdata object.
+    * The ``cbAllocateBuffer`` parameter is not supported. Set ``m_pData`` and ``m_cbSize`` manually.
+
+    **Notes:**
+
+    * Assigning to ``m_pData`` creates a new string in C++, and frees the old one, but does not modify ``m_cbSize`` automatically, so keep it in sync manually.
 
 .. function:: NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds)
 
@@ -162,9 +165,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nListSz:
+    :param int? nListSz: size of the buffer to allocate for ``list``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
-    :returns: (int) ``list``
+    :returns: (int[]) ``list``
     :SteamWorks: `GetPOPList <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetPOPList>`_
 
     **Signature differences from C++ API:**
@@ -283,7 +286,7 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamNetworkingFakeIPResult_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamNetworkingFakeIPResult_t <struct-SteamNetworkingFakeIPResult_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_FakeIPResult <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_FakeIPResult>`_
 
@@ -292,13 +295,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamNetworkingFakeIPResult`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalCallback_MessagesSessionFailed(callback)
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamNetworkingMessagesSessionFailed_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamNetworkingMessagesSessionFailed_t <struct-SteamNetworkingMessagesSessionFailed_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_MessagesSessionFailed <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionFailed>`_
 
@@ -307,13 +309,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamNetworkingMessagesSessionFailed`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalCallback_MessagesSessionRequest(callback)
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamNetworkingMessagesSessionRequest_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamNetworkingMessagesSessionRequest_t <struct-SteamNetworkingMessagesSessionRequest_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_MessagesSessionRequest <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionRequest>`_
 
@@ -322,13 +323,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamNetworkingMessagesSessionRequest`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged(callback)
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamNetAuthenticationStatus_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamNetAuthenticationStatus_t <struct-SteamNetAuthenticationStatus_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamNetAuthenticationStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetAuthenticationStatusChanged>`_
 
@@ -337,13 +337,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamNetAuthenticationStatusChanged`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged(callback)
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamNetConnectionStatusChangedCallback_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamNetConnectionStatusChangedCallback_t <struct-SteamNetConnectionStatusChangedCallback_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamNetConnectionStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetConnectionStatusChanged>`_
 
@@ -352,13 +351,12 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamNetConnectionStatusChanged`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged(callback)
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving a SteamRelayNetworkStatus_t table. Pass nil to clear.
+    :param function? callback: Function receiving a :ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`. Pass ``nil`` to clear.
     :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamRelayNetworkStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamRelayNetworkStatusChanged>`_
 
@@ -367,7 +365,6 @@ Function Reference
     **Signature differences from C++ API:**
 
     * The C++ ``FnSteamRelayNetworkStatusChanged`` function pointer is replaced by a Lua function.
-    * Pass ``nil`` instead of ``nullptr`` to clear the callback.
 
 .. function:: NetworkingUtils.SetGlobalConfigValueFloat(eValue, val)
 

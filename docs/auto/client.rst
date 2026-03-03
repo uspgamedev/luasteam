@@ -116,7 +116,7 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param function or nil callback: Function receiving ``(severity: integer, message: string)``. Pass ``nil`` to clear the hook.
+    :param function? callback: Function receiving ``(severity: integer, message: string)``. Pass ``nil`` to clear the hook.
     :returns: nothing
     :SteamWorks: `SetWarningMessageHook <https://partner.steamgames.com/doc/api/ISteamClient#SetWarningMessageHook>`_
 

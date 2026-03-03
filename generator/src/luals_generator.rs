@@ -266,7 +266,10 @@ impl LuaLsGenerator {
                 };
                 cb.line(&format!("---@param {} {} {}", param.name, type_str, desc));
             } else if let Some(cpp_name) = &param.cpp_type_name {
-                cb.line(&format!("---@param {} {} -- {}", param.name, type_str, cpp_name));
+                cb.line(&format!(
+                    "---@param {} {} -- {}",
+                    param.name, type_str, cpp_name
+                ));
             } else {
                 cb.line(&format!("---@param {} {}", param.name, type_str));
             }
@@ -276,7 +279,11 @@ impl LuaLsGenerator {
             if signature.returns_steam_api_call {
                 cb.line(&format!("---@return {} -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called", ret.to_luals_string()));
             } else if let Some(cpp_name) = &signature.return_cpp_type {
-                cb.line(&format!("---@return {} -- {}", ret.to_luals_string(), cpp_name));
+                cb.line(&format!(
+                    "---@return {} -- {}",
+                    ret.to_luals_string(),
+                    cpp_name
+                ));
             } else {
                 cb.line(&format!("---@return {}", ret.to_luals_string()));
             }

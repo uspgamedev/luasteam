@@ -181,14 +181,26 @@ impl LuaMethodSignature {
 
     /// Append an array name to an already-registered size param (for output arrays sharing a size).
     pub fn append_to_size_param(&mut self, size_name: &str, array_name: String) {
-        let p = self.params.iter_mut().find(|p| p.name == size_name).expect("size param not found");
-        p.size_of.as_mut().expect("not a size param").0.push(array_name);
+        let p = self
+            .params
+            .iter_mut()
+            .find(|p| p.name == size_name)
+            .expect("size param not found");
+        p.size_of
+            .as_mut()
+            .expect("not a size param")
+            .0
+            .push(array_name);
     }
 
     /// Mark an already-added normal param as the size/count for the given input array.
     /// If already marked as a size param, appends the array name.
     pub fn mark_param_as_size_for(&mut self, size_name: &str, array_name: String) {
-        let p = self.params.iter_mut().find(|p| p.name == size_name).expect("param not found");
+        let p = self
+            .params
+            .iter_mut()
+            .find(|p| p.name == size_name)
+            .expect("param not found");
         match &mut p.size_of {
             None => p.size_of = Some((vec![array_name], false)),
             Some((names, _)) => names.push(array_name),
