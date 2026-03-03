@@ -228,7 +228,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``psteamIDClans`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``psteamIDClans`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Friends.EnumerateFollowingList(unStartIndex, callback)
 
@@ -261,9 +261,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnOnline`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pnInGame`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pnChatting`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnOnline`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnInGame`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnChatting`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Friends.GetClanByIndex(iClan)
 
@@ -300,9 +300,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``prgchText`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``peChatEntryType`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``psteamidChatter`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``prgchText`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``peChatEntryType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``psteamidChatter`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Friends.GetClanCount()
 
@@ -492,7 +492,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pFriendGameInfo`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pFriendGameInfo`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -515,8 +515,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``peChatEntryType`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``peChatEntryType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Friends.GetFriendPersonaName(steamIDFriend)
 
@@ -673,7 +673,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutSteamIDMembers`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutSteamIDMembers`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Friends.GetFriendsGroupName(friendsGroupID)
 

@@ -73,7 +73,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -91,7 +91,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -118,7 +118,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -138,7 +138,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.DestroyResult(resultHandle)
 
@@ -167,7 +167,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.GenerateItems(pArrayItemDefs, punArrayQuantity, unArrayLength)
 
@@ -182,7 +182,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.GetAllItems()
 
@@ -194,7 +194,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -215,8 +215,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pItemDefIDs`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punItemDefIDsArraySize`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
 .. function:: Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize)
 
@@ -230,8 +230,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pItemDefIDs`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punItemDefIDsArraySize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pItemDefIDs`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punItemDefIDsArraySize`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
 **Example**::
 
@@ -255,8 +255,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punValueBufferSizeOut`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValueBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punValueBufferSizeOut`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
     **Notes:**
 
@@ -274,8 +274,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCurrentPrice`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pBasePrice`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pCurrentPrice`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pBasePrice`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs)
 
@@ -289,7 +289,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -318,8 +318,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValueBuffer`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punValueBufferSizeOut`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValueBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punValueBufferSizeOut`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
 .. function:: Inventory.GetResultItems(resultHandle, punOutItemsArraySize)
 
@@ -334,8 +334,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutItemsArray`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punOutItemsArraySize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutItemsArray`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punOutItemsArraySize`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
 **Example**::
 
@@ -381,7 +381,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.InspectItem(pchItemToken)
 
@@ -394,7 +394,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.LoadItemDefinitions()
 
@@ -552,7 +552,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, pArrayGiveQuantity, nArrayGiveLength, pArrayGet, pArrayGetQuantity, nArrayGetLength)
 
@@ -571,7 +571,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest)
 
@@ -586,7 +586,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -604,7 +604,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pResultHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 

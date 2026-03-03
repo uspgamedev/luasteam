@@ -155,8 +155,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnIP`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pnPort`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnIP`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnPort`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.GetMaxPacketSize(hSocket)
 
@@ -177,7 +177,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pConnectionState`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pConnectionState`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -209,10 +209,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDRemote`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``peSocketStatus`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punIPRemote`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punPortRemote`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pSteamIDRemote`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``peSocketStatus`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punIPRemote`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punPortRemote`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.IsDataAvailable(hListenSocket)
 
@@ -226,8 +226,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``phSocket`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``phSocket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.IsDataAvailableOnSocket(hSocket)
 
@@ -240,7 +240,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.IsP2PPacketAvailable(nChannel)
 
@@ -253,7 +253,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -278,9 +278,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``psteamIDRemote`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pubDest`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``psteamIDRemote`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -300,9 +300,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``phSocket`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pubDest`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``phSocket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.RetrieveDataFromSocket(hSocket, cubDest)
 
@@ -317,8 +317,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pcubMsgSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pubDest`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pcubMsgSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Networking.SendDataOnSocket(hSocket, pubData, cubData, bReliable)
 

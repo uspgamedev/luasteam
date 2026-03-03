@@ -237,8 +237,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutConnection1`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pOutConnection2`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutConnection1`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pOutConnection2`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.DestroyPollGroup(hPollGroup)
 
@@ -274,7 +274,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetConnectionInfo(hConn)
 
@@ -287,7 +287,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pInfo`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pInfo`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -308,7 +308,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszName`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pszName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes)
 
@@ -323,8 +323,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pStatus`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pLanes`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pStatus`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pLanes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetConnectionUserData(hPeer)
 
@@ -350,7 +350,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszBuf`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pszBuf`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetFakeIP(idxFirstPort)
 
@@ -362,7 +362,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pInfo`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pInfo`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetHostedDedicatedServerPOPID()
 
@@ -388,7 +388,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pIdentity`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pIdentity`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -408,7 +408,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``address`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``address`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.GetRemoteFakeIPForConnection(hConn)
 
@@ -421,7 +421,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutAddr`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutAddr`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: NetworkingSockets.InitAuthentication()
 
@@ -527,7 +527,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutMessageNumber`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pOutMessageNumber`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 

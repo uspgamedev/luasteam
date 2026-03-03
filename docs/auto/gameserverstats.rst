@@ -53,7 +53,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -75,7 +75,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: GameServerStats.GetUserStatInt32(steamIDUser, pchName)
 
@@ -90,7 +90,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 

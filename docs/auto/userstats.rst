@@ -209,7 +209,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -229,7 +229,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercent`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pflPercent`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetAchievementAndUnlockTime(pchName)
 
@@ -243,8 +243,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punUnlockTime`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punUnlockTime`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -301,8 +301,8 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetAchievementProgressLimits``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pfMinProgress`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pfMaxProgress`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pfMinProgress`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pfMaxProgress`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetAchievementProgressLimitsInt32(pchName)
 
@@ -317,8 +317,8 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetAchievementProgressLimits``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pnMinProgress`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pnMaxProgress`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnMinProgress`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnMaxProgress`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -341,8 +341,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pLeaderboardEntry`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pDetails`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pLeaderboardEntry`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetGlobalStatDouble(pchStatName)
 
@@ -356,7 +356,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetGlobalStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -378,7 +378,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetGlobalStatHistory``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetGlobalStatHistoryInt64(pchStatName, cubData)
 
@@ -393,7 +393,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetGlobalStatHistory``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetGlobalStatInt64(pchStatName)
 
@@ -407,7 +407,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetGlobalStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -482,9 +482,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pflPercent`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pflPercent`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -508,9 +508,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pflPercent`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pflPercent`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetNumAchievements()
 
@@ -556,7 +556,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -577,7 +577,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -598,7 +598,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -620,8 +620,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbAchieved`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punUnlockTime`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pbAchieved`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punUnlockTime`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetUserStatFloat(steamIDUser, pchName)
 
@@ -636,7 +636,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UserStats.GetUserStatInt32(steamIDUser, pchName)
 
@@ -651,7 +651,7 @@ Function Reference
     **Signature differences from C++ API:**
 
     * In C++, this is an overloaded method called ``GetUserStat``. luasteam exposes each overload as a distinct function with a type suffix.
-    * Parameter ``pData`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 

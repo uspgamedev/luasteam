@@ -422,8 +422,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punBytesTotal`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBytesDownloaded`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punBytesTotal`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -446,9 +446,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSizeOnDisk`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pchFolder`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punTimeStamp`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punSizeOnDisk`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchFolder`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punTimeStamp`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -483,8 +483,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesProcessed`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``punBytesTotal`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``punBytesProcessed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punBytesTotal`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -532,9 +532,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURLOrVideoID`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pchOriginalFileName`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pPreviewType`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchURLOrVideoID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchOriginalFileName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pPreviewType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCChildren(handle, index, cMaxEntries)
 
@@ -549,7 +549,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvecPublishedFileID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCContentDescriptors(handle, index, cMaxEntries)
 
@@ -564,7 +564,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvecDescriptors`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCKeyValueTag(handle, index, keyValueTagIndex, cchKeySize, cchValueSize)
 
@@ -582,8 +582,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchKey`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchValue`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCMetadata(handle, index, cchMetadatasize)
 
@@ -598,7 +598,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchMetadata`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchMetadata`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCNumAdditionalPreviews(handle, index)
 
@@ -640,7 +640,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchURL`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchURL`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -661,7 +661,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -680,7 +680,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pStatValue`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pStatValue`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCTag(handle, index, indexTag, cchValueSize)
 
@@ -696,7 +696,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValue`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetQueryUGCTagDisplayName(handle, index, indexTag, cchValueSize)
 
@@ -712,7 +712,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchValue`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchValue`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)
 
@@ -726,7 +726,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecPublishedFileID`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvecPublishedFileID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -751,8 +751,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchGameBranchMin`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pchGameBranchMax`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchGameBranchMin`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchGameBranchMax`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetUserContentDescriptorPreferences(cMaxEntries)
 
@@ -765,7 +765,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDescriptors`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pvecDescriptors`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: UGC.GetUserItemVote(nPublishedFileID, callback)
 

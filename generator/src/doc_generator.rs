@@ -424,10 +424,18 @@ impl DocGenerator {
                 ));
             }
             for output_param in &signature.output_params {
-                doc.push_str(&format!(
-                    "    * Parameter ``{}`` is no longer a parameter, and is instead an additional return value\n",
-                    output_param.name
-                ));
+                let is_also_input = signature.params.iter().any(|p| p.name == output_param.name);
+                if is_also_input {
+                    doc.push_str(&format!(
+                        "    * Parameter ``{}`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.\n",
+                        output_param.name
+                    ));
+                } else {
+                    doc.push_str(&format!(
+                        "    * Parameter ``{}`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.\n",
+                        output_param.name
+                    ));
+                }
             }
             doc.push('\n');
         }

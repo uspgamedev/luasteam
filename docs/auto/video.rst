@@ -45,8 +45,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is no longer a parameter, and is instead an additional return value
-    * Parameter ``pnBufferSize`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pchBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnBufferSize`` is both an input and an output in C++: you pass the buffer size, and Steam writes the actual count back. luasteam returns it as an additional return value.
 
 .. function:: Video.GetVideoURL(unVideoAppID)
 
@@ -70,7 +70,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnNumViewers`` is no longer a parameter, and is instead an additional return value
+    * Parameter ``pnNumViewers`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 **Example**::
 
