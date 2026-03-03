@@ -55,7 +55,7 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param integer cbAllocateBuffer: Number of bytes to allocate in the message payload buffer.
+    :param int cbAllocateBuffer: Number of bytes to allocate in the message payload buffer.
     :returns: (SteamNetworkingMessage_t) New message userdata with a pre-allocated payload buffer.
     :SteamWorks: `AllocateMessage <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#AllocateMessage>`_
 
@@ -284,7 +284,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamNetworkingFakeIPResult_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_FakeIPResult <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_FakeIPResult>`_
 
     Sets or clears the global callback for fake IP result events.
@@ -299,7 +299,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamNetworkingMessagesSessionFailed_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_MessagesSessionFailed <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionFailed>`_
 
     Sets or clears the global callback for messages session failed events.
@@ -314,7 +314,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamNetworkingMessagesSessionRequest_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_MessagesSessionRequest <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_MessagesSessionRequest>`_
 
     Sets or clears the global callback for messages session request events.
@@ -329,7 +329,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamNetAuthenticationStatus_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamNetAuthenticationStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetAuthenticationStatusChanged>`_
 
     Sets or clears the global callback for Steam network authentication status changes.
@@ -344,7 +344,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamNetConnectionStatusChangedCallback_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamNetConnectionStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamNetConnectionStatusChanged>`_
 
     Sets or clears the global callback for Steam network connection status changes.
@@ -359,7 +359,7 @@ Function Reference
     ✍️ **Manually implemented**
 
     :param function or nil callback: Function receiving a SteamRelayNetworkStatus_t table. Pass nil to clear.
-    :returns: (boolean)
+    :returns: (bool)
     :SteamWorks: `SetGlobalCallback_SteamRelayNetworkStatusChanged <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalCallback_SteamRelayNetworkStatusChanged>`_
 
     Sets or clears the global callback for Steam relay network status changes.

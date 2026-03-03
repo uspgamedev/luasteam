@@ -93,10 +93,6 @@ Function Reference
 
     * Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value.
 
-    **Notes:**
-
-    * ``Steam.NetworkingMessages`` routes to the game server networking interface when a game server is active.
-
 **Example**::
 
     local count, msgs = Steam.NetworkingMessages.ReceiveMessagesOnChannel(0, 32)

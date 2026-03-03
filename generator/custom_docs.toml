@@ -630,7 +630,7 @@ signature_differences = [
 
 [[manual.ISteamNetworkingUtils.AllocateMessage.params]]
 name = "cbAllocateBuffer"
-ptype = "integer"
+ptype = "int"
 description = "Number of bytes to allocate in the message payload buffer."
 
 [[manual.ISteamNetworkingUtils.AllocateMessage.returns]]
@@ -651,7 +651,7 @@ ptype = "function or nil"
 description = "Function receiving a SteamNetworkingFakeIPResult_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_FakeIPResult.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionFailed]
 description = "Sets or clears the global callback for messages session failed events."
@@ -667,7 +667,7 @@ ptype = "function or nil"
 description = "Function receiving a SteamNetworkingMessagesSessionFailed_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionFailed.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionRequest]
 description = "Sets or clears the global callback for messages session request events."
@@ -683,7 +683,7 @@ ptype = "function or nil"
 description = "Function receiving a SteamNetworkingMessagesSessionRequest_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_MessagesSessionRequest.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged]
 description = "Sets or clears the global callback for Steam network authentication status changes."
@@ -699,7 +699,7 @@ ptype = "function or nil"
 description = "Function receiving a SteamNetAuthenticationStatus_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetAuthenticationStatusChanged.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged]
 description = "Sets or clears the global callback for Steam network connection status changes."
@@ -715,7 +715,7 @@ ptype = "function or nil"
 description = "Function receiving a SteamNetConnectionStatusChangedCallback_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged]
 description = "Sets or clears the global callback for Steam relay network status changes."
@@ -731,15 +731,13 @@ ptype = "function or nil"
 description = "Function receiving a SteamRelayNetworkStatus_t table. Pass nil to clear."
 
 [[manual.ISteamNetworkingUtils.SetGlobalCallback_SteamRelayNetworkStatusChanged.returns]]
-ptype = "boolean"
+ptype = "bool"
 
 [manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection]
 description = "Receives messages that have been sent to a connection."
-notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
 steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection"
 signature_differences = [
-    "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
-    "The C++ ``int`` return is kept as the first return value."
+    "Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value."
 ]
 example = """
 local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnConnection(hConn, 32)
@@ -752,29 +750,28 @@ end
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.params]]
 name = "hConn"
-ptype = "integer"
+ptype = "int"
 description = "Connection handle."
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.params]]
 name = "nMaxMessages"
-ptype = "integer"
-description = "Maximum number of messages to receive."
+ptype = "int"
+description = "size of the buffer to allocate for ``ppOutMessages``"
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.returns]]
-ptype = "integer"
-description = "Number of messages received, or a negative EResult on error."
+ptype = "int"
+description = "Number of messages received, or -1 if the handle is invalid."
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnConnection.returns]]
 ptype = "SteamNetworkingMessage_t[]"
-description = "Table of received message userdata objects (length = number of messages received)."
+description = "Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using."
+
 
 [manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup]
 description = "Receives messages that have arrived on any connection in a poll group."
-notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
 steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup"
 signature_differences = [
-    "The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.",
-    "The C++ ``int`` return is kept as the first return value."
+    "Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value."
 ]
 example = """
 local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnPollGroup(hPollGroup, 64)
@@ -787,29 +784,27 @@ end
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.params]]
 name = "hPollGroup"
-ptype = "integer"
+ptype = "int"
 description = "Poll group handle."
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.params]]
 name = "nMaxMessages"
-ptype = "integer"
-description = "Maximum number of messages to receive."
+ptype = "int"
+description = "size of the buffer to allocate for ``ppOutMessages``"
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.returns]]
-ptype = "integer"
-description = "Number of messages received, or a negative EResult on error."
+ptype = "int"
+description = "Number of messages received, or -1 if the handle is invalid."
 
 [[manual.ISteamNetworkingSockets.ReceiveMessagesOnPollGroup.returns]]
 ptype = "SteamNetworkingMessage_t[]"
-description = "Table of received message userdata objects (length = number of messages received)."
+description = "Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using."
 
 [manual.ISteamNetworkingSockets.SendMessages]
 description = "Sends one or more messages to one or more connections in a single call."
-notes = ["``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active."]
 steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages"
 signature_differences = [
-    "The C++ output parameter ``pOutMessageNumberOrResult`` is removed; its values are returned as a table instead.",
-    "The C++ return type is ``void``; the message number/result table is the only return value."
+    "Parameter ``pOutMessageNumberOrResult`` is not a parameter in Lua — it is an output-only array in C++ and is returned as the only return value."
 ]
 example = """
 local msg = Steam.NetworkingUtils.AllocateMessage(#payload)
@@ -824,17 +819,17 @@ end
 
 [[manual.ISteamNetworkingSockets.SendMessages.params]]
 name = "nMessages"
-ptype = "integer"
-description = "Number of messages to send."
+ptype = "int"
+description = "size of the array ``pMessages``"
 
 [[manual.ISteamNetworkingSockets.SendMessages.params]]
 name = "pMessages"
 ptype = "SteamNetworkingMessage_t[]"
-description = "Table of SteamNetworkingMessage_t userdata objects to send."
+description = "array of SteamNetworkingMessage_t userdata objects to send."
 
 [[manual.ISteamNetworkingSockets.SendMessages.returns]]
-ptype = "integer[]"
-description = "Table of per-message results: positive = message number assigned, negative = EResult error code."
+ptype = "int[]"
+description = "array of per-message results: positive = message number assigned, negative = EResult error code."
 
 # =============================================================================
 # ISteamNetworkingMessages (manual functions)
@@ -842,7 +837,6 @@ description = "Table of per-message results: positive = message number assigned,
 
 [manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel]
 description = "Receives messages sent via SendMessageToUser on the given channel number."
-notes = ["``Steam.NetworkingMessages`` routes to the game server networking interface when a game server is active."]
 steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#ReceiveMessagesOnChannel"
 signature_differences = [
     "Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value."
@@ -2463,7 +2457,9 @@ local hSocket = Steam.NetworkingSockets.CreateListenSocketP2P(0, 0, nil)
 [ISteamNetworkingSockets.ConnectP2P]
 example = """
 -- Connect to another player using their Steam identity
-local hConn = Steam.NetworkingSockets.ConnectP2P(tostring(friendSteamID), 0, 0, nil)
+local id = Steam.newSteamNetworkingIdentity {}
+id:setSteamID(friendSteamID)
+local hConn = Steam.NetworkingSockets.ConnectP2P(id, 0, 0, nil)
 """
 
 [ISteamNetworkingSockets.AcceptConnection]
@@ -2497,12 +2493,16 @@ end
 [ISteamNetworkingSockets.CreateListenSocketIP]
 example = """
 -- Listen on all interfaces, port 27015
-local hSocket = Steam.NetworkingSockets.CreateListenSocketIP('0.0.0.0:27015', 0, nil)
+local addr = Steam.newSteamNetworkingIPAddr {}
+addr:SetIPv6LocalHost(27015)
+local hSocket = Steam.NetworkingSockets.CreateListenSocketIP(addr, 0, nil)
 """
 
 [ISteamNetworkingSockets.ConnectByIPAddress]
 example = """
-local hConn = Steam.NetworkingSockets.ConnectByIPAddress('192.168.1.100:27015', 0, nil)
+local addr = Steam.newSteamNetworkingIPAddr {}
+addr:ParseString("192.168.1.100:27015")
+local hConn = Steam.NetworkingSockets.ConnectByIPAddress(addr, 0, nil)
 """
 
 [ISteamNetworkingSockets.CreatePollGroup]
@@ -2557,12 +2557,6 @@ Steam.NetworkingSockets.SetConnectionUserData(hConn, playerIndex)
 [ISteamNetworkingSockets.GetConnectionUserData]
 example = """
 local playerIndex = Steam.NetworkingSockets.GetConnectionUserData(hConn)
-"""
-
-[ISteamNetworkingSockets.RunCallbacks]
-example = """
--- Call once per frame to process networking callbacks
-Steam.NetworkingSockets.RunCallbacks()
 """
 
 [ISteamNetworkingSockets.InitAuthentication]

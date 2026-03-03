@@ -131,7 +131,9 @@ Function Reference
 
 **Example**::
 
-    local hConn = Steam.NetworkingSockets.ConnectByIPAddress('192.168.1.100:27015', 0, nil)
+    local addr = Steam.newSteamNetworkingIPAddr {}
+    addr:ParseString("192.168.1.100:27015")
+    local hConn = Steam.NetworkingSockets.ConnectByIPAddress(addr, 0, nil)
 
 .. function:: NetworkingSockets.ConnectP2P(identityRemote, nRemoteVirtualPort, nOptions, pOptions)
 
@@ -147,7 +149,9 @@ Function Reference
 **Example**::
 
     -- Connect to another player using their Steam identity
-    local hConn = Steam.NetworkingSockets.ConnectP2P(tostring(friendSteamID), 0, 0, nil)
+    local id = Steam.newSteamNetworkingIdentity {}
+    id:setSteamID(friendSteamID)
+    local hConn = Steam.NetworkingSockets.ConnectP2P(id, 0, 0, nil)
 
 .. function:: NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget, nRemoteVirtualPort, nOptions, pOptions)
 
@@ -183,7 +187,9 @@ Function Reference
 **Example**::
 
     -- Listen on all interfaces, port 27015
-    local hSocket = Steam.NetworkingSockets.CreateListenSocketIP('0.0.0.0:27015', 0, nil)
+    local addr = Steam.newSteamNetworkingIPAddr {}
+    addr:SetIPv6LocalHost(27015)
+    local hSocket = Steam.NetworkingSockets.CreateListenSocketIP(addr, 0, nil)
 
 .. function:: NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort, nOptions, pOptions)
 
@@ -439,22 +445,17 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param integer hConn: Connection handle.
-    :param integer nMaxMessages: Maximum number of messages to receive.
-    :returns: (integer) Number of messages received, or a negative EResult on error.
-    :returns: (SteamNetworkingMessage_t[]) Table of received message userdata objects (length = number of messages received).
+    :param int hConn: Connection handle.
+    :param int nMaxMessages: size of the buffer to allocate for ``ppOutMessages``
+    :returns: (int) Number of messages received, or -1 if the handle is invalid.
+    :returns: (SteamNetworkingMessage_t[]) Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using.
     :SteamWorks: `ReceiveMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnConnection>`_
 
     Receives messages that have been sent to a connection.
 
     **Signature differences from C++ API:**
 
-    * The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.
-    * The C++ ``int`` return is kept as the first return value.
-
-    **Notes:**
-
-    * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
+    * Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value.
 
 **Example**::
 
@@ -469,22 +470,17 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param integer hPollGroup: Poll group handle.
-    :param integer nMaxMessages: Maximum number of messages to receive.
-    :returns: (integer) Number of messages received, or a negative EResult on error.
-    :returns: (SteamNetworkingMessage_t[]) Table of received message userdata objects (length = number of messages received).
+    :param int hPollGroup: Poll group handle.
+    :param int nMaxMessages: size of the buffer to allocate for ``ppOutMessages``
+    :returns: (int) Number of messages received, or -1 if the handle is invalid.
+    :returns: (SteamNetworkingMessage_t[]) Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using.
     :SteamWorks: `ReceiveMessagesOnPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ReceiveMessagesOnPollGroup>`_
 
     Receives messages that have arrived on any connection in a poll group.
 
     **Signature differences from C++ API:**
 
-    * The C++ output parameter ``ppOutMessages`` is removed; the received messages are returned as a second return value instead.
-    * The C++ ``int`` return is kept as the first return value.
-
-    **Notes:**
-
-    * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
+    * Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value.
 
 **Example**::
 
@@ -507,11 +503,6 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :SteamWorks: `RunCallbacks <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#RunCallbacks>`_
-
-**Example**::
-
-    -- Call once per frame to process networking callbacks
-    Steam.NetworkingSockets.RunCallbacks()
 
 .. function:: NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags)
 
@@ -542,21 +533,16 @@ Function Reference
 
     ✍️ **Manually implemented**
 
-    :param integer nMessages: Number of messages to send.
-    :param SteamNetworkingMessage_t[] pMessages: Table of SteamNetworkingMessage_t userdata objects to send.
-    :returns: (integer[]) Table of per-message results: positive = message number assigned, negative = EResult error code.
+    :param int nMessages: size of the array ``pMessages``
+    :param SteamNetworkingMessage_t[] pMessages: array of SteamNetworkingMessage_t userdata objects to send.
+    :returns: (int[]) array of per-message results: positive = message number assigned, negative = EResult error code.
     :SteamWorks: `SendMessages <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages>`_
 
     Sends one or more messages to one or more connections in a single call.
 
     **Signature differences from C++ API:**
 
-    * The C++ output parameter ``pOutMessageNumberOrResult`` is removed; its values are returned as a table instead.
-    * The C++ return type is ``void``; the message number/result table is the only return value.
-
-    **Notes:**
-
-    * ``Steam.NetworkingSockets`` routes to the game server networking interface when a game server is active.
+    * Parameter ``pOutMessageNumberOrResult`` is not a parameter in Lua — it is an output-only array in C++ and is returned as the only return value.
 
 **Example**::
 
