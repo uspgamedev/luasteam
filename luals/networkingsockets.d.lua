@@ -107,7 +107,7 @@ function NetworkingSockets.GetListenSocketAddress(hSocket) end
 function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2) end
 
 ---@param hConn integer -- HSteamNetConnection
----@param nNumLanes integer
+---@param nNumLanes integer size of the input arrays pLanePriorities and pLaneWeights
 ---@param pLanePriorities integer[]?
 ---@param pLaneWeights integer[]?
 ---@return integer -- EResult

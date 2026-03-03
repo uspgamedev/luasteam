@@ -1060,10 +1060,12 @@ impl Generator {
                                             ),
                                         );
                                     }
+                                } else {
+                                    // size was already read as a Normal input param before this array.
+                                    // Update its description to note it sizes this array.
+                                    sig.mark_param_as_size_for(size, param.paramname.clone());
                                 }
-                                // else: size was already read as a Normal input param before this array
-                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size)
-                            {
+                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size) {
                                 names.push(param.paramname.clone());
                                 if *last_idx == i {
                                     let names = deferred_size_sig.remove(size).unwrap().1;

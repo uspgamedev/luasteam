@@ -113,7 +113,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hConn: ``HSteamNetConnection``
-    :param int nNumLanes:
+    :param int nNumLanes: size of the input arrays ``pLanePriorities`` and ``pLaneWeights``
     :param int[]? pLanePriorities:
     :param int[]? pLaneWeights:
     :returns: (int) ``EResult``
