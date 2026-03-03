@@ -13,6 +13,7 @@ List of Functions
 * :func:`NetworkingMessages.CloseChannelWithUser`
 * :func:`NetworkingMessages.CloseSessionWithUser`
 * :func:`NetworkingMessages.GetSessionConnectionInfo`
+* :func:`NetworkingMessages.ReceiveMessagesOnChannel`
 * :func:`NetworkingMessages.SendMessageToUser`
 
 List of Callbacks
@@ -57,8 +58,9 @@ Function Reference
 
 **Example**::
 
-    -- Clean up when a player leaves
-    Steam.NetworkingMessages.CloseSessionWithUser(tostring(playerSteamID))
+    local identity = Steam.newSteamNetworkingIdentity {}
+    identity:SetSteamID(steam_id)
+    Steam.NetworkingMessages.CloseSessionWithUser(identity)
 
 .. function:: NetworkingMessages.GetSessionConnectionInfo(identityRemote)
 
@@ -75,6 +77,35 @@ Function Reference
     * Parameter ``pConnectionInfo`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
     * Parameter ``pQuickStatus`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
+.. function:: NetworkingMessages.ReceiveMessagesOnChannel(nLocalChannel, nMaxMessages)
+
+    ✍️ **Manually implemented**
+
+    :param int nLocalChannel: Local channel number to receive messages from.
+    :param int nMaxMessages: size of the buffer to allocate for ``ppOutMessages``
+    :returns: (int) Number of messages received.
+    :returns: (SteamNetworkingMessage_t[]) Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using.
+    :SteamWorks: `ReceiveMessagesOnChannel <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#ReceiveMessagesOnChannel>`_
+
+    Receives messages sent via SendMessageToUser on the given channel number.
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value.
+
+    **Notes:**
+
+    * ``Steam.NetworkingMessages`` routes to the game server networking interface when a game server is active.
+
+**Example**::
+
+    local count, msgs = Steam.NetworkingMessages.ReceiveMessagesOnChannel(0, 32)
+    for i = 1, count do
+        local msg = msgs[i]
+        processMessage(msg.m_identityPeer, msg.m_pData, msg.m_cbSize)
+        msg:Release()
+    end
+
 .. function:: NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel)
 
     🤖 **Auto-generated binding**
@@ -89,9 +120,11 @@ Function Reference
 
 **Example**::
 
-    local data = serializePacket(packet)
+    local identity = Steam.newSteamNetworkingIdentity {}
+    identity:ParseString(send_to)
+    local data = serializePacket(send_data)
     local result = Steam.NetworkingMessages.SendMessageToUser(
-        tostring(targetSteamID), data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
+        identity, data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
     if result ~= Steam.k_EResultOK then
         print('Send failed:', result)
     end

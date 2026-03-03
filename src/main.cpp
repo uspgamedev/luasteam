@@ -3,6 +3,7 @@
 #include "Core.hpp"
 #include "Extra.hpp"
 #include "GameServer.hpp"
+#include "NetworkingMessages.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"
 #include "Utils.hpp"
@@ -44,8 +45,8 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_Video_auto(L);
     luasteam::add_ParentalSettings_auto(L);
     luasteam::add_RemotePlay_auto(L);
-    luasteam::add_NetworkingMessages_auto(L);
-    luasteam::add_GameServerNetworkingMessages_auto(L);
+    luasteam::add_NetworkingMessages(L);
+    luasteam::add_GameServerNetworkingMessages(L);
     luasteam::add_GameServerStats_auto(L);
     luasteam::add_Timeline_auto(L);
     luasteam::add_Parties_auto(L);

@@ -837,6 +837,44 @@ ptype = "integer[]"
 description = "Table of per-message results: positive = message number assigned, negative = EResult error code."
 
 # =============================================================================
+# ISteamNetworkingMessages (manual functions)
+# =============================================================================
+
+[manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel]
+description = "Receives messages sent via SendMessageToUser on the given channel number."
+notes = ["``Steam.NetworkingMessages`` routes to the game server networking interface when a game server is active."]
+steamworks = "https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#ReceiveMessagesOnChannel"
+signature_differences = [
+    "Parameter ``ppOutMessages`` is not a parameter in Lua — it is an output-only array in C++ and is returned as a second return value."
+]
+example = """
+local count, msgs = Steam.NetworkingMessages.ReceiveMessagesOnChannel(0, 32)
+for i = 1, count do
+    local msg = msgs[i]
+    processMessage(msg.m_identityPeer, msg.m_pData, msg.m_cbSize)
+    msg:Release()
+end
+"""
+
+[[manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel.params]]
+name = "nLocalChannel"
+ptype = "int"
+description = "Local channel number to receive messages from."
+
+[[manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel.params]]
+name = "nMaxMessages"
+ptype = "int"
+description = "size of the buffer to allocate for ``ppOutMessages``"
+
+[[manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel.returns]]
+ptype = "int"
+description = "Number of messages received."
+
+[[manual.ISteamNetworkingMessages.ReceiveMessagesOnChannel.returns]]
+ptype = "SteamNetworkingMessage_t[]"
+description = "Table of received messages, ``ppOutMessages``. Remember to call ``Release`` on all of them after using."
+
+# =============================================================================
 # ISteamApps (additional examples)
 # =============================================================================
 
@@ -3806,9 +3844,11 @@ end
 
 [ISteamNetworkingMessages.SendMessageToUser]
 example = """
-local data = serializePacket(packet)
+local identity = Steam.newSteamNetworkingIdentity {}
+identity:ParseString(send_to)
+local data = serializePacket(send_data)
 local result = Steam.NetworkingMessages.SendMessageToUser(
-    tostring(targetSteamID), data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
+    identity, data, #data, Steam.k_nSteamNetworkingSend_Reliable, 0)
 if result ~= Steam.k_EResultOK then
     print('Send failed:', result)
 end
@@ -3823,8 +3863,9 @@ end
 
 [ISteamNetworkingMessages.CloseSessionWithUser]
 example = """
--- Clean up when a player leaves
-Steam.NetworkingMessages.CloseSessionWithUser(tostring(playerSteamID))
+local identity = Steam.newSteamNetworkingIdentity {}
+identity:SetSteamID(steam_id)
+Steam.NetworkingMessages.CloseSessionWithUser(identity)
 """
 
 [ISteamNetworkingMessages.OnSteamNetworkingMessagesSessionRequest]
