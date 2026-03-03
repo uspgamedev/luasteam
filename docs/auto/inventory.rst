@@ -78,7 +78,6 @@ Function Reference
 **Example**::
 
     local ok, resultHandle = Steam.Inventory.AddPromoItem(promoItemDefID)
-    -- Grants a promo item if the trigger conditions are met
 
 .. function:: Inventory.AddPromoItems(pArrayItemDefs, unArrayLength)
 
@@ -93,6 +92,10 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
+
+**Example**::
+
+    local ok, resultHandle = Steam.Inventory.AddPromoItems({item1, item2}, 2)
 
 .. function:: Inventory.CheckResultSteamID(resultHandle, steamIDExpected)
 
@@ -148,16 +151,16 @@ Function Reference
 
     * See :func:`Inventory.GetResultItems`'s example.
 
-.. function:: Inventory.ExchangeItems(pArrayGenerate, unArrayGenerateLength, punArrayGenerateQuantity, pArrayDestroy, unArrayDestroyLength, punArrayDestroyQuantity)
+.. function:: Inventory.ExchangeItems(pArrayGenerate, punArrayGenerateQuantity, unArrayGenerateLength, pArrayDestroy, punArrayDestroyQuantity, unArrayDestroyLength)
 
     🤖 **Auto-generated binding**
 
     :param int[] pArrayGenerate:
-    :param int unArrayGenerateLength: size of the input array ``pArrayGenerate``
     :param int[] punArrayGenerateQuantity:
+    :param int unArrayGenerateLength: size of the input arrays ``pArrayGenerate`` and ``punArrayGenerateQuantity``
     :param uint64[] pArrayDestroy:
-    :param int unArrayDestroyLength: size of the input array ``pArrayDestroy``
     :param int[] punArrayDestroyQuantity:
+    :param int unArrayDestroyLength: size of the input arrays ``pArrayDestroy`` and ``punArrayDestroyQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `ExchangeItems <https://partner.steamgames.com/doc/api/ISteamInventory#ExchangeItems>`_
@@ -166,13 +169,13 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
-.. function:: Inventory.GenerateItems(pArrayItemDefs, unArrayLength, punArrayQuantity)
+.. function:: Inventory.GenerateItems(pArrayItemDefs, punArrayQuantity, unArrayLength)
 
     🤖 **Auto-generated binding**
 
     :param int[] pArrayItemDefs:
-    :param int unArrayLength: size of the input array ``pArrayItemDefs``
     :param int[] punArrayQuantity:
+    :param int unArrayLength: size of the input arrays ``pArrayItemDefs`` and ``punArrayQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `GenerateItems <https://partner.steamgames.com/doc/api/ISteamInventory#GenerateItems>`_
@@ -511,13 +514,13 @@ Function Reference
 
     * In C++, this is an overloaded method called ``SetProperty``. luasteam exposes each overload as a distinct function with a type suffix.
 
-.. function:: Inventory.StartPurchase(pArrayItemDefs, unArrayLength, punArrayQuantity, callback)
+.. function:: Inventory.StartPurchase(pArrayItemDefs, punArrayQuantity, unArrayLength, callback)
 
     🤖 **Auto-generated binding**
 
     :param int[] pArrayItemDefs:
-    :param int unArrayLength: size of the input array ``pArrayItemDefs``
     :param int[] punArrayQuantity:
+    :param int unArrayLength: size of the input arrays ``pArrayItemDefs`` and ``punArrayQuantity``
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryStartPurchaseResult_t <Inventory.OnSteamInventoryStartPurchaseResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
@@ -550,17 +553,17 @@ Function Reference
 
     * Parameter ``pResultHandle`` is no longer a parameter, and is instead an additional return value
 
-.. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, nArrayGiveLength, pArrayGiveQuantity, pArrayGet, nArrayGetLength, pArrayGetQuantity)
+.. function:: Inventory.TradeItems(steamIDTradePartner, pArrayGive, pArrayGiveQuantity, nArrayGiveLength, pArrayGet, pArrayGetQuantity, nArrayGetLength)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDTradePartner:
     :param uint64[] pArrayGive:
-    :param int nArrayGiveLength: size of the input array ``pArrayGive``
     :param int[] pArrayGiveQuantity:
+    :param int nArrayGiveLength: size of the input arrays ``pArrayGive`` and ``pArrayGiveQuantity``
     :param uint64[] pArrayGet:
-    :param int nArrayGetLength: size of the input array ``pArrayGet``
     :param int[] pArrayGetQuantity:
+    :param int nArrayGetLength: size of the input arrays ``pArrayGet`` and ``pArrayGetQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `TradeItems <https://partner.steamgames.com/doc/api/ISteamInventory#TradeItems>`_

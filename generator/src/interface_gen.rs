@@ -703,6 +703,9 @@ impl Generator {
         // Pointer params that are returned as output: (param_info, custom_push_code)
         let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
+        // Maps size_name -> (last_array_cpp_idx, all_array_names_so_far).
+        // Used to defer sig.add_size_param until all arrays sharing that size are processed.
+        let mut deferred_size_sig: HashMap<String, (usize, Vec<String>)> = HashMap::new();
 
         let mut i = 0;
         let mut lua_idx = lua_idx_start;
@@ -850,7 +853,7 @@ impl Generator {
                                 sig.add_size_param(
                                     size_param.to_string(),
                                     LType::Integer,
-                                    param.paramname.clone(),
+                                    vec![param.paramname.clone()],
                                     true,
                                 );
                                 lua_idx += 1;
@@ -966,37 +969,62 @@ impl Generator {
                             })?;
 
                         sig.add_param(param.paramname.clone(), ltype);
-                        if !size.is_empty() && !size_params_to_ignore.contains(size) {
-                            let p_idx = method
-                                .params
-                                .iter()
-                                .position(|p| p.paramname == size)
-                                .expect("Size param not found");
-                            let p = &method.params[p_idx];
-                            if p_idx > i {
-                                size_params_to_ignore.insert(size.to_string());
-                                lua_idx += 1;
-                                s.line(&format!(
-                                    "{} {} = luaL_checkint(L, {});",
-                                    p.paramtype
-                                        .strip_suffix(" *")
-                                        .unwrap_or(p.paramtype.as_str()),
-                                    size,
-                                    lua_idx
-                                ));
-                                sig.add_size_param(
-                                    size.to_string(),
-                                    LType::Integer,
-                                    param.paramname.clone(),
-                                    false,
-                                );
-                                lua_idx += 1;
-                            } else {
-                                assert!(
-                                    !p.paramtype.ends_with(" *"),
-                                    "Size param {} should not be a pointer",
-                                    size
-                                );
+                        if !size.is_empty() {
+                            lua_idx += 1; // advance past this array
+                            if !size_params_to_ignore.contains(size) {
+                                let p_idx = method
+                                    .params
+                                    .iter()
+                                    .position(|p| p.paramname == size)
+                                    .expect("Size param not found");
+                                if p_idx > i {
+                                    let p = &method.params[p_idx];
+                                    let sharing: Vec<usize> = method.params[i + 1..p_idx]
+                                        .iter()
+                                        .enumerate()
+                                        .filter(|(_, q)| {
+                                            q.input_array_size_param()
+                                                .map(|s| s == size)
+                                                .unwrap_or(false)
+                                        })
+                                        .map(|(j, _)| i + 1 + j)
+                                        .collect();
+                                    // Size Lua slot is right after all arrays that share it
+                                    s.line(&format!(
+                                        "{} {} = luaL_checkint(L, {});",
+                                        p.paramtype.strip_suffix(" *").unwrap_or(p.paramtype.as_str()),
+                                        size,
+                                        lua_idx + sharing.len()
+                                    ));
+                                    size_params_to_ignore.insert(size.to_string());
+                                    if sharing.is_empty() {
+                                        sig.add_size_param(
+                                            size.to_string(),
+                                            LType::Integer,
+                                            vec![param.paramname.clone()],
+                                            false,
+                                        );
+                                        lua_idx += 1; // advance past size
+                                    } else {
+                                        deferred_size_sig.insert(
+                                            size.to_string(),
+                                            (*sharing.last().unwrap(), vec![param.paramname.clone()]),
+                                        );
+                                    }
+                                }
+                                // else: size was already read as a Normal input param before this array
+                            } else if let Some((last_idx, names)) = deferred_size_sig.get_mut(size) {
+                                names.push(param.paramname.clone());
+                                if *last_idx == i {
+                                    let names = deferred_size_sig.remove(size).unwrap().1;
+                                    sig.add_size_param(
+                                        size.to_string(),
+                                        LType::Integer,
+                                        names,
+                                        false,
+                                    );
+                                    lua_idx += 1; // advance past size
+                                }
                             }
                         }
 
@@ -1090,6 +1118,11 @@ impl Generator {
             size_params_to_ignore.is_empty(),
             "Some size parameters were not used: {:?}",
             size_params_to_ignore
+        );
+        assert!(
+            deferred_size_sig.is_empty(),
+            "Some deferred sizes were never emitted: {:?}",
+            deferred_size_sig
         );
 
         let call = if cpp_call_params.is_empty() {

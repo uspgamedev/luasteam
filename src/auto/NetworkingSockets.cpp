@@ -352,10 +352,10 @@ static int luasteam_NetworkingSockets_ConfigureConnectionLanes(lua_State *L, ISt
 		pLanePriorities[i] = static_cast<int>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}
-	luaL_checktype(L, 3, LUA_TTABLE);
+	luaL_checktype(L, 4, LUA_TTABLE);
 	std::vector<uint16> pLaneWeights(nNumLanes);
 	for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
-		lua_rawgeti(L, 3, i+1);
+		lua_rawgeti(L, 4, i+1);
 		pLaneWeights[i] = static_cast<uint16>(luaL_checkint(L, -1));
 		lua_pop(L, 1);
 	}

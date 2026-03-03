@@ -337,9 +337,9 @@ Function Reference
 
 **Example**::
 
-    local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
+    local _, origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, attackActionHandle)
     if #origins > 0 then
-        local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], 'Medium', 0)
+        local glyphPath = Steam.Input.GetGlyphPNGForActionOrigin(origins[1], Steam.k_ESteamInputGlyphSize_Medium, 0)
         loadButtonIcon(glyphPath)
     end
 
@@ -403,7 +403,7 @@ Function Reference
 
 **Example**::
 
-    local origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
+    local _, origins = Steam.Input.GetDigitalActionOrigins(controllerHandle, actionSetHandle, jumpActionHandle)
     if #origins > 0 then
         local label = Steam.Input.GetStringForActionOrigin(origins[1])
         print('Press ' .. label .. ' to jump')

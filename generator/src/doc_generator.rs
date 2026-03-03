@@ -343,14 +343,21 @@ impl DocGenerator {
                 let type_str = param.ltype.to_rst_link(&self.structs);
                 let desc = if !param_desc.is_empty() {
                     param_desc.to_string()
-                } else if let Some((array_name, is_output)) = &param.size_of {
+                } else if let Some((array_names, is_output)) = &param.size_of {
                     if *is_output {
                         format!(
                             "size of the buffer to be allocated to hold the return value ``{}``",
-                            array_name
+                            array_names[0]
                         )
+                    } else if array_names.len() == 1 {
+                        format!("size of the input array ``{}``", array_names[0])
                     } else {
-                        format!("size of the input array ``{}``", array_name)
+                        let names = array_names
+                            .iter()
+                            .map(|n| format!("``{}``", n))
+                            .collect::<Vec<_>>()
+                            .join(" and ");
+                        format!("size of the input arrays {}", names)
                     }
                 } else {
                     String::new()

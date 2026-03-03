@@ -2656,7 +2656,11 @@ local ok, resultHandle = Steam.Inventory.TriggerItemDrop(dropListDefinitionID)
 [ISteamInventory.AddPromoItem]
 example = """
 local ok, resultHandle = Steam.Inventory.AddPromoItem(promoItemDefID)
--- Grants a promo item if the trigger conditions are met
+"""
+
+[ISteamInventory.AddPromoItems]
+example = """
+local ok, resultHandle = Steam.Inventory.AddPromoItems({item1, item2}, 2)
 """
 
 [ISteamInventory.TransferItemQuantity]

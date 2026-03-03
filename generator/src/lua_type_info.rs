@@ -94,9 +94,9 @@ pub struct LuaTypeInfo {
     pub ltype: LType,
     /// The name of the parameter
     pub name: String,
-    /// If this param is a size/count for another array param, stores (array_param_name, is_output).
-    /// is_output=true: sizes an output buffer (return value); is_output=false: sizes an input array.
-    pub size_of: Option<(String, bool)>,
+    /// If this param is a size/count for array param(s), stores (array_param_names, is_output).
+    /// is_output=true: sizes an output buffer (return value); is_output=false: sizes input array(s).
+    pub size_of: Option<(Vec<String>, bool)>,
 }
 
 /// Signature metadata for a Lua method, capturing type information determined during C++ generation.
@@ -133,19 +133,19 @@ impl LuaMethodSignature {
         });
     }
     /// Add a size/count parameter that describes the length of another array param.
-    /// `array_name`: the name of the array param this sizes.
+    /// `array_names`: names of the array param(s) this sizes (one or more).
     /// `is_output`: true if the array is an output (return value), false if input.
     pub fn add_size_param(
         &mut self,
         name: String,
         ltype: LType,
-        array_name: String,
+        array_names: Vec<String>,
         is_output: bool,
     ) {
         self.params.push(LuaTypeInfo {
             name,
             ltype,
-            size_of: Some((array_name, is_output)),
+            size_of: Some((array_names, is_output)),
         });
     }
 
