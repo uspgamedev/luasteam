@@ -8,6 +8,8 @@ use std::fs;
 pub struct StructDocInfo<'a> {
     pub name: &'a str,
     pub readable_fields: &'a [(String, LType)],
+    pub writable_field_names: &'a std::collections::HashSet<String>,
+    pub unsupported_fields: &'a [String],
     pub method_signatures: &'a [(String, LuaMethodSignature)],
 }
 
@@ -808,11 +810,35 @@ impl DocGenerator {
             ));
 
             // Fields
-            if !st.readable_fields.is_empty() {
+            let read_write: Vec<_> = st.readable_fields.iter()
+                .filter(|(name, _)| st.writable_field_names.contains(name))
+                .collect();
+            let read_only: Vec<_> = st.readable_fields.iter()
+                .filter(|(name, _)| !st.writable_field_names.contains(name))
+                .collect();
+
+            if !read_write.is_empty() {
                 doc.push_str("    **Fields** (readable and writable):\n\n");
-                for (fieldname, ltype) in st.readable_fields {
+                for (fieldname, ltype) in &read_write {
                     let type_str = ltype.to_rst_link(&self.structs);
                     doc.push_str(&format!("    * **{}** ({})\n", fieldname, type_str));
+                }
+                doc.push('\n');
+            }
+
+            if !read_only.is_empty() {
+                doc.push_str("    **Fields** (read-only):\n\n");
+                for (fieldname, ltype) in &read_only {
+                    let type_str = ltype.to_rst_link(&self.structs);
+                    doc.push_str(&format!("    * **{}** ({})\n", fieldname, type_str));
+                }
+                doc.push('\n');
+            }
+
+            if !st.unsupported_fields.is_empty() {
+                doc.push_str("    **Fields** (unsupported — not accessible from Lua):\n\n");
+                for fieldname in st.unsupported_fields {
+                    doc.push_str(&format!("    * **{}**\n", fieldname));
                 }
                 doc.push('\n');
             }

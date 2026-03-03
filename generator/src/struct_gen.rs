@@ -138,6 +138,8 @@ impl Generator {
             .map(|o| StructDocInfo {
                 name: &o.name,
                 readable_fields: &o.readable_fields,
+                writable_field_names: &o.writable_field_names,
+                unsupported_fields: &o.unsupported_fields,
                 method_signatures: &o.method_signatures,
             })
             .collect();
@@ -248,6 +250,22 @@ impl Generator {
                 writable_fields.push((field, check_code_newindex, check_code_ctor));
             }
         }
+
+        // Compute doc metadata: which readable fields are also writable, and which are unsupported.
+        let writable_field_names: std::collections::HashSet<String> = writable_fields
+            .iter()
+            .map(|(f, _, _)| f.fieldname.clone())
+            .chain(string_array_fields.iter().map(|(f, _)| f.fieldname.clone()))
+            .collect();
+        let readable_names: std::collections::HashSet<&str> =
+            readable_field_types.iter().map(|(n, _)| n.as_str()).collect();
+        let unsupported_fields: Vec<String> = accessible_fields
+            .iter()
+            .filter(|f| f.string_count.is_none())
+            .filter(|f| !readable_names.contains(f.fieldname.as_str()))
+            .filter(|f| !writable_field_names.contains(&f.fieldname))
+            .map(|f| f.fieldname.clone())
+            .collect();
 
         let has_methods = !methods.is_empty();
         let has_readable = !readable_fields.is_empty() || !string_array_fields.is_empty();
@@ -580,6 +598,8 @@ impl Generator {
             shutdown_code,
             add_code,
             readable_fields: readable_field_types,
+            writable_field_names,
+            unsupported_fields,
             method_signatures,
             skipped_methods,
         })

@@ -40,7 +40,9 @@ pub struct StructGenOutput {
     pub shutdown_code: String,
     pub add_code: String,
     // For documentation
-    pub readable_fields: Vec<(String, LType)>, // (fieldname, ltype)
+    pub readable_fields: Vec<(String, LType)>, // (fieldname, ltype) — fields where push succeeds
+    pub writable_field_names: HashSet<String>, // names of fields that are also writable
+    pub unsupported_fields: Vec<String>,       // accessible but neither readable nor writable
     pub method_signatures: Vec<(String, LuaMethodSignature)>, // (lua_name, sig)
     pub skipped_methods: Vec<(String, SkipReason)>, // (StructName::MethodName, reason)
 }

@@ -346,6 +346,10 @@ SteamInputActionEvent_t
     * **controllerHandle** (uint64)
     * **eEventType** (int)
 
+    **Fields** (unsupported — not accessible from Lua):
+
+    * **analogAction**
+
 .. _struct-SteamUGCDetails_t:
 
 -----------------
@@ -792,6 +796,10 @@ SteamNetConnectionRealTimeStatus_t
     * **m_cbSentUnackedReliable** (int)
     * **reserved** (int[])
 
+    **Fields** (unsupported — not accessible from Lua):
+
+    * **m_usecQueueTime**
+
 .. _struct-SteamNetConnectionRealTimeLaneStatus_t:
 
 --------------------------------------
@@ -812,6 +820,10 @@ SteamNetConnectionRealTimeLaneStatus_t
     * **m_cbSentUnackedReliable** (int)
     * **_reservePad1** (int)
     * **reserved** (int[])
+
+    **Fields** (unsupported — not accessible from Lua):
+
+    * **m_usecQueueTime**
 
 .. _struct-SteamNetworkPingLocation_t:
 
