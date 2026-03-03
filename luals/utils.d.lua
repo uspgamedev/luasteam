@@ -32,7 +32,7 @@ function Utils.GetIPCountry() end
 function Utils.GetImageSize(iImage) end
 
 ---@param iImage integer
----@param nDestBufferSize integer size of the buffer to allocate for return value pubDest
+---@param nDestBufferSize integer? size of the buffer for pubDest; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pubDest
 function Utils.GetImageRGBA(iImage, nDestBufferSize) end
@@ -56,7 +56,7 @@ function Utils.IsAPICallCompleted(hSteamAPICall) end
 function Utils.GetAPICallFailureReason(hSteamAPICall) end
 
 ---@param hSteamAPICall uint64
----@param cubCallback integer size of the buffer to allocate for return value pCallback
+---@param cubCallback integer? size of the buffer for pCallback; if nil then the buffer will be NULL
 ---@param iCallbackExpected integer
 ---@return boolean
 ---@return string -- Value of: pCallback
@@ -72,23 +72,23 @@ function Utils.IsOverlayEnabled() end
 ---@return boolean
 function Utils.BOverlayNeedsPresent() end
 
----@param szFileName string
+---@param szFileName string?
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Utils.CheckFileSignature(szFileName, callback) end
 
 ---@param eInputMode integer
 ---@param eLineInputMode integer
----@param pchDescription string
+---@param pchDescription string?
 ---@param unCharMax integer
----@param pchExistingText string
+---@param pchExistingText string?
 ---@return boolean
 function Utils.ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText) end
 
 ---@return integer
 function Utils.GetEnteredGamepadTextLength() end
 
----@param cchText integer size of the buffer to allocate for return value pchText
+---@param cchText integer? size of the buffer for pchText; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchText
 function Utils.GetEnteredGamepadTextInput(cchText) end
@@ -123,8 +123,8 @@ function Utils.InitFilterText(unFilterOptions) end
 
 ---@param eContext integer
 ---@param sourceSteamID uint64
----@param pchInputMessage string
----@param nByteSizeOutFilteredText integer size of the buffer to allocate for return value pchOutFilteredText
+---@param pchInputMessage string?
+---@param nByteSizeOutFilteredText integer? size of the buffer for pchOutFilteredText; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pchOutFilteredText
 function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOutFilteredText) end

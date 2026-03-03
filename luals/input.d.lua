@@ -12,7 +12,7 @@ function Input.Init(bExplicitlyCallRunFrame) end
 ---@return boolean
 function Input.Shutdown() end
 
----@param pchInputActionManifestAbsolutePath string
+---@param pchInputActionManifestAbsolutePath string?
 ---@return boolean
 function Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath) end
 
@@ -33,7 +33,7 @@ function Input.GetConnectedControllers() end
 
 function Input.EnableDeviceCallbacks() end
 
----@param pszActionSetName string
+---@param pszActionSetName string?
 ---@return uint64
 function Input.GetActionSetHandle(pszActionSetName) end
 
@@ -61,7 +61,7 @@ function Input.DeactivateAllActionSetLayers(inputHandle) end
 ---@return uint64[] -- Value of: handlesOut
 function Input.GetActiveActionSetLayers(inputHandle) end
 
----@param pszActionName string
+---@param pszActionName string?
 ---@return uint64
 function Input.GetDigitalActionHandle(pszActionName) end
 
@@ -81,7 +81,7 @@ function Input.GetDigitalActionOrigins(inputHandle, actionSetHandle, digitalActi
 ---@return string
 function Input.GetStringForDigitalActionName(eActionHandle) end
 
----@param pszActionName string
+---@param pszActionName string?
 ---@return uint64
 function Input.GetAnalogActionHandle(pszActionName) end
 

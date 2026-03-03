@@ -139,7 +139,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pAuthTicket:
+    :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
     :returns: (int) Return value
@@ -168,9 +168,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pCompressed:
+    :param str? pCompressed:
     :param int cbCompressed: size of the input array ``pCompressed``
-    :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
+    :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :param int nDesiredSampleRate:
     :returns: (int) Return value
     :returns: (str) ``pDestBuffer``
@@ -206,7 +206,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
+    :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSteamNetworkingIdentity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (int) Return value
     :returns: (str) ``pTicket``
@@ -231,7 +231,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchIdentity:
+    :param str? pchIdentity:
     :returns: (int) Return value
     :SteamWorks: `GetAuthTicketForWebApi <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthTicketForWebApi>`_
 
@@ -267,7 +267,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
+    :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pTicket``
     :returns: (int) ``pcbTicket``
@@ -340,7 +340,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubBuffer: size of the buffer to be allocated to hold the return value ``pchBuffer``
+    :param int? cubBuffer: size of the buffer to allocate for ``pchBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchBuffer``
     :SteamWorks: `GetUserDataFolder <https://partner.steamgames.com/doc/api/ISteamUser#GetUserDataFolder>`_
@@ -361,7 +361,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param bool bWantCompressed:
-    :param int cbDestBufferSize: size of the buffer to be allocated to hold the return value ``pDestBuffer``
+    :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pDestBuffer``
     :returns: (int) ``nBytesWritten``
@@ -398,7 +398,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pDataToInclude:
+    :param str? pDataToInclude:
     :param int cbDataToInclude: size of the input array ``pDataToInclude``
     :param function callback: CallResult callback receiving struct :func:`EncryptedAppTicketResponse_t <User.OnEncryptedAppTicketResponse>` and a boolean
     :returns: (uint64) Return value
@@ -417,7 +417,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchRedirectURL:
+    :param str? pchRedirectURL:
     :param function callback: CallResult callback receiving struct :func:`StoreAuthURLResponse_t <User.OnStoreAuthURLResponse>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `RequestStoreAuthURL <https://partner.steamgames.com/doc/api/ISteamUser#RequestStoreAuthURL>`_
@@ -450,7 +450,7 @@ Function Reference
 
     :param uint64 gameID:
     :param int eAppUsageEvent:
-    :param str pchExtraInfo:
+    :param str? pchExtraInfo:
     :SteamWorks: `TrackAppUsageEvent <https://partner.steamgames.com/doc/api/ISteamUser#TrackAppUsageEvent>`_
 
 .. function:: User.UserHasLicenseForApp(steamID, appID)

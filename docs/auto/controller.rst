@@ -96,7 +96,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionSetName:
+    :param str? pszActionSetName:
     :returns: (uint64) Return value
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamController#GetActionSetHandle>`_
 
@@ -136,7 +136,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionName:
+    :param str? pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamController#GetAnalogActionHandle>`_
 
@@ -228,7 +228,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionName:
+    :param str? pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamController#GetDigitalActionHandle>`_
 

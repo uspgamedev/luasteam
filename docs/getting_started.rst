@@ -287,12 +287,39 @@ string:
 
     local ok, value, len = Steam.Inventory.GetItemDefinitionProperty(def, "name", 256)
 
+Passing ``nil``
+-------------------------
+
+Input arrays and ``const char*`` parameters marked ``?`` accept ``nil``,
+which maps to a C++ ``NULL``. Some Steam APIs treat ``NULL``s differently, like `Inventory::GetItemDefinitionProperty <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionProperty>`_ which returns a comma-separated list of all the available property names instead of a value. Example usage:
+
+.. code-block:: lua
+
+    -- First call: pass nil to find out how many bytes we need
+    local _, pchValueBuffer, punValueBufferSizeOut = Steam.Inventory.GetItemDefinitionProperty(iDef, nil, 1024)
+
+    print(pchValueBuffer) -- a comma-separated list of all the available property names
+
+For output arrays or strings, wherever a size or count is marked ``?`` in the documentation (e.g. ``int?``), you may
+pass ``nil`` instead of a number, so that luasteam sends a ``NULL`` output array or string. Some Steam APIs treat ``NULL``s differently, like `GetItemDefinitionIDs <https://partner.steamgames.com/doc/api/ISteamInventory#GetItemDefinitionIDs>`_ which doesn't populate the array but returns the correct array size in ``punItemDefIDsArraySize``. Example usage:
+
+.. code-block:: lua
+
+    -- After SteamInventoryDefinitionUpdate_t callback
+    -- First call: pass nil to find out the size we need
+    local _, _, punItemDefIDsArraySize = Steam.Inventory.GetItemDefinitionIDs(nil)
+
+    -- Second call: allocate the right size and get the actual data
+    local _, items, _ = Steam.Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize)
+    print(items)
+
+
 ----
 
 Special: SteamNetworkingMessage_t
 ==================================
 
-This is the only struct that must be **explicitly released** after use:
+This struct works a little differently than the rest. It must be **explicitly released** after use. Furthermore, it can never be explicitly built (there's no ``newSteamNetworkingMessage_t`` method), and must just be passed around using Steam methods. Different than other structs, the Lua userdata just carries a pointer to it, not its value. Example usage:
 
 .. code-block:: lua
 

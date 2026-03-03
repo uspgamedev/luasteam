@@ -60,7 +60,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iDLC:
-    :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
+    :param int? cchNameBufferSize: size of the buffer to allocate for ``pchName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (int) ``pAppID``
     :returns: (bool) ``pbAvailable``
@@ -202,7 +202,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int appID:
-    :param int cchFolderBufferSize: size of the buffer to be allocated to hold the return value ``pchFolder``
+    :param int? cchFolderBufferSize: size of the buffer to allocate for ``pchFolder``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pchFolder``
     :SteamWorks: `GetAppInstallDir <https://partner.steamgames.com/doc/api/ISteamApps#GetAppInstallDir>`_
@@ -250,8 +250,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iBetaIndex:
-    :param int cchBetaName: size of the buffer to be allocated to hold the return value ``pchBetaName``
-    :param int cchDescription: size of the buffer to be allocated to hold the return value ``pchDescription``
+    :param int? cchBetaName: size of the buffer to allocate for ``pchBetaName``. If ``nil`` then the buffer will be ``NULL``.
+    :param int? cchDescription: size of the buffer to allocate for ``pchDescription``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (int) ``punFlags``
     :returns: (int) ``punBuildID``
@@ -270,7 +270,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cchNameBufferSize: size of the buffer to be allocated to hold the return value ``pchName``
+    :param int? cchNameBufferSize: size of the buffer to allocate for ``pchName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchName``
     :SteamWorks: `GetCurrentBetaName <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentBetaName>`_
@@ -339,7 +339,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszFileName:
+    :param str? pszFileName:
     :param function callback: CallResult callback receiving struct :func:`FileDetailsResult_t <Apps.OnFileDetailsResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `GetFileDetails <https://partner.steamgames.com/doc/api/ISteamApps#GetFileDetails>`_
@@ -349,7 +349,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int appID:
-    :param int cMaxDepots: size of the buffer to be allocated to hold the return value ``pvecDepots``
+    :param int? cMaxDepots: size of the buffer to allocate for ``pvecDepots``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (int[]) ``pvecDepots``
     :SteamWorks: `GetInstalledDepots <https://partner.steamgames.com/doc/api/ISteamApps#GetInstalledDepots>`_
@@ -369,7 +369,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubCommandLine: size of the buffer to be allocated to hold the return value ``pszCommandLine``
+    :param int? cubCommandLine: size of the buffer to allocate for ``pszCommandLine``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pszCommandLine``
     :SteamWorks: `GetLaunchCommandLine <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchCommandLine>`_
@@ -390,7 +390,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLaunchQueryParam <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchQueryParam>`_
 
@@ -452,7 +452,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchBetaName:
+    :param str? pchBetaName:
     :returns: (bool) Return value
     :SteamWorks: `SetActiveBeta <https://partner.steamgames.com/doc/api/ISteamApps#SetActiveBeta>`_
 

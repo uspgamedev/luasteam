@@ -97,6 +97,8 @@ pub struct LuaTypeInfo {
     /// If this param is a size/count for array param(s), stores (array_param_names, is_output).
     /// is_output=true: sizes an output buffer (return value); is_output=false: sizes input array(s).
     pub size_of: Option<(Vec<String>, bool)>,
+    /// Whether this parameter accepts nil (mapped to nullptr / 0 in C++).
+    pub is_optional: bool,
 }
 
 /// Signature metadata for a Lua method, capturing type information determined during C++ generation.
@@ -119,7 +121,12 @@ impl LuaMethodSignature {
             name,
             ltype,
             size_of: None,
+            is_optional: false,
         });
+    }
+    /// Mark the most recently added parameter as optional (accepts nil → nullptr/0).
+    pub fn mark_last_param_optional(&mut self) {
+        self.params.last_mut().expect("No params added yet").is_optional = true;
     }
     pub fn set_return_type(&mut self, ltype: LType) {
         assert!(self.return_type.is_none(), "Return type already set");
@@ -130,6 +137,7 @@ impl LuaMethodSignature {
             name,
             ltype,
             size_of: None,
+            is_optional: false,
         });
     }
     /// Add a size/count parameter that describes the length of another array param.
@@ -146,6 +154,7 @@ impl LuaMethodSignature {
             name,
             ltype,
             size_of: Some((array_names, is_output)),
+            is_optional: false,
         });
     }
 

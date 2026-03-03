@@ -41,9 +41,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchTagName:
-    :param str pchTagIcon:
-    :param str pchTagGroup:
+    :param str? pchTagName:
+    :param str? pchTagIcon:
+    :param str? pchTagGroup:
     :param int unPriority:
     :SteamWorks: `AddGamePhaseTag <https://partner.steamgames.com/doc/api/ISteamTimeline#AddGamePhaseTag>`_
 
@@ -51,9 +51,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchTitle:
-    :param str pchDescription:
-    :param str pchIcon:
+    :param str? pchTitle:
+    :param str? pchDescription:
+    :param str? pchIcon:
     :param int unIconPriority:
     :param float flStartOffsetSeconds:
     :param int ePossibleClip:
@@ -70,9 +70,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchTitle:
-    :param str pchDescription:
-    :param str pchIcon:
+    :param str? pchTitle:
+    :param str? pchDescription:
+    :param str? pchIcon:
     :param int unIconPriority:
     :param float flStartOffsetSeconds:
     :param float flDuration:
@@ -110,7 +110,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchPhaseID:
+    :param str? pchPhaseID:
     :param function callback: CallResult callback receiving struct :func:`SteamTimelineGamePhaseRecordingExists_t <Timeline.OnSteamTimelineGamePhaseRecordingExists>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `DoesGamePhaseRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesGamePhaseRecordingExist>`_
@@ -141,7 +141,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchPhaseID:
+    :param str? pchPhaseID:
     :SteamWorks: `OpenOverlayToGamePhase <https://partner.steamgames.com/doc/api/ISteamTimeline#OpenOverlayToGamePhase>`_
 
 .. function:: Timeline.OpenOverlayToTimelineEvent(ulEvent)
@@ -167,8 +167,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchAttributeGroup:
-    :param str pchAttributeValue:
+    :param str? pchAttributeGroup:
+    :param str? pchAttributeValue:
     :param int unPriority:
     :SteamWorks: `SetGamePhaseAttribute <https://partner.steamgames.com/doc/api/ISteamTimeline#SetGamePhaseAttribute>`_
 
@@ -176,7 +176,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchPhaseID:
+    :param str? pchPhaseID:
     :SteamWorks: `SetGamePhaseID <https://partner.steamgames.com/doc/api/ISteamTimeline#SetGamePhaseID>`_
 
     **Notes:**
@@ -199,7 +199,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchDescription:
+    :param str? pchDescription:
     :param float flTimeDelta:
     :SteamWorks: `SetTimelineTooltip <https://partner.steamgames.com/doc/api/ISteamTimeline#SetTimelineTooltip>`_
 
@@ -222,9 +222,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchTitle:
-    :param str pchDescription:
-    :param str pchIcon:
+    :param str? pchTitle:
+    :param str? pchDescription:
+    :param str? pchIcon:
     :param int unPriority:
     :param float flStartOffsetSeconds:
     :param int ePossibleClip:
@@ -242,9 +242,9 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulEvent:
-    :param str pchTitle:
-    :param str pchDescription:
-    :param str pchIcon:
+    :param str? pchTitle:
+    :param str? pchDescription:
+    :param str? pchIcon:
     :param int unPriority:
     :param int ePossibleClip:
     :SteamWorks: `UpdateRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#UpdateRangeTimelineEvent>`_

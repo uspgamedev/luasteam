@@ -83,7 +83,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int[] pArrayItemDefs:
+    :param int[]? pArrayItemDefs:
     :param int unArrayLength: size of the input array ``pArrayItemDefs``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
@@ -129,7 +129,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pBuffer:
+    :param str? pBuffer:
     :param int unBufferSize: size of the input array ``pBuffer``
     :param bool bRESERVED_MUST_BE_FALSE:
     :returns: (bool) Return value
@@ -155,11 +155,11 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int[] pArrayGenerate:
-    :param int[] punArrayGenerateQuantity:
+    :param int[]? pArrayGenerate:
+    :param int[]? punArrayGenerateQuantity:
     :param int unArrayGenerateLength: size of the input arrays ``pArrayGenerate`` and ``punArrayGenerateQuantity``
-    :param uint64[] pArrayDestroy:
-    :param int[] punArrayDestroyQuantity:
+    :param uint64[]? pArrayDestroy:
+    :param int[]? punArrayDestroyQuantity:
     :param int unArrayDestroyLength: size of the input arrays ``pArrayDestroy`` and ``punArrayDestroyQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
@@ -173,8 +173,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int[] pArrayItemDefs:
-    :param int[] punArrayQuantity:
+    :param int[]? pArrayItemDefs:
+    :param int[]? punArrayQuantity:
     :param int unArrayLength: size of the input arrays ``pArrayItemDefs`` and ``punArrayQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
@@ -207,7 +207,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int punItemDefIDsArraySize: size of the buffer to be allocated to hold the return value ``pItemDefIDs``
+    :param int? punItemDefIDsArraySize: size of the buffer to allocate for ``pItemDefIDs``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (int[]) ``pItemDefIDs``
     :returns: (int) ``punItemDefIDsArraySize``
@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int punItemDefIDsArraySize: size of the buffer to be allocated to hold the return value ``pItemDefIDs``
+    :param int? punItemDefIDsArraySize: size of the buffer to allocate for ``pItemDefIDs``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (int[]) ``pItemDefIDs``
     :returns: (int) ``punItemDefIDsArraySize``
@@ -246,8 +246,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iDefinition:
-    :param str pchPropertyName:
-    :param int punValueBufferSizeOut: size of the buffer to be allocated to hold the return value ``pchValueBuffer``
+    :param str? pchPropertyName:
+    :param int? punValueBufferSizeOut: size of the buffer to allocate for ``pchValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchValueBuffer``
     :returns: (int) ``punValueBufferSizeOut``
@@ -281,7 +281,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pInstanceIDs:
+    :param uint64[]? pInstanceIDs:
     :param int unCountInstanceIDs: size of the input array ``pInstanceIDs``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
@@ -309,8 +309,8 @@ Function Reference
 
     :param int resultHandle:
     :param int unItemIndex:
-    :param str pchPropertyName:
-    :param int punValueBufferSizeOut: size of the buffer to be allocated to hold the return value ``pchValueBuffer``
+    :param str? pchPropertyName:
+    :param int? punValueBufferSizeOut: size of the buffer to allocate for ``pchValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchValueBuffer``
     :returns: (int) ``punValueBufferSizeOut``
@@ -326,7 +326,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int resultHandle:
-    :param int punOutItemsArraySize: size of the buffer to be allocated to hold the return value ``pOutItemsArray``
+    :param int? punOutItemsArraySize: size of the buffer to allocate for ``pOutItemsArray``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`\ []) ``pOutItemsArray``
     :returns: (int) ``punOutItemsArraySize``
@@ -341,7 +341,7 @@ Function Reference
 
     function Steam.Inventory.OnSteamInventoryResultReady(data)
         if data.m_result ~= Steam.k_EResultOK then return end
-        local items = Steam.Inventory.GetResultItems(data.m_handle, 256)
+        local _, items = Steam.Inventory.GetResultItems(data.m_handle, 256)
         for _, item in ipairs(items) do
             print('Item:', item.m_iDefinition, 'Qty:', item.m_unQuantity)
         end
@@ -387,7 +387,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchItemToken:
+    :param str? pchItemToken:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `InspectItem <https://partner.steamgames.com/doc/api/ISteamInventory#InspectItem>`_
@@ -414,7 +414,7 @@ Function Reference
 
     :param uint64 handle:
     :param uint64 nItemID:
-    :param str pchPropertyName:
+    :param str? pchPropertyName:
     :returns: (bool) Return value
     :SteamWorks: `RemoveProperty <https://partner.steamgames.com/doc/api/ISteamInventory#RemoveProperty>`_
 
@@ -440,10 +440,11 @@ Function Reference
     Steam.Inventory.RequestPrices(function(data, err)
         if not err and data.m_result == Steam.k_EResultOK then
             local numItems = Steam.Inventory.GetNumItemsWithPrices()
-            local items = Steam.Inventory.getItemsWithPrices(numItems)
-            for _, item in ipairs(items) do
-                print('Item', item.m_iDefinition, 'costs',
-                      item.m_flCurrentPrice, item.m_rgchCurrencyCode)
+            local ok, items, curPrices, basePrices = Steam.Inventory.GetItemsWithPrices(numItems)
+            if ok then
+                for i = 1, numItems do
+                    print('Item', items[i], 'prices', curPrices[i], basePrices[i])
+                end
             end
         end
     end)
@@ -460,7 +461,7 @@ Function Reference
 
     :param uint64 handle:
     :param uint64 nItemID:
-    :param str pchPropertyName:
+    :param str? pchPropertyName:
     :param bool bValue:
     :returns: (bool) Return value
     :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
@@ -475,7 +476,7 @@ Function Reference
 
     :param uint64 handle:
     :param uint64 nItemID:
-    :param str pchPropertyName:
+    :param str? pchPropertyName:
     :param float flValue:
     :returns: (bool) Return value
     :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
@@ -490,7 +491,7 @@ Function Reference
 
     :param uint64 handle:
     :param uint64 nItemID:
-    :param str pchPropertyName:
+    :param str? pchPropertyName:
     :param uint64 nValue:
     :returns: (bool) Return value
     :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
@@ -505,8 +506,8 @@ Function Reference
 
     :param uint64 handle:
     :param uint64 nItemID:
-    :param str pchPropertyName:
-    :param str pchPropertyValue:
+    :param str? pchPropertyName:
+    :param str? pchPropertyValue:
     :returns: (bool) Return value
     :SteamWorks: `SetProperty <https://partner.steamgames.com/doc/api/ISteamInventory#SetProperty>`_
 
@@ -518,8 +519,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int[] pArrayItemDefs:
-    :param int[] punArrayQuantity:
+    :param int[]? pArrayItemDefs:
+    :param int[]? punArrayQuantity:
     :param int unArrayLength: size of the input arrays ``pArrayItemDefs`` and ``punArrayQuantity``
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryStartPurchaseResult_t <Inventory.OnSteamInventoryStartPurchaseResult>` and a boolean
     :returns: (uint64) Return value
@@ -558,11 +559,11 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDTradePartner:
-    :param uint64[] pArrayGive:
-    :param int[] pArrayGiveQuantity:
+    :param uint64[]? pArrayGive:
+    :param int[]? pArrayGiveQuantity:
     :param int nArrayGiveLength: size of the input arrays ``pArrayGive`` and ``pArrayGiveQuantity``
-    :param uint64[] pArrayGet:
-    :param int[] pArrayGetQuantity:
+    :param uint64[]? pArrayGet:
+    :param int[]? pArrayGetQuantity:
     :param int nArrayGetLength: size of the input arrays ``pArrayGet`` and ``pArrayGetQuantity``
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``

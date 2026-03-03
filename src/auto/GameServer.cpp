@@ -317,7 +317,7 @@ template <> void CallResultListener<GSReputation_t>::Result(GSReputation_t *data
 // GameServer.SetProduct(pszProduct: str)
 static int luasteam_GameServer_SetProduct(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszProduct = luaL_checkstring(L, 1);
+	const char *pszProduct = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetProduct(iface, pszProduct);
 	return 0;
 }
@@ -328,7 +328,7 @@ static int luasteam_GameServer_SetProduct(lua_State *L) {
 // GameServer.SetGameDescription(pszGameDescription: str)
 static int luasteam_GameServer_SetGameDescription(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszGameDescription = luaL_checkstring(L, 1);
+	const char *pszGameDescription = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetGameDescription(iface, pszGameDescription);
 	return 0;
 }
@@ -339,7 +339,7 @@ static int luasteam_GameServer_SetGameDescription(lua_State *L) {
 // GameServer.SetModDir(pszModDir: str)
 static int luasteam_GameServer_SetModDir(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszModDir = luaL_checkstring(L, 1);
+	const char *pszModDir = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetModDir(iface, pszModDir);
 	return 0;
 }
@@ -361,7 +361,7 @@ static int luasteam_GameServer_SetDedicatedServer(lua_State *L) {
 // GameServer.LogOn(pszToken: str)
 static int luasteam_GameServer_LogOn(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszToken = luaL_checkstring(L, 1);
+	const char *pszToken = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_LogOn(iface, pszToken);
 	return 0;
 }
@@ -458,7 +458,7 @@ static int luasteam_GameServer_SetBotPlayerCount(lua_State *L) {
 // GameServer.SetServerName(pszServerName: str)
 static int luasteam_GameServer_SetServerName(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszServerName = luaL_checkstring(L, 1);
+	const char *pszServerName = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetServerName(iface, pszServerName);
 	return 0;
 }
@@ -469,7 +469,7 @@ static int luasteam_GameServer_SetServerName(lua_State *L) {
 // GameServer.SetMapName(pszMapName: str)
 static int luasteam_GameServer_SetMapName(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszMapName = luaL_checkstring(L, 1);
+	const char *pszMapName = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetMapName(iface, pszMapName);
 	return 0;
 }
@@ -502,7 +502,7 @@ static int luasteam_GameServer_SetSpectatorPort(lua_State *L) {
 // GameServer.SetSpectatorServerName(pszSpectatorServerName: str)
 static int luasteam_GameServer_SetSpectatorServerName(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszSpectatorServerName = luaL_checkstring(L, 1);
+	const char *pszSpectatorServerName = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetSpectatorServerName(iface, pszSpectatorServerName);
 	return 0;
 }
@@ -523,8 +523,8 @@ static int luasteam_GameServer_ClearAllKeyValues(lua_State *L) {
 // GameServer.SetKeyValue(pKey: str, pValue: str)
 static int luasteam_GameServer_SetKeyValue(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pKey = luaL_checkstring(L, 1);
-	const char *pValue = luaL_checkstring(L, 2);
+	const char *pKey = luaL_optstring(L, 1, nullptr);
+	const char *pValue = luaL_optstring(L, 2, nullptr);
 	SteamAPI_ISteamGameServer_SetKeyValue(iface, pKey, pValue);
 	return 0;
 }
@@ -535,7 +535,7 @@ static int luasteam_GameServer_SetKeyValue(lua_State *L) {
 // GameServer.SetGameTags(pchGameTags: str)
 static int luasteam_GameServer_SetGameTags(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pchGameTags = luaL_checkstring(L, 1);
+	const char *pchGameTags = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetGameTags(iface, pchGameTags);
 	return 0;
 }
@@ -546,7 +546,7 @@ static int luasteam_GameServer_SetGameTags(lua_State *L) {
 // GameServer.SetGameData(pchGameData: str)
 static int luasteam_GameServer_SetGameData(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pchGameData = luaL_checkstring(L, 1);
+	const char *pchGameData = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetGameData(iface, pchGameData);
 	return 0;
 }
@@ -557,7 +557,7 @@ static int luasteam_GameServer_SetGameData(lua_State *L) {
 // GameServer.SetRegion(pszRegion: str)
 static int luasteam_GameServer_SetRegion(lua_State *L) {
 	auto *iface = SteamGameServer();
-	const char *pszRegion = luaL_checkstring(L, 1);
+	const char *pszRegion = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamGameServer_SetRegion(iface, pszRegion);
 	return 0;
 }
@@ -579,11 +579,11 @@ static int luasteam_GameServer_SetAdvertiseServerActive(lua_State *L) {
 // (int, pTicket: str, pcbTicket: int) GameServer.GetAuthSessionTicket(cbMaxTicket: int, pSnid: SteamNetworkingIdentity)
 static int luasteam_GameServer_GetAuthSessionTicket(lua_State *L) {
 	auto *iface = SteamGameServer();
-	int cbMaxTicket = luaL_checkint(L, 1);
+	int cbMaxTicket = lua_isnil(L, 1) ? 0 : (int)luaL_checkint(L, 1);
 	uint32 pcbTicket = cbMaxTicket;
 	std::vector<unsigned char> pTicket(cbMaxTicket);
 	const SteamNetworkingIdentity *pSnid = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 2);
-	HAuthTicket __ret = SteamAPI_ISteamGameServer_GetAuthSessionTicket(iface, pTicket.data(), cbMaxTicket, &pcbTicket, pSnid);
+	HAuthTicket __ret = SteamAPI_ISteamGameServer_GetAuthSessionTicket(iface, lua_isnil(L, 1) ? nullptr : pTicket.data(), cbMaxTicket, &pcbTicket, pSnid);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pTicket.data()), pcbTicket);
 	lua_pushinteger(L, pcbTicket);
@@ -598,7 +598,7 @@ static int luasteam_GameServer_BeginAuthSession(lua_State *L) {
 	auto *iface = SteamGameServer();
 	int cbAuthTicket = luaL_checkint(L, 2);
 	size_t _len__tmp0;
-	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
+	const char *_tmp0 = luaL_optlstring(L, 1, nullptr, &_len__tmp0);
 	const void *pAuthTicket = reinterpret_cast<const void *>(_tmp0);
 	uint64 steamID = luasteam::checkuint64(L, 3);
 	EBeginAuthSessionResult __ret = SteamAPI_ISteamGameServer_BeginAuthSession(iface, pAuthTicket, cbAuthTicket, steamID);
@@ -704,7 +704,7 @@ static int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
 	auto *iface = SteamGameServer();
 	int cbData = luaL_checkint(L, 2);
 	size_t _len__tmp1;
-	const char *_tmp1 = luaL_checklstring(L, 1, &_len__tmp1);
+	const char *_tmp1 = luaL_optlstring(L, 1, nullptr, &_len__tmp1);
 	const void *pData = reinterpret_cast<const void *>(_tmp1);
 	uint32 srcIP = static_cast<uint32>(luaL_checkint(L, 3));
 	uint16 srcPort = static_cast<uint16>(luaL_checkint(L, 4));
@@ -719,11 +719,11 @@ static int luasteam_GameServer_HandleIncomingPacket(lua_State *L) {
 // (int, pOut: str, pNetAdr: int, pPort: int) GameServer.GetNextOutgoingPacket(cbMaxOut: int)
 static int luasteam_GameServer_GetNextOutgoingPacket(lua_State *L) {
 	auto *iface = SteamGameServer();
-	int cbMaxOut = luaL_checkint(L, 1);
+	int cbMaxOut = lua_isnil(L, 1) ? 0 : (int)luaL_checkint(L, 1);
 	std::vector<unsigned char> pOut(cbMaxOut);
 	uint32 pNetAdr;
 	uint16 pPort;
-	int __ret = SteamAPI_ISteamGameServer_GetNextOutgoingPacket(iface, pOut.data(), cbMaxOut, &pNetAdr, &pPort);
+	int __ret = SteamAPI_ISteamGameServer_GetNextOutgoingPacket(iface, lua_isnil(L, 1) ? nullptr : pOut.data(), cbMaxOut, &pNetAdr, &pPort);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pOut.data()), cbMaxOut);
 	lua_pushinteger(L, pNetAdr);
@@ -793,7 +793,7 @@ static int luasteam_GameServer_CreateUnauthenticatedUserConnection(lua_State *L)
 static int luasteam_GameServer_BUpdateUserData(lua_State *L) {
 	auto *iface = SteamGameServer();
 	uint64 steamIDUser = luasteam::checkuint64(L, 1);
-	const char *pchPlayerName = luaL_checkstring(L, 2);
+	const char *pchPlayerName = luaL_optstring(L, 2, nullptr);
 	uint32 uScore = static_cast<uint32>(luaL_checkint(L, 3));
 	bool __ret = SteamAPI_ISteamGameServer_BUpdateUserData(iface, steamIDUser, pchPlayerName, uScore);
 	lua_pushboolean(L, __ret);

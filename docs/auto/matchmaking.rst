@@ -104,7 +104,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchKeyToMatch:
+    :param str? pchKeyToMatch:
     :param int nValueToBeCloseTo:
     :SteamWorks: `AddRequestLobbyListNearValueFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNearValueFilter>`_
 
@@ -112,7 +112,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchKeyToMatch:
+    :param str? pchKeyToMatch:
     :param int nValueToMatch:
     :param int eComparisonType:
     :SteamWorks: `AddRequestLobbyListNumericalFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNumericalFilter>`_
@@ -128,8 +128,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchKeyToMatch:
-    :param str pchValueToMatch:
+    :param str? pchKeyToMatch:
+    :param str? pchValueToMatch:
     :param int eComparisonType:
     :SteamWorks: `AddRequestLobbyListStringFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListStringFilter>`_
 
@@ -160,7 +160,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (bool) Return value
     :SteamWorks: `DeleteLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#DeleteLobbyData>`_
 
@@ -208,7 +208,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param int iChatID:
-    :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
+    :param int? cubData: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (uint64) ``pSteamIDUser``
     :returns: (str) ``pvData``
@@ -226,7 +226,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
 
@@ -241,8 +241,8 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param int iLobbyData:
-    :param int cchKeyBufferSize: size of the buffer to be allocated to hold the return value ``pchKey``
-    :param int cchValueBufferSize: size of the buffer to be allocated to hold the return value ``pchValue``
+    :param int? cchKeyBufferSize: size of the buffer to allocate for ``pchKey``. If ``nil`` then the buffer will be ``NULL``.
+    :param int? cchValueBufferSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchKey``
     :returns: (str) ``pchValue``
@@ -300,7 +300,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param uint64 steamIDUser:
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
 
@@ -436,7 +436,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param str pvMsgBody:
+    :param str? pvMsgBody:
     :param int cubMsgBody: size of the input array ``pvMsgBody``
     :returns: (bool) Return value
     :SteamWorks: `SendLobbyChatMsg <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SendLobbyChatMsg>`_
@@ -460,8 +460,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param str pchKey:
-    :param str pchValue:
+    :param str? pchKey:
+    :param str? pchValue:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyData>`_
 
@@ -503,8 +503,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param str pchKey:
-    :param str pchValue:
+    :param str? pchKey:
+    :param str? pchValue:
     :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
 
 **Example**::

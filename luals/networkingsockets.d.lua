@@ -35,7 +35,7 @@ function NetworkingSockets.AcceptConnection(hConn) end
 
 ---@param hPeer integer
 ---@param nReason integer
----@param pszDebug string
+---@param pszDebug string?
 ---@param bEnableLinger boolean
 ---@return boolean
 function NetworkingSockets.CloseConnection(hPeer, nReason, pszDebug, bEnableLinger) end
@@ -54,17 +54,17 @@ function NetworkingSockets.SetConnectionUserData(hPeer, nUserData) end
 function NetworkingSockets.GetConnectionUserData(hPeer) end
 
 ---@param hPeer integer
----@param pszName string
+---@param pszName string?
 function NetworkingSockets.SetConnectionName(hPeer, pszName) end
 
 ---@param hPeer integer
----@param nMaxLen integer size of the buffer to allocate for return value pszName
+---@param nMaxLen integer? size of the buffer for pszName; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pszName
 function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
 
 ---@param hConn integer
----@param pData string
+---@param pData string?
 ---@param cbData integer size of the input array pData
 ---@param nSendFlags integer
 ---@return integer
@@ -88,7 +88,7 @@ function NetworkingSockets.GetConnectionInfo(hConn) end
 function NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes) end
 
 ---@param hConn integer
----@param cbBuf integer size of the buffer to allocate for return value pszBuf
+---@param cbBuf integer? size of the buffer for pszBuf; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pszBuf
 function NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf) end
@@ -108,8 +108,8 @@ function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pId
 
 ---@param hConn integer
 ---@param nNumLanes integer
----@param pLanePriorities integer[]
----@param pLaneWeights integer[]
+---@param pLanePriorities integer[]?
+---@param pLaneWeights integer[]?
 ---@return integer
 function NetworkingSockets.ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities, pLaneWeights) end
 

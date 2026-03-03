@@ -80,7 +80,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :param str pubData:
+    :param str? pubData:
     :param int cubData: size of the input array ``pubData``
     :param int nSendFlags:
     :param int nRemoteChannel:

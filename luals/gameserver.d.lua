@@ -15,19 +15,19 @@
 ---@field OnComputeNewPlayerCompatibilityResult? fun(data: ComputeNewPlayerCompatibilityResult_t)
 local GameServer = {}
 
----@param pszProduct string
+---@param pszProduct string?
 function GameServer.SetProduct(pszProduct) end
 
----@param pszGameDescription string
+---@param pszGameDescription string?
 function GameServer.SetGameDescription(pszGameDescription) end
 
----@param pszModDir string
+---@param pszModDir string?
 function GameServer.SetModDir(pszModDir) end
 
 ---@param bDedicated boolean
 function GameServer.SetDedicatedServer(bDedicated) end
 
----@param pszToken string
+---@param pszToken string?
 function GameServer.LogOn(pszToken) end
 
 function GameServer.LogOnAnonymous() end
@@ -52,10 +52,10 @@ function GameServer.SetMaxPlayerCount(cPlayersMax) end
 ---@param cBotplayers integer
 function GameServer.SetBotPlayerCount(cBotplayers) end
 
----@param pszServerName string
+---@param pszServerName string?
 function GameServer.SetServerName(pszServerName) end
 
----@param pszMapName string
+---@param pszMapName string?
 function GameServer.SetMapName(pszMapName) end
 
 ---@param bPasswordProtected boolean
@@ -64,35 +64,35 @@ function GameServer.SetPasswordProtected(bPasswordProtected) end
 ---@param unSpectatorPort integer
 function GameServer.SetSpectatorPort(unSpectatorPort) end
 
----@param pszSpectatorServerName string
+---@param pszSpectatorServerName string?
 function GameServer.SetSpectatorServerName(pszSpectatorServerName) end
 
 function GameServer.ClearAllKeyValues() end
 
----@param pKey string
----@param pValue string
+---@param pKey string?
+---@param pValue string?
 function GameServer.SetKeyValue(pKey, pValue) end
 
----@param pchGameTags string
+---@param pchGameTags string?
 function GameServer.SetGameTags(pchGameTags) end
 
----@param pchGameData string
+---@param pchGameData string?
 function GameServer.SetGameData(pchGameData) end
 
----@param pszRegion string
+---@param pszRegion string?
 function GameServer.SetRegion(pszRegion) end
 
 ---@param bActive boolean
 function GameServer.SetAdvertiseServerActive(bActive) end
 
----@param cbMaxTicket integer size of the buffer to allocate for return value pTicket
+---@param cbMaxTicket integer? size of the buffer for pTicket; if nil then the buffer will be NULL
 ---@param pSnid SteamNetworkingIdentity
 ---@return integer
 ---@return string -- Value of: pTicket
 ---@return integer -- Value of: pcbTicket
 function GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid) end
 
----@param pAuthTicket string
+---@param pAuthTicket string?
 ---@param cbAuthTicket integer size of the input array pAuthTicket
 ---@param steamID uint64
 ---@return integer
@@ -123,14 +123,14 @@ function GameServer.GetServerReputation(callback) end
 ---@return SteamIPAddress_t
 function GameServer.GetPublicIP() end
 
----@param pData string
+---@param pData string?
 ---@param cbData integer size of the input array pData
 ---@param srcIP integer
 ---@param srcPort integer
 ---@return boolean
 function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 
----@param cbMaxOut integer size of the buffer to allocate for return value pOut
+---@param cbMaxOut integer? size of the buffer for pOut; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pOut
 ---@return integer -- Value of: pNetAdr
@@ -151,7 +151,7 @@ function GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback) en
 function GameServer.CreateUnauthenticatedUserConnection() end
 
 ---@param steamIDUser uint64
----@param pchPlayerName string
+---@param pchPlayerName string?
 ---@param uScore integer
 ---@return boolean
 function GameServer.BUpdateUserData(steamIDUser, pchPlayerName, uScore) end

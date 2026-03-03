@@ -109,7 +109,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchPlayerName:
+    :param str? pchPlayerName:
     :param int uScore:
     :returns: (bool) Return value
     :SteamWorks: `BUpdateUserData <https://partner.steamgames.com/doc/api/ISteamGameServer#BUpdateUserData>`_
@@ -123,7 +123,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pAuthTicket:
+    :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
     :returns: (int) Return value
@@ -184,7 +184,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxTicket: size of the buffer to be allocated to hold the return value ``pTicket``
+    :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSnid: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (int) Return value
     :returns: (str) ``pTicket``
@@ -206,7 +206,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cbMaxOut: size of the buffer to be allocated to hold the return value ``pOut``
+    :param int? cbMaxOut: size of the buffer to allocate for ``pOut``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pOut``
     :returns: (int) ``pNetAdr``
@@ -255,7 +255,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pData:
+    :param str? pData:
     :param int cbData: size of the input array ``pData``
     :param int srcIP:
     :param int srcPort:
@@ -276,7 +276,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszToken:
+    :param str? pszToken:
     :SteamWorks: `LogOn <https://partner.steamgames.com/doc/api/ISteamGameServer#LogOn>`_
 
 **Example**::
@@ -346,14 +346,14 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchGameData:
+    :param str? pchGameData:
     :SteamWorks: `SetGameData <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameData>`_
 
 .. function:: GameServer.SetGameDescription(pszGameDescription)
 
     🤖 **Auto-generated binding**
 
-    :param str pszGameDescription:
+    :param str? pszGameDescription:
     :SteamWorks: `SetGameDescription <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameDescription>`_
 
 **Example**::
@@ -364,7 +364,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchGameTags:
+    :param str? pchGameTags:
     :SteamWorks: `SetGameTags <https://partner.steamgames.com/doc/api/ISteamGameServer#SetGameTags>`_
 
 **Example**::
@@ -375,8 +375,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pKey:
-    :param str pValue:
+    :param str? pKey:
+    :param str? pValue:
     :SteamWorks: `SetKeyValue <https://partner.steamgames.com/doc/api/ISteamGameServer#SetKeyValue>`_
 
 **Example**::
@@ -389,7 +389,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszMapName:
+    :param str? pszMapName:
     :SteamWorks: `SetMapName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetMapName>`_
 
 **Example**::
@@ -411,7 +411,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszModDir:
+    :param str? pszModDir:
     :SteamWorks: `SetModDir <https://partner.steamgames.com/doc/api/ISteamGameServer#SetModDir>`_
 
 .. function:: GameServer.SetPasswordProtected(bPasswordProtected)
@@ -429,21 +429,21 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszProduct:
+    :param str? pszProduct:
     :SteamWorks: `SetProduct <https://partner.steamgames.com/doc/api/ISteamGameServer#SetProduct>`_
 
 .. function:: GameServer.SetRegion(pszRegion)
 
     🤖 **Auto-generated binding**
 
-    :param str pszRegion:
+    :param str? pszRegion:
     :SteamWorks: `SetRegion <https://partner.steamgames.com/doc/api/ISteamGameServer#SetRegion>`_
 
 .. function:: GameServer.SetServerName(pszServerName)
 
     🤖 **Auto-generated binding**
 
-    :param str pszServerName:
+    :param str? pszServerName:
     :SteamWorks: `SetServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetServerName>`_
 
 **Example**::
@@ -461,7 +461,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszSpectatorServerName:
+    :param str? pszSpectatorServerName:
     :SteamWorks: `SetSpectatorServerName <https://partner.steamgames.com/doc/api/ISteamGameServer#SetSpectatorServerName>`_
 
 .. function:: GameServer.UserHasLicenseForApp(steamID, appID)

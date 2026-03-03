@@ -3,15 +3,15 @@
 ---@field OnScreenshotRequested? fun(data: ScreenshotRequested_t)
 local Screenshots = {}
 
----@param pubRGB string
+---@param pubRGB string?
 ---@param cubRGB integer size of the input array pubRGB
 ---@param nWidth integer
 ---@param nHeight integer
 ---@return integer
 function Screenshots.WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight) end
 
----@param pchFilename string
----@param pchThumbnailFilename string
+---@param pchFilename string?
+---@param pchThumbnailFilename string?
 ---@param nWidth integer
 ---@param nHeight integer
 ---@return integer
@@ -23,7 +23,7 @@ function Screenshots.TriggerScreenshot() end
 function Screenshots.HookScreenshots(bHook) end
 
 ---@param hScreenshot integer
----@param pchLocation string
+---@param pchLocation string?
 ---@return boolean
 function Screenshots.SetLocation(hScreenshot, pchLocation) end
 
@@ -41,8 +41,8 @@ function Screenshots.TagPublishedFile(hScreenshot, unPublishedFileID) end
 function Screenshots.IsScreenshotsHooked() end
 
 ---@param eType integer
----@param pchFilename string
----@param pchVRFilename string
+---@param pchFilename string?
+---@param pchVRFilename string?
 ---@return integer
 function Screenshots.AddVRScreenshotToLibrary(eType, pchFilename, pchVRFilename) end
 

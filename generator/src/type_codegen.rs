@@ -1,8 +1,8 @@
 use super::Generator;
-use crate::COUNTER;
 use crate::code_builder::CodeBuilder;
 use crate::cpp_type::CppType;
 use crate::lua_type_info::LType;
+use crate::COUNTER;
 
 impl Generator {
     /// Generate code to check a lua value and convert it to a C++ type, returning the generated code and the Lua type info.
@@ -90,7 +90,7 @@ impl Generator {
                 ttype,
                 is_const: true,
             } if resolved.is_buffer() => {
-                let mut get = format!("luaL_checkstring(L, {lua_idx})");
+                let mut get = format!("luaL_optstring(L, {lua_idx}, nullptr)");
                 if ttype != "char" {
                     get = format!("reinterpret_cast<const {ttype} *>({get})");
                 }
@@ -118,6 +118,7 @@ impl Generator {
                     out,
                     size,
                     false,
+                    false,
                 );
             }
             _ => {
@@ -138,6 +139,7 @@ impl Generator {
         mut out: CodeBuilder,
         size: &str,
         const_cast: bool,
+        nullable: bool,
     ) -> Option<(String, LType)> {
         let ltype = if is_buffer {
             let var = format!(
@@ -146,10 +148,13 @@ impl Generator {
             );
             let len_var = format!("_len_{}", var);
             out.line(&format!("size_t {};", len_var));
-            out.line(&format!(
-                "const char *{} = luaL_checklstring(L, {}, &{});",
-                var, lua_idx, len_var
-            ));
+            // When nullable, luaL_optlstring returns nullptr (and len=0) if the argument is nil.
+            let lstring_call = if nullable {
+                format!("luaL_optlstring(L, {lua_idx}, nullptr, &{len_var})")
+            } else {
+                format!("luaL_checklstring(L, {lua_idx}, &{len_var})")
+            };
+            out.line(&format!("const char *{} = {};", var, lstring_call));
 
             if create_var {
                 // Method input buffer: use lua_tolstring for the actual byte length.
@@ -190,12 +195,16 @@ impl Generator {
             LType::String
         } else {
             assert!(!size.is_empty());
+            if create_var {
+                out.line(&format!("std::vector<{}> {};", ttype, value_accessor));
+            }
+            if nullable {
+                out.line(&format!("if (!lua_isnil(L, {})) {{", lua_idx));
+                out.indent_right();
+            }
             out.line(&format!("luaL_checktype(L, {}, LUA_TTABLE);", lua_idx));
             if create_var {
-                out.line(&format!(
-                    "std::vector<{}> {}({});",
-                    ttype, value_accessor, size
-                ));
+                out.line(&format!("{}.resize({});", value_accessor, size));
             }
             out.line(&format!(
                 "for(decltype({}) i = 0; i < {}; i++) {{",
@@ -213,6 +222,10 @@ impl Generator {
             )?;
             out.raw(&check);
             out.line("lua_pop(L, 1);");
+            if nullable {
+                out.indent_left();
+                out.line("}");
+            }
             out.indent_left();
             out.line("}");
             LType::Array(Box::new(elem_ltype))

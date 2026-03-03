@@ -46,17 +46,17 @@ function Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFl
 ---@return uint64
 function Matchmaking.RequestLobbyList(callback) end
 
----@param pchKeyToMatch string
----@param pchValueToMatch string
+---@param pchKeyToMatch string?
+---@param pchValueToMatch string?
 ---@param eComparisonType integer
 function Matchmaking.AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType) end
 
----@param pchKeyToMatch string
+---@param pchKeyToMatch string?
 ---@param nValueToMatch integer
 ---@param eComparisonType integer
 function Matchmaking.AddRequestLobbyListNumericalFilter(pchKeyToMatch, nValueToMatch, eComparisonType) end
 
----@param pchKeyToMatch string
+---@param pchKeyToMatch string?
 ---@param nValueToBeCloseTo integer
 function Matchmaking.AddRequestLobbyListNearValueFilter(pchKeyToMatch, nValueToBeCloseTo) end
 
@@ -105,13 +105,13 @@ function Matchmaking.GetNumLobbyMembers(steamIDLobby) end
 function Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember) end
 
 ---@param steamIDLobby uint64
----@param pchKey string
+---@param pchKey string?
 ---@return string
 function Matchmaking.GetLobbyData(steamIDLobby, pchKey) end
 
 ---@param steamIDLobby uint64
----@param pchKey string
----@param pchValue string
+---@param pchKey string?
+---@param pchValue string?
 ---@return boolean
 function Matchmaking.SetLobbyData(steamIDLobby, pchKey, pchValue) end
 
@@ -121,38 +121,38 @@ function Matchmaking.GetLobbyDataCount(steamIDLobby) end
 
 ---@param steamIDLobby uint64
 ---@param iLobbyData integer
----@param cchKeyBufferSize integer size of the buffer to allocate for return value pchKey
----@param cchValueBufferSize integer size of the buffer to allocate for return value pchValue
+---@param cchKeyBufferSize integer? size of the buffer for pchKey; if nil then the buffer will be NULL
+---@param cchValueBufferSize integer? size of the buffer for pchValue; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchKey
 ---@return string -- Value of: pchValue
 function Matchmaking.GetLobbyDataByIndex(steamIDLobby, iLobbyData, cchKeyBufferSize, cchValueBufferSize) end
 
 ---@param steamIDLobby uint64
----@param pchKey string
+---@param pchKey string?
 ---@return boolean
 function Matchmaking.DeleteLobbyData(steamIDLobby, pchKey) end
 
 ---@param steamIDLobby uint64
 ---@param steamIDUser uint64
----@param pchKey string
+---@param pchKey string?
 ---@return string
 function Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey) end
 
 ---@param steamIDLobby uint64
----@param pchKey string
----@param pchValue string
+---@param pchKey string?
+---@param pchValue string?
 function Matchmaking.SetLobbyMemberData(steamIDLobby, pchKey, pchValue) end
 
 ---@param steamIDLobby uint64
----@param pvMsgBody string
+---@param pvMsgBody string?
 ---@param cubMsgBody integer size of the input array pvMsgBody
 ---@return boolean
 function Matchmaking.SendLobbyChatMsg(steamIDLobby, pvMsgBody, cubMsgBody) end
 
 ---@param steamIDLobby uint64
 ---@param iChatID integer
----@param cubData integer size of the buffer to allocate for return value pvData
+---@param cubData integer? size of the buffer for pvData; if nil then the buffer will be NULL
 ---@return integer
 ---@return uint64 -- Value of: pSteamIDUser
 ---@return string -- Value of: pvData

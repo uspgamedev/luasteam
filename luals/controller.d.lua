@@ -13,7 +13,7 @@ function Controller.RunFrame() end
 ---@return uint64[] -- Value of: handlesOut
 function Controller.GetConnectedControllers() end
 
----@param pszActionSetName string
+---@param pszActionSetName string?
 ---@return uint64
 function Controller.GetActionSetHandle(pszActionSetName) end
 
@@ -41,7 +41,7 @@ function Controller.DeactivateAllActionSetLayers(controllerHandle) end
 ---@return uint64[] -- Value of: handlesOut
 function Controller.GetActiveActionSetLayers(controllerHandle) end
 
----@param pszActionName string
+---@param pszActionName string?
 ---@return uint64
 function Controller.GetDigitalActionHandle(pszActionName) end
 
@@ -57,7 +57,7 @@ function Controller.GetDigitalActionData(controllerHandle, digitalActionHandle) 
 ---@return integer[] -- Value of: originsOut
 function Controller.GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle) end
 
----@param pszActionName string
+---@param pszActionName string?
 ---@return uint64
 function Controller.GetAnalogActionHandle(pszActionName) end
 

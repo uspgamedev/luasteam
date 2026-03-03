@@ -758,14 +758,17 @@ static int luasteam_UGC_CreateQueryAllUGCRequestPage_gs(lua_State *L) { return l
 // uint64 UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID: uint64[], unNumPublishedFileIDs: int)
 static int luasteam_UGC_CreateQueryUGCDetailsRequest(lua_State *L, ISteamUGC *iface) {
 	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
-	luaL_checktype(L, 1, LUA_TTABLE);
-	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
-	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
-		lua_rawgeti(L, 1, i+1);
-		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
-		lua_pop(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileID;
+	if (!lua_isnil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		pvecPublishedFileID.resize(unNumPublishedFileIDs);
+		for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+			lua_rawgeti(L, 1, i+1);
+			pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+			lua_pop(L, 1);
+		}
 	}
-	UGCQueryHandle_t __ret = SteamAPI_ISteamUGC_CreateQueryUGCDetailsRequest(iface, pvecPublishedFileID.data(), unNumPublishedFileIDs);
+	UGCQueryHandle_t __ret = SteamAPI_ISteamUGC_CreateQueryUGCDetailsRequest(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	luasteam::pushuint64(L, __ret);
 	return 1;
 }
@@ -833,9 +836,9 @@ static int luasteam_UGC_GetQueryUGCTag(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 indexTag = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 cchValueSize = luaL_checkint(L, 4);
+	uint32 cchValueSize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchValue(cchValueSize);
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCTag(iface, handle, index, indexTag, pchValue.data(), cchValueSize);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCTag(iface, handle, index, indexTag, lua_isnil(L, 4) ? nullptr : pchValue.data(), cchValueSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
 	return 2;
@@ -851,9 +854,9 @@ static int luasteam_UGC_GetQueryUGCTagDisplayName(lua_State *L, ISteamUGC *iface
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 indexTag = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 cchValueSize = luaL_checkint(L, 4);
+	uint32 cchValueSize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchValue(cchValueSize);
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCTagDisplayName(iface, handle, index, indexTag, pchValue.data(), cchValueSize);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCTagDisplayName(iface, handle, index, indexTag, lua_isnil(L, 4) ? nullptr : pchValue.data(), cchValueSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
 	return 2;
@@ -868,9 +871,9 @@ static int luasteam_UGC_GetQueryUGCTagDisplayName_gs(lua_State *L) { return luas
 static int luasteam_UGC_GetQueryUGCPreviewURL(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	uint32 cchURLSize = luaL_checkint(L, 3);
+	uint32 cchURLSize = lua_isnil(L, 3) ? 0 : (uint32)luaL_checkint(L, 3);
 	std::vector<char> pchURL(cchURLSize);
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCPreviewURL(iface, handle, index, pchURL.data(), cchURLSize);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCPreviewURL(iface, handle, index, lua_isnil(L, 3) ? nullptr : pchURL.data(), cchURLSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchURL.data()));
 	return 2;
@@ -885,9 +888,9 @@ static int luasteam_UGC_GetQueryUGCPreviewURL_gs(lua_State *L) { return luasteam
 static int luasteam_UGC_GetQueryUGCMetadata(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	uint32 cchMetadatasize = luaL_checkint(L, 3);
+	uint32 cchMetadatasize = lua_isnil(L, 3) ? 0 : (uint32)luaL_checkint(L, 3);
 	std::vector<char> pchMetadata(cchMetadatasize);
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCMetadata(iface, handle, index, pchMetadata.data(), cchMetadatasize);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCMetadata(iface, handle, index, lua_isnil(L, 3) ? nullptr : pchMetadata.data(), cchMetadatasize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchMetadata.data()));
 	return 2;
@@ -951,12 +954,12 @@ static int luasteam_UGC_GetQueryUGCAdditionalPreview(lua_State *L, ISteamUGC *if
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 previewIndex = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 cchURLSize = luaL_checkint(L, 4);
+	uint32 cchURLSize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchURLOrVideoID(cchURLSize);
-	uint32 cchOriginalFileNameSize = luaL_checkint(L, 5);
+	uint32 cchOriginalFileNameSize = lua_isnil(L, 5) ? 0 : (uint32)luaL_checkint(L, 5);
 	std::vector<char> pchOriginalFileName(cchOriginalFileNameSize);
 	EItemPreviewType pPreviewType;
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCAdditionalPreview(iface, handle, index, previewIndex, pchURLOrVideoID.data(), cchURLSize, pchOriginalFileName.data(), cchOriginalFileNameSize, &pPreviewType);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCAdditionalPreview(iface, handle, index, previewIndex, lua_isnil(L, 4) ? nullptr : pchURLOrVideoID.data(), cchURLSize, lua_isnil(L, 5) ? nullptr : pchOriginalFileName.data(), cchOriginalFileNameSize, &pPreviewType);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchURLOrVideoID.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchOriginalFileName.data()));
@@ -988,11 +991,11 @@ static int luasteam_UGC_GetQueryUGCKeyValueTag(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 keyValueTagIndex = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 cchKeySize = luaL_checkint(L, 4);
+	uint32 cchKeySize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchKey(cchKeySize);
-	uint32 cchValueSize = luaL_checkint(L, 5);
+	uint32 cchValueSize = lua_isnil(L, 5) ? 0 : (uint32)luaL_checkint(L, 5);
 	std::vector<char> pchValue(cchValueSize);
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCKeyValueTag(iface, handle, index, keyValueTagIndex, pchKey.data(), cchKeySize, pchValue.data(), cchValueSize);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCKeyValueTag(iface, handle, index, keyValueTagIndex, lua_isnil(L, 4) ? nullptr : pchKey.data(), cchKeySize, lua_isnil(L, 5) ? nullptr : pchValue.data(), cchValueSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchKey.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchValue.data()));
@@ -1023,10 +1026,10 @@ static int luasteam_UGC_GetSupportedGameVersionData(lua_State *L, ISteamUGC *ifa
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 versionIndex = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 cchGameBranchSize = luaL_checkint(L, 4);
+	uint32 cchGameBranchSize = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchGameBranchMin(cchGameBranchSize);
 	std::vector<char> pchGameBranchMax(cchGameBranchSize);
-	bool __ret = SteamAPI_ISteamUGC_GetSupportedGameVersionData(iface, handle, index, versionIndex, pchGameBranchMin.data(), pchGameBranchMax.data(), cchGameBranchSize);
+	bool __ret = SteamAPI_ISteamUGC_GetSupportedGameVersionData(iface, handle, index, versionIndex, lua_isnil(L, 4) ? nullptr : pchGameBranchMin.data(), pchGameBranchMax.data(), cchGameBranchSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchGameBranchMin.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchGameBranchMax.data()));
@@ -1071,7 +1074,7 @@ static int luasteam_UGC_ReleaseQueryUGCRequest_gs(lua_State *L) { return luastea
 // bool UGC.AddRequiredTag(handle: uint64, pTagName: str)
 static int luasteam_UGC_AddRequiredTag(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pTagName = luaL_checkstring(L, 2);
+	const char *pTagName = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_AddRequiredTag(iface, handle, pTagName);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1099,7 +1102,7 @@ static int luasteam_UGC_AddRequiredTagGroup_gs(lua_State *L) { return luasteam_U
 // bool UGC.AddExcludedTag(handle: uint64, pTagName: str)
 static int luasteam_UGC_AddExcludedTag(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pTagName = luaL_checkstring(L, 2);
+	const char *pTagName = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_AddExcludedTag(iface, handle, pTagName);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1225,7 +1228,7 @@ static int luasteam_UGC_SetReturnPlaytimeStats_gs(lua_State *L) { return luastea
 // bool UGC.SetLanguage(handle: uint64, pchLanguage: str)
 static int luasteam_UGC_SetLanguage(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchLanguage = luaL_checkstring(L, 2);
+	const char *pchLanguage = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetLanguage(iface, handle, pchLanguage);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1267,7 +1270,7 @@ static int luasteam_UGC_SetAdminQuery_gs(lua_State *L) { return luasteam_UGC_Set
 // bool UGC.SetCloudFileNameFilter(handle: uint64, pMatchCloudFileName: str)
 static int luasteam_UGC_SetCloudFileNameFilter(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pMatchCloudFileName = luaL_checkstring(L, 2);
+	const char *pMatchCloudFileName = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetCloudFileNameFilter(iface, handle, pMatchCloudFileName);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1295,7 +1298,7 @@ static int luasteam_UGC_SetMatchAnyTag_gs(lua_State *L) { return luasteam_UGC_Se
 // bool UGC.SetSearchText(handle: uint64, pSearchText: str)
 static int luasteam_UGC_SetSearchText(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pSearchText = luaL_checkstring(L, 2);
+	const char *pSearchText = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetSearchText(iface, handle, pSearchText);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1353,8 +1356,8 @@ static int luasteam_UGC_SetTimeUpdatedDateRange_gs(lua_State *L) { return luaste
 // bool UGC.AddRequiredKeyValueTag(handle: uint64, pKey: str, pValue: str)
 static int luasteam_UGC_AddRequiredKeyValueTag(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pKey = luaL_checkstring(L, 2);
-	const char *pValue = luaL_checkstring(L, 3);
+	const char *pKey = luaL_optstring(L, 2, nullptr);
+	const char *pValue = luaL_optstring(L, 3, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_AddRequiredKeyValueTag(iface, handle, pKey, pValue);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1430,7 +1433,7 @@ static int luasteam_UGC_StartItemUpdate_gs(lua_State *L) { return luasteam_UGC_S
 // bool UGC.SetItemTitle(handle: uint64, pchTitle: str)
 static int luasteam_UGC_SetItemTitle(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchTitle = luaL_checkstring(L, 2);
+	const char *pchTitle = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemTitle(iface, handle, pchTitle);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1444,7 +1447,7 @@ static int luasteam_UGC_SetItemTitle_gs(lua_State *L) { return luasteam_UGC_SetI
 // bool UGC.SetItemDescription(handle: uint64, pchDescription: str)
 static int luasteam_UGC_SetItemDescription(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchDescription = luaL_checkstring(L, 2);
+	const char *pchDescription = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemDescription(iface, handle, pchDescription);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1458,7 +1461,7 @@ static int luasteam_UGC_SetItemDescription_gs(lua_State *L) { return luasteam_UG
 // bool UGC.SetItemUpdateLanguage(handle: uint64, pchLanguage: str)
 static int luasteam_UGC_SetItemUpdateLanguage(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchLanguage = luaL_checkstring(L, 2);
+	const char *pchLanguage = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemUpdateLanguage(iface, handle, pchLanguage);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1472,7 +1475,7 @@ static int luasteam_UGC_SetItemUpdateLanguage_gs(lua_State *L) { return luasteam
 // bool UGC.SetItemMetadata(handle: uint64, pchMetaData: str)
 static int luasteam_UGC_SetItemMetadata(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchMetaData = luaL_checkstring(L, 2);
+	const char *pchMetaData = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemMetadata(iface, handle, pchMetaData);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1515,7 +1518,7 @@ static int luasteam_UGC_SetItemTags_gs(lua_State *L) { return luasteam_UGC_SetIt
 // bool UGC.SetItemContent(handle: uint64, pszContentFolder: str)
 static int luasteam_UGC_SetItemContent(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pszContentFolder = luaL_checkstring(L, 2);
+	const char *pszContentFolder = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemContent(iface, handle, pszContentFolder);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1529,7 +1532,7 @@ static int luasteam_UGC_SetItemContent_gs(lua_State *L) { return luasteam_UGC_Se
 // bool UGC.SetItemPreview(handle: uint64, pszPreviewFile: str)
 static int luasteam_UGC_SetItemPreview(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pszPreviewFile = luaL_checkstring(L, 2);
+	const char *pszPreviewFile = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetItemPreview(iface, handle, pszPreviewFile);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1570,7 +1573,7 @@ static int luasteam_UGC_RemoveAllItemKeyValueTags_gs(lua_State *L) { return luas
 // bool UGC.RemoveItemKeyValueTags(handle: uint64, pchKey: str)
 static int luasteam_UGC_RemoveItemKeyValueTags(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchKey = luaL_checkstring(L, 2);
+	const char *pchKey = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_RemoveItemKeyValueTags(iface, handle, pchKey);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1584,8 +1587,8 @@ static int luasteam_UGC_RemoveItemKeyValueTags_gs(lua_State *L) { return luastea
 // bool UGC.AddItemKeyValueTag(handle: uint64, pchKey: str, pchValue: str)
 static int luasteam_UGC_AddItemKeyValueTag(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchKey = luaL_checkstring(L, 2);
-	const char *pchValue = luaL_checkstring(L, 3);
+	const char *pchKey = luaL_optstring(L, 2, nullptr);
+	const char *pchValue = luaL_optstring(L, 3, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_AddItemKeyValueTag(iface, handle, pchKey, pchValue);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1599,7 +1602,7 @@ static int luasteam_UGC_AddItemKeyValueTag_gs(lua_State *L) { return luasteam_UG
 // bool UGC.AddItemPreviewFile(handle: uint64, pszPreviewFile: str, type: int)
 static int luasteam_UGC_AddItemPreviewFile(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pszPreviewFile = luaL_checkstring(L, 2);
+	const char *pszPreviewFile = luaL_optstring(L, 2, nullptr);
 	EItemPreviewType type = static_cast<EItemPreviewType>(luaL_checkint(L, 3));
 	bool __ret = SteamAPI_ISteamUGC_AddItemPreviewFile(iface, handle, pszPreviewFile, type);
 	lua_pushboolean(L, __ret);
@@ -1614,7 +1617,7 @@ static int luasteam_UGC_AddItemPreviewFile_gs(lua_State *L) { return luasteam_UG
 // bool UGC.AddItemPreviewVideo(handle: uint64, pszVideoID: str)
 static int luasteam_UGC_AddItemPreviewVideo(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pszVideoID = luaL_checkstring(L, 2);
+	const char *pszVideoID = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_AddItemPreviewVideo(iface, handle, pszVideoID);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1629,7 +1632,7 @@ static int luasteam_UGC_AddItemPreviewVideo_gs(lua_State *L) { return luasteam_U
 static int luasteam_UGC_UpdateItemPreviewFile(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	const char *pszPreviewFile = luaL_checkstring(L, 3);
+	const char *pszPreviewFile = luaL_optstring(L, 3, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_UpdateItemPreviewFile(iface, handle, index, pszPreviewFile);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1644,7 +1647,7 @@ static int luasteam_UGC_UpdateItemPreviewFile_gs(lua_State *L) { return luasteam
 static int luasteam_UGC_UpdateItemPreviewVideo(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	const char *pszVideoID = luaL_checkstring(L, 3);
+	const char *pszVideoID = luaL_optstring(L, 3, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_UpdateItemPreviewVideo(iface, handle, index, pszVideoID);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1700,8 +1703,8 @@ static int luasteam_UGC_RemoveContentDescriptor_gs(lua_State *L) { return luaste
 // bool UGC.SetRequiredGameVersions(handle: uint64, pszGameBranchMin: str, pszGameBranchMax: str)
 static int luasteam_UGC_SetRequiredGameVersions(lua_State *L, ISteamUGC *iface) {
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pszGameBranchMin = luaL_checkstring(L, 2);
-	const char *pszGameBranchMax = luaL_checkstring(L, 3);
+	const char *pszGameBranchMin = luaL_optstring(L, 2, nullptr);
+	const char *pszGameBranchMax = luaL_optstring(L, 3, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_SetRequiredGameVersions(iface, handle, pszGameBranchMin, pszGameBranchMax);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1720,7 +1723,7 @@ static int luasteam_UGC_SubmitItemUpdate(lua_State *L, ISteamUGC *iface) {
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	UGCUpdateHandle_t handle = luasteam::checkuint64(L, 1);
-	const char *pchChangeNote = luaL_checkstring(L, 2);
+	const char *pchChangeNote = luaL_optstring(L, 2, nullptr);
 	SteamAPICall_t __ret = SteamAPI_ISteamUGC_SubmitItemUpdate(iface, handle, pchChangeNote);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<SubmitItemUpdateResult_t>();
@@ -1909,10 +1912,10 @@ static int luasteam_UGC_GetNumSubscribedItems_gs(lua_State *L) { return luasteam
 // In Lua:
 // (int, pvecPublishedFileID: uint64[]) UGC.GetSubscribedItems(cMaxEntries: int, bIncludeLocallyDisabled: bool)
 static int luasteam_UGC_GetSubscribedItems(lua_State *L, ISteamUGC *iface) {
-	uint32 cMaxEntries = luaL_checkint(L, 1);
+	uint32 cMaxEntries = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
 	std::vector<PublishedFileId_t> pvecPublishedFileID(cMaxEntries);
 	bool bIncludeLocallyDisabled = lua_toboolean(L, 2);
-	uint32 __ret = SteamAPI_ISteamUGC_GetSubscribedItems(iface, pvecPublishedFileID.data(), cMaxEntries, bIncludeLocallyDisabled);
+	uint32 __ret = SteamAPI_ISteamUGC_GetSubscribedItems(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileID.data(), cMaxEntries, bIncludeLocallyDisabled);
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -1945,10 +1948,10 @@ static int luasteam_UGC_GetItemState_gs(lua_State *L) { return luasteam_UGC_GetI
 static int luasteam_UGC_GetItemInstallInfo(lua_State *L, ISteamUGC *iface) {
 	PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
 	uint64 punSizeOnDisk;
-	uint32 cchFolderSize = luaL_checkint(L, 2);
+	uint32 cchFolderSize = lua_isnil(L, 2) ? 0 : (uint32)luaL_checkint(L, 2);
 	std::vector<char> pchFolder(cchFolderSize);
 	uint32 punTimeStamp;
-	bool __ret = SteamAPI_ISteamUGC_GetItemInstallInfo(iface, nPublishedFileID, &punSizeOnDisk, pchFolder.data(), cchFolderSize, &punTimeStamp);
+	bool __ret = SteamAPI_ISteamUGC_GetItemInstallInfo(iface, nPublishedFileID, &punSizeOnDisk, lua_isnil(L, 2) ? nullptr : pchFolder.data(), cchFolderSize, &punTimeStamp);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, punSizeOnDisk);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchFolder.data()));
@@ -1995,7 +1998,7 @@ static int luasteam_UGC_DownloadItem_gs(lua_State *L) { return luasteam_UGC_Down
 // bool UGC.BInitWorkshopForGameServer(unWorkshopDepotID: int, pszFolder: str)
 static int luasteam_UGC_BInitWorkshopForGameServer(lua_State *L, ISteamUGC *iface) {
 	DepotId_t unWorkshopDepotID = static_cast<DepotId_t>(luaL_checkint(L, 1));
-	const char *pszFolder = luaL_checkstring(L, 2);
+	const char *pszFolder = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamUGC_BInitWorkshopForGameServer(iface, unWorkshopDepotID, pszFolder);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -2026,14 +2029,17 @@ static int luasteam_UGC_StartPlaytimeTracking(lua_State *L, ISteamUGC *iface) {
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
-	luaL_checktype(L, 1, LUA_TTABLE);
-	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
-	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
-		lua_rawgeti(L, 1, i+1);
-		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
-		lua_pop(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileID;
+	if (!lua_isnil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		pvecPublishedFileID.resize(unNumPublishedFileIDs);
+		for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+			lua_rawgeti(L, 1, i+1);
+			pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+			lua_pop(L, 1);
+		}
 	}
-	SteamAPICall_t __ret = SteamAPI_ISteamUGC_StartPlaytimeTracking(iface, pvecPublishedFileID.data(), unNumPublishedFileIDs);
+	SteamAPICall_t __ret = SteamAPI_ISteamUGC_StartPlaytimeTracking(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<StartPlaytimeTrackingResult_t>();
 		listener->callback_ref = callback_ref;
@@ -2056,14 +2062,17 @@ static int luasteam_UGC_StopPlaytimeTracking(lua_State *L, ISteamUGC *iface) {
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
-	luaL_checktype(L, 1, LUA_TTABLE);
-	std::vector<PublishedFileId_t> pvecPublishedFileID(unNumPublishedFileIDs);
-	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
-		lua_rawgeti(L, 1, i+1);
-		pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
-		lua_pop(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileID;
+	if (!lua_isnil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		pvecPublishedFileID.resize(unNumPublishedFileIDs);
+		for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+			lua_rawgeti(L, 1, i+1);
+			pvecPublishedFileID[i] = luasteam::checkuint64(L, -1);
+			lua_pop(L, 1);
+		}
 	}
-	SteamAPICall_t __ret = SteamAPI_ISteamUGC_StopPlaytimeTracking(iface, pvecPublishedFileID.data(), unNumPublishedFileIDs);
+	SteamAPICall_t __ret = SteamAPI_ISteamUGC_StopPlaytimeTracking(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileID.data(), unNumPublishedFileIDs);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<StopPlaytimeTrackingResult_t>();
 		listener->callback_ref = callback_ref;
@@ -2294,15 +2303,18 @@ static int luasteam_UGC_GetUserContentDescriptorPreferences_gs(lua_State *L) { r
 // bool UGC.SetItemsDisabledLocally(pvecPublishedFileIDs: uint64[], unNumPublishedFileIDs: int, bDisabledLocally: bool)
 static int luasteam_UGC_SetItemsDisabledLocally(lua_State *L, ISteamUGC *iface) {
 	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
-	luaL_checktype(L, 1, LUA_TTABLE);
-	std::vector<PublishedFileId_t> pvecPublishedFileIDs(unNumPublishedFileIDs);
-	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
-		lua_rawgeti(L, 1, i+1);
-		pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
-		lua_pop(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileIDs;
+	if (!lua_isnil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		pvecPublishedFileIDs.resize(unNumPublishedFileIDs);
+		for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+			lua_rawgeti(L, 1, i+1);
+			pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
+			lua_pop(L, 1);
+		}
 	}
 	bool bDisabledLocally = lua_toboolean(L, 3);
-	bool __ret = SteamAPI_ISteamUGC_SetItemsDisabledLocally(iface, pvecPublishedFileIDs.data(), unNumPublishedFileIDs, bDisabledLocally);
+	bool __ret = SteamAPI_ISteamUGC_SetItemsDisabledLocally(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileIDs.data(), unNumPublishedFileIDs, bDisabledLocally);
 	lua_pushboolean(L, __ret);
 	return 1;
 }
@@ -2315,14 +2327,17 @@ static int luasteam_UGC_SetItemsDisabledLocally_gs(lua_State *L) { return luaste
 // bool UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs: uint64[], unNumPublishedFileIDs: int)
 static int luasteam_UGC_SetSubscriptionsLoadOrder(lua_State *L, ISteamUGC *iface) {
 	uint32 unNumPublishedFileIDs = luaL_checkint(L, 2);
-	luaL_checktype(L, 1, LUA_TTABLE);
-	std::vector<PublishedFileId_t> pvecPublishedFileIDs(unNumPublishedFileIDs);
-	for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
-		lua_rawgeti(L, 1, i+1);
-		pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
-		lua_pop(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileIDs;
+	if (!lua_isnil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		pvecPublishedFileIDs.resize(unNumPublishedFileIDs);
+		for(decltype(unNumPublishedFileIDs) i = 0; i < unNumPublishedFileIDs; i++) {
+			lua_rawgeti(L, 1, i+1);
+			pvecPublishedFileIDs[i] = luasteam::checkuint64(L, -1);
+			lua_pop(L, 1);
+		}
 	}
-	bool __ret = SteamAPI_ISteamUGC_SetSubscriptionsLoadOrder(iface, pvecPublishedFileIDs.data(), unNumPublishedFileIDs);
+	bool __ret = SteamAPI_ISteamUGC_SetSubscriptionsLoadOrder(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileIDs.data(), unNumPublishedFileIDs);
 	lua_pushboolean(L, __ret);
 	return 1;
 }

@@ -5,7 +5,7 @@
 local HTTP = {}
 
 ---@param eHTTPRequestMethod integer
----@param pchAbsoluteURL string
+---@param pchAbsoluteURL string?
 ---@return integer
 function HTTP.CreateHTTPRequest(eHTTPRequestMethod, pchAbsoluteURL) end
 
@@ -20,14 +20,14 @@ function HTTP.SetHTTPRequestContextValue(hRequest, ulContextValue) end
 function HTTP.SetHTTPRequestNetworkActivityTimeout(hRequest, unTimeoutSeconds) end
 
 ---@param hRequest integer
----@param pchHeaderName string
----@param pchHeaderValue string
+---@param pchHeaderName string?
+---@param pchHeaderValue string?
 ---@return boolean
 function HTTP.SetHTTPRequestHeaderValue(hRequest, pchHeaderName, pchHeaderValue) end
 
 ---@param hRequest integer
----@param pchParamName string
----@param pchParamValue string
+---@param pchParamName string?
+---@param pchParamValue string?
 ---@return boolean
 function HTTP.SetHTTPRequestGetOrPostParameter(hRequest, pchParamName, pchParamValue) end
 
@@ -50,14 +50,14 @@ function HTTP.DeferHTTPRequest(hRequest) end
 function HTTP.PrioritizeHTTPRequest(hRequest) end
 
 ---@param hRequest integer
----@param pchHeaderName string
+---@param pchHeaderName string?
 ---@return boolean
 ---@return integer -- Value of: unResponseHeaderSize
 function HTTP.GetHTTPResponseHeaderSize(hRequest, pchHeaderName) end
 
 ---@param hRequest integer
----@param pchHeaderName string
----@param unBufferSize integer size of the buffer to allocate for return value pHeaderValueBuffer
+---@param pchHeaderName string?
+---@param unBufferSize integer? size of the buffer for pHeaderValueBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pHeaderValueBuffer
 function HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize) end
@@ -68,14 +68,14 @@ function HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize) 
 function HTTP.GetHTTPResponseBodySize(hRequest) end
 
 ---@param hRequest integer
----@param unBufferSize integer size of the buffer to allocate for return value pBodyDataBuffer
+---@param unBufferSize integer? size of the buffer for pBodyDataBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pBodyDataBuffer
 function HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize) end
 
 ---@param hRequest integer
 ---@param cOffset integer
----@param unBufferSize integer size of the buffer to allocate for return value pBodyDataBuffer
+---@param unBufferSize integer? size of the buffer for pBodyDataBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pBodyDataBuffer
 function HTTP.GetHTTPStreamingResponseBodyData(hRequest, cOffset, unBufferSize) end
@@ -90,8 +90,8 @@ function HTTP.ReleaseHTTPRequest(hRequest) end
 function HTTP.GetHTTPDownloadProgressPct(hRequest) end
 
 ---@param hRequest integer
----@param pchContentType string
----@param pubBody string
+---@param pchContentType string?
+---@param pubBody string?
 ---@param unBodyLen integer size of the input array pubBody
 ---@return boolean
 function HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, pubBody, unBodyLen) end
@@ -105,9 +105,9 @@ function HTTP.CreateCookieContainer(bAllowResponsesToModify) end
 function HTTP.ReleaseCookieContainer(hCookieContainer) end
 
 ---@param hCookieContainer integer
----@param pchHost string
----@param pchUrl string
----@param pchCookie string
+---@param pchHost string?
+---@param pchUrl string?
+---@param pchCookie string?
 ---@return boolean
 function HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie) end
 
@@ -117,7 +117,7 @@ function HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie) end
 function HTTP.SetHTTPRequestCookieContainer(hRequest, hCookieContainer) end
 
 ---@param hRequest integer
----@param pchUserAgentInfo string
+---@param pchUserAgentInfo string?
 ---@return boolean
 function HTTP.SetHTTPRequestUserAgentInfo(hRequest, pchUserAgentInfo) end
 

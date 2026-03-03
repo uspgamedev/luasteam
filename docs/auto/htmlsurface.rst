@@ -81,8 +81,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchKey:
-    :param str pchValue:
+    :param str? pchKey:
+    :param str? pchValue:
     :SteamWorks: `AddHeader <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AddHeader>`_
 
 .. function:: HTMLSurface.AllowStartRequest(unBrowserHandle, bAllowed)
@@ -104,8 +104,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchUserAgent:
-    :param str pchUserCSS:
+    :param str? pchUserAgent:
+    :param str? pchUserCSS:
     :param function callback: CallResult callback receiving struct :func:`HTML_BrowserReady_t <HTMLSurface.OnHTML_BrowserReady>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CreateBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CreateBrowser>`_
@@ -125,7 +125,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchScript:
+    :param str? pchScript:
     :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
 
 **Example**::
@@ -137,7 +137,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchSearchStr:
+    :param str? pchSearchStr:
     :param bool bCurrentlyInFind:
     :param bool bReverse:
     :SteamWorks: `Find <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Find>`_
@@ -241,8 +241,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unBrowserHandle:
-    :param str pchURL:
-    :param str pchPostData:
+    :param str? pchURL:
+    :param str? pchPostData:
     :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
 
     **Notes:**
@@ -355,10 +355,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchHostname:
-    :param str pchKey:
-    :param str pchValue:
-    :param str pchPath:
+    :param str? pchHostname:
+    :param str? pchKey:
+    :param str? pchValue:
+    :param str? pchPath:
     :param int nExpires:
     :param bool bSecure:
     :param bool bHTTPOnly:

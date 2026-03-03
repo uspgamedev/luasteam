@@ -188,9 +188,9 @@ static int luasteam_RemotePlay_DisableRemotePlayTogetherDirectInput(lua_State *L
 // (int, pInput: RemotePlayInput_t[]) RemotePlay.GetInput(unMaxEvents: int)
 static int luasteam_RemotePlay_GetInput(lua_State *L) {
 	auto *iface = SteamRemotePlay();
-	uint32 unMaxEvents = luaL_checkint(L, 1);
+	uint32 unMaxEvents = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
 	std::vector<RemotePlayInput_t> pInput(unMaxEvents);
-	uint32 __ret = SteamAPI_ISteamRemotePlay_GetInput(iface, pInput.data(), unMaxEvents);
+	uint32 __ret = SteamAPI_ISteamRemotePlay_GetInput(iface, lua_isnil(L, 1) ? nullptr : pInput.data(), unMaxEvents);
 	lua_pushinteger(L, __ret);
 	lua_createtable(L, __ret, 0);
 	for(decltype(__ret) i = 0; i < __ret; i++) {
@@ -237,7 +237,7 @@ static int luasteam_RemotePlay_CreateMouseCursor(lua_State *L) {
 	int nHotX = static_cast<int>(luaL_checkint(L, 3));
 	int nHotY = static_cast<int>(luaL_checkint(L, 4));
 	size_t _len__tmp0;
-	const char *_tmp0 = luaL_checklstring(L, 5, &_len__tmp0);
+	const char *_tmp0 = luaL_optlstring(L, 5, nullptr, &_len__tmp0);
 	const void *pBGRA = reinterpret_cast<const void *>(_tmp0);
 	int nPitch = static_cast<int>(luaL_checkint(L, 5));
 	RemotePlayCursorID_t __ret = SteamAPI_ISteamRemotePlay_CreateMouseCursor(iface, nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch);

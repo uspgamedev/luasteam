@@ -56,7 +56,7 @@ static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	uint32 cubRGB = luaL_checkint(L, 2);
 	size_t _len__tmp0;
-	const char *_tmp0 = luaL_checklstring(L, 1, &_len__tmp0);
+	const char *_tmp0 = luaL_optlstring(L, 1, nullptr, &_len__tmp0);
 	void *pubRGB = const_cast<void *>(reinterpret_cast<const void *>(_tmp0));
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
@@ -71,8 +71,8 @@ static int luasteam_Screenshots_WriteScreenshot(lua_State *L) {
 // int Screenshots.AddScreenshotToLibrary(pchFilename: str, pchThumbnailFilename: str, nWidth: int, nHeight: int)
 static int luasteam_Screenshots_AddScreenshotToLibrary(lua_State *L) {
 	auto *iface = SteamScreenshots();
-	const char *pchFilename = luaL_checkstring(L, 1);
-	const char *pchThumbnailFilename = luaL_checkstring(L, 2);
+	const char *pchFilename = luaL_optstring(L, 1, nullptr);
+	const char *pchThumbnailFilename = luaL_optstring(L, 2, nullptr);
 	int nWidth = static_cast<int>(luaL_checkint(L, 3));
 	int nHeight = static_cast<int>(luaL_checkint(L, 4));
 	ScreenshotHandle __ret = SteamAPI_ISteamScreenshots_AddScreenshotToLibrary(iface, pchFilename, pchThumbnailFilename, nWidth, nHeight);
@@ -108,7 +108,7 @@ static int luasteam_Screenshots_HookScreenshots(lua_State *L) {
 static int luasteam_Screenshots_SetLocation(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	ScreenshotHandle hScreenshot = static_cast<ScreenshotHandle>(luaL_checkint(L, 1));
-	const char *pchLocation = luaL_checkstring(L, 2);
+	const char *pchLocation = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamScreenshots_SetLocation(iface, hScreenshot, pchLocation);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -158,8 +158,8 @@ static int luasteam_Screenshots_IsScreenshotsHooked(lua_State *L) {
 static int luasteam_Screenshots_AddVRScreenshotToLibrary(lua_State *L) {
 	auto *iface = SteamScreenshots();
 	EVRScreenshotType eType = static_cast<EVRScreenshotType>(luaL_checkint(L, 1));
-	const char *pchFilename = luaL_checkstring(L, 2);
-	const char *pchVRFilename = luaL_checkstring(L, 3);
+	const char *pchFilename = luaL_optstring(L, 2, nullptr);
+	const char *pchVRFilename = luaL_optstring(L, 3, nullptr);
 	ScreenshotHandle __ret = SteamAPI_ISteamScreenshots_AddVRScreenshotToLibrary(iface, eType, pchFilename, pchVRFilename);
 	lua_pushinteger(L, __ret);
 	return 1;

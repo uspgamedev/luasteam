@@ -69,7 +69,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int uMaxNumLocations: size of the buffer to be allocated to hold the return value ``pLocationList``
+    :param int? uMaxNumLocations: size of the buffer to allocate for ``pLocationList``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`\ []) ``pLocationList``
     :SteamWorks: `GetAvailableBeaconLocations <https://partner.steamgames.com/doc/api/ISteamParties#GetAvailableBeaconLocations>`_
@@ -95,7 +95,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 ulBeaconID:
-    :param int cchMetadata: size of the buffer to be allocated to hold the return value ``pchMetadata``
+    :param int? cchMetadata: size of the buffer to allocate for ``pchMetadata``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (uint64) ``pSteamIDBeaconOwner``
     :returns: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) ``pLocation``
@@ -118,7 +118,7 @@ Function Reference
 
     :param BeaconLocation: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`)
     :param int eData:
-    :param int cchDataStringOut: size of the buffer to be allocated to hold the return value ``pchDataStringOut``
+    :param int? cchDataStringOut: size of the buffer to allocate for ``pchDataStringOut``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchDataStringOut``
     :SteamWorks: `GetBeaconLocationData <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconLocationData>`_

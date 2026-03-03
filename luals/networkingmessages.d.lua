@@ -4,7 +4,7 @@
 local NetworkingMessages = {}
 
 ---@param identityRemote SteamNetworkingIdentity
----@param pubData string
+---@param pubData string?
 ---@param cubData integer size of the input array pubData
 ---@param nSendFlags integer
 ---@param nRemoteChannel integer

@@ -144,7 +144,7 @@ static int luasteam_NetworkingSockets_AcceptConnection_gs(lua_State *L) { return
 static int luasteam_NetworkingSockets_CloseConnection(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	int nReason = static_cast<int>(luaL_checkint(L, 2));
-	const char *pszDebug = luaL_checkstring(L, 3);
+	const char *pszDebug = luaL_optstring(L, 3, nullptr);
 	bool bEnableLinger = lua_toboolean(L, 4);
 	bool __ret = SteamAPI_ISteamNetworkingSockets_CloseConnection(iface, hPeer, nReason, pszDebug, bEnableLinger);
 	lua_pushboolean(L, __ret);
@@ -199,7 +199,7 @@ static int luasteam_NetworkingSockets_GetConnectionUserData_gs(lua_State *L) { r
 // NetworkingSockets.SetConnectionName(hPeer: int, pszName: str)
 static int luasteam_NetworkingSockets_SetConnectionName(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
-	const char *pszName = luaL_checkstring(L, 2);
+	const char *pszName = luaL_optstring(L, 2, nullptr);
 	SteamAPI_ISteamNetworkingSockets_SetConnectionName(iface, hPeer, pszName);
 	return 0;
 }
@@ -212,9 +212,9 @@ static int luasteam_NetworkingSockets_SetConnectionName_gs(lua_State *L) { retur
 // (bool, pszName: str) NetworkingSockets.GetConnectionName(hPeer: int, nMaxLen: int)
 static int luasteam_NetworkingSockets_GetConnectionName(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hPeer = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
-	int nMaxLen = luaL_checkint(L, 2);
+	int nMaxLen = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<char> pszName(nMaxLen);
-	bool __ret = SteamAPI_ISteamNetworkingSockets_GetConnectionName(iface, hPeer, pszName.data(), nMaxLen);
+	bool __ret = SteamAPI_ISteamNetworkingSockets_GetConnectionName(iface, hPeer, lua_isnil(L, 2) ? nullptr : pszName.data(), nMaxLen);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pszName.data()));
 	return 2;
@@ -230,7 +230,7 @@ static int luasteam_NetworkingSockets_SendMessageToConnection(lua_State *L, ISte
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	uint32 cbData = luaL_checkint(L, 3);
 	size_t _len__tmp0;
-	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const char *_tmp0 = luaL_optlstring(L, 2, nullptr, &_len__tmp0);
 	const void *pData = reinterpret_cast<const void *>(_tmp0);
 	int nSendFlags = static_cast<int>(luaL_checkint(L, 4));
 	int64 pOutMessageNumber;
@@ -294,9 +294,9 @@ static int luasteam_NetworkingSockets_GetConnectionRealTimeStatus_gs(lua_State *
 // (int, pszBuf: str) NetworkingSockets.GetDetailedConnectionStatus(hConn: int, cbBuf: int)
 static int luasteam_NetworkingSockets_GetDetailedConnectionStatus(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
-	int cbBuf = luaL_checkint(L, 2);
+	int cbBuf = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<char> pszBuf(cbBuf);
-	int __ret = SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(iface, hConn, pszBuf.data(), cbBuf);
+	int __ret = SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(iface, hConn, lua_isnil(L, 2) ? nullptr : pszBuf.data(), cbBuf);
 	lua_pushinteger(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pszBuf.data()));
 	return 2;
@@ -345,21 +345,27 @@ static int luasteam_NetworkingSockets_CreateSocketPair_gs(lua_State *L) { return
 static int luasteam_NetworkingSockets_ConfigureConnectionLanes(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection hConn = static_cast<HSteamNetConnection>(luaL_checkint(L, 1));
 	int nNumLanes = static_cast<int>(luaL_checkint(L, 2));
-	luaL_checktype(L, 3, LUA_TTABLE);
-	std::vector<int> pLanePriorities(nNumLanes);
-	for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
-		lua_rawgeti(L, 3, i+1);
-		pLanePriorities[i] = static_cast<int>(luaL_checkint(L, -1));
-		lua_pop(L, 1);
+	std::vector<int> pLanePriorities;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pLanePriorities.resize(nNumLanes);
+		for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pLanePriorities[i] = static_cast<int>(luaL_checkint(L, -1));
+			lua_pop(L, 1);
+		}
 	}
-	luaL_checktype(L, 4, LUA_TTABLE);
-	std::vector<uint16> pLaneWeights(nNumLanes);
-	for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
-		lua_rawgeti(L, 4, i+1);
-		pLaneWeights[i] = static_cast<uint16>(luaL_checkint(L, -1));
-		lua_pop(L, 1);
+	std::vector<uint16> pLaneWeights;
+	if (!lua_isnil(L, 4)) {
+		luaL_checktype(L, 4, LUA_TTABLE);
+		pLaneWeights.resize(nNumLanes);
+		for(decltype(nNumLanes) i = 0; i < nNumLanes; i++) {
+			lua_rawgeti(L, 4, i+1);
+			pLaneWeights[i] = static_cast<uint16>(luaL_checkint(L, -1));
+			lua_pop(L, 1);
+		}
 	}
-	EResult __ret = SteamAPI_ISteamNetworkingSockets_ConfigureConnectionLanes(iface, hConn, nNumLanes, pLanePriorities.data(), pLaneWeights.data());
+	EResult __ret = SteamAPI_ISteamNetworkingSockets_ConfigureConnectionLanes(iface, hConn, nNumLanes, lua_isnil(L, 3) ? nullptr : pLanePriorities.data(), lua_isnil(L, 4) ? nullptr : pLaneWeights.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }

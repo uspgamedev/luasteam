@@ -16,7 +16,7 @@ function Video.IsBroadcasting() end
 function Video.GetOPFSettings(unVideoAppID) end
 
 ---@param unVideoAppID integer
----@param pnBufferSize integer size of the buffer to allocate for return value pchBuffer
+---@param pnBufferSize integer? size of the buffer for pchBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchBuffer
 ---@return integer -- Value of: pnBufferSize

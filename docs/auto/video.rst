@@ -37,7 +37,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unVideoAppID:
-    :param int pnBufferSize: size of the buffer to be allocated to hold the return value ``pchBuffer``
+    :param int? pnBufferSize: size of the buffer to allocate for ``pchBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchBuffer``
     :returns: (int) ``pnBufferSize``

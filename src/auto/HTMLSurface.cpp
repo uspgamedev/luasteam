@@ -417,8 +417,8 @@ static int luasteam_HTMLSurface_CreateBrowser(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	const char *pchUserAgent = luaL_checkstring(L, 1);
-	const char *pchUserCSS = luaL_checkstring(L, 2);
+	const char *pchUserAgent = luaL_optstring(L, 1, nullptr);
+	const char *pchUserCSS = luaL_optstring(L, 2, nullptr);
 	SteamAPICall_t __ret = SteamAPI_ISteamHTMLSurface_CreateBrowser(iface, pchUserAgent, pchUserCSS);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<HTML_BrowserReady_t>();
@@ -447,8 +447,8 @@ static int luasteam_HTMLSurface_RemoveBrowser(lua_State *L) {
 static int luasteam_HTMLSurface_LoadURL(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	const char *pchURL = luaL_checkstring(L, 2);
-	const char *pchPostData = luaL_checkstring(L, 3);
+	const char *pchURL = luaL_optstring(L, 2, nullptr);
+	const char *pchPostData = luaL_optstring(L, 3, nullptr);
 	SteamAPI_ISteamHTMLSurface_LoadURL(iface, unBrowserHandle, pchURL, pchPostData);
 	return 0;
 }
@@ -517,8 +517,8 @@ static int luasteam_HTMLSurface_GoForward(lua_State *L) {
 static int luasteam_HTMLSurface_AddHeader(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	const char *pchKey = luaL_checkstring(L, 2);
-	const char *pchValue = luaL_checkstring(L, 3);
+	const char *pchKey = luaL_optstring(L, 2, nullptr);
+	const char *pchValue = luaL_optstring(L, 3, nullptr);
 	SteamAPI_ISteamHTMLSurface_AddHeader(iface, unBrowserHandle, pchKey, pchValue);
 	return 0;
 }
@@ -530,7 +530,7 @@ static int luasteam_HTMLSurface_AddHeader(lua_State *L) {
 static int luasteam_HTMLSurface_ExecuteJavascript(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	const char *pchScript = luaL_checkstring(L, 2);
+	const char *pchScript = luaL_optstring(L, 2, nullptr);
 	SteamAPI_ISteamHTMLSurface_ExecuteJavascript(iface, unBrowserHandle, pchScript);
 	return 0;
 }
@@ -712,7 +712,7 @@ static int luasteam_HTMLSurface_PasteFromClipboard(lua_State *L) {
 static int luasteam_HTMLSurface_Find(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
 	HHTMLBrowser unBrowserHandle = static_cast<HHTMLBrowser>(luaL_checkint(L, 1));
-	const char *pchSearchStr = luaL_checkstring(L, 2);
+	const char *pchSearchStr = luaL_optstring(L, 2, nullptr);
 	bool bCurrentlyInFind = lua_toboolean(L, 3);
 	bool bReverse = lua_toboolean(L, 4);
 	SteamAPI_ISteamHTMLSurface_Find(iface, unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse);
@@ -749,10 +749,10 @@ static int luasteam_HTMLSurface_GetLinkAtPosition(lua_State *L) {
 // HTMLSurface.SetCookie(pchHostname: str, pchKey: str, pchValue: str, pchPath: str, nExpires: int, bSecure: bool, bHTTPOnly: bool)
 static int luasteam_HTMLSurface_SetCookie(lua_State *L) {
 	auto *iface = SteamHTMLSurface();
-	const char *pchHostname = luaL_checkstring(L, 1);
-	const char *pchKey = luaL_checkstring(L, 2);
-	const char *pchValue = luaL_checkstring(L, 3);
-	const char *pchPath = luaL_checkstring(L, 4);
+	const char *pchHostname = luaL_optstring(L, 1, nullptr);
+	const char *pchKey = luaL_optstring(L, 2, nullptr);
+	const char *pchValue = luaL_optstring(L, 3, nullptr);
+	const char *pchPath = luaL_optstring(L, 4, nullptr);
 	RTime32 nExpires = static_cast<RTime32>(luaL_checkint(L, 5));
 	bool bSecure = lua_toboolean(L, 6);
 	bool bHTTPOnly = lua_toboolean(L, 7);

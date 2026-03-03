@@ -41,7 +41,7 @@ function RemotePlay.BEnableRemotePlayTogetherDirectInput() end
 
 function RemotePlay.DisableRemotePlayTogetherDirectInput() end
 
----@param unMaxEvents integer size of the buffer to allocate for return value pInput
+---@param unMaxEvents integer? size of the buffer for pInput; if nil then the buffer will be NULL
 ---@return integer
 ---@return RemotePlayInput_t[] -- Value of: pInput
 function RemotePlay.GetInput(unMaxEvents) end
@@ -59,7 +59,7 @@ function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) 
 ---@param nHeight integer
 ---@param nHotX integer
 ---@param nHotY integer
----@param pBGRA string
+---@param pBGRA string?
 ---@param nPitch integer
 ---@return integer
 function RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch) end

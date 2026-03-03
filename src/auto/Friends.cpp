@@ -707,9 +707,9 @@ static int luasteam_Friends_GetFriendsGroupMembersCount(lua_State *L) {
 static int luasteam_Friends_GetFriendsGroupMembersList(lua_State *L) {
 	auto *iface = SteamFriends();
 	FriendsGroupID_t friendsGroupID = static_cast<FriendsGroupID_t>(luaL_checkint(L, 1));
-	int nMembersCount = luaL_checkint(L, 2);
+	int nMembersCount = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<CSteamID> pOutSteamIDMembers(nMembersCount);
-	SteamAPI_ISteamFriends_GetFriendsGroupMembersList(iface, friendsGroupID, pOutSteamIDMembers.data(), nMembersCount);
+	SteamAPI_ISteamFriends_GetFriendsGroupMembersList(iface, friendsGroupID, lua_isnil(L, 2) ? nullptr : pOutSteamIDMembers.data(), nMembersCount);
 	lua_createtable(L, nMembersCount, 0);
 	for(decltype(nMembersCount) i = 0; i < nMembersCount; i++) {
 		luasteam::pushuint64(L, pOutSteamIDMembers[i].ConvertToUint64());
@@ -808,9 +808,9 @@ static int luasteam_Friends_DownloadClanActivityCounts(lua_State *L) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	int cClansToRequest = luaL_checkint(L, 1);
+	int cClansToRequest = lua_isnil(L, 1) ? 0 : (int)luaL_checkint(L, 1);
 	std::vector<CSteamID> psteamIDClans(cClansToRequest);
-	SteamAPICall_t __ret = SteamAPI_ISteamFriends_DownloadClanActivityCounts(iface, psteamIDClans.data(), cClansToRequest);
+	SteamAPICall_t __ret = SteamAPI_ISteamFriends_DownloadClanActivityCounts(iface, lua_isnil(L, 1) ? nullptr : psteamIDClans.data(), cClansToRequest);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<DownloadClanActivityCountsResult_t>();
 		listener->callback_ref = callback_ref;
@@ -882,7 +882,7 @@ static int luasteam_Friends_SetInGameVoiceSpeaking(lua_State *L) {
 // Friends.ActivateGameOverlay(pchDialog: str)
 static int luasteam_Friends_ActivateGameOverlay(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchDialog = luaL_checkstring(L, 1);
+	const char *pchDialog = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamFriends_ActivateGameOverlay(iface, pchDialog);
 	return 0;
 }
@@ -893,7 +893,7 @@ static int luasteam_Friends_ActivateGameOverlay(lua_State *L) {
 // Friends.ActivateGameOverlayToUser(pchDialog: str, steamID: uint64)
 static int luasteam_Friends_ActivateGameOverlayToUser(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchDialog = luaL_checkstring(L, 1);
+	const char *pchDialog = luaL_optstring(L, 1, nullptr);
 	uint64 steamID = luasteam::checkuint64(L, 2);
 	SteamAPI_ISteamFriends_ActivateGameOverlayToUser(iface, pchDialog, steamID);
 	return 0;
@@ -905,7 +905,7 @@ static int luasteam_Friends_ActivateGameOverlayToUser(lua_State *L) {
 // Friends.ActivateGameOverlayToWebPage(pchURL: str, eMode: int)
 static int luasteam_Friends_ActivateGameOverlayToWebPage(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchURL = luaL_checkstring(L, 1);
+	const char *pchURL = luaL_optstring(L, 1, nullptr);
 	EActivateGameOverlayToWebPageMode eMode = static_cast<EActivateGameOverlayToWebPageMode>(luaL_checkint(L, 2));
 	SteamAPI_ISteamFriends_ActivateGameOverlayToWebPage(iface, pchURL, eMode);
 	return 0;
@@ -1059,8 +1059,8 @@ static int luasteam_Friends_GetClanOfficerByIndex(lua_State *L) {
 // bool Friends.SetRichPresence(pchKey: str, pchValue: str)
 static int luasteam_Friends_SetRichPresence(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchKey = luaL_checkstring(L, 1);
-	const char *pchValue = luaL_checkstring(L, 2);
+	const char *pchKey = luaL_optstring(L, 1, nullptr);
+	const char *pchValue = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamFriends_SetRichPresence(iface, pchKey, pchValue);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1083,7 +1083,7 @@ static int luasteam_Friends_ClearRichPresence(lua_State *L) {
 static int luasteam_Friends_GetFriendRichPresence(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDFriend = luasteam::checkuint64(L, 1);
-	const char *pchKey = luaL_checkstring(L, 2);
+	const char *pchKey = luaL_optstring(L, 2, nullptr);
 	const char * __ret = SteamAPI_ISteamFriends_GetFriendRichPresence(iface, steamIDFriend, pchKey);
 	lua_pushstring(L, reinterpret_cast<const char*>(__ret));
 	return 1;
@@ -1132,7 +1132,7 @@ static int luasteam_Friends_RequestFriendRichPresence(lua_State *L) {
 static int luasteam_Friends_InviteUserToGame(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDFriend = luasteam::checkuint64(L, 1);
-	const char *pchConnectString = luaL_checkstring(L, 2);
+	const char *pchConnectString = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamFriends_InviteUserToGame(iface, steamIDFriend, pchConnectString);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1251,7 +1251,7 @@ static int luasteam_Friends_GetChatMemberByIndex(lua_State *L) {
 static int luasteam_Friends_SendClanChatMessage(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDClanChat = luasteam::checkuint64(L, 1);
-	const char *pchText = luaL_checkstring(L, 2);
+	const char *pchText = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamFriends_SendClanChatMessage(iface, steamIDClanChat, pchText);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1265,11 +1265,11 @@ static int luasteam_Friends_GetClanChatMessage(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDClanChat = luasteam::checkuint64(L, 1);
 	int iMessage = static_cast<int>(luaL_checkint(L, 2));
-	int cchTextMax = luaL_checkint(L, 3);
+	int cchTextMax = lua_isnil(L, 3) ? 0 : (int)luaL_checkint(L, 3);
 	std::vector<unsigned char> prgchText(cchTextMax);
 	EChatEntryType peChatEntryType;
 	CSteamID psteamidChatter;
-	int __ret = SteamAPI_ISteamFriends_GetClanChatMessage(iface, steamIDClanChat, iMessage, prgchText.data(), cchTextMax, &peChatEntryType, &psteamidChatter);
+	int __ret = SteamAPI_ISteamFriends_GetClanChatMessage(iface, steamIDClanChat, iMessage, lua_isnil(L, 3) ? nullptr : prgchText.data(), cchTextMax, &peChatEntryType, &psteamidChatter);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(prgchText.data()), __ret);
 	lua_pushinteger(L, peChatEntryType);
@@ -1345,7 +1345,7 @@ static int luasteam_Friends_SetListenForFriendsMessages(lua_State *L) {
 static int luasteam_Friends_ReplyToFriendMessage(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDFriend = luasteam::checkuint64(L, 1);
-	const char *pchMsgToSend = luaL_checkstring(L, 2);
+	const char *pchMsgToSend = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_ISteamFriends_ReplyToFriendMessage(iface, steamIDFriend, pchMsgToSend);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1359,10 +1359,10 @@ static int luasteam_Friends_GetFriendMessage(lua_State *L) {
 	auto *iface = SteamFriends();
 	uint64 steamIDFriend = luasteam::checkuint64(L, 1);
 	int iMessageID = static_cast<int>(luaL_checkint(L, 2));
-	int cubData = luaL_checkint(L, 3);
+	int cubData = lua_isnil(L, 3) ? 0 : (int)luaL_checkint(L, 3);
 	std::vector<unsigned char> pvData(cubData);
 	EChatEntryType peChatEntryType;
-	int __ret = SteamAPI_ISteamFriends_GetFriendMessage(iface, steamIDFriend, iMessageID, pvData.data(), cubData, &peChatEntryType);
+	int __ret = SteamAPI_ISteamFriends_GetFriendMessage(iface, steamIDFriend, iMessageID, lua_isnil(L, 3) ? nullptr : pvData.data(), cubData, &peChatEntryType);
 	lua_pushinteger(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pvData.data()), __ret);
 	lua_pushinteger(L, peChatEntryType);
@@ -1487,7 +1487,7 @@ static int luasteam_Friends_ActivateGameOverlayRemotePlayTogetherInviteDialog(lu
 // bool Friends.RegisterProtocolInOverlayBrowser(pchProtocol: str)
 static int luasteam_Friends_RegisterProtocolInOverlayBrowser(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchProtocol = luaL_checkstring(L, 1);
+	const char *pchProtocol = luaL_optstring(L, 1, nullptr);
 	bool __ret = SteamAPI_ISteamFriends_RegisterProtocolInOverlayBrowser(iface, pchProtocol);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -1499,7 +1499,7 @@ static int luasteam_Friends_RegisterProtocolInOverlayBrowser(lua_State *L) {
 // Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString: str)
 static int luasteam_Friends_ActivateGameOverlayInviteDialogConnectString(lua_State *L) {
 	auto *iface = SteamFriends();
-	const char *pchConnectString = luaL_checkstring(L, 1);
+	const char *pchConnectString = luaL_optstring(L, 1, nullptr);
 	SteamAPI_ISteamFriends_ActivateGameOverlayInviteDialogConnectString(iface, pchConnectString);
 	return 0;
 }

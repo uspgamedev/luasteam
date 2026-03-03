@@ -12,7 +12,7 @@ local Inventory = {}
 function Inventory.GetResultStatus(resultHandle) end
 
 ---@param resultHandle integer
----@param punOutItemsArraySize integer size of the buffer to allocate for return value pOutItemsArray
+---@param punOutItemsArraySize integer? size of the buffer for pOutItemsArray; if nil then the buffer will be NULL
 ---@return boolean
 ---@return SteamItemDetails_t[] -- Value of: pOutItemsArray
 ---@return integer -- Value of: punOutItemsArraySize
@@ -20,8 +20,8 @@ function Inventory.GetResultItems(resultHandle, punOutItemsArraySize) end
 
 ---@param resultHandle integer
 ---@param unItemIndex integer
----@param pchPropertyName string
----@param punValueBufferSizeOut integer size of the buffer to allocate for return value pchValueBuffer
+---@param pchPropertyName string?
+---@param punValueBufferSizeOut integer? size of the buffer for pchValueBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchValueBuffer
 ---@return integer -- Value of: punValueBufferSizeOut
@@ -43,21 +43,21 @@ function Inventory.DestroyResult(resultHandle) end
 ---@return integer -- Value of: pResultHandle
 function Inventory.GetAllItems() end
 
----@param pInstanceIDs uint64[]
+---@param pInstanceIDs uint64[]?
 ---@param unCountInstanceIDs integer size of the input array pInstanceIDs
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.GetItemsByID(pInstanceIDs, unCountInstanceIDs) end
 
----@param pBuffer string
+---@param pBuffer string?
 ---@param unBufferSize integer size of the input array pBuffer
 ---@param bRESERVED_MUST_BE_FALSE boolean
 ---@return boolean
 ---@return integer -- Value of: pOutResultHandle
 function Inventory.DeserializeResult(pBuffer, unBufferSize, bRESERVED_MUST_BE_FALSE) end
 
----@param pArrayItemDefs integer[]
----@param punArrayQuantity integer[]
+---@param pArrayItemDefs integer[]?
+---@param punArrayQuantity integer[]?
 ---@param unArrayLength integer size of the input arrays pArrayItemDefs and punArrayQuantity
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
@@ -72,7 +72,7 @@ function Inventory.GrantPromoItems() end
 ---@return integer -- Value of: pResultHandle
 function Inventory.AddPromoItem(itemDef) end
 
----@param pArrayItemDefs integer[]
+---@param pArrayItemDefs integer[]?
 ---@param unArrayLength integer size of the input array pArrayItemDefs
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
@@ -84,11 +84,11 @@ function Inventory.AddPromoItems(pArrayItemDefs, unArrayLength) end
 ---@return integer -- Value of: pResultHandle
 function Inventory.ConsumeItem(itemConsume, unQuantity) end
 
----@param pArrayGenerate integer[]
----@param punArrayGenerateQuantity integer[]
+---@param pArrayGenerate integer[]?
+---@param punArrayGenerateQuantity integer[]?
 ---@param unArrayGenerateLength integer size of the input arrays pArrayGenerate and punArrayGenerateQuantity
----@param pArrayDestroy uint64[]
----@param punArrayDestroyQuantity integer[]
+---@param pArrayDestroy uint64[]?
+---@param punArrayDestroyQuantity integer[]?
 ---@param unArrayDestroyLength integer size of the input arrays pArrayDestroy and punArrayDestroyQuantity
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
@@ -109,11 +109,11 @@ function Inventory.SendItemDropHeartbeat() end
 function Inventory.TriggerItemDrop(dropListDefinition) end
 
 ---@param steamIDTradePartner uint64
----@param pArrayGive uint64[]
----@param pArrayGiveQuantity integer[]
+---@param pArrayGive uint64[]?
+---@param pArrayGiveQuantity integer[]?
 ---@param nArrayGiveLength integer size of the input arrays pArrayGive and pArrayGiveQuantity
----@param pArrayGet uint64[]
----@param pArrayGetQuantity integer[]
+---@param pArrayGet uint64[]?
+---@param pArrayGetQuantity integer[]?
 ---@param nArrayGetLength integer size of the input arrays pArrayGet and pArrayGetQuantity
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
@@ -122,15 +122,15 @@ function Inventory.TradeItems(steamIDTradePartner, pArrayGive, pArrayGiveQuantit
 ---@return boolean
 function Inventory.LoadItemDefinitions() end
 
----@param punItemDefIDsArraySize integer size of the buffer to allocate for return value pItemDefIDs
+---@param punItemDefIDsArraySize integer? size of the buffer for pItemDefIDs; if nil then the buffer will be NULL
 ---@return boolean
 ---@return integer[] -- Value of: pItemDefIDs
 ---@return integer -- Value of: punItemDefIDsArraySize
 function Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize) end
 
 ---@param iDefinition integer
----@param pchPropertyName string
----@param punValueBufferSizeOut integer size of the buffer to allocate for return value pchValueBuffer
+---@param pchPropertyName string?
+---@param punValueBufferSizeOut integer? size of the buffer for pchValueBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchValueBuffer
 ---@return integer -- Value of: punValueBufferSizeOut
@@ -142,14 +142,14 @@ function Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punVa
 function Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback) end
 
 ---@param steamID uint64
----@param punItemDefIDsArraySize integer size of the buffer to allocate for return value pItemDefIDs
+---@param punItemDefIDsArraySize integer? size of the buffer for pItemDefIDs; if nil then the buffer will be NULL
 ---@return boolean
 ---@return integer[] -- Value of: pItemDefIDs
 ---@return integer -- Value of: punItemDefIDsArraySize
 function Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArraySize) end
 
----@param pArrayItemDefs integer[]
----@param punArrayQuantity integer[]
+---@param pArrayItemDefs integer[]?
+---@param punArrayQuantity integer[]?
 ---@param unArrayLength integer size of the input arrays pArrayItemDefs and punArrayQuantity
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
@@ -173,34 +173,34 @@ function Inventory.StartUpdateProperties() end
 
 ---@param handle uint64
 ---@param nItemID uint64
----@param pchPropertyName string
+---@param pchPropertyName string?
 ---@return boolean
 function Inventory.RemoveProperty(handle, nItemID, pchPropertyName) end
 
 ---@param handle uint64
 ---@param nItemID uint64
----@param pchPropertyName string
----@param pchPropertyValue string
+---@param pchPropertyName string?
+---@param pchPropertyValue string?
 ---@return boolean
 function Inventory.SetPropertyString(handle, nItemID, pchPropertyName, pchPropertyValue) end
 
 ---@param handle uint64
 ---@param nItemID uint64
----@param pchPropertyName string
+---@param pchPropertyName string?
 ---@param bValue boolean
 ---@return boolean
 function Inventory.SetPropertyBool(handle, nItemID, pchPropertyName, bValue) end
 
 ---@param handle uint64
 ---@param nItemID uint64
----@param pchPropertyName string
+---@param pchPropertyName string?
 ---@param nValue uint64
 ---@return boolean
 function Inventory.SetPropertyInt64(handle, nItemID, pchPropertyName, nValue) end
 
 ---@param handle uint64
 ---@param nItemID uint64
----@param pchPropertyName string
+---@param pchPropertyName string?
 ---@param flValue number
 ---@return boolean
 function Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue) end
@@ -210,7 +210,7 @@ function Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue) e
 ---@return integer -- Value of: pResultHandle
 function Inventory.SubmitUpdateProperties(handle) end
 
----@param pchItemToken string
+---@param pchItemToken string?
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.InspectItem(pchItemToken) end

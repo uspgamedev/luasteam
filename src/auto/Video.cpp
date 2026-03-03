@@ -120,9 +120,9 @@ static int luasteam_Video_GetOPFSettings(lua_State *L) {
 static int luasteam_Video_GetOPFStringForApp(lua_State *L) {
 	auto *iface = SteamVideo();
 	AppId_t unVideoAppID = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int32 pnBufferSize = luaL_checkint(L, 2);
+	int32 pnBufferSize = lua_isnil(L, 2) ? 0 : (int32)luaL_checkint(L, 2);
 	std::vector<char> pchBuffer(pnBufferSize);
-	bool __ret = SteamAPI_ISteamVideo_GetOPFStringForApp(iface, unVideoAppID, pchBuffer.data(), &pnBufferSize);
+	bool __ret = SteamAPI_ISteamVideo_GetOPFStringForApp(iface, unVideoAppID, lua_isnil(L, 2) ? nullptr : pchBuffer.data(), &pnBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBuffer.data()));
 	lua_pushinteger(L, pnBufferSize);

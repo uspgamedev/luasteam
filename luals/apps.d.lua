@@ -43,7 +43,7 @@ function Apps.BIsSubscribedFromFreeWeekend() end
 function Apps.GetDLCCount() end
 
 ---@param iDLC integer
----@param cchNameBufferSize integer size of the buffer to allocate for return value pchName
+---@param cchNameBufferSize integer? size of the buffer for pchName; if nil then the buffer will be NULL
 ---@return boolean
 ---@return integer -- Value of: pAppID
 ---@return boolean -- Value of: pbAvailable
@@ -59,7 +59,7 @@ function Apps.UninstallDLC(nAppID) end
 ---@param nAppID integer
 function Apps.RequestAppProofOfPurchaseKey(nAppID) end
 
----@param cchNameBufferSize integer size of the buffer to allocate for return value pchName
+---@param cchNameBufferSize integer? size of the buffer for pchName; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchName
 function Apps.GetCurrentBetaName(cchNameBufferSize) end
@@ -69,13 +69,13 @@ function Apps.GetCurrentBetaName(cchNameBufferSize) end
 function Apps.MarkContentCorrupt(bMissingFilesOnly) end
 
 ---@param appID integer
----@param cMaxDepots integer size of the buffer to allocate for return value pvecDepots
+---@param cMaxDepots integer? size of the buffer for pvecDepots; if nil then the buffer will be NULL
 ---@return integer
 ---@return integer[] -- Value of: pvecDepots
 function Apps.GetInstalledDepots(appID, cMaxDepots) end
 
 ---@param appID integer
----@param cchFolderBufferSize integer size of the buffer to allocate for return value pchFolder
+---@param cchFolderBufferSize integer? size of the buffer for pchFolder; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pchFolder
 function Apps.GetAppInstallDir(appID, cchFolderBufferSize) end
@@ -87,7 +87,7 @@ function Apps.BIsAppInstalled(appID) end
 ---@return uint64
 function Apps.GetAppOwner() end
 
----@param pchKey string
+---@param pchKey string?
 ---@return string
 function Apps.GetLaunchQueryParam(pchKey) end
 
@@ -102,12 +102,12 @@ function Apps.GetAppBuildId() end
 
 function Apps.RequestAllProofOfPurchaseKeys() end
 
----@param pszFileName string
+---@param pszFileName string?
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function Apps.GetFileDetails(pszFileName, callback) end
 
----@param cubCommandLine integer size of the buffer to allocate for return value pszCommandLine
+---@param cubCommandLine integer? size of the buffer for pszCommandLine; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pszCommandLine
 function Apps.GetLaunchCommandLine(cubCommandLine) end
@@ -130,8 +130,8 @@ function Apps.SetDlcContext(nAppID) end
 function Apps.GetNumBetas() end
 
 ---@param iBetaIndex integer
----@param cchBetaName integer size of the buffer to allocate for return value pchBetaName
----@param cchDescription integer size of the buffer to allocate for return value pchDescription
+---@param cchBetaName integer? size of the buffer for pchBetaName; if nil then the buffer will be NULL
+---@param cchDescription integer? size of the buffer for pchDescription; if nil then the buffer will be NULL
 ---@return boolean
 ---@return integer -- Value of: punFlags
 ---@return integer -- Value of: punBuildID
@@ -139,7 +139,7 @@ function Apps.GetNumBetas() end
 ---@return string -- Value of: pchDescription
 function Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription) end
 
----@param pchBetaName string
+---@param pchBetaName string?
 ---@return boolean
 function Apps.SetActiveBeta(pchBetaName) end
 

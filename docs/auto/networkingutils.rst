@@ -85,7 +85,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param location: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`)
-    :param int cchBufSize: size of the buffer to be allocated to hold the return value ``pszBuf``
+    :param int? cchBufSize: size of the buffer to allocate for ``pszBuf``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (str) ``pszBuf``
     :SteamWorks: `ConvertPingLocationToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ConvertPingLocationToString>`_
 
@@ -275,7 +275,7 @@ Function Reference
 
     :param int hConn:
     :param int eValue:
-    :param str val:
+    :param str? val:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionConfigValueString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConnectionConfigValueString>`_
 
@@ -398,7 +398,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eValue:
-    :param str val:
+    :param str? val:
     :returns: (bool) Return value
     :SteamWorks: `SetGlobalConfigValueString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValueString>`_
 
@@ -414,7 +414,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszStr:
+    :param str? pszStr:
     :returns: (bool) Return value
     :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``pAddr``
     :SteamWorks: `SteamNetworkingIPAddr_ParseString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ParseString>`_
@@ -435,7 +435,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param addr: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
-    :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
+    :param int? cbBuf: size of the buffer to allocate for ``buf``. If ``nil`` then the buffer will be ``NULL``.
     :param bool bWithPort:
     :returns: (str) ``buf``
     :SteamWorks: `SteamNetworkingIPAddr_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_ToString>`_
@@ -453,7 +453,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszStr:
+    :param str? pszStr:
     :returns: (bool) Return value
     :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) ``pIdentity``
     :SteamWorks: `SteamNetworkingIdentity_ParseString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ParseString>`_
@@ -474,7 +474,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param identity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :param int cbBuf: size of the buffer to be allocated to hold the return value ``buf``
+    :param int? cbBuf: size of the buffer to allocate for ``buf``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (str) ``buf``
     :SteamWorks: `SteamNetworkingIdentity_ToString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIdentity_ToString>`_
 

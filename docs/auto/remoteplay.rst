@@ -79,7 +79,7 @@ Function Reference
     :param int nHeight:
     :param int nHotX:
     :param int nHotY:
-    :param str pBGRA:
+    :param str? pBGRA:
     :param int nPitch:
     :returns: (int) Return value
     :SteamWorks: `CreateMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#CreateMouseCursor>`_
@@ -94,7 +94,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unMaxEvents: size of the buffer to be allocated to hold the return value ``pInput``
+    :param int? unMaxEvents: size of the buffer to allocate for ``pInput``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (:ref:`RemotePlayInput_t <struct-RemotePlayInput_t>`\ []) ``pInput``
     :SteamWorks: `GetInput <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetInput>`_

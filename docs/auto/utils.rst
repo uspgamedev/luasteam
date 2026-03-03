@@ -80,7 +80,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str szFileName:
+    :param str? szFileName:
     :param function callback: CallResult callback receiving struct :func:`CheckFileSignature_t <Utils.OnCheckFileSignature>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `CheckFileSignature <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature>`_
@@ -105,8 +105,8 @@ Function Reference
 
     :param int eContext:
     :param uint64 sourceSteamID:
-    :param str pchInputMessage:
-    :param int nByteSizeOutFilteredText: size of the buffer to be allocated to hold the return value ``pchOutFilteredText``
+    :param str? pchInputMessage:
+    :param int? nByteSizeOutFilteredText: size of the buffer to allocate for ``pchOutFilteredText``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pchOutFilteredText``
     :SteamWorks: `FilterText <https://partner.steamgames.com/doc/api/ISteamUtils#FilterText>`_
@@ -135,7 +135,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamAPICall:
-    :param int cubCallback: size of the buffer to be allocated to hold the return value ``pCallback``
+    :param int? cubCallback: size of the buffer to allocate for ``pCallback``. If ``nil`` then the buffer will be ``NULL``.
     :param int iCallbackExpected:
     :returns: (bool) Return value
     :returns: (str) ``pCallback``
@@ -183,7 +183,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cchText: size of the buffer to be allocated to hold the return value ``pchText``
+    :param int? cchText: size of the buffer to allocate for ``pchText``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchText``
     :SteamWorks: `GetEnteredGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#GetEnteredGamepadTextInput>`_
@@ -231,7 +231,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iImage:
-    :param int nDestBufferSize: size of the buffer to be allocated to hold the return value ``pubDest``
+    :param int? nDestBufferSize: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
     :SteamWorks: `GetImageRGBA <https://partner.steamgames.com/doc/api/ISteamUtils#GetImageRGBA>`_
@@ -458,9 +458,9 @@ Function Reference
 
     :param int eInputMode:
     :param int eLineInputMode:
-    :param str pchDescription:
+    :param str? pchDescription:
     :param int unCharMax:
-    :param str pchExistingText:
+    :param str? pchExistingText:
     :returns: (bool) Return value
     :SteamWorks: `ShowGamepadTextInput <https://partner.steamgames.com/doc/api/ISteamUtils#ShowGamepadTextInput>`_
 

@@ -107,7 +107,7 @@ static int luasteam_Input_Shutdown(lua_State *L) {
 // bool Input.SetInputActionManifestFilePath(pchInputActionManifestAbsolutePath: str)
 static int luasteam_Input_SetInputActionManifestFilePath(lua_State *L) {
 	auto *iface = SteamInput();
-	const char *pchInputActionManifestAbsolutePath = luaL_checkstring(L, 1);
+	const char *pchInputActionManifestAbsolutePath = luaL_optstring(L, 1, nullptr);
 	bool __ret = SteamAPI_ISteamInput_SetInputActionManifestFilePath(iface, pchInputActionManifestAbsolutePath);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -182,7 +182,7 @@ static int luasteam_Input_EnableDeviceCallbacks(lua_State *L) {
 // uint64 Input.GetActionSetHandle(pszActionSetName: str)
 static int luasteam_Input_GetActionSetHandle(lua_State *L) {
 	auto *iface = SteamInput();
-	const char *pszActionSetName = luaL_checkstring(L, 1);
+	const char *pszActionSetName = luaL_optstring(L, 1, nullptr);
 	InputActionSetHandle_t __ret = SteamAPI_ISteamInput_GetActionSetHandle(iface, pszActionSetName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
@@ -272,7 +272,7 @@ static int luasteam_Input_GetActiveActionSetLayers(lua_State *L) {
 // uint64 Input.GetDigitalActionHandle(pszActionName: str)
 static int luasteam_Input_GetDigitalActionHandle(lua_State *L) {
 	auto *iface = SteamInput();
-	const char *pszActionName = luaL_checkstring(L, 1);
+	const char *pszActionName = luaL_optstring(L, 1, nullptr);
 	InputDigitalActionHandle_t __ret = SteamAPI_ISteamInput_GetDigitalActionHandle(iface, pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
@@ -330,7 +330,7 @@ static int luasteam_Input_GetStringForDigitalActionName(lua_State *L) {
 // uint64 Input.GetAnalogActionHandle(pszActionName: str)
 static int luasteam_Input_GetAnalogActionHandle(lua_State *L) {
 	auto *iface = SteamInput();
-	const char *pszActionName = luaL_checkstring(L, 1);
+	const char *pszActionName = luaL_optstring(L, 1, nullptr);
 	InputAnalogActionHandle_t __ret = SteamAPI_ISteamInput_GetAnalogActionHandle(iface, pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;

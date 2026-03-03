@@ -257,9 +257,9 @@ static int luasteam_Utils_GetImageSize_gs(lua_State *L) { return luasteam_Utils_
 // (bool, pubDest: str) Utils.GetImageRGBA(iImage: int, nDestBufferSize: int)
 static int luasteam_Utils_GetImageRGBA(lua_State *L, ISteamUtils *iface) {
 	int iImage = static_cast<int>(luaL_checkint(L, 1));
-	int nDestBufferSize = luaL_checkint(L, 2);
+	int nDestBufferSize = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<uint8> pubDest(nDestBufferSize);
-	bool __ret = SteamAPI_ISteamUtils_GetImageRGBA(iface, iImage, pubDest.data(), nDestBufferSize);
+	bool __ret = SteamAPI_ISteamUtils_GetImageRGBA(iface, iImage, lua_isnil(L, 2) ? nullptr : pubDest.data(), nDestBufferSize);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), nDestBufferSize);
 	return 2;
@@ -337,11 +337,11 @@ static int luasteam_Utils_GetAPICallFailureReason_gs(lua_State *L) { return luas
 // (bool, pCallback: str, pbFailed: bool) Utils.GetAPICallResult(hSteamAPICall: uint64, cubCallback: int, iCallbackExpected: int)
 static int luasteam_Utils_GetAPICallResult(lua_State *L, ISteamUtils *iface) {
 	SteamAPICall_t hSteamAPICall = luasteam::checkuint64(L, 1);
-	int cubCallback = luaL_checkint(L, 2);
+	int cubCallback = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<unsigned char> pCallback(cubCallback);
 	int iCallbackExpected = static_cast<int>(luaL_checkint(L, 3));
 	bool pbFailed;
-	bool __ret = SteamAPI_ISteamUtils_GetAPICallResult(iface, hSteamAPICall, pCallback.data(), cubCallback, iCallbackExpected, &pbFailed);
+	bool __ret = SteamAPI_ISteamUtils_GetAPICallResult(iface, hSteamAPICall, lua_isnil(L, 2) ? nullptr : pCallback.data(), cubCallback, iCallbackExpected, &pbFailed);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pCallback.data()), cubCallback);
 	lua_pushboolean(L, pbFailed);
@@ -396,7 +396,7 @@ static int luasteam_Utils_CheckFileSignature(lua_State *L, ISteamUtils *iface) {
 		lua_pushvalue(L, lua_gettop(L));
 		callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
-	const char *szFileName = luaL_checkstring(L, 1);
+	const char *szFileName = luaL_optstring(L, 1, nullptr);
 	SteamAPICall_t __ret = SteamAPI_ISteamUtils_CheckFileSignature(iface, szFileName);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<CheckFileSignature_t>();
@@ -416,9 +416,9 @@ static int luasteam_Utils_CheckFileSignature_gs(lua_State *L) { return luasteam_
 static int luasteam_Utils_ShowGamepadTextInput(lua_State *L, ISteamUtils *iface) {
 	EGamepadTextInputMode eInputMode = static_cast<EGamepadTextInputMode>(luaL_checkint(L, 1));
 	EGamepadTextInputLineMode eLineInputMode = static_cast<EGamepadTextInputLineMode>(luaL_checkint(L, 2));
-	const char *pchDescription = luaL_checkstring(L, 3);
+	const char *pchDescription = luaL_optstring(L, 3, nullptr);
 	uint32 unCharMax = static_cast<uint32>(luaL_checkint(L, 4));
-	const char *pchExistingText = luaL_checkstring(L, 5);
+	const char *pchExistingText = luaL_optstring(L, 5, nullptr);
 	bool __ret = SteamAPI_ISteamUtils_ShowGamepadTextInput(iface, eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -443,9 +443,9 @@ static int luasteam_Utils_GetEnteredGamepadTextLength_gs(lua_State *L) { return 
 // In Lua:
 // (bool, pchText: str) Utils.GetEnteredGamepadTextInput(cchText: int)
 static int luasteam_Utils_GetEnteredGamepadTextInput(lua_State *L, ISteamUtils *iface) {
-	uint32 cchText = luaL_checkint(L, 1);
+	uint32 cchText = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
 	std::vector<char> pchText(cchText);
-	bool __ret = SteamAPI_ISteamUtils_GetEnteredGamepadTextInput(iface, pchText.data(), cchText);
+	bool __ret = SteamAPI_ISteamUtils_GetEnteredGamepadTextInput(iface, lua_isnil(L, 1) ? nullptr : pchText.data(), cchText);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchText.data()));
 	return 2;
@@ -569,10 +569,10 @@ static int luasteam_Utils_InitFilterText_gs(lua_State *L) { return luasteam_Util
 static int luasteam_Utils_FilterText(lua_State *L, ISteamUtils *iface) {
 	ETextFilteringContext eContext = static_cast<ETextFilteringContext>(luaL_checkint(L, 1));
 	uint64 sourceSteamID = luasteam::checkuint64(L, 2);
-	const char *pchInputMessage = luaL_checkstring(L, 3);
-	uint32 nByteSizeOutFilteredText = luaL_checkint(L, 4);
+	const char *pchInputMessage = luaL_optstring(L, 3, nullptr);
+	uint32 nByteSizeOutFilteredText = lua_isnil(L, 4) ? 0 : (uint32)luaL_checkint(L, 4);
 	std::vector<char> pchOutFilteredText(nByteSizeOutFilteredText);
-	int __ret = SteamAPI_ISteamUtils_FilterText(iface, eContext, sourceSteamID, pchInputMessage, pchOutFilteredText.data(), nByteSizeOutFilteredText);
+	int __ret = SteamAPI_ISteamUtils_FilterText(iface, eContext, sourceSteamID, pchInputMessage, lua_isnil(L, 4) ? nullptr : pchOutFilteredText.data(), nByteSizeOutFilteredText);
 	lua_pushinteger(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchOutFilteredText.data()));
 	return 2;

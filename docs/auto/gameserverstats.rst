@@ -37,7 +37,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :SteamWorks: `ClearUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#ClearUserAchievement>`_
 
@@ -46,7 +46,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserAchievement>`_
@@ -67,7 +67,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
     :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStat>`_
@@ -82,7 +82,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
     :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#GetUserStat>`_
@@ -122,7 +122,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :SteamWorks: `SetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserAchievement>`_
 
@@ -131,7 +131,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :param float fData:
     :returns: (bool) Return value
     :SteamWorks: `SetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStat>`_
@@ -145,7 +145,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :param int nData:
     :returns: (bool) Return value
     :SteamWorks: `SetUserStat <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserStat>`_
@@ -181,7 +181,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :param float flCountThisSession:
     :param float dSessionLength:
     :returns: (bool) Return value

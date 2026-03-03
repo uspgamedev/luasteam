@@ -839,16 +839,20 @@ impl Generator {
                     }
                     if let Some(size_param) = param.input_array_size_param() {
                         let p = method.params.iter().find(|p| p.paramname == size_param);
+                        // Capture the lua stack index where the user provides the size (if any),
+                        // so we can use lua_isnil on it to conditionally pass nullptr.
+                        let mut size_lua_idx: Option<String> = None;
                         if let Some(p) = p {
                             if !size_params_to_ignore.contains(size_param) {
                                 size_params_to_ignore.insert(size_param.to_string());
+                                size_lua_idx = Some(lua_idx.to_string());
+                                // If the user passes nil for the size, pass nullptr as the buffer
+                                // so Steam fills in the required size (returned as output).
                                 s.line(&format!(
-                                    "{} {} = luaL_checkint(L, {});",
-                                    p.paramtype
-                                        .strip_suffix(" *")
-                                        .unwrap_or(p.paramtype.as_str()),
-                                    size_param,
-                                    lua_idx
+                                    "{tp} {sp} = lua_isnil(L, {idx}) ? 0 : ({tp})luaL_checkint(L, {idx});",
+                                    tp = p.paramtype.strip_suffix(" *").unwrap_or(p.paramtype.as_str()),
+                                    sp = size_param,
+                                    idx = lua_idx
                                 ));
                                 sig.add_size_param(
                                     size_param.to_string(),
@@ -856,6 +860,7 @@ impl Generator {
                                     vec![param.paramname.clone()],
                                     true,
                                 );
+                                sig.mark_last_param_optional();
                                 lua_idx += 1;
                             }
                         } else if let Some(c) =
@@ -900,17 +905,19 @@ impl Generator {
                             .paramtype
                             .strip_suffix(" *")
                             .expect("Malformed pointer type");
-                        s.line(&format!(
-                            "std::vector<{}> {}({});",
-                            if pointee_type != "void" {
-                                pointee_type
-                            } else {
-                                "unsigned char"
-                            },
-                            param.paramname,
-                            size_param
-                        ));
-                        cpp_call_params.push(format!("{}.data()", param.paramname));
+                        let elem_type = if pointee_type != "void" { pointee_type } else { "unsigned char" };
+                        if let Some(ref slua) = size_lua_idx {
+                            // Size comes from Lua: allocate only when size is non-nil
+                            s.line(&format!("std::vector<{}> {}({});", elem_type, param.paramname, size_param));
+                            cpp_call_params.push(format!(
+                                "lua_isnil(L, {}) ? nullptr : {}.data()",
+                                slua, param.paramname
+                            ));
+                        } else {
+                            // Size from a compile-time constant: always allocate
+                            s.line(&format!("std::vector<{}> {}({});", elem_type, param.paramname, size_param));
+                            cpp_call_params.push(format!("{}.data()", param.paramname));
+                        }
                         pointer_params.push((param, true));
                     } else {
                         // Create a default variable with that name and type
@@ -960,6 +967,7 @@ impl Generator {
                                     || (method.methodname_flat
                                         == "SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody"
                                         && param.paramname == "pubBody"),
+                                true, // nullable: nil → nullptr
                             )
                             .ok_or_else(|| {
                                 SkipReason::UnsupportedType(format!(
@@ -969,6 +977,7 @@ impl Generator {
                             })?;
 
                         sig.add_param(param.paramname.clone(), ltype);
+                        sig.mark_last_param_optional();
                         if !size.is_empty() {
                             lua_idx += 1; // advance past this array
                             if !size_params_to_ignore.contains(size) {
@@ -1030,9 +1039,13 @@ impl Generator {
 
                         s.raw(&code);
                         if is_buffer {
+                            // For buffers (strings): luaL_optlstring already returns nullptr when nil
                             cpp_call_params.push(param.paramname.clone());
                         } else {
-                            cpp_call_params.push(format!("{}.data()", param.paramname));
+                            cpp_call_params.push(format!(
+                                "lua_isnil(L, {}) ? nullptr : {}.data()",
+                                lua_idx_str, param.paramname
+                            ));
                         }
                     } else if resolved.is_buffer() {
                         let lua_idx_str = lua_idx.to_string();
@@ -1049,6 +1062,7 @@ impl Generator {
                         s.raw(&code);
                         cpp_call_params.push(param.paramname.clone());
                         sig.add_param(param.paramname.clone(), ltype);
+                        sig.mark_last_param_optional();
                         lua_idx += 1;
                     } else {
                         // Non-array const pointer — treat as optional input (nil → nullptr).

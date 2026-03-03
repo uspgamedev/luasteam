@@ -83,7 +83,7 @@ function Friends.GetFriendsGroupName(friendsGroupID) end
 function Friends.GetFriendsGroupMembersCount(friendsGroupID) end
 
 ---@param friendsGroupID integer
----@param nMembersCount integer size of the buffer to allocate for return value pOutSteamIDMembers
+---@param nMembersCount integer? size of the buffer for pOutSteamIDMembers; if nil then the buffer will be NULL
 ---@return uint64[] -- Value of: pOutSteamIDMembers
 function Friends.GetFriendsGroupMembersList(friendsGroupID, nMembersCount) end
 
@@ -114,7 +114,7 @@ function Friends.GetClanTag(steamIDClan) end
 ---@return integer -- Value of: pnChatting
 function Friends.GetClanActivityCounts(steamIDClan) end
 
----@param cClansToRequest integer size of the buffer to allocate for return value psteamIDClans
+---@param cClansToRequest integer? size of the buffer for psteamIDClans; if nil then the buffer will be NULL
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 ---@return uint64[] -- Value of: psteamIDClans
@@ -138,14 +138,14 @@ function Friends.IsUserInSource(steamIDUser, steamIDSource) end
 ---@param bSpeaking boolean
 function Friends.SetInGameVoiceSpeaking(steamIDUser, bSpeaking) end
 
----@param pchDialog string
+---@param pchDialog string?
 function Friends.ActivateGameOverlay(pchDialog) end
 
----@param pchDialog string
+---@param pchDialog string?
 ---@param steamID uint64
 function Friends.ActivateGameOverlayToUser(pchDialog, steamID) end
 
----@param pchURL string
+---@param pchURL string?
 ---@param eMode integer
 function Friends.ActivateGameOverlayToWebPage(pchURL, eMode) end
 
@@ -194,15 +194,15 @@ function Friends.GetClanOfficerCount(steamIDClan) end
 ---@return uint64
 function Friends.GetClanOfficerByIndex(steamIDClan, iOfficer) end
 
----@param pchKey string
----@param pchValue string
+---@param pchKey string?
+---@param pchValue string?
 ---@return boolean
 function Friends.SetRichPresence(pchKey, pchValue) end
 
 function Friends.ClearRichPresence() end
 
 ---@param steamIDFriend uint64
----@param pchKey string
+---@param pchKey string?
 ---@return string
 function Friends.GetFriendRichPresence(steamIDFriend, pchKey) end
 
@@ -219,7 +219,7 @@ function Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey) end
 function Friends.RequestFriendRichPresence(steamIDFriend) end
 
 ---@param steamIDFriend uint64
----@param pchConnectString string
+---@param pchConnectString string?
 ---@return boolean
 function Friends.InviteUserToGame(steamIDFriend, pchConnectString) end
 
@@ -257,13 +257,13 @@ function Friends.GetClanChatMemberCount(steamIDClan) end
 function Friends.GetChatMemberByIndex(steamIDClan, iUser) end
 
 ---@param steamIDClanChat uint64
----@param pchText string
+---@param pchText string?
 ---@return boolean
 function Friends.SendClanChatMessage(steamIDClanChat, pchText) end
 
 ---@param steamIDClanChat uint64
 ---@param iMessage integer
----@param cchTextMax integer size of the buffer to allocate for return value prgchText
+---@param cchTextMax integer? size of the buffer for prgchText; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: prgchText
 ---@return integer -- Value of: peChatEntryType
@@ -292,13 +292,13 @@ function Friends.CloseClanChatWindowInSteam(steamIDClanChat) end
 function Friends.SetListenForFriendsMessages(bInterceptEnabled) end
 
 ---@param steamIDFriend uint64
----@param pchMsgToSend string
+---@param pchMsgToSend string?
 ---@return boolean
 function Friends.ReplyToFriendMessage(steamIDFriend, pchMsgToSend) end
 
 ---@param steamIDFriend uint64
 ---@param iMessageID integer
----@param cubData integer size of the buffer to allocate for return value pvData
+---@param cubData integer? size of the buffer for pvData; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pvData
 ---@return integer -- Value of: peChatEntryType
@@ -333,11 +333,11 @@ function Friends.GetNumChatsWithUnreadPriorityMessages() end
 ---@param steamIDLobby uint64
 function Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog(steamIDLobby) end
 
----@param pchProtocol string
+---@param pchProtocol string?
 ---@return boolean
 function Friends.RegisterProtocolInOverlayBrowser(pchProtocol) end
 
----@param pchConnectString string
+---@param pchConnectString string?
 function Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString) end
 
 ---@param steamID uint64

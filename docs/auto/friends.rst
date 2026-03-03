@@ -120,7 +120,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchDialog:
+    :param str? pchDialog:
     :SteamWorks: `ActivateGameOverlay <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlay>`_
 
 **Example**::
@@ -143,7 +143,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchConnectString:
+    :param str? pchConnectString:
     :SteamWorks: `ActivateGameOverlayInviteDialogConnectString <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialogConnectString>`_
 
 .. function:: Friends.ActivateGameOverlayRemotePlayTogetherInviteDialog(steamIDLobby)
@@ -169,7 +169,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchDialog:
+    :param str? pchDialog:
     :param uint64 steamID:
     :SteamWorks: `ActivateGameOverlayToUser <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToUser>`_
 
@@ -181,7 +181,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchURL:
+    :param str? pchURL:
     :param int eMode:
     :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
 
@@ -220,7 +220,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cClansToRequest: size of the buffer to be allocated to hold the return value ``psteamIDClans``
+    :param int? cClansToRequest: size of the buffer to allocate for ``psteamIDClans``. If ``nil`` then the buffer will be ``NULL``.
     :param function callback: CallResult callback receiving struct :func:`DownloadClanActivityCountsResult_t <Friends.OnDownloadClanActivityCountsResult>` and a boolean
     :returns: (uint64) Return value
     :returns: (uint64[]) ``psteamIDClans``
@@ -291,7 +291,7 @@ Function Reference
 
     :param uint64 steamIDClanChat:
     :param int iMessage:
-    :param int cchTextMax: size of the buffer to be allocated to hold the return value ``prgchText``
+    :param int? cchTextMax: size of the buffer to allocate for ``prgchText``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``prgchText``
     :returns: (int) ``peChatEntryType``
@@ -507,7 +507,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iMessageID:
-    :param int cubData: size of the buffer to be allocated to hold the return value ``pvData``
+    :param int? cubData: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pvData``
     :returns: (int) ``peChatEntryType``
@@ -575,7 +575,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
 
@@ -667,7 +667,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int friendsGroupID:
-    :param int nMembersCount: size of the buffer to be allocated to hold the return value ``pOutSteamIDMembers``
+    :param int? nMembersCount: size of the buffer to allocate for ``pOutSteamIDMembers``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (uint64[]) ``pOutSteamIDMembers``
     :SteamWorks: `GetFriendsGroupMembersList <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersList>`_
 
@@ -820,7 +820,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :param str pchConnectString:
+    :param str? pchConnectString:
     :returns: (bool) Return value
     :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
 
@@ -925,7 +925,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchProtocol:
+    :param str? pchProtocol:
     :returns: (bool) Return value
     :SteamWorks: `RegisterProtocolInOverlayBrowser <https://partner.steamgames.com/doc/api/ISteamFriends#RegisterProtocolInOverlayBrowser>`_
 
@@ -934,7 +934,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :param str pchMsgToSend:
+    :param str? pchMsgToSend:
     :returns: (bool) Return value
     :SteamWorks: `ReplyToFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#ReplyToFriendMessage>`_
 
@@ -990,7 +990,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClanChat:
-    :param str pchText:
+    :param str? pchText:
     :returns: (bool) Return value
     :SteamWorks: `SendClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#SendClanChatMessage>`_
 
@@ -1041,8 +1041,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchKey: The Rich Presence key to set
-    :param str pchValue: The value to associate with the key
+    :param str? pchKey: The Rich Presence key to set
+    :param str? pchValue: The value to associate with the key
     :returns: (bool) Return value
     :SteamWorks: `SetRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence>`_
 

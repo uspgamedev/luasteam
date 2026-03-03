@@ -30,8 +30,8 @@ function HTMLSurface.Init() end
 ---@return boolean
 function HTMLSurface.Shutdown() end
 
----@param pchUserAgent string
----@param pchUserCSS string
+---@param pchUserAgent string?
+---@param pchUserCSS string?
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback) end
@@ -40,8 +40,8 @@ function HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback) end
 function HTMLSurface.RemoveBrowser(unBrowserHandle) end
 
 ---@param unBrowserHandle integer
----@param pchURL string
----@param pchPostData string
+---@param pchURL string?
+---@param pchPostData string?
 function HTMLSurface.LoadURL(unBrowserHandle, pchURL, pchPostData) end
 
 ---@param unBrowserHandle integer
@@ -62,12 +62,12 @@ function HTMLSurface.GoBack(unBrowserHandle) end
 function HTMLSurface.GoForward(unBrowserHandle) end
 
 ---@param unBrowserHandle integer
----@param pchKey string
----@param pchValue string
+---@param pchKey string?
+---@param pchValue string?
 function HTMLSurface.AddHeader(unBrowserHandle, pchKey, pchValue) end
 
 ---@param unBrowserHandle integer
----@param pchScript string
+---@param pchScript string?
 function HTMLSurface.ExecuteJavascript(unBrowserHandle, pchScript) end
 
 ---@param unBrowserHandle integer
@@ -129,7 +129,7 @@ function HTMLSurface.CopyToClipboard(unBrowserHandle) end
 function HTMLSurface.PasteFromClipboard(unBrowserHandle) end
 
 ---@param unBrowserHandle integer
----@param pchSearchStr string
+---@param pchSearchStr string?
 ---@param bCurrentlyInFind boolean
 ---@param bReverse boolean
 function HTMLSurface.Find(unBrowserHandle, pchSearchStr, bCurrentlyInFind, bReverse) end
@@ -142,10 +142,10 @@ function HTMLSurface.StopFind(unBrowserHandle) end
 ---@param y integer
 function HTMLSurface.GetLinkAtPosition(unBrowserHandle, x, y) end
 
----@param pchHostname string
----@param pchKey string
----@param pchValue string
----@param pchPath string
+---@param pchHostname string?
+---@param pchKey string?
+---@param pchValue string?
+---@param pchPath string?
 ---@param nExpires integer
 ---@param bSecure boolean
 ---@param bHTTPOnly boolean

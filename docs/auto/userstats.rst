@@ -91,7 +91,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :SteamWorks: `ClearAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#ClearAchievement>`_
 
@@ -134,7 +134,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :param uint64[] prgUsers:
+    :param uint64[]? prgUsers:
     :param int cUsers: size of the input array ``prgUsers``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoresDownloaded_t <UserStats.OnLeaderboardScoresDownloaded>` and a boolean
     :returns: (uint64) Return value
@@ -158,7 +158,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchLeaderboardName:
+    :param str? pchLeaderboardName:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardFindResult_t <UserStats.OnLeaderboardFindResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
@@ -179,7 +179,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchLeaderboardName:
+    :param str? pchLeaderboardName:
     :param int eLeaderboardSortMethod:
     :param int eLeaderboardDisplayType:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardFindResult_t <UserStats.OnLeaderboardFindResult>` and a boolean
@@ -200,7 +200,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName: The 'API Name' of the achievement
+    :param str? pchName: The 'API Name' of the achievement
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievement>`_
@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pflPercent``
     :SteamWorks: `GetAchievementAchievedPercent <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementAchievedPercent>`_
@@ -235,7 +235,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
     :returns: (int) ``punUnlockTime``
@@ -257,8 +257,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
-    :param str pchKey:
+    :param str? pchName:
+    :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
 
@@ -272,7 +272,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (int) Return value
     :SteamWorks: `GetAchievementIcon <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementIcon>`_
 
@@ -292,7 +292,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pfMinProgress``
     :returns: (float) ``pfMaxProgress``
@@ -308,7 +308,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pnMinProgress``
     :returns: (int) ``pnMaxProgress``
@@ -333,7 +333,7 @@ Function Reference
 
     :param uint64 hSteamLeaderboardEntries:
     :param int index:
-    :param int cDetailsMax: size of the buffer to be allocated to hold the return value ``pDetails``
+    :param int? cDetailsMax: size of the buffer to allocate for ``pDetails``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (:ref:`LeaderboardEntry_t <struct-LeaderboardEntry_t>`) ``pLeaderboardEntry``
     :returns: (int[]) ``pDetails``
@@ -348,7 +348,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchStatName:
+    :param str? pchStatName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
     :SteamWorks: `GetGlobalStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStat>`_
@@ -369,8 +369,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchStatName:
-    :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
+    :param str? pchStatName:
+    :param int? cubData: size of the buffer to allocate for ``pData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (float[]) ``pData``
     :SteamWorks: `GetGlobalStatHistory <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistory>`_
@@ -384,8 +384,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchStatName:
-    :param int cubData: size of the buffer to be allocated to hold the return value ``pData``
+    :param str? pchStatName:
+    :param int? cubData: size of the buffer to allocate for ``pData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (uint64[]) ``pData``
     :SteamWorks: `GetGlobalStatHistory <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStatHistory>`_
@@ -399,7 +399,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchStatName:
+    :param str? pchStatName:
     :returns: (bool) Return value
     :returns: (uint64) ``pData``
     :SteamWorks: `GetGlobalStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetGlobalStat>`_
@@ -473,7 +473,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
+    :param int? unNameBufLen: size of the buffer to allocate for ``pchName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pchName``
     :returns: (float) ``pflPercent``
@@ -499,7 +499,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iIteratorPrevious:
-    :param int unNameBufLen: size of the buffer to be allocated to hold the return value ``pchName``
+    :param int? unNameBufLen: size of the buffer to allocate for ``pchName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pchName``
     :returns: (float) ``pflPercent``
@@ -548,7 +548,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
     :SteamWorks: `GetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStat>`_
@@ -569,7 +569,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
     :SteamWorks: `GetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetStat>`_
@@ -591,7 +591,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
     :SteamWorks: `GetUserAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserAchievement>`_
@@ -612,7 +612,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
     :returns: (int) ``punUnlockTime``
@@ -628,7 +628,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
     :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStat>`_
@@ -643,7 +643,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDUser:
-    :param str pchName:
+    :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
     :SteamWorks: `GetUserStat <https://partner.steamgames.com/doc/api/ISteamUserStats#GetUserStat>`_
@@ -664,7 +664,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :param int nCurProgress:
     :param int nMaxProgress:
     :returns: (bool) Return value
@@ -748,7 +748,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName: The 'API Name' of the achievement
+    :param str? pchName: The 'API Name' of the achievement
     :returns: (bool) Return value
     :SteamWorks: `SetAchievement <https://partner.steamgames.com/doc/api/ISteamUserStats#SetAchievement>`_
 
@@ -765,7 +765,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :param float fData:
     :returns: (bool) Return value
     :SteamWorks: `SetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStat>`_
@@ -783,7 +783,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :param int nData:
     :returns: (bool) Return value
     :SteamWorks: `SetStat <https://partner.steamgames.com/doc/api/ISteamUserStats#SetStat>`_
@@ -815,7 +815,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchName:
+    :param str? pchName:
     :param float flCountThisSession:
     :param float dSessionLength:
     :returns: (bool) Return value
@@ -834,7 +834,7 @@ Function Reference
     :param uint64 hSteamLeaderboard:
     :param int eLeaderboardUploadScoreMethod:
     :param int nScore:
-    :param int[] pScoreDetails:
+    :param int[]? pScoreDetails:
     :param int cScoreDetailsCount: size of the input array ``pScoreDetails``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoreUploaded_t <UserStats.OnLeaderboardScoreUploaded>` and a boolean
     :returns: (uint64) Return value

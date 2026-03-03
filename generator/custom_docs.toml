@@ -2598,7 +2598,7 @@ local ok, resultHandle = Steam.Inventory.GetAllItems()
 example = """
 function Steam.Inventory.OnSteamInventoryResultReady(data)
     if data.m_result ~= Steam.k_EResultOK then return end
-    local items = Steam.Inventory.GetResultItems(data.m_handle, 256)
+    local _, items = Steam.Inventory.GetResultItems(data.m_handle, 256)
     for _, item in ipairs(items) do
         print('Item:', item.m_iDefinition, 'Qty:', item.m_unQuantity)
     end
@@ -2674,10 +2674,11 @@ example = """
 Steam.Inventory.RequestPrices(function(data, err)
     if not err and data.m_result == Steam.k_EResultOK then
         local numItems = Steam.Inventory.GetNumItemsWithPrices()
-        local items = Steam.Inventory.getItemsWithPrices(numItems)
-        for _, item in ipairs(items) do
-            print('Item', item.m_iDefinition, 'costs',
-                  item.m_flCurrentPrice, item.m_rgchCurrencyCode)
+        local ok, items, curPrices, basePrices = Steam.Inventory.GetItemsWithPrices(numItems)
+        if ok then
+            for i = 1, numItems do
+                print('Item', items[i], 'prices', curPrices[i], basePrices[i])
+            end
         end
     end
 end)

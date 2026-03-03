@@ -340,15 +340,26 @@ impl DocGenerator {
                 };
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct {} and a boolean\n", param.name, struct_ref));
             } else {
-                let type_str = param.ltype.to_rst_link(&self.structs);
+                let type_str = if param.is_optional {
+                    format!("{}?", param.ltype.to_rst_link(&self.structs))
+                } else {
+                    param.ltype.to_rst_link(&self.structs)
+                };
                 let desc = if !param_desc.is_empty() {
                     param_desc.to_string()
                 } else if let Some((array_names, is_output)) = &param.size_of {
                     if *is_output {
-                        format!(
-                            "size of the buffer to be allocated to hold the return value ``{}``",
-                            array_names[0]
-                        )
+                        if param.is_optional {
+                            format!(
+                                "size of the buffer to allocate for ``{}``. If ``nil`` then the buffer will be ``NULL``.",
+                                array_names[0]
+                            )
+                        } else {
+                            format!(
+                                "size of the buffer to be allocated to hold the return value ``{}``",
+                                array_names[0]
+                            )
+                        }
                     } else if array_names.len() == 1 {
                         format!("size of the input array ``{}``", array_names[0])
                     } else {

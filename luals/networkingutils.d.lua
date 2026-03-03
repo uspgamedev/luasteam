@@ -18,7 +18,7 @@ function NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location
 function NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation) end
 
 ---@param location SteamNetworkPingLocation_t
----@param cchBufSize integer size of the buffer to allocate for return value pszBuf
+---@param cchBufSize integer? size of the buffer for pszBuf; if nil then the buffer will be NULL
 ---@return string -- Value of: pszBuf
 function NetworkingUtils.ConvertPingLocationToString(location, cchBufSize) end
 
@@ -67,7 +67,7 @@ function NetworkingUtils.SetGlobalConfigValueInt32(eValue, val) end
 function NetworkingUtils.SetGlobalConfigValueFloat(eValue, val) end
 
 ---@param eValue integer
----@param val string
+---@param val string?
 ---@return boolean
 function NetworkingUtils.SetGlobalConfigValueString(eValue, val) end
 
@@ -85,7 +85,7 @@ function NetworkingUtils.SetConnectionConfigValueFloat(hConn, eValue, val) end
 
 ---@param hConn integer
 ---@param eValue integer
----@param val string
+---@param val string?
 ---@return boolean
 function NetworkingUtils.SetConnectionConfigValueString(hConn, eValue, val) end
 
@@ -101,12 +101,12 @@ function NetworkingUtils.GetConfigValueInfo(eValue) end
 function NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars) end
 
 ---@param addr SteamNetworkingIPAddr
----@param cbBuf integer size of the buffer to allocate for return value buf
+---@param cbBuf integer? size of the buffer for buf; if nil then the buffer will be NULL
 ---@param bWithPort boolean
 ---@return string -- Value of: buf
 function NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort) end
 
----@param pszStr string
+---@param pszStr string?
 ---@return boolean
 ---@return SteamNetworkingIPAddr -- Value of: pAddr
 function NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr) end
@@ -116,11 +116,11 @@ function NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr) end
 function NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr) end
 
 ---@param identity SteamNetworkingIdentity
----@param cbBuf integer size of the buffer to allocate for return value buf
+---@param cbBuf integer? size of the buffer for buf; if nil then the buffer will be NULL
 ---@return string -- Value of: buf
 function NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf) end
 
----@param pszStr string
+---@param pszStr string?
 ---@return boolean
 ---@return SteamNetworkingIdentity -- Value of: pIdentity
 function NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr) end

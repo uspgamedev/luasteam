@@ -66,7 +66,7 @@ static int luasteam_Controller_GetConnectedControllers(lua_State *L) {
 // uint64 Controller.GetActionSetHandle(pszActionSetName: str)
 static int luasteam_Controller_GetActionSetHandle(lua_State *L) {
 	auto *iface = SteamController();
-	const char *pszActionSetName = luaL_checkstring(L, 1);
+	const char *pszActionSetName = luaL_optstring(L, 1, nullptr);
 	ControllerActionSetHandle_t __ret = SteamAPI_ISteamController_GetActionSetHandle(iface, pszActionSetName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
@@ -156,7 +156,7 @@ static int luasteam_Controller_GetActiveActionSetLayers(lua_State *L) {
 // uint64 Controller.GetDigitalActionHandle(pszActionName: str)
 static int luasteam_Controller_GetDigitalActionHandle(lua_State *L) {
 	auto *iface = SteamController();
-	const char *pszActionName = luaL_checkstring(L, 1);
+	const char *pszActionName = luaL_optstring(L, 1, nullptr);
 	ControllerDigitalActionHandle_t __ret = SteamAPI_ISteamController_GetDigitalActionHandle(iface, pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;
@@ -202,7 +202,7 @@ static int luasteam_Controller_GetDigitalActionOrigins(lua_State *L) {
 // uint64 Controller.GetAnalogActionHandle(pszActionName: str)
 static int luasteam_Controller_GetAnalogActionHandle(lua_State *L) {
 	auto *iface = SteamController();
-	const char *pszActionName = luaL_checkstring(L, 1);
+	const char *pszActionName = luaL_optstring(L, 1, nullptr);
 	ControllerAnalogActionHandle_t __ret = SteamAPI_ISteamController_GetAnalogActionHandle(iface, pszActionName);
 	luasteam::pushuint64(L, __ret);
 	return 1;

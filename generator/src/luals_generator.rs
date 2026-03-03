@@ -236,29 +236,32 @@ impl LuaLsGenerator {
         signature: &LuaMethodSignature,
     ) {
         for param in signature.params.iter() {
+            let type_str = if param.is_optional {
+                format!("{}?", param.ltype.to_luals_string())
+            } else {
+                param.ltype.to_luals_string()
+            };
             if let Some((array_names, is_output)) = &param.size_of {
                 let desc = if *is_output {
-                    format!(
-                        "size of the buffer to allocate for return value {}",
-                        array_names[0]
-                    )
+                    if param.is_optional {
+                        format!(
+                            "size of the buffer for {}; if nil then the buffer will be NULL",
+                            array_names[0]
+                        )
+                    } else {
+                        format!(
+                            "size of the buffer to allocate for return value {}",
+                            array_names[0]
+                        )
+                    }
                 } else if array_names.len() == 1 {
                     format!("size of the input array {}", array_names[0])
                 } else {
                     format!("size of the input arrays {}", array_names.join(" and "))
                 };
-                cb.line(&format!(
-                    "---@param {} {} {}",
-                    param.name,
-                    param.ltype.to_luals_string(),
-                    desc
-                ));
+                cb.line(&format!("---@param {} {} {}", param.name, type_str, desc));
             } else {
-                cb.line(&format!(
-                    "---@param {} {}",
-                    param.name,
-                    param.ltype.to_luals_string()
-                ));
+                cb.line(&format!("---@param {} {}", param.name, type_str));
             }
         }
 

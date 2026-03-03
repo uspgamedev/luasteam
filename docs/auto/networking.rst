@@ -268,7 +268,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
+    :param int? cubDest: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :param int nChannel:
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
@@ -291,7 +291,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hListenSocket:
-    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
+    :param int? cubDest: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
     :returns: (int) ``pcubMsgSize``
@@ -309,7 +309,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hSocket:
-    :param int cubDest: size of the buffer to be allocated to hold the return value ``pubDest``
+    :param int? cubDest: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
     :returns: (int) ``pcubMsgSize``
@@ -325,7 +325,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hSocket:
-    :param str pubData:
+    :param str? pubData:
     :param int cubData: size of the input array ``pubData``
     :param bool bReliable:
     :returns: (bool) Return value
@@ -336,7 +336,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDRemote:
-    :param str pubData:
+    :param str? pubData:
     :param int cubData: size of the input array ``pubData``
     :param int eP2PSendType:
     :param int nChannel:

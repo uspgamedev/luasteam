@@ -26,26 +26,26 @@
 ---@field OnRemoteStorageLocalFileChange? fun(data: RemoteStorageLocalFileChange_t)
 local RemoteStorage = {}
 
----@param pchFile string
----@param pvData string
+---@param pchFile string?
+---@param pvData string?
 ---@param cubData integer size of the input array pvData
 ---@return boolean
 function RemoteStorage.FileWrite(pchFile, pvData, cubData) end
 
----@param pchFile string
----@param cubDataToRead integer size of the buffer to allocate for return value pvData
+---@param pchFile string?
+---@param cubDataToRead integer? size of the buffer for pvData; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pvData
 function RemoteStorage.FileRead(pchFile, cubDataToRead) end
 
----@param pchFile string
----@param pvData string
+---@param pchFile string?
+---@param pvData string?
 ---@param cubData integer size of the input array pvData
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 
----@param pchFile string
+---@param pchFile string?
 ---@param nOffset integer
 ---@param cubToRead integer
 ---@param callback fun(data: table?, io_fail: boolean)?
@@ -53,35 +53,35 @@ function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 function RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback) end
 
 ---@param hReadCall uint64
----@param cubToRead integer size of the buffer to allocate for return value pvBuffer
+---@param cubToRead integer? size of the buffer for pvBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pvBuffer
 function RemoteStorage.FileReadAsyncComplete(hReadCall, cubToRead) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return boolean
 function RemoteStorage.FileForget(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return boolean
 function RemoteStorage.FileDelete(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
 function RemoteStorage.FileShare(pchFile, callback) end
 
----@param pchFile string
+---@param pchFile string?
 ---@param eRemoteStoragePlatform integer
 ---@return boolean
 function RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return uint64
 function RemoteStorage.FileWriteStreamOpen(pchFile) end
 
 ---@param writeHandle uint64
----@param pvData string
+---@param pvData string?
 ---@param cubData integer size of the input array pvData
 ---@return boolean
 function RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData) end
@@ -94,23 +94,23 @@ function RemoteStorage.FileWriteStreamClose(writeHandle) end
 ---@return boolean
 function RemoteStorage.FileWriteStreamCancel(writeHandle) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return boolean
 function RemoteStorage.FileExists(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return boolean
 function RemoteStorage.FilePersisted(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return integer
 function RemoteStorage.GetFileSize(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return uint64
 function RemoteStorage.GetFileTimestamp(pchFile) end
 
----@param pchFile string
+---@param pchFile string?
 ---@return integer
 function RemoteStorage.GetSyncPlatforms(pchFile) end
 
@@ -149,7 +149,7 @@ function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 function RemoteStorage.GetUGCDownloadProgress(hContent) end
 
 ---@param hContent uint64
----@param cubDataToRead integer size of the buffer to allocate for return value pvData
+---@param cubDataToRead integer? size of the buffer for pvData; if nil then the buffer will be NULL
 ---@param cOffset integer
 ---@param eAction integer
 ---@return integer
@@ -163,11 +163,11 @@ function RemoteStorage.GetCachedUGCCount() end
 ---@return uint64
 function RemoteStorage.GetCachedUGCHandle(iCachedContent) end
 
----@param pchFile string
----@param pchPreviewFile string
+---@param pchFile string?
+---@param pchPreviewFile string?
 ---@param nConsumerAppId integer
----@param pchTitle string
----@param pchDescription string
+---@param pchTitle string?
+---@param pchDescription string?
 ---@param eVisibility integer
 ---@param eWorkshopFileType integer
 ---@param callback fun(data: table?, io_fail: boolean)?
@@ -180,22 +180,22 @@ function RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerApp
 function RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId) end
 
 ---@param updateHandle uint64
----@param pchFile string
+---@param pchFile string?
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileFile(updateHandle, pchFile) end
 
 ---@param updateHandle uint64
----@param pchPreviewFile string
+---@param pchPreviewFile string?
 ---@return boolean
 function RemoteStorage.UpdatePublishedFilePreviewFile(updateHandle, pchPreviewFile) end
 
 ---@param updateHandle uint64
----@param pchTitle string
+---@param pchTitle string?
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileTitle(updateHandle, pchTitle) end
 
 ---@param updateHandle uint64
----@param pchDescription string
+---@param pchDescription string?
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescription) end
 
@@ -246,7 +246,7 @@ function RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback) end
 function RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback) end
 
 ---@param updateHandle uint64
----@param pchChangeDescription string
+---@param pchChangeDescription string?
 ---@return boolean
 function RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pchChangeDescription) end
 
@@ -275,12 +275,12 @@ function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callba
 function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback) end
 
 ---@param eVideoProvider integer
----@param pchVideoAccount string
----@param pchVideoIdentifier string
----@param pchPreviewFile string
+---@param pchVideoAccount string?
+---@param pchVideoIdentifier string?
+---@param pchPreviewFile string?
 ---@param nConsumerAppId integer
----@param pchTitle string
----@param pchDescription string
+---@param pchTitle string?
+---@param pchDescription string?
 ---@param eVisibility integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64
@@ -310,7 +310,7 @@ function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex
 function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback) end
 
 ---@param hContent uint64
----@param pchLocation string
+---@param pchLocation string?
 ---@param unPriority integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64

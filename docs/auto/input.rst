@@ -138,7 +138,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionSetName:
+    :param str? pszActionSetName:
     :returns: (uint64) Return value
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetActionSetHandle>`_
 
@@ -178,7 +178,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionName:
+    :param str? pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionHandle>`_
 
@@ -277,7 +277,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pszActionName:
+    :param str? pszActionName:
     :returns: (uint64) Return value
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionHandle>`_
 
@@ -481,7 +481,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchInputActionManifestAbsolutePath:
+    :param str? pchInputActionManifestAbsolutePath:
     :returns: (bool) Return value
     :SteamWorks: `SetInputActionManifestFilePath <https://partner.steamgames.com/doc/api/ISteamInput#SetInputActionManifestFilePath>`_
 

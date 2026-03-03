@@ -167,7 +167,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pTagName:
+    :param str? pTagName:
     :returns: (bool) Return value
     :SteamWorks: `AddExcludedTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddExcludedTag>`_
 
@@ -182,8 +182,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchKey:
-    :param str pchValue:
+    :param str? pchKey:
+    :param str? pchValue:
     :returns: (bool) Return value
     :SteamWorks: `AddItemKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemKeyValueTag>`_
 
@@ -198,7 +198,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pszPreviewFile:
+    :param str? pszPreviewFile:
     :param int type:
     :returns: (bool) Return value
     :SteamWorks: `AddItemPreviewFile <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemPreviewFile>`_
@@ -208,7 +208,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pszVideoID:
+    :param str? pszVideoID:
     :returns: (bool) Return value
     :SteamWorks: `AddItemPreviewVideo <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemPreviewVideo>`_
 
@@ -235,8 +235,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pKey:
-    :param str pValue:
+    :param str? pKey:
+    :param str? pValue:
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredKeyValueTag>`_
 
@@ -245,7 +245,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pTagName:
+    :param str? pTagName:
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTag>`_
 
@@ -269,7 +269,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unWorkshopDepotID:
-    :param str pszFolder:
+    :param str? pszFolder:
     :returns: (bool) Return value
     :SteamWorks: `BInitWorkshopForGameServer <https://partner.steamgames.com/doc/api/ISteamUGC#BInitWorkshopForGameServer>`_
 
@@ -320,7 +320,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pvecPublishedFileID:
+    :param uint64[]? pvecPublishedFileID:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :returns: (uint64) Return value
     :SteamWorks: `CreateQueryUGCDetailsRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryUGCDetailsRequest>`_
@@ -437,7 +437,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 nPublishedFileID:
-    :param int cchFolderSize: size of the buffer to be allocated to hold the return value ``pchFolder``
+    :param int? cchFolderSize: size of the buffer to allocate for ``pchFolder``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (uint64) ``punSizeOnDisk``
     :returns: (str) ``pchFolder``
@@ -522,8 +522,8 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int previewIndex:
-    :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURLOrVideoID``
-    :param int cchOriginalFileNameSize: size of the buffer to be allocated to hold the return value ``pchOriginalFileName``
+    :param int? cchURLSize: size of the buffer to allocate for ``pchURLOrVideoID``. If ``nil`` then the buffer will be ``NULL``.
+    :param int? cchOriginalFileNameSize: size of the buffer to allocate for ``pchOriginalFileName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchURLOrVideoID``
     :returns: (str) ``pchOriginalFileName``
@@ -573,8 +573,8 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int keyValueTagIndex:
-    :param int cchKeySize: size of the buffer to be allocated to hold the return value ``pchKey``
-    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
+    :param int? cchKeySize: size of the buffer to allocate for ``pchKey``. If ``nil`` then the buffer will be ``NULL``.
+    :param int? cchValueSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchKey``
     :returns: (str) ``pchValue``
@@ -591,7 +591,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param int cchMetadatasize: size of the buffer to be allocated to hold the return value ``pchMetadata``
+    :param int? cchMetadatasize: size of the buffer to allocate for ``pchMetadata``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchMetadata``
     :SteamWorks: `GetQueryUGCMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCMetadata>`_
@@ -633,7 +633,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param int cchURLSize: size of the buffer to be allocated to hold the return value ``pchURL``
+    :param int? cchURLSize: size of the buffer to allocate for ``pchURL``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchURL``
     :SteamWorks: `GetQueryUGCPreviewURL <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCPreviewURL>`_
@@ -689,7 +689,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int indexTag:
-    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
+    :param int? cchValueSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchValue``
     :SteamWorks: `GetQueryUGCTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTag>`_
@@ -705,7 +705,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int indexTag:
-    :param int cchValueSize: size of the buffer to be allocated to hold the return value ``pchValue``
+    :param int? cchValueSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchValue``
     :SteamWorks: `GetQueryUGCTagDisplayName <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCTagDisplayName>`_
@@ -718,7 +718,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int cMaxEntries: size of the buffer to be allocated to hold the return value ``pvecPublishedFileID``
+    :param int? cMaxEntries: size of the buffer to allocate for ``pvecPublishedFileID``. If ``nil`` then the buffer will be ``NULL``.
     :param bool bIncludeLocallyDisabled:
     :returns: (int) Return value
     :returns: (uint64[]) ``pvecPublishedFileID``
@@ -743,7 +743,7 @@ Function Reference
     :param uint64 handle:
     :param int index:
     :param int versionIndex:
-    :param int cchGameBranchSize: size of the buffer to be allocated to hold the return value ``pchGameBranchMin``
+    :param int? cchGameBranchSize: size of the buffer to allocate for ``pchGameBranchMin``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchGameBranchMin``
     :returns: (str) ``pchGameBranchMax``
@@ -865,7 +865,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchKey:
+    :param str? pchKey:
     :returns: (bool) Return value
     :SteamWorks: `RemoveItemKeyValueTags <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveItemKeyValueTags>`_
 
@@ -952,7 +952,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pMatchCloudFileName:
+    :param str? pMatchCloudFileName:
     :returns: (bool) Return value
     :SteamWorks: `SetCloudFileNameFilter <https://partner.steamgames.com/doc/api/ISteamUGC#SetCloudFileNameFilter>`_
 
@@ -961,7 +961,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pszContentFolder:
+    :param str? pszContentFolder:
     :returns: (bool) Return value
     :SteamWorks: `SetItemContent <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemContent>`_
 
@@ -974,7 +974,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchDescription:
+    :param str? pchDescription:
     :returns: (bool) Return value
     :SteamWorks: `SetItemDescription <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemDescription>`_
 
@@ -987,7 +987,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchMetaData:
+    :param str? pchMetaData:
     :returns: (bool) Return value
     :SteamWorks: `SetItemMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemMetadata>`_
 
@@ -1002,7 +1002,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pszPreviewFile:
+    :param str? pszPreviewFile:
     :returns: (bool) Return value
     :SteamWorks: `SetItemPreview <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemPreview>`_
 
@@ -1031,7 +1031,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchTitle:
+    :param str? pchTitle:
     :returns: (bool) Return value
     :SteamWorks: `SetItemTitle <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTitle>`_
 
@@ -1044,7 +1044,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchLanguage:
+    :param str? pchLanguage:
     :returns: (bool) Return value
     :SteamWorks: `SetItemUpdateLanguage <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemUpdateLanguage>`_
 
@@ -1073,7 +1073,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pvecPublishedFileIDs:
+    :param uint64[]? pvecPublishedFileIDs:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileIDs``
     :param bool bDisabledLocally:
     :returns: (bool) Return value
@@ -1084,7 +1084,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchLanguage:
+    :param str? pchLanguage:
     :returns: (bool) Return value
     :SteamWorks: `SetLanguage <https://partner.steamgames.com/doc/api/ISteamUGC#SetLanguage>`_
 
@@ -1118,8 +1118,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pszGameBranchMin:
-    :param str pszGameBranchMax:
+    :param str? pszGameBranchMin:
+    :param str? pszGameBranchMax:
     :returns: (bool) Return value
     :SteamWorks: `SetRequiredGameVersions <https://partner.steamgames.com/doc/api/ISteamUGC#SetRequiredGameVersions>`_
 
@@ -1227,7 +1227,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pSearchText:
+    :param str? pSearchText:
     :returns: (bool) Return value
     :SteamWorks: `SetSearchText <https://partner.steamgames.com/doc/api/ISteamUGC#SetSearchText>`_
 
@@ -1241,7 +1241,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pvecPublishedFileIDs:
+    :param uint64[]? pvecPublishedFileIDs:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileIDs``
     :returns: (bool) Return value
     :SteamWorks: `SetSubscriptionsLoadOrder <https://partner.steamgames.com/doc/api/ISteamUGC#SetSubscriptionsLoadOrder>`_
@@ -1321,7 +1321,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pvecPublishedFileID:
+    :param uint64[]? pvecPublishedFileID:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :param function callback: CallResult callback receiving struct :func:`StartPlaytimeTrackingResult_t <UGC.OnStartPlaytimeTrackingResult>` and a boolean
     :returns: (uint64) Return value
@@ -1338,7 +1338,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64[] pvecPublishedFileID:
+    :param uint64[]? pvecPublishedFileID:
     :param int unNumPublishedFileIDs: size of the input array ``pvecPublishedFileID``
     :param function callback: CallResult callback receiving struct :func:`StopPlaytimeTrackingResult_t <UGC.OnStopPlaytimeTrackingResult>` and a boolean
     :returns: (uint64) Return value
@@ -1363,7 +1363,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 handle:
-    :param str pchChangeNote:
+    :param str? pchChangeNote:
     :param function callback: CallResult callback receiving struct :func:`SubmitItemUpdateResult_t <UGC.OnSubmitItemUpdateResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `SubmitItemUpdate <https://partner.steamgames.com/doc/api/ISteamUGC#SubmitItemUpdate>`_
@@ -1428,7 +1428,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param str pszPreviewFile:
+    :param str? pszPreviewFile:
     :returns: (bool) Return value
     :SteamWorks: `UpdateItemPreviewFile <https://partner.steamgames.com/doc/api/ISteamUGC#UpdateItemPreviewFile>`_
 
@@ -1438,7 +1438,7 @@ Function Reference
 
     :param uint64 handle:
     :param int index:
-    :param str pszVideoID:
+    :param str? pszVideoID:
     :returns: (bool) Return value
     :SteamWorks: `UpdateItemPreviewVideo <https://partner.steamgames.com/doc/api/ISteamUGC#UpdateItemPreviewVideo>`_
 

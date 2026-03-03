@@ -318,7 +318,7 @@ static int luasteam_gameserveritem_t_GetName(lua_State *L) {
 }
 static int luasteam_gameserveritem_t_SetName(lua_State *L) {
 	gameserveritem_t *self = luasteam::check_gameserveritem_t_ptr(L, 1);
-	const char *pName = luaL_checkstring(L, 2);
+	const char *pName = luaL_optstring(L, 2, nullptr);
 	SteamAPI_gameserveritem_t_SetName(self, pName);
 	return 0;
 }
@@ -2109,7 +2109,7 @@ static int luasteam_SteamNetworkingIPAddr_IsIPv6AllZeros(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIPAddr_SetIPv6(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	const unsigned char *ipv6 = reinterpret_cast<const unsigned char *>(luaL_checkstring(L, 2));
+	const unsigned char *ipv6 = reinterpret_cast<const unsigned char *>(luaL_optstring(L, 2, nullptr));
 	uint16 nPort = static_cast<uint16>(luaL_checkint(L, 3));
 	SteamAPI_SteamNetworkingIPAddr_SetIPv6(self, ipv6, nPort);
 	return 0;
@@ -2147,16 +2147,16 @@ static int luasteam_SteamNetworkingIPAddr_IsLocalHost(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIPAddr_ToString(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	uint32 cbBuf = luaL_checkint(L, 2);
+	uint32 cbBuf = lua_isnil(L, 2) ? 0 : (uint32)luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
 	bool bWithPort = lua_toboolean(L, 3);
-	SteamAPI_SteamNetworkingIPAddr_ToString(self, buf.data(), cbBuf, bWithPort);
+	SteamAPI_SteamNetworkingIPAddr_ToString(self, lua_isnil(L, 2) ? nullptr : buf.data(), cbBuf, bWithPort);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
 static int luasteam_SteamNetworkingIPAddr_ParseString(lua_State *L) {
 	SteamNetworkingIPAddr *self = luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
-	const char *pszStr = luaL_checkstring(L, 2);
+	const char *pszStr = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_SteamNetworkingIPAddr_ParseString(self, pszStr);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -2275,7 +2275,7 @@ static int luasteam_SteamNetworkingIdentity_GetSteamID64(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetXboxPairwiseID(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char *pszString = luaL_checkstring(L, 2);
+	const char *pszString = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_SteamNetworkingIdentity_SetXboxPairwiseID(self, pszString);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -2352,7 +2352,7 @@ static int luasteam_SteamNetworkingIdentity_IsLocalHost(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetGenericString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char *pszString = luaL_checkstring(L, 2);
+	const char *pszString = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_SteamNetworkingIdentity_SetGenericString(self, pszString);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -2365,7 +2365,7 @@ static int luasteam_SteamNetworkingIdentity_GetGenericString(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_SetGenericBytes(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const void *data = reinterpret_cast<const void *>(luaL_checkstring(L, 2));
+	const void *data = reinterpret_cast<const void *>(luaL_optstring(L, 2, nullptr));
 	uint32 cbLen = static_cast<uint32>(luaL_checkint(L, 3));
 	bool __ret = SteamAPI_SteamNetworkingIdentity_SetGenericBytes(self, data, cbLen);
 	lua_pushboolean(L, __ret);
@@ -2373,15 +2373,15 @@ static int luasteam_SteamNetworkingIdentity_SetGenericBytes(lua_State *L) {
 }
 static int luasteam_SteamNetworkingIdentity_ToString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	uint32 cbBuf = luaL_checkint(L, 2);
+	uint32 cbBuf = lua_isnil(L, 2) ? 0 : (uint32)luaL_checkint(L, 2);
 	std::vector<char> buf(cbBuf);
-	SteamAPI_SteamNetworkingIdentity_ToString(self, buf.data(), cbBuf);
+	SteamAPI_SteamNetworkingIdentity_ToString(self, lua_isnil(L, 2) ? nullptr : buf.data(), cbBuf);
 	lua_pushstring(L, reinterpret_cast<const char*>(buf.data()));
 	return 1;
 }
 static int luasteam_SteamNetworkingIdentity_ParseString(lua_State *L) {
 	SteamNetworkingIdentity *self = luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
-	const char *pszStr = luaL_checkstring(L, 2);
+	const char *pszStr = luaL_optstring(L, 2, nullptr);
 	bool __ret = SteamAPI_SteamNetworkingIdentity_ParseString(self, pszStr);
 	lua_pushboolean(L, __ret);
 	return 1;
@@ -3021,7 +3021,7 @@ static int luasteam_SteamNetworkingConfigValue_t_SetFloat(lua_State *L) {
 static int luasteam_SteamNetworkingConfigValue_t_SetString(lua_State *L) {
 	SteamNetworkingConfigValue_t *self = luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 1);
 	ESteamNetworkingConfigValue eVal = static_cast<ESteamNetworkingConfigValue>(luaL_checkint(L, 2));
-	const char *data = luaL_checkstring(L, 3);
+	const char *data = luaL_optstring(L, 3, nullptr);
 	SteamAPI_SteamNetworkingConfigValue_t_SetString(self, eVal, data);
 	return 0;
 }
@@ -12158,7 +12158,7 @@ static int HTML_NeedsPaint_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pBGRA") == 0) {
-		luasteam::copy_str_into(self->pBGRA, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pBGRA, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "unWide") == 0) {
@@ -12216,7 +12216,7 @@ EXTERN int luasteam_newHTML_NeedsPaint_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pBGRA");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pBGRA, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pBGRA, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "unWide");
@@ -12314,15 +12314,15 @@ static int HTML_StartRequest_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "pchTarget") == 0) {
-		luasteam::copy_str_into(self->pchTarget, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchTarget, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "pchPostData") == 0) {
-		luasteam::copy_str_into(self->pchPostData, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchPostData, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "bIsRedirect") == 0) {
@@ -12344,17 +12344,17 @@ EXTERN int luasteam_newHTML_StartRequest_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchTarget");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchTarget, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchTarget, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchPostData");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchPostData, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchPostData, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bIsRedirect");
@@ -12452,11 +12452,11 @@ static int HTML_URLChanged_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "pchPostData") == 0) {
-		luasteam::copy_str_into(self->pchPostData, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchPostData, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "bIsRedirect") == 0) {
@@ -12464,7 +12464,7 @@ static int HTML_URLChanged_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchPageTitle") == 0) {
-		luasteam::copy_str_into(self->pchPageTitle, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchPageTitle, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "bNewNavigation") == 0) {
@@ -12486,12 +12486,12 @@ EXTERN int luasteam_newHTML_URLChanged_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchPostData");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchPostData, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchPostData, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bIsRedirect");
@@ -12501,7 +12501,7 @@ EXTERN int luasteam_newHTML_URLChanged_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchPageTitle");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchPageTitle, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchPageTitle, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bNewNavigation");
@@ -12546,11 +12546,11 @@ static int HTML_FinishedRequest_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "pchPageTitle") == 0) {
-		luasteam::copy_str_into(self->pchPageTitle, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchPageTitle, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_FinishedRequest_t has no field '%%s'", key);
@@ -12568,12 +12568,12 @@ EXTERN int luasteam_newHTML_FinishedRequest_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchPageTitle");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchPageTitle, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchPageTitle, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -12609,7 +12609,7 @@ static int HTML_OpenLinkInNewTab_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_OpenLinkInNewTab_t has no field '%%s'", key);
@@ -12627,7 +12627,7 @@ EXTERN int luasteam_newHTML_OpenLinkInNewTab_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -12663,7 +12663,7 @@ static int HTML_ChangedTitle_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchTitle") == 0) {
-		luasteam::copy_str_into(self->pchTitle, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchTitle, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_ChangedTitle_t has no field '%%s'", key);
@@ -12681,7 +12681,7 @@ EXTERN int luasteam_newHTML_ChangedTitle_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchTitle");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchTitle, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchTitle, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13087,7 +13087,7 @@ static int HTML_LinkAtPosition_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "bInput") == 0) {
@@ -13123,7 +13123,7 @@ EXTERN int luasteam_newHTML_LinkAtPosition_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "bInput");
@@ -13169,7 +13169,7 @@ static int HTML_JSAlert_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchMessage") == 0) {
-		luasteam::copy_str_into(self->pchMessage, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchMessage, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_JSAlert_t has no field '%%s'", key);
@@ -13187,7 +13187,7 @@ EXTERN int luasteam_newHTML_JSAlert_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchMessage");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchMessage, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchMessage, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13223,7 +13223,7 @@ static int HTML_JSConfirm_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchMessage") == 0) {
-		luasteam::copy_str_into(self->pchMessage, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchMessage, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_JSConfirm_t has no field '%%s'", key);
@@ -13241,7 +13241,7 @@ EXTERN int luasteam_newHTML_JSConfirm_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchMessage");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchMessage, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchMessage, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13281,11 +13281,11 @@ static int HTML_FileOpenDialog_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchTitle") == 0) {
-		luasteam::copy_str_into(self->pchTitle, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchTitle, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "pchInitialFile") == 0) {
-		luasteam::copy_str_into(self->pchInitialFile, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchInitialFile, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_FileOpenDialog_t has no field '%%s'", key);
@@ -13303,12 +13303,12 @@ EXTERN int luasteam_newHTML_FileOpenDialog_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchTitle");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchTitle, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchTitle, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchInitialFile");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchInitialFile, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchInitialFile, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13364,7 +13364,7 @@ static int HTML_NewWindow_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchURL") == 0) {
-		luasteam::copy_str_into(self->pchURL, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchURL, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	if (strcmp(key, "unX") == 0) {
@@ -13402,7 +13402,7 @@ EXTERN int luasteam_newHTML_NewWindow_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchURL");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchURL, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchURL, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "unX");
@@ -13517,7 +13517,7 @@ static int HTML_StatusText_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchMsg") == 0) {
-		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchMsg, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_StatusText_t has no field '%%s'", key);
@@ -13535,7 +13535,7 @@ EXTERN int luasteam_newHTML_StatusText_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchMsg");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchMsg, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13571,7 +13571,7 @@ static int HTML_ShowToolTip_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchMsg") == 0) {
-		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchMsg, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_ShowToolTip_t has no field '%%s'", key);
@@ -13589,7 +13589,7 @@ EXTERN int luasteam_newHTML_ShowToolTip_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchMsg");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchMsg, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}
@@ -13625,7 +13625,7 @@ static int HTML_UpdateToolTip_t_newindex(lua_State *L) {
 		return 0;
 	}
 	if (strcmp(key, "pchMsg") == 0) {
-		luasteam::copy_str_into(self->pchMsg, luaL_checkstring(L, 3));
+		luasteam::copy_str_into(self->pchMsg, luaL_optstring(L, 3, nullptr));
 		return 0;
 	}
 	return luaL_error(L, "HTML_UpdateToolTip_t has no field '%%s'", key);
@@ -13643,7 +13643,7 @@ EXTERN int luasteam_newHTML_UpdateToolTip_t(lua_State *L) {
 		lua_pop(L, 1);
 		lua_getfield(L, 1, "pchMsg");
 		if (!lua_isnil(L, -1)) {
-			luasteam::copy_str_into(ptr->pchMsg, luaL_checkstring(L, -1));
+			luasteam::copy_str_into(ptr->pchMsg, luaL_optstring(L, -1, nullptr));
 		}
 		lua_pop(L, 1);
 	}

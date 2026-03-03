@@ -15,7 +15,7 @@ function Parties.GetNumActiveBeacons() end
 function Parties.GetBeaconByIndex(unIndex) end
 
 ---@param ulBeaconID uint64
----@param cchMetadata integer size of the buffer to allocate for return value pchMetadata
+---@param cchMetadata integer? size of the buffer for pchMetadata; if nil then the buffer will be NULL
 ---@return boolean
 ---@return uint64 -- Value of: pSteamIDBeaconOwner
 ---@return SteamPartyBeaconLocation_t -- Value of: pLocation
@@ -31,7 +31,7 @@ function Parties.JoinParty(ulBeaconID, callback) end
 ---@return integer -- Value of: puNumLocations
 function Parties.GetNumAvailableBeaconLocations() end
 
----@param uMaxNumLocations integer size of the buffer to allocate for return value pLocationList
+---@param uMaxNumLocations integer? size of the buffer for pLocationList; if nil then the buffer will be NULL
 ---@return boolean
 ---@return SteamPartyBeaconLocation_t[] -- Value of: pLocationList
 function Parties.GetAvailableBeaconLocations(uMaxNumLocations) end
@@ -56,7 +56,7 @@ function Parties.DestroyBeacon(ulBeacon) end
 
 ---@param BeaconLocation SteamPartyBeaconLocation_t
 ---@param eData integer
----@param cchDataStringOut integer size of the buffer to allocate for return value pchDataStringOut
+---@param cchDataStringOut integer? size of the buffer for pchDataStringOut; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchDataStringOut
 function Parties.GetBeaconLocationData(BeaconLocation, eData, cchDataStringOut) end

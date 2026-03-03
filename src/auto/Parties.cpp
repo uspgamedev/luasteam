@@ -211,9 +211,9 @@ static int luasteam_Parties_GetBeaconDetails(lua_State *L) {
 	PartyBeaconID_t ulBeaconID = luasteam::checkuint64(L, 1);
 	CSteamID pSteamIDBeaconOwner;
 	SteamPartyBeaconLocation_t pLocation;
-	int cchMetadata = luaL_checkint(L, 2);
+	int cchMetadata = lua_isnil(L, 2) ? 0 : (int)luaL_checkint(L, 2);
 	std::vector<char> pchMetadata(cchMetadata);
-	bool __ret = SteamAPI_ISteamParties_GetBeaconDetails(iface, ulBeaconID, &pSteamIDBeaconOwner, &pLocation, pchMetadata.data(), cchMetadata);
+	bool __ret = SteamAPI_ISteamParties_GetBeaconDetails(iface, ulBeaconID, &pSteamIDBeaconOwner, &pLocation, lua_isnil(L, 2) ? nullptr : pchMetadata.data(), cchMetadata);
 	lua_pushboolean(L, __ret);
 	luasteam::pushuint64(L, pSteamIDBeaconOwner.ConvertToUint64());
 	luasteam::push_SteamPartyBeaconLocation_t(L, pLocation);
@@ -262,9 +262,9 @@ static int luasteam_Parties_GetNumAvailableBeaconLocations(lua_State *L) {
 // (bool, pLocationList: SteamPartyBeaconLocation_t[]) Parties.GetAvailableBeaconLocations(uMaxNumLocations: int)
 static int luasteam_Parties_GetAvailableBeaconLocations(lua_State *L) {
 	auto *iface = SteamParties();
-	uint32 uMaxNumLocations = luaL_checkint(L, 1);
+	uint32 uMaxNumLocations = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
 	std::vector<SteamPartyBeaconLocation_t> pLocationList(uMaxNumLocations);
-	bool __ret = SteamAPI_ISteamParties_GetAvailableBeaconLocations(iface, pLocationList.data(), uMaxNumLocations);
+	bool __ret = SteamAPI_ISteamParties_GetAvailableBeaconLocations(iface, lua_isnil(L, 1) ? nullptr : pLocationList.data(), uMaxNumLocations);
 	lua_pushboolean(L, __ret);
 	lua_createtable(L, uMaxNumLocations, 0);
 	for(decltype(uMaxNumLocations) i = 0; i < uMaxNumLocations; i++) {
@@ -342,9 +342,9 @@ static int luasteam_Parties_GetBeaconLocationData(lua_State *L) {
 	auto *iface = SteamParties();
 	SteamPartyBeaconLocation_t BeaconLocation = luasteam::check_SteamPartyBeaconLocation_t(L, 1);
 	ESteamPartyBeaconLocationData eData = static_cast<ESteamPartyBeaconLocationData>(luaL_checkint(L, 2));
-	int cchDataStringOut = luaL_checkint(L, 3);
+	int cchDataStringOut = lua_isnil(L, 3) ? 0 : (int)luaL_checkint(L, 3);
 	std::vector<char> pchDataStringOut(cchDataStringOut);
-	bool __ret = SteamAPI_ISteamParties_GetBeaconLocationData(iface, BeaconLocation, eData, pchDataStringOut.data(), cchDataStringOut);
+	bool __ret = SteamAPI_ISteamParties_GetBeaconLocationData(iface, BeaconLocation, eData, lua_isnil(L, 3) ? nullptr : pchDataStringOut.data(), cchDataStringOut);
 	lua_pushboolean(L, __ret);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchDataStringOut.data()));
 	return 2;

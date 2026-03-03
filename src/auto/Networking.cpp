@@ -71,7 +71,7 @@ static int luasteam_Networking_SendP2PPacket(lua_State *L, ISteamNetworking *ifa
 	uint64 steamIDRemote = luasteam::checkuint64(L, 1);
 	uint32 cubData = luaL_checkint(L, 3);
 	size_t _len__tmp0;
-	const char *_tmp0 = luaL_checklstring(L, 2, &_len__tmp0);
+	const char *_tmp0 = luaL_optlstring(L, 2, nullptr, &_len__tmp0);
 	const void *pubData = reinterpret_cast<const void *>(_tmp0);
 	EP2PSend eP2PSendType = static_cast<EP2PSend>(luaL_checkint(L, 4));
 	int nChannel = static_cast<int>(luaL_checkint(L, 5));
@@ -102,12 +102,12 @@ static int luasteam_Networking_IsP2PPacketAvailable_gs(lua_State *L) { return lu
 // In Lua:
 // (bool, pubDest: str, pcubMsgSize: int, psteamIDRemote: uint64) Networking.ReadP2PPacket(cubDest: int, nChannel: int)
 static int luasteam_Networking_ReadP2PPacket(lua_State *L, ISteamNetworking *iface) {
-	uint32 cubDest = luaL_checkint(L, 1);
+	uint32 cubDest = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
 	uint32 pcubMsgSize = cubDest;
 	std::vector<unsigned char> pubDest(cubDest);
 	CSteamID psteamIDRemote;
 	int nChannel = static_cast<int>(luaL_checkint(L, 2));
-	bool __ret = SteamAPI_ISteamNetworking_ReadP2PPacket(iface, pubDest.data(), cubDest, &pcubMsgSize, &psteamIDRemote, nChannel);
+	bool __ret = SteamAPI_ISteamNetworking_ReadP2PPacket(iface, lua_isnil(L, 1) ? nullptr : pubDest.data(), cubDest, &pcubMsgSize, &psteamIDRemote, nChannel);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);
@@ -268,7 +268,7 @@ static int luasteam_Networking_SendDataOnSocket(lua_State *L, ISteamNetworking *
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
 	uint32 cubData = luaL_checkint(L, 3);
 	size_t _len__tmp1;
-	const char *_tmp1 = luaL_checklstring(L, 2, &_len__tmp1);
+	const char *_tmp1 = luaL_optlstring(L, 2, nullptr, &_len__tmp1);
 	void *pubData = const_cast<void *>(reinterpret_cast<const void *>(_tmp1));
 	bool bReliable = lua_toboolean(L, 4);
 	bool __ret = SteamAPI_ISteamNetworking_SendDataOnSocket(iface, hSocket, pubData, cubData, bReliable);
@@ -299,10 +299,10 @@ static int luasteam_Networking_IsDataAvailableOnSocket_gs(lua_State *L) { return
 // (bool, pubDest: str, pcubMsgSize: int) Networking.RetrieveDataFromSocket(hSocket: int, cubDest: int)
 static int luasteam_Networking_RetrieveDataFromSocket(lua_State *L, ISteamNetworking *iface) {
 	SNetSocket_t hSocket = static_cast<SNetSocket_t>(luaL_checkint(L, 1));
-	uint32 cubDest = luaL_checkint(L, 2);
+	uint32 cubDest = lua_isnil(L, 2) ? 0 : (uint32)luaL_checkint(L, 2);
 	uint32 pcubMsgSize = cubDest;
 	std::vector<unsigned char> pubDest(cubDest);
-	bool __ret = SteamAPI_ISteamNetworking_RetrieveDataFromSocket(iface, hSocket, pubDest.data(), cubDest, &pcubMsgSize);
+	bool __ret = SteamAPI_ISteamNetworking_RetrieveDataFromSocket(iface, hSocket, lua_isnil(L, 2) ? nullptr : pubDest.data(), cubDest, &pcubMsgSize);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);
@@ -334,11 +334,11 @@ static int luasteam_Networking_IsDataAvailable_gs(lua_State *L) { return luastea
 // (bool, pubDest: str, pcubMsgSize: int, phSocket: int) Networking.RetrieveData(hListenSocket: int, cubDest: int)
 static int luasteam_Networking_RetrieveData(lua_State *L, ISteamNetworking *iface) {
 	SNetListenSocket_t hListenSocket = static_cast<SNetListenSocket_t>(luaL_checkint(L, 1));
-	uint32 cubDest = luaL_checkint(L, 2);
+	uint32 cubDest = lua_isnil(L, 2) ? 0 : (uint32)luaL_checkint(L, 2);
 	uint32 pcubMsgSize = cubDest;
 	std::vector<unsigned char> pubDest(cubDest);
 	SNetSocket_t phSocket;
-	bool __ret = SteamAPI_ISteamNetworking_RetrieveData(iface, hListenSocket, pubDest.data(), cubDest, &pcubMsgSize, &phSocket);
+	bool __ret = SteamAPI_ISteamNetworking_RetrieveData(iface, hListenSocket, lua_isnil(L, 2) ? nullptr : pubDest.data(), cubDest, &pcubMsgSize, &phSocket);
 	lua_pushboolean(L, __ret);
 	lua_pushlstring(L, reinterpret_cast<const char*>(pubDest.data()), pcubMsgSize);
 	lua_pushinteger(L, pcubMsgSize);

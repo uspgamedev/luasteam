@@ -215,7 +215,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (bool) Return value
     :SteamWorks: `FileDelete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileDelete>`_
 
@@ -229,7 +229,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (bool) Return value
     :SteamWorks: `FileExists <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileExists>`_
 
@@ -245,7 +245,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (bool) Return value
     :SteamWorks: `FileForget <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileForget>`_
 
@@ -253,7 +253,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (bool) Return value
     :SteamWorks: `FilePersisted <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FilePersisted>`_
 
@@ -267,8 +267,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
-    :param int cubDataToRead: size of the buffer to be allocated to hold the return value ``pvData``
+    :param str? pchFile:
+    :param int? cubDataToRead: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pvData``
     :SteamWorks: `FileRead <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileRead>`_
@@ -289,7 +289,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :param int nOffset:
     :param int cubToRead:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileReadAsyncComplete_t <RemoteStorage.OnRemoteStorageFileReadAsyncComplete>` and a boolean
@@ -310,7 +310,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hReadCall:
-    :param int cubToRead: size of the buffer to be allocated to hold the return value ``pvBuffer``
+    :param int? cubToRead: size of the buffer to allocate for ``pvBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pvBuffer``
     :SteamWorks: `FileReadAsyncComplete <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsyncComplete>`_
@@ -323,7 +323,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileShareResult_t <RemoteStorage.OnRemoteStorageFileShareResult>` and a boolean
     :returns: (uint64) Return value
     :SteamWorks: `FileShare <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileShare>`_
@@ -332,8 +332,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
-    :param str pvData:
+    :param str? pchFile:
+    :param str? pvData:
     :param int cubData: size of the input array ``pvData``
     :returns: (bool) Return value
     :SteamWorks: `FileWrite <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWrite>`_
@@ -352,8 +352,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
-    :param str pvData:
+    :param str? pchFile:
+    :param str? pvData:
     :param int cubData: size of the input array ``pvData``
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileWriteAsyncComplete_t <RemoteStorage.OnRemoteStorageFileWriteAsyncComplete>` and a boolean
     :returns: (uint64) Return value
@@ -389,7 +389,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (uint64) Return value
     :SteamWorks: `FileWriteStreamOpen <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamOpen>`_
 
@@ -398,7 +398,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 writeHandle:
-    :param str pvData:
+    :param str? pvData:
     :param int cubData: size of the input array ``pvData``
     :returns: (bool) Return value
     :SteamWorks: `FileWriteStreamWriteChunk <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamWriteChunk>`_
@@ -454,7 +454,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (int) Return value
     :SteamWorks: `GetFileSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileSize>`_
 
@@ -467,7 +467,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (uint64) Return value
     :SteamWorks: `GetFileTimestamp <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileTimestamp>`_
 
@@ -549,7 +549,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (int) Return value
     :SteamWorks: `GetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetSyncPlatforms>`_
 
@@ -602,12 +602,12 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eVideoProvider:
-    :param str pchVideoAccount:
-    :param str pchVideoIdentifier:
-    :param str pchPreviewFile:
+    :param str? pchVideoAccount:
+    :param str? pchVideoIdentifier:
+    :param str? pchPreviewFile:
     :param int nConsumerAppId:
-    :param str pchTitle:
-    :param str pchDescription:
+    :param str? pchTitle:
+    :param str? pchDescription:
     :param int eVisibility:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
     :returns: (uint64) Return value
@@ -622,11 +622,11 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
-    :param str pchPreviewFile:
+    :param str? pchFile:
+    :param str? pchPreviewFile:
     :param int nConsumerAppId:
-    :param str pchTitle:
-    :param str pchDescription:
+    :param str? pchTitle:
+    :param str? pchDescription:
     :param int eVisibility:
     :param int eWorkshopFileType:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
@@ -654,7 +654,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFile:
+    :param str? pchFile:
     :param int eRemoteStoragePlatform:
     :returns: (bool) Return value
     :SteamWorks: `SetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetSyncPlatforms>`_
@@ -693,7 +693,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hContent:
-    :param str pchLocation:
+    :param str? pchLocation:
     :param int unPriority:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageDownloadUGCResult_t <RemoteStorage.OnRemoteStorageDownloadUGCResult>` and a boolean
     :returns: (uint64) Return value
@@ -704,7 +704,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hContent:
-    :param int cubDataToRead: size of the buffer to be allocated to hold the return value ``pvData``
+    :param int? cubDataToRead: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :param int cOffset:
     :param int eAction:
     :returns: (int) Return value
@@ -729,7 +729,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param str pchDescription:
+    :param str? pchDescription:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFileDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileDescription>`_
 
@@ -738,7 +738,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param str pchFile:
+    :param str? pchFile:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFileFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileFile>`_
 
@@ -747,7 +747,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param str pchPreviewFile:
+    :param str? pchPreviewFile:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFilePreviewFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFilePreviewFile>`_
 
@@ -756,7 +756,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param str pchChangeDescription:
+    :param str? pchChangeDescription:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFileSetChangeDescription <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileSetChangeDescription>`_
 
@@ -778,7 +778,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 updateHandle:
-    :param str pchTitle:
+    :param str? pchTitle:
     :returns: (bool) Return value
     :SteamWorks: `UpdatePublishedFileTitle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdatePublishedFileTitle>`_
 

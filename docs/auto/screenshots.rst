@@ -32,8 +32,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pchFilename:
-    :param str pchThumbnailFilename:
+    :param str? pchFilename:
+    :param str? pchThumbnailFilename:
     :param int nWidth:
     :param int nHeight:
     :returns: (int) Return value
@@ -51,8 +51,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eType:
-    :param str pchFilename:
-    :param str pchVRFilename:
+    :param str? pchFilename:
+    :param str? pchVRFilename:
     :returns: (int) Return value
     :SteamWorks: `AddVRScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddVRScreenshotToLibrary>`_
 
@@ -80,7 +80,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hScreenshot:
-    :param str pchLocation:
+    :param str? pchLocation:
     :returns: (bool) Return value
     :SteamWorks: `SetLocation <https://partner.steamgames.com/doc/api/ISteamScreenshots#SetLocation>`_
 
@@ -121,7 +121,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param str pubRGB:
+    :param str? pubRGB:
     :param int cubRGB: size of the input array ``pubRGB``
     :param int nWidth:
     :param int nHeight:

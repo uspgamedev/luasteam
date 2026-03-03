@@ -87,7 +87,7 @@ Function Reference
 
     :param int hPeer:
     :param int nReason:
-    :param str pszDebug:
+    :param str? pszDebug:
     :param bool bEnableLinger:
     :returns: (bool) Return value
     :SteamWorks: `CloseConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CloseConnection>`_
@@ -114,8 +114,8 @@ Function Reference
 
     :param int hConn:
     :param int nNumLanes:
-    :param int[] pLanePriorities:
-    :param int[] pLaneWeights:
+    :param int[]? pLanePriorities:
+    :param int[]? pLaneWeights:
     :returns: (int) Return value
     :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
 
@@ -301,7 +301,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hPeer:
-    :param int nMaxLen: size of the buffer to be allocated to hold the return value ``pszName``
+    :param int? nMaxLen: size of the buffer to allocate for ``pszName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pszName``
     :SteamWorks: `GetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionName>`_
@@ -343,7 +343,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hConn:
-    :param int cbBuf: size of the buffer to be allocated to hold the return value ``pszBuf``
+    :param int? cbBuf: size of the buffer to allocate for ``pszBuf``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pszBuf``
     :SteamWorks: `GetDetailedConnectionStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetDetailedConnectionStatus>`_
@@ -518,7 +518,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hConn:
-    :param str pData:
+    :param str? pData:
     :param int cbData: size of the input array ``pData``
     :param int nSendFlags:
     :returns: (int) Return value
@@ -574,7 +574,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hPeer:
-    :param str pszName:
+    :param str? pszName:
     :SteamWorks: `SetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionName>`_
 
 **Example**::

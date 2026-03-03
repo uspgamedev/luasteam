@@ -58,7 +58,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eHTTPRequestMethod:
-    :param str pchAbsoluteURL:
+    :param str? pchAbsoluteURL:
     :returns: (int) Return value
     :SteamWorks: `CreateHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateHTTPRequest>`_
 
@@ -113,7 +113,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pBodyDataBuffer``
+    :param int? unBufferSize: size of the buffer to allocate for ``pBodyDataBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodyData>`_
@@ -157,7 +157,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchHeaderName:
+    :param str? pchHeaderName:
     :returns: (bool) Return value
     :returns: (int) ``unResponseHeaderSize``
     :SteamWorks: `GetHTTPResponseHeaderSize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseHeaderSize>`_
@@ -171,8 +171,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchHeaderName:
-    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pHeaderValueBuffer``
+    :param str? pchHeaderName:
+    :param int? unBufferSize: size of the buffer to allocate for ``pHeaderValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pHeaderValueBuffer``
     :SteamWorks: `GetHTTPResponseHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseHeaderValue>`_
@@ -200,7 +200,7 @@ Function Reference
 
     :param int hRequest:
     :param int cOffset:
-    :param int unBufferSize: size of the buffer to be allocated to hold the return value ``pBodyDataBuffer``
+    :param int? unBufferSize: size of the buffer to allocate for ``pBodyDataBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pBodyDataBuffer``
     :SteamWorks: `GetHTTPStreamingResponseBodyData <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPStreamingResponseBodyData>`_
@@ -275,9 +275,9 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hCookieContainer:
-    :param str pchHost:
-    :param str pchUrl:
-    :param str pchCookie:
+    :param str? pchHost:
+    :param str? pchUrl:
+    :param str? pchCookie:
     :returns: (bool) Return value
     :SteamWorks: `SetCookie <https://partner.steamgames.com/doc/api/ISteamHTTP#SetCookie>`_
 
@@ -313,8 +313,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchParamName:
-    :param str pchParamValue:
+    :param str? pchParamName:
+    :param str? pchParamValue:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestGetOrPostParameter <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestGetOrPostParameter>`_
 
@@ -330,8 +330,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchHeaderName:
-    :param str pchHeaderValue:
+    :param str? pchHeaderName:
+    :param str? pchHeaderValue:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestHeaderValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestHeaderValue>`_
 
@@ -359,8 +359,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchContentType:
-    :param str pubBody:
+    :param str? pchContentType:
+    :param str? pubBody:
     :param int unBodyLen: size of the input array ``pubBody``
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestRawPostBody <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestRawPostBody>`_
@@ -386,7 +386,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hRequest:
-    :param str pchUserAgentInfo:
+    :param str? pchUserAgentInfo:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestUserAgentInfo <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestUserAgentInfo>`_
 
