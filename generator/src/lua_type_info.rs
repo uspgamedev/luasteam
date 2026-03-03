@@ -113,6 +113,11 @@ pub struct LuaMethodSignature {
     /// Original C++ method name, if the Lua name differs (e.g. overload with type suffix).
     /// e.g. `GetUserStat` when the Lua name is `GetUserStatInt32`.
     pub original_cpp_name: Option<String>,
+    /// True when the C++ return type is SteamAPICall_t (the async call handle).
+    pub returns_steam_api_call: bool,
+    /// The original C++ return type name when it's a named typedef (e.g. HServerQuery, EResult,
+    /// AppId_t) that gets mapped to a simpler Lua type like int or uint64.
+    pub return_cpp_type: Option<String>,
 }
 
 impl LuaMethodSignature {

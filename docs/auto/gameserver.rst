@@ -76,7 +76,7 @@ Function Reference
 
     :param uint64 steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`AssociateWithClanResult_t <GameServer.OnAssociateWithClanResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
 
 .. function:: GameServer.BLoggedOn()
@@ -126,7 +126,7 @@ Function Reference
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
-    :returns: (int) Return value
+    :returns: (int) ``EBeginAuthSessionResult``
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
 
 **Example**::
@@ -159,7 +159,7 @@ Function Reference
 
     :param uint64 steamIDNewPlayer:
     :param function callback: CallResult callback receiving struct :func:`ComputeNewPlayerCompatibilityResult_t <GameServer.OnComputeNewPlayerCompatibilityResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
 
 .. function:: GameServer.CreateUnauthenticatedUserConnection()
@@ -186,7 +186,7 @@ Function Reference
 
     :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSnid: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :returns: (int) Return value
+    :returns: (int) ``HAuthTicket``
     :returns: (str) ``pTicket``
     :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetAuthSessionTicket>`_
@@ -223,7 +223,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``SteamIPAddress_t``
     :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
 **Example**::
@@ -236,7 +236,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`GSReputation_t <GameServer.OnGSReputation>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetServerReputation <https://partner.steamgames.com/doc/api/ISteamGameServer#GetServerReputation>`_
 
 .. function:: GameServer.GetSteamID()
@@ -470,7 +470,7 @@ Function Reference
 
     :param uint64 steamID:
     :param int appID:
-    :returns: (int) Return value
+    :returns: (int) ``EUserHasLicenseForAppResult``
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
 
 .. function:: GameServer.WasRestartRequested()

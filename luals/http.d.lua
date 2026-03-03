@@ -6,7 +6,7 @@ local HTTP = {}
 
 ---@param eHTTPRequestMethod integer
 ---@param pchAbsoluteURL string?
----@return integer
+---@return integer -- HTTPRequestHandle
 function HTTP.CreateHTTPRequest(eHTTPRequestMethod, pchAbsoluteURL) end
 
 ---@param hRequest integer
@@ -97,7 +97,7 @@ function HTTP.GetHTTPDownloadProgressPct(hRequest) end
 function HTTP.SetHTTPRequestRawPostBody(hRequest, pchContentType, pubBody, unBodyLen) end
 
 ---@param bAllowResponsesToModify boolean
----@return integer
+---@return integer -- HTTPCookieContainerHandle
 function HTTP.CreateCookieContainer(bAllowResponsesToModify) end
 
 ---@param hCookieContainer integer

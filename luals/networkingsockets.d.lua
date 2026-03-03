@@ -7,30 +7,30 @@ local NetworkingSockets = {}
 ---@param localAddress SteamNetworkingIPAddr
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamListenSocket
 function NetworkingSockets.CreateListenSocketIP(localAddress, nOptions, pOptions) end
 
 ---@param address SteamNetworkingIPAddr
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamNetConnection
 function NetworkingSockets.ConnectByIPAddress(address, nOptions, pOptions) end
 
 ---@param nLocalVirtualPort integer
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamListenSocket
 function NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort, nOptions, pOptions) end
 
 ---@param identityRemote SteamNetworkingIdentity
 ---@param nRemoteVirtualPort integer
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamNetConnection
 function NetworkingSockets.ConnectP2P(identityRemote, nRemoteVirtualPort, nOptions, pOptions) end
 
 ---@param hConn integer
----@return integer
+---@return integer -- EResult
 function NetworkingSockets.AcceptConnection(hConn) end
 
 ---@param hPeer integer
@@ -67,12 +67,12 @@ function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
 ---@param pData string?
 ---@param cbData integer size of the input array pData
 ---@param nSendFlags integer
----@return integer
+---@return integer -- EResult
 ---@return uint64 -- Value of: pOutMessageNumber
 function NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags) end
 
 ---@param hConn integer
----@return integer
+---@return integer -- EResult
 function NetworkingSockets.FlushMessagesOnConnection(hConn) end
 
 ---@param hConn integer
@@ -82,7 +82,7 @@ function NetworkingSockets.GetConnectionInfo(hConn) end
 
 ---@param hConn integer
 ---@param nLanes integer
----@return integer
+---@return integer -- EResult
 ---@return SteamNetConnectionRealTimeStatus_t -- Value of: pStatus
 ---@return SteamNetConnectionRealTimeLaneStatus_t -- Value of: pLanes
 function NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes) end
@@ -110,21 +110,21 @@ function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pId
 ---@param nNumLanes integer
 ---@param pLanePriorities integer[]?
 ---@param pLaneWeights integer[]?
----@return integer
+---@return integer -- EResult
 function NetworkingSockets.ConfigureConnectionLanes(hConn, nNumLanes, pLanePriorities, pLaneWeights) end
 
 ---@return boolean
 ---@return SteamNetworkingIdentity -- Value of: pIdentity
 function NetworkingSockets.GetIdentity() end
 
----@return integer
+---@return integer -- ESteamNetworkingAvailability
 function NetworkingSockets.InitAuthentication() end
 
----@return integer
+---@return integer -- ESteamNetworkingAvailability
 ---@return SteamNetAuthenticationStatus_t -- Value of: pDetails
 function NetworkingSockets.GetAuthenticationStatus() end
 
----@return integer
+---@return integer -- HSteamNetPollGroup
 function NetworkingSockets.CreatePollGroup() end
 
 ---@param hPollGroup integer
@@ -140,19 +140,19 @@ function NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup) end
 ---@param nRemoteVirtualPort integer
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamNetConnection
 function NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget, nRemoteVirtualPort, nOptions, pOptions) end
 
 ---@return integer
 function NetworkingSockets.GetHostedDedicatedServerPort() end
 
----@return integer
+---@return integer -- SteamNetworkingPOPID
 function NetworkingSockets.GetHostedDedicatedServerPOPID() end
 
 ---@param nLocalVirtualPort integer
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamListenSocket
 function NetworkingSockets.CreateHostedDedicatedServerListenSocket(nLocalVirtualPort, nOptions, pOptions) end
 
 ---@param pIdentity SteamNetworkingIdentity
@@ -171,11 +171,11 @@ function NetworkingSockets.GetFakeIP(idxFirstPort) end
 ---@param idxFakePort integer
 ---@param nOptions integer
 ---@param pOptions SteamNetworkingConfigValue_t
----@return integer
+---@return integer -- HSteamListenSocket
 function NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort, nOptions, pOptions) end
 
 ---@param hConn integer
----@return integer
+---@return integer -- EResult
 ---@return SteamNetworkingIPAddr -- Value of: pOutAddr
 function NetworkingSockets.GetRemoteFakeIPForConnection(hConn) end
 

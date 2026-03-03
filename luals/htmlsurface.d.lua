@@ -33,7 +33,7 @@ function HTMLSurface.Shutdown() end
 ---@param pchUserAgent string?
 ---@param pchUserCSS string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback) end
 
 ---@param unBrowserHandle integer

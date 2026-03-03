@@ -36,7 +36,7 @@ Function Reference
     :param str? pchThumbnailFilename:
     :param int nWidth:
     :param int nHeight:
-    :returns: (int) Return value
+    :returns: (int) ``ScreenshotHandle``
     :SteamWorks: `AddScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddScreenshotToLibrary>`_
 
 **Example**::
@@ -53,7 +53,7 @@ Function Reference
     :param int eType:
     :param str? pchFilename:
     :param str? pchVRFilename:
-    :returns: (int) Return value
+    :returns: (int) ``ScreenshotHandle``
     :SteamWorks: `AddVRScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddVRScreenshotToLibrary>`_
 
 .. function:: Screenshots.HookScreenshots(bHook)
@@ -125,7 +125,7 @@ Function Reference
     :param int cubRGB: size of the input array ``pubRGB``
     :param int nWidth:
     :param int nHeight:
-    :returns: (int) Return value
+    :returns: (int) ``ScreenshotHandle``
     :SteamWorks: `WriteScreenshot <https://partner.steamgames.com/doc/api/ISteamScreenshots#WriteScreenshot>`_
 
 **Example**::

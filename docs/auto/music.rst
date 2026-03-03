@@ -58,7 +58,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``AudioPlayback_Status``
     :SteamWorks: `GetPlaybackStatus <https://partner.steamgames.com/doc/api/ISteamMusic#GetPlaybackStatus>`_
 
 **Example**::

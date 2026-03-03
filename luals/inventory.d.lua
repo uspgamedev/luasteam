@@ -8,7 +8,7 @@
 local Inventory = {}
 
 ---@param resultHandle integer
----@return integer
+---@return integer -- EResult
 function Inventory.GetResultStatus(resultHandle) end
 
 ---@param resultHandle integer
@@ -138,7 +138,7 @@ function Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punVa
 
 ---@param steamID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback) end
 
 ---@param steamID uint64
@@ -152,11 +152,11 @@ function Inventory.GetEligiblePromoItemDefinitionIDs(steamID, punItemDefIDsArray
 ---@param punArrayQuantity integer[]?
 ---@param unArrayLength integer size of the input arrays pArrayItemDefs and punArrayQuantity
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Inventory.StartPurchase(pArrayItemDefs, punArrayQuantity, unArrayLength, callback) end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Inventory.RequestPrices(callback) end
 
 ---@return integer
@@ -175,7 +175,7 @@ function Inventory.GetItemsWithPrices(unArrayLength) end
 ---@return uint64 -- Value of: pBasePrice
 function Inventory.GetItemPrice(iDefinition) end
 
----@return uint64
+---@return uint64 -- SteamInventoryUpdateHandle_t
 function Inventory.StartUpdateProperties() end
 
 ---@param handle uint64

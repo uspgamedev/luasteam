@@ -22,10 +22,10 @@
 ---@field OnEquippedProfileItems? fun(data: EquippedProfileItems_t)
 local Friends = {}
 
----@return string
+---@return string -- const char *
 function Friends.GetPersonaName() end
 
----@return integer
+---@return integer -- EPersonaState
 function Friends.GetPersonaState() end
 
 ---@param iFriendFlags integer
@@ -38,15 +38,15 @@ function Friends.GetFriendCount(iFriendFlags) end
 function Friends.GetFriendByIndex(iFriend, iFriendFlags) end
 
 ---@param steamIDFriend uint64
----@return integer
+---@return integer -- EFriendRelationship
 function Friends.GetFriendRelationship(steamIDFriend) end
 
 ---@param steamIDFriend uint64
----@return integer
+---@return integer -- EPersonaState
 function Friends.GetFriendPersonaState(steamIDFriend) end
 
 ---@param steamIDFriend uint64
----@return string
+---@return string -- const char *
 function Friends.GetFriendPersonaName(steamIDFriend) end
 
 ---@param steamIDFriend uint64
@@ -56,7 +56,7 @@ function Friends.GetFriendGamePlayed(steamIDFriend) end
 
 ---@param steamIDFriend uint64
 ---@param iPersonaName integer
----@return string
+---@return string -- const char *
 function Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName) end
 
 ---@param steamIDFriend uint64
@@ -64,18 +64,18 @@ function Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName) end
 function Friends.GetFriendSteamLevel(steamIDFriend) end
 
 ---@param steamIDPlayer uint64
----@return string
+---@return string -- const char *
 function Friends.GetPlayerNickname(steamIDPlayer) end
 
 ---@return integer
 function Friends.GetFriendsGroupCount() end
 
 ---@param iFG integer
----@return integer
+---@return integer -- FriendsGroupID_t
 function Friends.GetFriendsGroupIDByIndex(iFG) end
 
 ---@param friendsGroupID integer
----@return string
+---@return string -- const char *
 function Friends.GetFriendsGroupName(friendsGroupID) end
 
 ---@param friendsGroupID integer
@@ -100,11 +100,11 @@ function Friends.GetClanCount() end
 function Friends.GetClanByIndex(iClan) end
 
 ---@param steamIDClan uint64
----@return string
+---@return string -- const char *
 function Friends.GetClanName(steamIDClan) end
 
 ---@param steamIDClan uint64
----@return string
+---@return string -- const char *
 function Friends.GetClanTag(steamIDClan) end
 
 ---@param steamIDClan uint64
@@ -116,7 +116,7 @@ function Friends.GetClanActivityCounts(steamIDClan) end
 
 ---@param cClansToRequest integer? size of the buffer for psteamIDClans; if nil then the buffer will be NULL
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 ---@return uint64[] -- Value of: psteamIDClans
 function Friends.DownloadClanActivityCounts(cClansToRequest, callback) end
 
@@ -178,7 +178,7 @@ function Friends.RequestUserInformation(steamIDUser, bRequireNameOnly) end
 
 ---@param steamIDClan uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.RequestClanOfficerList(steamIDClan, callback) end
 
 ---@param steamIDClan uint64
@@ -203,7 +203,7 @@ function Friends.ClearRichPresence() end
 
 ---@param steamIDFriend uint64
 ---@param pchKey string?
----@return string
+---@return string -- const char *
 function Friends.GetFriendRichPresence(steamIDFriend, pchKey) end
 
 ---@param steamIDFriend uint64
@@ -212,7 +212,7 @@ function Friends.GetFriendRichPresenceKeyCount(steamIDFriend) end
 
 ---@param steamIDFriend uint64
 ---@param iKey integer
----@return string
+---@return string -- const char *
 function Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey) end
 
 ---@param steamIDFriend uint64
@@ -235,12 +235,12 @@ function Friends.GetCoplayFriend(iCoplayFriend) end
 function Friends.GetFriendCoplayTime(steamIDFriend) end
 
 ---@param steamIDFriend uint64
----@return integer
+---@return integer -- AppId_t
 function Friends.GetFriendCoplayGame(steamIDFriend) end
 
 ---@param steamIDClan uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.JoinClanChatRoom(steamIDClan, callback) end
 
 ---@param steamIDClan uint64
@@ -306,17 +306,17 @@ function Friends.GetFriendMessage(steamIDFriend, iMessageID, cubData) end
 
 ---@param steamID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.GetFollowerCount(steamID, callback) end
 
 ---@param steamID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.IsFollowing(steamID, callback) end
 
 ---@param unStartIndex integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.EnumerateFollowingList(unStartIndex, callback) end
 
 ---@param steamIDClan uint64
@@ -342,7 +342,7 @@ function Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString) 
 
 ---@param steamID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Friends.RequestEquippedProfileItems(steamID, callback) end
 
 ---@param steamID uint64
@@ -353,7 +353,7 @@ function Friends.BHasEquippedProfileItem(steamID, itemType) end
 ---@param steamID uint64
 ---@param itemType integer
 ---@param prop integer
----@return string
+---@return string -- const char *
 function Friends.GetProfileItemPropertyString(steamID, itemType, prop) end
 
 ---@param steamID uint64

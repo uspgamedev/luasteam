@@ -84,7 +84,7 @@ Function Reference
     :param uint64 hSteamLeaderboard:
     :param uint64 hUGC:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardUGCSet_t <UserStats.OnLeaderboardUGCSet>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AttachLeaderboardUGC <https://partner.steamgames.com/doc/api/ISteamUserStats#AttachLeaderboardUGC>`_
 
 .. function:: UserStats.ClearAchievement(pchName)
@@ -109,7 +109,7 @@ Function Reference
     :param int nRangeStart:
     :param int nRangeEnd:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoresDownloaded_t <UserStats.OnLeaderboardScoresDownloaded>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DownloadLeaderboardEntries <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntries>`_
 
 **Example**::
@@ -137,7 +137,7 @@ Function Reference
     :param uint64[]? prgUsers:
     :param int cUsers: size of the input array ``prgUsers``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoresDownloaded_t <UserStats.OnLeaderboardScoresDownloaded>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DownloadLeaderboardEntriesForUsers <https://partner.steamgames.com/doc/api/ISteamUserStats#DownloadLeaderboardEntriesForUsers>`_
 
 **Example**::
@@ -160,7 +160,7 @@ Function Reference
 
     :param str? pchLeaderboardName:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardFindResult_t <UserStats.OnLeaderboardFindResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FindLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindLeaderboard>`_
 
     Asynchronously finds a leaderboard by name.
@@ -183,7 +183,7 @@ Function Reference
     :param int eLeaderboardSortMethod:
     :param int eLeaderboardDisplayType:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardFindResult_t <UserStats.OnLeaderboardFindResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
 
 **Example**::
@@ -259,7 +259,7 @@ Function Reference
 
     :param str? pchName:
     :param str? pchKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
 
 **Example**::
@@ -281,7 +281,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iAchievement:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
 
     **Notes:**
@@ -421,7 +421,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :returns: (int) Return value
+    :returns: (int) ``ELeaderboardDisplayType``
     :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
     **Notes:**
@@ -445,7 +445,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
 
 **Example**::
@@ -462,7 +462,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamLeaderboard:
-    :returns: (int) Return value
+    :returns: (int) ``ELeaderboardSortMethod``
     :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
 
     **Notes:**
@@ -533,7 +533,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`NumberOfCurrentPlayers_t <UserStats.OnNumberOfCurrentPlayers>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetNumberOfCurrentPlayers <https://partner.steamgames.com/doc/api/ISteamUserStats#GetNumberOfCurrentPlayers>`_
 
 **Example**::
@@ -680,7 +680,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`GlobalAchievementPercentagesReady_t <UserStats.OnGlobalAchievementPercentagesReady>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestGlobalAchievementPercentages <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalAchievementPercentages>`_
 
 **Example**::
@@ -698,7 +698,7 @@ Function Reference
 
     :param int nHistoryDays:
     :param function callback: CallResult callback receiving struct :func:`GlobalStatsReceived_t <UserStats.OnGlobalStatsReceived>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestGlobalStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestGlobalStats>`_
 
 **Example**::
@@ -716,7 +716,7 @@ Function Reference
 
     :param uint64 steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`UserStatsReceived_t <UserStats.OnUserStatsReceived>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
 
 **Example**::
@@ -837,7 +837,7 @@ Function Reference
     :param int[]? pScoreDetails:
     :param int cScoreDetailsCount: size of the input array ``pScoreDetails``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoreUploaded_t <UserStats.OnLeaderboardScoreUploaded>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UploadLeaderboardScore <https://partner.steamgames.com/doc/api/ISteamUserStats#UploadLeaderboardScore>`_
 
     Uploads a user score to a specified leaderboard.

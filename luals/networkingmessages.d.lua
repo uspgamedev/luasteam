@@ -8,7 +8,7 @@ local NetworkingMessages = {}
 ---@param cubData integer size of the input array pubData
 ---@param nSendFlags integer
 ---@param nRemoteChannel integer
----@return integer
+---@return integer -- EResult
 function NetworkingMessages.SendMessageToUser(identityRemote, pubData, cubData, nSendFlags, nRemoteChannel) end
 
 ---@param identityRemote SteamNetworkingIdentity
@@ -25,7 +25,7 @@ function NetworkingMessages.CloseSessionWithUser(identityRemote) end
 function NetworkingMessages.CloseChannelWithUser(identityRemote, nLocalChannel) end
 
 ---@param identityRemote SteamNetworkingIdentity
----@return integer
+---@return integer -- ESteamNetworkingConnectionState
 ---@return SteamNetConnectionInfo_t -- Value of: pConnectionInfo
 ---@return SteamNetConnectionRealTimeStatus_t -- Value of: pQuickStatus
 function NetworkingMessages.GetSessionConnectionInfo(identityRemote) end

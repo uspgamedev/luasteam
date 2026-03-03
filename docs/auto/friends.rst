@@ -222,7 +222,7 @@ Function Reference
 
     :param int? cClansToRequest: size of the buffer to allocate for ``psteamIDClans``. If ``nil`` then the buffer will be ``NULL``.
     :param function callback: CallResult callback receiving struct :func:`DownloadClanActivityCountsResult_t <Friends.OnDownloadClanActivityCountsResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :returns: (uint64[]) ``psteamIDClans``
     :SteamWorks: `DownloadClanActivityCounts <https://partner.steamgames.com/doc/api/ISteamFriends#DownloadClanActivityCounts>`_
 
@@ -236,7 +236,7 @@ Function Reference
 
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`FriendsEnumerateFollowingList_t <Friends.OnFriendsEnumerateFollowingList>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumerateFollowingList <https://partner.steamgames.com/doc/api/ISteamFriends#EnumerateFollowingList>`_
 
 .. function:: Friends.GetChatMemberByIndex(steamIDClan, iUser)
@@ -324,7 +324,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
 
     **Notes:**
@@ -378,7 +378,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetClanTag <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanTag>`_
 
 .. function:: Friends.GetCoplayFriend(iCoplayFriend)
@@ -402,7 +402,7 @@ Function Reference
 
     :param uint64 steamID:
     :param function callback: CallResult callback receiving struct :func:`FriendsGetFollowerCount_t <Friends.OnFriendsGetFollowerCount>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
 
 **Example**::
@@ -435,7 +435,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) Return value
+    :returns: (int) ``AppId_t``
     :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
 
 **Example**::
@@ -523,7 +523,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
 
 **Example**::
@@ -537,7 +537,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iPersonaName:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetFriendPersonaNameHistory <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaNameHistory>`_
 
 .. function:: Friends.GetFriendPersonaState(steamIDFriend)
@@ -545,7 +545,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) Return value
+    :returns: (int) ``EPersonaState``
     :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
 
 **Example**::
@@ -560,7 +560,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) Return value
+    :returns: (int) ``EFriendRelationship``
     :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
 
 **Example**::
@@ -576,7 +576,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param str? pchKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
 
 **Example**::
@@ -590,7 +590,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
 
     **Notes:**
@@ -647,7 +647,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iFG:
-    :returns: (int) Return value
+    :returns: (int) ``FriendsGroupID_t``
     :SteamWorks: `GetFriendsGroupIDByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupIDByIndex>`_
 
     **Notes:**
@@ -680,7 +680,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int friendsGroupID:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
     **Notes:**
@@ -722,7 +722,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaName>`_
 
     Gets the current user's persona (display) name.
@@ -735,7 +735,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``EPersonaState``
     :SteamWorks: `GetPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaState>`_
 
 **Example**::
@@ -750,7 +750,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDPlayer:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
 
 **Example**::
@@ -767,7 +767,7 @@ Function Reference
     :param uint64 steamID:
     :param int itemType:
     :param int prop:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetProfileItemPropertyString <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyString>`_
 
 .. function:: Friends.GetProfileItemPropertyUint(steamID, itemType, prop)
@@ -868,7 +868,7 @@ Function Reference
 
     :param uint64 steamID:
     :param function callback: CallResult callback receiving struct :func:`FriendsIsFollowing_t <Friends.OnFriendsIsFollowing>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
 
 **Example**::
@@ -894,7 +894,7 @@ Function Reference
 
     :param uint64 steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`JoinClanChatRoomCompletionResult_t <Friends.OnJoinClanChatRoomCompletionResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
 
 **Example**::
@@ -944,7 +944,7 @@ Function Reference
 
     :param uint64 steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`ClanOfficerListResponse_t <Friends.OnClanOfficerListResponse>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
 
 .. function:: Friends.RequestEquippedProfileItems(steamID, callback)
@@ -953,7 +953,7 @@ Function Reference
 
     :param uint64 steamID:
     :param function callback: CallResult callback receiving struct :func:`EquippedProfileItems_t <Friends.OnEquippedProfileItems>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
 
 .. function:: Friends.RequestFriendRichPresence(steamIDFriend)

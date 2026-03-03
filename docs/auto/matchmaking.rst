@@ -124,6 +124,10 @@ Function Reference
     :param int cMaxResults:
     :SteamWorks: `AddRequestLobbyListResultCountFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListResultCountFilter>`_
 
+    **Notes:**
+
+    * See :func:`MatchMaking.RequestLobbyList`'s example.
+
 .. function:: Matchmaking.AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType)
 
     🤖 **Auto-generated binding**
@@ -133,6 +137,10 @@ Function Reference
     :param int eComparisonType:
     :SteamWorks: `AddRequestLobbyListStringFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListStringFilter>`_
 
+    **Notes:**
+
+    * See :func:`MatchMaking.RequestLobbyList`'s example.
+
 .. function:: Matchmaking.CreateLobby(eLobbyType, cMaxMembers, callback)
 
     🤖 **Auto-generated binding**
@@ -140,12 +148,12 @@ Function Reference
     :param int eLobbyType:
     :param int cMaxMembers:
     :param function callback: CallResult callback receiving struct :func:`LobbyCreated_t <Matchmaking.OnLobbyCreated>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `CreateLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#CreateLobby>`_
 
 **Example**::
 
-    Steam.Matchmaking.CreateLobby('Public', 8, function(data, err)
+    Steam.Matchmaking.CreateLobby(Steam.k_ELobbyTypePublic, 8, function(data, err)
         if err or data.m_eResult ~= Steam.k_EResultOK then
             print('Failed to create lobby')
             return
@@ -187,12 +195,24 @@ Function Reference
     * Parameter ``punFlags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
     * Parameter ``pRTime32LastPlayedOnServer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
+**Example**::
+
+    local nGames = Steam.Matchmaking.GetFavoriteGameCount()
+    for i = 0, nGames - 1 do
+        local ok, pnAppID, _, _, _, _, _ = Steam.Matchmaking.GetFavoriteGame(i)
+        print("Favorite game", i, pnAppID)
+    end
+
 .. function:: Matchmaking.GetFavoriteGameCount()
 
     🤖 **Auto-generated binding**
 
     :returns: (int) Return value
     :SteamWorks: `GetFavoriteGameCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetFavoriteGameCount>`_
+
+    **Notes:**
+
+    * See :func:`MatchMaking.GetFavoriteGame`'s example.
 
 .. function:: Matchmaking.GetLobbyByIndex(iLobby)
 
@@ -201,6 +221,10 @@ Function Reference
     :param int iLobby:
     :returns: (uint64) Return value
     :SteamWorks: `GetLobbyByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyByIndex>`_
+
+    **Notes:**
+
+    * See :func:`MatchMaking.RequestLobbyList`'s example.
 
 .. function:: Matchmaking.GetLobbyChatEntry(steamIDLobby, iChatID, cubData)
 
@@ -227,7 +251,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param str? pchKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
 
 **Example**::
@@ -294,6 +318,10 @@ Function Reference
     :returns: (uint64) Return value
     :SteamWorks: `GetLobbyMemberByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberByIndex>`_
 
+    **Notes:**
+
+    * See :func:`MatchMaking.GetNumLobbyMembers`'s example.
+
 .. function:: Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey)
 
     🤖 **Auto-generated binding**
@@ -301,7 +329,7 @@ Function Reference
     :param uint64 steamIDLobby:
     :param uint64 steamIDUser:
     :param str? pchKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
 
 **Example**::
@@ -365,7 +393,7 @@ Function Reference
 
     :param uint64 steamIDLobby:
     :param function callback: CallResult callback receiving struct :func:`LobbyEnter_t <Matchmaking.OnLobbyEnter>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
 
 **Example**::
@@ -414,12 +442,12 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`LobbyMatchList_t <Matchmaking.OnLobbyMatchList>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestLobbyList <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyList>`_
 
 **Example**::
 
-    Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', 'EqualToOrLessThan')
+    Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', Steam.k_ELobbyComparisonEqualToOrLessThan)
     Steam.Matchmaking.AddRequestLobbyListResultCountFilter(20)
     Steam.Matchmaking.RequestLobbyList(function(data, err)
         if not err then

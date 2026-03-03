@@ -16,13 +16,13 @@ function Utils.GetSecondsSinceAppActive() end
 ---@return integer
 function Utils.GetSecondsSinceComputerActive() end
 
----@return integer
+---@return integer -- EUniverse
 function Utils.GetConnectedUniverse() end
 
 ---@return integer
 function Utils.GetServerRealTime() end
 
----@return string
+---@return string -- const char *
 function Utils.GetIPCountry() end
 
 ---@param iImage integer
@@ -52,7 +52,7 @@ function Utils.SetOverlayNotificationPosition(eNotificationPosition) end
 function Utils.IsAPICallCompleted(hSteamAPICall) end
 
 ---@param hSteamAPICall uint64
----@return integer
+---@return integer -- ESteamAPICallFailure
 function Utils.GetAPICallFailureReason(hSteamAPICall) end
 
 ---@param hSteamAPICall uint64
@@ -74,7 +74,7 @@ function Utils.BOverlayNeedsPresent() end
 
 ---@param szFileName string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Utils.CheckFileSignature(szFileName, callback) end
 
 ---@param eInputMode integer
@@ -93,7 +93,7 @@ function Utils.GetEnteredGamepadTextLength() end
 ---@return string -- Value of: pchText
 function Utils.GetEnteredGamepadTextInput(cchText) end
 
----@return string
+---@return string -- const char *
 function Utils.GetSteamUILanguage() end
 
 ---@return boolean
@@ -130,7 +130,7 @@ function Utils.InitFilterText(unFilterOptions) end
 function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOutFilteredText) end
 
 ---@param eProtocol integer
----@return integer
+---@return integer -- ESteamIPv6ConnectivityState
 function Utils.GetIPv6ConnectivityState(eProtocol) end
 
 ---@return boolean

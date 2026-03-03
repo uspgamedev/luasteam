@@ -9,7 +9,7 @@ function Music.BIsEnabled() end
 ---@return boolean
 function Music.BIsPlaying() end
 
----@return integer
+---@return integer -- AudioPlayback_Status
 function Music.GetPlaybackStatus() end
 
 function Music.Play() end

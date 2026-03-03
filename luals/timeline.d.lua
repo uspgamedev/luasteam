@@ -19,7 +19,7 @@ function Timeline.SetTimelineGameMode(eMode) end
 ---@param unIconPriority integer
 ---@param flStartOffsetSeconds number
 ---@param ePossibleClip integer
----@return uint64
+---@return uint64 -- TimelineEventHandle_t
 function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, ePossibleClip) end
 
 ---@param pchTitle string?
@@ -29,7 +29,7 @@ function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIco
 ---@param flStartOffsetSeconds number
 ---@param flDuration number
 ---@param ePossibleClip integer
----@return uint64
+---@return uint64 -- TimelineEventHandle_t
 function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, flDuration, ePossibleClip) end
 
 ---@param pchTitle string?
@@ -38,7 +38,7 @@ function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIco
 ---@param unPriority integer
 ---@param flStartOffsetSeconds number
 ---@param ePossibleClip integer
----@return uint64
+---@return uint64 -- TimelineEventHandle_t
 function Timeline.StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unPriority, flStartOffsetSeconds, ePossibleClip) end
 
 ---@param ulEvent uint64
@@ -58,7 +58,7 @@ function Timeline.RemoveTimelineEvent(ulEvent) end
 
 ---@param ulEvent uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Timeline.DoesEventRecordingExist(ulEvent, callback) end
 
 function Timeline.StartGamePhase() end
@@ -70,7 +70,7 @@ function Timeline.SetGamePhaseID(pchPhaseID) end
 
 ---@param pchPhaseID string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Timeline.DoesGamePhaseRecordingExist(pchPhaseID, callback) end
 
 ---@param pchTagName string?

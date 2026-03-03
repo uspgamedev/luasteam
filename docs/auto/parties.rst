@@ -54,7 +54,7 @@ Function Reference
     :param uint64 ulBeacon:
     :param int unOpenSlots:
     :param function callback: CallResult callback receiving struct :func:`ChangeNumOpenSlotsCallback_t <Parties.OnChangeNumOpenSlotsCallback>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `ChangeNumOpenSlots <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlots>`_
 
 .. function:: Parties.DestroyBeacon(ulBeacon)
@@ -83,7 +83,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unIndex:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``PartyBeaconID_t``
     :SteamWorks: `GetBeaconByIndex <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconByIndex>`_
 
     **Notes:**
@@ -171,7 +171,7 @@ Function Reference
 
     :param uint64 ulBeaconID:
     :param function callback: CallResult callback receiving struct :func:`JoinPartyCallback_t <Parties.OnJoinPartyCallback>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
 
 **Example**::

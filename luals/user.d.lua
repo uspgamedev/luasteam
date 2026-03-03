@@ -17,7 +17,7 @@
 ---@field OnGSPolicyResponse? fun(data: GSPolicyResponse_t)
 local User = {}
 
----@return integer
+---@return integer -- HSteamUser
 function User.GetHSteamUser() end
 
 ---@return boolean
@@ -40,13 +40,13 @@ function User.StartVoiceRecording() end
 
 function User.StopVoiceRecording() end
 
----@return integer
+---@return integer -- EVoiceResult
 ---@return integer -- Value of: pcbCompressed
 function User.GetAvailableVoice() end
 
 ---@param bWantCompressed boolean
 ---@param cbDestBufferSize integer? size of the buffer for pDestBuffer; if nil then the buffer will be NULL
----@return integer
+---@return integer -- EVoiceResult
 ---@return string -- Value of: pDestBuffer
 ---@return integer -- Value of: nBytesWritten
 function User.GetVoice(bWantCompressed, cbDestBufferSize) end
@@ -55,7 +55,7 @@ function User.GetVoice(bWantCompressed, cbDestBufferSize) end
 ---@param cbCompressed integer size of the input array pCompressed
 ---@param cbDestBufferSize integer? size of the buffer for pDestBuffer; if nil then the buffer will be NULL
 ---@param nDesiredSampleRate integer
----@return integer
+---@return integer -- EVoiceResult
 ---@return string -- Value of: pDestBuffer
 ---@return integer -- Value of: nBytesWritten
 function User.DecompressVoice(pCompressed, cbCompressed, cbDestBufferSize, nDesiredSampleRate) end
@@ -65,19 +65,19 @@ function User.GetVoiceOptimalSampleRate() end
 
 ---@param cbMaxTicket integer? size of the buffer for pTicket; if nil then the buffer will be NULL
 ---@param pSteamNetworkingIdentity SteamNetworkingIdentity
----@return integer
+---@return integer -- HAuthTicket
 ---@return string -- Value of: pTicket
 ---@return integer -- Value of: pcbTicket
 function User.GetAuthSessionTicket(cbMaxTicket, pSteamNetworkingIdentity) end
 
 ---@param pchIdentity string?
----@return integer
+---@return integer -- HAuthTicket
 function User.GetAuthTicketForWebApi(pchIdentity) end
 
 ---@param pAuthTicket string?
 ---@param cbAuthTicket integer size of the input array pAuthTicket
 ---@param steamID uint64
----@return integer
+---@return integer -- EBeginAuthSessionResult
 function User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 
 ---@param steamID uint64
@@ -88,7 +88,7 @@ function User.CancelAuthTicket(hAuthTicket) end
 
 ---@param steamID uint64
 ---@param appID integer
----@return integer
+---@return integer -- EUserHasLicenseForAppResult
 function User.UserHasLicenseForApp(steamID, appID) end
 
 ---@return boolean
@@ -102,7 +102,7 @@ function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end
 ---@param pDataToInclude string?
 ---@param cbDataToInclude integer size of the input array pDataToInclude
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function User.RequestEncryptedAppTicket(pDataToInclude, cbDataToInclude, callback) end
 
 ---@param cbMaxTicket integer? size of the buffer for pTicket; if nil then the buffer will be NULL
@@ -121,7 +121,7 @@ function User.GetPlayerSteamLevel() end
 
 ---@param pchRedirectURL string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function User.RequestStoreAuthURL(pchRedirectURL, callback) end
 
 ---@return boolean
@@ -137,11 +137,11 @@ function User.BIsPhoneIdentifying() end
 function User.BIsPhoneRequiringVerification() end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function User.GetMarketEligibility(callback) end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function User.GetDurationControl(callback) end
 
 ---@param eNewState integer

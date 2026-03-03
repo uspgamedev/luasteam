@@ -100,7 +100,7 @@ Function Reference
     :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
     :param int nPort:
     :param int nTimeoutSec:
-    :returns: (int) Return value
+    :returns: (int) ``SNetSocket_t``
     :SteamWorks: `CreateConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateConnectionSocket>`_
 
 .. function:: Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay)
@@ -111,7 +111,7 @@ Function Reference
     :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
     :param int nPort:
     :param bool bAllowUseOfPacketRelay:
-    :returns: (int) Return value
+    :returns: (int) ``SNetListenSocket_t``
     :SteamWorks: `CreateListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateListenSocket>`_
 
 .. function:: Networking.CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay)
@@ -122,7 +122,7 @@ Function Reference
     :param int nVirtualPort:
     :param int nTimeoutSec:
     :param bool bAllowUseOfPacketRelay:
-    :returns: (int) Return value
+    :returns: (int) ``SNetSocket_t``
     :SteamWorks: `CreateP2PConnectionSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#CreateP2PConnectionSocket>`_
 
 .. function:: Networking.DestroyListenSocket(hSocket, bNotifyRemoteEnd)
@@ -192,7 +192,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hSocket:
-    :returns: (int) Return value
+    :returns: (int) ``ESNetSocketConnectionType``
     :SteamWorks: `GetSocketConnectionType <https://partner.steamgames.com/doc/api/ISteamNetworking#GetSocketConnectionType>`_
 
 .. function:: Networking.GetSocketInfo(hSocket)

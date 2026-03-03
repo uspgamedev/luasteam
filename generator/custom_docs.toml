@@ -2141,7 +2141,7 @@ end
 
 [ISteamMatchmaking.CreateLobby]
 example = """
-Steam.Matchmaking.CreateLobby('Public', 8, function(data, err)
+Steam.Matchmaking.CreateLobby(Steam.k_ELobbyTypePublic, 8, function(data, err)
     if err or data.m_eResult ~= Steam.k_EResultOK then
         print('Failed to create lobby')
         return
@@ -2202,6 +2202,10 @@ for i = 0, count - 1 do
 end
 """
 
+[ISteamMatchmaking.GetLobbyMemberByIndex]
+notes = ["See :func:`MatchMaking.GetNumLobbyMembers`'s example."]
+
+
 [ISteamMatchmaking.GetLobbyOwner]
 example = """
 local ownerID = Steam.Matchmaking.GetLobbyOwner(lobbyID)
@@ -2210,7 +2214,7 @@ local isOwner = ownerID == Steam.User.GetSteamID()
 
 [ISteamMatchmaking.RequestLobbyList]
 example = """
-Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', 'EqualToOrLessThan')
+Steam.Matchmaking.AddRequestLobbyListStringFilter('map', 'level_01', Steam.k_ELobbyComparisonEqualToOrLessThan)
 Steam.Matchmaking.AddRequestLobbyListResultCountFilter(20)
 Steam.Matchmaking.RequestLobbyList(function(data, err)
     if not err then
@@ -2222,6 +2226,16 @@ Steam.Matchmaking.RequestLobbyList(function(data, err)
     end
 end)
 """
+
+
+[ISteamMatchmaking.AddRequestLobbyListStringFilter]
+notes = ["See :func:`MatchMaking.RequestLobbyList`'s example."]
+
+[ISteamMatchmaking.AddRequestLobbyListResultCountFilter]
+notes = ["See :func:`MatchMaking.RequestLobbyList`'s example."]
+
+[ISteamMatchmaking.GetLobbyByIndex]
+notes = ["See :func:`MatchMaking.RequestLobbyList`'s example."]
 
 [ISteamMatchmaking.InviteUserToLobby]
 example = """
@@ -2238,6 +2252,19 @@ Steam.Matchmaking.SetLobbyJoinable(lobbyID, false)
 example = """
 Steam.Matchmaking.SetLobbyGameServer(lobbyID, serverIP, serverPort, Steam.GameServer.GetSteamID())
 """
+
+[ISteamMatchmaking.GetFavoriteGame]
+example = """
+local nGames = Steam.Matchmaking.GetFavoriteGameCount()
+for i = 0, nGames - 1 do
+    local ok, pnAppID, _, _, _, _, _ = Steam.Matchmaking.GetFavoriteGame(i)
+    print("Favorite game", i, pnAppID)
+end
+"""
+
+[ISteamMatchmaking.GetFavoriteGameCount]
+notes = ["See :func:`MatchMaking.GetFavoriteGame`'s example."]
+
 
 [ISteamMatchmaking.GetLobbyGameServer]
 example = """

@@ -1238,6 +1238,21 @@ impl Generator {
                     .generate_push(ret_push_type, "__ret", 1)
                     .ok_or_else(|| SkipReason::UnsupportedType(method.returntype.clone()))?;
                 s.raw(&push);
+                if method.returntype == "SteamAPICall_t" {
+                    sig.returns_steam_api_call = true;
+                } else {
+                    // If the C++ type is a named typedef (handle, enum, etc.) that maps to a
+                    // plain Lua int/uint64, record the original name for documentation.
+                    const PRIMITIVES: &[&str] = &[
+                        "bool", "int", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
+                        "float", "double", "void", "CSteamID", "CGameID",
+                    ];
+                    if !PRIMITIVES.contains(&method.returntype.as_str())
+                        && !matches!(ltype, LType::LightUserdata(_))
+                    {
+                        sig.return_cpp_type = Some(method.returntype.clone());
+                    }
+                }
                 sig.set_return_type(ltype);
             }
         }

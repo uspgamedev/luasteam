@@ -107,7 +107,7 @@ Function Reference
     :param str? pchUserAgent:
     :param str? pchUserCSS:
     :param function callback: CallResult callback receiving struct :func:`HTML_BrowserReady_t <HTMLSurface.OnHTML_BrowserReady>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `CreateBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CreateBrowser>`_
 
 **Example**::

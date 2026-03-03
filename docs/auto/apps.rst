@@ -237,7 +237,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetAvailableGameLanguages <https://partner.steamgames.com/doc/api/ISteamApps#GetAvailableGameLanguages>`_
 
 **Example**::
@@ -283,7 +283,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetCurrentGameLanguage <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentGameLanguage>`_
 
 **Example**::
@@ -341,7 +341,7 @@ Function Reference
 
     :param str? pszFileName:
     :param function callback: CallResult callback receiving struct :func:`FileDetailsResult_t <Apps.OnFileDetailsResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetFileDetails <https://partner.steamgames.com/doc/api/ISteamApps#GetFileDetails>`_
 
 .. function:: Apps.GetInstalledDepots(appID, cMaxDepots)
@@ -391,7 +391,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchKey:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetLaunchQueryParam <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchQueryParam>`_
 
 **Example**::

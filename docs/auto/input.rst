@@ -131,7 +131,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :param int eOrigin:
-    :returns: (int) Return value
+    :returns: (int) ``EInputActionOrigin``
     :SteamWorks: `GetActionOriginFromXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetActionOriginFromXboxOrigin>`_
 
 .. function:: Input.GetActionSetHandle(pszActionSetName)
@@ -139,7 +139,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pszActionSetName:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``InputActionSetHandle_t``
     :SteamWorks: `GetActionSetHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetActionSetHandle>`_
 
 **Example**::
@@ -166,7 +166,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :param uint64 analogActionHandle:
-    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) Return value
+    :returns: (:ref:`InputAnalogActionData_t <struct-InputAnalogActionData_t>`) ``InputAnalogActionData_t``
     :SteamWorks: `GetAnalogActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionData>`_
 
 **Example**::
@@ -179,7 +179,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pszActionName:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``InputAnalogActionHandle_t``
     :SteamWorks: `GetAnalogActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetAnalogActionHandle>`_
 
 **Example**::
@@ -227,7 +227,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nIndex:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``InputHandle_t``
     :SteamWorks: `GetControllerForGamepadIndex <https://partner.steamgames.com/doc/api/ISteamInput#GetControllerForGamepadIndex>`_
 
 .. function:: Input.GetCurrentActionSet(inputHandle)
@@ -235,7 +235,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``InputActionSetHandle_t``
     :SteamWorks: `GetCurrentActionSet <https://partner.steamgames.com/doc/api/ISteamInput#GetCurrentActionSet>`_
 
 **Example**::
@@ -263,7 +263,7 @@ Function Reference
 
     :param uint64 inputHandle:
     :param uint64 digitalActionHandle:
-    :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) Return value
+    :returns: (:ref:`InputDigitalActionData_t <struct-InputDigitalActionData_t>`) ``InputDigitalActionData_t``
     :SteamWorks: `GetDigitalActionData <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionData>`_
 
 **Example**::
@@ -278,7 +278,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pszActionName:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``InputDigitalActionHandle_t``
     :SteamWorks: `GetDigitalActionHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetDigitalActionHandle>`_
 
 **Example**::
@@ -314,7 +314,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eOrigin:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetGlyphForActionOrigin_Legacy <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForActionOrigin_Legacy>`_
 
 .. function:: Input.GetGlyphForXboxOrigin(eOrigin)
@@ -322,7 +322,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eOrigin:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetGlyphForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphForXboxOrigin>`_
 
 .. function:: Input.GetGlyphPNGForActionOrigin(eOrigin, eSize, unFlags)
@@ -332,7 +332,7 @@ Function Reference
     :param int eOrigin:
     :param int eSize:
     :param int unFlags:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetGlyphPNGForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphPNGForActionOrigin>`_
 
 **Example**::
@@ -349,7 +349,7 @@ Function Reference
 
     :param int eOrigin:
     :param int unFlags:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetGlyphSVGForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetGlyphSVGForActionOrigin>`_
 
 .. function:: Input.GetInputTypeForHandle(inputHandle)
@@ -357,7 +357,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamInputType``
     :SteamWorks: `GetInputTypeForHandle <https://partner.steamgames.com/doc/api/ISteamInput#GetInputTypeForHandle>`_
 
     **Notes:**
@@ -369,7 +369,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 inputHandle:
-    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) Return value
+    :returns: (:ref:`InputMotionData_t <struct-InputMotionData_t>`) ``InputMotionData_t``
     :SteamWorks: `GetMotionData <https://partner.steamgames.com/doc/api/ISteamInput#GetMotionData>`_
 
 **Example**::
@@ -398,7 +398,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eOrigin:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetStringForActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForActionOrigin>`_
 
 **Example**::
@@ -414,7 +414,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 eActionHandle:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetStringForAnalogActionName <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForAnalogActionName>`_
 
 .. function:: Input.GetStringForDigitalActionName(eActionHandle)
@@ -422,7 +422,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 eActionHandle:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetStringForDigitalActionName <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForDigitalActionName>`_
 
 .. function:: Input.GetStringForXboxOrigin(eOrigin)
@@ -430,7 +430,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eOrigin:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetStringForXboxOrigin <https://partner.steamgames.com/doc/api/ISteamInput#GetStringForXboxOrigin>`_
 
 .. function:: Input.Init(bExplicitlyCallRunFrame)
@@ -534,7 +534,7 @@ Function Reference
 
     :param int eDestinationInputType:
     :param int eSourceOrigin:
-    :returns: (int) Return value
+    :returns: (int) ``EInputActionOrigin``
     :SteamWorks: `TranslateActionOrigin <https://partner.steamgames.com/doc/api/ISteamInput#TranslateActionOrigin>`_
 
 .. function:: Input.TriggerSimpleHapticEvent(inputHandle, eHapticLocation, nIntensity, nGainDB, nOtherIntensity, nOtherGainDB)

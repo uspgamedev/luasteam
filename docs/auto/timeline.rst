@@ -57,7 +57,7 @@ Function Reference
     :param int unIconPriority:
     :param float flStartOffsetSeconds:
     :param int ePossibleClip:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `AddInstantaneousTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddInstantaneousTimelineEvent>`_
 
 **Example**::
@@ -77,7 +77,7 @@ Function Reference
     :param float flStartOffsetSeconds:
     :param float flDuration:
     :param int ePossibleClip:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `AddRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddRangeTimelineEvent>`_
 
 **Example**::
@@ -103,7 +103,7 @@ Function Reference
 
     :param uint64 ulEvent:
     :param function callback: CallResult callback receiving struct :func:`SteamTimelineEventRecordingExists_t <Timeline.OnSteamTimelineEventRecordingExists>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DoesEventRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesEventRecordingExist>`_
 
 .. function:: Timeline.DoesGamePhaseRecordingExist(pchPhaseID, callback)
@@ -112,7 +112,7 @@ Function Reference
 
     :param str? pchPhaseID:
     :param function callback: CallResult callback receiving struct :func:`SteamTimelineGamePhaseRecordingExists_t <Timeline.OnSteamTimelineGamePhaseRecordingExists>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DoesGamePhaseRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesGamePhaseRecordingExist>`_
 
 .. function:: Timeline.EndGamePhase()
@@ -228,7 +228,7 @@ Function Reference
     :param int unPriority:
     :param float flStartOffsetSeconds:
     :param int ePossibleClip:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `StartRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#StartRangeTimelineEvent>`_
 
 **Example**::

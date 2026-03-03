@@ -113,7 +113,7 @@ generate:
 	cd generator && cargo run
 
 docs:
-	$(MAKE) -C docs html SPHINXBUILD=$(SPHINXBUILD)
+	python -m sphinx docs docs/_build/html
 
 check-luals:
 	$(LUA_LANGUAGE_SERVER) --check=luals --configpath=luals/.luarc.json --check_format=pretty --checklevel=Warning

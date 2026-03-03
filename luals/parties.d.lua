@@ -11,7 +11,7 @@ local Parties = {}
 function Parties.GetNumActiveBeacons() end
 
 ---@param unIndex integer
----@return uint64
+---@return uint64 -- PartyBeaconID_t
 function Parties.GetBeaconByIndex(unIndex) end
 
 ---@param ulBeaconID uint64
@@ -24,7 +24,7 @@ function Parties.GetBeaconDetails(ulBeaconID, cchMetadata) end
 
 ---@param ulBeaconID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Parties.JoinParty(ulBeaconID, callback) end
 
 ---@return boolean
@@ -47,7 +47,7 @@ function Parties.CancelReservation(ulBeacon, steamIDUser) end
 ---@param ulBeacon uint64
 ---@param unOpenSlots integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback) end
 
 ---@param ulBeacon uint64

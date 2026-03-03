@@ -60,19 +60,19 @@ function MatchmakingServers.RefreshServer(hRequest, iServer) end
 ---@param unIP integer
 ---@param usPort integer
 ---@param pRequestServersResponse ISteamMatchmakingPingResponse
----@return integer
+---@return integer -- HServerQuery
 function MatchmakingServers.PingServer(unIP, usPort, pRequestServersResponse) end
 
 ---@param unIP integer
 ---@param usPort integer
 ---@param pRequestServersResponse ISteamMatchmakingPlayersResponse
----@return integer
+---@return integer -- HServerQuery
 function MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse) end
 
 ---@param unIP integer
 ---@param usPort integer
 ---@param pRequestServersResponse ISteamMatchmakingRulesResponse
----@return integer
+---@return integer -- HServerQuery
 function MatchmakingServers.ServerRules(unIP, usPort, pRequestServersResponse) end
 
 ---@param hServerQuery integer

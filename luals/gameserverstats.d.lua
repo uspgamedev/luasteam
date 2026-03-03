@@ -5,7 +5,7 @@ local GameServerStats = {}
 
 ---@param steamIDUser uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function GameServerStats.RequestUserStats(steamIDUser, callback) end
 
 ---@param steamIDUser uint64
@@ -57,7 +57,7 @@ function GameServerStats.ClearUserAchievement(steamIDUser, pchName) end
 
 ---@param steamIDUser uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function GameServerStats.StoreUserStats(steamIDUser, callback) end
 
 Steam.GameServerStats = GameServerStats

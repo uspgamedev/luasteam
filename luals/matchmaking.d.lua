@@ -43,7 +43,7 @@ function Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags
 function Matchmaking.RemoveFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags) end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Matchmaking.RequestLobbyList(callback) end
 
 ---@param pchKeyToMatch string?
@@ -79,12 +79,12 @@ function Matchmaking.GetLobbyByIndex(iLobby) end
 ---@param eLobbyType integer
 ---@param cMaxMembers integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Matchmaking.CreateLobby(eLobbyType, cMaxMembers, callback) end
 
 ---@param steamIDLobby uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Matchmaking.JoinLobby(steamIDLobby, callback) end
 
 ---@param steamIDLobby uint64
@@ -106,7 +106,7 @@ function Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember) end
 
 ---@param steamIDLobby uint64
 ---@param pchKey string?
----@return string
+---@return string -- const char *
 function Matchmaking.GetLobbyData(steamIDLobby, pchKey) end
 
 ---@param steamIDLobby uint64
@@ -136,7 +136,7 @@ function Matchmaking.DeleteLobbyData(steamIDLobby, pchKey) end
 ---@param steamIDLobby uint64
 ---@param steamIDUser uint64
 ---@param pchKey string?
----@return string
+---@return string -- const char *
 function Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey) end
 
 ---@param steamIDLobby uint64

@@ -7,14 +7,14 @@ local Screenshots = {}
 ---@param cubRGB integer size of the input array pubRGB
 ---@param nWidth integer
 ---@param nHeight integer
----@return integer
+---@return integer -- ScreenshotHandle
 function Screenshots.WriteScreenshot(pubRGB, cubRGB, nWidth, nHeight) end
 
 ---@param pchFilename string?
 ---@param pchThumbnailFilename string?
 ---@param nWidth integer
 ---@param nHeight integer
----@return integer
+---@return integer -- ScreenshotHandle
 function Screenshots.AddScreenshotToLibrary(pchFilename, pchThumbnailFilename, nWidth, nHeight) end
 
 function Screenshots.TriggerScreenshot() end
@@ -43,7 +43,7 @@ function Screenshots.IsScreenshotsHooked() end
 ---@param eType integer
 ---@param pchFilename string?
 ---@param pchVRFilename string?
----@return integer
+---@return integer -- ScreenshotHandle
 function Screenshots.AddVRScreenshotToLibrary(eType, pchFilename, pchVRFilename) end
 
 Steam.Screenshots = Screenshots

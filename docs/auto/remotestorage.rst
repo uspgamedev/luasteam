@@ -120,7 +120,7 @@ Function Reference
 
     :param uint64 updateHandle:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageUpdatePublishedFileResult_t <RemoteStorage.OnRemoteStorageUpdatePublishedFileResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `CommitPublishedFileUpdate <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#CommitPublishedFileUpdate>`_
 
 .. function:: RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId)
@@ -128,7 +128,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 unPublishedFileId:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``PublishedFileUpdateHandle_t``
     :SteamWorks: `CreatePublishedFileUpdateRequest <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#CreatePublishedFileUpdateRequest>`_
 
 .. function:: RemoteStorage.DeletePublishedFile(unPublishedFileId, callback)
@@ -137,7 +137,7 @@ Function Reference
 
     :param uint64 unPublishedFileId:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageDeletePublishedFileResult_t <RemoteStorage.OnRemoteStorageDeletePublishedFileResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DeletePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#DeletePublishedFile>`_
 
 .. function:: RemoteStorage.EndFileWriteBatch()
@@ -154,7 +154,7 @@ Function Reference
     :param int eAction:
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumeratePublishedFilesByUserActionResult_t <RemoteStorage.OnRemoteStorageEnumeratePublishedFilesByUserActionResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumeratePublishedFilesByUserAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedFilesByUserAction>`_
 
 .. function:: RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback)
@@ -166,7 +166,7 @@ Function Reference
     :param int unCount:
     :param int unDays:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateWorkshopFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pUserTags``
     :SteamWorks: `EnumeratePublishedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedWorkshopFiles>`_
@@ -182,7 +182,7 @@ Function Reference
 
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateUserPublishedFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumerateUserPublishedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserPublishedFiles>`_
 
 .. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback)
@@ -192,7 +192,7 @@ Function Reference
     :param uint64 steamId:
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateUserPublishedFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pRequiredTags``
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pExcludedTags``
     :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
@@ -208,7 +208,7 @@ Function Reference
 
     :param int unStartIndex:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateUserSubscribedFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateUserSubscribedFilesResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumerateUserSubscribedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSubscribedFiles>`_
 
 .. function:: RemoteStorage.FileDelete(pchFile)
@@ -293,7 +293,7 @@ Function Reference
     :param int nOffset:
     :param int cubToRead:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileReadAsyncComplete_t <RemoteStorage.OnRemoteStorageFileReadAsyncComplete>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FileReadAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileReadAsync>`_
 
 **Example**::
@@ -325,7 +325,7 @@ Function Reference
 
     :param str? pchFile:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileShareResult_t <RemoteStorage.OnRemoteStorageFileShareResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FileShare <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileShare>`_
 
 .. function:: RemoteStorage.FileWrite(pchFile, pvData, cubData)
@@ -356,7 +356,7 @@ Function Reference
     :param str? pvData:
     :param int cubData: size of the input array ``pvData``
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageFileWriteAsyncComplete_t <RemoteStorage.OnRemoteStorageFileWriteAsyncComplete>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FileWriteAsync <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteAsync>`_
 
 **Example**::
@@ -390,7 +390,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchFile:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``UGCFileWriteStreamHandle_t``
     :SteamWorks: `FileWriteStreamOpen <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#FileWriteStreamOpen>`_
 
 .. function:: RemoteStorage.FileWriteStreamWriteChunk(writeHandle, pvData, cubData)
@@ -415,7 +415,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iCachedContent:
-    :returns: (uint64) Return value
+    :returns: (uint64) ``UGCHandle_t``
     :SteamWorks: `GetCachedUGCHandle <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetCachedUGCHandle>`_
 
 .. function:: RemoteStorage.GetFileCount()
@@ -438,7 +438,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iFile:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :returns: (int) ``pnFileSizeInBytes``
     :SteamWorks: `GetFileNameAndSize <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetFileNameAndSize>`_
 
@@ -481,7 +481,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iFile:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :returns: (int) ``pEChangeType``
     :returns: (int) ``pEFilePathType``
     :SteamWorks: `GetLocalFileChange <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetLocalFileChange>`_
@@ -514,7 +514,7 @@ Function Reference
     :param uint64 unPublishedFileId:
     :param int unMaxSecondsOld:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageGetPublishedFileDetailsResult_t <RemoteStorage.OnRemoteStorageGetPublishedFileDetailsResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetPublishedFileDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedFileDetails>`_
 
 .. function:: RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback)
@@ -523,7 +523,7 @@ Function Reference
 
     :param uint64 unPublishedFileId:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageGetPublishedItemVoteDetailsResult_t <RemoteStorage.OnRemoteStorageGetPublishedItemVoteDetailsResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetPublishedItemVoteDetails>`_
 
 .. function:: RemoteStorage.GetQuota()
@@ -550,7 +550,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchFile:
-    :returns: (int) Return value
+    :returns: (int) ``ERemoteStoragePlatform``
     :SteamWorks: `GetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetSyncPlatforms>`_
 
 .. function:: RemoteStorage.GetUGCDownloadProgress(hContent)
@@ -574,7 +574,7 @@ Function Reference
 
     :param uint64 unPublishedFileId:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageGetPublishedItemVoteDetailsResult_t <RemoteStorage.OnRemoteStorageGetPublishedItemVoteDetailsResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetUserPublishedItemVoteDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUserPublishedItemVoteDetails>`_
 
 .. function:: RemoteStorage.IsCloudEnabledForAccount()
@@ -610,7 +610,7 @@ Function Reference
     :param str? pchDescription:
     :param int eVisibility:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :SteamWorks: `PublishVideo <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishVideo>`_
 
@@ -630,7 +630,7 @@ Function Reference
     :param int eVisibility:
     :param int eWorkshopFileType:
     :param function callback: CallResult callback receiving struct :func:`RemoteStoragePublishFileProgress_t <RemoteStorage.OnRemoteStoragePublishFileProgress>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
     :SteamWorks: `PublishWorkshopFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#PublishWorkshopFile>`_
 
@@ -666,7 +666,7 @@ Function Reference
     :param uint64 unPublishedFileId:
     :param int eAction:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageSetUserPublishedFileActionResult_t <RemoteStorage.OnRemoteStorageSetUserPublishedFileActionResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `SetUserPublishedFileAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SetUserPublishedFileAction>`_
 
 .. function:: RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback)
@@ -675,7 +675,7 @@ Function Reference
 
     :param uint64 unPublishedFileId:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageSubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageSubscribePublishedFileResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `SubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#SubscribePublishedFile>`_
 
 .. function:: RemoteStorage.UGCDownload(hContent, unPriority, callback)
@@ -685,7 +685,7 @@ Function Reference
     :param uint64 hContent:
     :param int unPriority:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageDownloadUGCResult_t <RemoteStorage.OnRemoteStorageDownloadUGCResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UGCDownload <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownload>`_
 
 .. function:: RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback)
@@ -696,7 +696,7 @@ Function Reference
     :param str? pchLocation:
     :param int unPriority:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageDownloadUGCResult_t <RemoteStorage.OnRemoteStorageDownloadUGCResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UGCDownloadToLocation <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UGCDownloadToLocation>`_
 
 .. function:: RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction)
@@ -721,7 +721,7 @@ Function Reference
 
     :param uint64 unPublishedFileId:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageUnsubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UnsubscribePublishedFile <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UnsubscribePublishedFile>`_
 
 .. function:: RemoteStorage.UpdatePublishedFileDescription(updateHandle, pchDescription)
@@ -798,7 +798,7 @@ Function Reference
     :param uint64 unPublishedFileId:
     :param bool bVoteUp:
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageUpdateUserPublishedItemVoteResult_t <RemoteStorage.OnRemoteStorageUpdateUserPublishedItemVoteResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UpdateUserPublishedItemVote <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdateUserPublishedItemVote>`_
 
 

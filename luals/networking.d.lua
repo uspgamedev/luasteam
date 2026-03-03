@@ -51,20 +51,20 @@ function Networking.AllowP2PPacketRelay(bAllow) end
 ---@param nIP SteamIPAddress_t
 ---@param nPort integer
 ---@param bAllowUseOfPacketRelay boolean
----@return integer
+---@return integer -- SNetListenSocket_t
 function Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay) end
 
 ---@param steamIDTarget uint64
 ---@param nVirtualPort integer
 ---@param nTimeoutSec integer
 ---@param bAllowUseOfPacketRelay boolean
----@return integer
+---@return integer -- SNetSocket_t
 function Networking.CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay) end
 
 ---@param nIP SteamIPAddress_t
 ---@param nPort integer
 ---@param nTimeoutSec integer
----@return integer
+---@return integer -- SNetSocket_t
 function Networking.CreateConnectionSocket(nIP, nPort, nTimeoutSec) end
 
 ---@param hSocket integer
@@ -125,7 +125,7 @@ function Networking.GetSocketInfo(hSocket) end
 function Networking.GetListenSocketInfo(hListenSocket) end
 
 ---@param hSocket integer
----@return integer
+---@return integer -- ESNetSocketConnectionType
 function Networking.GetSocketConnectionType(hSocket) end
 
 ---@param hSocket integer

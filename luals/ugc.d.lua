@@ -27,7 +27,7 @@ local UGC = {}
 ---@param nCreatorAppID integer
 ---@param nConsumerAppID integer
 ---@param unPage integer
----@return uint64
+---@return uint64 -- UGCQueryHandle_t
 function UGC.CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType, eSortOrder, nCreatorAppID, nConsumerAppID, unPage) end
 
 ---@param eQueryType integer
@@ -35,17 +35,17 @@ function UGC.CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType,
 ---@param nCreatorAppID integer
 ---@param nConsumerAppID integer
 ---@param unPage integer
----@return uint64
+---@return uint64 -- UGCQueryHandle_t
 function UGC.CreateQueryAllUGCRequestPage(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage) end
 
 ---@param pvecPublishedFileID uint64[]?
 ---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
----@return uint64
+---@return uint64 -- UGCQueryHandle_t
 function UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID, unNumPublishedFileIDs) end
 
 ---@param handle uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.SendQueryUGCRequest(handle, callback) end
 
 ---@param handle uint64
@@ -270,18 +270,18 @@ function UGC.AddRequiredKeyValueTag(handle, pKey, pValue) end
 ---@param nPublishedFileID uint64
 ---@param unMaxAgeSeconds integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.RequestUGCDetails(nPublishedFileID, unMaxAgeSeconds, callback) end
 
 ---@param nConsumerAppId integer
 ---@param eFileType integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.CreateItem(nConsumerAppId, eFileType, callback) end
 
 ---@param nConsumerAppId integer
 ---@param nPublishedFileID uint64
----@return uint64
+---@return uint64 -- UGCUpdateHandle_t
 function UGC.StartItemUpdate(nConsumerAppId, nPublishedFileID) end
 
 ---@param handle uint64
@@ -392,11 +392,11 @@ function UGC.SetRequiredGameVersions(handle, pszGameBranchMin, pszGameBranchMax)
 ---@param handle uint64
 ---@param pchChangeNote string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.SubmitItemUpdate(handle, pchChangeNote, callback) end
 
 ---@param handle uint64
----@return integer
+---@return integer -- EItemUpdateStatus
 ---@return uint64 -- Value of: punBytesProcessed
 ---@return uint64 -- Value of: punBytesTotal
 function UGC.GetItemUpdateProgress(handle) end
@@ -404,34 +404,34 @@ function UGC.GetItemUpdateProgress(handle) end
 ---@param nPublishedFileID uint64
 ---@param bVoteUp boolean
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.SetUserItemVote(nPublishedFileID, bVoteUp, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.GetUserItemVote(nPublishedFileID, callback) end
 
 ---@param nAppId integer
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.AddItemToFavorites(nAppId, nPublishedFileID, callback) end
 
 ---@param nAppId integer
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.RemoveItemFromFavorites(nAppId, nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.SubscribeItem(nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.UnsubscribeItem(nPublishedFileID, callback) end
 
 ---@param bIncludeLocallyDisabled boolean
@@ -478,58 +478,58 @@ function UGC.SuspendDownloads(bSuspend) end
 ---@param pvecPublishedFileID uint64[]?
 ---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.StartPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
 
 ---@param pvecPublishedFileID uint64[]?
 ---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.StopPlaytimeTracking(pvecPublishedFileID, unNumPublishedFileIDs, callback) end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.StopPlaytimeTrackingForAllItems(callback) end
 
 ---@param nParentPublishedFileID uint64
 ---@param nChildPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.AddDependency(nParentPublishedFileID, nChildPublishedFileID, callback) end
 
 ---@param nParentPublishedFileID uint64
 ---@param nChildPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.RemoveDependency(nParentPublishedFileID, nChildPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param nAppID integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.AddAppDependency(nPublishedFileID, nAppID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param nAppID integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.RemoveAppDependency(nPublishedFileID, nAppID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.GetAppDependencies(nPublishedFileID, callback) end
 
 ---@param nPublishedFileID uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.DeleteItem(nPublishedFileID, callback) end
 
 ---@return boolean
 function UGC.ShowWorkshopEULA() end
 
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.GetWorkshopEULAStatus(callback) end
 
 ---@param cMaxEntries integer

@@ -50,7 +50,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param bool bAllowResponsesToModify:
-    :returns: (int) Return value
+    :returns: (int) ``HTTPCookieContainerHandle``
     :SteamWorks: `CreateCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateCookieContainer>`_
 
 .. function:: HTTP.CreateHTTPRequest(eHTTPRequestMethod, pchAbsoluteURL)
@@ -59,7 +59,7 @@ Function Reference
 
     :param int eHTTPRequestMethod:
     :param str? pchAbsoluteURL:
-    :returns: (int) Return value
+    :returns: (int) ``HTTPRequestHandle``
     :SteamWorks: `CreateHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateHTTPRequest>`_
 
 **Example**::

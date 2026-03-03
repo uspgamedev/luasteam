@@ -42,14 +42,14 @@ function RemoteStorage.FileRead(pchFile, cubDataToRead) end
 ---@param pvData string?
 ---@param cubData integer size of the input array pvData
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.FileWriteAsync(pchFile, pvData, cubData, callback) end
 
 ---@param pchFile string?
 ---@param nOffset integer
 ---@param cubToRead integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.FileReadAsync(pchFile, nOffset, cubToRead, callback) end
 
 ---@param hReadCall uint64
@@ -68,7 +68,7 @@ function RemoteStorage.FileDelete(pchFile) end
 
 ---@param pchFile string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.FileShare(pchFile, callback) end
 
 ---@param pchFile string?
@@ -77,7 +77,7 @@ function RemoteStorage.FileShare(pchFile, callback) end
 function RemoteStorage.SetSyncPlatforms(pchFile, eRemoteStoragePlatform) end
 
 ---@param pchFile string?
----@return uint64
+---@return uint64 -- UGCFileWriteStreamHandle_t
 function RemoteStorage.FileWriteStreamOpen(pchFile) end
 
 ---@param writeHandle uint64
@@ -111,14 +111,14 @@ function RemoteStorage.GetFileSize(pchFile) end
 function RemoteStorage.GetFileTimestamp(pchFile) end
 
 ---@param pchFile string?
----@return integer
+---@return integer -- ERemoteStoragePlatform
 function RemoteStorage.GetSyncPlatforms(pchFile) end
 
 ---@return integer
 function RemoteStorage.GetFileCount() end
 
 ---@param iFile integer
----@return string
+---@return string -- const char *
 ---@return integer -- Value of: pnFileSizeInBytes
 function RemoteStorage.GetFileNameAndSize(iFile) end
 
@@ -139,7 +139,7 @@ function RemoteStorage.SetCloudEnabledForApp(bEnabled) end
 ---@param hContent uint64
 ---@param unPriority integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 
 ---@param hContent uint64
@@ -160,7 +160,7 @@ function RemoteStorage.UGCRead(hContent, cubDataToRead, cOffset, eAction) end
 function RemoteStorage.GetCachedUGCCount() end
 
 ---@param iCachedContent integer
----@return uint64
+---@return uint64 -- UGCHandle_t
 function RemoteStorage.GetCachedUGCHandle(iCachedContent) end
 
 ---@param pchFile string?
@@ -171,12 +171,12 @@ function RemoteStorage.GetCachedUGCHandle(iCachedContent) end
 ---@param eVisibility integer
 ---@param eWorkshopFileType integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 ---@return SteamParamStringArray_t -- Value of: pTags
 function RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback) end
 
 ---@param unPublishedFileId uint64
----@return uint64
+---@return uint64 -- PublishedFileUpdateHandle_t
 function RemoteStorage.CreatePublishedFileUpdateRequest(unPublishedFileId) end
 
 ---@param updateHandle uint64
@@ -211,38 +211,38 @@ function RemoteStorage.UpdatePublishedFileTags(updateHandle) end
 
 ---@param updateHandle uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.CommitPublishedFileUpdate(updateHandle, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param unMaxSecondsOld integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.GetPublishedFileDetails(unPublishedFileId, unMaxSecondsOld, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.DeletePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.SubscribePublishedFile(unPublishedFileId, callback) end
 
 ---@param unStartIndex integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback) end
 
 ---@param updateHandle uint64
@@ -252,24 +252,24 @@ function RemoteStorage.UpdatePublishedFileSetChangeDescription(updateHandle, pch
 
 ---@param unPublishedFileId uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.GetPublishedItemVoteDetails(unPublishedFileId, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param bVoteUp boolean
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback) end
 
 ---@param steamId uint64
 ---@param unStartIndex integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 ---@return SteamParamStringArray_t -- Value of: pRequiredTags
 ---@return SteamParamStringArray_t -- Value of: pExcludedTags
 function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback) end
@@ -283,20 +283,20 @@ function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, c
 ---@param pchDescription string?
 ---@param eVisibility integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 ---@return SteamParamStringArray_t -- Value of: pTags
 function RemoteStorage.PublishVideo(eVideoProvider, pchVideoAccount, pchVideoIdentifier, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, callback) end
 
 ---@param unPublishedFileId uint64
 ---@param eAction integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.SetUserPublishedFileAction(unPublishedFileId, eAction, callback) end
 
 ---@param eAction integer
 ---@param unStartIndex integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex, callback) end
 
 ---@param eEnumerationType integer
@@ -304,7 +304,7 @@ function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex
 ---@param unCount integer
 ---@param unDays integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 ---@return SteamParamStringArray_t -- Value of: pTags
 ---@return SteamParamStringArray_t -- Value of: pUserTags
 function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback) end
@@ -313,14 +313,14 @@ function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStart
 ---@param pchLocation string?
 ---@param unPriority integer
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.UGCDownloadToLocation(hContent, pchLocation, unPriority, callback) end
 
 ---@return integer
 function RemoteStorage.GetLocalFileChangeCount() end
 
 ---@param iFile integer
----@return string
+---@return string -- const char *
 ---@return integer -- Value of: pEChangeType
 ---@return integer -- Value of: pEFilePathType
 function RemoteStorage.GetLocalFileChange(iFile) end

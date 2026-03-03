@@ -50,7 +50,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int hSteamPipe:
-    :returns: (int) Return value
+    :returns: (int) ``HSteamUser``
     :SteamWorks: `ConnectToGlobalUser <https://partner.steamgames.com/doc/api/ISteamClient#ConnectToGlobalUser>`_
 
 **Example**::
@@ -62,7 +62,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eAccountType:
-    :returns: (int) Return value
+    :returns: (int) ``HSteamUser``
     :returns: (int) ``phSteamPipe``
     :SteamWorks: `CreateLocalUser <https://partner.steamgames.com/doc/api/ISteamClient#CreateLocalUser>`_
 
@@ -78,7 +78,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``HSteamPipe``
     :SteamWorks: `CreateSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#CreateSteamPipe>`_
 
 **Example**::

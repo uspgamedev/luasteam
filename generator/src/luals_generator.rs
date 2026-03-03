@@ -271,7 +271,13 @@ impl LuaLsGenerator {
         }
 
         if let Some(ret) = &signature.return_type {
-            cb.line(&format!("---@return {}", ret.to_luals_string()));
+            if signature.returns_steam_api_call {
+                cb.line(&format!("---@return {} -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called", ret.to_luals_string()));
+            } else if let Some(cpp_name) = &signature.return_cpp_type {
+                cb.line(&format!("---@return {} -- {}", ret.to_luals_string(), cpp_name));
+            } else {
+                cb.line(&format!("---@return {}", ret.to_luals_string()));
+            }
         }
 
         // Use signature data for output params if available

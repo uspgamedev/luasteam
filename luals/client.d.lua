@@ -4,7 +4,7 @@ local Client = {}
 ---@param hook fun(severity: integer, message: string)?
 function Client.SetWarningMessageHook(hook) end
 
----@return integer
+---@return integer -- HSteamPipe
 function Client.CreateSteamPipe() end
 
 ---@param hSteamPipe integer
@@ -12,11 +12,11 @@ function Client.CreateSteamPipe() end
 function Client.BReleaseSteamPipe(hSteamPipe) end
 
 ---@param hSteamPipe integer
----@return integer
+---@return integer -- HSteamUser
 function Client.ConnectToGlobalUser(hSteamPipe) end
 
 ---@param eAccountType integer
----@return integer
+---@return integer -- HSteamUser
 ---@return integer -- Value of: phSteamPipe
 function Client.CreateLocalUser(eAccountType) end
 

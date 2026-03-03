@@ -14,7 +14,7 @@ function Controller.RunFrame() end
 function Controller.GetConnectedControllers() end
 
 ---@param pszActionSetName string?
----@return uint64
+---@return uint64 -- ControllerActionSetHandle_t
 function Controller.GetActionSetHandle(pszActionSetName) end
 
 ---@param controllerHandle uint64
@@ -22,7 +22,7 @@ function Controller.GetActionSetHandle(pszActionSetName) end
 function Controller.ActivateActionSet(controllerHandle, actionSetHandle) end
 
 ---@param controllerHandle uint64
----@return uint64
+---@return uint64 -- ControllerActionSetHandle_t
 function Controller.GetCurrentActionSet(controllerHandle) end
 
 ---@param controllerHandle uint64
@@ -42,12 +42,12 @@ function Controller.DeactivateAllActionSetLayers(controllerHandle) end
 function Controller.GetActiveActionSetLayers(controllerHandle) end
 
 ---@param pszActionName string?
----@return uint64
+---@return uint64 -- ControllerDigitalActionHandle_t
 function Controller.GetDigitalActionHandle(pszActionName) end
 
 ---@param controllerHandle uint64
 ---@param digitalActionHandle uint64
----@return InputDigitalActionData_t
+---@return InputDigitalActionData_t -- InputDigitalActionData_t
 function Controller.GetDigitalActionData(controllerHandle, digitalActionHandle) end
 
 ---@param controllerHandle uint64
@@ -58,12 +58,12 @@ function Controller.GetDigitalActionData(controllerHandle, digitalActionHandle) 
 function Controller.GetDigitalActionOrigins(controllerHandle, actionSetHandle, digitalActionHandle) end
 
 ---@param pszActionName string?
----@return uint64
+---@return uint64 -- ControllerAnalogActionHandle_t
 function Controller.GetAnalogActionHandle(pszActionName) end
 
 ---@param controllerHandle uint64
 ---@param analogActionHandle uint64
----@return InputAnalogActionData_t
+---@return InputAnalogActionData_t -- InputAnalogActionData_t
 function Controller.GetAnalogActionData(controllerHandle, analogActionHandle) end
 
 ---@param controllerHandle uint64
@@ -74,11 +74,11 @@ function Controller.GetAnalogActionData(controllerHandle, analogActionHandle) en
 function Controller.GetAnalogActionOrigins(controllerHandle, actionSetHandle, analogActionHandle) end
 
 ---@param eOrigin integer
----@return string
+---@return string -- const char *
 function Controller.GetGlyphForActionOrigin(eOrigin) end
 
 ---@param eOrigin integer
----@return string
+---@return string -- const char *
 function Controller.GetStringForActionOrigin(eOrigin) end
 
 ---@param controllerHandle uint64
@@ -86,7 +86,7 @@ function Controller.GetStringForActionOrigin(eOrigin) end
 function Controller.StopAnalogActionMomentum(controllerHandle, eAction) end
 
 ---@param controllerHandle uint64
----@return InputMotionData_t
+---@return InputMotionData_t -- InputMotionData_t
 function Controller.GetMotionData(controllerHandle) end
 
 ---@param controllerHandle uint64
@@ -119,11 +119,11 @@ function Controller.SetLEDColor(controllerHandle, nColorR, nColorG, nColorB, nFl
 function Controller.ShowBindingPanel(controllerHandle) end
 
 ---@param controllerHandle uint64
----@return integer
+---@return integer -- ESteamInputType
 function Controller.GetInputTypeForHandle(controllerHandle) end
 
 ---@param nIndex integer
----@return uint64
+---@return uint64 -- ControllerHandle_t
 function Controller.GetControllerForGamepadIndex(nIndex) end
 
 ---@param ulControllerHandle uint64
@@ -131,21 +131,21 @@ function Controller.GetControllerForGamepadIndex(nIndex) end
 function Controller.GetGamepadIndexForController(ulControllerHandle) end
 
 ---@param eOrigin integer
----@return string
+---@return string -- const char *
 function Controller.GetStringForXboxOrigin(eOrigin) end
 
 ---@param eOrigin integer
----@return string
+---@return string -- const char *
 function Controller.GetGlyphForXboxOrigin(eOrigin) end
 
 ---@param controllerHandle uint64
 ---@param eOrigin integer
----@return integer
+---@return integer -- EControllerActionOrigin
 function Controller.GetActionOriginFromXboxOrigin(controllerHandle, eOrigin) end
 
 ---@param eDestinationInputType integer
 ---@param eSourceOrigin integer
----@return integer
+---@return integer -- EControllerActionOrigin
 function Controller.TranslateActionOrigin(eDestinationInputType, eSourceOrigin) end
 
 ---@param controllerHandle uint64

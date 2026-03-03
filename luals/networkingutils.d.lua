@@ -4,7 +4,7 @@ local NetworkingUtils = {}
 
 function NetworkingUtils.InitRelayNetworkAccess() end
 
----@return integer
+---@return integer -- ESteamNetworkingAvailability
 ---@return SteamRelayNetworkStatus_t -- Value of: pDetails
 function NetworkingUtils.GetRelayNetworkStatus() end
 
@@ -48,11 +48,11 @@ function NetworkingUtils.GetPOPList(nListSz) end
 function NetworkingUtils.IsFakeIPv4(nIPv4) end
 
 ---@param nIPv4 integer
----@return integer
+---@return integer -- ESteamNetworkingFakeIPType
 function NetworkingUtils.GetIPv4FakeIPType(nIPv4) end
 
 ---@param fakeIP SteamNetworkingIPAddr
----@return integer
+---@return integer -- EResult
 ---@return SteamNetworkingIdentity -- Value of: pOutRealIdentity
 function NetworkingUtils.GetRealIdentityForFakeIP(fakeIP) end
 
@@ -90,14 +90,14 @@ function NetworkingUtils.SetConnectionConfigValueFloat(hConn, eValue, val) end
 function NetworkingUtils.SetConnectionConfigValueString(hConn, eValue, val) end
 
 ---@param eValue integer
----@return string
+---@return string -- const char *
 ---@return integer -- Value of: pOutDataType
 ---@return integer -- Value of: pOutScope
 function NetworkingUtils.GetConfigValueInfo(eValue) end
 
 ---@param eCurrent integer
 ---@param bEnumerateDevVars boolean
----@return integer
+---@return integer -- ESteamNetworkingConfigValue
 function NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars) end
 
 ---@param addr SteamNetworkingIPAddr
@@ -112,7 +112,7 @@ function NetworkingUtils.SteamNetworkingIPAddr_ToString(addr, cbBuf, bWithPort) 
 function NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr) end
 
 ---@param addr SteamNetworkingIPAddr
----@return integer
+---@return integer -- ESteamNetworkingFakeIPType
 function NetworkingUtils.SteamNetworkingIPAddr_GetFakeIPType(addr) end
 
 ---@param identity SteamNetworkingIdentity

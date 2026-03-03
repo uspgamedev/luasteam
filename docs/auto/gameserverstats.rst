@@ -105,7 +105,7 @@ Function Reference
 
     :param uint64 steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`GSStatsReceived_t <GameServerStats.OnGSStatsReceived>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
 
 **Example**::
@@ -165,7 +165,7 @@ Function Reference
 
     :param uint64 steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`GSStatsStored_t <GameServerStats.OnGSStatsStored>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
 
 **Example**::

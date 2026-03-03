@@ -8,7 +8,7 @@ local RemotePlay = {}
 function RemotePlay.GetSessionCount() end
 
 ---@param iSessionIndex integer
----@return integer
+---@return integer -- RemotePlaySessionID_t
 function RemotePlay.GetSessionID(iSessionIndex) end
 
 ---@param unSessionID integer
@@ -16,11 +16,11 @@ function RemotePlay.GetSessionID(iSessionIndex) end
 function RemotePlay.GetSessionSteamID(unSessionID) end
 
 ---@param unSessionID integer
----@return string
+---@return string -- const char *
 function RemotePlay.GetSessionClientName(unSessionID) end
 
 ---@param unSessionID integer
----@return integer
+---@return integer -- ESteamDeviceFormFactor
 function RemotePlay.GetSessionClientFormFactor(unSessionID) end
 
 ---@param unSessionID integer
@@ -61,7 +61,7 @@ function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) 
 ---@param nHotY integer
 ---@param pBGRA string?
 ---@param nPitch integer
----@return integer
+---@return integer -- RemotePlayCursorID_t
 function RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch) end
 
 ---@param unSessionID integer

@@ -115,7 +115,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eValue:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :returns: (int) ``pOutDataType``
     :returns: (int) ``pOutScope``
     :SteamWorks: `GetConfigValueInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetConfigValueInfo>`_
@@ -143,7 +143,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nIPv4:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamNetworkingFakeIPType``
     :SteamWorks: `GetIPv4FakeIPType <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetIPv4FakeIPType>`_
 
 .. function:: NetworkingUtils.GetPOPCount()
@@ -189,7 +189,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param fakeIP: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
-    :returns: (int) Return value
+    :returns: (int) ``EResult``
     :returns: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`) ``pOutRealIdentity``
     :SteamWorks: `GetRealIdentityForFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRealIdentityForFakeIP>`_
 
@@ -201,7 +201,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``ESteamNetworkingAvailability``
     :returns: (:ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`) ``pDetails``
     :SteamWorks: `GetRelayNetworkStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetRelayNetworkStatus>`_
 
@@ -240,7 +240,7 @@ Function Reference
 
     :param int eCurrent:
     :param bool bEnumerateDevVars:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamNetworkingConfigValue``
     :SteamWorks: `IterateGenericEditableConfigValues <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#IterateGenericEditableConfigValues>`_
 
 .. function:: NetworkingUtils.SetConnectionConfigValueFloat(hConn, eValue, val)
@@ -407,7 +407,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param addr: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
-    :returns: (int) Return value
+    :returns: (int) ``ESteamNetworkingFakeIPType``
     :SteamWorks: `SteamNetworkingIPAddr_GetFakeIPType <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SteamNetworkingIPAddr_GetFakeIPType>`_
 
 .. function:: NetworkingUtils.SteamNetworkingIPAddr_ParseString(pszStr)

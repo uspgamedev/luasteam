@@ -81,7 +81,7 @@ Function Reference
     :param int nHotY:
     :param str? pBGRA:
     :param int nPitch:
-    :returns: (int) Return value
+    :returns: (int) ``RemotePlayCursorID_t``
     :SteamWorks: `CreateMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#CreateMouseCursor>`_
 
 .. function:: RemotePlay.DisableRemotePlayTogetherDirectInput()
@@ -108,7 +108,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unSessionID:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamDeviceFormFactor``
     :SteamWorks: `GetSessionClientFormFactor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientFormFactor>`_
 
 **Example**::
@@ -123,7 +123,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unSessionID:
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetSessionClientName <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientName>`_
 
     **Notes:**
@@ -147,7 +147,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iSessionIndex:
-    :returns: (int) Return value
+    :returns: (int) ``RemotePlaySessionID_t``
     :SteamWorks: `GetSessionID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionID>`_
 
 **Example**::

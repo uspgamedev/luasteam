@@ -391,9 +391,17 @@ impl DocGenerator {
 
         // Return values from signature
         if let Some(ret_type) = &signature.return_type {
+            let ret_desc = if signature.returns_steam_api_call {
+                "``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.".to_string()
+            } else if let Some(cpp_name) = &signature.return_cpp_type {
+                format!("``{}``", cpp_name)
+            } else {
+                "Return value".to_string()
+            };
             doc.push_str(&format!(
-                "    :returns: ({}) Return value\n",
-                ret_type.to_rst_link(&self.structs)
+                "    :returns: ({}) {}\n",
+                ret_type.to_rst_link(&self.structs),
+                ret_desc
             ));
         }
 

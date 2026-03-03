@@ -142,7 +142,7 @@ Function Reference
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
-    :returns: (int) Return value
+    :returns: (int) ``EBeginAuthSessionResult``
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
 
 **Example**::
@@ -172,7 +172,7 @@ Function Reference
     :param int cbCompressed: size of the input array ``pCompressed``
     :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :param int nDesiredSampleRate:
-    :returns: (int) Return value
+    :returns: (int) ``EVoiceResult``
     :returns: (str) ``pDestBuffer``
     :returns: (int) ``nBytesWritten``
     :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
@@ -208,7 +208,7 @@ Function Reference
 
     :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSteamNetworkingIdentity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :returns: (int) Return value
+    :returns: (int) ``HAuthTicket``
     :returns: (str) ``pTicket``
     :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
@@ -232,14 +232,14 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchIdentity:
-    :returns: (int) Return value
+    :returns: (int) ``HAuthTicket``
     :SteamWorks: `GetAuthTicketForWebApi <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthTicketForWebApi>`_
 
 .. function:: User.GetAvailableVoice()
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``EVoiceResult``
     :returns: (int) ``pcbCompressed``
     :SteamWorks: `GetAvailableVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetAvailableVoice>`_
 
@@ -260,7 +260,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`DurationControl_t <User.OnDurationControl>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetDurationControl <https://partner.steamgames.com/doc/api/ISteamUser#GetDurationControl>`_
 
 .. function:: User.GetEncryptedAppTicket(cbMaxTicket)
@@ -296,7 +296,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``HSteamUser``
     :SteamWorks: `GetHSteamUser <https://partner.steamgames.com/doc/api/ISteamUser#GetHSteamUser>`_
 
 .. function:: User.GetMarketEligibility(callback)
@@ -304,7 +304,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`MarketEligibilityResponse_t <User.OnMarketEligibilityResponse>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetMarketEligibility <https://partner.steamgames.com/doc/api/ISteamUser#GetMarketEligibility>`_
 
 .. function:: User.GetPlayerSteamLevel()
@@ -362,7 +362,7 @@ Function Reference
 
     :param bool bWantCompressed:
     :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
-    :returns: (int) Return value
+    :returns: (int) ``EVoiceResult``
     :returns: (str) ``pDestBuffer``
     :returns: (int) ``nBytesWritten``
     :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
@@ -401,7 +401,7 @@ Function Reference
     :param str? pDataToInclude:
     :param int cbDataToInclude: size of the input array ``pDataToInclude``
     :param function callback: CallResult callback receiving struct :func:`EncryptedAppTicketResponse_t <User.OnEncryptedAppTicketResponse>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestEncryptedAppTicket <https://partner.steamgames.com/doc/api/ISteamUser#RequestEncryptedAppTicket>`_
 
 **Example**::
@@ -419,7 +419,7 @@ Function Reference
 
     :param str? pchRedirectURL:
     :param function callback: CallResult callback receiving struct :func:`StoreAuthURLResponse_t <User.OnStoreAuthURLResponse>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestStoreAuthURL <https://partner.steamgames.com/doc/api/ISteamUser#RequestStoreAuthURL>`_
 
 .. function:: User.StartVoiceRecording()
@@ -459,7 +459,7 @@ Function Reference
 
     :param uint64 steamID:
     :param int appID:
-    :returns: (int) Return value
+    :returns: (int) ``EUserHasLicenseForAppResult``
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
 
 **Example**::

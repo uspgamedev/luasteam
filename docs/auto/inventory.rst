@@ -371,7 +371,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int resultHandle:
-    :returns: (int) Return value
+    :returns: (int) ``EResult``
     :SteamWorks: `GetResultStatus <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultStatus>`_
 
 **Example**::
@@ -442,7 +442,7 @@ Function Reference
 
     :param uint64 steamID:
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryEligiblePromoItemDefIDs_t <Inventory.OnSteamInventoryEligiblePromoItemDefIDs>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestEligiblePromoItemDefinitionsIDs <https://partner.steamgames.com/doc/api/ISteamInventory#RequestEligiblePromoItemDefinitionsIDs>`_
 
 .. function:: Inventory.RequestPrices(callback)
@@ -450,7 +450,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryRequestPricesResult_t <Inventory.OnSteamInventoryRequestPricesResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestPrices <https://partner.steamgames.com/doc/api/ISteamInventory#RequestPrices>`_
 
 **Example**::
@@ -541,7 +541,7 @@ Function Reference
     :param int[]? punArrayQuantity:
     :param int unArrayLength: size of the input arrays ``pArrayItemDefs`` and ``punArrayQuantity``
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryStartPurchaseResult_t <Inventory.OnSteamInventoryStartPurchaseResult>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `StartPurchase <https://partner.steamgames.com/doc/api/ISteamInventory#StartPurchase>`_
 
 **Example**::
@@ -556,7 +556,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamInventoryUpdateHandle_t``
     :SteamWorks: `StartUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#StartUpdateProperties>`_
 
 .. function:: Inventory.SubmitUpdateProperties(handle)

@@ -81,7 +81,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>`)
-    :returns: (int) Return value
+    :returns: (int) ``HServerQuery``
     :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
 
 **Example**::
@@ -103,7 +103,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingPlayersResponse <struct-ISteamMatchmakingPlayersResponse>`)
-    :returns: (int) Return value
+    :returns: (int) ``HServerQuery``
     :SteamWorks: `PlayerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PlayerDetails>`_
 
 .. function:: MatchmakingServers.RefreshQuery(hRequest)
@@ -231,7 +231,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingRulesResponse <struct-ISteamMatchmakingRulesResponse>`)
-    :returns: (int) Return value
+    :returns: (int) ``HServerQuery``
     :SteamWorks: `ServerRules <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerRules>`_
 
 

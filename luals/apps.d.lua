@@ -18,10 +18,10 @@ function Apps.BIsCybercafe() end
 ---@return boolean
 function Apps.BIsVACBanned() end
 
----@return string
+---@return string -- const char *
 function Apps.GetCurrentGameLanguage() end
 
----@return string
+---@return string -- const char *
 function Apps.GetAvailableGameLanguages() end
 
 ---@param appID integer
@@ -88,7 +88,7 @@ function Apps.BIsAppInstalled(appID) end
 function Apps.GetAppOwner() end
 
 ---@param pchKey string?
----@return string
+---@return string -- const char *
 function Apps.GetLaunchQueryParam(pchKey) end
 
 ---@param nAppID integer
@@ -104,7 +104,7 @@ function Apps.RequestAllProofOfPurchaseKeys() end
 
 ---@param pszFileName string?
 ---@param callback fun(data: table?, io_fail: boolean)?
----@return uint64
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Apps.GetFileDetails(pszFileName, callback) end
 
 ---@param cubCommandLine integer? size of the buffer for pszCommandLine; if nil then the buffer will be NULL

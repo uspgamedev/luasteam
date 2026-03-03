@@ -82,7 +82,7 @@ Function Reference
 
     :param str? szFileName:
     :param function callback: CallResult callback receiving struct :func:`CheckFileSignature_t <Utils.OnCheckFileSignature>` and a boolean
-    :returns: (uint64) Return value
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `CheckFileSignature <https://partner.steamgames.com/doc/api/ISteamUtils#CheckFileSignature>`_
 
 .. function:: Utils.DismissFloatingGamepadTextInput()
@@ -127,7 +127,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamAPICall:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamAPICallFailure``
     :SteamWorks: `GetAPICallFailureReason <https://partner.steamgames.com/doc/api/ISteamUtils#GetAPICallFailureReason>`_
 
 .. function:: Utils.GetAPICallResult(hSteamAPICall, cubCallback, iCallbackExpected)
@@ -162,7 +162,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) Return value
+    :returns: (int) ``EUniverse``
     :SteamWorks: `GetConnectedUniverse <https://partner.steamgames.com/doc/api/ISteamUtils#GetConnectedUniverse>`_
 
 .. function:: Utils.GetCurrentBatteryPower()
@@ -210,7 +210,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetIPCountry <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPCountry>`_
 
 **Example**::
@@ -223,7 +223,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int eProtocol:
-    :returns: (int) Return value
+    :returns: (int) ``ESteamIPv6ConnectivityState``
     :SteamWorks: `GetIPv6ConnectivityState <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPv6ConnectivityState>`_
 
 .. function:: Utils.GetImageRGBA(iImage, nDestBufferSize)
@@ -302,7 +302,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) Return value
+    :returns: (str) ``const char *``
     :SteamWorks: `GetSteamUILanguage <https://partner.steamgames.com/doc/api/ISteamUtils#GetSteamUILanguage>`_
 
 **Example**::
