@@ -736,7 +736,8 @@ impl Generator {
                 {
                     let struct_name = struct_name.to_string();
                     let sz = sz.clone();
-                    s.line(&format!("int {} = (int)lua_objlen(L, {});", sz, lua_idx));
+                    // Size comes from Lua (the next parameter), not from lua_objlen.
+                    s.line(&format!("int {} = luaL_checkint(L, {});", sz, lua_idx + 1));
                     s.line(&format!(
                         "std::vector<{} *> {}_vec({});",
                         struct_name, param.paramname, sz
@@ -760,8 +761,11 @@ impl Generator {
                         param.paramname.clone(),
                         LType::Array(Box::new(LType::Userdata(struct_name))),
                     );
+                    lua_idx += 1; // advance past the array
+                    sig.add_size_param(sz.clone(), LType::Integer, vec![param.paramname.clone()], false);
+                    lua_idx += 1; // advance past the size
+                    // Mark sz so the outer loop skips adding it to sig again (just pushes to cpp_call_params).
                     size_params_to_ignore.insert(sz);
-                    lua_idx += 1;
                     i += 1;
                     continue;
                 }

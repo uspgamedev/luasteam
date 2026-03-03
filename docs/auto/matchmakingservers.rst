@@ -86,14 +86,14 @@ Function Reference
 
 **Example**::
 
-    local pingCallbacks = Steam.newISteamMatchmakingPingResponse({
+    local pingCallbacks = Steam.newISteamMatchmakingPingResponse {
         ServerResponded = function(server)
             print('Server:', server.m_szServerName, 'Ping:', server.m_nPing)
         end,
         ServerFailedToRespond = function()
             print('Server did not respond to ping')
         end,
-    })
+    }
     Steam.MatchmakingServers.PingServer(serverIP, serverPort, pingCallbacks)
 
 .. function:: MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse)
@@ -137,29 +137,31 @@ Function Reference
     Steam.MatchmakingServers.ReleaseRequest(serverListRequest)
     serverListRequest = nil
 
-.. function:: MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, pRequestServersResponse)
+.. function:: MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, nFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
 
     :param int iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestFavoritesServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFavoritesServerList>`_
 
-.. function:: MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, pRequestServersResponse)
+.. function:: MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, nFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
 
     :param int iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestFriendsServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestFriendsServerList>`_
 
 **Example**::
 
-    local callbacks = Steam.newISteamMatchmakingServerListResponse({
+    local callbacks = Steam.newISteamMatchmakingServerListResponse {
         ServerResponded = function(req, idx)
             local info = Steam.MatchmakingServers.getServerDetails(req, idx)
             print('Friend server:', info.m_szServerName)
@@ -167,25 +169,27 @@ Function Reference
         RefreshComplete = function(req, resp)
             Steam.MatchmakingServers.ReleaseRequest(req)
         end,
-    })
-    local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, callbacks)
+    }
+    local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, 0, callbacks)
 
-.. function:: MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, pRequestServersResponse)
+.. function:: MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, nFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
 
     :param int iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestHistoryServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestHistoryServerList>`_
 
-.. function:: MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, pRequestServersResponse)
+.. function:: MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, nFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
 
     :param int iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestInternetServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestInternetServerList>`_
@@ -193,7 +197,7 @@ Function Reference
 **Example**::
 
     local filters = {{'gamedir', 'mygame'}, {'map', 'de_dust2'}}
-    local callbacks = Steam.newISteamMatchmakingServerListResponse({
+    local callbacks = Steam.newISteamMatchmakingServerListResponse {
         ServerResponded = function(request, index)
             local info = Steam.MatchmakingServers.getServerDetails(request, index)
             print(info.m_szServerName .. ' - ' .. info.m_nPlayers .. '/' .. info.m_nMaxPlayers)
@@ -202,8 +206,8 @@ Function Reference
             print('Server list refresh complete')
             Steam.MatchmakingServers.ReleaseRequest(request)
         end,
-    })
-    local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, callbacks)
+    }
+    local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, #filters, callbacks)
 
 .. function:: MatchmakingServers.RequestLANServerList(iApp, pRequestServersResponse)
 
@@ -214,12 +218,13 @@ Function Reference
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
 
-.. function:: MatchmakingServers.RequestSpectatorServerList(iApp, ppchFilters, pRequestServersResponse)
+.. function:: MatchmakingServers.RequestSpectatorServerList(iApp, ppchFilters, nFilters, pRequestServersResponse)
 
     🤖 **Auto-generated binding**
 
     :param int iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
+    :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_

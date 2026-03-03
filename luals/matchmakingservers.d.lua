@@ -3,9 +3,10 @@ local MatchmakingServers = {}
 
 ---@param iApp integer
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
+---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
-function MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, pRequestServersResponse) end
+function MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
 ---@param iApp integer
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
@@ -14,27 +15,31 @@ function MatchmakingServers.RequestLANServerList(iApp, pRequestServersResponse) 
 
 ---@param iApp integer
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
+---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
-function MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, pRequestServersResponse) end
+function MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
 ---@param iApp integer
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
+---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
-function MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, pRequestServersResponse) end
+function MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
 ---@param iApp integer
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
+---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
-function MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, pRequestServersResponse) end
+function MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
 ---@param iApp integer
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
+---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
-function MatchmakingServers.RequestSpectatorServerList(iApp, ppchFilters, pRequestServersResponse) end
+function MatchmakingServers.RequestSpectatorServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
 ---@param hServerListRequest HServerListRequest
 function MatchmakingServers.ReleaseRequest(hServerListRequest) end

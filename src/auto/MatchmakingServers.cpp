@@ -13,11 +13,11 @@ void shutdown_MatchmakingServers_auto(lua_State *L) {
 // In C++:
 // HServerListRequest RequestInternetServerList(AppId_t iApp, MatchMakingKeyValuePair_t ** ppchFilters, uint32 nFilters, ISteamMatchmakingServerListResponse * pRequestServersResponse);
 // In Lua:
-// HServerListRequest MatchmakingServers.RequestInternetServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], pRequestServersResponse: ISteamMatchmakingServerListResponse)
+// HServerListRequest MatchmakingServers.RequestInternetServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], nFilters: int, pRequestServersResponse: ISteamMatchmakingServerListResponse)
 static int luasteam_MatchmakingServers_RequestInternetServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int nFilters = (int)lua_objlen(L, 2);
+	int nFilters = luaL_checkint(L, 3);
 	std::vector<MatchMakingKeyValuePair_t *> ppchFilters_vec(nFilters);
 	for (int _i = 0; _i < nFilters; _i++) {
 		lua_rawgeti(L, 2, _i + 1);
@@ -25,7 +25,7 @@ static int luasteam_MatchmakingServers_RequestInternetServerList(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
-	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
+	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 4);
 	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestInternetServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
@@ -47,11 +47,11 @@ static int luasteam_MatchmakingServers_RequestLANServerList(lua_State *L) {
 // In C++:
 // HServerListRequest RequestFriendsServerList(AppId_t iApp, MatchMakingKeyValuePair_t ** ppchFilters, uint32 nFilters, ISteamMatchmakingServerListResponse * pRequestServersResponse);
 // In Lua:
-// HServerListRequest MatchmakingServers.RequestFriendsServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], pRequestServersResponse: ISteamMatchmakingServerListResponse)
+// HServerListRequest MatchmakingServers.RequestFriendsServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], nFilters: int, pRequestServersResponse: ISteamMatchmakingServerListResponse)
 static int luasteam_MatchmakingServers_RequestFriendsServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int nFilters = (int)lua_objlen(L, 2);
+	int nFilters = luaL_checkint(L, 3);
 	std::vector<MatchMakingKeyValuePair_t *> ppchFilters_vec(nFilters);
 	for (int _i = 0; _i < nFilters; _i++) {
 		lua_rawgeti(L, 2, _i + 1);
@@ -59,7 +59,7 @@ static int luasteam_MatchmakingServers_RequestFriendsServerList(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
-	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
+	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 4);
 	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestFriendsServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
@@ -68,11 +68,11 @@ static int luasteam_MatchmakingServers_RequestFriendsServerList(lua_State *L) {
 // In C++:
 // HServerListRequest RequestFavoritesServerList(AppId_t iApp, MatchMakingKeyValuePair_t ** ppchFilters, uint32 nFilters, ISteamMatchmakingServerListResponse * pRequestServersResponse);
 // In Lua:
-// HServerListRequest MatchmakingServers.RequestFavoritesServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], pRequestServersResponse: ISteamMatchmakingServerListResponse)
+// HServerListRequest MatchmakingServers.RequestFavoritesServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], nFilters: int, pRequestServersResponse: ISteamMatchmakingServerListResponse)
 static int luasteam_MatchmakingServers_RequestFavoritesServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int nFilters = (int)lua_objlen(L, 2);
+	int nFilters = luaL_checkint(L, 3);
 	std::vector<MatchMakingKeyValuePair_t *> ppchFilters_vec(nFilters);
 	for (int _i = 0; _i < nFilters; _i++) {
 		lua_rawgeti(L, 2, _i + 1);
@@ -80,7 +80,7 @@ static int luasteam_MatchmakingServers_RequestFavoritesServerList(lua_State *L) 
 		lua_pop(L, 1);
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
-	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
+	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 4);
 	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestFavoritesServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
@@ -89,11 +89,11 @@ static int luasteam_MatchmakingServers_RequestFavoritesServerList(lua_State *L) 
 // In C++:
 // HServerListRequest RequestHistoryServerList(AppId_t iApp, MatchMakingKeyValuePair_t ** ppchFilters, uint32 nFilters, ISteamMatchmakingServerListResponse * pRequestServersResponse);
 // In Lua:
-// HServerListRequest MatchmakingServers.RequestHistoryServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], pRequestServersResponse: ISteamMatchmakingServerListResponse)
+// HServerListRequest MatchmakingServers.RequestHistoryServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], nFilters: int, pRequestServersResponse: ISteamMatchmakingServerListResponse)
 static int luasteam_MatchmakingServers_RequestHistoryServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int nFilters = (int)lua_objlen(L, 2);
+	int nFilters = luaL_checkint(L, 3);
 	std::vector<MatchMakingKeyValuePair_t *> ppchFilters_vec(nFilters);
 	for (int _i = 0; _i < nFilters; _i++) {
 		lua_rawgeti(L, 2, _i + 1);
@@ -101,7 +101,7 @@ static int luasteam_MatchmakingServers_RequestHistoryServerList(lua_State *L) {
 		lua_pop(L, 1);
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
-	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
+	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 4);
 	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestHistoryServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;
@@ -110,11 +110,11 @@ static int luasteam_MatchmakingServers_RequestHistoryServerList(lua_State *L) {
 // In C++:
 // HServerListRequest RequestSpectatorServerList(AppId_t iApp, MatchMakingKeyValuePair_t ** ppchFilters, uint32 nFilters, ISteamMatchmakingServerListResponse * pRequestServersResponse);
 // In Lua:
-// HServerListRequest MatchmakingServers.RequestSpectatorServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], pRequestServersResponse: ISteamMatchmakingServerListResponse)
+// HServerListRequest MatchmakingServers.RequestSpectatorServerList(iApp: int, ppchFilters: MatchMakingKeyValuePair_t[], nFilters: int, pRequestServersResponse: ISteamMatchmakingServerListResponse)
 static int luasteam_MatchmakingServers_RequestSpectatorServerList(lua_State *L) {
 	auto *iface = SteamMatchmakingServers();
 	AppId_t iApp = static_cast<AppId_t>(luaL_checkint(L, 1));
-	int nFilters = (int)lua_objlen(L, 2);
+	int nFilters = luaL_checkint(L, 3);
 	std::vector<MatchMakingKeyValuePair_t *> ppchFilters_vec(nFilters);
 	for (int _i = 0; _i < nFilters; _i++) {
 		lua_rawgeti(L, 2, _i + 1);
@@ -122,7 +122,7 @@ static int luasteam_MatchmakingServers_RequestSpectatorServerList(lua_State *L) 
 		lua_pop(L, 1);
 	}
 	MatchMakingKeyValuePair_t **ppchFilters = ppchFilters_vec.data();
-	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 3);
+	ISteamMatchmakingServerListResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerListResponse(L, 4);
 	HServerListRequest __ret = SteamAPI_ISteamMatchmakingServers_RequestSpectatorServerList(iface, iApp, ppchFilters, nFilters, pRequestServersResponse);
 	lua_pushlightuserdata(L, (void*)__ret);
 	return 1;

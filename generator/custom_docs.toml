@@ -2343,7 +2343,7 @@ end
 [ISteamMatchmakingServers.RequestInternetServerList]
 example = """
 local filters = {{'gamedir', 'mygame'}, {'map', 'de_dust2'}}
-local callbacks = Steam.newISteamMatchmakingServerListResponse({
+local callbacks = Steam.newISteamMatchmakingServerListResponse {
     ServerResponded = function(request, index)
         local info = Steam.MatchmakingServers.getServerDetails(request, index)
         print(info.m_szServerName .. ' - ' .. info.m_nPlayers .. '/' .. info.m_nMaxPlayers)
@@ -2352,13 +2352,13 @@ local callbacks = Steam.newISteamMatchmakingServerListResponse({
         print('Server list refresh complete')
         Steam.MatchmakingServers.ReleaseRequest(request)
     end,
-})
-local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, callbacks)
+}
+local request = Steam.MatchmakingServers.RequestInternetServerList(appID, filters, #filters, callbacks)
 """
 
 [ISteamMatchmakingServers.RequestFriendsServerList]
 example = """
-local callbacks = Steam.newISteamMatchmakingServerListResponse({
+local callbacks = Steam.newISteamMatchmakingServerListResponse {
     ServerResponded = function(req, idx)
         local info = Steam.MatchmakingServers.getServerDetails(req, idx)
         print('Friend server:', info.m_szServerName)
@@ -2366,8 +2366,8 @@ local callbacks = Steam.newISteamMatchmakingServerListResponse({
     RefreshComplete = function(req, resp)
         Steam.MatchmakingServers.ReleaseRequest(req)
     end,
-})
-local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, callbacks)
+}
+local req = Steam.MatchmakingServers.RequestFriendsServerList(appID, {}, 0, callbacks)
 """
 
 [ISteamMatchmakingServers.GetServerCount]
@@ -2401,14 +2401,14 @@ Steam.MatchmakingServers.CancelQuery(serverListRequest)
 
 [ISteamMatchmakingServers.PingServer]
 example = """
-local pingCallbacks = Steam.newISteamMatchmakingPingResponse({
+local pingCallbacks = Steam.newISteamMatchmakingPingResponse {
     ServerResponded = function(server)
         print('Server:', server.m_szServerName, 'Ping:', server.m_nPing)
     end,
     ServerFailedToRespond = function()
         print('Server did not respond to ping')
     end,
-})
+}
 Steam.MatchmakingServers.PingServer(serverIP, serverPort, pingCallbacks)
 """
 
