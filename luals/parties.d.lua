@@ -36,6 +36,14 @@ function Parties.GetNumAvailableBeaconLocations() end
 ---@return SteamPartyBeaconLocation_t[] -- Value of: pLocationList
 function Parties.GetAvailableBeaconLocations(uMaxNumLocations) end
 
+---@param unOpenSlots integer
+---@param pBeaconLocation SteamPartyBeaconLocation_t
+---@param pchConnectString string?
+---@param pchMetadata string?
+---@param callback fun(data: table?, io_fail: boolean)?
+---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
+function Parties.CreateBeacon(unOpenSlots, pBeaconLocation, pchConnectString, pchMetadata, callback) end
+
 ---@param ulBeacon uint64 -- PartyBeaconID_t
 ---@param steamIDUser uint64
 function Parties.OnReservationCompleted(ulBeacon, steamIDUser) end

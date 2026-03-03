@@ -11,6 +11,7 @@ List of Functions
 
 * :func:`Parties.CancelReservation`
 * :func:`Parties.ChangeNumOpenSlots`
+* :func:`Parties.CreateBeacon`
 * :func:`Parties.DestroyBeacon`
 * :func:`Parties.GetAvailableBeaconLocations`
 * :func:`Parties.GetBeaconByIndex`
@@ -56,6 +57,18 @@ Function Reference
     :param function callback: CallResult callback receiving struct :func:`ChangeNumOpenSlotsCallback_t <Parties.OnChangeNumOpenSlotsCallback>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `ChangeNumOpenSlots <https://partner.steamgames.com/doc/api/ISteamParties#ChangeNumOpenSlots>`_
+
+.. function:: Parties.CreateBeacon(unOpenSlots, pBeaconLocation, pchConnectString, pchMetadata, callback)
+
+    🤖 **Auto-generated binding**
+
+    :param int unOpenSlots:
+    :param pBeaconLocation: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`)
+    :param str? pchConnectString:
+    :param str? pchMetadata:
+    :param function callback: CallResult callback receiving struct :func:`CreateBeaconCallback_t <Parties.OnCreateBeaconCallback>` and a boolean
+    :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
+    :SteamWorks: `CreateBeacon <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeacon>`_
 
 .. function:: Parties.DestroyBeacon(ulBeacon)
 
@@ -190,16 +203,6 @@ Function Reference
     :param uint64 ulBeacon: ``PartyBeaconID_t``
     :param uint64 steamIDUser:
     :SteamWorks: `OnReservationCompleted <https://partner.steamgames.com/doc/api/ISteamParties#OnReservationCompleted>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: Parties.CreateBeacon
-
-    ✋ **Not implemented** - blocklist: requires custom implementation
-    
-    :SteamWorks: `CreateBeacon <https://partner.steamgames.com/doc/api/ISteamParties#CreateBeacon>`_
 
 
 Callbacks

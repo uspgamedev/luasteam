@@ -722,7 +722,7 @@ void add_Parties_auto(lua_State *L);
 void init_Parties_auto(lua_State *L);
 void shutdown_Parties_auto(lua_State *L);
 extern int Parties_ref;
-static constexpr int Parties_count = 11;
+static constexpr int Parties_count = 12;
 void register_RemoteStorage_auto(lua_State *L);
 void add_RemoteStorage_auto(lua_State *L);
 void init_RemoteStorage_auto(lua_State *L);

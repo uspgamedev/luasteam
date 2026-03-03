@@ -1153,7 +1153,16 @@ impl Generator {
                         } else {
                             return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
                         }
-                        cpp_call_params.push(param.paramname.clone());
+                        if matches!(
+                            (method.methodname_flat.as_str(), param.paramname.as_str()),
+                            ("SteamAPI_ISteamParties_CreateBeacon", "pBeaconLocation")
+                        ) {
+                            // API is wrong and not const
+                            cpp_call_params
+                                .push(format!("const_cast<{} *>({})", ttype, param.paramname));
+                        } else {
+                            cpp_call_params.push(param.paramname.clone());
+                        }
                         sig.add_param(param.paramname.clone(), LType::Userdata(ttype.to_string()));
                         lua_idx += 1;
                     }

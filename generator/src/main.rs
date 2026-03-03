@@ -175,10 +175,6 @@ impl Generator {
         );
 
         blocklist.insert(
-            "SteamAPI_ISteamParties_CreateBeacon".to_string(),
-            SkipReason::ManualBlocklist("requires custom implementation".to_string()),
-        );
-        blocklist.insert(
             "SteamAPI_ISteamNetworkingUtils_SetConfigValue".to_string(),
             SkipReason::ManualBlocklist("Needs careful dealing with void*".to_string()),
         );
