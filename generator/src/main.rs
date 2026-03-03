@@ -156,12 +156,6 @@ impl Generator {
             SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()),
         );
 
-        // char** output semantics unclear (Steam sets internal pointer; lifetime is unknown)
-        blocklist.insert(
-            "SteamAPI_ISteamRemoteStorage_GetUGCDetails".to_string(),
-            SkipReason::ManualBlocklist("char** output semantics unclear".to_string()),
-        );
-
         // Has function pointers — manual implementation in Client.cpp shared with Utils
         blocklist.insert(
             "SteamAPI_ISteamUtils_SetWarningMessageHook".to_string(),

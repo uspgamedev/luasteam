@@ -2039,7 +2039,7 @@ end
 [ISteamRemoteStorage.FileRead]
 example = """
 local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
-local data = Steam.RemoteStorage.FileRead('savegame.txt', size)
+local _, data = Steam.RemoteStorage.FileRead('savegame.txt', size)
 if data then
     loadSaveData(data)
 end
@@ -2081,7 +2081,7 @@ notes = ["See :func:`RemoteStorage.GetFileCount`'s example."]
 
 [ISteamRemoteStorage.GetQuota]
 example = """
-local total, available = Steam.RemoteStorage.GetQuota()
+local _, total, available = Steam.RemoteStorage.GetQuota()
 print(string.format('Cloud storage: %d/%d bytes used', total - available, total))
 """
 
@@ -2113,11 +2113,16 @@ end)
 example = """
 Steam.RemoteStorage.FileReadAsync('savegame.dat', 0, fileSize, function(data, err)
     if not err and data.m_eResult == Steam.k_EResultOK then
-        local fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
-        loadSaveData(fileData)
+        local ok, fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
+        if ok then
+            loadSaveData(fileData)
+        end
     end
 end)
 """
+
+[ISteamRemoteStorage.FileReadAsyncComplete]
+notes = ["See :func:`RemoteStorage.FileReadAsync`'s example."]
 
 [ISteamRemoteStorage.BeginFileWriteBatch]
 example = """

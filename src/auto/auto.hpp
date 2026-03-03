@@ -728,7 +728,7 @@ void add_RemoteStorage_auto(lua_State *L);
 void init_RemoteStorage_auto(lua_State *L);
 void shutdown_RemoteStorage_auto(lua_State *L);
 extern int RemoteStorage_ref;
-static constexpr int RemoteStorage_count = 58;
+static constexpr int RemoteStorage_count = 59;
 void register_UserStats_auto(lua_State *L);
 void add_UserStats_auto(lua_State *L);
 void init_UserStats_auto(lua_State *L);

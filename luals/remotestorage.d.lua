@@ -149,6 +149,14 @@ function RemoteStorage.UGCDownload(hContent, unPriority, callback) end
 function RemoteStorage.GetUGCDownloadProgress(hContent) end
 
 ---@param hContent uint64 -- UGCHandle_t
+---@return boolean
+---@return integer -- Value of: pnAppID
+---@return string -- Value of: ppchName
+---@return integer -- Value of: pnFileSizeInBytes
+---@return uint64 -- Value of: pSteamIDOwner
+function RemoteStorage.GetUGCDetails(hContent) end
+
+---@param hContent uint64 -- UGCHandle_t
 ---@param cubDataToRead integer? size of the buffer for pvData; if nil then the buffer will be NULL
 ---@param cOffset integer
 ---@param eAction integer -- EUGCReadAction
@@ -268,11 +276,11 @@ function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callba
 
 ---@param steamId uint64
 ---@param unStartIndex integer
+---@param pRequiredTags SteamParamStringArray_t
+---@param pExcludedTags SteamParamStringArray_t
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
----@return SteamParamStringArray_t -- Value of: pRequiredTags
----@return SteamParamStringArray_t -- Value of: pExcludedTags
-function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback) end
+function RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, pRequiredTags, pExcludedTags, callback) end
 
 ---@param eVideoProvider integer -- EWorkshopVideoProvider
 ---@param pchVideoAccount string?
@@ -303,11 +311,11 @@ function RemoteStorage.EnumeratePublishedFilesByUserAction(eAction, unStartIndex
 ---@param unStartIndex integer
 ---@param unCount integer
 ---@param unDays integer
+---@param pTags SteamParamStringArray_t
+---@param pUserTags SteamParamStringArray_t
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
----@return SteamParamStringArray_t -- Value of: pTags
----@return SteamParamStringArray_t -- Value of: pUserTags
-function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback) end
+function RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, pTags, pUserTags, callback) end
 
 ---@param hContent uint64 -- UGCHandle_t
 ---@param pchLocation string?

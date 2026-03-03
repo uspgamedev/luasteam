@@ -1012,18 +1012,18 @@ impl Generator {
                                 &lua_idx_str,
                                 out,
                                 size,
-                                (method.methodname_flat
-                                    == "SteamAPI_ISteamUser_RequestEncryptedAppTicket"
-                                    && param.paramname == "pDataToInclude")
-                                    || (method.methodname_flat
-                                        == "SteamAPI_ISteamScreenshots_WriteScreenshot"
-                                        && param.paramname == "pubRGB")
-                                    || (method.methodname_flat
-                                        == "SteamAPI_ISteamNetworking_SendDataOnSocket"
-                                        && param.paramname == "pubData")
-                                    || (method.methodname_flat
-                                        == "SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody"
-                                        && param.paramname == "pubBody"),
+                                matches!(
+                                    (method.methodname_flat.as_str(), param.paramname.as_str()),
+                                    (
+                                        "SteamAPI_ISteamUser_RequestEncryptedAppTicket",
+                                        "pDataToInclude"
+                                    ) | ("SteamAPI_ISteamScreenshots_WriteScreenshot", "pubRGB")
+                                        | ("SteamAPI_ISteamNetworking_SendDataOnSocket", "pubData")
+                                        | (
+                                            "SteamAPI_ISteamHTTP_SetHTTPRequestRawPostBody",
+                                            "pubBody"
+                                        )
+                                ),
                                 true, // nullable: nil → nullptr
                             )
                             .ok_or_else(|| {
@@ -1156,6 +1156,14 @@ impl Generator {
                         if matches!(
                             (method.methodname_flat.as_str(), param.paramname.as_str()),
                             ("SteamAPI_ISteamParties_CreateBeacon", "pBeaconLocation")
+                                | (
+                                    "SteamAPI_ISteamRemoteStorage_EnumeratePublishedWorkshopFiles",
+                                    "pTags" | "pUserTags"
+                                )
+                                | (
+                                    "EnumerateUserSharedWorkshopFiles",
+                                    "pRequiredTags" | "pExcludedTags"
+                                )
                         ) {
                             // API is wrong and not const
                             cpp_call_params

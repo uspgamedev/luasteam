@@ -257,8 +257,10 @@ impl Generator {
             .map(|(f, _, _)| f.fieldname.clone())
             .chain(string_array_fields.iter().map(|(f, _)| f.fieldname.clone()))
             .collect();
-        let readable_names: std::collections::HashSet<&str> =
-            readable_field_types.iter().map(|(n, _)| n.as_str()).collect();
+        let readable_names: std::collections::HashSet<&str> = readable_field_types
+            .iter()
+            .map(|(n, _)| n.as_str())
+            .collect();
         let unsupported_fields: Vec<String> = accessible_fields
             .iter()
             .filter(|f| f.string_count.is_none())

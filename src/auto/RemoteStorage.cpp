@@ -1289,6 +1289,26 @@ static int luasteam_RemoteStorage_GetUGCDownloadProgress(lua_State *L) {
 }
 
 // In C++:
+// bool GetUGCDetails(UGCHandle_t hContent, AppId_t * pnAppID, char ** ppchName, int32 * pnFileSizeInBytes, CSteamID * pSteamIDOwner);
+// In Lua:
+// (bool, pnAppID: int, ppchName: str, pnFileSizeInBytes: int, pSteamIDOwner: uint64) RemoteStorage.GetUGCDetails(hContent: uint64)
+static int luasteam_RemoteStorage_GetUGCDetails(lua_State *L) {
+	auto *iface = SteamRemoteStorage();
+	UGCHandle_t hContent = luasteam::checkuint64(L, 1);
+	AppId_t pnAppID;
+	char *ppchName = nullptr;
+	int32 pnFileSizeInBytes;
+	CSteamID pSteamIDOwner;
+	bool __ret = SteamAPI_ISteamRemoteStorage_GetUGCDetails(iface, hContent, &pnAppID, &ppchName, &pnFileSizeInBytes, &pSteamIDOwner);
+	lua_pushboolean(L, __ret);
+	lua_pushinteger(L, pnAppID);
+	lua_pushstring(L, ppchName);
+	lua_pushinteger(L, pnFileSizeInBytes);
+	luasteam::pushuint64(L, pSteamIDOwner.ConvertToUint64());
+	return 5;
+}
+
+// In C++:
 // int32 UGCRead(UGCHandle_t hContent, void * pvData, int32 cubDataToRead, uint32 cOffset, EUGCReadAction eAction);
 // In Lua:
 // (int, pvData: str) RemoteStorage.UGCRead(hContent: uint64, cubDataToRead: int, cOffset: int, eAction: int)
@@ -1685,9 +1705,9 @@ static int luasteam_RemoteStorage_GetUserPublishedItemVoteDetails(lua_State *L) 
 }
 
 // In C++:
-// SteamAPICall_t EnumerateUserSharedWorkshopFiles(CSteamID steamId, uint32 unStartIndex, SteamParamStringArray_t * pRequiredTags, SteamParamStringArray_t * pExcludedTags);
+// SteamAPICall_t EnumerateUserSharedWorkshopFiles(CSteamID steamId, uint32 unStartIndex, const SteamParamStringArray_t * pRequiredTags, const SteamParamStringArray_t * pExcludedTags);
 // In Lua:
-// (uint64, pRequiredTags: SteamParamStringArray_t, pExcludedTags: SteamParamStringArray_t) RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId: uint64, unStartIndex: int, callback: function)
+// uint64 RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId: uint64, unStartIndex: int, pRequiredTags: SteamParamStringArray_t, pExcludedTags: SteamParamStringArray_t, callback: function)
 static int luasteam_RemoteStorage_EnumerateUserSharedWorkshopFiles(lua_State *L) {
 	auto *iface = SteamRemoteStorage();
 	int callback_ref = LUA_NOREF;
@@ -1697,18 +1717,16 @@ static int luasteam_RemoteStorage_EnumerateUserSharedWorkshopFiles(lua_State *L)
 	}
 	uint64 steamId = luasteam::checkuint64(L, 1);
 	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
-	SteamParamStringArray_t pRequiredTags;
-	SteamParamStringArray_t pExcludedTags;
-	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumerateUserSharedWorkshopFiles(iface, steamId, unStartIndex, &pRequiredTags, &pExcludedTags);
+	const SteamParamStringArray_t *pRequiredTags = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 3);
+	const SteamParamStringArray_t *pExcludedTags = lua_isnil(L, 4) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 4);
+	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumerateUserSharedWorkshopFiles(iface, steamId, unStartIndex, pRequiredTags, pExcludedTags);
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<RemoteStorageEnumerateUserPublishedFilesResult_t>();
 		listener->callback_ref = callback_ref;
 		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStorageEnumerateUserPublishedFilesResult_t>::Result);
 	}
 	luasteam::pushuint64(L, __ret);
-	luasteam::push_SteamParamStringArray_t(L, pRequiredTags);
-	luasteam::push_SteamParamStringArray_t(L, pExcludedTags);
-	return 3;
+	return 1;
 }
 
 // In C++:
@@ -1789,9 +1807,9 @@ static int luasteam_RemoteStorage_EnumeratePublishedFilesByUserAction(lua_State 
 }
 
 // In C++:
-// SteamAPICall_t EnumeratePublishedWorkshopFiles(EWorkshopEnumerationType eEnumerationType, uint32 unStartIndex, uint32 unCount, uint32 unDays, SteamParamStringArray_t * pTags, SteamParamStringArray_t * pUserTags);
+// SteamAPICall_t EnumeratePublishedWorkshopFiles(EWorkshopEnumerationType eEnumerationType, uint32 unStartIndex, uint32 unCount, uint32 unDays, const SteamParamStringArray_t * pTags, const SteamParamStringArray_t * pUserTags);
 // In Lua:
-// (uint64, pTags: SteamParamStringArray_t, pUserTags: SteamParamStringArray_t) RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType: int, unStartIndex: int, unCount: int, unDays: int, callback: function)
+// uint64 RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType: int, unStartIndex: int, unCount: int, unDays: int, pTags: SteamParamStringArray_t, pUserTags: SteamParamStringArray_t, callback: function)
 static int luasteam_RemoteStorage_EnumeratePublishedWorkshopFiles(lua_State *L) {
 	auto *iface = SteamRemoteStorage();
 	int callback_ref = LUA_NOREF;
@@ -1803,18 +1821,16 @@ static int luasteam_RemoteStorage_EnumeratePublishedWorkshopFiles(lua_State *L) 
 	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
 	uint32 unCount = static_cast<uint32>(luaL_checkint(L, 3));
 	uint32 unDays = static_cast<uint32>(luaL_checkint(L, 4));
-	SteamParamStringArray_t pTags;
-	SteamParamStringArray_t pUserTags;
-	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumeratePublishedWorkshopFiles(iface, eEnumerationType, unStartIndex, unCount, unDays, &pTags, &pUserTags);
+	const SteamParamStringArray_t *pTags = lua_isnil(L, 5) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 5);
+	const SteamParamStringArray_t *pUserTags = lua_isnil(L, 6) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 6);
+	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumeratePublishedWorkshopFiles(iface, eEnumerationType, unStartIndex, unCount, unDays, const_cast<SteamParamStringArray_t *>(pTags), const_cast<SteamParamStringArray_t *>(pUserTags));
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<RemoteStorageEnumerateWorkshopFilesResult_t>();
 		listener->callback_ref = callback_ref;
 		listener->call_result.Set(__ret, listener, &luasteam::CallResultListener<RemoteStorageEnumerateWorkshopFilesResult_t>::Result);
 	}
 	luasteam::pushuint64(L, __ret);
-	luasteam::push_SteamParamStringArray_t(L, pTags);
-	luasteam::push_SteamParamStringArray_t(L, pUserTags);
-	return 3;
+	return 1;
 }
 
 // In C++:
@@ -1917,6 +1933,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 	add_func(L, "SetCloudEnabledForApp", luasteam_RemoteStorage_SetCloudEnabledForApp);
 	add_func(L, "UGCDownload", luasteam_RemoteStorage_UGCDownload);
 	add_func(L, "GetUGCDownloadProgress", luasteam_RemoteStorage_GetUGCDownloadProgress);
+	add_func(L, "GetUGCDetails", luasteam_RemoteStorage_GetUGCDetails);
 	add_func(L, "UGCRead", luasteam_RemoteStorage_UGCRead);
 	add_func(L, "GetCachedUGCCount", luasteam_RemoteStorage_GetCachedUGCCount);
 	add_func(L, "GetCachedUGCHandle", luasteam_RemoteStorage_GetCachedUGCHandle);
@@ -1952,7 +1969,7 @@ void register_RemoteStorage_auto(lua_State *L) {
 }
 
 void add_RemoteStorage_auto(lua_State *L) {
-	lua_createtable(L, 0, 58);
+	lua_createtable(L, 0, 59);
 	register_RemoteStorage_auto(L);
 	lua_pushvalue(L, -1);
 	RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);

@@ -45,6 +45,7 @@ List of Functions
 * :func:`RemoteStorage.GetPublishedItemVoteDetails`
 * :func:`RemoteStorage.GetQuota`
 * :func:`RemoteStorage.GetSyncPlatforms`
+* :func:`RemoteStorage.GetUGCDetails`
 * :func:`RemoteStorage.GetUGCDownloadProgress`
 * :func:`RemoteStorage.GetUserPublishedItemVoteDetails`
 * :func:`RemoteStorage.IsCloudEnabledForAccount`
@@ -157,7 +158,7 @@ Function Reference
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumeratePublishedFilesByUserAction <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedFilesByUserAction>`_
 
-.. function:: RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, callback)
+.. function:: RemoteStorage.EnumeratePublishedWorkshopFiles(eEnumerationType, unStartIndex, unCount, unDays, pTags, pUserTags, callback)
 
     🤖 **Auto-generated binding**
 
@@ -165,16 +166,11 @@ Function Reference
     :param int unStartIndex:
     :param int unCount:
     :param int unDays:
+    :param pTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
+    :param pUserTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateWorkshopFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateWorkshopFilesResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pTags``
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pUserTags``
     :SteamWorks: `EnumeratePublishedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumeratePublishedWorkshopFiles>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pUserTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.EnumerateUserPublishedFiles(unStartIndex, callback)
 
@@ -185,22 +181,17 @@ Function Reference
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `EnumerateUserPublishedFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserPublishedFiles>`_
 
-.. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, callback)
+.. function:: RemoteStorage.EnumerateUserSharedWorkshopFiles(steamId, unStartIndex, pRequiredTags, pExcludedTags, callback)
 
     🤖 **Auto-generated binding**
 
     :param uint64 steamId:
     :param int unStartIndex:
+    :param pRequiredTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
+    :param pExcludedTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageEnumerateUserPublishedFilesResult_t <RemoteStorage.OnRemoteStorageEnumerateUserPublishedFilesResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pRequiredTags``
-    :returns: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`) ``pExcludedTags``
     :SteamWorks: `EnumerateUserSharedWorkshopFiles <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#EnumerateUserSharedWorkshopFiles>`_
-
-    **Signature differences from C++ API:**
-
-    * Parameter ``pRequiredTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pExcludedTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.EnumerateUserSubscribedFiles(unStartIndex, callback)
 
@@ -280,7 +271,7 @@ Function Reference
 **Example**::
 
     local size = Steam.RemoteStorage.GetFileSize('savegame.txt')
-    local data = Steam.RemoteStorage.FileRead('savegame.txt', size)
+    local _, data = Steam.RemoteStorage.FileRead('savegame.txt', size)
     if data then
         loadSaveData(data)
     end
@@ -300,8 +291,10 @@ Function Reference
 
     Steam.RemoteStorage.FileReadAsync('savegame.dat', 0, fileSize, function(data, err)
         if not err and data.m_eResult == Steam.k_EResultOK then
-            local fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
-            loadSaveData(fileData)
+            local ok, fileData = Steam.RemoteStorage.FileReadAsyncComplete(data.m_hFileReadAsync, fileSize)
+            if ok then
+                loadSaveData(fileData)
+            end
         end
     end)
 
@@ -318,6 +311,10 @@ Function Reference
     **Signature differences from C++ API:**
 
     * Parameter ``pvBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
+    **Notes:**
+
+    * See :func:`RemoteStorage.FileReadAsync`'s example.
 
 .. function:: RemoteStorage.FileShare(pchFile, callback)
 
@@ -542,7 +539,7 @@ Function Reference
 
 **Example**::
 
-    local total, available = Steam.RemoteStorage.GetQuota()
+    local _, total, available = Steam.RemoteStorage.GetQuota()
     print(string.format('Cloud storage: %d/%d bytes used', total - available, total))
 
 .. function:: RemoteStorage.GetSyncPlatforms(pchFile)
@@ -552,6 +549,25 @@ Function Reference
     :param str? pchFile:
     :returns: (int) ``ERemoteStoragePlatform``
     :SteamWorks: `GetSyncPlatforms <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetSyncPlatforms>`_
+
+.. function:: RemoteStorage.GetUGCDetails(hContent)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 hContent: ``UGCHandle_t``
+    :returns: (bool) Return value
+    :returns: (int) ``pnAppID``
+    :returns: (str) ``ppchName``
+    :returns: (int) ``pnFileSizeInBytes``
+    :returns: (uint64) ``pSteamIDOwner``
+    :SteamWorks: `GetUGCDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDetails>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pnAppID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``ppchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnFileSizeInBytes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pSteamIDOwner`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.GetUGCDownloadProgress(hContent)
 
@@ -800,16 +816,6 @@ Function Reference
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageUpdateUserPublishedItemVoteResult_t <RemoteStorage.OnRemoteStorageUpdateUserPublishedItemVoteResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UpdateUserPublishedItemVote <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#UpdateUserPublishedItemVote>`_
-
-
-Unimplemented Methods
----------------------
-
-.. function:: RemoteStorage.GetUGCDetails
-
-    ✋ **Not implemented** - blocklist: char** output semantics unclear
-    
-    :SteamWorks: `GetUGCDetails <https://partner.steamgames.com/doc/api/ISteamRemoteStorage#GetUGCDetails>`_
 
 
 Callbacks

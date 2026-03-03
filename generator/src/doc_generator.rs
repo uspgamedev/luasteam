@@ -810,10 +810,14 @@ impl DocGenerator {
             ));
 
             // Fields
-            let read_write: Vec<_> = st.readable_fields.iter()
+            let read_write: Vec<_> = st
+                .readable_fields
+                .iter()
                 .filter(|(name, _)| st.writable_field_names.contains(name))
                 .collect();
-            let read_only: Vec<_> = st.readable_fields.iter()
+            let read_only: Vec<_> = st
+                .readable_fields
+                .iter()
                 .filter(|(name, _)| !st.writable_field_names.contains(name))
                 .collect();
 

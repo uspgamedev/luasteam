@@ -257,6 +257,19 @@ impl SteamApi {
                 "ISteamHTTP",
                 vec![("SetHTTPRequestRawPostBody", vec!["pubBody"])],
             ),
+            (
+                "ISteamRemoteStorage",
+                vec![
+                    (
+                        "EnumeratePublishedWorkshopFiles",
+                        vec!["pTags", "pUserTags"],
+                    ),
+                    (
+                        "EnumerateUserSharedWorkshopFiles",
+                        vec!["pRequiredTags", "pExcludedTags"],
+                    ),
+                ],
+            ),
         ];
 
         for (i_name, methods) in data {
