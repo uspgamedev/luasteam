@@ -57,7 +57,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eHTTPRequestMethod:
+    :param int eHTTPRequestMethod: ``EHTTPMethod``
     :param str? pchAbsoluteURL:
     :returns: (int) ``HTTPRequestHandle``
     :SteamWorks: `CreateHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#CreateHTTPRequest>`_
@@ -72,7 +72,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :SteamWorks: `DeferHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#DeferHTTPRequest>`_
 
@@ -80,7 +80,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :returns: (float) ``pflPercentOut``
     :SteamWorks: `GetHTTPDownloadProgressPct <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPDownloadProgressPct>`_
@@ -99,7 +99,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :returns: (bool) ``pbWasTimedOut``
     :SteamWorks: `GetHTTPRequestWasTimedOut <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPRequestWasTimedOut>`_
@@ -112,7 +112,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param int? unBufferSize: size of the buffer to allocate for ``pBodyDataBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pBodyDataBuffer``
@@ -130,7 +130,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :returns: (int) ``unBodySize``
     :SteamWorks: `GetHTTPResponseBodySize <https://partner.steamgames.com/doc/api/ISteamHTTP#GetHTTPResponseBodySize>`_
@@ -156,7 +156,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchHeaderName:
     :returns: (bool) Return value
     :returns: (int) ``unResponseHeaderSize``
@@ -170,7 +170,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchHeaderName:
     :param int? unBufferSize: size of the buffer to allocate for ``pHeaderValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -198,7 +198,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param int cOffset:
     :param int? unBufferSize: size of the buffer to allocate for ``pBodyDataBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -213,7 +213,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :SteamWorks: `PrioritizeHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#PrioritizeHTTPRequest>`_
 
@@ -221,7 +221,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hCookieContainer:
+    :param int hCookieContainer: ``HTTPCookieContainerHandle``
     :returns: (bool) Return value
     :SteamWorks: `ReleaseCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseCookieContainer>`_
 
@@ -229,7 +229,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :SteamWorks: `ReleaseHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#ReleaseHTTPRequest>`_
 
@@ -242,7 +242,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :returns: (uint64) ``pCallHandle``
     :SteamWorks: `SendHTTPRequest <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequest>`_
@@ -261,7 +261,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :returns: (bool) Return value
     :returns: (uint64) ``pCallHandle``
     :SteamWorks: `SendHTTPRequestAndStreamResponse <https://partner.steamgames.com/doc/api/ISteamHTTP#SendHTTPRequestAndStreamResponse>`_
@@ -274,7 +274,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hCookieContainer:
+    :param int hCookieContainer: ``HTTPCookieContainerHandle``
     :param str? pchHost:
     :param str? pchUrl:
     :param str? pchCookie:
@@ -285,7 +285,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param int unMilliseconds:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestAbsoluteTimeoutMS <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestAbsoluteTimeoutMS>`_
@@ -294,7 +294,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param uint64 ulContextValue:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestContextValue <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestContextValue>`_
@@ -303,8 +303,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
-    :param int hCookieContainer:
+    :param int hRequest: ``HTTPRequestHandle``
+    :param int hCookieContainer: ``HTTPCookieContainerHandle``
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestCookieContainer <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestCookieContainer>`_
 
@@ -312,7 +312,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchParamName:
     :param str? pchParamValue:
     :returns: (bool) Return value
@@ -329,7 +329,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchHeaderName:
     :param str? pchHeaderValue:
     :returns: (bool) Return value
@@ -343,7 +343,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param int unTimeoutSeconds:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestNetworkActivityTimeout <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestNetworkActivityTimeout>`_
@@ -358,7 +358,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchContentType:
     :param str? pubBody:
     :param int unBodyLen: size of the input array ``pubBody``
@@ -376,7 +376,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param bool bRequireVerifiedCertificate:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestRequiresVerifiedCertificate <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestRequiresVerifiedCertificate>`_
@@ -385,7 +385,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hRequest:
+    :param int hRequest: ``HTTPRequestHandle``
     :param str? pchUserAgentInfo:
     :returns: (bool) Return value
     :SteamWorks: `SetHTTPRequestUserAgentInfo <https://partner.steamgames.com/doc/api/ISteamHTTP#SetHTTPRequestUserAgentInfo>`_

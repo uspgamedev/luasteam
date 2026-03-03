@@ -26,7 +26,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSteamPipe:
+    :param int hSteamPipe: ``HSteamPipe``
     :returns: (bool) Return value
     :SteamWorks: `BReleaseSteamPipe <https://partner.steamgames.com/doc/api/ISteamClient#BReleaseSteamPipe>`_
 
@@ -49,7 +49,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSteamPipe:
+    :param int hSteamPipe: ``HSteamPipe``
     :returns: (int) ``HSteamUser``
     :SteamWorks: `ConnectToGlobalUser <https://partner.steamgames.com/doc/api/ISteamClient#ConnectToGlobalUser>`_
 
@@ -61,7 +61,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eAccountType:
+    :param int eAccountType: ``EAccountType``
     :returns: (int) ``HSteamUser``
     :returns: (int) ``phSteamPipe``
     :SteamWorks: `CreateLocalUser <https://partner.steamgames.com/doc/api/ISteamClient#CreateLocalUser>`_
@@ -96,8 +96,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSteamPipe:
-    :param int hUser:
+    :param int hSteamPipe: ``HSteamPipe``
+    :param int hUser: ``HSteamUser``
     :SteamWorks: `ReleaseUser <https://partner.steamgames.com/doc/api/ISteamClient#ReleaseUser>`_
 
 **Example**::

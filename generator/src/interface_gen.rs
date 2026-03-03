@@ -9,6 +9,13 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::Path;
 
+/// C++ primitive types that don't need a "cpp type" annotation in docs.
+const PRIMITIVES: &[&str] = &[
+    "bool", "int", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
+    "float", "double", "void", "CSteamID", "CGameID", "SteamAPICall_t",
+    "const char *", "char *",
+];
+
 impl Generator {
     fn to_lua_callback_name(struct_name: &str) -> String {
         assert!(struct_name.ends_with("_t"));
@@ -818,6 +825,11 @@ impl Generator {
                             s.raw(&code);
                             cpp_call_params.push(param.paramname.clone());
                             sig.add_param(param.paramname.clone(), ltype);
+                            if !PRIMITIVES.contains(&param.paramtype.as_str())
+                                && !matches!(sig.params.last().unwrap().ltype, LType::LightUserdata(_))
+                            {
+                                sig.mark_last_param_cpp_type(param.paramtype.clone());
+                            }
                             lua_idx += 1;
                         }
                         None => return Err(SkipReason::UnsupportedType(param.paramtype.clone())),
@@ -1247,10 +1259,6 @@ impl Generator {
                 } else {
                     // If the C++ type is a named typedef (handle, enum, etc.) that maps to a
                     // plain Lua int/uint64, record the original name for documentation.
-                    const PRIMITIVES: &[&str] = &[
-                        "bool", "int", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
-                        "float", "double", "void", "CSteamID", "CGameID",
-                    ];
                     if !PRIMITIVES.contains(&method.returntype.as_str())
                         && !matches!(ltype, LType::LightUserdata(_))
                     {

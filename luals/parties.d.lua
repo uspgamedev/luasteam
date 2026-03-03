@@ -14,7 +14,7 @@ function Parties.GetNumActiveBeacons() end
 ---@return uint64 -- PartyBeaconID_t
 function Parties.GetBeaconByIndex(unIndex) end
 
----@param ulBeaconID uint64
+---@param ulBeaconID uint64 -- PartyBeaconID_t
 ---@param cchMetadata integer? size of the buffer for pchMetadata; if nil then the buffer will be NULL
 ---@return boolean
 ---@return uint64 -- Value of: pSteamIDBeaconOwner
@@ -22,7 +22,7 @@ function Parties.GetBeaconByIndex(unIndex) end
 ---@return string -- Value of: pchMetadata
 function Parties.GetBeaconDetails(ulBeaconID, cchMetadata) end
 
----@param ulBeaconID uint64
+---@param ulBeaconID uint64 -- PartyBeaconID_t
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Parties.JoinParty(ulBeaconID, callback) end
@@ -36,26 +36,26 @@ function Parties.GetNumAvailableBeaconLocations() end
 ---@return SteamPartyBeaconLocation_t[] -- Value of: pLocationList
 function Parties.GetAvailableBeaconLocations(uMaxNumLocations) end
 
----@param ulBeacon uint64
+---@param ulBeacon uint64 -- PartyBeaconID_t
 ---@param steamIDUser uint64
 function Parties.OnReservationCompleted(ulBeacon, steamIDUser) end
 
----@param ulBeacon uint64
+---@param ulBeacon uint64 -- PartyBeaconID_t
 ---@param steamIDUser uint64
 function Parties.CancelReservation(ulBeacon, steamIDUser) end
 
----@param ulBeacon uint64
+---@param ulBeacon uint64 -- PartyBeaconID_t
 ---@param unOpenSlots integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Parties.ChangeNumOpenSlots(ulBeacon, unOpenSlots, callback) end
 
----@param ulBeacon uint64
+---@param ulBeacon uint64 -- PartyBeaconID_t
 ---@return boolean
 function Parties.DestroyBeacon(ulBeacon) end
 
----@param BeaconLocation SteamPartyBeaconLocation_t
----@param eData integer
+---@param BeaconLocation SteamPartyBeaconLocation_t -- SteamPartyBeaconLocation_t
+---@param eData integer -- ESteamPartyBeaconLocationData
 ---@param cchDataStringOut integer? size of the buffer for pchDataStringOut; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchDataStringOut

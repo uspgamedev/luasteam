@@ -7,7 +7,7 @@ local Networking = {}
 ---@param steamIDRemote uint64
 ---@param pubData string?
 ---@param cubData integer size of the input array pubData
----@param eP2PSendType integer
+---@param eP2PSendType integer -- EP2PSend
 ---@param nChannel integer
 ---@return boolean
 function Networking.SendP2PPacket(steamIDRemote, pubData, cubData, eP2PSendType, nChannel) end
@@ -48,7 +48,7 @@ function Networking.GetP2PSessionState(steamIDRemote) end
 function Networking.AllowP2PPacketRelay(bAllow) end
 
 ---@param nVirtualP2PPort integer
----@param nIP SteamIPAddress_t
+---@param nIP SteamIPAddress_t -- SteamIPAddress_t
 ---@param nPort integer
 ---@param bAllowUseOfPacketRelay boolean
 ---@return integer -- SNetListenSocket_t
@@ -61,48 +61,48 @@ function Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfP
 ---@return integer -- SNetSocket_t
 function Networking.CreateP2PConnectionSocket(steamIDTarget, nVirtualPort, nTimeoutSec, bAllowUseOfPacketRelay) end
 
----@param nIP SteamIPAddress_t
+---@param nIP SteamIPAddress_t -- SteamIPAddress_t
 ---@param nPort integer
 ---@param nTimeoutSec integer
 ---@return integer -- SNetSocket_t
 function Networking.CreateConnectionSocket(nIP, nPort, nTimeoutSec) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@param bNotifyRemoteEnd boolean
 ---@return boolean
 function Networking.DestroySocket(hSocket, bNotifyRemoteEnd) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetListenSocket_t
 ---@param bNotifyRemoteEnd boolean
 ---@return boolean
 function Networking.DestroyListenSocket(hSocket, bNotifyRemoteEnd) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@param pubData string?
 ---@param cubData integer size of the input array pubData
 ---@param bReliable boolean
 ---@return boolean
 function Networking.SendDataOnSocket(hSocket, pubData, cubData, bReliable) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@return boolean
 ---@return integer -- Value of: pcubMsgSize
 function Networking.IsDataAvailableOnSocket(hSocket) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@param cubDest integer? size of the buffer for pubDest; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pubDest
 ---@return integer -- Value of: pcubMsgSize
 function Networking.RetrieveDataFromSocket(hSocket, cubDest) end
 
----@param hListenSocket integer
+---@param hListenSocket integer -- SNetListenSocket_t
 ---@return boolean
 ---@return integer -- Value of: pcubMsgSize
 ---@return integer -- Value of: phSocket
 function Networking.IsDataAvailable(hListenSocket) end
 
----@param hListenSocket integer
+---@param hListenSocket integer -- SNetListenSocket_t
 ---@param cubDest integer? size of the buffer for pubDest; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pubDest
@@ -110,7 +110,7 @@ function Networking.IsDataAvailable(hListenSocket) end
 ---@return integer -- Value of: phSocket
 function Networking.RetrieveData(hListenSocket, cubDest) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@return boolean
 ---@return uint64 -- Value of: pSteamIDRemote
 ---@return integer -- Value of: peSocketStatus
@@ -118,17 +118,17 @@ function Networking.RetrieveData(hListenSocket, cubDest) end
 ---@return integer -- Value of: punPortRemote
 function Networking.GetSocketInfo(hSocket) end
 
----@param hListenSocket integer
+---@param hListenSocket integer -- SNetListenSocket_t
 ---@return boolean
 ---@return SteamIPAddress_t -- Value of: pnIP
 ---@return integer -- Value of: pnPort
 function Networking.GetListenSocketInfo(hListenSocket) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@return integer -- ESNetSocketConnectionType
 function Networking.GetSocketConnectionType(hSocket) end
 
----@param hSocket integer
+---@param hSocket integer -- SNetSocket_t
 ---@return integer
 function Networking.GetMaxPacketSize(hSocket) end
 

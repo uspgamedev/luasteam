@@ -68,7 +68,7 @@ function UserStats.GetAchievementIcon(pchName) end
 
 ---@param pchName string?
 ---@param pchKey string?
----@return string -- const char *
+---@return string
 function UserStats.GetAchievementDisplayAttribute(pchName, pchKey) end
 
 ---@param pchName string?
@@ -81,7 +81,7 @@ function UserStats.IndicateAchievementProgress(pchName, nCurProgress, nMaxProgre
 function UserStats.GetNumAchievements() end
 
 ---@param iAchievement integer
----@return string -- const char *
+---@return string
 function UserStats.GetAchievementName(iAchievement) end
 
 ---@param steamIDUser uint64
@@ -119,8 +119,8 @@ function UserStats.GetUserAchievementAndUnlockTime(steamIDUser, pchName) end
 function UserStats.ResetAllStats(bAchievementsToo) end
 
 ---@param pchLeaderboardName string?
----@param eLeaderboardSortMethod integer
----@param eLeaderboardDisplayType integer
+---@param eLeaderboardSortMethod integer -- ELeaderboardSortMethod
+---@param eLeaderboardDisplayType integer -- ELeaderboardDisplayType
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortMethod, eLeaderboardDisplayType, callback) end
@@ -130,38 +130,38 @@ function UserStats.FindOrCreateLeaderboard(pchLeaderboardName, eLeaderboardSortM
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.FindLeaderboard(pchLeaderboardName, callback) end
 
----@param hSteamLeaderboard uint64
----@return string -- const char *
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
+---@return string
 function UserStats.GetLeaderboardName(hSteamLeaderboard) end
 
----@param hSteamLeaderboard uint64
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
 ---@return integer
 function UserStats.GetLeaderboardEntryCount(hSteamLeaderboard) end
 
----@param hSteamLeaderboard uint64
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
 ---@return integer -- ELeaderboardSortMethod
 function UserStats.GetLeaderboardSortMethod(hSteamLeaderboard) end
 
----@param hSteamLeaderboard uint64
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
 ---@return integer -- ELeaderboardDisplayType
 function UserStats.GetLeaderboardDisplayType(hSteamLeaderboard) end
 
----@param hSteamLeaderboard uint64
----@param eLeaderboardDataRequest integer
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
+---@param eLeaderboardDataRequest integer -- ELeaderboardDataRequest
 ---@param nRangeStart integer
 ---@param nRangeEnd integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.DownloadLeaderboardEntries(hSteamLeaderboard, eLeaderboardDataRequest, nRangeStart, nRangeEnd, callback) end
 
----@param hSteamLeaderboard uint64
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
 ---@param prgUsers uint64[]?
 ---@param cUsers integer size of the input array prgUsers
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUsers, cUsers, callback) end
 
----@param hSteamLeaderboardEntries uint64
+---@param hSteamLeaderboardEntries uint64 -- SteamLeaderboardEntries_t
 ---@param index integer
 ---@param cDetailsMax integer? size of the buffer for pDetails; if nil then the buffer will be NULL
 ---@return boolean
@@ -169,8 +169,8 @@ function UserStats.DownloadLeaderboardEntriesForUsers(hSteamLeaderboard, prgUser
 ---@return integer[] -- Value of: pDetails
 function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index, cDetailsMax) end
 
----@param hSteamLeaderboard uint64
----@param eLeaderboardUploadScoreMethod integer
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
+---@param eLeaderboardUploadScoreMethod integer -- ELeaderboardUploadScoreMethod
 ---@param nScore integer
 ---@param pScoreDetails integer[]?
 ---@param cScoreDetailsCount integer size of the input array pScoreDetails
@@ -178,8 +178,8 @@ function UserStats.GetDownloadedLeaderboardEntry(hSteamLeaderboardEntries, index
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.UploadLeaderboardScore(hSteamLeaderboard, eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount, callback) end
 
----@param hSteamLeaderboard uint64
----@param hUGC uint64
+---@param hSteamLeaderboard uint64 -- SteamLeaderboard_t
+---@param hUGC uint64 -- UGCHandle_t
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.AttachLeaderboardUGC(hSteamLeaderboard, hUGC, callback) end

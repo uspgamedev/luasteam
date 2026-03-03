@@ -1,40 +1,40 @@
 ---@class Steam.MatchmakingServers
 local MatchmakingServers = {}
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
 ---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
 function MatchmakingServers.RequestInternetServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
 function MatchmakingServers.RequestLANServerList(iApp, pRequestServersResponse) end
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
 ---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
 function MatchmakingServers.RequestFriendsServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
 ---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
 function MatchmakingServers.RequestFavoritesServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
 ---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
 ---@return HServerListRequest
 function MatchmakingServers.RequestHistoryServerList(iApp, ppchFilters, nFilters, pRequestServersResponse) end
 
----@param iApp integer
+---@param iApp integer -- AppId_t
 ---@param ppchFilters MatchMakingKeyValuePair_t[]
 ---@param nFilters integer size of the input array ppchFilters
 ---@param pRequestServersResponse ISteamMatchmakingServerListResponse
@@ -80,7 +80,7 @@ function MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse)
 ---@return integer -- HServerQuery
 function MatchmakingServers.ServerRules(unIP, usPort, pRequestServersResponse) end
 
----@param hServerQuery integer
+---@param hServerQuery integer -- HServerQuery
 function MatchmakingServers.CancelServerQuery(hServerQuery) end
 
 Steam.MatchmakingServers = MatchmakingServers

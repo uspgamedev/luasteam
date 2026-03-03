@@ -77,7 +77,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int appID:
+    :param int appID: ``AppId_t``
     :returns: (bool) Return value
     :SteamWorks: `BIsAppInstalled <https://partner.steamgames.com/doc/api/ISteamApps#BIsAppInstalled>`_
 
@@ -98,7 +98,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int appID:
+    :param int appID: ``AppId_t``
     :returns: (bool) Return value
     :SteamWorks: `BIsDlcInstalled <https://partner.steamgames.com/doc/api/ISteamApps#BIsDlcInstalled>`_
 
@@ -201,7 +201,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int appID:
+    :param int appID: ``AppId_t``
     :param int? cchFolderBufferSize: size of the buffer to allocate for ``pchFolder``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pchFolder``
@@ -237,7 +237,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetAvailableGameLanguages <https://partner.steamgames.com/doc/api/ISteamApps#GetAvailableGameLanguages>`_
 
 **Example**::
@@ -283,7 +283,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetCurrentGameLanguage <https://partner.steamgames.com/doc/api/ISteamApps#GetCurrentGameLanguage>`_
 
 **Example**::
@@ -311,7 +311,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :returns: (bool) Return value
     :returns: (uint64) ``punBytesDownloaded``
     :returns: (uint64) ``punBytesTotal``
@@ -326,7 +326,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :returns: (int) Return value
     :SteamWorks: `GetEarliestPurchaseUnixTime <https://partner.steamgames.com/doc/api/ISteamApps#GetEarliestPurchaseUnixTime>`_
 
@@ -348,7 +348,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int appID:
+    :param int appID: ``AppId_t``
     :param int? cMaxDepots: size of the buffer to allocate for ``pvecDepots``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (int[]) ``pvecDepots``
@@ -391,7 +391,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchKey:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetLaunchQueryParam <https://partner.steamgames.com/doc/api/ISteamApps#GetLaunchQueryParam>`_
 
 **Example**::
@@ -419,7 +419,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :SteamWorks: `InstallDLC <https://partner.steamgames.com/doc/api/ISteamApps#InstallDLC>`_
 
 .. function:: Apps.MarkContentCorrupt(bMissingFilesOnly)
@@ -445,7 +445,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :SteamWorks: `RequestAppProofOfPurchaseKey <https://partner.steamgames.com/doc/api/ISteamApps#RequestAppProofOfPurchaseKey>`_
 
 .. function:: Apps.SetActiveBeta(pchBetaName)
@@ -460,7 +460,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :returns: (bool) Return value
     :SteamWorks: `SetDlcContext <https://partner.steamgames.com/doc/api/ISteamApps#SetDlcContext>`_
 
@@ -468,7 +468,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :SteamWorks: `UninstallDLC <https://partner.steamgames.com/doc/api/ISteamApps#UninstallDLC>`_
 
 

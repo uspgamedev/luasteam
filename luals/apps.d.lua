@@ -18,21 +18,21 @@ function Apps.BIsCybercafe() end
 ---@return boolean
 function Apps.BIsVACBanned() end
 
----@return string -- const char *
+---@return string
 function Apps.GetCurrentGameLanguage() end
 
----@return string -- const char *
+---@return string
 function Apps.GetAvailableGameLanguages() end
 
----@param appID integer
+---@param appID integer -- AppId_t
 ---@return boolean
 function Apps.BIsSubscribedApp(appID) end
 
----@param appID integer
+---@param appID integer -- AppId_t
 ---@return boolean
 function Apps.BIsDlcInstalled(appID) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 ---@return integer
 function Apps.GetEarliestPurchaseUnixTime(nAppID) end
 
@@ -50,13 +50,13 @@ function Apps.GetDLCCount() end
 ---@return string -- Value of: pchName
 function Apps.BGetDLCDataByIndex(iDLC, cchNameBufferSize) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 function Apps.InstallDLC(nAppID) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 function Apps.UninstallDLC(nAppID) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 function Apps.RequestAppProofOfPurchaseKey(nAppID) end
 
 ---@param cchNameBufferSize integer? size of the buffer for pchName; if nil then the buffer will be NULL
@@ -68,19 +68,19 @@ function Apps.GetCurrentBetaName(cchNameBufferSize) end
 ---@return boolean
 function Apps.MarkContentCorrupt(bMissingFilesOnly) end
 
----@param appID integer
+---@param appID integer -- AppId_t
 ---@param cMaxDepots integer? size of the buffer for pvecDepots; if nil then the buffer will be NULL
 ---@return integer
 ---@return integer[] -- Value of: pvecDepots
 function Apps.GetInstalledDepots(appID, cMaxDepots) end
 
----@param appID integer
+---@param appID integer -- AppId_t
 ---@param cchFolderBufferSize integer? size of the buffer for pchFolder; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pchFolder
 function Apps.GetAppInstallDir(appID, cchFolderBufferSize) end
 
----@param appID integer
+---@param appID integer -- AppId_t
 ---@return boolean
 function Apps.BIsAppInstalled(appID) end
 
@@ -88,10 +88,10 @@ function Apps.BIsAppInstalled(appID) end
 function Apps.GetAppOwner() end
 
 ---@param pchKey string?
----@return string -- const char *
+---@return string
 function Apps.GetLaunchQueryParam(pchKey) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 ---@return boolean
 ---@return uint64 -- Value of: punBytesDownloaded
 ---@return uint64 -- Value of: punBytesTotal
@@ -120,7 +120,7 @@ function Apps.BIsSubscribedFromFamilySharing() end
 ---@return integer -- Value of: punSecondsPlayed
 function Apps.BIsTimedTrial() end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 ---@return boolean
 function Apps.SetDlcContext(nAppID) end
 

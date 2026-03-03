@@ -25,7 +25,7 @@ function Matchmaking.GetFavoriteGameCount() end
 ---@return integer -- Value of: pRTime32LastPlayedOnServer
 function Matchmaking.GetFavoriteGame(iGame) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 ---@param nIP integer
 ---@param nConnPort integer
 ---@param nQueryPort integer
@@ -34,7 +34,7 @@ function Matchmaking.GetFavoriteGame(iGame) end
 ---@return integer
 function Matchmaking.AddFavoriteGame(nAppID, nIP, nConnPort, nQueryPort, unFlags, rTime32LastPlayedOnServer) end
 
----@param nAppID integer
+---@param nAppID integer -- AppId_t
 ---@param nIP integer
 ---@param nConnPort integer
 ---@param nQueryPort integer
@@ -48,12 +48,12 @@ function Matchmaking.RequestLobbyList(callback) end
 
 ---@param pchKeyToMatch string?
 ---@param pchValueToMatch string?
----@param eComparisonType integer
+---@param eComparisonType integer -- ELobbyComparison
 function Matchmaking.AddRequestLobbyListStringFilter(pchKeyToMatch, pchValueToMatch, eComparisonType) end
 
 ---@param pchKeyToMatch string?
 ---@param nValueToMatch integer
----@param eComparisonType integer
+---@param eComparisonType integer -- ELobbyComparison
 function Matchmaking.AddRequestLobbyListNumericalFilter(pchKeyToMatch, nValueToMatch, eComparisonType) end
 
 ---@param pchKeyToMatch string?
@@ -63,7 +63,7 @@ function Matchmaking.AddRequestLobbyListNearValueFilter(pchKeyToMatch, nValueToB
 ---@param nSlotsAvailable integer
 function Matchmaking.AddRequestLobbyListFilterSlotsAvailable(nSlotsAvailable) end
 
----@param eLobbyDistanceFilter integer
+---@param eLobbyDistanceFilter integer -- ELobbyDistanceFilter
 function Matchmaking.AddRequestLobbyListDistanceFilter(eLobbyDistanceFilter) end
 
 ---@param cMaxResults integer
@@ -76,7 +76,7 @@ function Matchmaking.AddRequestLobbyListCompatibleMembersFilter(steamIDLobby) en
 ---@return uint64
 function Matchmaking.GetLobbyByIndex(iLobby) end
 
----@param eLobbyType integer
+---@param eLobbyType integer -- ELobbyType
 ---@param cMaxMembers integer
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
@@ -106,7 +106,7 @@ function Matchmaking.GetLobbyMemberByIndex(steamIDLobby, iMember) end
 
 ---@param steamIDLobby uint64
 ---@param pchKey string?
----@return string -- const char *
+---@return string
 function Matchmaking.GetLobbyData(steamIDLobby, pchKey) end
 
 ---@param steamIDLobby uint64
@@ -136,7 +136,7 @@ function Matchmaking.DeleteLobbyData(steamIDLobby, pchKey) end
 ---@param steamIDLobby uint64
 ---@param steamIDUser uint64
 ---@param pchKey string?
----@return string -- const char *
+---@return string
 function Matchmaking.GetLobbyMemberData(steamIDLobby, steamIDUser, pchKey) end
 
 ---@param steamIDLobby uint64
@@ -186,7 +186,7 @@ function Matchmaking.SetLobbyMemberLimit(steamIDLobby, cMaxMembers) end
 function Matchmaking.GetLobbyMemberLimit(steamIDLobby) end
 
 ---@param steamIDLobby uint64
----@param eLobbyType integer
+---@param eLobbyType integer -- ELobbyType
 ---@return boolean
 function Matchmaking.SetLobbyType(steamIDLobby, eLobbyType) end
 

@@ -22,7 +22,7 @@
 ---@field OnEquippedProfileItems? fun(data: EquippedProfileItems_t)
 local Friends = {}
 
----@return string -- const char *
+---@return string
 function Friends.GetPersonaName() end
 
 ---@return integer -- EPersonaState
@@ -46,7 +46,7 @@ function Friends.GetFriendRelationship(steamIDFriend) end
 function Friends.GetFriendPersonaState(steamIDFriend) end
 
 ---@param steamIDFriend uint64
----@return string -- const char *
+---@return string
 function Friends.GetFriendPersonaName(steamIDFriend) end
 
 ---@param steamIDFriend uint64
@@ -56,7 +56,7 @@ function Friends.GetFriendGamePlayed(steamIDFriend) end
 
 ---@param steamIDFriend uint64
 ---@param iPersonaName integer
----@return string -- const char *
+---@return string
 function Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName) end
 
 ---@param steamIDFriend uint64
@@ -64,7 +64,7 @@ function Friends.GetFriendPersonaNameHistory(steamIDFriend, iPersonaName) end
 function Friends.GetFriendSteamLevel(steamIDFriend) end
 
 ---@param steamIDPlayer uint64
----@return string -- const char *
+---@return string
 function Friends.GetPlayerNickname(steamIDPlayer) end
 
 ---@return integer
@@ -74,15 +74,15 @@ function Friends.GetFriendsGroupCount() end
 ---@return integer -- FriendsGroupID_t
 function Friends.GetFriendsGroupIDByIndex(iFG) end
 
----@param friendsGroupID integer
----@return string -- const char *
+---@param friendsGroupID integer -- FriendsGroupID_t
+---@return string
 function Friends.GetFriendsGroupName(friendsGroupID) end
 
----@param friendsGroupID integer
+---@param friendsGroupID integer -- FriendsGroupID_t
 ---@return integer
 function Friends.GetFriendsGroupMembersCount(friendsGroupID) end
 
----@param friendsGroupID integer
+---@param friendsGroupID integer -- FriendsGroupID_t
 ---@param nMembersCount integer? size of the buffer for pOutSteamIDMembers; if nil then the buffer will be NULL
 ---@return uint64[] -- Value of: pOutSteamIDMembers
 function Friends.GetFriendsGroupMembersList(friendsGroupID, nMembersCount) end
@@ -100,11 +100,11 @@ function Friends.GetClanCount() end
 function Friends.GetClanByIndex(iClan) end
 
 ---@param steamIDClan uint64
----@return string -- const char *
+---@return string
 function Friends.GetClanName(steamIDClan) end
 
 ---@param steamIDClan uint64
----@return string -- const char *
+---@return string
 function Friends.GetClanTag(steamIDClan) end
 
 ---@param steamIDClan uint64
@@ -146,11 +146,11 @@ function Friends.ActivateGameOverlay(pchDialog) end
 function Friends.ActivateGameOverlayToUser(pchDialog, steamID) end
 
 ---@param pchURL string?
----@param eMode integer
+---@param eMode integer -- EActivateGameOverlayToWebPageMode
 function Friends.ActivateGameOverlayToWebPage(pchURL, eMode) end
 
----@param nAppID integer
----@param eFlag integer
+---@param nAppID integer -- AppId_t
+---@param eFlag integer -- EOverlayToStoreFlag
 function Friends.ActivateGameOverlayToStore(nAppID, eFlag) end
 
 ---@param steamIDUserPlayedWith uint64
@@ -203,7 +203,7 @@ function Friends.ClearRichPresence() end
 
 ---@param steamIDFriend uint64
 ---@param pchKey string?
----@return string -- const char *
+---@return string
 function Friends.GetFriendRichPresence(steamIDFriend, pchKey) end
 
 ---@param steamIDFriend uint64
@@ -212,7 +212,7 @@ function Friends.GetFriendRichPresenceKeyCount(steamIDFriend) end
 
 ---@param steamIDFriend uint64
 ---@param iKey integer
----@return string -- const char *
+---@return string
 function Friends.GetFriendRichPresenceKeyByIndex(steamIDFriend, iKey) end
 
 ---@param steamIDFriend uint64
@@ -346,19 +346,19 @@ function Friends.ActivateGameOverlayInviteDialogConnectString(pchConnectString) 
 function Friends.RequestEquippedProfileItems(steamID, callback) end
 
 ---@param steamID uint64
----@param itemType integer
+---@param itemType integer -- ECommunityProfileItemType
 ---@return boolean
 function Friends.BHasEquippedProfileItem(steamID, itemType) end
 
 ---@param steamID uint64
----@param itemType integer
----@param prop integer
----@return string -- const char *
+---@param itemType integer -- ECommunityProfileItemType
+---@param prop integer -- ECommunityProfileItemProperty
+---@return string
 function Friends.GetProfileItemPropertyString(steamID, itemType, prop) end
 
 ---@param steamID uint64
----@param itemType integer
----@param prop integer
+---@param itemType integer -- ECommunityProfileItemType
+---@param prop integer -- ECommunityProfileItemProperty
 ---@return integer
 function Friends.GetProfileItemPropertyUint(steamID, itemType, prop) end
 

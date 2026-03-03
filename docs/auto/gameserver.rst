@@ -138,7 +138,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hAuthTicket:
+    :param int hAuthTicket: ``HAuthTicket``
     :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#CancelAuthTicket>`_
 
 .. function:: GameServer.ClearAllKeyValues()
@@ -469,7 +469,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int appID:
+    :param int appID: ``AppId_t``
     :returns: (int) ``EUserHasLicenseForAppResult``
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
 

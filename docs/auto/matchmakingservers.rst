@@ -44,7 +44,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hServerQuery:
+    :param int hServerQuery: ``HServerQuery``
     :SteamWorks: `CancelServerQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#CancelServerQuery>`_
 
 .. function:: MatchmakingServers.GetServerCount(hRequest)
@@ -141,7 +141,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -152,7 +152,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -176,7 +176,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -187,7 +187,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -213,7 +213,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp:
+    :param int iApp: ``AppId_t``
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)

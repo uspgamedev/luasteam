@@ -56,7 +56,7 @@ Function Reference
     :param str? pchIcon:
     :param int unIconPriority:
     :param float flStartOffsetSeconds:
-    :param int ePossibleClip:
+    :param int ePossibleClip: ``ETimelineEventClipPriority``
     :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `AddInstantaneousTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddInstantaneousTimelineEvent>`_
 
@@ -76,7 +76,7 @@ Function Reference
     :param int unIconPriority:
     :param float flStartOffsetSeconds:
     :param float flDuration:
-    :param int ePossibleClip:
+    :param int ePossibleClip: ``ETimelineEventClipPriority``
     :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `AddRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#AddRangeTimelineEvent>`_
 
@@ -101,7 +101,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulEvent:
+    :param uint64 ulEvent: ``TimelineEventHandle_t``
     :param function callback: CallResult callback receiving struct :func:`SteamTimelineEventRecordingExists_t <Timeline.OnSteamTimelineEventRecordingExists>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DoesEventRecordingExist <https://partner.steamgames.com/doc/api/ISteamTimeline#DoesEventRecordingExist>`_
@@ -129,7 +129,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulEvent:
+    :param uint64 ulEvent: ``TimelineEventHandle_t``
     :param float flEndOffsetSeconds:
     :SteamWorks: `EndRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#EndRangeTimelineEvent>`_
 
@@ -148,7 +148,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulEvent:
+    :param uint64 ulEvent: ``const TimelineEventHandle_t``
     :SteamWorks: `OpenOverlayToTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#OpenOverlayToTimelineEvent>`_
 
 **Example**::
@@ -160,7 +160,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulEvent:
+    :param uint64 ulEvent: ``TimelineEventHandle_t``
     :SteamWorks: `RemoveTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#RemoveTimelineEvent>`_
 
 .. function:: Timeline.SetGamePhaseAttribute(pchAttributeGroup, pchAttributeValue, unPriority)
@@ -187,7 +187,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eMode:
+    :param int eMode: ``ETimelineGameMode``
     :SteamWorks: `SetTimelineGameMode <https://partner.steamgames.com/doc/api/ISteamTimeline#SetTimelineGameMode>`_
 
 **Example**::
@@ -227,7 +227,7 @@ Function Reference
     :param str? pchIcon:
     :param int unPriority:
     :param float flStartOffsetSeconds:
-    :param int ePossibleClip:
+    :param int ePossibleClip: ``ETimelineEventClipPriority``
     :returns: (uint64) ``TimelineEventHandle_t``
     :SteamWorks: `StartRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#StartRangeTimelineEvent>`_
 
@@ -241,12 +241,12 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulEvent:
+    :param uint64 ulEvent: ``TimelineEventHandle_t``
     :param str? pchTitle:
     :param str? pchDescription:
     :param str? pchIcon:
     :param int unPriority:
-    :param int ePossibleClip:
+    :param int ePossibleClip: ``ETimelineEventClipPriority``
     :SteamWorks: `UpdateRangeTimelineEvent <https://partner.steamgames.com/doc/api/ISteamTimeline#UpdateRangeTimelineEvent>`_
 
 

@@ -5,17 +5,17 @@
 ---@field OnBroadcastUploadStop? fun(data: BroadcastUploadStop_t)
 local Video = {}
 
----@param unVideoAppID integer
+---@param unVideoAppID integer -- AppId_t
 function Video.GetVideoURL(unVideoAppID) end
 
 ---@return boolean
 ---@return integer -- Value of: pnNumViewers
 function Video.IsBroadcasting() end
 
----@param unVideoAppID integer
+---@param unVideoAppID integer -- AppId_t
 function Video.GetOPFSettings(unVideoAppID) end
 
----@param unVideoAppID integer
+---@param unVideoAppID integer -- AppId_t
 ---@param pnBufferSize integer? size of the buffer for pchBuffer; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pchBuffer

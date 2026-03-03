@@ -81,8 +81,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
-    :param uint64 hUGC:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
+    :param uint64 hUGC: ``UGCHandle_t``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardUGCSet_t <UserStats.OnLeaderboardUGCSet>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AttachLeaderboardUGC <https://partner.steamgames.com/doc/api/ISteamUserStats#AttachLeaderboardUGC>`_
@@ -104,8 +104,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
-    :param int eLeaderboardDataRequest:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
+    :param int eLeaderboardDataRequest: ``ELeaderboardDataRequest``
     :param int nRangeStart:
     :param int nRangeEnd:
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoresDownloaded_t <UserStats.OnLeaderboardScoresDownloaded>` and a boolean
@@ -133,7 +133,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
     :param uint64[]? prgUsers:
     :param int cUsers: size of the input array ``prgUsers``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardScoresDownloaded_t <UserStats.OnLeaderboardScoresDownloaded>` and a boolean
@@ -180,8 +180,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchLeaderboardName:
-    :param int eLeaderboardSortMethod:
-    :param int eLeaderboardDisplayType:
+    :param int eLeaderboardSortMethod: ``ELeaderboardSortMethod``
+    :param int eLeaderboardDisplayType: ``ELeaderboardDisplayType``
     :param function callback: CallResult callback receiving struct :func:`LeaderboardFindResult_t <UserStats.OnLeaderboardFindResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `FindOrCreateLeaderboard <https://partner.steamgames.com/doc/api/ISteamUserStats#FindOrCreateLeaderboard>`_
@@ -259,7 +259,7 @@ Function Reference
 
     :param str? pchName:
     :param str? pchKey:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetAchievementDisplayAttribute <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementDisplayAttribute>`_
 
 **Example**::
@@ -281,7 +281,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iAchievement:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetAchievementName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetAchievementName>`_
 
     **Notes:**
@@ -331,7 +331,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboardEntries:
+    :param uint64 hSteamLeaderboardEntries: ``SteamLeaderboardEntries_t``
     :param int index:
     :param int? cDetailsMax: size of the buffer to allocate for ``pDetails``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -420,7 +420,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
     :returns: (int) ``ELeaderboardDisplayType``
     :SteamWorks: `GetLeaderboardDisplayType <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardDisplayType>`_
 
@@ -432,7 +432,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
     :returns: (int) Return value
     :SteamWorks: `GetLeaderboardEntryCount <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardEntryCount>`_
 
@@ -444,8 +444,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
-    :returns: (str) ``const char *``
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
+    :returns: (str) Return value
     :SteamWorks: `GetLeaderboardName <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardName>`_
 
 **Example**::
@@ -461,7 +461,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
     :returns: (int) ``ELeaderboardSortMethod``
     :SteamWorks: `GetLeaderboardSortMethod <https://partner.steamgames.com/doc/api/ISteamUserStats#GetLeaderboardSortMethod>`_
 
@@ -831,8 +831,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 hSteamLeaderboard:
-    :param int eLeaderboardUploadScoreMethod:
+    :param uint64 hSteamLeaderboard: ``SteamLeaderboard_t``
+    :param int eLeaderboardUploadScoreMethod: ``ELeaderboardUploadScoreMethod``
     :param int nScore:
     :param int[]? pScoreDetails:
     :param int cScoreDetailsCount: size of the input array ``pScoreDetails``

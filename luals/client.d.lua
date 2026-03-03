@@ -7,21 +7,21 @@ function Client.SetWarningMessageHook(hook) end
 ---@return integer -- HSteamPipe
 function Client.CreateSteamPipe() end
 
----@param hSteamPipe integer
+---@param hSteamPipe integer -- HSteamPipe
 ---@return boolean
 function Client.BReleaseSteamPipe(hSteamPipe) end
 
----@param hSteamPipe integer
+---@param hSteamPipe integer -- HSteamPipe
 ---@return integer -- HSteamUser
 function Client.ConnectToGlobalUser(hSteamPipe) end
 
----@param eAccountType integer
+---@param eAccountType integer -- EAccountType
 ---@return integer -- HSteamUser
 ---@return integer -- Value of: phSteamPipe
 function Client.CreateLocalUser(eAccountType) end
 
----@param hSteamPipe integer
----@param hUser integer
+---@param hSteamPipe integer -- HSteamPipe
+---@param hUser integer -- HSteamUser
 function Client.ReleaseUser(hSteamPipe, hUser) end
 
 ---@param unIP SteamIPAddress_t

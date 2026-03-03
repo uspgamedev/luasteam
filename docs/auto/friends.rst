@@ -157,8 +157,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
-    :param int eFlag:
+    :param int nAppID: ``AppId_t``
+    :param int eFlag: ``EOverlayToStoreFlag``
     :SteamWorks: `ActivateGameOverlayToStore <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToStore>`_
 
 **Example**::
@@ -182,7 +182,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchURL:
-    :param int eMode:
+    :param int eMode: ``EActivateGameOverlayToWebPageMode``
     :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
 
 **Example**::
@@ -194,7 +194,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType:
+    :param int itemType: ``ECommunityProfileItemType``
     :returns: (bool) Return value
     :SteamWorks: `BHasEquippedProfileItem <https://partner.steamgames.com/doc/api/ISteamFriends#BHasEquippedProfileItem>`_
 
@@ -324,7 +324,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
 
     **Notes:**
@@ -378,7 +378,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDClan:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetClanTag <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanTag>`_
 
 .. function:: Friends.GetCoplayFriend(iCoplayFriend)
@@ -523,7 +523,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
 
 **Example**::
@@ -537,7 +537,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iPersonaName:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaNameHistory <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaNameHistory>`_
 
 .. function:: Friends.GetFriendPersonaState(steamIDFriend)
@@ -576,7 +576,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param str? pchKey:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
 
 **Example**::
@@ -590,7 +590,7 @@ Function Reference
 
     :param uint64 steamIDFriend:
     :param int iKey:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
 
     **Notes:**
@@ -658,7 +658,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID:
+    :param int friendsGroupID: ``FriendsGroupID_t``
     :returns: (int) Return value
     :SteamWorks: `GetFriendsGroupMembersCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersCount>`_
 
@@ -666,7 +666,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID:
+    :param int friendsGroupID: ``FriendsGroupID_t``
     :param int? nMembersCount: size of the buffer to allocate for ``pOutSteamIDMembers``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (uint64[]) ``pOutSteamIDMembers``
     :SteamWorks: `GetFriendsGroupMembersList <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersList>`_
@@ -679,8 +679,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID:
-    :returns: (str) ``const char *``
+    :param int friendsGroupID: ``FriendsGroupID_t``
+    :returns: (str) Return value
     :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
     **Notes:**
@@ -722,7 +722,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaName>`_
 
     Gets the current user's persona (display) name.
@@ -750,7 +750,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDPlayer:
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
 
 **Example**::
@@ -765,9 +765,9 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType:
-    :param int prop:
-    :returns: (str) ``const char *``
+    :param int itemType: ``ECommunityProfileItemType``
+    :param int prop: ``ECommunityProfileItemProperty``
+    :returns: (str) Return value
     :SteamWorks: `GetProfileItemPropertyString <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyString>`_
 
 .. function:: Friends.GetProfileItemPropertyUint(steamID, itemType, prop)
@@ -775,8 +775,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType:
-    :param int prop:
+    :param int itemType: ``ECommunityProfileItemType``
+    :param int prop: ``ECommunityProfileItemProperty``
     :returns: (int) Return value
     :SteamWorks: `GetProfileItemPropertyUint <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyUint>`_
 

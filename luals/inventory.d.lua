@@ -7,18 +7,18 @@
 ---@field OnSteamInventoryRequestPricesResult? fun(data: SteamInventoryRequestPricesResult_t)
 local Inventory = {}
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 ---@return integer -- EResult
 function Inventory.GetResultStatus(resultHandle) end
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 ---@param punOutItemsArraySize integer? size of the buffer for pOutItemsArray; if nil then the buffer will be NULL
 ---@return boolean
 ---@return SteamItemDetails_t[] -- Value of: pOutItemsArray
 ---@return integer -- Value of: punOutItemsArraySize
 function Inventory.GetResultItems(resultHandle, punOutItemsArraySize) end
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 ---@param unItemIndex integer
 ---@param pchPropertyName string?
 ---@param punValueBufferSizeOut integer? size of the buffer for pchValueBuffer; if nil then the buffer will be NULL
@@ -27,16 +27,16 @@ function Inventory.GetResultItems(resultHandle, punOutItemsArraySize) end
 ---@return integer -- Value of: punValueBufferSizeOut
 function Inventory.GetResultItemProperty(resultHandle, unItemIndex, pchPropertyName, punValueBufferSizeOut) end
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 ---@return integer
 function Inventory.GetResultTimestamp(resultHandle) end
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 ---@param steamIDExpected uint64
 ---@return boolean
 function Inventory.CheckResultSteamID(resultHandle, steamIDExpected) end
 
----@param resultHandle integer
+---@param resultHandle integer -- SteamInventoryResult_t
 function Inventory.DestroyResult(resultHandle) end
 
 ---@return boolean
@@ -67,7 +67,7 @@ function Inventory.GenerateItems(pArrayItemDefs, punArrayQuantity, unArrayLength
 ---@return integer -- Value of: pResultHandle
 function Inventory.GrantPromoItems() end
 
----@param itemDef integer
+---@param itemDef integer -- SteamItemDef_t
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.AddPromoItem(itemDef) end
@@ -78,7 +78,7 @@ function Inventory.AddPromoItem(itemDef) end
 ---@return integer -- Value of: pResultHandle
 function Inventory.AddPromoItems(pArrayItemDefs, unArrayLength) end
 
----@param itemConsume uint64
+---@param itemConsume uint64 -- SteamItemInstanceID_t
 ---@param unQuantity integer
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
@@ -94,16 +94,16 @@ function Inventory.ConsumeItem(itemConsume, unQuantity) end
 ---@return integer -- Value of: pResultHandle
 function Inventory.ExchangeItems(pArrayGenerate, punArrayGenerateQuantity, unArrayGenerateLength, pArrayDestroy, punArrayDestroyQuantity, unArrayDestroyLength) end
 
----@param itemIdSource uint64
+---@param itemIdSource uint64 -- SteamItemInstanceID_t
 ---@param unQuantity integer
----@param itemIdDest uint64
+---@param itemIdDest uint64 -- SteamItemInstanceID_t
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.TransferItemQuantity(itemIdSource, unQuantity, itemIdDest) end
 
 function Inventory.SendItemDropHeartbeat() end
 
----@param dropListDefinition integer
+---@param dropListDefinition integer -- SteamItemDef_t
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.TriggerItemDrop(dropListDefinition) end
@@ -128,7 +128,7 @@ function Inventory.LoadItemDefinitions() end
 ---@return integer -- Value of: punItemDefIDsArraySize
 function Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize) end
 
----@param iDefinition integer
+---@param iDefinition integer -- SteamItemDef_t
 ---@param pchPropertyName string?
 ---@param punValueBufferSizeOut integer? size of the buffer for pchValueBuffer; if nil then the buffer will be NULL
 ---@return boolean
@@ -169,7 +169,7 @@ function Inventory.GetNumItemsWithPrices() end
 ---@return uint64[] -- Value of: pBasePrices
 function Inventory.GetItemsWithPrices(unArrayLength) end
 
----@param iDefinition integer
+---@param iDefinition integer -- SteamItemDef_t
 ---@return boolean
 ---@return uint64 -- Value of: pCurrentPrice
 ---@return uint64 -- Value of: pBasePrice
@@ -178,41 +178,41 @@ function Inventory.GetItemPrice(iDefinition) end
 ---@return uint64 -- SteamInventoryUpdateHandle_t
 function Inventory.StartUpdateProperties() end
 
----@param handle uint64
----@param nItemID uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
+---@param nItemID uint64 -- SteamItemInstanceID_t
 ---@param pchPropertyName string?
 ---@return boolean
 function Inventory.RemoveProperty(handle, nItemID, pchPropertyName) end
 
----@param handle uint64
----@param nItemID uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
+---@param nItemID uint64 -- SteamItemInstanceID_t
 ---@param pchPropertyName string?
 ---@param pchPropertyValue string?
 ---@return boolean
 function Inventory.SetPropertyString(handle, nItemID, pchPropertyName, pchPropertyValue) end
 
----@param handle uint64
----@param nItemID uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
+---@param nItemID uint64 -- SteamItemInstanceID_t
 ---@param pchPropertyName string?
 ---@param bValue boolean
 ---@return boolean
 function Inventory.SetPropertyBool(handle, nItemID, pchPropertyName, bValue) end
 
----@param handle uint64
----@param nItemID uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
+---@param nItemID uint64 -- SteamItemInstanceID_t
 ---@param pchPropertyName string?
 ---@param nValue uint64
 ---@return boolean
 function Inventory.SetPropertyInt64(handle, nItemID, pchPropertyName, nValue) end
 
----@param handle uint64
----@param nItemID uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
+---@param nItemID uint64 -- SteamItemInstanceID_t
 ---@param pchPropertyName string?
 ---@param flValue number
 ---@return boolean
 function Inventory.SetPropertyFloat(handle, nItemID, pchPropertyName, flValue) end
 
----@param handle uint64
+---@param handle uint64 -- SteamInventoryUpdateHandle_t
 ---@return boolean
 ---@return integer -- Value of: pResultHandle
 function Inventory.SubmitUpdateProperties(handle) end

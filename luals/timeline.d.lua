@@ -10,7 +10,7 @@ function Timeline.SetTimelineTooltip(pchDescription, flTimeDelta) end
 ---@param flTimeDelta number
 function Timeline.ClearTimelineTooltip(flTimeDelta) end
 
----@param eMode integer
+---@param eMode integer -- ETimelineGameMode
 function Timeline.SetTimelineGameMode(eMode) end
 
 ---@param pchTitle string?
@@ -18,7 +18,7 @@ function Timeline.SetTimelineGameMode(eMode) end
 ---@param pchIcon string?
 ---@param unIconPriority integer
 ---@param flStartOffsetSeconds number
----@param ePossibleClip integer
+---@param ePossibleClip integer -- ETimelineEventClipPriority
 ---@return uint64 -- TimelineEventHandle_t
 function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, ePossibleClip) end
 
@@ -28,7 +28,7 @@ function Timeline.AddInstantaneousTimelineEvent(pchTitle, pchDescription, pchIco
 ---@param unIconPriority integer
 ---@param flStartOffsetSeconds number
 ---@param flDuration number
----@param ePossibleClip integer
+---@param ePossibleClip integer -- ETimelineEventClipPriority
 ---@return uint64 -- TimelineEventHandle_t
 function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIconPriority, flStartOffsetSeconds, flDuration, ePossibleClip) end
 
@@ -37,26 +37,26 @@ function Timeline.AddRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unIco
 ---@param pchIcon string?
 ---@param unPriority integer
 ---@param flStartOffsetSeconds number
----@param ePossibleClip integer
+---@param ePossibleClip integer -- ETimelineEventClipPriority
 ---@return uint64 -- TimelineEventHandle_t
 function Timeline.StartRangeTimelineEvent(pchTitle, pchDescription, pchIcon, unPriority, flStartOffsetSeconds, ePossibleClip) end
 
----@param ulEvent uint64
+---@param ulEvent uint64 -- TimelineEventHandle_t
 ---@param pchTitle string?
 ---@param pchDescription string?
 ---@param pchIcon string?
 ---@param unPriority integer
----@param ePossibleClip integer
+---@param ePossibleClip integer -- ETimelineEventClipPriority
 function Timeline.UpdateRangeTimelineEvent(ulEvent, pchTitle, pchDescription, pchIcon, unPriority, ePossibleClip) end
 
----@param ulEvent uint64
+---@param ulEvent uint64 -- TimelineEventHandle_t
 ---@param flEndOffsetSeconds number
 function Timeline.EndRangeTimelineEvent(ulEvent, flEndOffsetSeconds) end
 
----@param ulEvent uint64
+---@param ulEvent uint64 -- TimelineEventHandle_t
 function Timeline.RemoveTimelineEvent(ulEvent) end
 
----@param ulEvent uint64
+---@param ulEvent uint64 -- TimelineEventHandle_t
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Timeline.DoesEventRecordingExist(ulEvent, callback) end
@@ -87,7 +87,7 @@ function Timeline.SetGamePhaseAttribute(pchAttributeGroup, pchAttributeValue, un
 ---@param pchPhaseID string?
 function Timeline.OpenOverlayToGamePhase(pchPhaseID) end
 
----@param ulEvent uint64
+---@param ulEvent uint64 -- const TimelineEventHandle_t
 function Timeline.OpenOverlayToTimelineEvent(ulEvent) end
 
 Steam.Timeline = Timeline

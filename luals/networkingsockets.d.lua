@@ -29,41 +29,41 @@ function NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort, nOptions, pO
 ---@return integer -- HSteamNetConnection
 function NetworkingSockets.ConnectP2P(identityRemote, nRemoteVirtualPort, nOptions, pOptions) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@return integer -- EResult
 function NetworkingSockets.AcceptConnection(hConn) end
 
----@param hPeer integer
+---@param hPeer integer -- HSteamNetConnection
 ---@param nReason integer
 ---@param pszDebug string?
 ---@param bEnableLinger boolean
 ---@return boolean
 function NetworkingSockets.CloseConnection(hPeer, nReason, pszDebug, bEnableLinger) end
 
----@param hSocket integer
+---@param hSocket integer -- HSteamListenSocket
 ---@return boolean
 function NetworkingSockets.CloseListenSocket(hSocket) end
 
----@param hPeer integer
+---@param hPeer integer -- HSteamNetConnection
 ---@param nUserData uint64
 ---@return boolean
 function NetworkingSockets.SetConnectionUserData(hPeer, nUserData) end
 
----@param hPeer integer
+---@param hPeer integer -- HSteamNetConnection
 ---@return uint64
 function NetworkingSockets.GetConnectionUserData(hPeer) end
 
----@param hPeer integer
+---@param hPeer integer -- HSteamNetConnection
 ---@param pszName string?
 function NetworkingSockets.SetConnectionName(hPeer, pszName) end
 
----@param hPeer integer
+---@param hPeer integer -- HSteamNetConnection
 ---@param nMaxLen integer? size of the buffer for pszName; if nil then the buffer will be NULL
 ---@return boolean
 ---@return string -- Value of: pszName
 function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@param pData string?
 ---@param cbData integer size of the input array pData
 ---@param nSendFlags integer
@@ -71,29 +71,29 @@ function NetworkingSockets.GetConnectionName(hPeer, nMaxLen) end
 ---@return uint64 -- Value of: pOutMessageNumber
 function NetworkingSockets.SendMessageToConnection(hConn, pData, cbData, nSendFlags) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@return integer -- EResult
 function NetworkingSockets.FlushMessagesOnConnection(hConn) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@return boolean
 ---@return SteamNetConnectionInfo_t -- Value of: pInfo
 function NetworkingSockets.GetConnectionInfo(hConn) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@param nLanes integer
 ---@return integer -- EResult
 ---@return SteamNetConnectionRealTimeStatus_t -- Value of: pStatus
 ---@return SteamNetConnectionRealTimeLaneStatus_t -- Value of: pLanes
 function NetworkingSockets.GetConnectionRealTimeStatus(hConn, nLanes) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@param cbBuf integer? size of the buffer for pszBuf; if nil then the buffer will be NULL
 ---@return integer
 ---@return string -- Value of: pszBuf
 function NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf) end
 
----@param hSocket integer
+---@param hSocket integer -- HSteamListenSocket
 ---@return boolean
 ---@return SteamNetworkingIPAddr -- Value of: address
 function NetworkingSockets.GetListenSocketAddress(hSocket) end
@@ -106,7 +106,7 @@ function NetworkingSockets.GetListenSocketAddress(hSocket) end
 ---@return integer -- Value of: pOutConnection2
 function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@param nNumLanes integer
 ---@param pLanePriorities integer[]?
 ---@param pLaneWeights integer[]?
@@ -127,12 +127,12 @@ function NetworkingSockets.GetAuthenticationStatus() end
 ---@return integer -- HSteamNetPollGroup
 function NetworkingSockets.CreatePollGroup() end
 
----@param hPollGroup integer
+---@param hPollGroup integer -- HSteamNetPollGroup
 ---@return boolean
 function NetworkingSockets.DestroyPollGroup(hPollGroup) end
 
----@param hConn integer
----@param hPollGroup integer
+---@param hConn integer -- HSteamNetConnection
+---@param hPollGroup integer -- HSteamNetPollGroup
 ---@return boolean
 function NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup) end
 
@@ -174,7 +174,7 @@ function NetworkingSockets.GetFakeIP(idxFirstPort) end
 ---@return integer -- HSteamListenSocket
 function NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort, nOptions, pOptions) end
 
----@param hConn integer
+---@param hConn integer -- HSteamNetConnection
 ---@return integer -- EResult
 ---@return SteamNetworkingIPAddr -- Value of: pOutAddr
 function NetworkingSockets.GetRemoteFakeIPForConnection(hConn) end

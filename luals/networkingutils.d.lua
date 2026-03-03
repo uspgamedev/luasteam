@@ -26,12 +26,12 @@ function NetworkingUtils.ConvertPingLocationToString(location, cchBufSize) end
 ---@return boolean
 function NetworkingUtils.CheckPingDataUpToDate(flMaxAgeSeconds) end
 
----@param popID integer
+---@param popID integer -- SteamNetworkingPOPID
 ---@return integer
 ---@return integer -- Value of: pViaRelayPoP
 function NetworkingUtils.GetPingToDataCenter(popID) end
 
----@param popID integer
+---@param popID integer -- SteamNetworkingPOPID
 ---@return integer
 function NetworkingUtils.GetDirectPingToPOP(popID) end
 
@@ -56,46 +56,46 @@ function NetworkingUtils.GetIPv4FakeIPType(nIPv4) end
 ---@return SteamNetworkingIdentity -- Value of: pOutRealIdentity
 function NetworkingUtils.GetRealIdentityForFakeIP(fakeIP) end
 
----@param eValue integer
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val integer
 ---@return boolean
 function NetworkingUtils.SetGlobalConfigValueInt32(eValue, val) end
 
----@param eValue integer
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val number
 ---@return boolean
 function NetworkingUtils.SetGlobalConfigValueFloat(eValue, val) end
 
----@param eValue integer
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val string?
 ---@return boolean
 function NetworkingUtils.SetGlobalConfigValueString(eValue, val) end
 
----@param hConn integer
----@param eValue integer
+---@param hConn integer -- HSteamNetConnection
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val integer
 ---@return boolean
 function NetworkingUtils.SetConnectionConfigValueInt32(hConn, eValue, val) end
 
----@param hConn integer
----@param eValue integer
+---@param hConn integer -- HSteamNetConnection
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val number
 ---@return boolean
 function NetworkingUtils.SetConnectionConfigValueFloat(hConn, eValue, val) end
 
----@param hConn integer
----@param eValue integer
+---@param hConn integer -- HSteamNetConnection
+---@param eValue integer -- ESteamNetworkingConfigValue
 ---@param val string?
 ---@return boolean
 function NetworkingUtils.SetConnectionConfigValueString(hConn, eValue, val) end
 
----@param eValue integer
----@return string -- const char *
+---@param eValue integer -- ESteamNetworkingConfigValue
+---@return string
 ---@return integer -- Value of: pOutDataType
 ---@return integer -- Value of: pOutScope
 function NetworkingUtils.GetConfigValueInfo(eValue) end
 
----@param eCurrent integer
+---@param eCurrent integer -- ESteamNetworkingConfigValue
 ---@param bEnumerateDevVars boolean
 ---@return integer -- ESteamNetworkingConfigValue
 function NetworkingUtils.IterateGenericEditableConfigValues(eCurrent, bEnumerateDevVars) end

@@ -28,7 +28,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :returns: (bool) Return value
     :SteamWorks: `BIsAppBlocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsAppBlocked>`_
 
@@ -42,7 +42,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID:
+    :param int nAppID: ``AppId_t``
     :returns: (bool) Return value
     :SteamWorks: `BIsAppInBlockList <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsAppInBlockList>`_
 
@@ -50,7 +50,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eFeature:
+    :param int eFeature: ``EParentalFeature``
     :returns: (bool) Return value
     :SteamWorks: `BIsFeatureBlocked <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsFeatureBlocked>`_
 
@@ -64,7 +64,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eFeature:
+    :param int eFeature: ``EParentalFeature``
     :returns: (bool) Return value
     :SteamWorks: `BIsFeatureInBlockList <https://partner.steamgames.com/doc/api/ISteamParentalSettings#BIsFeatureInBlockList>`_
 

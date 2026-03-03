@@ -114,8 +114,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eValue:
-    :returns: (str) ``const char *``
+    :param int eValue: ``ESteamNetworkingConfigValue``
+    :returns: (str) Return value
     :returns: (int) ``pOutDataType``
     :returns: (int) ``pOutScope``
     :SteamWorks: `GetConfigValueInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetConfigValueInfo>`_
@@ -129,7 +129,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int popID:
+    :param int popID: ``SteamNetworkingPOPID``
     :returns: (int) Return value
     :SteamWorks: `GetDirectPingToPOP <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetDirectPingToPOP>`_
 
@@ -175,7 +175,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int popID:
+    :param int popID: ``SteamNetworkingPOPID``
     :returns: (int) Return value
     :returns: (int) ``pViaRelayPoP``
     :SteamWorks: `GetPingToDataCenter <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetPingToDataCenter>`_
@@ -238,7 +238,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eCurrent:
+    :param int eCurrent: ``ESteamNetworkingConfigValue``
     :param bool bEnumerateDevVars:
     :returns: (int) ``ESteamNetworkingConfigValue``
     :SteamWorks: `IterateGenericEditableConfigValues <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#IterateGenericEditableConfigValues>`_
@@ -247,8 +247,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn:
-    :param int eValue:
+    :param int hConn: ``HSteamNetConnection``
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param float val:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionConfigValueFloat <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConnectionConfigValueFloat>`_
@@ -257,8 +257,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn:
-    :param int eValue:
+    :param int hConn: ``HSteamNetConnection``
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param int val:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionConfigValueInt32 <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConnectionConfigValueInt32>`_
@@ -273,8 +273,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn:
-    :param int eValue:
+    :param int hConn: ``HSteamNetConnection``
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param str? val:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionConfigValueString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetConnectionConfigValueString>`_
@@ -373,7 +373,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eValue:
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param float val:
     :returns: (bool) Return value
     :SteamWorks: `SetGlobalConfigValueFloat <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValueFloat>`_
@@ -382,7 +382,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eValue:
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param int val:
     :returns: (bool) Return value
     :SteamWorks: `SetGlobalConfigValueInt32 <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValueInt32>`_
@@ -397,7 +397,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eValue:
+    :param int eValue: ``ESteamNetworkingConfigValue``
     :param str? val:
     :returns: (bool) Return value
     :SteamWorks: `SetGlobalConfigValueString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#SetGlobalConfigValueString>`_

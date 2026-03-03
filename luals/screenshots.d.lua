@@ -22,25 +22,25 @@ function Screenshots.TriggerScreenshot() end
 ---@param bHook boolean
 function Screenshots.HookScreenshots(bHook) end
 
----@param hScreenshot integer
+---@param hScreenshot integer -- ScreenshotHandle
 ---@param pchLocation string?
 ---@return boolean
 function Screenshots.SetLocation(hScreenshot, pchLocation) end
 
----@param hScreenshot integer
+---@param hScreenshot integer -- ScreenshotHandle
 ---@param steamID uint64
 ---@return boolean
 function Screenshots.TagUser(hScreenshot, steamID) end
 
----@param hScreenshot integer
----@param unPublishedFileID uint64
+---@param hScreenshot integer -- ScreenshotHandle
+---@param unPublishedFileID uint64 -- PublishedFileId_t
 ---@return boolean
 function Screenshots.TagPublishedFile(hScreenshot, unPublishedFileID) end
 
 ---@return boolean
 function Screenshots.IsScreenshotsHooked() end
 
----@param eType integer
+---@param eType integer -- EVRScreenshotType
 ---@param pchFilename string?
 ---@param pchVRFilename string?
 ---@return integer -- ScreenshotHandle

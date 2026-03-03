@@ -29,14 +29,14 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unVideoAppID:
+    :param int unVideoAppID: ``AppId_t``
     :SteamWorks: `GetOPFSettings <https://partner.steamgames.com/doc/api/ISteamVideo#GetOPFSettings>`_
 
 .. function:: Video.GetOPFStringForApp(unVideoAppID, pnBufferSize)
 
     🤖 **Auto-generated binding**
 
-    :param int unVideoAppID:
+    :param int unVideoAppID: ``AppId_t``
     :param int? pnBufferSize: size of the buffer to allocate for ``pchBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchBuffer``
@@ -52,7 +52,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unVideoAppID:
+    :param int unVideoAppID: ``AppId_t``
     :SteamWorks: `GetVideoURL <https://partner.steamgames.com/doc/api/ISteamVideo#GetVideoURL>`_
 
 **Example**::

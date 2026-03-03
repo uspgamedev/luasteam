@@ -103,7 +103,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eContext:
+    :param int eContext: ``ETextFilteringContext``
     :param uint64 sourceSteamID:
     :param str? pchInputMessage:
     :param int? nByteSizeOutFilteredText: size of the buffer to allocate for ``pchOutFilteredText``. If ``nil`` then the buffer will be ``NULL``.
@@ -210,7 +210,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetIPCountry <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPCountry>`_
 
 **Example**::
@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eProtocol:
+    :param int eProtocol: ``ESteamIPv6ConnectivityProtocol``
     :returns: (int) ``ESteamIPv6ConnectivityState``
     :SteamWorks: `GetIPv6ConnectivityState <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPv6ConnectivityState>`_
 
@@ -302,7 +302,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (str) ``const char *``
+    :returns: (str) Return value
     :SteamWorks: `GetSteamUILanguage <https://partner.steamgames.com/doc/api/ISteamUtils#GetSteamUILanguage>`_
 
 **Example**::
@@ -420,7 +420,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eNotificationPosition:
+    :param int eNotificationPosition: ``ENotificationPosition``
     :SteamWorks: `SetOverlayNotificationPosition <https://partner.steamgames.com/doc/api/ISteamUtils#SetOverlayNotificationPosition>`_
 
 **Example**::
@@ -438,7 +438,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eKeyboardMode:
+    :param int eKeyboardMode: ``EFloatingGamepadTextInputMode``
     :param int nTextFieldXPosition:
     :param int nTextFieldYPosition:
     :param int nTextFieldWidth:
@@ -456,8 +456,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eInputMode:
-    :param int eLineInputMode:
+    :param int eInputMode: ``EGamepadTextInputMode``
+    :param int eLineInputMode: ``EGamepadTextInputLineMode``
     :param str? pchDescription:
     :param int unCharMax:
     :param str? pchExistingText:

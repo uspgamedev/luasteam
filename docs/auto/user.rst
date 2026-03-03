@@ -131,7 +131,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eNewState:
+    :param int eNewState: ``EDurationControlOnlineState``
     :returns: (bool) Return value
     :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
 
@@ -157,7 +157,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hAuthTicket:
+    :param int hAuthTicket: ``HAuthTicket``
     :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamUser#CancelAuthTicket>`_
 
 **Example**::
@@ -458,7 +458,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int appID:
+    :param int appID: ``AppId_t``
     :returns: (int) ``EUserHasLicenseForAppResult``
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
 

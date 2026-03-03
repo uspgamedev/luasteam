@@ -97,7 +97,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
+    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``SteamIPAddress_t``
     :param int nPort:
     :param int nTimeoutSec:
     :returns: (int) ``SNetSocket_t``
@@ -108,7 +108,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nVirtualP2PPort:
-    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`)
+    :param nIP: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``SteamIPAddress_t``
     :param int nPort:
     :param bool bAllowUseOfPacketRelay:
     :returns: (int) ``SNetListenSocket_t``
@@ -129,7 +129,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetListenSocket_t``
     :param bool bNotifyRemoteEnd:
     :returns: (bool) Return value
     :SteamWorks: `DestroyListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#DestroyListenSocket>`_
@@ -138,7 +138,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :param bool bNotifyRemoteEnd:
     :returns: (bool) Return value
     :SteamWorks: `DestroySocket <https://partner.steamgames.com/doc/api/ISteamNetworking#DestroySocket>`_
@@ -147,7 +147,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hListenSocket:
+    :param int hListenSocket: ``SNetListenSocket_t``
     :returns: (bool) Return value
     :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``pnIP``
     :returns: (int) ``pnPort``
@@ -162,7 +162,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :returns: (int) Return value
     :SteamWorks: `GetMaxPacketSize <https://partner.steamgames.com/doc/api/ISteamNetworking#GetMaxPacketSize>`_
 
@@ -191,7 +191,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :returns: (int) ``ESNetSocketConnectionType``
     :SteamWorks: `GetSocketConnectionType <https://partner.steamgames.com/doc/api/ISteamNetworking#GetSocketConnectionType>`_
 
@@ -199,7 +199,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :returns: (bool) Return value
     :returns: (uint64) ``pSteamIDRemote``
     :returns: (int) ``peSocketStatus``
@@ -218,7 +218,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hListenSocket:
+    :param int hListenSocket: ``SNetListenSocket_t``
     :returns: (bool) Return value
     :returns: (int) ``pcubMsgSize``
     :returns: (int) ``phSocket``
@@ -233,7 +233,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :returns: (bool) Return value
     :returns: (int) ``pcubMsgSize``
     :SteamWorks: `IsDataAvailableOnSocket <https://partner.steamgames.com/doc/api/ISteamNetworking#IsDataAvailableOnSocket>`_
@@ -290,7 +290,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hListenSocket:
+    :param int hListenSocket: ``SNetListenSocket_t``
     :param int? cubDest: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
@@ -308,7 +308,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :param int? cubDest: size of the buffer to allocate for ``pubDest``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pubDest``
@@ -324,7 +324,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket:
+    :param int hSocket: ``SNetSocket_t``
     :param str? pubData:
     :param int cubData: size of the input array ``pubData``
     :param bool bReliable:
@@ -338,7 +338,7 @@ Function Reference
     :param uint64 steamIDRemote:
     :param str? pubData:
     :param int cubData: size of the input array ``pubData``
-    :param int eP2PSendType:
+    :param int eP2PSendType: ``EP2PSend``
     :param int nChannel:
     :returns: (bool) Return value
     :SteamWorks: `SendP2PPacket <https://partner.steamgames.com/doc/api/ISteamNetworking#SendP2PPacket>`_

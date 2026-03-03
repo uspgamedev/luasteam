@@ -265,6 +265,8 @@ impl LuaLsGenerator {
                     format!("size of the input arrays {}", array_names.join(" and "))
                 };
                 cb.line(&format!("---@param {} {} {}", param.name, type_str, desc));
+            } else if let Some(cpp_name) = &param.cpp_type_name {
+                cb.line(&format!("---@param {} {} -- {}", param.name, type_str, cpp_name));
             } else {
                 cb.line(&format!("---@param {} {}", param.name, type_str));
             }

@@ -80,7 +80,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param str? pchKey:
     :param str? pchValue:
     :SteamWorks: `AddHeader <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AddHeader>`_
@@ -89,7 +89,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param bool bAllowed:
     :SteamWorks: `AllowStartRequest <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#AllowStartRequest>`_
 
@@ -97,7 +97,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `CopyToClipboard <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#CopyToClipboard>`_
 
 .. function:: HTMLSurface.CreateBrowser(pchUserAgent, pchUserCSS, callback)
@@ -124,7 +124,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param str? pchScript:
     :SteamWorks: `ExecuteJavascript <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ExecuteJavascript>`_
 
@@ -136,7 +136,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param str? pchSearchStr:
     :param bool bCurrentlyInFind:
     :param bool bReverse:
@@ -150,7 +150,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int x:
     :param int y:
     :SteamWorks: `GetLinkAtPosition <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GetLinkAtPosition>`_
@@ -159,7 +159,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `GoBack <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GoBack>`_
 
 **Example**::
@@ -170,7 +170,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `GoForward <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#GoForward>`_
 
 **Example**::
@@ -192,7 +192,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param bool bResult:
     :SteamWorks: `JSDialogResponse <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#JSDialogResponse>`_
 
@@ -200,9 +200,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int cUnicodeChar:
-    :param int eHTMLKeyModifiers:
+    :param int eHTMLKeyModifiers: ``ISteamHTMLSurface::EHTMLKeyModifiers``
     :SteamWorks: `KeyChar <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyChar>`_
 
 **Example**::
@@ -213,9 +213,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int nNativeKeyCode:
-    :param int eHTMLKeyModifiers:
+    :param int eHTMLKeyModifiers: ``ISteamHTMLSurface::EHTMLKeyModifiers``
     :param bool bIsSystemKey:
     :SteamWorks: `KeyDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyDown>`_
 
@@ -227,9 +227,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int nNativeKeyCode:
-    :param int eHTMLKeyModifiers:
+    :param int eHTMLKeyModifiers: ``ISteamHTMLSurface::EHTMLKeyModifiers``
     :SteamWorks: `KeyUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#KeyUp>`_
 
 **Example**::
@@ -240,7 +240,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param str? pchURL:
     :param str? pchPostData:
     :SteamWorks: `LoadURL <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#LoadURL>`_
@@ -253,16 +253,16 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
-    :param int eMouseButton:
+    :param int unBrowserHandle: ``HHTMLBrowser``
+    :param int eMouseButton: ``ISteamHTMLSurface::EHTMLMouseButton``
     :SteamWorks: `MouseDoubleClick <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDoubleClick>`_
 
 .. function:: HTMLSurface.MouseDown(unBrowserHandle, eMouseButton)
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
-    :param int eMouseButton:
+    :param int unBrowserHandle: ``HHTMLBrowser``
+    :param int eMouseButton: ``ISteamHTMLSurface::EHTMLMouseButton``
     :SteamWorks: `MouseDown <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseDown>`_
 
 **Example**::
@@ -273,7 +273,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int x:
     :param int y:
     :SteamWorks: `MouseMove <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseMove>`_
@@ -287,8 +287,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
-    :param int eMouseButton:
+    :param int unBrowserHandle: ``HHTMLBrowser``
+    :param int eMouseButton: ``ISteamHTMLSurface::EHTMLMouseButton``
     :SteamWorks: `MouseUp <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseUp>`_
 
 **Example**::
@@ -299,7 +299,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int nDelta:
     :SteamWorks: `MouseWheel <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#MouseWheel>`_
 
@@ -311,21 +311,21 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `OpenDeveloperTools <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#OpenDeveloperTools>`_
 
 .. function:: HTMLSurface.PasteFromClipboard(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `PasteFromClipboard <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#PasteFromClipboard>`_
 
 .. function:: HTMLSurface.Reload(unBrowserHandle)
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `Reload <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#Reload>`_
 
 **Example**::
@@ -336,7 +336,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `RemoveBrowser <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#RemoveBrowser>`_
 
 **Example**::
@@ -347,7 +347,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param bool bBackgroundMode:
     :SteamWorks: `SetBackgroundMode <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetBackgroundMode>`_
 
@@ -359,7 +359,7 @@ Function Reference
     :param str? pchKey:
     :param str? pchValue:
     :param str? pchPath:
-    :param int nExpires:
+    :param int nExpires: ``RTime32``
     :param bool bSecure:
     :param bool bHTTPOnly:
     :SteamWorks: `SetCookie <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetCookie>`_
@@ -368,7 +368,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param float flDPIScaling:
     :SteamWorks: `SetDPIScalingFactor <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetDPIScalingFactor>`_
 
@@ -376,7 +376,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int nAbsolutePixelScroll:
     :SteamWorks: `SetHorizontalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetHorizontalScroll>`_
 
@@ -388,7 +388,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param bool bHasKeyFocus:
     :SteamWorks: `SetKeyFocus <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetKeyFocus>`_
 
@@ -396,7 +396,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param float flZoom:
     :param int nPointX:
     :param int nPointY:
@@ -406,7 +406,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int unWidth:
     :param int unHeight:
     :SteamWorks: `SetSize <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetSize>`_
@@ -419,7 +419,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :param int nAbsolutePixelScroll:
     :SteamWorks: `SetVerticalScroll <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#SetVerticalScroll>`_
 
@@ -442,7 +442,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `StopFind <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopFind>`_
 
 **Example**::
@@ -453,7 +453,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `StopLoad <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#StopLoad>`_
 
 **Example**::
@@ -464,7 +464,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unBrowserHandle:
+    :param int unBrowserHandle: ``HHTMLBrowser``
     :SteamWorks: `ViewSource <https://partner.steamgames.com/doc/api/ISteamHTMLSurface#ViewSource>`_
 
 

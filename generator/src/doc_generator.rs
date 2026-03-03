@@ -385,6 +385,17 @@ impl DocGenerator {
                 } else {
                     String::new()
                 };
+                // If the parameter has a more specific C++ type, append it unless the desc
+                // already provides context (size-of descriptions are already specific enough).
+                let desc = if desc.is_empty() {
+                    if let Some(cpp_name) = &param.cpp_type_name {
+                        format!("``{}``", cpp_name)
+                    } else {
+                        String::new()
+                    }
+                } else {
+                    desc
+                };
                 doc.push_str(&Self::format_param_field(&type_str, &param.name, &desc));
             }
         }

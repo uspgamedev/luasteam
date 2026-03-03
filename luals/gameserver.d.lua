@@ -101,11 +101,11 @@ function GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 ---@param steamID uint64
 function GameServer.EndAuthSession(steamID) end
 
----@param hAuthTicket integer
+---@param hAuthTicket integer -- HAuthTicket
 function GameServer.CancelAuthTicket(hAuthTicket) end
 
 ---@param steamID uint64
----@param appID integer
+---@param appID integer -- AppId_t
 ---@return integer -- EUserHasLicenseForAppResult
 function GameServer.UserHasLicenseForApp(steamID, appID) end
 

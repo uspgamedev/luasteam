@@ -22,7 +22,7 @@ function Utils.GetConnectedUniverse() end
 ---@return integer
 function Utils.GetServerRealTime() end
 
----@return string -- const char *
+---@return string
 function Utils.GetIPCountry() end
 
 ---@param iImage integer
@@ -43,7 +43,7 @@ function Utils.GetCurrentBatteryPower() end
 ---@return integer
 function Utils.GetAppID() end
 
----@param eNotificationPosition integer
+---@param eNotificationPosition integer -- ENotificationPosition
 function Utils.SetOverlayNotificationPosition(eNotificationPosition) end
 
 ---@param hSteamAPICall uint64
@@ -77,8 +77,8 @@ function Utils.BOverlayNeedsPresent() end
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Utils.CheckFileSignature(szFileName, callback) end
 
----@param eInputMode integer
----@param eLineInputMode integer
+---@param eInputMode integer -- EGamepadTextInputMode
+---@param eLineInputMode integer -- EGamepadTextInputLineMode
 ---@param pchDescription string?
 ---@param unCharMax integer
 ---@param pchExistingText string?
@@ -93,7 +93,7 @@ function Utils.GetEnteredGamepadTextLength() end
 ---@return string -- Value of: pchText
 function Utils.GetEnteredGamepadTextInput(cchText) end
 
----@return string -- const char *
+---@return string
 function Utils.GetSteamUILanguage() end
 
 ---@return boolean
@@ -121,7 +121,7 @@ function Utils.IsSteamChinaLauncher() end
 ---@return boolean
 function Utils.InitFilterText(unFilterOptions) end
 
----@param eContext integer
+---@param eContext integer -- ETextFilteringContext
 ---@param sourceSteamID uint64
 ---@param pchInputMessage string?
 ---@param nByteSizeOutFilteredText integer? size of the buffer for pchOutFilteredText; if nil then the buffer will be NULL
@@ -129,14 +129,14 @@ function Utils.InitFilterText(unFilterOptions) end
 ---@return string -- Value of: pchOutFilteredText
 function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOutFilteredText) end
 
----@param eProtocol integer
+---@param eProtocol integer -- ESteamIPv6ConnectivityProtocol
 ---@return integer -- ESteamIPv6ConnectivityState
 function Utils.GetIPv6ConnectivityState(eProtocol) end
 
 ---@return boolean
 function Utils.IsSteamRunningOnSteamDeck() end
 
----@param eKeyboardMode integer
+---@param eKeyboardMode integer -- EFloatingGamepadTextInputMode
 ---@param nTextFieldXPosition integer
 ---@param nTextFieldYPosition integer
 ---@param nTextFieldWidth integer

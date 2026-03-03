@@ -137,8 +137,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
-    :param int nAppID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
+    :param int nAppID: ``AppId_t``
     :param function callback: CallResult callback receiving struct :func:`AddAppDependencyResult_t <UGC.OnAddAppDependencyResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AddAppDependency <https://partner.steamgames.com/doc/api/ISteamUGC#AddAppDependency>`_
@@ -147,8 +147,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param int descid:
+    :param uint64 handle: ``UGCUpdateHandle_t``
+    :param int descid: ``EUGCContentDescriptorID``
     :returns: (bool) Return value
     :SteamWorks: `AddContentDescriptor <https://partner.steamgames.com/doc/api/ISteamUGC#AddContentDescriptor>`_
 
@@ -156,8 +156,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nParentPublishedFileID:
-    :param uint64 nChildPublishedFileID:
+    :param uint64 nParentPublishedFileID: ``PublishedFileId_t``
+    :param uint64 nChildPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`AddUGCDependencyResult_t <UGC.OnAddUGCDependencyResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AddDependency <https://partner.steamgames.com/doc/api/ISteamUGC#AddDependency>`_
@@ -166,7 +166,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pTagName:
     :returns: (bool) Return value
     :SteamWorks: `AddExcludedTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddExcludedTag>`_
@@ -181,7 +181,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchKey:
     :param str? pchValue:
     :returns: (bool) Return value
@@ -197,9 +197,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pszPreviewFile:
-    :param int type:
+    :param int type: ``EItemPreviewType``
     :returns: (bool) Return value
     :SteamWorks: `AddItemPreviewFile <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemPreviewFile>`_
 
@@ -207,7 +207,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pszVideoID:
     :returns: (bool) Return value
     :SteamWorks: `AddItemPreviewVideo <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemPreviewVideo>`_
@@ -216,8 +216,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppId:
-    :param uint64 nPublishedFileID:
+    :param int nAppId: ``AppId_t``
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`UserFavoriteItemsListChanged_t <UGC.OnUserFavoriteItemsListChanged>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AddItemToFavorites <https://partner.steamgames.com/doc/api/ISteamUGC#AddItemToFavorites>`_
@@ -234,7 +234,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pKey:
     :param str? pValue:
     :returns: (bool) Return value
@@ -244,7 +244,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pTagName:
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredTag <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTag>`_
@@ -259,7 +259,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param pTagGroups: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :returns: (bool) Return value
     :SteamWorks: `AddRequiredTagGroup <https://partner.steamgames.com/doc/api/ISteamUGC#AddRequiredTagGroup>`_
@@ -268,7 +268,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unWorkshopDepotID:
+    :param int unWorkshopDepotID: ``DepotId_t``
     :param str? pszFolder:
     :returns: (bool) Return value
     :SteamWorks: `BInitWorkshopForGameServer <https://partner.steamgames.com/doc/api/ISteamUGC#BInitWorkshopForGameServer>`_
@@ -277,8 +277,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nConsumerAppId:
-    :param int eFileType:
+    :param int nConsumerAppId: ``AppId_t``
+    :param int eFileType: ``EWorkshopFileType``
     :param function callback: CallResult callback receiving struct :func:`CreateItemResult_t <UGC.OnCreateItemResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `CreateItem <https://partner.steamgames.com/doc/api/ISteamUGC#CreateItem>`_
@@ -297,10 +297,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eQueryType:
-    :param int eMatchingeMatchingUGCTypeFileType:
-    :param int nCreatorAppID:
-    :param int nConsumerAppID:
+    :param int eQueryType: ``EUGCQuery``
+    :param int eMatchingeMatchingUGCTypeFileType: ``EUGCMatchingUGCType``
+    :param int nCreatorAppID: ``AppId_t``
+    :param int nConsumerAppID: ``AppId_t``
     :param int unPage:
     :returns: (uint64) ``UGCQueryHandle_t``
     :SteamWorks: `CreateQueryAllUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#CreateQueryAllUGCRequest>`_
@@ -372,7 +372,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`DeleteItemResult_t <UGC.OnDeleteItemResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `DeleteItem <https://partner.steamgames.com/doc/api/ISteamUGC#DeleteItem>`_
@@ -389,7 +389,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param bool bHighPriority:
     :returns: (bool) Return value
     :SteamWorks: `DownloadItem <https://partner.steamgames.com/doc/api/ISteamUGC#DownloadItem>`_
@@ -405,7 +405,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`GetAppDependenciesResult_t <UGC.OnGetAppDependenciesResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetAppDependencies <https://partner.steamgames.com/doc/api/ISteamUGC#GetAppDependencies>`_
@@ -414,7 +414,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :returns: (bool) Return value
     :returns: (uint64) ``punBytesDownloaded``
     :returns: (uint64) ``punBytesTotal``
@@ -436,7 +436,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param int? cchFolderSize: size of the buffer to allocate for ``pchFolder``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (uint64) ``punSizeOnDisk``
@@ -462,7 +462,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :returns: (int) Return value
     :SteamWorks: `GetItemState <https://partner.steamgames.com/doc/api/ISteamUGC#GetItemState>`_
 
@@ -475,7 +475,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :returns: (int) ``EItemUpdateStatus``
     :returns: (uint64) ``punBytesProcessed``
     :returns: (uint64) ``punBytesTotal``
@@ -510,7 +510,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :returns: (int) Return value
     :SteamWorks: `GetNumSupportedGameVersions <https://partner.steamgames.com/doc/api/ISteamUGC#GetNumSupportedGameVersions>`_
@@ -519,7 +519,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int previewIndex:
     :param int? cchURLSize: size of the buffer to allocate for ``pchURLOrVideoID``. If ``nil`` then the buffer will be ``NULL``.
@@ -540,7 +540,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int cMaxEntries:
     :returns: (bool) Return value
@@ -555,7 +555,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int cMaxEntries:
     :returns: (int) Return value
@@ -570,7 +570,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int keyValueTagIndex:
     :param int? cchKeySize: size of the buffer to allocate for ``pchKey``. If ``nil`` then the buffer will be ``NULL``.
@@ -589,7 +589,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int? cchMetadatasize: size of the buffer to allocate for ``pchMetadata``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -604,7 +604,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :returns: (int) Return value
     :SteamWorks: `GetQueryUGCNumAdditionalPreviews <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCNumAdditionalPreviews>`_
@@ -613,7 +613,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :returns: (int) Return value
     :SteamWorks: `GetQueryUGCNumKeyValueTags <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCNumKeyValueTags>`_
@@ -622,7 +622,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :returns: (int) Return value
     :SteamWorks: `GetQueryUGCNumTags <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCNumTags>`_
@@ -631,7 +631,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int? cchURLSize: size of the buffer to allocate for ``pchURL``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -653,7 +653,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :returns: (bool) Return value
     :returns: (:ref:`SteamUGCDetails_t <struct-SteamUGCDetails_t>`) ``pDetails``
@@ -671,9 +671,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
-    :param int eStatType:
+    :param int eStatType: ``EItemStatistic``
     :returns: (bool) Return value
     :returns: (uint64) ``pStatValue``
     :SteamWorks: `GetQueryUGCStatistic <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCStatistic>`_
@@ -686,7 +686,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int indexTag:
     :param int? cchValueSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
@@ -702,7 +702,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int indexTag:
     :param int? cchValueSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
@@ -740,7 +740,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int index:
     :param int versionIndex:
     :param int? cchGameBranchSize: size of the buffer to allocate for the output arrays ``pchGameBranchMin``, ``pchGameBranchMax``. If ``nil`` then the buffer will be ``NULL``.
@@ -771,7 +771,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`GetUserItemVoteResult_t <UGC.OnGetUserItemVoteResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetUserItemVote <https://partner.steamgames.com/doc/api/ISteamUGC#GetUserItemVote>`_
@@ -797,7 +797,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :returns: (bool) Return value
     :SteamWorks: `ReleaseQueryUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#ReleaseQueryUGCRequest>`_
 
@@ -809,7 +809,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :returns: (bool) Return value
     :SteamWorks: `RemoveAllItemKeyValueTags <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveAllItemKeyValueTags>`_
 
@@ -817,8 +817,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
-    :param int nAppID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
+    :param int nAppID: ``AppId_t``
     :param function callback: CallResult callback receiving struct :func:`RemoveAppDependencyResult_t <UGC.OnRemoveAppDependencyResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RemoveAppDependency <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveAppDependency>`_
@@ -827,8 +827,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param int descid:
+    :param uint64 handle: ``UGCUpdateHandle_t``
+    :param int descid: ``EUGCContentDescriptorID``
     :returns: (bool) Return value
     :SteamWorks: `RemoveContentDescriptor <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveContentDescriptor>`_
 
@@ -836,8 +836,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nParentPublishedFileID:
-    :param uint64 nChildPublishedFileID:
+    :param uint64 nParentPublishedFileID: ``PublishedFileId_t``
+    :param uint64 nChildPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`RemoveUGCDependencyResult_t <UGC.OnRemoveUGCDependencyResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RemoveDependency <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveDependency>`_
@@ -846,8 +846,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppId:
-    :param uint64 nPublishedFileID:
+    :param int nAppId: ``AppId_t``
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`UserFavoriteItemsListChanged_t <UGC.OnUserFavoriteItemsListChanged>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RemoveItemFromFavorites <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveItemFromFavorites>`_
@@ -864,7 +864,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchKey:
     :returns: (bool) Return value
     :SteamWorks: `RemoveItemKeyValueTags <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveItemKeyValueTags>`_
@@ -873,7 +873,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param int index:
     :returns: (bool) Return value
     :SteamWorks: `RemoveItemPreview <https://partner.steamgames.com/doc/api/ISteamUGC#RemoveItemPreview>`_
@@ -882,7 +882,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param int unMaxAgeSeconds:
     :param function callback: CallResult callback receiving struct :func:`SteamUGCRequestUGCDetailsResult_t <UGC.OnSteamUGCRequestUGCDetailsResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
@@ -900,7 +900,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param function callback: CallResult callback receiving struct :func:`SteamUGCQueryCompleted_t <UGC.OnSteamUGCQueryCompleted>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `SendQueryUGCRequest <https://partner.steamgames.com/doc/api/ISteamUGC#SendQueryUGCRequest>`_
@@ -924,7 +924,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param bool bAdminQuery:
     :returns: (bool) Return value
     :SteamWorks: `SetAdminQuery <https://partner.steamgames.com/doc/api/ISteamUGC#SetAdminQuery>`_
@@ -933,7 +933,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int unMaxAgeSeconds:
     :returns: (bool) Return value
     :SteamWorks: `SetAllowCachedResponse <https://partner.steamgames.com/doc/api/ISteamUGC#SetAllowCachedResponse>`_
@@ -942,7 +942,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param bool bAllowLegacyUpload:
     :returns: (bool) Return value
     :SteamWorks: `SetAllowLegacyUpload <https://partner.steamgames.com/doc/api/ISteamUGC#SetAllowLegacyUpload>`_
@@ -951,7 +951,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pMatchCloudFileName:
     :returns: (bool) Return value
     :SteamWorks: `SetCloudFileNameFilter <https://partner.steamgames.com/doc/api/ISteamUGC#SetCloudFileNameFilter>`_
@@ -960,7 +960,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pszContentFolder:
     :returns: (bool) Return value
     :SteamWorks: `SetItemContent <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemContent>`_
@@ -973,7 +973,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchDescription:
     :returns: (bool) Return value
     :SteamWorks: `SetItemDescription <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemDescription>`_
@@ -986,7 +986,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchMetaData:
     :returns: (bool) Return value
     :SteamWorks: `SetItemMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemMetadata>`_
@@ -1001,7 +1001,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pszPreviewFile:
     :returns: (bool) Return value
     :SteamWorks: `SetItemPreview <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemPreview>`_
@@ -1014,7 +1014,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 updateHandle:
+    :param uint64 updateHandle: ``UGCUpdateHandle_t``
     :param pTags: (:ref:`SteamParamStringArray_t <struct-SteamParamStringArray_t>`)
     :param bool bAllowAdminTags:
     :returns: (bool) Return value
@@ -1030,7 +1030,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchTitle:
     :returns: (bool) Return value
     :SteamWorks: `SetItemTitle <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemTitle>`_
@@ -1043,7 +1043,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchLanguage:
     :returns: (bool) Return value
     :SteamWorks: `SetItemUpdateLanguage <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemUpdateLanguage>`_
@@ -1058,8 +1058,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param int eVisibility:
+    :param uint64 handle: ``UGCUpdateHandle_t``
+    :param int eVisibility: ``ERemoteStoragePublishedFileVisibility``
     :returns: (bool) Return value
     :SteamWorks: `SetItemVisibility <https://partner.steamgames.com/doc/api/ISteamUGC#SetItemVisibility>`_
 
@@ -1083,7 +1083,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pchLanguage:
     :returns: (bool) Return value
     :SteamWorks: `SetLanguage <https://partner.steamgames.com/doc/api/ISteamUGC#SetLanguage>`_
@@ -1092,7 +1092,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bMatchAnyTag:
     :returns: (bool) Return value
     :SteamWorks: `SetMatchAnyTag <https://partner.steamgames.com/doc/api/ISteamUGC#SetMatchAnyTag>`_
@@ -1101,7 +1101,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int unDays:
     :returns: (bool) Return value
     :SteamWorks: `SetRankedByTrendDays <https://partner.steamgames.com/doc/api/ISteamUGC#SetRankedByTrendDays>`_
@@ -1117,7 +1117,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pszGameBranchMin:
     :param str? pszGameBranchMax:
     :returns: (bool) Return value
@@ -1127,7 +1127,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnAdditionalPreviews:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnAdditionalPreviews <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnAdditionalPreviews>`_
@@ -1136,7 +1136,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnChildren:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnChildren <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnChildren>`_
@@ -1145,7 +1145,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnKeyValueTags:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnKeyValueTags <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnKeyValueTags>`_
@@ -1169,7 +1169,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnLongDescription:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnLongDescription <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnLongDescription>`_
@@ -1178,7 +1178,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnMetadata:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnMetadata <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnMetadata>`_
@@ -1199,7 +1199,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnOnlyIDs:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnOnlyIDs <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnOnlyIDs>`_
@@ -1208,7 +1208,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param int unDays:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnPlaytimeStats <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnPlaytimeStats>`_
@@ -1217,7 +1217,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param bool bReturnTotalOnly:
     :returns: (bool) Return value
     :SteamWorks: `SetReturnTotalOnly <https://partner.steamgames.com/doc/api/ISteamUGC#SetReturnTotalOnly>`_
@@ -1226,7 +1226,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCQueryHandle_t``
     :param str? pSearchText:
     :returns: (bool) Return value
     :SteamWorks: `SetSearchText <https://partner.steamgames.com/doc/api/ISteamUGC#SetSearchText>`_
@@ -1250,9 +1250,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param int rtStart:
-    :param int rtEnd:
+    :param uint64 handle: ``UGCQueryHandle_t``
+    :param int rtStart: ``RTime32``
+    :param int rtEnd: ``RTime32``
     :returns: (bool) Return value
     :SteamWorks: `SetTimeCreatedDateRange <https://partner.steamgames.com/doc/api/ISteamUGC#SetTimeCreatedDateRange>`_
 
@@ -1260,9 +1260,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
-    :param int rtStart:
-    :param int rtEnd:
+    :param uint64 handle: ``UGCQueryHandle_t``
+    :param int rtStart: ``RTime32``
+    :param int rtEnd: ``RTime32``
     :returns: (bool) Return value
     :SteamWorks: `SetTimeUpdatedDateRange <https://partner.steamgames.com/doc/api/ISteamUGC#SetTimeUpdatedDateRange>`_
 
@@ -1270,7 +1270,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param bool bVoteUp:
     :param function callback: CallResult callback receiving struct :func:`SetUserItemVoteResult_t <UGC.OnSetUserItemVoteResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
@@ -1295,8 +1295,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nConsumerAppId:
-    :param uint64 nPublishedFileID:
+    :param int nConsumerAppId: ``AppId_t``
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :returns: (uint64) ``UGCUpdateHandle_t``
     :SteamWorks: `StartItemUpdate <https://partner.steamgames.com/doc/api/ISteamUGC#StartItemUpdate>`_
 
@@ -1362,7 +1362,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param str? pchChangeNote:
     :param function callback: CallResult callback receiving struct :func:`SubmitItemUpdateResult_t <UGC.OnSubmitItemUpdateResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
@@ -1376,7 +1376,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageSubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageSubscribePublishedFileResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `SubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#SubscribeItem>`_
@@ -1409,7 +1409,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 nPublishedFileID:
+    :param uint64 nPublishedFileID: ``PublishedFileId_t``
     :param function callback: CallResult callback receiving struct :func:`RemoteStorageUnsubscribePublishedFileResult_t <RemoteStorage.OnRemoteStorageUnsubscribePublishedFileResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `UnsubscribeItem <https://partner.steamgames.com/doc/api/ISteamUGC#UnsubscribeItem>`_
@@ -1426,7 +1426,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param int index:
     :param str? pszPreviewFile:
     :returns: (bool) Return value
@@ -1436,7 +1436,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle:
+    :param uint64 handle: ``UGCUpdateHandle_t``
     :param int index:
     :param str? pszVideoID:
     :returns: (bool) Return value

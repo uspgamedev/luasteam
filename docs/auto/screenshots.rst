@@ -50,7 +50,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eType:
+    :param int eType: ``EVRScreenshotType``
     :param str? pchFilename:
     :param str? pchVRFilename:
     :returns: (int) ``ScreenshotHandle``
@@ -79,7 +79,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot:
+    :param int hScreenshot: ``ScreenshotHandle``
     :param str? pchLocation:
     :returns: (bool) Return value
     :SteamWorks: `SetLocation <https://partner.steamgames.com/doc/api/ISteamScreenshots#SetLocation>`_
@@ -92,8 +92,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot:
-    :param uint64 unPublishedFileID:
+    :param int hScreenshot: ``ScreenshotHandle``
+    :param uint64 unPublishedFileID: ``PublishedFileId_t``
     :returns: (bool) Return value
     :SteamWorks: `TagPublishedFile <https://partner.steamgames.com/doc/api/ISteamScreenshots#TagPublishedFile>`_
 
@@ -101,7 +101,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot:
+    :param int hScreenshot: ``ScreenshotHandle``
     :param uint64 steamID:
     :returns: (bool) Return value
     :SteamWorks: `TagUser <https://partner.steamgames.com/doc/api/ISteamScreenshots#TagUser>`_

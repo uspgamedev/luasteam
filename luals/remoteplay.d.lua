@@ -11,19 +11,19 @@ function RemotePlay.GetSessionCount() end
 ---@return integer -- RemotePlaySessionID_t
 function RemotePlay.GetSessionID(iSessionIndex) end
 
----@param unSessionID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@return uint64
 function RemotePlay.GetSessionSteamID(unSessionID) end
 
----@param unSessionID integer
----@return string -- const char *
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@return string
 function RemotePlay.GetSessionClientName(unSessionID) end
 
----@param unSessionID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@return integer -- ESteamDeviceFormFactor
 function RemotePlay.GetSessionClientFormFactor(unSessionID) end
 
----@param unSessionID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@return boolean
 ---@return integer -- Value of: pnResolutionX
 ---@return integer -- Value of: pnResolutionY
@@ -46,11 +46,11 @@ function RemotePlay.DisableRemotePlayTogetherDirectInput() end
 ---@return RemotePlayInput_t[] -- Value of: pInput
 function RemotePlay.GetInput(unMaxEvents) end
 
----@param unSessionID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@param bVisible boolean
 function RemotePlay.SetMouseVisibility(unSessionID, bVisible) end
 
----@param unSessionID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@param flNormalizedX number
 ---@param flNormalizedY number
 function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) end
@@ -64,8 +64,8 @@ function RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY) 
 ---@return integer -- RemotePlayCursorID_t
 function RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch) end
 
----@param unSessionID integer
----@param unCursorID integer
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@param unCursorID integer -- RemotePlayCursorID_t
 function RemotePlay.SetMouseCursor(unSessionID, unCursorID) end
 
 Steam.RemotePlay = RemotePlay

@@ -83,11 +83,11 @@ function User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 ---@param steamID uint64
 function User.EndAuthSession(steamID) end
 
----@param hAuthTicket integer
+---@param hAuthTicket integer -- HAuthTicket
 function User.CancelAuthTicket(hAuthTicket) end
 
 ---@param steamID uint64
----@param appID integer
+---@param appID integer -- AppId_t
 ---@return integer -- EUserHasLicenseForAppResult
 function User.UserHasLicenseForApp(steamID, appID) end
 
@@ -144,7 +144,7 @@ function User.GetMarketEligibility(callback) end
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function User.GetDurationControl(callback) end
 
----@param eNewState integer
+---@param eNewState integer -- EDurationControlOnlineState
 ---@return boolean
 function User.BSetDurationControlOnlineState(eNewState) end
 
