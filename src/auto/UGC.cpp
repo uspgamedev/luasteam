@@ -901,15 +901,20 @@ static int luasteam_UGC_GetQueryUGCMetadata_gs(lua_State *L) { return luasteam_U
 // In C++:
 // bool GetQueryUGCChildren(UGCQueryHandle_t handle, uint32 index, PublishedFileId_t * pvecPublishedFileID, uint32 cMaxEntries);
 // In Lua:
-// (bool, pvecPublishedFileID: uint64) UGC.GetQueryUGCChildren(handle: uint64, index: int, cMaxEntries: int)
+// (bool, pvecPublishedFileID: uint64[]) UGC.GetQueryUGCChildren(handle: uint64, index: int, cMaxEntries: int)
 static int luasteam_UGC_GetQueryUGCChildren(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	PublishedFileId_t pvecPublishedFileID;
-	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 3));
-	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCChildren(iface, handle, index, &pvecPublishedFileID, cMaxEntries);
+	uint32 cMaxEntries = lua_isnil(L, 3) ? 0 : (uint32)luaL_checkint(L, 3);
+	std::vector<PublishedFileId_t> pvecPublishedFileID(cMaxEntries);
+	bool __ret = SteamAPI_ISteamUGC_GetQueryUGCChildren(iface, handle, index, lua_isnil(L, 3) ? nullptr : pvecPublishedFileID.data(), cMaxEntries);
 	lua_pushboolean(L, __ret);
-	luasteam::pushuint64(L, pvecPublishedFileID);
+	lua_createtable(L, cMaxEntries, 0);
+	for(decltype(cMaxEntries) i = 0; i < cMaxEntries; i++) {
+		luasteam::pushuint64(L, pvecPublishedFileID[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 static int luasteam_UGC_GetQueryUGCChildren_user(lua_State *L) { return luasteam_UGC_GetQueryUGCChildren(L, SteamUGC()); }
@@ -1041,15 +1046,20 @@ static int luasteam_UGC_GetSupportedGameVersionData_gs(lua_State *L) { return lu
 // In C++:
 // uint32 GetQueryUGCContentDescriptors(UGCQueryHandle_t handle, uint32 index, EUGCContentDescriptorID * pvecDescriptors, uint32 cMaxEntries);
 // In Lua:
-// (int, pvecDescriptors: int) UGC.GetQueryUGCContentDescriptors(handle: uint64, index: int, cMaxEntries: int)
+// (int, pvecDescriptors: int[]) UGC.GetQueryUGCContentDescriptors(handle: uint64, index: int, cMaxEntries: int)
 static int luasteam_UGC_GetQueryUGCContentDescriptors(lua_State *L, ISteamUGC *iface) {
 	UGCQueryHandle_t handle = luasteam::checkuint64(L, 1);
 	uint32 index = static_cast<uint32>(luaL_checkint(L, 2));
-	EUGCContentDescriptorID pvecDescriptors;
-	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 3));
-	uint32 __ret = SteamAPI_ISteamUGC_GetQueryUGCContentDescriptors(iface, handle, index, &pvecDescriptors, cMaxEntries);
+	uint32 cMaxEntries = lua_isnil(L, 3) ? 0 : (uint32)luaL_checkint(L, 3);
+	std::vector<EUGCContentDescriptorID> pvecDescriptors(cMaxEntries);
+	uint32 __ret = SteamAPI_ISteamUGC_GetQueryUGCContentDescriptors(iface, handle, index, lua_isnil(L, 3) ? nullptr : pvecDescriptors.data(), cMaxEntries);
 	lua_pushinteger(L, __ret);
-	lua_pushinteger(L, pvecDescriptors);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i = 0; i < __ret; i++) {
+		lua_pushinteger(L, pvecDescriptors[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 static int luasteam_UGC_GetQueryUGCContentDescriptors_user(lua_State *L) { return luasteam_UGC_GetQueryUGCContentDescriptors(L, SteamUGC()); }
@@ -2285,13 +2295,18 @@ static int luasteam_UGC_GetWorkshopEULAStatus_gs(lua_State *L) { return luasteam
 // In C++:
 // uint32 GetUserContentDescriptorPreferences(EUGCContentDescriptorID * pvecDescriptors, uint32 cMaxEntries);
 // In Lua:
-// (int, pvecDescriptors: int) UGC.GetUserContentDescriptorPreferences(cMaxEntries: int)
+// (int, pvecDescriptors: int[]) UGC.GetUserContentDescriptorPreferences(cMaxEntries: int)
 static int luasteam_UGC_GetUserContentDescriptorPreferences(lua_State *L, ISteamUGC *iface) {
-	EUGCContentDescriptorID pvecDescriptors;
-	uint32 cMaxEntries = static_cast<uint32>(luaL_checkint(L, 1));
-	uint32 __ret = SteamAPI_ISteamUGC_GetUserContentDescriptorPreferences(iface, &pvecDescriptors, cMaxEntries);
+	uint32 cMaxEntries = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
+	std::vector<EUGCContentDescriptorID> pvecDescriptors(cMaxEntries);
+	uint32 __ret = SteamAPI_ISteamUGC_GetUserContentDescriptorPreferences(iface, lua_isnil(L, 1) ? nullptr : pvecDescriptors.data(), cMaxEntries);
 	lua_pushinteger(L, __ret);
-	lua_pushinteger(L, pvecDescriptors);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i = 0; i < __ret; i++) {
+		lua_pushinteger(L, pvecDescriptors[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
 	return 2;
 }
 static int luasteam_UGC_GetUserContentDescriptorPreferences_user(lua_State *L) { return luasteam_UGC_GetUserContentDescriptorPreferences(L, SteamUGC()); }

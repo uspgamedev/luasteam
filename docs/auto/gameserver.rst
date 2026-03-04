@@ -126,7 +126,7 @@ Function Reference
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
-    :returns: (int) ``EBeginAuthSessionResult``
+    :returns: (int - EBeginAuthSessionResult) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
 
 **Example**::
@@ -138,7 +138,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hAuthTicket: ``HAuthTicket``
+    :param int - HAuthTicket hAuthTicket:
     :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#CancelAuthTicket>`_
 
 .. function:: GameServer.ClearAllKeyValues()
@@ -186,7 +186,7 @@ Function Reference
 
     :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSnid: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :returns: (int) ``HAuthTicket``
+    :returns: (int - HAuthTicket) Return value
     :returns: (str) ``pTicket``
     :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamGameServer#GetAuthSessionTicket>`_
@@ -223,7 +223,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) ``SteamIPAddress_t``
+    :returns: (:ref:`SteamIPAddress_t <struct-SteamIPAddress_t>`) Return value
     :SteamWorks: `GetPublicIP <https://partner.steamgames.com/doc/api/ISteamGameServer#GetPublicIP>`_
 
 **Example**::
@@ -469,8 +469,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int appID: ``AppId_t``
-    :returns: (int) ``EUserHasLicenseForAppResult``
+    :param int - AppId_t appID:
+    :returns: (int - EUserHasLicenseForAppResult) Return value
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
 
 .. function:: GameServer.WasRestartRequested()

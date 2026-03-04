@@ -67,7 +67,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :returns: (int) ``ESteamNetworkingConnectionState``
+    :returns: (int - ESteamNetworkingConnectionState) Return value
     :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) ``pConnectionInfo``
     :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) ``pQuickStatus``
     :SteamWorks: `GetSessionConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#GetSessionConnectionInfo>`_
@@ -111,7 +111,7 @@ Function Reference
     :param int cubData: size of the input array ``pubData``
     :param int nSendFlags:
     :param int nRemoteChannel:
-    :returns: (int) ``EResult``
+    :returns: (int - EResult) Return value
     :SteamWorks: `SendMessageToUser <https://partner.steamgames.com/doc/api/ISteamNetworkingMessages#SendMessageToUser>`_
 
 **Example**::

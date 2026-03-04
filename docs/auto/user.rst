@@ -131,7 +131,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eNewState: ``EDurationControlOnlineState``
+    :param int - EDurationControlOnlineState eNewState:
     :returns: (bool) Return value
     :SteamWorks: `BSetDurationControlOnlineState <https://partner.steamgames.com/doc/api/ISteamUser#BSetDurationControlOnlineState>`_
 
@@ -142,7 +142,7 @@ Function Reference
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
     :param uint64 steamID:
-    :returns: (int) ``EBeginAuthSessionResult``
+    :returns: (int - EBeginAuthSessionResult) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
 
 **Example**::
@@ -157,7 +157,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hAuthTicket: ``HAuthTicket``
+    :param int - HAuthTicket hAuthTicket:
     :SteamWorks: `CancelAuthTicket <https://partner.steamgames.com/doc/api/ISteamUser#CancelAuthTicket>`_
 
 **Example**::
@@ -172,7 +172,7 @@ Function Reference
     :param int cbCompressed: size of the input array ``pCompressed``
     :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :param int nDesiredSampleRate:
-    :returns: (int) ``EVoiceResult``
+    :returns: (int - EVoiceResult) Return value
     :returns: (str) ``pDestBuffer``
     :returns: (int) ``nBytesWritten``
     :SteamWorks: `DecompressVoice <https://partner.steamgames.com/doc/api/ISteamUser#DecompressVoice>`_
@@ -208,7 +208,7 @@ Function Reference
 
     :param int? cbMaxTicket: size of the buffer to allocate for ``pTicket``. If ``nil`` then the buffer will be ``NULL``.
     :param pSteamNetworkingIdentity: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :returns: (int) ``HAuthTicket``
+    :returns: (int - HAuthTicket) Return value
     :returns: (str) ``pTicket``
     :returns: (int) ``pcbTicket``
     :SteamWorks: `GetAuthSessionTicket <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthSessionTicket>`_
@@ -232,14 +232,14 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchIdentity:
-    :returns: (int) ``HAuthTicket``
+    :returns: (int - HAuthTicket) Return value
     :SteamWorks: `GetAuthTicketForWebApi <https://partner.steamgames.com/doc/api/ISteamUser#GetAuthTicketForWebApi>`_
 
 .. function:: User.GetAvailableVoice()
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``EVoiceResult``
+    :returns: (int - EVoiceResult) Return value
     :returns: (int) ``pcbCompressed``
     :SteamWorks: `GetAvailableVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetAvailableVoice>`_
 
@@ -296,7 +296,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``HSteamUser``
+    :returns: (int - HSteamUser) Return value
     :SteamWorks: `GetHSteamUser <https://partner.steamgames.com/doc/api/ISteamUser#GetHSteamUser>`_
 
 .. function:: User.GetMarketEligibility(callback)
@@ -362,7 +362,7 @@ Function Reference
 
     :param bool bWantCompressed:
     :param int? cbDestBufferSize: size of the buffer to allocate for ``pDestBuffer``. If ``nil`` then the buffer will be ``NULL``.
-    :returns: (int) ``EVoiceResult``
+    :returns: (int - EVoiceResult) Return value
     :returns: (str) ``pDestBuffer``
     :returns: (int) ``nBytesWritten``
     :SteamWorks: `GetVoice <https://partner.steamgames.com/doc/api/ISteamUser#GetVoice>`_
@@ -458,8 +458,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int appID: ``AppId_t``
-    :returns: (int) ``EUserHasLicenseForAppResult``
+    :param int - AppId_t appID:
+    :returns: (int - EUserHasLicenseForAppResult) Return value
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
 
 **Example**::

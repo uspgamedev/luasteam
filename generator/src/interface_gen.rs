@@ -1378,6 +1378,9 @@ impl Generator {
                         "SteamAPI_ISteamInput_GetAnalogActionOrigins",
                         "SteamAPI_ISteamInput_GetDigitalActionOrigins",
                         "SteamAPI_ISteamNetworkingUtils_GetPOPList",
+                        "SteamAPI_ISteamUGC_GetQueryUGCContentDescriptors",
+                        // This is not in the official docs, but I assumed this from the return value
+                        "SteamAPI_ISteamUGC_GetUserContentDescriptorPreferences",
                     ]
                     .contains(&method.methodname_flat.as_str())
                     {
@@ -1398,6 +1401,7 @@ impl Generator {
                             "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
                             "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
                             "SteamAPI_ISteamInventory_GetItemsWithPrices",
+                            "SteamAPI_ISteamUGC_GetQueryUGCChildren",
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {

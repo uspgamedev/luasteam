@@ -62,8 +62,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
-    :returns: (int) ``EResult``
+    :param int - HSteamNetConnection hConn:
+    :returns: (int - EResult) Return value
     :SteamWorks: `AcceptConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#AcceptConnection>`_
 
 **Example**::
@@ -85,7 +85,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPeer: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hPeer:
     :param int nReason:
     :param str? pszDebug:
     :param bool bEnableLinger:
@@ -100,7 +100,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket: ``HSteamListenSocket``
+    :param int - HSteamListenSocket hSocket:
     :returns: (bool) Return value
     :SteamWorks: `CloseListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CloseListenSocket>`_
 
@@ -112,11 +112,11 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hConn:
     :param int nNumLanes: size of the input arrays ``pLanePriorities`` and ``pLaneWeights``
     :param int[]? pLanePriorities:
     :param int[]? pLaneWeights:
-    :returns: (int) ``EResult``
+    :returns: (int - EResult) Return value
     :SteamWorks: `ConfigureConnectionLanes <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConfigureConnectionLanes>`_
 
 .. function:: NetworkingSockets.ConnectByIPAddress(address, nOptions, pOptions)
@@ -126,7 +126,7 @@ Function Reference
     :param address: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamNetConnection``
+    :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
 **Example**::
@@ -143,7 +143,7 @@ Function Reference
     :param int nRemoteVirtualPort:
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamNetConnection``
+    :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectP2P>`_
 
 **Example**::
@@ -161,7 +161,7 @@ Function Reference
     :param int nRemoteVirtualPort:
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamNetConnection``
+    :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectToHostedDedicatedServer <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectToHostedDedicatedServer>`_
 
 .. function:: NetworkingSockets.CreateHostedDedicatedServerListenSocket(nLocalVirtualPort, nOptions, pOptions)
@@ -171,7 +171,7 @@ Function Reference
     :param int nLocalVirtualPort:
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamListenSocket``
+    :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateHostedDedicatedServerListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateHostedDedicatedServerListenSocket>`_
 
 .. function:: NetworkingSockets.CreateListenSocketIP(localAddress, nOptions, pOptions)
@@ -181,7 +181,7 @@ Function Reference
     :param localAddress: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamListenSocket``
+    :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketIP>`_
 
 **Example**::
@@ -198,7 +198,7 @@ Function Reference
     :param int nLocalVirtualPort:
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamListenSocket``
+    :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
 **Example**::
@@ -213,14 +213,14 @@ Function Reference
     :param int idxFakePort:
     :param int nOptions:
     :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
-    :returns: (int) ``HSteamListenSocket``
+    :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketP2PFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2PFakeIP>`_
 
 .. function:: NetworkingSockets.CreatePollGroup()
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``HSteamNetPollGroup``
+    :returns: (int - HSteamNetPollGroup) Return value
     :SteamWorks: `CreatePollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreatePollGroup>`_
 
 **Example**::
@@ -250,7 +250,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPollGroup: ``HSteamNetPollGroup``
+    :param int - HSteamNetPollGroup hPollGroup:
     :returns: (bool) Return value
     :SteamWorks: `DestroyPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#DestroyPollGroup>`_
 
@@ -262,8 +262,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
-    :returns: (int) ``EResult``
+    :param int - HSteamNetConnection hConn:
+    :returns: (int - EResult) Return value
     :SteamWorks: `FlushMessagesOnConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#FlushMessagesOnConnection>`_
 
 **Example**::
@@ -274,7 +274,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``ESteamNetworkingAvailability``
+    :returns: (int - ESteamNetworkingAvailability) Return value
     :returns: (:ref:`SteamNetAuthenticationStatus_t <struct-SteamNetAuthenticationStatus_t>`) ``pDetails``
     :SteamWorks: `GetAuthenticationStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetAuthenticationStatus>`_
 
@@ -286,7 +286,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hConn:
     :returns: (bool) Return value
     :returns: (:ref:`SteamNetConnectionInfo_t <struct-SteamNetConnectionInfo_t>`) ``pInfo``
     :SteamWorks: `GetConnectionInfo <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionInfo>`_
@@ -306,7 +306,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPeer: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hPeer:
     :param int? nMaxLen: size of the buffer to allocate for ``pszName``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pszName``
@@ -320,9 +320,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hConn:
     :param int nLanes:
-    :returns: (int) ``EResult``
+    :returns: (int - EResult) Return value
     :returns: (:ref:`SteamNetConnectionRealTimeStatus_t <struct-SteamNetConnectionRealTimeStatus_t>`) ``pStatus``
     :returns: (:ref:`SteamNetConnectionRealTimeLaneStatus_t <struct-SteamNetConnectionRealTimeLaneStatus_t>`) ``pLanes``
     :SteamWorks: `GetConnectionRealTimeStatus <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionRealTimeStatus>`_
@@ -336,7 +336,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPeer: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hPeer:
     :returns: (uint64) Return value
     :SteamWorks: `GetConnectionUserData <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetConnectionUserData>`_
 
@@ -348,7 +348,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hConn:
     :param int? cbBuf: size of the buffer to allocate for ``pszBuf``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
     :returns: (str) ``pszBuf``
@@ -374,7 +374,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``SteamNetworkingPOPID``
+    :returns: (int - SteamNetworkingPOPID) Return value
     :SteamWorks: `GetHostedDedicatedServerPOPID <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetHostedDedicatedServerPOPID>`_
 
 .. function:: NetworkingSockets.GetHostedDedicatedServerPort()
@@ -407,7 +407,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hSocket: ``HSteamListenSocket``
+    :param int - HSteamListenSocket hSocket:
     :returns: (bool) Return value
     :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``address``
     :SteamWorks: `GetListenSocketAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetListenSocketAddress>`_
@@ -420,8 +420,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
-    :returns: (int) ``EResult``
+    :param int - HSteamNetConnection hConn:
+    :returns: (int - EResult) Return value
     :returns: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`) ``pOutAddr``
     :SteamWorks: `GetRemoteFakeIPForConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#GetRemoteFakeIPForConnection>`_
 
@@ -433,7 +433,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``ESteamNetworkingAvailability``
+    :returns: (int - ESteamNetworkingAvailability) Return value
     :SteamWorks: `InitAuthentication <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#InitAuthentication>`_
 
 **Example**::
@@ -508,11 +508,11 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hConn:
     :param str? pData:
     :param int cbData: size of the input array ``pData``
     :param int nSendFlags:
-    :returns: (int) ``EResult``
+    :returns: (int - EResult) Return value
     :returns: (uint64) ``pOutMessageNumber``
     :SteamWorks: `SendMessageToConnection <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessageToConnection>`_
 
@@ -559,7 +559,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPeer: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hPeer:
     :param str? pszName:
     :SteamWorks: `SetConnectionName <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionName>`_
 
@@ -571,8 +571,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hConn: ``HSteamNetConnection``
-    :param int hPollGroup: ``HSteamNetPollGroup``
+    :param int - HSteamNetConnection hConn:
+    :param int - HSteamNetPollGroup hPollGroup:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionPollGroup <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionPollGroup>`_
 
@@ -584,7 +584,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hPeer: ``HSteamNetConnection``
+    :param int - HSteamNetConnection hPeer:
     :param uint64 nUserData:
     :returns: (bool) Return value
     :SteamWorks: `SetConnectionUserData <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SetConnectionUserData>`_

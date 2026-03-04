@@ -103,7 +103,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eContext: ``ETextFilteringContext``
+    :param int - ETextFilteringContext eContext:
     :param uint64 sourceSteamID:
     :param str? pchInputMessage:
     :param int? nByteSizeOutFilteredText: size of the buffer to allocate for ``pchOutFilteredText``. If ``nil`` then the buffer will be ``NULL``.
@@ -127,7 +127,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 hSteamAPICall:
-    :returns: (int) ``ESteamAPICallFailure``
+    :returns: (int - ESteamAPICallFailure) Return value
     :SteamWorks: `GetAPICallFailureReason <https://partner.steamgames.com/doc/api/ISteamUtils#GetAPICallFailureReason>`_
 
 .. function:: Utils.GetAPICallResult(hSteamAPICall, cubCallback, iCallbackExpected)
@@ -162,7 +162,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``EUniverse``
+    :returns: (int - EUniverse) Return value
     :SteamWorks: `GetConnectedUniverse <https://partner.steamgames.com/doc/api/ISteamUtils#GetConnectedUniverse>`_
 
 .. function:: Utils.GetCurrentBatteryPower()
@@ -222,8 +222,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eProtocol: ``ESteamIPv6ConnectivityProtocol``
-    :returns: (int) ``ESteamIPv6ConnectivityState``
+    :param int - ESteamIPv6ConnectivityProtocol eProtocol:
+    :returns: (int - ESteamIPv6ConnectivityState) Return value
     :SteamWorks: `GetIPv6ConnectivityState <https://partner.steamgames.com/doc/api/ISteamUtils#GetIPv6ConnectivityState>`_
 
 .. function:: Utils.GetImageRGBA(iImage, nDestBufferSize)
@@ -420,7 +420,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eNotificationPosition: ``ENotificationPosition``
+    :param int - ENotificationPosition eNotificationPosition:
     :SteamWorks: `SetOverlayNotificationPosition <https://partner.steamgames.com/doc/api/ISteamUtils#SetOverlayNotificationPosition>`_
 
 **Example**::
@@ -438,7 +438,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eKeyboardMode: ``EFloatingGamepadTextInputMode``
+    :param int - EFloatingGamepadTextInputMode eKeyboardMode:
     :param int nTextFieldXPosition:
     :param int nTextFieldYPosition:
     :param int nTextFieldWidth:
@@ -456,8 +456,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eInputMode: ``EGamepadTextInputMode``
-    :param int eLineInputMode: ``EGamepadTextInputLineMode``
+    :param int - EGamepadTextInputMode eInputMode:
+    :param int - EGamepadTextInputLineMode eLineInputMode:
     :param str? pchDescription:
     :param int unCharMax:
     :param str? pchExistingText:

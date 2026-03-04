@@ -343,11 +343,12 @@ impl DocGenerator {
                 };
                 doc.push_str(&format!("    :param function {}: CallResult callback receiving struct {} and a boolean\n", param.name, struct_ref));
             } else {
-                let type_str = if param.is_optional {
-                    format!("{}?", param.ltype.to_rst_link(&self.structs))
-                } else {
-                    param.ltype.to_rst_link(&self.structs)
-                };
+                let type_str = Self::rst_type_with_cpp(
+                    &param.ltype,
+                    param.is_optional,
+                    param.cpp_type_name.as_deref(),
+                    &self.structs,
+                );
                 let desc = if !param_desc.is_empty() {
                     param_desc.to_string()
                 } else if let Some((array_names, is_output)) = &param.size_of {
@@ -386,35 +387,24 @@ impl DocGenerator {
                 } else {
                     String::new()
                 };
-                // If the parameter has a more specific C++ type, append it unless the desc
-                // already provides context (size-of descriptions are already specific enough).
-                let desc = if desc.is_empty() {
-                    if let Some(cpp_name) = &param.cpp_type_name {
-                        format!("``{}``", cpp_name)
-                    } else {
-                        String::new()
-                    }
-                } else {
-                    desc
-                };
                 doc.push_str(&Self::format_param_field(&type_str, &param.name, &desc));
             }
         }
 
         // Return values from signature
         if let Some(ret_type) = &signature.return_type {
+            let ret_type_str = Self::rst_type_with_cpp(
+                ret_type,
+                false,
+                signature.return_cpp_type.as_deref(),
+                &self.structs,
+            );
             let ret_desc = if signature.returns_steam_api_call {
                 "``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.".to_string()
-            } else if let Some(cpp_name) = &signature.return_cpp_type {
-                format!("``{}``", cpp_name)
             } else {
                 "Return value".to_string()
             };
-            doc.push_str(&format!(
-                "    :returns: ({}) {}\n",
-                ret_type.to_rst_link(&self.structs),
-                ret_desc
-            ));
+            doc.push_str(&format!("    :returns: ({}) {}\n", ret_type_str, ret_desc));
         }
 
         // Output parameters become additional return values
@@ -732,6 +722,35 @@ impl DocGenerator {
         doc
     }
 
+    /// Build the RST type annotation string, optionally appending the original C++ type name.
+    /// Only annotates scalar types (int, uint64, etc.) — struct/array types already encode identity.
+    fn rst_type_with_cpp(
+        ltype: &LType,
+        is_optional: bool,
+        cpp_type: Option<&str>,
+        structs: &[crate::schema::Struct],
+    ) -> String {
+        let base = if is_optional {
+            format!("{}?", ltype.to_rst_link(structs))
+        } else {
+            ltype.to_rst_link(structs)
+        };
+        // Only append C++ type for simple scalar types where it adds semantic meaning.
+        let effective_cpp = match ltype {
+            LType::Integer
+            | LType::Uint64
+            | LType::Float
+            | LType::Boolean
+            | LType::String
+            | LType::Char => cpp_type,
+            _ => None,
+        };
+        match effective_cpp {
+            Some(name) => format!("{} - {}", base, name),
+            None => base,
+        }
+    }
+
     /// Emit a `:param` RST field safely. When `type_str` contains RST role markup (e.g. `:ref:`)
     /// it cannot be placed before the parameter name in the Sphinx field syntax because that
     /// breaks the field list parser. In that case the type is placed in the description instead.
@@ -860,17 +879,22 @@ impl DocGenerator {
                     doc.push_str("    🤖 **Auto-generated binding**\n\n");
 
                     for param in &sig.params {
-                        doc.push_str(&format!(
-                            "    :param {} {}:\n",
-                            param.ltype.to_rst_link(&self.structs),
-                            param.name
-                        ));
+                        let type_str = Self::rst_type_with_cpp(
+                            &param.ltype,
+                            param.is_optional,
+                            param.cpp_type_name.as_deref(),
+                            &self.structs,
+                        );
+                        doc.push_str(&Self::format_param_field(&type_str, &param.name, ""));
                     }
                     if let Some(ret) = &sig.return_type {
-                        doc.push_str(&format!(
-                            "    :returns: ({})\n",
-                            ret.to_rst_link(&self.structs)
-                        ));
+                        let ret_type_str = Self::rst_type_with_cpp(
+                            ret,
+                            false,
+                            sig.return_cpp_type.as_deref(),
+                            &self.structs,
+                        );
+                        doc.push_str(&format!("    :returns: ({})\n", ret_type_str));
                     }
                     doc.push('\n');
                 }

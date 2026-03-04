@@ -70,7 +70,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID: ``AppId_t``
+    :param int - AppId_t nAppID:
     :param int nIP:
     :param int nConnPort:
     :param int nQueryPort:
@@ -90,7 +90,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eLobbyDistanceFilter: ``ELobbyDistanceFilter``
+    :param int - ELobbyDistanceFilter eLobbyDistanceFilter:
     :SteamWorks: `AddRequestLobbyListDistanceFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListDistanceFilter>`_
 
 .. function:: Matchmaking.AddRequestLobbyListFilterSlotsAvailable(nSlotsAvailable)
@@ -114,7 +114,7 @@ Function Reference
 
     :param str? pchKeyToMatch:
     :param int nValueToMatch:
-    :param int eComparisonType: ``ELobbyComparison``
+    :param int - ELobbyComparison eComparisonType:
     :SteamWorks: `AddRequestLobbyListNumericalFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListNumericalFilter>`_
 
 .. function:: Matchmaking.AddRequestLobbyListResultCountFilter(cMaxResults)
@@ -134,7 +134,7 @@ Function Reference
 
     :param str? pchKeyToMatch:
     :param str? pchValueToMatch:
-    :param int eComparisonType: ``ELobbyComparison``
+    :param int - ELobbyComparison eComparisonType:
     :SteamWorks: `AddRequestLobbyListStringFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListStringFilter>`_
 
     **Notes:**
@@ -145,7 +145,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eLobbyType: ``ELobbyType``
+    :param int - ELobbyType eLobbyType:
     :param int cMaxMembers:
     :param function callback: CallResult callback receiving struct :func:`LobbyCreated_t <Matchmaking.OnLobbyCreated>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
@@ -421,7 +421,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID: ``AppId_t``
+    :param int - AppId_t nAppID:
     :param int nIP:
     :param int nConnPort:
     :param int nQueryPort:
@@ -564,7 +564,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDLobby:
-    :param int eLobbyType: ``ELobbyType``
+    :param int - ELobbyType eLobbyType:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyType <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyType>`_
 

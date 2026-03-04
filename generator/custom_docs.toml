@@ -507,7 +507,7 @@ param_descriptions = { unAccountID = "The account ID to query", eListType = "The
 example = """
 local appID = Steam.Utils.GetAppID()
 local myAccountID = Steam.User.GetSteamID()
-local handle = Steam.UGC.CreateQueryUserUGCRequest(myAccountID, 'Published', 'Items', 'CreationOrderDesc', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryUserUGCRequest(myAccountID, Steam.k_EUserUGCList_Published, Steam.k_EUGCMatchingUGCType_Items, Steam.k_EUserUGCListSortOrder_CreationOrderDesc, appID, appID, 1)
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
     if not err and data.m_eResultCode == Steam.k_EResultOK then
         for i = 0, data.m_unNumResultsReturned - 1 do
@@ -521,7 +521,7 @@ end)
 
 [ISteamUGC.CreateItem]
 example = """
-Steam.UGC.CreateItem(Steam.Utils.GetAppID(), 'Community', function(data, err)
+Steam.UGC.CreateItem(Steam.Utils.GetAppID(), Steam.k_EWorkshopFileTypeCommunity, function(data, err)
     if err or data.m_eResult ~= Steam.k_EResultOK then
         print('Failure when creating item')
     else
@@ -572,7 +572,7 @@ print('You are subscribed to ' .. count .. ' workshop items')
 [ISteamUGC.GetSubscribedItems]
 example = """
 local count = Steam.UGC.GetNumSubscribedItems(false)
-local items = Steam.UGC.GetSubscribedItems(count, false)
+local _, items = Steam.UGC.GetSubscribedItems(count, false)
 for _, item_id in ipairs(items) do
     print('Subscribed item:', tostring(item_id))
 end
@@ -1782,7 +1782,8 @@ end)
 [ISteamUGC.SetItemTags]
 example = """
 local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
-Steam.UGC.SetItemTags(handle, {'rpg', 'adventure', 'fantasy'}, false)
+local tags = Steam.newSteamParamStringArray_t { m_ppStrings = {'rpg', 'adventure', 'fantasy'}, m_nNumStrings = 3 }
+Steam.UGC.SetItemTags(handle, tags, false)
 Steam.UGC.SubmitItemUpdate(handle, 'Updated tags', function(data, err) end)
 """
 
@@ -1796,7 +1797,7 @@ Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
 [ISteamUGC.SetItemVisibility]
 example = """
 local handle = Steam.UGC.StartItemUpdate(appID, publishedFileID)
-Steam.UGC.SetItemVisibility(handle, 'Public')
+Steam.UGC.SetItemVisibility(handle, Steam.k_ERemoteStoragePublishedFileVisibilityPublic)
 Steam.UGC.SubmitItemUpdate(handle, nil, function(data, err) end)
 """
 
@@ -1831,7 +1832,7 @@ notes = ["See :func:`UGC.SendQueryUGCRequest`'s example."]
 
 [ISteamUGC.CreateQueryAllUGCRequestPage]
 example = """
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByVote, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.SetReturnLongDescription(handle, true)
 Steam.UGC.SetReturnMetadata(handle, true)
 -- Then call SendQueryUGCRequest
@@ -1852,21 +1853,21 @@ end)
 
 [ISteamUGC.AddRequiredTag]
 example = """
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByVote, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.AddRequiredTag(handle, 'multiplayer')
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
 """
 
 [ISteamUGC.AddExcludedTag]
 example = """
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByVote, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.AddExcludedTag(handle, 'deprecated')
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
 """
 
 [ISteamUGC.SetSearchText]
 example = """
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByVote, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.SetSearchText(handle, 'dungeon')
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
 """
@@ -1874,14 +1875,14 @@ Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
 [ISteamUGC.SetRankedByTrendDays]
 example = """
 -- Query items trending in the last 7 days
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByTrend', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByTrend, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.SetRankedByTrendDays(handle, 7)
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err) end)
 """
 
 [ISteamUGC.SetReturnMetadata]
 example = """
-local handle = Steam.UGC.CreateQueryAllUGCRequestPage('RankedByVote', 'Items', appID, appID, 1)
+local handle = Steam.UGC.CreateQueryAllUGCRequestPage(Steam.k_EUGCQuery_RankedByVote, Steam.k_EUGCMatchingUGCType_Items, appID, appID, 1)
 Steam.UGC.SetReturnMetadata(handle, true)
 Steam.UGC.SendQueryUGCRequest(handle, function(data, err)
     if not err then

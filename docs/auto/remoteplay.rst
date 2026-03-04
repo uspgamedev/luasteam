@@ -46,7 +46,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
     :returns: (bool) Return value
     :returns: (int) ``pnResolutionX``
     :returns: (int) ``pnResolutionY``
@@ -81,7 +81,7 @@ Function Reference
     :param int nHotY:
     :param str? pBGRA:
     :param int nPitch:
-    :returns: (int) ``RemotePlayCursorID_t``
+    :returns: (int - RemotePlayCursorID_t) Return value
     :SteamWorks: `CreateMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#CreateMouseCursor>`_
 
 .. function:: RemotePlay.DisableRemotePlayTogetherDirectInput()
@@ -115,8 +115,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
-    :returns: (int) ``ESteamDeviceFormFactor``
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (int - ESteamDeviceFormFactor) Return value
     :SteamWorks: `GetSessionClientFormFactor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientFormFactor>`_
 
 **Example**::
@@ -130,7 +130,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
     :returns: (str) Return value
     :SteamWorks: `GetSessionClientName <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionClientName>`_
 
@@ -155,7 +155,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iSessionIndex:
-    :returns: (int) ``RemotePlaySessionID_t``
+    :returns: (int - RemotePlaySessionID_t) Return value
     :SteamWorks: `GetSessionID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionID>`_
 
 **Example**::
@@ -171,7 +171,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
     :returns: (uint64) Return value
     :SteamWorks: `GetSessionSteamID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionSteamID>`_
 
@@ -184,15 +184,15 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
-    :param int unCursorID: ``RemotePlayCursorID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
+    :param int - RemotePlayCursorID_t unCursorID:
     :SteamWorks: `SetMouseCursor <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SetMouseCursor>`_
 
 .. function:: RemotePlay.SetMousePosition(unSessionID, flNormalizedX, flNormalizedY)
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
     :param float flNormalizedX:
     :param float flNormalizedY:
     :SteamWorks: `SetMousePosition <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SetMousePosition>`_
@@ -201,7 +201,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int unSessionID: ``RemotePlaySessionID_t``
+    :param int - RemotePlaySessionID_t unSessionID:
     :param bool bVisible:
     :SteamWorks: `SetMouseVisibility <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SetMouseVisibility>`_
 

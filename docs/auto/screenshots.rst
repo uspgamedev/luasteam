@@ -36,7 +36,7 @@ Function Reference
     :param str? pchThumbnailFilename:
     :param int nWidth:
     :param int nHeight:
-    :returns: (int) ``ScreenshotHandle``
+    :returns: (int - ScreenshotHandle) Return value
     :SteamWorks: `AddScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddScreenshotToLibrary>`_
 
 **Example**::
@@ -50,10 +50,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int eType: ``EVRScreenshotType``
+    :param int - EVRScreenshotType eType:
     :param str? pchFilename:
     :param str? pchVRFilename:
-    :returns: (int) ``ScreenshotHandle``
+    :returns: (int - ScreenshotHandle) Return value
     :SteamWorks: `AddVRScreenshotToLibrary <https://partner.steamgames.com/doc/api/ISteamScreenshots#AddVRScreenshotToLibrary>`_
 
 .. function:: Screenshots.HookScreenshots(bHook)
@@ -79,7 +79,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot: ``ScreenshotHandle``
+    :param int - ScreenshotHandle hScreenshot:
     :param str? pchLocation:
     :returns: (bool) Return value
     :SteamWorks: `SetLocation <https://partner.steamgames.com/doc/api/ISteamScreenshots#SetLocation>`_
@@ -92,8 +92,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot: ``ScreenshotHandle``
-    :param uint64 unPublishedFileID: ``PublishedFileId_t``
+    :param int - ScreenshotHandle hScreenshot:
+    :param uint64 - PublishedFileId_t unPublishedFileID:
     :returns: (bool) Return value
     :SteamWorks: `TagPublishedFile <https://partner.steamgames.com/doc/api/ISteamScreenshots#TagPublishedFile>`_
 
@@ -101,7 +101,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hScreenshot: ``ScreenshotHandle``
+    :param int - ScreenshotHandle hScreenshot:
     :param uint64 steamID:
     :returns: (bool) Return value
     :SteamWorks: `TagUser <https://partner.steamgames.com/doc/api/ISteamScreenshots#TagUser>`_
@@ -125,7 +125,7 @@ Function Reference
     :param int cubRGB: size of the input array ``pubRGB``
     :param int nWidth:
     :param int nHeight:
-    :returns: (int) ``ScreenshotHandle``
+    :returns: (int - ScreenshotHandle) Return value
     :SteamWorks: `WriteScreenshot <https://partner.steamgames.com/doc/api/ISteamScreenshots#WriteScreenshot>`_
 
 **Example**::

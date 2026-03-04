@@ -39,7 +39,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeacon: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeacon:
     :param uint64 steamIDUser:
     :SteamWorks: `CancelReservation <https://partner.steamgames.com/doc/api/ISteamParties#CancelReservation>`_
 
@@ -52,7 +52,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeacon: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeacon:
     :param int unOpenSlots:
     :param function callback: CallResult callback receiving struct :func:`ChangeNumOpenSlotsCallback_t <Parties.OnChangeNumOpenSlotsCallback>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
@@ -74,7 +74,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeacon: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeacon:
     :returns: (bool) Return value
     :SteamWorks: `DestroyBeacon <https://partner.steamgames.com/doc/api/ISteamParties#DestroyBeacon>`_
 
@@ -96,7 +96,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int unIndex:
-    :returns: (uint64) ``PartyBeaconID_t``
+    :returns: (uint64 - PartyBeaconID_t) Return value
     :SteamWorks: `GetBeaconByIndex <https://partner.steamgames.com/doc/api/ISteamParties#GetBeaconByIndex>`_
 
     **Notes:**
@@ -107,7 +107,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeaconID: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeaconID:
     :param int? cchMetadata: size of the buffer to allocate for ``pchMetadata``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (uint64) ``pSteamIDBeaconOwner``
@@ -129,8 +129,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param BeaconLocation: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`) ``SteamPartyBeaconLocation_t``
-    :param int eData: ``ESteamPartyBeaconLocationData``
+    :param BeaconLocation: (:ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`)
+    :param int - ESteamPartyBeaconLocationData eData:
     :param int? cchDataStringOut: size of the buffer to allocate for ``pchDataStringOut``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (str) ``pchDataStringOut``
@@ -182,7 +182,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeaconID: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeaconID:
     :param function callback: CallResult callback receiving struct :func:`JoinPartyCallback_t <Parties.OnJoinPartyCallback>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinParty <https://partner.steamgames.com/doc/api/ISteamParties#JoinParty>`_
@@ -200,7 +200,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 ulBeacon: ``PartyBeaconID_t``
+    :param uint64 - PartyBeaconID_t ulBeacon:
     :param uint64 steamIDUser:
     :SteamWorks: `OnReservationCompleted <https://partner.steamgames.com/doc/api/ISteamParties#OnReservationCompleted>`_
 

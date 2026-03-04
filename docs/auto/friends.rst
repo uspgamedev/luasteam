@@ -157,8 +157,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int nAppID: ``AppId_t``
-    :param int eFlag: ``EOverlayToStoreFlag``
+    :param int - AppId_t nAppID:
+    :param int - EOverlayToStoreFlag eFlag:
     :SteamWorks: `ActivateGameOverlayToStore <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToStore>`_
 
 **Example**::
@@ -182,7 +182,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchURL:
-    :param int eMode: ``EActivateGameOverlayToWebPageMode``
+    :param int - EActivateGameOverlayToWebPageMode eMode:
     :SteamWorks: `ActivateGameOverlayToWebPage <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToWebPage>`_
 
 **Example**::
@@ -194,7 +194,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType: ``ECommunityProfileItemType``
+    :param int - ECommunityProfileItemType itemType:
     :returns: (bool) Return value
     :SteamWorks: `BHasEquippedProfileItem <https://partner.steamgames.com/doc/api/ISteamFriends#BHasEquippedProfileItem>`_
 
@@ -435,7 +435,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) ``AppId_t``
+    :returns: (int - AppId_t) Return value
     :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
 
 **Example**::
@@ -545,7 +545,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) ``EPersonaState``
+    :returns: (int - EPersonaState) Return value
     :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
 
 **Example**::
@@ -560,7 +560,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamIDFriend:
-    :returns: (int) ``EFriendRelationship``
+    :returns: (int - EFriendRelationship) Return value
     :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
 
 **Example**::
@@ -647,7 +647,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iFG:
-    :returns: (int) ``FriendsGroupID_t``
+    :returns: (int - FriendsGroupID_t) Return value
     :SteamWorks: `GetFriendsGroupIDByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupIDByIndex>`_
 
     **Notes:**
@@ -658,7 +658,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID: ``FriendsGroupID_t``
+    :param int - FriendsGroupID_t friendsGroupID:
     :returns: (int) Return value
     :SteamWorks: `GetFriendsGroupMembersCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersCount>`_
 
@@ -666,7 +666,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID: ``FriendsGroupID_t``
+    :param int - FriendsGroupID_t friendsGroupID:
     :param int? nMembersCount: size of the buffer to allocate for ``pOutSteamIDMembers``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (uint64[]) ``pOutSteamIDMembers``
     :SteamWorks: `GetFriendsGroupMembersList <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupMembersList>`_
@@ -679,7 +679,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int friendsGroupID: ``FriendsGroupID_t``
+    :param int - FriendsGroupID_t friendsGroupID:
     :returns: (str) Return value
     :SteamWorks: `GetFriendsGroupName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendsGroupName>`_
 
@@ -735,7 +735,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (int) ``EPersonaState``
+    :returns: (int - EPersonaState) Return value
     :SteamWorks: `GetPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetPersonaState>`_
 
 **Example**::
@@ -765,8 +765,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType: ``ECommunityProfileItemType``
-    :param int prop: ``ECommunityProfileItemProperty``
+    :param int - ECommunityProfileItemType itemType:
+    :param int - ECommunityProfileItemProperty prop:
     :returns: (str) Return value
     :SteamWorks: `GetProfileItemPropertyString <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyString>`_
 
@@ -775,8 +775,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 steamID:
-    :param int itemType: ``ECommunityProfileItemType``
-    :param int prop: ``ECommunityProfileItemProperty``
+    :param int - ECommunityProfileItemType itemType:
+    :param int - ECommunityProfileItemProperty prop:
     :returns: (int) Return value
     :SteamWorks: `GetProfileItemPropertyUint <https://partner.steamgames.com/doc/api/ISteamFriends#GetProfileItemPropertyUint>`_
 

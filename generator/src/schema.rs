@@ -533,6 +533,17 @@ impl SteamApi {
                         "pvecPublishedFileIDs",
                         "unNumPublishedFileIDs",
                     ),
+                    ("GetQueryUGCChildren", "pvecPublishedFileID", "cMaxEntries"),
+                    (
+                        "GetQueryUGCContentDescriptors",
+                        "pvecDescriptors",
+                        "cMaxEntries",
+                    ),
+                    (
+                        "GetUserContentDescriptorPreferences",
+                        "pvecDescriptors",
+                        "cMaxEntries",
+                    ),
                 ],
             ),
             (

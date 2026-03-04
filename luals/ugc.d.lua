@@ -91,9 +91,9 @@ function UGC.GetQueryUGCMetadata(handle, index, cchMetadatasize) end
 
 ---@param handle uint64 -- UGCQueryHandle_t
 ---@param index integer
----@param cMaxEntries integer
+---@param cMaxEntries integer? size of the buffer for pvecPublishedFileID; if nil then the buffer will be NULL
 ---@return boolean
----@return uint64 -- Value of: pvecPublishedFileID
+---@return uint64[] -- Value of: pvecPublishedFileID
 function UGC.GetQueryUGCChildren(handle, index, cMaxEntries) end
 
 ---@param handle uint64 -- UGCQueryHandle_t
@@ -150,9 +150,9 @@ function UGC.GetSupportedGameVersionData(handle, index, versionIndex, cchGameBra
 
 ---@param handle uint64 -- UGCQueryHandle_t
 ---@param index integer
----@param cMaxEntries integer
+---@param cMaxEntries integer? size of the buffer for pvecDescriptors; if nil then the buffer will be NULL
 ---@return integer
----@return integer -- Value of: pvecDescriptors
+---@return integer[] -- Value of: pvecDescriptors
 function UGC.GetQueryUGCContentDescriptors(handle, index, cMaxEntries) end
 
 ---@param handle uint64 -- UGCQueryHandle_t
@@ -532,9 +532,9 @@ function UGC.ShowWorkshopEULA() end
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UGC.GetWorkshopEULAStatus(callback) end
 
----@param cMaxEntries integer
+---@param cMaxEntries integer? size of the buffer for pvecDescriptors; if nil then the buffer will be NULL
 ---@return integer
----@return integer -- Value of: pvecDescriptors
+---@return integer[] -- Value of: pvecDescriptors
 function UGC.GetUserContentDescriptorPreferences(cMaxEntries) end
 
 ---@param pvecPublishedFileIDs uint64[]?

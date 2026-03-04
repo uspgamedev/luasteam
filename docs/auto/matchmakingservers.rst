@@ -44,7 +44,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int hServerQuery: ``HServerQuery``
+    :param int - HServerQuery hServerQuery:
     :SteamWorks: `CancelServerQuery <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#CancelServerQuery>`_
 
 .. function:: MatchmakingServers.GetServerCount(hRequest)
@@ -81,7 +81,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingPingResponse <struct-ISteamMatchmakingPingResponse>`)
-    :returns: (int) ``HServerQuery``
+    :returns: (int - HServerQuery) Return value
     :SteamWorks: `PingServer <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PingServer>`_
 
 **Example**::
@@ -103,7 +103,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingPlayersResponse <struct-ISteamMatchmakingPlayersResponse>`)
-    :returns: (int) ``HServerQuery``
+    :returns: (int - HServerQuery) Return value
     :SteamWorks: `PlayerDetails <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#PlayerDetails>`_
 
 .. function:: MatchmakingServers.RefreshQuery(hRequest)
@@ -141,7 +141,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -152,7 +152,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -176,7 +176,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -187,7 +187,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -213,7 +213,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestLANServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestLANServerList>`_
@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iApp: ``AppId_t``
+    :param int - AppId_t iApp:
     :param ppchFilters: (:ref:`MatchMakingKeyValuePair_t <struct-MatchMakingKeyValuePair_t>`\ [])
     :param int nFilters: size of the input array ``ppchFilters``
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
@@ -236,7 +236,7 @@ Function Reference
     :param int unIP:
     :param int usPort:
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingRulesResponse <struct-ISteamMatchmakingRulesResponse>`)
-    :returns: (int) ``HServerQuery``
+    :returns: (int - HServerQuery) Return value
     :SteamWorks: `ServerRules <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerRules>`_
 
 

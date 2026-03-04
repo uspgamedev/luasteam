@@ -86,7 +86,7 @@ servernetadr_t
 
     🤖 **Auto-generated binding**
 
-    :param int ip:
+    :param int - unsigned int ip:
     :param int usQueryPort:
     :param int usConnectionPort:
 
@@ -181,7 +181,7 @@ gameserveritem_t
 
     🤖 **Auto-generated binding**
 
-    :param str pName:
+    :param str? pName:
 
 .. _struct-SteamPartyBeaconLocation_t:
 
@@ -523,7 +523,7 @@ SteamNetworkingIPAddr
 
     🤖 **Auto-generated binding**
 
-    :param str ipv6:
+    :param str? ipv6:
     :param int nPort:
 
 .. function:: SteamNetworkingIPAddr:SetIPv4(nIP, nPort)
@@ -561,21 +561,21 @@ SteamNetworkingIPAddr
 
     🤖 **Auto-generated binding**
 
-    :param int cbBuf:
+    :param int? cbBuf:
     :param bool bWithPort:
 
 .. function:: SteamNetworkingIPAddr:ParseString(pszStr)
 
     🤖 **Auto-generated binding**
 
-    :param str pszStr:
+    :param str? pszStr:
     :returns: (bool)
 
 .. function:: SteamNetworkingIPAddr:GetFakeIPType()
 
     🤖 **Auto-generated binding**
 
-    :returns: (int)
+    :returns: (int - ESteamNetworkingFakeIPType)
 
 .. function:: SteamNetworkingIPAddr:IsFakeIP()
 
@@ -635,7 +635,7 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param str pszString:
+    :param str? pszString:
     :returns: (bool)
 
 .. function:: SteamNetworkingIdentity:GetXboxPairwiseID()
@@ -660,7 +660,7 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param :ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>` addr:
+    :param addr: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
 
 .. function:: SteamNetworkingIdentity:GetIPAddr()
 
@@ -685,7 +685,7 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :returns: (int)
+    :returns: (int - ESteamNetworkingFakeIPType)
 
 .. function:: SteamNetworkingIdentity:IsFakeIP()
 
@@ -708,7 +708,7 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param str pszString:
+    :param str? pszString:
     :returns: (bool)
 
 .. function:: SteamNetworkingIdentity:GetGenericString()
@@ -721,7 +721,7 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param str data:
+    :param str? data:
     :param int cbLen:
     :returns: (bool)
 
@@ -729,13 +729,13 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param int cbBuf:
+    :param int? cbBuf:
 
 .. function:: SteamNetworkingIdentity:ParseString(pszStr)
 
     🤖 **Auto-generated binding**
 
-    :param str pszStr:
+    :param str? pszStr:
     :returns: (bool)
 
 .. _struct-SteamNetConnectionInfo_t:
@@ -865,29 +865,29 @@ SteamNetworkingConfigValue_t
 
     🤖 **Auto-generated binding**
 
-    :param int eVal:
-    :param int data:
+    :param int - ESteamNetworkingConfigValue eVal:
+    :param int - int32_t data:
 
 .. function:: SteamNetworkingConfigValue_t:SetInt64(eVal, data)
 
     🤖 **Auto-generated binding**
 
-    :param int eVal:
-    :param uint64 data:
+    :param int - ESteamNetworkingConfigValue eVal:
+    :param uint64 - int64_t data:
 
 .. function:: SteamNetworkingConfigValue_t:SetFloat(eVal, data)
 
     🤖 **Auto-generated binding**
 
-    :param int eVal:
+    :param int - ESteamNetworkingConfigValue eVal:
     :param float data:
 
 .. function:: SteamNetworkingConfigValue_t:SetString(eVal, data)
 
     🤖 **Auto-generated binding**
 
-    :param int eVal:
-    :param str data:
+    :param int - ESteamNetworkingConfigValue eVal:
+    :param str? data:
 
 .. _struct-SteamServersConnected_t:
 

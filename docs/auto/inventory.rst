@@ -67,7 +67,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int itemDef: ``SteamItemDef_t``
+    :param int - SteamItemDef_t itemDef:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `AddPromoItem <https://partner.steamgames.com/doc/api/ISteamInventory#AddPromoItem>`_
@@ -102,7 +102,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
+    :param int - SteamInventoryResult_t resultHandle:
     :param uint64 steamIDExpected:
     :returns: (bool) Return value
     :SteamWorks: `CheckResultSteamID <https://partner.steamgames.com/doc/api/ISteamInventory#CheckResultSteamID>`_
@@ -111,7 +111,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 itemConsume: ``SteamItemInstanceID_t``
+    :param uint64 - SteamItemInstanceID_t itemConsume:
     :param int unQuantity:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
@@ -145,7 +145,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
+    :param int - SteamInventoryResult_t resultHandle:
     :SteamWorks: `DestroyResult <https://partner.steamgames.com/doc/api/ISteamInventory#DestroyResult>`_
 
     **Notes:**
@@ -246,7 +246,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iDefinition: ``SteamItemDef_t``
+    :param int - SteamItemDef_t iDefinition:
     :param str? pchPropertyName:
     :param int? punValueBufferSizeOut: size of the buffer to allocate for ``pchValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
@@ -267,7 +267,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int iDefinition: ``SteamItemDef_t``
+    :param int - SteamItemDef_t iDefinition:
     :returns: (bool) Return value
     :returns: (uint64) ``pCurrentPrice``
     :returns: (uint64) ``pBasePrice``
@@ -325,7 +325,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
+    :param int - SteamInventoryResult_t resultHandle:
     :param int unItemIndex:
     :param str? pchPropertyName:
     :param int? punValueBufferSizeOut: size of the buffer to allocate for ``pchValueBuffer``. If ``nil`` then the buffer will be ``NULL``.
@@ -343,7 +343,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
+    :param int - SteamInventoryResult_t resultHandle:
     :param int? punOutItemsArraySize: size of the buffer to allocate for ``pOutItemsArray``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (:ref:`SteamItemDetails_t <struct-SteamItemDetails_t>`\ []) ``pOutItemsArray``
@@ -370,8 +370,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
-    :returns: (int) ``EResult``
+    :param int - SteamInventoryResult_t resultHandle:
+    :returns: (int - EResult) Return value
     :SteamWorks: `GetResultStatus <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultStatus>`_
 
 **Example**::
@@ -385,7 +385,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int resultHandle: ``SteamInventoryResult_t``
+    :param int - SteamInventoryResult_t resultHandle:
     :returns: (int) Return value
     :SteamWorks: `GetResultTimestamp <https://partner.steamgames.com/doc/api/ISteamInventory#GetResultTimestamp>`_
 
@@ -430,8 +430,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
-    :param uint64 nItemID: ``SteamItemInstanceID_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
+    :param uint64 - SteamItemInstanceID_t nItemID:
     :param str? pchPropertyName:
     :returns: (bool) Return value
     :SteamWorks: `RemoveProperty <https://partner.steamgames.com/doc/api/ISteamInventory#RemoveProperty>`_
@@ -477,8 +477,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
-    :param uint64 nItemID: ``SteamItemInstanceID_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
+    :param uint64 - SteamItemInstanceID_t nItemID:
     :param str? pchPropertyName:
     :param bool bValue:
     :returns: (bool) Return value
@@ -492,8 +492,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
-    :param uint64 nItemID: ``SteamItemInstanceID_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
+    :param uint64 - SteamItemInstanceID_t nItemID:
     :param str? pchPropertyName:
     :param float flValue:
     :returns: (bool) Return value
@@ -507,8 +507,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
-    :param uint64 nItemID: ``SteamItemInstanceID_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
+    :param uint64 - SteamItemInstanceID_t nItemID:
     :param str? pchPropertyName:
     :param uint64 nValue:
     :returns: (bool) Return value
@@ -522,8 +522,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
-    :param uint64 nItemID: ``SteamItemInstanceID_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
+    :param uint64 - SteamItemInstanceID_t nItemID:
     :param str? pchPropertyName:
     :param str? pchPropertyValue:
     :returns: (bool) Return value
@@ -556,14 +556,14 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) ``SteamInventoryUpdateHandle_t``
+    :returns: (uint64 - SteamInventoryUpdateHandle_t) Return value
     :SteamWorks: `StartUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#StartUpdateProperties>`_
 
 .. function:: Inventory.SubmitUpdateProperties(handle)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 handle: ``SteamInventoryUpdateHandle_t``
+    :param uint64 - SteamInventoryUpdateHandle_t handle:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `SubmitUpdateProperties <https://partner.steamgames.com/doc/api/ISteamInventory#SubmitUpdateProperties>`_
@@ -595,9 +595,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 itemIdSource: ``SteamItemInstanceID_t``
+    :param uint64 - SteamItemInstanceID_t itemIdSource:
     :param int unQuantity:
-    :param uint64 itemIdDest: ``SteamItemInstanceID_t``
+    :param uint64 - SteamItemInstanceID_t itemIdDest:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `TransferItemQuantity <https://partner.steamgames.com/doc/api/ISteamInventory#TransferItemQuantity>`_
@@ -615,7 +615,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param int dropListDefinition: ``SteamItemDef_t``
+    :param int - SteamItemDef_t dropListDefinition:
     :returns: (bool) Return value
     :returns: (int) ``pResultHandle``
     :SteamWorks: `TriggerItemDrop <https://partner.steamgames.com/doc/api/ISteamInventory#TriggerItemDrop>`_
