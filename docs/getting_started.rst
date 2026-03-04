@@ -149,6 +149,12 @@ Lua numbers cannot safely represent 64-bit integers. Wherever the Steamworks API
 - Compare with ``id1 == id2``
 - Parse from a string with ``Steam.Extra.ParseUint64(str)``
 
+Arithmetic operators (``+``, ``-``, ``*``, ``/``, ``%``) and comparison operators
+(``<``, ``<=``) are supported. Both operands may be uint64 userdata or plain Lua
+numbers; the result is always a plain Lua number (``lua_Number`` / double). This means
+IEEE 754 rules apply: dividing by zero returns ``inf`` or ``-inf``, and
+``0 / 0`` or ``x % 0`` returns ``nan``.
+
 .. code-block:: lua
 
     local myId = Steam.User.GetSteamID()   -- uint64 userdata

@@ -1,4 +1,5 @@
 #include "Common.hpp"
+#include <cmath>
 #include <string>
 
 namespace {
@@ -15,19 +16,19 @@ void my_assert(lua_State *L, int cond, const char *fmt, va_list list) {
     lua_error(L);
 }
 
-// Returns the uint64 value of a stack slot, accepting both uint64 userdata and Lua numbers.
-bool get_uint64_coerce(lua_State *L, int idx, uint64 &out) {
+// Returns the value of a stack slot as a lua_Number, accepting both uint64 userdata and Lua numbers.
+bool get_number_coerce(lua_State *L, int idx, lua_Number &out) {
     if (lua_isuserdata(L, idx)) {
         lua_rawgeti(L, LUA_REGISTRYINDEX, uint64Metatable_ref);
         lua_getmetatable(L, idx);
         bool ok = lua_rawequal(L, -2, -1) != 0;
         lua_pop(L, 2);
         if (ok) {
-            out = *reinterpret_cast<uint64 *>(lua_touserdata(L, idx));
+            out = (lua_Number)*reinterpret_cast<uint64 *>(lua_touserdata(L, idx));
             return true;
         }
     } else if (lua_isnumber(L, idx)) {
-        out = (uint64)lua_tonumber(L, idx);
+        out = lua_tonumber(L, idx);
         return true;
     }
     return false;
@@ -44,62 +45,58 @@ EXTERN int luasteam_uint64ToString(lua_State *L) {
 }
 
 EXTERN int luasteam_ltuint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
     lua_pushboolean(L, a < b);
     return 1;
 }
 
 EXTERN int luasteam_leuint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
     lua_pushboolean(L, a <= b);
     return 1;
 }
 
 EXTERN int luasteam_adduint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
-    luasteam::pushuint64(L, a + b);
+    lua_pushnumber(L, a + b);
     return 1;
 }
 
 EXTERN int luasteam_subuint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
-    luasteam::pushuint64(L, a - b);
+    lua_pushnumber(L, a - b);
     return 1;
 }
 
 EXTERN int luasteam_muluint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
-    luasteam::pushuint64(L, a * b);
+    lua_pushnumber(L, a * b);
     return 1;
 }
 
 EXTERN int luasteam_divuint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
-    if (b == 0)
-        return luaL_error(L, "uint64: division by zero");
-    luasteam::pushuint64(L, a / b);
+    lua_pushnumber(L, a / b);
     return 1;
 }
 
 EXTERN int luasteam_moduint64(lua_State *L) {
-    uint64 a, b;
-    if (!get_uint64_coerce(L, 1, a) || !get_uint64_coerce(L, 2, b))
+    lua_Number a, b;
+    if (!get_number_coerce(L, 1, a) || !get_number_coerce(L, 2, b))
         return luaL_error(L, "uint64: operands must be uint64 or number");
-    if (b == 0)
-        return luaL_error(L, "uint64: modulo by zero");
-    luasteam::pushuint64(L, a % b);
+    lua_pushnumber(L, fmod(a, b));
     return 1;
 }
 
