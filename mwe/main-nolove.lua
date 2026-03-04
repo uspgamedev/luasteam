@@ -1,24 +1,24 @@
 package.cpath = package.cpath .. ";./?.dll"
 local before = os.clock()
-local luasteam = require('luasteam')
-print("luasteam loaded in " .. (os.clock() - before) .. " seconds!")
+local Steam = require('Steam')
+print("Steam loaded in " .. (os.clock() - before) .. " seconds!")
 
-assert(luasteam ~= nil, "luasteam module not found")
-assert(type(luasteam) == "table", "luasteam is not a table")
+assert(Steam ~= nil, "luasteam module not found")
+assert(type(Steam) == "table", "luasteam is not a table")
 
 -- Test some enums
-assert(luasteam.k_EUniversePublic == 1, "k_EUniversePublic mismatch (expected 1, got " .. tostring(luasteam.k_EUniversePublic) .. ")")
+assert(Steam.k_EUniversePublic == 1, "k_EUniversePublic mismatch (expected 1, got " .. tostring(Steam.k_EUniversePublic) .. ")")
 
-assert(luasteam.k_EResultOK == 1, "k_EResultOK mismatch (expected 1, got " .. tostring(luasteam.k_EResultOK) .. ")")
+assert(Steam.k_EResultOK == 1, "k_EResultOK mismatch (expected 1, got " .. tostring(Steam.k_EResultOK) .. ")")
 
-assert(luasteam.k_EInputSourceMode_Trigger == 10, "k_EInputSourceMode_Trigger mismatch (expected 10, got " .. tostring(luasteam.k_EInputSourceMode_Trigger) .. ")")
+assert(Steam.k_EInputSourceMode_Trigger == 10, "k_EInputSourceMode_Trigger mismatch (expected 10, got " .. tostring(Steam.k_EInputSourceMode_Trigger) .. ")")
 
 -- Test some of the new interfaces
-assert(luasteam.Matchmaking ~= nil, "matchmaking interface not found")
-assert(luasteam.GameServerStats ~= nil, "gameServerStats interface not found")
-assert(luasteam.Screenshots ~= nil, "screenshots interface not found")
+assert(Steam.Matchmaking ~= nil, "matchmaking interface not found")
+assert(Steam.GameServerStats ~= nil, "gameServerStats interface not found")
+assert(Steam.Screenshots ~= nil, "screenshots interface not found")
 
-x, y = luasteam.Extra.ParseUint64("1234"), luasteam.Extra.ParseUint64("4444")
+x, y = Steam.Extra.ParseUint64("1234"), Steam.Extra.ParseUint64("4444")
 assert(tostring(x) == "1234" and y:tostring() == "4444")
 assert(x:tonumber() + y:tonumber() == 5678)
 
