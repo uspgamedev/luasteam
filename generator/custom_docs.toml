@@ -1009,20 +1009,15 @@ Steam.User.StopVoiceRecording()
 """
 
 [ISteamUser.GetAvailableVoice]
-example = """
-local compressed, raw, sampleRate = Steam.User.GetAvailableVoice()
-if compressed > 0 then
-    local data = Steam.User.GetVoice(true, compressed)
-    sendVoiceToNetwork(data)
-end
-"""
+notes = ["See :func:`User.GetVoice`'s example."]
+
 
 [ISteamUser.GetVoice]
 example = """
-local available, _, _ = Steam.User.GetAvailableVoice()
+local _, sizeCompressed = Steam.User.GetAvailableVoice()
 if available > 0 then
-    local voiceData = Steam.User.GetVoice(true, available)
-    if voiceData then
+    local ok, voiceData = Steam.User.GetVoice(true, sizeCompressed)
+    if ok == Steam.k_EVoiceResultOK then
         sendVoiceToNetwork(voiceData)
     end
 end

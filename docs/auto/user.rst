@@ -247,13 +247,9 @@ Function Reference
 
     * Parameter ``pcbCompressed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
-**Example**::
+    **Notes:**
 
-    local compressed, raw, sampleRate = Steam.User.GetAvailableVoice()
-    if compressed > 0 then
-        local data = Steam.User.GetVoice(true, compressed)
-        sendVoiceToNetwork(data)
-    end
+    * See :func:`User.GetVoice`'s example.
 
 .. function:: User.GetDurationControl(callback)
 
@@ -374,10 +370,10 @@ Function Reference
 
 **Example**::
 
-    local available, _, _ = Steam.User.GetAvailableVoice()
+    local _, sizeCompressed = Steam.User.GetAvailableVoice()
     if available > 0 then
-        local voiceData = Steam.User.GetVoice(true, available)
-        if voiceData then
+        local ok, voiceData = Steam.User.GetVoice(true, sizeCompressed)
+        if ok == Steam.k_EVoiceResultOK then
             sendVoiceToNetwork(voiceData)
         end
     end
