@@ -61,7 +61,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (bool) Return value
     :SteamWorks: `BSendRemotePlayTogetherInvite <https://partner.steamgames.com/doc/api/ISteamRemotePlay#BSendRemotePlayTogetherInvite>`_
 
@@ -172,7 +172,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int - RemotePlaySessionID_t unSessionID:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetSessionSteamID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionSteamID>`_
 
 **Example**::
@@ -222,7 +222,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unSessionID** *(RemotePlaySessionID_t)*
+    * **data.m_unSessionID** *(int - RemotePlaySessionID_t)*
 
 **Example**::
 
@@ -237,7 +237,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unSessionID** *(RemotePlaySessionID_t)*
+    * **data.m_unSessionID** *(int - RemotePlaySessionID_t)*
 
 **Example**::
 

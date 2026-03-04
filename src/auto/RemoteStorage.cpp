@@ -1719,7 +1719,7 @@ static int luasteam_RemoteStorage_EnumerateUserSharedWorkshopFiles(lua_State *L)
 	uint32 unStartIndex = static_cast<uint32>(luaL_checkint(L, 2));
 	const SteamParamStringArray_t *pRequiredTags = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 3);
 	const SteamParamStringArray_t *pExcludedTags = lua_isnil(L, 4) ? nullptr : luasteam::check_SteamParamStringArray_t_ptr(L, 4);
-	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumerateUserSharedWorkshopFiles(iface, steamId, unStartIndex, pRequiredTags, pExcludedTags);
+	SteamAPICall_t __ret = SteamAPI_ISteamRemoteStorage_EnumerateUserSharedWorkshopFiles(iface, steamId, unStartIndex, const_cast<SteamParamStringArray_t *>(pRequiredTags), const_cast<SteamParamStringArray_t *>(pExcludedTags));
 	if (callback_ref != LUA_NOREF) {
 		auto *listener = new luasteam::CallResultListener<RemoteStorageEnumerateUserPublishedFilesResult_t>();
 		listener->callback_ref = callback_ref;

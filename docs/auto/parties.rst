@@ -40,7 +40,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 - PartyBeaconID_t ulBeacon:
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :SteamWorks: `CancelReservation <https://partner.steamgames.com/doc/api/ISteamParties#CancelReservation>`_
 
 **Example**::
@@ -201,7 +201,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param uint64 - PartyBeaconID_t ulBeacon:
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :SteamWorks: `OnReservationCompleted <https://partner.steamgames.com/doc/api/ISteamParties#OnReservationCompleted>`_
 
 
@@ -214,9 +214,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
-    * **data.m_SteamIDBeaconOwner** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_ulBeaconID** *(uint64 - PartyBeaconID_t)*
+    * **data.m_SteamIDBeaconOwner** *(uint64 - CSteamID)*
     * **data.m_rgchConnectString** *(string)*
 
 **Example**::
@@ -233,8 +233,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_ulBeaconID** *(uint64 - PartyBeaconID_t)*
 
 .. function:: Parties.OnReservationNotificationCallback
 
@@ -242,8 +242,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulBeaconID** *(PartyBeaconID_t)*
-    * **data.m_steamIDJoiner** *(uint64)*
+    * **data.m_ulBeaconID** *(uint64 - PartyBeaconID_t)*
+    * **data.m_steamIDJoiner** *(uint64 - CSteamID)*
 
 .. function:: Parties.OnChangeNumOpenSlotsCallback
 
@@ -251,7 +251,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 .. function:: Parties.OnAvailableBeaconLocationsUpdated
 

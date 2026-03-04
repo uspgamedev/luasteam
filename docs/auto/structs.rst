@@ -611,13 +611,13 @@ SteamNetworkingIdentity
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
 
 .. function:: SteamNetworkingIdentity:GetSteamID()
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64)
+    :returns: (uint64 - CSteamID)
 
 .. function:: SteamNetworkingIdentity:SetSteamID64(steamID)
 

@@ -91,6 +91,7 @@ impl Generator {
 
         let doc_generator = DocGenerator::new()
             .with_structs(api.structs.clone())
+            .with_type_resolver(type_resolver.clone())
             .with_interface_callbacks(&interface_callbacks);
         let luals_generator = LuaLsGenerator::new();
         let opaque_handles = type_resolver.opaque_handles().clone();
@@ -144,16 +145,11 @@ impl Generator {
     fn manual_method_blocklist(&self) -> HashMap<String, SkipReason> {
         let mut blocklist = HashMap::new();
 
-        // Cursor method is not used
-        blocklist.insert(
-            "SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor".to_string(),
-            SkipReason::ManualBlocklist("cursor method is not used".to_string()),
-        );
-
-        // Unused method, not even in API Reference
         blocklist.insert(
             "SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string(),
-            SkipReason::ManualBlocklist("unused, not even in API Reference".to_string()),
+            SkipReason::ManualBlocklist(
+                "overload where difference in name is not suffix".to_string(),
+            ),
         );
 
         // Has function pointers — manual implementation in Client.cpp shared with Utils

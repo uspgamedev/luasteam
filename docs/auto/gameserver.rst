@@ -74,7 +74,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`AssociateWithClanResult_t <GameServer.OnAssociateWithClanResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `AssociateWithClan <https://partner.steamgames.com/doc/api/ISteamGameServer#AssociateWithClan>`_
@@ -108,7 +108,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchPlayerName:
     :param int uScore:
     :returns: (bool) Return value
@@ -125,7 +125,7 @@ Function Reference
 
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :returns: (int - EBeginAuthSessionResult) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#BeginAuthSession>`_
 
@@ -157,7 +157,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDNewPlayer:
+    :param uint64 - CSteamID steamIDNewPlayer:
     :param function callback: CallResult callback receiving struct :func:`ComputeNewPlayerCompatibilityResult_t <GameServer.OnComputeNewPlayerCompatibilityResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `ComputeNewPlayerCompatibility <https://partner.steamgames.com/doc/api/ISteamGameServer#ComputeNewPlayerCompatibility>`_
@@ -166,14 +166,14 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `CreateUnauthenticatedUserConnection <https://partner.steamgames.com/doc/api/ISteamGameServer#CreateUnauthenticatedUserConnection>`_
 
 .. function:: GameServer.EndAuthSession(steamID)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamGameServer#EndAuthSession>`_
 
 **Example**::
@@ -243,7 +243,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamGameServer#GetSteamID>`_
 
 **Example**::
@@ -298,8 +298,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
-    :param uint64 steamIDGroup:
+    :param uint64 - CSteamID steamIDUser:
+    :param uint64 - CSteamID steamIDGroup:
     :returns: (bool) Return value
     :SteamWorks: `RequestUserGroupStatus <https://partner.steamgames.com/doc/api/ISteamGameServer#RequestUserGroupStatus>`_
 
@@ -468,7 +468,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int - AppId_t appID:
     :returns: (int - EUserHasLicenseForAppResult) Return value
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamGameServer#UserHasLicenseForApp>`_
@@ -509,7 +509,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_bStillRetrying** *(bool)*
 
 **Example**::
@@ -524,7 +524,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -538,9 +538,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** *(uint64)*
-    * **data.m_eAuthSessionResponse** *(EAuthSessionResponse)*
-    * **data.m_OwnerSteamID** *(uint64)*
+    * **data.m_SteamID** *(uint64 - CSteamID)*
+    * **data.m_eAuthSessionResponse** *(int - EAuthSessionResponse)*
+    * **data.m_OwnerSteamID** *(uint64 - CSteamID)*
 
 **Example**::
 
@@ -558,8 +558,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** *(uint64)*
-    * **data.m_OwnerSteamID** *(uint64)*
+    * **data.m_SteamID** *(uint64 - CSteamID)*
+    * **data.m_OwnerSteamID** *(uint64 - CSteamID)*
 
 **Example**::
 
@@ -574,8 +574,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** *(uint64)*
-    * **data.m_eDenyReason** *(EDenyReason)*
+    * **data.m_SteamID** *(uint64 - CSteamID)*
+    * **data.m_eDenyReason** *(int - EDenyReason)*
     * **data.m_rgchOptionalText** *(string)*
 
 **Example**::
@@ -591,8 +591,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** *(uint64)*
-    * **data.m_eDenyReason** *(EDenyReason)*
+    * **data.m_SteamID** *(uint64 - CSteamID)*
+    * **data.m_eDenyReason** *(int - EDenyReason)*
 
 .. function:: GameServer.OnGSClientAchievementStatus
 
@@ -626,7 +626,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_nRank** *(int)*
     * **data.m_unTotalConnects** *(int)*
     * **data.m_unTotalMinutesPlayed** *(int)*
@@ -637,8 +637,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamIDUser** *(uint64)*
-    * **data.m_SteamIDGroup** *(uint64)*
+    * **data.m_SteamIDUser** *(uint64 - CSteamID)*
+    * **data.m_SteamIDGroup** *(uint64 - CSteamID)*
     * **data.m_bMember** *(bool)*
     * **data.m_bOfficer** *(bool)*
 
@@ -656,7 +656,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_unReputationScore** *(int)*
     * **data.m_bBanned** *(bool)*
     * **data.m_unBannedIP** *(int)*
@@ -670,7 +670,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 .. function:: GameServer.OnComputeNewPlayerCompatibilityResult
 
@@ -678,9 +678,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_cPlayersThatDontLikeCandidate** *(int)*
     * **data.m_cPlayersThatCandidateDoesntLike** *(int)*
     * **data.m_cClanPlayersThatDontLikeCandidate** *(int)*
-    * **data.m_SteamIDCandidate** *(uint64)*
+    * **data.m_SteamIDCandidate** *(uint64 - CSteamID)*
 

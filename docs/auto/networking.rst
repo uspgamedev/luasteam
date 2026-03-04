@@ -46,7 +46,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDRemote:
+    :param uint64 - CSteamID steamIDRemote:
     :returns: (bool) Return value
     :SteamWorks: `AcceptP2PSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworking#AcceptP2PSessionWithUser>`_
 
@@ -75,7 +75,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDRemote:
+    :param uint64 - CSteamID steamIDRemote:
     :param int nChannel:
     :returns: (bool) Return value
     :SteamWorks: `CloseP2PChannelWithUser <https://partner.steamgames.com/doc/api/ISteamNetworking#CloseP2PChannelWithUser>`_
@@ -84,7 +84,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDRemote:
+    :param uint64 - CSteamID steamIDRemote:
     :returns: (bool) Return value
     :SteamWorks: `CloseP2PSessionWithUser <https://partner.steamgames.com/doc/api/ISteamNetworking#CloseP2PSessionWithUser>`_
 
@@ -118,7 +118,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDTarget:
+    :param uint64 - CSteamID steamIDTarget:
     :param int nVirtualPort:
     :param int nTimeoutSec:
     :param bool bAllowUseOfPacketRelay:
@@ -170,7 +170,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDRemote:
+    :param uint64 - CSteamID steamIDRemote:
     :returns: (bool) Return value
     :returns: (:ref:`P2PSessionState_t <struct-P2PSessionState_t>`) ``pConnectionState``
     :SteamWorks: `GetP2PSessionState <https://partner.steamgames.com/doc/api/ISteamNetworking#GetP2PSessionState>`_
@@ -335,7 +335,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDRemote:
+    :param uint64 - CSteamID steamIDRemote:
     :param str? pubData:
     :param int cubData: size of the input array ``pubData``
     :param int - EP2PSend eP2PSendType:
@@ -358,7 +358,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDRemote** *(uint64)*
+    * **data.m_steamIDRemote** *(uint64 - CSteamID)*
 
 .. function:: Networking.OnP2PSessionConnectFail
 
@@ -366,7 +366,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDRemote** *(uint64)*
+    * **data.m_steamIDRemote** *(uint64 - CSteamID)*
     * **data.m_eP2PSessionError** *(int)*
 
 **Example**::
@@ -382,8 +382,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSocket** *(SNetSocket_t)*
-    * **data.m_hListenSocket** *(SNetListenSocket_t)*
-    * **data.m_steamIDRemote** *(uint64)*
+    * **data.m_hSocket** *(int - SNetSocket_t)*
+    * **data.m_hListenSocket** *(int - SNetListenSocket_t)*
+    * **data.m_steamIDRemote** *(uint64 - CSteamID)*
     * **data.m_eSNetSocketState** *(int)*
 

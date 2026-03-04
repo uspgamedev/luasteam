@@ -274,7 +274,7 @@ function RemoteStorage.UpdateUserPublishedItemVote(unPublishedFileId, bVoteUp, c
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback) end
 
----@param steamId uint64
+---@param steamId uint64 -- CSteamID
 ---@param unStartIndex integer
 ---@param pRequiredTags SteamParamStringArray_t
 ---@param pExcludedTags SteamParamStringArray_t

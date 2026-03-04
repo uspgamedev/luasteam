@@ -487,7 +487,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
 
 .. function:: HTMLSurface.OnHTML_NeedsPaint
 
@@ -495,7 +495,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pBGRA** *(string)*
     * **data.unWide** *(int)*
     * **data.unTall** *(int)*
@@ -522,7 +522,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchURL** *(string)*
     * **data.pchTarget** *(string)*
     * **data.pchPostData** *(string)*
@@ -542,7 +542,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
 
 .. function:: HTMLSurface.OnHTML_URLChanged
 
@@ -550,7 +550,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchURL** *(string)*
     * **data.pchPostData** *(string)*
     * **data.bIsRedirect** *(bool)*
@@ -570,7 +570,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchURL** *(string)*
     * **data.pchPageTitle** *(string)*
 
@@ -587,7 +587,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchURL** *(string)*
 
 .. function:: HTMLSurface.OnHTML_ChangedTitle
@@ -596,7 +596,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchTitle** *(string)*
 
 **Example**::
@@ -611,7 +611,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.unResults** *(int)*
     * **data.unCurrentMatch** *(int)*
 
@@ -621,7 +621,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.bCanGoBack** *(bool)*
     * **data.bCanGoForward** *(bool)*
 
@@ -631,7 +631,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.unScrollMax** *(int)*
     * **data.unScrollCurrent** *(int)*
     * **data.flPageScale** *(float)*
@@ -644,7 +644,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.unScrollMax** *(int)*
     * **data.unScrollCurrent** *(int)*
     * **data.flPageScale** *(float)*
@@ -657,7 +657,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.x** *(int)*
     * **data.y** *(int)*
     * **data.pchURL** *(string)*
@@ -670,7 +670,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchMessage** *(string)*
 
 **Example**::
@@ -686,7 +686,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchMessage** *(string)*
 
 .. function:: HTMLSurface.OnHTML_FileOpenDialog
@@ -695,7 +695,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchTitle** *(string)*
     * **data.pchInitialFile** *(string)*
 
@@ -705,13 +705,13 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchURL** *(string)*
     * **data.unX** *(int)*
     * **data.unY** *(int)*
     * **data.unWide** *(int)*
     * **data.unTall** *(int)*
-    * **data.unNewWindow_BrowserHandle_IGNORE** *(HHTMLBrowser)*
+    * **data.unNewWindow_BrowserHandle_IGNORE** *(int - HHTMLBrowser)*
 
 .. function:: HTMLSurface.OnHTML_SetCursor
 
@@ -719,7 +719,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.eMouseCursor** *(int)*
 
 .. function:: HTMLSurface.OnHTML_StatusText
@@ -728,7 +728,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchMsg** *(string)*
 
 .. function:: HTMLSurface.OnHTML_ShowToolTip
@@ -737,7 +737,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchMsg** *(string)*
 
 .. function:: HTMLSurface.OnHTML_UpdateToolTip
@@ -746,7 +746,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
     * **data.pchMsg** *(string)*
 
 .. function:: HTMLSurface.OnHTML_HideToolTip
@@ -755,7 +755,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
 
 .. function:: HTMLSurface.OnHTML_BrowserRestarted
 
@@ -763,6 +763,6 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.unBrowserHandle** *(HHTMLBrowser)*
-    * **data.unOldBrowserHandle** *(HHTMLBrowser)*
+    * **data.unBrowserHandle** *(int - HHTMLBrowser)*
+    * **data.unOldBrowserHandle** *(int - HHTMLBrowser)*
 

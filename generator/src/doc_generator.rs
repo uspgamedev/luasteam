@@ -1,5 +1,6 @@
 use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{CallbackStruct, Interface, SkipReason, Struct};
+use crate::type_resolver::TypeResolver;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
@@ -87,6 +88,7 @@ pub struct CustomDoc {
 pub struct DocGenerator {
     custom_docs: CustomDocs,
     structs: Vec<Struct>,
+    type_resolver: TypeResolver,
     /// Maps C++ callback struct name (e.g. "FooResult_t") → RST :func: label (e.g. "Foo.OnFooResult")
     callresult_to_func: HashMap<String, String>,
 }
@@ -108,12 +110,18 @@ impl DocGenerator {
         Self {
             custom_docs,
             structs: Vec::new(),
+            type_resolver: TypeResolver::empty(),
             callresult_to_func: HashMap::new(),
         }
     }
 
     pub fn with_structs(mut self, structs: Vec<Struct>) -> Self {
         self.structs = structs;
+        self
+    }
+
+    pub fn with_type_resolver(mut self, type_resolver: TypeResolver) -> Self {
+        self.type_resolver = type_resolver;
         self
     }
 
@@ -604,7 +612,7 @@ impl DocGenerator {
         } else {
             doc.push_str("    **callback(data)** receives:\n\n");
             for field in &callback.fields {
-                let type_str = Self::fieldtype_to_doc(&field.fieldtype);
+                let type_str = self.fieldtype_to_doc(&field.fieldtype);
                 doc.push_str(&format!(
                     "    * **data.{}** *({})*\n",
                     field.fieldname, type_str
@@ -771,7 +779,9 @@ impl DocGenerator {
     }
 
     /// Convert a raw C++ field type to a human-readable doc type string.
-    fn fieldtype_to_doc(ctype: &str) -> String {
+    /// For named typedefs/enums (AppId_t, EResult, etc.) that map to a scalar Lua type,
+    /// returns "lua_type - CppName". For plain primitives, returns just the Lua type name.
+    fn fieldtype_to_doc(&self, ctype: &str) -> String {
         // Check for array suffix like [128]
         let is_array = ctype.contains('[');
         let base = if let Some(bracket) = ctype.find('[') {
@@ -780,13 +790,13 @@ impl DocGenerator {
             ctype.trim()
         };
         // Strip const and pointer/reference decorators
-        let base = base
+        let original = base
             .trim_start_matches("const ")
             .trim_end_matches(" *")
             .trim_end_matches(" &")
             .trim();
-        match (base, is_array) {
-            // Fixed-size byte/char arrays are pushed as Lua strings
+        match (original, is_array) {
+            // Fixed-size byte/char arrays are pushed as Lua strings — no C++ annotation needed
             ("char", true) | ("uint8", true) => "string".to_string(),
             ("bool", _) => "bool".to_string(),
             ("float", _) | ("double", _) => "float".to_string(),
@@ -799,9 +809,32 @@ impl DocGenerator {
             | ("uint16", _)
             | ("uint32", _) => "int".to_string(),
             ("int64", _) | ("uint64", _) | ("int64_t", _) | ("uint64_t", _) => "uint64".to_string(),
-            ("CSteamID", _) => "uint64".to_string(),
             ("char", false) => "string".to_string(),
-            (other, _) => other.to_string(),
+            (other, _) => {
+                // Special case: C++ class types we push as uint64
+                if other == "CSteamID" || other == "CGameID" {
+                    return if is_array {
+                        format!("uint64[] - {}", other)
+                    } else {
+                        format!("uint64 - {}", other)
+                    };
+                }
+                // Resolve through typedef chain to find the Lua type
+                let base_prim = self.type_resolver.resolve_base_type(other);
+                let lua_type = match base_prim {
+                    "bool" => "bool",
+                    "float" | "double" => "float",
+                    "int8" | "int16" | "int32" | "int" | "unsigned int" | "uint8" | "uint16"
+                    | "uint32" => "int",
+                    "int64" | "uint64" | "int64_t" | "uint64_t" => "uint64",
+                    _ => return other.to_string(), // unknown — fall back to raw name
+                };
+                if is_array {
+                    format!("{}[] - {}", lua_type, other)
+                } else {
+                    format!("{} - {}", lua_type, other)
+                }
+            }
         }
     }
 

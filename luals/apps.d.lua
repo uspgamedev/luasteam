@@ -84,7 +84,7 @@ function Apps.GetAppInstallDir(appID, cchFolderBufferSize) end
 ---@return boolean
 function Apps.BIsAppInstalled(appID) end
 
----@return uint64
+---@return uint64 -- CSteamID
 function Apps.GetAppOwner() end
 
 ---@param pchKey string?

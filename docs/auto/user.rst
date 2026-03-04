@@ -68,7 +68,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDGameServer:
+    :param uint64 - CSteamID steamIDGameServer:
     :param int unIPServer:
     :param int usPortServer:
     :SteamWorks: `AdvertiseGame <https://partner.steamgames.com/doc/api/ISteamUser#AdvertiseGame>`_
@@ -141,7 +141,7 @@ Function Reference
 
     :param str? pAuthTicket:
     :param int cbAuthTicket: size of the input array ``pAuthTicket``
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :returns: (int - EBeginAuthSessionResult) Return value
     :SteamWorks: `BeginAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#BeginAuthSession>`_
 
@@ -194,7 +194,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :SteamWorks: `EndAuthSession <https://partner.steamgames.com/doc/api/ISteamUser#EndAuthSession>`_
 
 **Example**::
@@ -324,7 +324,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetSteamID <https://partner.steamgames.com/doc/api/ISteamUser#GetSteamID>`_
 
     Returns the CSteamID of the account currently logged in to the Steam client.
@@ -448,7 +448,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 gameID:
+    :param uint64 - CGameID gameID:
     :param int eAppUsageEvent:
     :param str? pchExtraInfo:
     :SteamWorks: `TrackAppUsageEvent <https://partner.steamgames.com/doc/api/ISteamUser#TrackAppUsageEvent>`_
@@ -457,7 +457,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int - AppId_t appID:
     :returns: (int - EUserHasLicenseForAppResult) Return value
     :SteamWorks: `UserHasLicenseForApp <https://partner.steamgames.com/doc/api/ISteamUser#UserHasLicenseForApp>`_
@@ -491,7 +491,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_bStillRetrying** *(bool)*
 
 .. function:: User.OnSteamServersDisconnected
@@ -500,7 +500,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -540,9 +540,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_SteamID** *(uint64)*
-    * **data.m_eAuthSessionResponse** *(EAuthSessionResponse)*
-    * **data.m_OwnerSteamID** *(uint64)*
+    * **data.m_SteamID** *(uint64 - CSteamID)*
+    * **data.m_eAuthSessionResponse** *(int - EAuthSessionResponse)*
+    * **data.m_OwnerSteamID** *(uint64 - CSteamID)*
 
 **Example**::
 
@@ -581,7 +581,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -598,8 +598,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAuthTicket** *(HAuthTicket)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_hAuthTicket** *(int - HAuthTicket)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -634,8 +634,8 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_bAllowed** *(bool)*
-    * **data.m_eNotAllowedReason** *(EMarketNotAllowedReasonFlags)*
-    * **data.m_rtAllowedAtTime** *(RTime32)*
+    * **data.m_eNotAllowedReason** *(int - EMarketNotAllowedReasonFlags)*
+    * **data.m_rtAllowedAtTime** *(int - RTime32)*
     * **data.m_cdaySteamGuardRequiredDays** *(int)*
     * **data.m_cdayNewDeviceCooldown** *(int)*
 
@@ -645,12 +645,12 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_appid** *(AppId_t)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_appid** *(int - AppId_t)*
     * **data.m_bApplicable** *(bool)*
     * **data.m_csecsLast5h** *(int)*
-    * **data.m_progress** *(EDurationControlProgress)*
-    * **data.m_notification** *(EDurationControlNotification)*
+    * **data.m_progress** *(int - EDurationControlProgress)*
+    * **data.m_notification** *(int - EDurationControlNotification)*
     * **data.m_csecsToday** *(int)*
     * **data.m_csecsRemaining** *(int)*
 
@@ -660,8 +660,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAuthTicket** *(HAuthTicket)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_hAuthTicket** *(int - HAuthTicket)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_cubTicket** *(int)*
     * **data.m_rgubTicket** *(string)*
 

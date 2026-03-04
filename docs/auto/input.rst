@@ -600,7 +600,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulConnectedDeviceHandle** *(InputHandle_t)*
+    * **data.m_ulConnectedDeviceHandle** *(uint64 - InputHandle_t)*
 
 **Example**::
 
@@ -615,7 +615,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_ulDisconnectedDeviceHandle** *(InputHandle_t)*
+    * **data.m_ulDisconnectedDeviceHandle** *(uint64 - InputHandle_t)*
 
 **Example**::
 
@@ -630,9 +630,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** *(AppId_t)*
-    * **data.m_ulDeviceHandle** *(InputHandle_t)*
-    * **data.m_ulMappingCreator** *(uint64)*
+    * **data.m_unAppID** *(int - AppId_t)*
+    * **data.m_ulDeviceHandle** *(uint64 - InputHandle_t)*
+    * **data.m_ulMappingCreator** *(uint64 - CSteamID)*
     * **data.m_unMajorRevision** *(int)*
     * **data.m_unMinorRevision** *(int)*
     * **data.m_bUsesSteamInputAPI** *(bool)*
@@ -644,9 +644,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** *(AppId_t)*
-    * **data.m_ulDeviceHandle** *(InputHandle_t)*
-    * **data.m_eDeviceType** *(ESteamInputType)*
+    * **data.m_unAppID** *(int - AppId_t)*
+    * **data.m_ulDeviceHandle** *(uint64 - InputHandle_t)*
+    * **data.m_eDeviceType** *(int - ESteamInputType)*
     * **data.m_nOldGamepadSlot** *(int)*
     * **data.m_nNewGamepadSlot** *(int)*
 

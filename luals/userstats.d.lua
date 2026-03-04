@@ -84,30 +84,30 @@ function UserStats.GetNumAchievements() end
 ---@return string
 function UserStats.GetAchievementName(iAchievement) end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function UserStats.RequestUserStats(steamIDUser, callback) end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param pchName string?
 ---@return boolean
 ---@return integer -- Value of: pData
 function UserStats.GetUserStatInt32(steamIDUser, pchName) end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param pchName string?
 ---@return boolean
 ---@return number -- Value of: pData
 function UserStats.GetUserStatFloat(steamIDUser, pchName) end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param pchName string?
 ---@return boolean
 ---@return boolean -- Value of: pbAchieved
 function UserStats.GetUserAchievement(steamIDUser, pchName) end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param pchName string?
 ---@return boolean
 ---@return boolean -- Value of: pbAchieved

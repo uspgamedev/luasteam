@@ -4,7 +4,7 @@
 ---@field OnSocketStatusCallback? fun(data: SocketStatusCallback_t)
 local Networking = {}
 
----@param steamIDRemote uint64
+---@param steamIDRemote uint64 -- CSteamID
 ---@param pubData string?
 ---@param cubData integer size of the input array pubData
 ---@param eP2PSendType integer -- EP2PSend
@@ -25,20 +25,20 @@ function Networking.IsP2PPacketAvailable(nChannel) end
 ---@return uint64 -- Value of: psteamIDRemote
 function Networking.ReadP2PPacket(cubDest, nChannel) end
 
----@param steamIDRemote uint64
+---@param steamIDRemote uint64 -- CSteamID
 ---@return boolean
 function Networking.AcceptP2PSessionWithUser(steamIDRemote) end
 
----@param steamIDRemote uint64
+---@param steamIDRemote uint64 -- CSteamID
 ---@return boolean
 function Networking.CloseP2PSessionWithUser(steamIDRemote) end
 
----@param steamIDRemote uint64
+---@param steamIDRemote uint64 -- CSteamID
 ---@param nChannel integer
 ---@return boolean
 function Networking.CloseP2PChannelWithUser(steamIDRemote, nChannel) end
 
----@param steamIDRemote uint64
+---@param steamIDRemote uint64 -- CSteamID
 ---@return boolean
 ---@return P2PSessionState_t -- Value of: pConnectionState
 function Networking.GetP2PSessionState(steamIDRemote) end
@@ -54,7 +54,7 @@ function Networking.AllowP2PPacketRelay(bAllow) end
 ---@return integer -- SNetListenSocket_t
 function Networking.CreateListenSocket(nVirtualP2PPort, nIP, nPort, bAllowUseOfPacketRelay) end
 
----@param steamIDTarget uint64
+---@param steamIDTarget uint64 -- CSteamID
 ---@param nVirtualPort integer
 ---@param nTimeoutSec integer
 ---@param bAllowUseOfPacketRelay boolean

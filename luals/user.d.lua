@@ -23,10 +23,10 @@ function User.GetHSteamUser() end
 ---@return boolean
 function User.BLoggedOn() end
 
----@return uint64
+---@return uint64 -- CSteamID
 function User.GetSteamID() end
 
----@param gameID uint64
+---@param gameID uint64 -- CGameID
 ---@param eAppUsageEvent integer
 ---@param pchExtraInfo string?
 function User.TrackAppUsageEvent(gameID, eAppUsageEvent, pchExtraInfo) end
@@ -76,17 +76,17 @@ function User.GetAuthTicketForWebApi(pchIdentity) end
 
 ---@param pAuthTicket string?
 ---@param cbAuthTicket integer size of the input array pAuthTicket
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@return integer -- EBeginAuthSessionResult
 function User.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 function User.EndAuthSession(steamID) end
 
 ---@param hAuthTicket integer -- HAuthTicket
 function User.CancelAuthTicket(hAuthTicket) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@param appID integer -- AppId_t
 ---@return integer -- EUserHasLicenseForAppResult
 function User.UserHasLicenseForApp(steamID, appID) end
@@ -94,7 +94,7 @@ function User.UserHasLicenseForApp(steamID, appID) end
 ---@return boolean
 function User.BIsBehindNAT() end
 
----@param steamIDGameServer uint64
+---@param steamIDGameServer uint64 -- CSteamID
 ---@param unIPServer integer
 ---@param usPortServer integer
 function User.AdvertiseGame(steamIDGameServer, unIPServer, usPortServer) end

@@ -45,11 +45,11 @@ function Parties.GetAvailableBeaconLocations(uMaxNumLocations) end
 function Parties.CreateBeacon(unOpenSlots, pBeaconLocation, pchConnectString, pchMetadata, callback) end
 
 ---@param ulBeacon uint64 -- PartyBeaconID_t
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 function Parties.OnReservationCompleted(ulBeacon, steamIDUser) end
 
 ---@param ulBeacon uint64 -- PartyBeaconID_t
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 function Parties.CancelReservation(ulBeacon, steamIDUser) end
 
 ---@param ulBeacon uint64 -- PartyBeaconID_t

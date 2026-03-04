@@ -102,7 +102,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int - ScreenshotHandle hScreenshot:
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :returns: (bool) Return value
     :SteamWorks: `TagUser <https://partner.steamgames.com/doc/api/ISteamScreenshots#TagUser>`_
 
@@ -144,8 +144,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hLocal** *(ScreenshotHandle)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_hLocal** *(int - ScreenshotHandle)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 

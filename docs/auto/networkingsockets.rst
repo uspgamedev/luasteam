@@ -662,9 +662,9 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hConn** *(HSteamNetConnection)*
+    * **data.m_hConn** *(int - HSteamNetConnection)*
     * **data.m_info** *(SteamNetConnectionInfo_t)*
-    * **data.m_eOldState** *(ESteamNetworkingConnectionState)*
+    * **data.m_eOldState** *(int - ESteamNetworkingConnectionState)*
 
 **Example**::
 
@@ -684,7 +684,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eAvail** *(ESteamNetworkingAvailability)*
+    * **data.m_eAvail** *(int - ESteamNetworkingAvailability)*
     * **data.m_debugMsg** *(string)*
 
 .. function:: NetworkingSockets.OnSteamNetworkingFakeIPResult
@@ -693,7 +693,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_identity** *(SteamNetworkingIdentity)*
     * **data.m_unIP** *(int)*
     * **data.m_unPorts** *(int)*

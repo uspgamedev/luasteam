@@ -104,7 +104,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int - ETextFilteringContext eContext:
-    :param uint64 sourceSteamID:
+    :param uint64 - CSteamID sourceSteamID:
     :param str? pchInputMessage:
     :param int? nByteSizeOutFilteredText: size of the buffer to allocate for ``pchOutFilteredText``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
@@ -510,7 +510,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hAsyncCall** *(SteamAPICall_t)*
+    * **data.m_hAsyncCall** *(uint64 - SteamAPICall_t)*
     * **data.m_iCallback** *(int)*
     * **data.m_cubParam** *(int)*
 
@@ -533,7 +533,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eCheckFileSignature** *(ECheckFileSignature)*
+    * **data.m_eCheckFileSignature** *(int - ECheckFileSignature)*
 
 .. function:: Utils.OnGamepadTextInputDismissed
 
@@ -543,7 +543,7 @@ Callbacks
 
     * **data.m_bSubmitted** *(bool)*
     * **data.m_unSubmittedText** *(int)*
-    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_unAppID** *(int - AppId_t)*
 
 **Example**::
 

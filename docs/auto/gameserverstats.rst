@@ -36,7 +36,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :SteamWorks: `ClearUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#ClearUserAchievement>`_
@@ -45,7 +45,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
@@ -66,7 +66,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
@@ -81,7 +81,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
@@ -103,7 +103,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`GSStatsReceived_t <GameServerStats.OnGSStatsReceived>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#RequestUserStats>`_
@@ -121,7 +121,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :SteamWorks: `SetUserAchievement <https://partner.steamgames.com/doc/api/ISteamGameServerStats#SetUserAchievement>`_
@@ -130,7 +130,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :param float fData:
     :returns: (bool) Return value
@@ -144,7 +144,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :param int nData:
     :returns: (bool) Return value
@@ -163,7 +163,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`GSStatsStored_t <GameServerStats.OnGSStatsStored>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `StoreUserStats <https://partner.steamgames.com/doc/api/ISteamGameServerStats#StoreUserStats>`_
@@ -180,7 +180,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :param float flCountThisSession:
     :param float dSessionLength:
@@ -197,8 +197,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 
 .. function:: GameServerStats.OnGSStatsStored
 
@@ -206,6 +206,6 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 

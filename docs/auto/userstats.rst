@@ -590,7 +590,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
@@ -611,7 +611,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (bool) ``pbAchieved``
@@ -627,7 +627,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (float) ``pData``
@@ -642,7 +642,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchName:
     :returns: (bool) Return value
     :returns: (int) ``pData``
@@ -714,7 +714,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param function callback: CallResult callback receiving struct :func:`UserStatsReceived_t <UserStats.OnUserStatsReceived>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestUserStats <https://partner.steamgames.com/doc/api/ISteamUserStats#RequestUserStats>`_
@@ -866,8 +866,8 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_nGameID** *(uint64)*
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 
 **Example**::
 
@@ -884,7 +884,7 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_nGameID** *(uint64)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -923,7 +923,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_hSteamLeaderboard** *(uint64 - SteamLeaderboard_t)*
     * **data.m_bLeaderboardFound** *(int)*
 
 **Example**::
@@ -940,8 +940,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
-    * **data.m_hSteamLeaderboardEntries** *(SteamLeaderboardEntries_t)*
+    * **data.m_hSteamLeaderboard** *(uint64 - SteamLeaderboard_t)*
+    * **data.m_hSteamLeaderboardEntries** *(uint64 - SteamLeaderboardEntries_t)*
     * **data.m_cEntryCount** *(int)*
 
 .. function:: UserStats.OnLeaderboardScoreUploaded
@@ -951,7 +951,7 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_bSuccess** *(int)*
-    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_hSteamLeaderboard** *(uint64 - SteamLeaderboard_t)*
     * **data.m_nScore** *(int)*
     * **data.m_bScoreChanged** *(int)*
     * **data.m_nGlobalRankNew** *(int)*
@@ -980,7 +980,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 
 .. function:: UserStats.OnUserAchievementIconFetched
 
@@ -988,7 +988,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nGameID** *(CGameID)*
+    * **data.m_nGameID** *(uint64 - CGameID)*
     * **data.m_rgchAchievementName** *(string)*
     * **data.m_bAchieved** *(bool)*
     * **data.m_nIconHandle** *(int)*
@@ -1000,7 +1000,7 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_nGameID** *(uint64)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 **Example**::
 
@@ -1017,8 +1017,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_hSteamLeaderboard** *(SteamLeaderboard_t)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_hSteamLeaderboard** *(uint64 - SteamLeaderboard_t)*
 
 .. function:: UserStats.OnGlobalStatsReceived
 
@@ -1027,7 +1027,7 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_nGameID** *(uint64)*
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 
 .. function:: UserStats.OnGSStatsUnloaded
 
@@ -1035,5 +1035,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 

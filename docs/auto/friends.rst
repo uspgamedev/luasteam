@@ -131,7 +131,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :SteamWorks: `ActivateGameOverlayInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayInviteDialog>`_
 
 **Example**::
@@ -150,7 +150,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :SteamWorks: `ActivateGameOverlayRemotePlayTogetherInviteDialog <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayRemotePlayTogetherInviteDialog>`_
 
 .. function:: Friends.ActivateGameOverlayToStore(nAppID, eFlag)
@@ -170,7 +170,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param str? pchDialog:
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :SteamWorks: `ActivateGameOverlayToUser <https://partner.steamgames.com/doc/api/ISteamFriends#ActivateGameOverlayToUser>`_
 
 **Example**::
@@ -193,7 +193,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int - ECommunityProfileItemType itemType:
     :returns: (bool) Return value
     :SteamWorks: `BHasEquippedProfileItem <https://partner.steamgames.com/doc/api/ISteamFriends#BHasEquippedProfileItem>`_
@@ -212,7 +212,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
+    :param uint64 - CSteamID steamIDClanChat:
     :returns: (bool) Return value
     :SteamWorks: `CloseClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#CloseClanChatWindowInSteam>`_
 
@@ -243,16 +243,16 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :param int iUser:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetChatMemberByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetChatMemberByIndex>`_
 
 .. function:: Friends.GetClanActivityCounts(steamIDClan)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (bool) Return value
     :returns: (int) ``pnOnline``
     :returns: (int) ``pnInGame``
@@ -270,7 +270,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iClan:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetClanByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanByIndex>`_
 
     **Notes:**
@@ -281,7 +281,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (int) Return value
     :SteamWorks: `GetClanChatMemberCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanChatMemberCount>`_
 
@@ -289,7 +289,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
+    :param uint64 - CSteamID steamIDClanChat:
     :param int iMessage:
     :param int? cchTextMax: size of the buffer to allocate for ``prgchText``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
@@ -323,7 +323,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (str) Return value
     :SteamWorks: `GetClanName <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanName>`_
 
@@ -335,9 +335,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :param int iOfficer:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetClanOfficerByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerByIndex>`_
 
     **Notes:**
@@ -348,7 +348,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (int) Return value
     :SteamWorks: `GetClanOfficerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOfficerCount>`_
 
@@ -364,8 +364,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
-    :returns: (uint64) Return value
+    :param uint64 - CSteamID steamIDClan:
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetClanOwner <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanOwner>`_
 
 **Example**::
@@ -377,7 +377,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (str) Return value
     :SteamWorks: `GetClanTag <https://partner.steamgames.com/doc/api/ISteamFriends#GetClanTag>`_
 
@@ -386,7 +386,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iCoplayFriend:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetCoplayFriend <https://partner.steamgames.com/doc/api/ISteamFriends#GetCoplayFriend>`_
 
 .. function:: Friends.GetCoplayFriendCount()
@@ -400,7 +400,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param function callback: CallResult callback receiving struct :func:`FriendsGetFollowerCount_t <Friends.OnFriendsGetFollowerCount>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetFollowerCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFollowerCount>`_
@@ -419,7 +419,7 @@ Function Reference
 
     :param int iFriend:
     :param int iFriendFlags:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetFriendByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendByIndex>`_
 
 **Example**::
@@ -434,7 +434,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int - AppId_t) Return value
     :SteamWorks: `GetFriendCoplayGame <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayGame>`_
 
@@ -447,7 +447,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendCoplayTime <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCoplayTime>`_
 
@@ -468,7 +468,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDSource:
+    :param uint64 - CSteamID steamIDSource:
     :returns: (int) Return value
     :SteamWorks: `GetFriendCountFromSource <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendCountFromSource>`_
 
@@ -476,16 +476,16 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDSource:
+    :param uint64 - CSteamID steamIDSource:
     :param int iFriend:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetFriendFromSourceByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendFromSourceByIndex>`_
 
 .. function:: Friends.GetFriendGamePlayed(steamIDFriend)
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (bool) Return value
     :returns: (:ref:`FriendGameInfo_t <struct-FriendGameInfo_t>`) ``pFriendGameInfo``
     :SteamWorks: `GetFriendGamePlayed <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendGamePlayed>`_
@@ -505,7 +505,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param int iMessageID:
     :param int? cubData: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
@@ -522,7 +522,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaName <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaName>`_
 
@@ -535,7 +535,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param int iPersonaName:
     :returns: (str) Return value
     :SteamWorks: `GetFriendPersonaNameHistory <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaNameHistory>`_
@@ -544,7 +544,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int - EPersonaState) Return value
     :SteamWorks: `GetFriendPersonaState <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendPersonaState>`_
 
@@ -559,7 +559,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int - EFriendRelationship) Return value
     :SteamWorks: `GetFriendRelationship <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRelationship>`_
 
@@ -574,7 +574,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresence>`_
@@ -588,7 +588,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param int iKey:
     :returns: (str) Return value
     :SteamWorks: `GetFriendRichPresenceKeyByIndex <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyByIndex>`_
@@ -601,7 +601,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendRichPresenceKeyCount <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendRichPresenceKeyCount>`_
 
@@ -618,7 +618,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetFriendSteamLevel <https://partner.steamgames.com/doc/api/ISteamFriends#GetFriendSteamLevel>`_
 
@@ -691,7 +691,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetLargeFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetLargeFriendAvatar>`_
 
@@ -703,7 +703,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetMediumFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetMediumFriendAvatar>`_
 
@@ -749,7 +749,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDPlayer:
+    :param uint64 - CSteamID steamIDPlayer:
     :returns: (str) Return value
     :SteamWorks: `GetPlayerNickname <https://partner.steamgames.com/doc/api/ISteamFriends#GetPlayerNickname>`_
 
@@ -764,7 +764,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int - ECommunityProfileItemType itemType:
     :param int - ECommunityProfileItemProperty prop:
     :returns: (str) Return value
@@ -774,7 +774,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int - ECommunityProfileItemType itemType:
     :param int - ECommunityProfileItemProperty prop:
     :returns: (int) Return value
@@ -784,7 +784,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :returns: (int) Return value
     :SteamWorks: `GetSmallFriendAvatar <https://partner.steamgames.com/doc/api/ISteamFriends#GetSmallFriendAvatar>`_
 
@@ -804,7 +804,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param int iFriendFlags:
     :returns: (bool) Return value
     :SteamWorks: `HasFriend <https://partner.steamgames.com/doc/api/ISteamFriends#HasFriend>`_
@@ -819,7 +819,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param str? pchConnectString:
     :returns: (bool) Return value
     :SteamWorks: `InviteUserToGame <https://partner.steamgames.com/doc/api/ISteamFriends#InviteUserToGame>`_
@@ -833,8 +833,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDClanChat:
+    :param uint64 - CSteamID steamIDUser:
     :returns: (bool) Return value
     :SteamWorks: `IsClanChatAdmin <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatAdmin>`_
 
@@ -842,7 +842,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
+    :param uint64 - CSteamID steamIDClanChat:
     :returns: (bool) Return value
     :SteamWorks: `IsClanChatWindowOpenInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanChatWindowOpenInSteam>`_
 
@@ -850,7 +850,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (bool) Return value
     :SteamWorks: `IsClanOfficialGameGroup <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanOfficialGameGroup>`_
 
@@ -858,7 +858,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (bool) Return value
     :SteamWorks: `IsClanPublic <https://partner.steamgames.com/doc/api/ISteamFriends#IsClanPublic>`_
 
@@ -866,7 +866,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param function callback: CallResult callback receiving struct :func:`FriendsIsFollowing_t <Friends.OnFriendsIsFollowing>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `IsFollowing <https://partner.steamgames.com/doc/api/ISteamFriends#IsFollowing>`_
@@ -883,8 +883,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
-    :param uint64 steamIDSource:
+    :param uint64 - CSteamID steamIDUser:
+    :param uint64 - CSteamID steamIDSource:
     :returns: (bool) Return value
     :SteamWorks: `IsUserInSource <https://partner.steamgames.com/doc/api/ISteamFriends#IsUserInSource>`_
 
@@ -892,7 +892,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`JoinClanChatRoomCompletionResult_t <Friends.OnJoinClanChatRoomCompletionResult>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#JoinClanChatRoom>`_
@@ -909,7 +909,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :returns: (bool) Return value
     :SteamWorks: `LeaveClanChatRoom <https://partner.steamgames.com/doc/api/ISteamFriends#LeaveClanChatRoom>`_
 
@@ -917,7 +917,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
+    :param uint64 - CSteamID steamIDClanChat:
     :returns: (bool) Return value
     :SteamWorks: `OpenClanChatWindowInSteam <https://partner.steamgames.com/doc/api/ISteamFriends#OpenClanChatWindowInSteam>`_
 
@@ -933,7 +933,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :param str? pchMsgToSend:
     :returns: (bool) Return value
     :SteamWorks: `ReplyToFriendMessage <https://partner.steamgames.com/doc/api/ISteamFriends#ReplyToFriendMessage>`_
@@ -942,7 +942,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClan:
+    :param uint64 - CSteamID steamIDClan:
     :param function callback: CallResult callback receiving struct :func:`ClanOfficerListResponse_t <Friends.OnClanOfficerListResponse>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestClanOfficerList <https://partner.steamgames.com/doc/api/ISteamFriends#RequestClanOfficerList>`_
@@ -951,7 +951,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param function callback: CallResult callback receiving struct :func:`EquippedProfileItems_t <Friends.OnEquippedProfileItems>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestEquippedProfileItems <https://partner.steamgames.com/doc/api/ISteamFriends#RequestEquippedProfileItems>`_
@@ -960,7 +960,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDFriend:
+    :param uint64 - CSteamID steamIDFriend:
     :SteamWorks: `RequestFriendRichPresence <https://partner.steamgames.com/doc/api/ISteamFriends#RequestFriendRichPresence>`_
 
 **Example**::
@@ -972,7 +972,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param bool bRequireNameOnly:
     :returns: (bool) Return value
     :SteamWorks: `RequestUserInformation <https://partner.steamgames.com/doc/api/ISteamFriends#RequestUserInformation>`_
@@ -989,7 +989,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDClanChat:
+    :param uint64 - CSteamID steamIDClanChat:
     :param str? pchText:
     :returns: (bool) Return value
     :SteamWorks: `SendClanChatMessage <https://partner.steamgames.com/doc/api/ISteamFriends#SendClanChatMessage>`_
@@ -1002,7 +1002,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDUser:
     :param bool bSpeaking:
     :SteamWorks: `SetInGameVoiceSpeaking <https://partner.steamgames.com/doc/api/ISteamFriends#SetInGameVoiceSpeaking>`_
 
@@ -1028,7 +1028,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDUserPlayedWith:
+    :param uint64 - CSteamID steamIDUserPlayedWith:
     :SteamWorks: `SetPlayedWith <https://partner.steamgames.com/doc/api/ISteamFriends#SetPlayedWith>`_
 
 **Example**::
@@ -1081,7 +1081,7 @@ Callbacks
 
     * **data.m_bActive** *(int)*
     * **data.m_bUserInitiated** *(bool)*
-    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_nAppID** *(int - AppId_t)*
     * **data.m_dwOverlayPID** *(int)*
 
 **Example**::
@@ -1116,8 +1116,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDLobby** *(uint64)*
-    * **data.m_steamIDFriend** *(uint64)*
+    * **data.m_steamIDLobby** *(uint64 - CSteamID)*
+    * **data.m_steamIDFriend** *(uint64 - CSteamID)*
 
 **Example**::
 
@@ -1135,7 +1135,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamID** *(uint64)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
     * **data.m_iImage** *(int)*
     * **data.m_iWide** *(int)*
     * **data.m_iTall** *(int)*
@@ -1154,7 +1154,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClan** *(uint64)*
+    * **data.m_steamIDClan** *(uint64 - CSteamID)*
     * **data.m_cOfficers** *(int)*
     * **data.m_bSuccess** *(int)*
 
@@ -1164,8 +1164,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDFriend** *(uint64)*
-    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_steamIDFriend** *(uint64 - CSteamID)*
+    * **data.m_nAppID** *(int - AppId_t)*
 
 **Example**::
 
@@ -1180,7 +1180,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDFriend** *(uint64)*
+    * **data.m_steamIDFriend** *(uint64 - CSteamID)*
     * **data.m_rgchConnect** *(string)*
 
 **Example**::
@@ -1196,8 +1196,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** *(uint64)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDClanChat** *(uint64 - CSteamID)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
     * **data.m_iMessageID** *(int)*
 
 .. function:: Friends.OnGameConnectedChatJoin
@@ -1206,8 +1206,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** *(uint64)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDClanChat** *(uint64 - CSteamID)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
 
 .. function:: Friends.OnGameConnectedChatLeave
 
@@ -1215,8 +1215,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** *(uint64)*
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDClanChat** *(uint64 - CSteamID)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
     * **data.m_bKicked** *(bool)*
     * **data.m_bDropped** *(bool)*
 
@@ -1234,8 +1234,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDClanChat** *(uint64)*
-    * **data.m_eChatRoomEnterResponse** *(EChatRoomEnterResponse)*
+    * **data.m_steamIDClanChat** *(uint64 - CSteamID)*
+    * **data.m_eChatRoomEnterResponse** *(int - EChatRoomEnterResponse)*
 
 .. function:: Friends.OnGameConnectedFriendChatMsg
 
@@ -1243,7 +1243,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamIDUser** *(uint64)*
+    * **data.m_steamIDUser** *(uint64 - CSteamID)*
     * **data.m_iMessageID** *(int)*
 
 **Example**::
@@ -1259,8 +1259,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamID** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
     * **data.m_nCount** *(int)*
 
 .. function:: Friends.OnFriendsIsFollowing
@@ -1269,8 +1269,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamID** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
     * **data.m_bIsFollowing** *(bool)*
 
 .. function:: Friends.OnFriendsEnumerateFollowingList
@@ -1279,8 +1279,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_rgSteamID** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_rgSteamID** *(uint64[] - CSteamID)*
     * **data.m_nResultsReturned** *(int)*
     * **data.m_nTotalResultCount** *(int)*
 
@@ -1313,7 +1313,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_steamID** *(uint64)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
 
 .. function:: Friends.OnEquippedProfileItems
 
@@ -1321,8 +1321,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_steamID** *(uint64)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
     * **data.m_bHasAnimatedAvatar** *(bool)*
     * **data.m_bHasAvatarFrame** *(bool)*
     * **data.m_bHasProfileModifier** *(bool)*

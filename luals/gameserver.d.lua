@@ -40,7 +40,7 @@ function GameServer.BLoggedOn() end
 ---@return boolean
 function GameServer.BSecure() end
 
----@return uint64
+---@return uint64 -- CSteamID
 function GameServer.GetSteamID() end
 
 ---@return boolean
@@ -94,23 +94,23 @@ function GameServer.GetAuthSessionTicket(cbMaxTicket, pSnid) end
 
 ---@param pAuthTicket string?
 ---@param cbAuthTicket integer size of the input array pAuthTicket
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@return integer -- EBeginAuthSessionResult
 function GameServer.BeginAuthSession(pAuthTicket, cbAuthTicket, steamID) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 function GameServer.EndAuthSession(steamID) end
 
 ---@param hAuthTicket integer -- HAuthTicket
 function GameServer.CancelAuthTicket(hAuthTicket) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@param appID integer -- AppId_t
 ---@return integer -- EUserHasLicenseForAppResult
 function GameServer.UserHasLicenseForApp(steamID, appID) end
 
----@param steamIDUser uint64
----@param steamIDGroup uint64
+---@param steamIDUser uint64 -- CSteamID
+---@param steamIDGroup uint64 -- CSteamID
 ---@return boolean
 function GameServer.RequestUserGroupStatus(steamIDUser, steamIDGroup) end
 
@@ -137,20 +137,20 @@ function GameServer.HandleIncomingPacket(pData, cbData, srcIP, srcPort) end
 ---@return integer -- Value of: pPort
 function GameServer.GetNextOutgoingPacket(cbMaxOut) end
 
----@param steamIDClan uint64
+---@param steamIDClan uint64 -- CSteamID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function GameServer.AssociateWithClan(steamIDClan, callback) end
 
----@param steamIDNewPlayer uint64
+---@param steamIDNewPlayer uint64 -- CSteamID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function GameServer.ComputeNewPlayerCompatibility(steamIDNewPlayer, callback) end
 
----@return uint64
+---@return uint64 -- CSteamID
 function GameServer.CreateUnauthenticatedUserConnection() end
 
----@param steamIDUser uint64
+---@param steamIDUser uint64 -- CSteamID
 ---@param pchPlayerName string?
 ---@param uScore integer
 ---@return boolean

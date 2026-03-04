@@ -222,7 +222,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetAppOwner <https://partner.steamgames.com/doc/api/ISteamApps#GetAppOwner>`_
 
 **Example**::
@@ -481,7 +481,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_nAppID** *(AppId_t)*
+    * **data.m_nAppID** *(int - AppId_t)*
 
 **Example**::
 
@@ -509,7 +509,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_nAppID** *(int)*
     * **data.m_cchKeyLength** *(int)*
     * **data.m_rgchKey** *(string)*
@@ -520,7 +520,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_ulFileSize** *(uint64)*
     * **data.m_FileSHA** *(string)*
     * **data.m_unFlags** *(int)*
@@ -531,7 +531,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_unAppID** *(AppId_t)*
+    * **data.m_unAppID** *(int - AppId_t)*
     * **data.m_bIsOffline** *(bool)*
     * **data.m_unSecondsAllowed** *(int)*
     * **data.m_unSecondsPlayed** *(int)*

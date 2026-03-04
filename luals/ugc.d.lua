@@ -38,6 +38,14 @@ function UGC.CreateQueryUserUGCRequest(unAccountID, eListType, eMatchingUGCType,
 ---@return uint64 -- UGCQueryHandle_t
 function UGC.CreateQueryAllUGCRequestPage(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, unPage) end
 
+---@param eQueryType integer -- EUGCQuery
+---@param eMatchingeMatchingUGCTypeFileType integer -- EUGCMatchingUGCType
+---@param nCreatorAppID integer -- AppId_t
+---@param nConsumerAppID integer -- AppId_t
+---@param pchCursor string?
+---@return uint64 -- UGCQueryHandle_t
+function UGC.CreateQueryAllUGCRequestCursor(eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, pchCursor) end
+
 ---@param pvecPublishedFileID uint64[]?
 ---@param unNumPublishedFileIDs integer size of the input array pvecPublishedFileID
 ---@return uint64 -- UGCQueryHandle_t

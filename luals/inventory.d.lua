@@ -32,7 +32,7 @@ function Inventory.GetResultItemProperty(resultHandle, unItemIndex, pchPropertyN
 function Inventory.GetResultTimestamp(resultHandle) end
 
 ---@param resultHandle integer -- SteamInventoryResult_t
----@param steamIDExpected uint64
+---@param steamIDExpected uint64 -- CSteamID
 ---@return boolean
 function Inventory.CheckResultSteamID(resultHandle, steamIDExpected) end
 
@@ -108,7 +108,7 @@ function Inventory.SendItemDropHeartbeat() end
 ---@return integer -- Value of: pResultHandle
 function Inventory.TriggerItemDrop(dropListDefinition) end
 
----@param steamIDTradePartner uint64
+---@param steamIDTradePartner uint64 -- CSteamID
 ---@param pArrayGive uint64[]?
 ---@param pArrayGiveQuantity integer[]?
 ---@param nArrayGiveLength integer size of the input arrays pArrayGive and pArrayGiveQuantity
@@ -136,12 +136,12 @@ function Inventory.GetItemDefinitionIDs(punItemDefIDsArraySize) end
 ---@return integer -- Value of: punValueBufferSizeOut
 function Inventory.GetItemDefinitionProperty(iDefinition, pchPropertyName, punValueBufferSizeOut) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@param callback fun(data: table?, io_fail: boolean)?
 ---@return uint64 -- SteamAPICall_t handle; result delivered via the callback when Steam.RunCallbacks() is called
 function Inventory.RequestEligiblePromoItemDefinitionsIDs(steamID, callback) end
 
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@param punItemDefIDsArraySize integer? size of the buffer for pItemDefIDs; if nil then the buffer will be NULL
 ---@return boolean
 ---@return integer[] -- Value of: pItemDefIDs

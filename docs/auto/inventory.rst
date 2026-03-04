@@ -103,7 +103,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int - SteamInventoryResult_t resultHandle:
-    :param uint64 steamIDExpected:
+    :param uint64 - CSteamID steamIDExpected:
     :returns: (bool) Return value
     :SteamWorks: `CheckResultSteamID <https://partner.steamgames.com/doc/api/ISteamInventory#CheckResultSteamID>`_
 
@@ -207,7 +207,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param int? punItemDefIDsArraySize: size of the buffer to allocate for ``pItemDefIDs``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (bool) Return value
     :returns: (int[]) ``pItemDefIDs``
@@ -440,7 +440,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamID:
+    :param uint64 - CSteamID steamID:
     :param function callback: CallResult callback receiving struct :func:`SteamInventoryEligiblePromoItemDefIDs_t <Inventory.OnSteamInventoryEligiblePromoItemDefIDs>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `RequestEligiblePromoItemDefinitionsIDs <https://partner.steamgames.com/doc/api/ISteamInventory#RequestEligiblePromoItemDefinitionsIDs>`_
@@ -576,7 +576,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDTradePartner:
+    :param uint64 - CSteamID steamIDTradePartner:
     :param uint64[]? pArrayGive:
     :param int[]? pArrayGiveQuantity:
     :param int nArrayGiveLength: size of the input arrays ``pArrayGive`` and ``pArrayGiveQuantity``
@@ -649,8 +649,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_handle** *(SteamInventoryResult_t)*
-    * **data.m_result** *(EResult)*
+    * **data.m_handle** *(int - SteamInventoryResult_t)*
+    * **data.m_result** *(int - EResult)*
 
 .. function:: Inventory.OnSteamInventoryFullUpdate
 
@@ -658,7 +658,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_handle** *(SteamInventoryResult_t)*
+    * **data.m_handle** *(int - SteamInventoryResult_t)*
 
 .. function:: Inventory.OnSteamInventoryDefinitionUpdate
 
@@ -680,8 +680,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** *(EResult)*
-    * **data.m_steamID** *(uint64)*
+    * **data.m_result** *(int - EResult)*
+    * **data.m_steamID** *(uint64 - CSteamID)*
     * **data.m_numEligiblePromoItemDefs** *(int)*
     * **data.m_bCachedData** *(bool)*
 
@@ -691,7 +691,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** *(EResult)*
+    * **data.m_result** *(int - EResult)*
     * **data.m_ulOrderID** *(uint64)*
     * **data.m_ulTransID** *(uint64)*
 
@@ -701,7 +701,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_result** *(EResult)*
+    * **data.m_result** *(int - EResult)*
     * **data.m_rgchCurrency** *(string)*
 
 **Example**::

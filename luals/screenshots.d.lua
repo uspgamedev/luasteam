@@ -28,7 +28,7 @@ function Screenshots.HookScreenshots(bHook) end
 function Screenshots.SetLocation(hScreenshot, pchLocation) end
 
 ---@param hScreenshot integer -- ScreenshotHandle
----@param steamID uint64
+---@param steamID uint64 -- CSteamID
 ---@return boolean
 function Screenshots.TagUser(hScreenshot, steamID) end
 

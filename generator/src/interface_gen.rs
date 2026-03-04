@@ -22,8 +22,6 @@ const PRIMITIVES: &[&str] = &[
     "float",
     "double",
     "void",
-    "CSteamID",
-    "CGameID",
     "SteamAPICall_t",
     "const char *",
     "char *",
@@ -1161,7 +1159,7 @@ impl Generator {
                                     "pTags" | "pUserTags"
                                 )
                                 | (
-                                    "EnumerateUserSharedWorkshopFiles",
+                                    "SteamAPI_ISteamRemoteStorage_EnumerateUserSharedWorkshopFiles",
                                     "pRequiredTags" | "pExcludedTags"
                                 )
                         ) {

@@ -400,10 +400,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_hRequest** *(int - HTTPRequestHandle)*
     * **data.m_ulContextValue** *(uint64)*
     * **data.m_bRequestSuccessful** *(bool)*
-    * **data.m_eStatusCode** *(EHTTPStatusCode)*
+    * **data.m_eStatusCode** *(int - EHTTPStatusCode)*
     * **data.m_unBodySize** *(int)*
 
 .. function:: HTTP.OnHTTPRequestHeadersReceived
@@ -412,7 +412,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_hRequest** *(int - HTTPRequestHandle)*
     * **data.m_ulContextValue** *(uint64)*
 
 .. function:: HTTP.OnHTTPRequestDataReceived
@@ -421,7 +421,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_hRequest** *(HTTPRequestHandle)*
+    * **data.m_hRequest** *(int - HTTPRequestHandle)*
     * **data.m_ulContextValue** *(uint64)*
     * **data.m_cOffset** *(int)*
     * **data.m_cBytesReceived** *(int)*

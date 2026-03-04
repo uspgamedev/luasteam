@@ -83,7 +83,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :SteamWorks: `AddRequestLobbyListCompatibleMembersFilter <https://partner.steamgames.com/doc/api/ISteamMatchmaking#AddRequestLobbyListCompatibleMembersFilter>`_
 
 .. function:: Matchmaking.AddRequestLobbyListDistanceFilter(eLobbyDistanceFilter)
@@ -167,7 +167,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param str? pchKey:
     :returns: (bool) Return value
     :SteamWorks: `DeleteLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#DeleteLobbyData>`_
@@ -219,7 +219,7 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int iLobby:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetLobbyByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyByIndex>`_
 
     **Notes:**
@@ -230,7 +230,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int iChatID:
     :param int? cubData: size of the buffer to allocate for ``pvData``. If ``nil`` then the buffer will be ``NULL``.
     :returns: (int) Return value
@@ -249,7 +249,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyData>`_
@@ -263,7 +263,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int iLobbyData:
     :param int? cchKeyBufferSize: size of the buffer to allocate for ``pchKey``. If ``nil`` then the buffer will be ``NULL``.
     :param int? cchValueBufferSize: size of the buffer to allocate for ``pchValue``. If ``nil`` then the buffer will be ``NULL``.
@@ -281,7 +281,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :returns: (int) Return value
     :SteamWorks: `GetLobbyDataCount <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyDataCount>`_
 
@@ -289,7 +289,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :returns: (bool) Return value
     :returns: (int) ``punGameServerIP``
     :returns: (int) ``punGameServerPort``
@@ -313,9 +313,9 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int iMember:
-    :returns: (uint64) Return value
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetLobbyMemberByIndex <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberByIndex>`_
 
     **Notes:**
@@ -326,8 +326,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDUser:
+    :param uint64 - CSteamID steamIDLobby:
+    :param uint64 - CSteamID steamIDUser:
     :param str? pchKey:
     :returns: (str) Return value
     :SteamWorks: `GetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberData>`_
@@ -341,7 +341,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :returns: (int) Return value
     :SteamWorks: `GetLobbyMemberLimit <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyMemberLimit>`_
 
@@ -349,8 +349,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :returns: (uint64) Return value
+    :param uint64 - CSteamID steamIDLobby:
+    :returns: (uint64 - CSteamID) Return value
     :SteamWorks: `GetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetLobbyOwner>`_
 
 **Example**::
@@ -362,7 +362,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :returns: (int) Return value
     :SteamWorks: `GetNumLobbyMembers <https://partner.steamgames.com/doc/api/ISteamMatchmaking#GetNumLobbyMembers>`_
 
@@ -378,8 +378,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDInvitee:
+    :param uint64 - CSteamID steamIDLobby:
+    :param uint64 - CSteamID steamIDInvitee:
     :returns: (bool) Return value
     :SteamWorks: `InviteUserToLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#InviteUserToLobby>`_
 
@@ -391,7 +391,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param function callback: CallResult callback receiving struct :func:`LobbyEnter_t <Matchmaking.OnLobbyEnter>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `JoinLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#JoinLobby>`_
@@ -410,7 +410,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :SteamWorks: `LeaveLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#LeaveLobby>`_
 
 **Example**::
@@ -433,7 +433,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :returns: (bool) Return value
     :SteamWorks: `RequestLobbyData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#RequestLobbyData>`_
 
@@ -463,7 +463,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param str? pvMsgBody:
     :param int cubMsgBody: size of the input array ``pvMsgBody``
     :returns: (bool) Return value
@@ -478,8 +478,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDLobbyDependent:
+    :param uint64 - CSteamID steamIDLobby:
+    :param uint64 - CSteamID steamIDLobbyDependent:
     :returns: (bool) Return value
     :SteamWorks: `SetLinkedLobby <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLinkedLobby>`_
 
@@ -487,7 +487,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param str? pchKey:
     :param str? pchValue:
     :returns: (bool) Return value
@@ -502,10 +502,10 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int unGameServerIP:
     :param int unGameServerPort:
-    :param uint64 steamIDGameServer:
+    :param uint64 - CSteamID steamIDGameServer:
     :SteamWorks: `SetLobbyGameServer <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyGameServer>`_
 
 **Example**::
@@ -516,7 +516,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param bool bLobbyJoinable:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyJoinable <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyJoinable>`_
@@ -530,7 +530,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param str? pchKey:
     :param str? pchValue:
     :SteamWorks: `SetLobbyMemberData <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberData>`_
@@ -545,7 +545,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int cMaxMembers:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyMemberLimit <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyMemberLimit>`_
@@ -554,8 +554,8 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
-    :param uint64 steamIDNewOwner:
+    :param uint64 - CSteamID steamIDLobby:
+    :param uint64 - CSteamID steamIDNewOwner:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyOwner <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyOwner>`_
 
@@ -563,7 +563,7 @@ Function Reference
 
     🤖 **Auto-generated binding**
 
-    :param uint64 steamIDLobby:
+    :param uint64 - CSteamID steamIDLobby:
     :param int - ELobbyType eLobbyType:
     :returns: (bool) Return value
     :SteamWorks: `SetLobbyType <https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyType>`_
@@ -584,7 +584,7 @@ Callbacks
     * **data.m_nAppID** *(int)*
     * **data.m_nFlags** *(int)*
     * **data.m_bAdd** *(bool)*
-    * **data.m_unAccountId** *(AccountID_t)*
+    * **data.m_unAccountId** *(int - AccountID_t)*
 
 .. function:: Matchmaking.OnLobbyInvite
 
@@ -724,7 +724,7 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
     * **data.m_ulSteamIDLobby** *(uint64)*
 
 .. function:: Matchmaking.OnFavoritesListAccountsUpdated
@@ -733,5 +733,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
+    * **data.m_eResult** *(int - EResult)*
 

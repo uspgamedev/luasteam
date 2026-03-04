@@ -753,6 +753,23 @@ static int luasteam_UGC_CreateQueryAllUGCRequestPage_user(lua_State *L) { return
 static int luasteam_UGC_CreateQueryAllUGCRequestPage_gs(lua_State *L) { return luasteam_UGC_CreateQueryAllUGCRequestPage(L, SteamGameServerUGC()); }
 
 // In C++:
+// UGCQueryHandle_t CreateQueryAllUGCRequest(EUGCQuery eQueryType, EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType, AppId_t nCreatorAppID, AppId_t nConsumerAppID, const char * pchCursor);
+// In Lua:
+// uint64 UGC.CreateQueryAllUGCRequestCursor(eQueryType: int, eMatchingeMatchingUGCTypeFileType: int, nCreatorAppID: int, nConsumerAppID: int, pchCursor: str)
+static int luasteam_UGC_CreateQueryAllUGCRequestCursor(lua_State *L, ISteamUGC *iface) {
+	EUGCQuery eQueryType = static_cast<EUGCQuery>(luaL_checkint(L, 1));
+	EUGCMatchingUGCType eMatchingeMatchingUGCTypeFileType = static_cast<EUGCMatchingUGCType>(luaL_checkint(L, 2));
+	AppId_t nCreatorAppID = static_cast<AppId_t>(luaL_checkint(L, 3));
+	AppId_t nConsumerAppID = static_cast<AppId_t>(luaL_checkint(L, 4));
+	const char *pchCursor = luaL_optstring(L, 5, nullptr);
+	UGCQueryHandle_t __ret = SteamAPI_ISteamUGC_CreateQueryAllUGCRequestCursor(iface, eQueryType, eMatchingeMatchingUGCTypeFileType, nCreatorAppID, nConsumerAppID, pchCursor);
+	luasteam::pushuint64(L, __ret);
+	return 1;
+}
+static int luasteam_UGC_CreateQueryAllUGCRequestCursor_user(lua_State *L) { return luasteam_UGC_CreateQueryAllUGCRequestCursor(L, SteamUGC()); }
+static int luasteam_UGC_CreateQueryAllUGCRequestCursor_gs(lua_State *L) { return luasteam_UGC_CreateQueryAllUGCRequestCursor(L, SteamGameServerUGC()); }
+
+// In C++:
 // UGCQueryHandle_t CreateQueryUGCDetailsRequest(const PublishedFileId_t * pvecPublishedFileID, uint32 unNumPublishedFileIDs);
 // In Lua:
 // uint64 UGC.CreateQueryUGCDetailsRequest(pvecPublishedFileID: uint64[], unNumPublishedFileIDs: int)
@@ -2362,6 +2379,7 @@ static int luasteam_UGC_SetSubscriptionsLoadOrder_gs(lua_State *L) { return luas
 void register_UGC_auto(lua_State *L, bool is_gs) {
 	add_func(L, "CreateQueryUserUGCRequest", is_gs ? luasteam_UGC_CreateQueryUserUGCRequest_gs : luasteam_UGC_CreateQueryUserUGCRequest_user);
 	add_func(L, "CreateQueryAllUGCRequestPage", is_gs ? luasteam_UGC_CreateQueryAllUGCRequestPage_gs : luasteam_UGC_CreateQueryAllUGCRequestPage_user);
+	add_func(L, "CreateQueryAllUGCRequestCursor", is_gs ? luasteam_UGC_CreateQueryAllUGCRequestCursor_gs : luasteam_UGC_CreateQueryAllUGCRequestCursor_user);
 	add_func(L, "CreateQueryUGCDetailsRequest", is_gs ? luasteam_UGC_CreateQueryUGCDetailsRequest_gs : luasteam_UGC_CreateQueryUGCDetailsRequest_user);
 	add_func(L, "SendQueryUGCRequest", is_gs ? luasteam_UGC_SendQueryUGCRequest_gs : luasteam_UGC_SendQueryUGCRequest_user);
 	add_func(L, "GetQueryUGCResult", is_gs ? luasteam_UGC_GetQueryUGCResult_gs : luasteam_UGC_GetQueryUGCResult_user);
@@ -2457,7 +2475,7 @@ void register_UGC_auto(lua_State *L, bool is_gs) {
 }
 
 void add_UGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 94);
+	lua_createtable(L, 0, 95);
 	register_UGC_auto(L, false);
 	lua_pushvalue(L, -1);
 	UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -2766,7 +2784,7 @@ void shutdown_GameServerUGC_auto(lua_State *L) {
 }
 
 void add_GameServerUGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 94);
+	lua_createtable(L, 0, 95);
 	register_UGC_auto(L, true);
 	lua_pushvalue(L, -1);
 	GameServerUGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);

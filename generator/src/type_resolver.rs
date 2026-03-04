@@ -9,6 +9,14 @@ pub struct TypeResolver {
 }
 
 impl TypeResolver {
+    /// Creates an empty TypeResolver (for use as a default/placeholder).
+    pub fn empty() -> Self {
+        Self {
+            type_map: HashMap::new(),
+            opaque_handles: HashSet::new(),
+        }
+    }
+
     /// Creates a TypeResolver from scratch, building the type_map from API data.
     pub fn from_api(
         typedefs: &[Typedef],

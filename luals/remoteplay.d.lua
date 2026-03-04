@@ -12,7 +12,7 @@ function RemotePlay.GetSessionCount() end
 function RemotePlay.GetSessionID(iSessionIndex) end
 
 ---@param unSessionID integer -- RemotePlaySessionID_t
----@return uint64
+---@return uint64 -- CSteamID
 function RemotePlay.GetSessionSteamID(unSessionID) end
 
 ---@param unSessionID integer -- RemotePlaySessionID_t
@@ -32,7 +32,7 @@ function RemotePlay.BGetSessionClientResolution(unSessionID) end
 ---@return boolean
 function RemotePlay.ShowRemotePlayTogetherUI() end
 
----@param steamIDFriend uint64
+---@param steamIDFriend uint64 -- CSteamID
 ---@return boolean
 function RemotePlay.BSendRemotePlayTogetherInvite(steamIDFriend) end
 

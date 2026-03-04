@@ -546,10 +546,10 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eAvail** *(ESteamNetworkingAvailability)*
+    * **data.m_eAvail** *(int - ESteamNetworkingAvailability)*
     * **data.m_bPingMeasurementInProgress** *(int)*
-    * **data.m_eAvailNetworkConfig** *(ESteamNetworkingAvailability)*
-    * **data.m_eAvailAnyRelay** *(ESteamNetworkingAvailability)*
+    * **data.m_eAvailNetworkConfig** *(int - ESteamNetworkingAvailability)*
+    * **data.m_eAvailAnyRelay** *(int - ESteamNetworkingAvailability)*
     * **data.m_debugMsg** *(string)*
 
 **Example**::

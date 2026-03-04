@@ -122,7 +122,7 @@ function Utils.IsSteamChinaLauncher() end
 function Utils.InitFilterText(unFilterOptions) end
 
 ---@param eContext integer -- ETextFilteringContext
----@param sourceSteamID uint64
+---@param sourceSteamID uint64 -- CSteamID
 ---@param pchInputMessage string?
 ---@param nByteSizeOutFilteredText integer? size of the buffer for pchOutFilteredText; if nil then the buffer will be NULL
 ---@return integer

@@ -89,8 +89,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_unVideoAppID** *(AppId_t)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_unVideoAppID** *(int - AppId_t)*
     * **data.m_rgchURL** *(string)*
 
 **Example**::
@@ -108,8 +108,8 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EResult)*
-    * **data.m_unVideoAppID** *(AppId_t)*
+    * **data.m_eResult** *(int - EResult)*
+    * **data.m_unVideoAppID** *(int - AppId_t)*
 
 .. function:: Video.OnBroadcastUploadStart
 
@@ -131,5 +131,5 @@ Callbacks
 
     **callback(data)** receives:
 
-    * **data.m_eResult** *(EBroadcastUploadResult)*
+    * **data.m_eResult** *(int - EBroadcastUploadResult)*
 
