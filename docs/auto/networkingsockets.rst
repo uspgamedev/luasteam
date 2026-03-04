@@ -124,8 +124,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param address: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectByIPAddress <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectByIPAddress>`_
 
@@ -141,8 +141,8 @@ Function Reference
 
     :param identityRemote: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int nRemoteVirtualPort:
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectP2P>`_
 
@@ -159,8 +159,8 @@ Function Reference
 
     :param identityTarget: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :param int nRemoteVirtualPort:
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamNetConnection) Return value
     :SteamWorks: `ConnectToHostedDedicatedServer <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#ConnectToHostedDedicatedServer>`_
 
@@ -169,8 +169,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nLocalVirtualPort:
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateHostedDedicatedServerListenSocket <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateHostedDedicatedServerListenSocket>`_
 
@@ -179,8 +179,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param localAddress: (:ref:`SteamNetworkingIPAddr <struct-SteamNetworkingIPAddr>`)
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketIP>`_
 
@@ -196,8 +196,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int nLocalVirtualPort:
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketP2P <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2P>`_
 
@@ -211,8 +211,8 @@ Function Reference
     🤖 **Auto-generated binding**
 
     :param int idxFakePort:
-    :param int nOptions:
-    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`)
+    :param int nOptions: size of the input array ``pOptions``
+    :param pOptions: (:ref:`SteamNetworkingConfigValue_t <struct-SteamNetworkingConfigValue_t>`\ []?)
     :returns: (int - HSteamListenSocket) Return value
     :SteamWorks: `CreateListenSocketP2PFakeIP <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#CreateListenSocketP2PFakeIP>`_
 

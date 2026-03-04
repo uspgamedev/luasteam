@@ -694,6 +694,16 @@ impl SteamApi {
             assert!(p.out_string_count.is_none());
             p.out_string_count = Some(count_name.to_string());
         }
+        // There are some we can do automatically in NetworkingSockets
+        let iface = self.interface_mut("ISteamNetworkingSockets");
+        for m in &mut iface.methods {
+            if let Some(idx) = m.params.iter().position(|p| p.paramname == "nOptions") {
+                let p2 = &mut m.params[idx + 1];
+                assert!(p2.paramname == "pOptions");
+                assert!(p2.input_array_size_param().is_none());
+                p2.array_count = Some("nOptions".to_string());
+            }
+        }
     }
 
     fn fix_steam_client(&mut self) {

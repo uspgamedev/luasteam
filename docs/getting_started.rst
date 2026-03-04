@@ -245,6 +245,8 @@ Lua numbers cannot safely represent 64-bit integers. Wherever the Steamworks API
 
 ----
 
+.. _getting_started-structs:
+
 Structs
 =======
 

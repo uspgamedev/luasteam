@@ -66,12 +66,21 @@ void shutdown_NetworkingSockets_auto(lua_State *L) {
 // In C++:
 // HSteamListenSocket CreateListenSocketIP(const SteamNetworkingIPAddr & localAddress, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.CreateListenSocketIP(localAddress: SteamNetworkingIPAddr, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.CreateListenSocketIP(localAddress: SteamNetworkingIPAddr, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_CreateListenSocketIP(lua_State *L, ISteamNetworkingSockets *iface) {
 	const SteamNetworkingIPAddr &localAddress = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	int nOptions = static_cast<int>(luaL_checkint(L, 2));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 3);
-	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketIP(iface, localAddress, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketIP(iface, localAddress, nOptions, lua_isnil(L, 3) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -81,12 +90,21 @@ static int luasteam_NetworkingSockets_CreateListenSocketIP_gs(lua_State *L) { re
 // In C++:
 // HSteamNetConnection ConnectByIPAddress(const SteamNetworkingIPAddr & address, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.ConnectByIPAddress(address: SteamNetworkingIPAddr, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.ConnectByIPAddress(address: SteamNetworkingIPAddr, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_ConnectByIPAddress(lua_State *L, ISteamNetworkingSockets *iface) {
 	const SteamNetworkingIPAddr &address = *luasteam::check_SteamNetworkingIPAddr_ptr(L, 1);
 	int nOptions = static_cast<int>(luaL_checkint(L, 2));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 3);
-	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectByIPAddress(iface, address, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectByIPAddress(iface, address, nOptions, lua_isnil(L, 3) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -96,12 +114,21 @@ static int luasteam_NetworkingSockets_ConnectByIPAddress_gs(lua_State *L) { retu
 // In C++:
 // HSteamListenSocket CreateListenSocketP2P(int nLocalVirtualPort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.CreateListenSocketP2P(nLocalVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_CreateListenSocketP2P(lua_State *L, ISteamNetworkingSockets *iface) {
 	int nLocalVirtualPort = static_cast<int>(luaL_checkint(L, 1));
 	int nOptions = static_cast<int>(luaL_checkint(L, 2));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 3);
-	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2P(iface, nLocalVirtualPort, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2P(iface, nLocalVirtualPort, nOptions, lua_isnil(L, 3) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -111,13 +138,22 @@ static int luasteam_NetworkingSockets_CreateListenSocketP2P_gs(lua_State *L) { r
 // In C++:
 // HSteamNetConnection ConnectP2P(const SteamNetworkingIdentity & identityRemote, int nRemoteVirtualPort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.ConnectP2P(identityRemote: SteamNetworkingIdentity, nRemoteVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.ConnectP2P(identityRemote: SteamNetworkingIdentity, nRemoteVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_ConnectP2P(lua_State *L, ISteamNetworkingSockets *iface) {
 	const SteamNetworkingIdentity &identityRemote = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	int nRemoteVirtualPort = static_cast<int>(luaL_checkint(L, 2));
 	int nOptions = static_cast<int>(luaL_checkint(L, 3));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 4) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 4);
-	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectP2P(iface, identityRemote, nRemoteVirtualPort, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 4)) {
+		luaL_checktype(L, 4, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 4, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectP2P(iface, identityRemote, nRemoteVirtualPort, nOptions, lua_isnil(L, 4) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -454,13 +490,22 @@ static int luasteam_NetworkingSockets_SetConnectionPollGroup_gs(lua_State *L) { 
 // In C++:
 // HSteamNetConnection ConnectToHostedDedicatedServer(const SteamNetworkingIdentity & identityTarget, int nRemoteVirtualPort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget: SteamNetworkingIdentity, nRemoteVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget: SteamNetworkingIdentity, nRemoteVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_ConnectToHostedDedicatedServer(lua_State *L, ISteamNetworkingSockets *iface) {
 	const SteamNetworkingIdentity &identityTarget = *luasteam::check_SteamNetworkingIdentity_ptr(L, 1);
 	int nRemoteVirtualPort = static_cast<int>(luaL_checkint(L, 2));
 	int nOptions = static_cast<int>(luaL_checkint(L, 3));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 4) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 4);
-	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectToHostedDedicatedServer(iface, identityTarget, nRemoteVirtualPort, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 4)) {
+		luaL_checktype(L, 4, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 4, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamNetConnection __ret = SteamAPI_ISteamNetworkingSockets_ConnectToHostedDedicatedServer(iface, identityTarget, nRemoteVirtualPort, nOptions, lua_isnil(L, 4) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -494,12 +539,21 @@ static int luasteam_NetworkingSockets_GetHostedDedicatedServerPOPID_gs(lua_State
 // In C++:
 // HSteamListenSocket CreateHostedDedicatedServerListenSocket(int nLocalVirtualPort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.CreateHostedDedicatedServerListenSocket(nLocalVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.CreateHostedDedicatedServerListenSocket(nLocalVirtualPort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_CreateHostedDedicatedServerListenSocket(lua_State *L, ISteamNetworkingSockets *iface) {
 	int nLocalVirtualPort = static_cast<int>(luaL_checkint(L, 1));
 	int nOptions = static_cast<int>(luaL_checkint(L, 2));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 3);
-	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateHostedDedicatedServerListenSocket(iface, nLocalVirtualPort, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateHostedDedicatedServerListenSocket(iface, nLocalVirtualPort, nOptions, lua_isnil(L, 3) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }
@@ -559,12 +613,21 @@ static int luasteam_NetworkingSockets_GetFakeIP_gs(lua_State *L) { return luaste
 // In C++:
 // HSteamListenSocket CreateListenSocketP2PFakeIP(int idxFakePort, int nOptions, const SteamNetworkingConfigValue_t * pOptions);
 // In Lua:
-// int NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t)
+// int NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort: int, nOptions: int, pOptions: SteamNetworkingConfigValue_t[])
 static int luasteam_NetworkingSockets_CreateListenSocketP2PFakeIP(lua_State *L, ISteamNetworkingSockets *iface) {
 	int idxFakePort = static_cast<int>(luaL_checkint(L, 1));
 	int nOptions = static_cast<int>(luaL_checkint(L, 2));
-	const SteamNetworkingConfigValue_t *pOptions = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingConfigValue_t_ptr(L, 3);
-	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2PFakeIP(iface, idxFakePort, nOptions, pOptions);
+	std::vector<SteamNetworkingConfigValue_t> pOptions;
+	if (!lua_isnil(L, 3)) {
+		luaL_checktype(L, 3, LUA_TTABLE);
+		pOptions.resize(nOptions);
+		for(decltype(nOptions) i = 0; i < nOptions; i++) {
+			lua_rawgeti(L, 3, i+1);
+			pOptions[i] = luasteam::check_SteamNetworkingConfigValue_t(L, -1);
+			lua_pop(L, 1);
+		}
+	}
+	HSteamListenSocket __ret = SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2PFakeIP(iface, idxFakePort, nOptions, lua_isnil(L, 3) ? nullptr : pOptions.data());
 	lua_pushinteger(L, __ret);
 	return 1;
 }

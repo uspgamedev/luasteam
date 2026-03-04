@@ -1112,6 +1112,7 @@ impl Generator {
                             ));
                         }
                     } else if resolved.is_buffer() {
+                        assert!(param.paramname == "pchGameTags" || !param.paramname.ends_with("s"), "Weird, this is a buffer without a given size but it ends in s, indicating it could be an array: {method:-?}");
                         let lua_idx_str = lua_idx.to_string();
                         let (code, ltype) = self
                             .generate_check(
@@ -1129,6 +1130,7 @@ impl Generator {
                         sig.mark_last_param_optional();
                         lua_idx += 1;
                     } else {
+                        assert!(ttype == "SteamParamStringArray_t" || !param.paramname.ends_with("s"), "This looks weird, a non aray pointer but the name ends with an 's', so it's probably plural: {method:-?}");
                         // Non-array const pointer — treat as optional input (nil → nullptr).
                         // If the type has a _ptr check function, use it to avoid a copy.
                         if self.added_structs_with_ptr.contains(ttype) {

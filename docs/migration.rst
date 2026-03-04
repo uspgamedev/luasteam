@@ -5,15 +5,18 @@ Migration Guide from v4 to v5
 #################################
 
 v5 is a near-complete rewrite of the Lua bindings. The primary goal is to stay as
-close as possible to the C++ Steamworks SDK — if you know the C++ API, the Lua API
-should feel immediately familiar. This guide explains the systematic changes and the
-patterns that apply across the entire library.
+close as possible to the C++ Steamworks SDK. This guide explains what changed since v4, and is useful to port your code, as it will require some manual work. It is recommended to read the :doc:`getting_started` section as well.
 
-The old API was hand-written and made many convenience choices (camelCase names,
-auto-fetching entries, returning custom tables). The new API auto-generates bindings
-directly from ``steam_api.json`` and mirrors the C++ signatures as closely as Lua
-allows. When in doubt, consult the `Steamworks documentation
-<https://partner.steamgames.com/doc/api>`_ alongside this guide.
+The old API was hand-written and made many convenience choices (renaming fields, auto-dealing with buffer sizes). The new API auto-generates bindings
+directly from the API and mirrors the C++ signatures as closely as Lua
+allows. This may be less ergonomic to use, however, it scales better, we can support many more functions much more quickly. Implementing each function in v4 took a lot of work to analyze precisely what it does and how to make it as ergonomic as possible in Lua.
+
+Benefits:
+* **More functions supported**: the first release of v5 supported over 800 hundred Steam API functions (over 90% of all Steam API functions), while v4 supported only XXX.
+* **Less mental overhead**: Now the API works almost exactly the same as the Steam API, so you can just read that documentation and follow it, instead of having to constantly look up two distinct documentations.
+Drawbacks:
+* **Less ergonomic**
+
 
 .. contents:: Contents
    :local:
@@ -23,7 +26,7 @@ allows. When in doubt, consult the `Steamworks documentation
 
 .. _migration-naming:
 
-1. Naming: Everything Is PascalCase
+Naming: Everything Is PascalCase
 =====================================
 
 Every interface name and every function name is PascalCase, matching the C++ class
@@ -70,6 +73,8 @@ Top-level lifecycle functions
    * - ``Steam.runCallbacks()``
      - ``Steam.RunCallbacks()``
 
+Fields in returned tables (structs in C++) now also use their exact C++ names, instead of the simplified ones from v4. For example, ``entry.m_nGlobalRank`` rather than ``entry.globalRank`` for ``LeaderboardEntry_t``.
+
 GameServer lifecycle (moved out of the interface)
 --------------------------------------------------
 
@@ -91,22 +96,81 @@ level to mirror ``Steam.Init`` / ``Shutdown`` / ``RunCallbacks``:
 
 ----
 
+Parameter, Function and Return Value Changes
+======================
+
+Many functions now take a different number of parameters, or parameters of different sizes. Luasteam v4 aimed for ergonomics, so many useless parameters were removed (such as passing a table and also its size), while in v5 all parameters are required, so the conversion can be done automatically. The function return values might also be different, double check when migrating.
+
+For example, ``UGC.getSubscribedItems()`` returned a table with the ids in v4, while ``UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)`` in v5 takes a ``cMaxEntries`` integer with the size of the array to be allocated, which can be obtained from ``UGC.GetNumSubscribedItems(bIncludeLocallyDisabled)``, as well as taking an extra parameter ``bIncludeLocallyDisabled`` which took a default value in v4. Furthermore, it returns an integer as its first returned value (the size of the returned table), which was ommitted in v4.
+
+.. code:: lua
+
+    ---- In v5 ----
+    local sz = Steam.UGC.GetNumSubscribedItems(false)
+    local _, items = Steam.UGC.GetSubscribedItems(sz, false)
+    registerItems(items)
+
+    ---- In v4 ----
+    local items = Steam.UGC.getSubscribedItems()
+    registerItems(items)
+
+In other times, some functions were fully ommitted in v4, and used automatically under the hood, while in v5 they must be manually used. As an example, ``userStats.downloadLeaderboardEntries`` automatically called ``GetDownloadedLeaderboardEntry`` for you in v4, while in v5 you must call it manually.
+
+.. code:: lua
+
+    ---- In v5 ----
+    Steam.UserStats.DownloadLeaderboardEntries(handle, Steam.k_ELeaderboardDataRequestGlobal, 1, 1000, function(data, err)
+        if err then
+            print('Error happened')
+        else
+            for i = 0, data.m_cEntryCount - 1 do
+                local ok, entry = Steam.UserStats.GetDownloadedLeaderboardEntry(data.m_hSteamLeaderboardEntries, i, 0)
+                if ok then
+                    local name = Steam.Friends.GetFriendPersonaName(entry.m_steamIDUser)
+                    print('Rank #' .. entry.m_nGlobalRank .. ': ' .. name .. ' - ' .. entry.m_nScore)
+                end
+            end
+        end
+    end)
+
+    ---- In v4 ----
+    Steam.userStats.downloadLeaderboardEntries(handle, 'Global', 1, 1000, function(data, err)
+        if err then
+            print('Error happened')
+        else
+            for _, user in ipairs(data) do
+                local name = Steam.friends.getFriendPersoneName(user.steamIDUser)
+                print('Rank #' .. user.globalRank .. ': ' .. name .. ' - ' .. user.score)
+            end
+        end
+    end
+
 .. _migration-enums:
 
-2. Enums and Constants
+Enums and Constants
 ========================
 
 All C++ enum constants are exposed as **plain integers** on the ``Steam`` table,
-using their exact C++ names with the ``k_`` prefix. There are no grouped sub-tables
-like ``Steam.EResult`` — everything is flat.
+using their exact C++ names. Thus, they can be accessed by using ``Steam.<CppConstantName>``.
 
-.. code-block:: lua
+In v4, the enum values were not exposed anywhere, and functions that received enums often used strings with the enum name, now, they receive integers directly.
 
-    -- Access via Steam.k_<CppConstantName>
-    Steam.k_EResultOK                   -- 1
-    Steam.k_EItemStateInstalled         -- 4
-    Steam.k_ELeaderboardSortMethodDescending
-    Steam.k_ESteamNetworkingSend_Reliable
+.. list-table::
+   :header-rows: 1
+   :widths: 30 50 10
+
+   * - Old
+     - New
+     - Value
+   * - ``'Installed'``
+     - ``Steam.k_EItemStateInstalled``
+     - 4
+   * - ``'Descending'``
+     - ``Steam.k_ELeaderboardSortMethodDescending``
+     - 2
+   * - ``'Reliable'``
+     - ``Steam.k_ESteamNetworkingSend_Reliable``
+     - 8
 
 When a function returns or a callback field contains an enum value, it is always a
 plain Lua integer. You can compare it directly to the constant:
@@ -121,398 +185,71 @@ plain Lua integer. You can compare it directly to the constant:
 
 .. _migration-bitflags:
 
-3. Bit Flags
-==============
+Bit Flags
+=============
 
-Some API values are **bitmasks** — an integer where each bit represents an independent
-boolean flag. ``GetItemState``, ``GetPersonaStateFlags``, and others work this way.
+Some API values are **bitmasks** — an integer where each bit repreLsents an independent
+boolean flag. ``GetItemState``, ``GetPersonaStateFlags``, and others work this way, either to receive bitmask parameter or return bitmask values.
 
-Since luasteam targets **LuaJIT**, use the built-in ``bit`` library for bitwise
+In v4, these values were returned as tables with many booleans, while in v5 they follow the C++ format exactly and return integers. In **LuaJIT**, use the built-in ``bit`` library for bitwise
 operations:
 
 .. code-block:: lua
 
+    ---- In v5 ----
     local state = Steam.UGC.GetItemState(itemId)
+    -- state is an integer
 
-    -- Test a single flag
-    if bit.band(state, Steam.k_EItemStateInstalled) ~= 0 then
-        print("Item is installed")
-    end
+    local installed = bit.band(state, Steam.k_EItemStateInstalled) ~= 0
+    local needsUpdate = bit.band(state, Steam.k_EItemStateNeedsUpdate) ~= 0
 
-    -- Test multiple flags at once
-    local ready = bit.band(state, Steam.k_EItemStateInstalled)
-    local updating = bit.band(state, Steam.k_EItemStateNeedsUpdate)
+    ---- In v4 ----
+    local state = Steam.UGC.getItemState(itemId)
+    -- state is a table with boolean fields subscribed, legacyItem, ...
 
-----
-
-.. _migration-uint64:
-
-4. 64-bit Integers (uint64)
-==============================
-
-Lua's ``number`` type cannot safely represent 64-bit integers. Wherever the Steamworks
-API uses ``uint64`` (SteamIDs, item handles, leaderboard handles, etc.), luasteam uses
-a **userdata** value.
-
-- Print with ``tostring(id)``
-- Compare with ``id1 == id2``
-- Convert a string or number to uint64 with ``Steam.Extra.ParseUint64(str)``
-
-.. code-block:: lua
-
-    local myId = Steam.User.GetSteamID()      -- returns uint64 userdata
-    print(tostring(myId))                      -- "76561198000000000"
-
-    local parsed = Steam.Extra.ParseUint64("76561198000000000")
-    print(parsed == myId)                      -- true
+    local installed = state.installed
+    local needsUpdate = state.needsUpdate
 
 ----
 
 .. _migration-structs:
 
-5. Structs
+Structs
 ============
 
-Many Steamworks functions take or return C++ structs. luasteam exposes these as Lua
-**userdata** with field access via metamethods.
+Many Steamworks functions take or return C++ structs. luasteam v5 exposes these as Lua
+**userdata** with field access via metamethods, while v4 used different methods, tables or strings depending on which API method. See :ref:`getting_started-structs` on how to build and use them.
 
-Constructors
-------------
+.. code:: lua
 
-Every struct has a constructor at ``Steam.newStructName([table])``. You can pass an
-optional table to initialize fields:
+    ---- In v5 ----
+    local addr = Steam.newSteamNetworkingIPAddr {}
+    addr:ParseString("127.0.0.1:55556")
+    let opt1 = Steam.newSteamNetworkingConfigValue_t()
+    op1:SetInt32(Steam.k_ESteamNetworkingConfig_TimeoutInitial, 1000)
+    local id = Steam.NetworkingSockets.ConnectByIPAddress(addr, 1, {opt1})
 
-.. code-block:: lua
-
-    local addr = Steam.newSteamNetworkingIPAddr()
-    addr.m_port = 27015
-
-    -- Or initialize inline:
-    local addr = Steam.newSteamNetworkingIPAddr({ m_port = 27015 })
-
-Field access
-------------
-
-Struct fields are read and written directly using their C++ names (always ``m_``
-prefix):
-
-.. code-block:: lua
-
-    local entry = -- received from GetDownloadedLeaderboardEntry
-    print(entry.m_nGlobalRank)
-    print(entry.m_nScore)
-    print(tostring(entry.m_steamIDUser))
-
-Fields are **mutable** — you can write to them directly:
-
-.. code-block:: lua
-
-    local msg = Steam.newSteamNetworkingMessage_t()
-    msg.m_conn = connHandle
-    msg.m_nChannel = 0
-
-Structs as output
------------------
-
-When a C++ function fills a struct via an output pointer, luasteam returns it as an
-extra return value (see :ref:`migration-output-params`):
-
-.. code-block:: lua
-
-    local ok, entry, details = Steam.UserStats.GetDownloadedLeaderboardEntry(
-        data.m_hSteamLeaderboardEntries, i, 0)
-    -- entry is a LeaderboardEntry_t struct
-
-----
-
-.. _migration-luals:
-
-6. IDE Autocompletion (LuaLS)
-================================
-
-luasteam ships a ``luals/`` directory containing ``.d.lua`` type definitions for the
-entire API. Point the `Lua Language Server <https://github.com/LuaLS/lua-language-server>`_
-at this directory and your editor will offer autocompletion, inline docs, and type
-checking for every function, callback, and constant.
-
-Add to your ``.luarc.json`` (in the project root):
-
-.. code-block:: json
-
-    {
-      "workspace.library": ["path/to/luasteam/luals"]
-    }
-
-If you use the bundled ``luals/.luarc.json`` directly via ``--configpath``, no extra
-setup is needed.
+    ---- In v4 ----
+    local id = Steam.networkingSockets.connectByIPAddress("127.0.0.1:55556", {TimeoutInitial = 1000})
+    -- Note many types of options were not supported in v4 while all are in v5
 
 ----
 
 .. _migration-callbacks:
 
-7. Callbacks and CallResults
+Callbacks and CallResults
 ==============================
 
-Both patterns require ``Steam.RunCallbacks()`` to be called every frame to dispatch
-them.
-
-Persistent Callbacks
---------------------
-
-Some Steam events fire spontaneously (overlay opened, persona name changed, stats
-received). These are **persistent callbacks** — you register them once by assigning a
-function to a field on the interface table:
-
-.. code-block:: lua
-
-    function Steam.UserStats.OnUserStatsReceived(data)
-        -- data is a UserStatsReceived_t struct
-        if data.m_eResult == Steam.k_EResultOK then
-            print("Stats loaded for:", tostring(data.m_steamIDUser))
-        end
-    end
-
-    function Steam.Friends.OnGameOverlayActivated(data)
-        if data.m_bActive ~= 0 then
-            print("Overlay opened — pause the game")
-        end
-    end
-
-The field name is always ``On`` + the C++ callback struct name with the ``_t``
-stripped (e.g. ``GameOverlayActivated_t`` → ``OnGameOverlayActivated``).
-
-Callbacks **cannot be unregistered** — once set they fire for the lifetime of the
-Steam session.
-
-Notification-only callbacks (no data fields)
----------------------------------------------
-
-Some callbacks are pure notifications — they signal that something happened but carry
-no payload. For example, ``SteamServersConnected_t`` fires when the client connects to
-Steam but has no fields. The ``data`` table will be empty; do not attempt to read
-fields from it:
-
-.. code-block:: lua
-
-    function Steam.User.OnSteamServersConnected(data)
-        -- data has no fields — this is just a notification
-        print("Connected to Steam")
-    end
-
-Boolean fields may be ``uint8``, not Lua booleans
---------------------------------------------------
-
-Several callback struct fields that are conceptually boolean (e.g. ``m_bActive``,
-``m_bSecure``) are typed as ``uint8`` in the C++ headers, not ``bool``. They arrive
-in Lua as integers (``0`` or ``1``), not as Lua booleans. Always compare with
-``~= 0``:
-
-.. code-block:: lua
-
-    -- Correct:
-    if data.m_bActive ~= 0 then ... end
-
-    -- Wrong (m_bActive is 1, not true):
-    if data.m_bActive then ... end
-
-Fields that are actually typed ``bool`` in C++ (e.g. ``m_bLeaderboardFound``) do
-behave as Lua booleans. When in doubt, check the Steamworks SDK header or use
-``~= 0``.
-
-One-Shot CallResults
---------------------
-
-Async operations (finding a leaderboard, uploading a score, creating a UGC item) take
-a **callback function as their last parameter**. It fires exactly once when the
-operation completes:
-
-.. code-block:: lua
-
-    Steam.UserStats.FindOrCreateLeaderboard("TopScores", "Descending", "Numeric",
-        function(data, err)
-            if err then
-                print("IO error")
-            elseif not data.m_bLeaderboardFound then
-                print("Leaderboard not found")
-            else
-                local handle = data.m_hSteamLeaderboard
-                -- use handle...
-            end
-        end)
-
-The callback always receives **two arguments**:
-
-1. ``data`` — the result struct (with ``m_`` fields), or nil on IO failure
-2. ``err`` — ``true`` if there was an IO-level failure (Steam disconnected, etc.)
-
-Always check ``err`` first before accessing ``data`` fields.
-
-----
-
-.. _migration-output-params:
-
-8. Output Parameters Become Return Values
-==========================================
-
-In C++, many functions write results into pointer parameters passed by the caller.
-In luasteam, you **do not pass these parameters** — instead they are returned as
-additional values after the normal return value.
-
-.. code-block:: cpp
-
-    // C++ signature:
-    bool GetAchievement(const char *pchName, bool *pbAchieved);
-
-.. code-block:: lua
-
-    -- Lua: bool, bool pbAchieved = UserStats.GetAchievement(pchName)
-    local ok, achieved = Steam.UserStats.GetAchievement("MY_ACHIEVEMENT")
-
-.. code-block:: cpp
-
-    // C++ signature:
-    bool GetDownloadedLeaderboardEntry(SteamLeaderboardEntries_t h,
-        int index, LeaderboardEntry_t *pLeaderboardEntry,
-        int32 *pDetails, int cDetailsMax);
-
-.. code-block:: lua
-
-    -- Lua: bool, LeaderboardEntry_t, int[] = GetDownloadedLeaderboardEntry(h, index, cDetailsMax)
-    local ok, entry, details = Steam.UserStats.GetDownloadedLeaderboardEntry(
-        entriesHandle, i, 0)
-
-----
-
-.. _migration-input-arrays:
-
-9. Input Arrays: Pass Table and Count Separately
-=================================================
-
-When C++ takes ``(T *pArray, int count)``, Lua takes a table of values **and** the
-count as two separate arguments:
-
-.. code-block:: cpp
-
-    // C++ signature:
-    SteamAPICall_t DownloadLeaderboardEntriesForUsers(
-        SteamLeaderboard_t h, const CSteamID *prgUsers, int cUsers);
-
-.. code-block:: lua
-
-    local users = { id1, id2, id3 }
-    Steam.UserStats.DownloadLeaderboardEntriesForUsers(handle, users, #users, callback)
-
-----
-
-.. _migration-output-arrays:
-
-10. Output Arrays: Pass Buffer Size, Receive Table
-===================================================
-
-When C++ writes results into a caller-provided array (e.g. ``T *pOut, uint32 size``),
-you pass only the **desired maximum count**. luasteam allocates the buffer internally
-and returns a Lua table:
-
-.. code-block:: cpp
-
-    // C++ signature:
-    bool GetItemDefinitionIDs(SteamItemDef_t *pItemDefIDs, uint32 *punItemDefIDsArraySize);
-
-.. code-block:: lua
-
-    -- Lua: bool, int[] pItemDefIDs, int actualCount = GetItemDefinitionIDs(maxCount)
-    local ok, ids, count = Steam.Inventory.GetItemDefinitionIDs(256)
-    for i = 1, count do
-        print(ids[i])
-    end
-
-The same applies to **output string buffers** — pass the maximum size (in bytes),
-receive a string:
-
-.. code-block:: cpp
-
-    // C++ signature:
-    bool GetItemDefinitionProperty(SteamItemDef_t iDef, const char *name,
-        char *pchValueBuffer, uint32 *punValueBufferSizeOut);
-
-.. code-block:: lua
-
-    -- Lua: bool, str value, int actualLen = GetItemDefinitionProperty(def, name, bufSize)
-    local ok, value, len = Steam.Inventory.GetItemDefinitionProperty(def, "name", 256)
-
-.. tip::
-
-    If the result is truncated (the returned size equals your requested size), call
-    again with a larger buffer.
-
-----
-
-.. _migration-networking-message:
-
-11. ``SteamNetworkingMessage_t`` — Special Case
-================================================
-
-``SteamNetworkingMessage_t`` is the only struct that must be **explicitly released**
-after use. It has a protected destructor in C++ and cannot be copied, so luasteam
-stores a pointer rather than a value.
-
-.. code-block:: lua
-
-    local count, msgs = Steam.NetworkingSockets.ReceiveMessagesOnConnection(conn, 32)
-    for i = 1, count do
-        local msg = msgs[i]
-        local data    = msg.m_pData    -- payload as a Lua string
-        local size    = msg.m_cbSize
-        local channel = msg.m_nChannel
-        msg:Release()   -- REQUIRED: free the message back to Steam
-        -- Do not access msg after Release()
-    end
-
-A ``__gc`` metamethod will call ``Release()`` if you forget, but relying on that
-delays the release until Lua's garbage collector runs — which can cause memory
-pressure in high-throughput networking code. Always release explicitly.
+Callbacks and CallResults work very similar to v4, except for the names (and possibly types) of the fields in the callback structs, which now fully match the C++ name (e.g. ``m_eResult`` instead of ``result``).
 
 ----
 
 .. _migration-gameserver:
 
-12. GameServer Variants
+GameServer Variants
 ========================
 
-When running a dedicated server, most interfaces have a **GameServer variant** that
-calls ``SteamGameServer*()`` instead of ``Steam*()`` internally. The methods are
-identical; only the table name differs:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 40 40
-
-   * - Client
-     - GameServer
-   * - ``Steam.Utils``
-     - ``Steam.GameServerUtils``
-   * - ``Steam.UGC``
-     - ``Steam.GameServerUGC``
-   * - ``Steam.NetworkingSockets``
-     - ``Steam.GameServerNetworkingSockets``
-   * - ``Steam.NetworkingMessages``
-     - ``Steam.GameServerNetworkingMessages``
-   * - ``Steam.Networking``
-     - ``Steam.GameServerNetworking``
-   * - ``Steam.HTTP``
-     - ``Steam.GameServerHTTP``
-   * - ``Steam.Inventory``
-     - ``Steam.GameServerInventory``
-   * - ``Steam.Client``
-     - ``Steam.GameServerClient``
-
-Some interfaces exist only in the GameServer context:
-
-- ``Steam.GameServer`` — server lifecycle (``LogOn``, ``SetMapName``, etc.)
-- ``Steam.GameServerStats`` — per-user stat tracking for the server
-
-Initialize the GameServer session with ``Steam.GameServerInit(...)`` and tick it each
-frame with ``Steam.GameServerRunCallbacks()``.
+The initialization and shutdown of gameserver moved to be next to the core functions, so change ``Steam.gameServer.init(...)`` in v4 to ``Steam.GameServerInit(...)`` in v5. Also, now the interfaces that have a gameserver variant use acessors with the same name as in the C++ Steam API, so you can use ``Steam.GameServerUtils.XXX`` for the gameserver variant of ``Steam.Utils.XXX``, for example.
 
 ----
 
@@ -535,6 +272,9 @@ Quick-Reference: Breaking Changes from v4
    * - Lifecycle
      - ``Steam.shutdown()``
      - ``Steam.Shutdown()``
+   * - Lifecycle
+     - ``Steam.gameServer.init()``
+     - ``Steam.GameServerInit()``
    * - Interfaces
      - ``Steam.userStats``
      - ``Steam.UserStats`` (all PascalCase)
@@ -555,7 +295,7 @@ Quick-Reference: Breaking Changes from v4
      - Returns ``LeaderboardScoresDownloaded_t``; call ``GetDownloadedLeaderboardEntry(handle, i, 0)`` per entry (0-based index)
    * - ``DownloadLeaderboardEntries`` "Friends"
      - no range args
-     - must pass ``0, 0`` for range
+     - must pass ``0, 0`` for range (parameters not omitted)
    * - ``GetSubscribedItems``
      - ``getSubscribedItems()``
      - ``GetSubscribedItems(GetNumSubscribedItems(false), false)``
@@ -569,8 +309,5 @@ Quick-Reference: Breaking Changes from v4
      - ``getItemInstallInfo(id)``
      - ``GetItemInstallInfo(id, bufferSize)``
    * - Enums
-     - grouped sub-tables
+     - Used as strings
      - flat on ``Steam`` table as ``Steam.k_*`` integers
-   * - GameServer init
-     - ``Steam.GameServer.Init(...)``
-     - ``Steam.GameServerInit(...)``

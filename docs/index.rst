@@ -24,9 +24,11 @@ While using this documentation, you may also like to check the `SteamWorks API R
 
 .. toctree::
     :maxdepth: 2
-    :caption: Auto-Generated API Reference:
+    :caption: API Reference:
     :glob:
     
+    Core Functions <steam_api>
+    Extra <extra>
     auto/*
 
 Indices and tables
