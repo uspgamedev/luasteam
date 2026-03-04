@@ -242,10 +242,12 @@ Function Reference
 
 **Example**::
 
-    local w, h = Steam.Utils.GetImageSize(imageHandle)
-    local rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
-    -- rgba is a string of raw RGBA bytes; upload to a texture
-    uploadTexture(rgba, w, h)
+    local _, w, h = Steam.Utils.GetImageSize(imageHandle)
+    local ok, rgba = Steam.Utils.GetImageRGBA(imageHandle, w * h * 4)
+    if ok then
+        -- rgba is a string of raw RGBA bytes; upload to a texture
+        uploadTexture(rgba, w, h)
+    end
 
 .. function:: Utils.GetImageSize(iImage)
 
@@ -264,7 +266,7 @@ Function Reference
 
 **Example**::
 
-    local w, h = Steam.Utils.GetImageSize(imageHandle)
+    local _, w, h = Steam.Utils.GetImageSize(imageHandle)
     print(string.format('Image: %dx%d', w, h))
 
 .. function:: Utils.GetSecondsSinceAppActive()
@@ -450,7 +452,8 @@ Function Reference
 
     -- For bottom of window use 0,0,0,0
     -- For top of window use 0,windowHeight/2,windowWidth,windowHeight/2
-    Steam.Utils.ShowFloatingGamepadTextInput('SingleLine', x, y, w, h)
+    local SingleLine = Steam.k_EFloatingGamepadTextInputModeModeSingleLine
+    Steam.Utils.ShowFloatingGamepadTextInput(SingleLine, x, y, w, h)
 
 .. function:: Utils.ShowGamepadTextInput(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText)
 
@@ -466,7 +469,9 @@ Function Reference
 
 **Example**::
 
-    Steam.Utils.ShowGamepadTextInput('Normal', 'SingleLine', 'Enter your name', 64, existing_name)
+    local Normal = Steam.k_EGamepadTextInputModeNormal
+    local SingleLine = Steam.k_EGamepadTextInputLineModeSingleLine
+    Steam.Utils.ShowGamepadTextInput(Normal, SingleLine, 'Enter your name', 64, existing_name)
 
 .. function:: Utils.StartVRDashboard()
 
