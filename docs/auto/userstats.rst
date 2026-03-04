@@ -115,7 +115,7 @@ Function Reference
 **Example**::
 
     -- Download global entries 1-100
-    Steam.UserStats.DownloadLeaderboardEntries(handle, 'Global', 1, 100, function(data, err)
+    Steam.UserStats.DownloadLeaderboardEntries(handle, Steam.k_ELeaderboardDataRequestGlobal, 1, 100, function(data, err)
         if err then
             print('Error happened')
         else
@@ -188,7 +188,7 @@ Function Reference
 
 **Example**::
 
-    Steam.UserStats.FindOrCreateLeaderboard('TopScores', 'Descending', 'Numeric', function(data, err)
+    Steam.UserStats.FindOrCreateLeaderboard('TopScores', Steam.k_ELeaderboardSortMethodDescending, Steam.k_ELeaderboardDisplayTypeNumeric, function(data, err)
         if err or data.m_bLeaderboardFound == 0 then
             print('Something happened')
         else
@@ -343,6 +343,10 @@ Function Reference
 
     * Parameter ``pLeaderboardEntry`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
     * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
+    **Notes:**
+
+    * See :func:`UserStats.GetDownloadedLeaderboardEntry`'s example.
 
 .. function:: UserStats.GetGlobalStatDouble(pchStatName)
 
@@ -846,7 +850,8 @@ Function Reference
 
     local function uploadScoresHelper(handle)
         local score = getScore()
-        Steam.UserStats.UploadLeaderboardScore(handle, 'KeepBest', score, nil, function(data, err)
+        local KeepBest = Steam.k_ELeaderboardUploadScoreMethodKeepBest
+        Steam.UserStats.UploadLeaderboardScore(handle, KeepBest, score, nil, 0, function(data, err)
             if err or data.m_bSuccess == 0 then
                 print('Upload score failed')
             else
