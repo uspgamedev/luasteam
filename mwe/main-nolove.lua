@@ -19,6 +19,8 @@ assert(luasteam.GameServerStats ~= nil, "gameServerStats interface not found")
 assert(luasteam.Screenshots ~= nil, "screenshots interface not found")
 
 x, y = luasteam.Extra.ParseUint64("1234"), luasteam.Extra.ParseUint64("4444")
-assert(tostring(x + y) == "5678", "ParseUint64 failed (expected 5678, got " .. tostring(x + y) .. ")")
+assert(tostring(x) == "1234" and y:tostring() == "4444")
+assert(x:tonumber() + y:tonumber() == 5678)
+
 
 print("API import test passed successfully in " .. (os.clock() - before) .. " seconds!")

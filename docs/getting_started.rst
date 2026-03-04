@@ -145,15 +145,10 @@ Lua numbers cannot safely represent 64-bit integers. Wherever the Steamworks API
 ``uint64`` (SteamIDs, leaderboard handles, item handles, etc.), luasteam uses a
 **userdata** value.
 
-- Print with ``tostring(id)``
+- Convert to string with ``tostring(id)`` or ``id:tostring()``
 - Compare with ``id1 == id2``
-- Parse from a string with ``Steam.Extra.ParseUint64(str)``
-
-Arithmetic operators (``+``, ``-``, ``*``, ``/``, ``%``) and comparison operators
-(``<``, ``<=``) are supported. Both operands may be uint64 userdata or plain Lua
-numbers; the result is always a plain Lua number (``lua_Number`` / double). This means
-IEEE 754 rules apply: dividing by zero returns ``inf`` or ``-inf``, and
-``0 / 0`` or ``x % 0`` returns ``nan``.
+- Convert to a Lua number with ``id:tonumber()``
+- Parse from a string or number with ``Steam.Extra.ParseUint64(str)``
 
 .. code-block:: lua
 
@@ -162,6 +157,11 @@ IEEE 754 rules apply: dividing by zero returns ``inf`` or ``-inf``, and
 
     local parsed = Steam.Extra.ParseUint64("76561198000000000")
     assert(parsed == myId)                 -- true
+
+.. note ::
+
+    Arithmetic and comparison operators are **not** supported. Convert to a number first if you need to do math -- use ``x:tonumber()`` (``tonumber(x)`` is not supported). This conversion is lossy for values above 2^53, so be careful.
+
 
 ----
 
