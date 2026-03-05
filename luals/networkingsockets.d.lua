@@ -179,4 +179,5 @@ function NetworkingSockets.CreateListenSocketP2PFakeIP(idxFakePort, nOptions, pO
 ---@return SteamNetworkingIPAddr -- Value of: pOutAddr
 function NetworkingSockets.GetRemoteFakeIPForConnection(hConn) end
 
-Steam.NetworkingSockets = NetworkingSockets
+Steam.NetworkingSockets_SteamAPI = NetworkingSockets
+Steam.GameServerNetworkingSockets_SteamAPI = NetworkingSockets

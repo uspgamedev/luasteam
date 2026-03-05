@@ -1,7 +1,7 @@
 package.cpath = package.cpath .. ";./?.dll"
 local before = os.clock()
-local Steam = require('Steam')
-print("Steam loaded in " .. (os.clock() - before) .. " seconds!")
+local Steam = require('luasteam')
+print("luasteam loaded in " .. (os.clock() - before) .. " seconds!")
 
 assert(Steam ~= nil, "luasteam module not found")
 assert(type(Steam) == "table", "luasteam is not a table")

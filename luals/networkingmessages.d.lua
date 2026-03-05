@@ -30,4 +30,5 @@ function NetworkingMessages.CloseChannelWithUser(identityRemote, nLocalChannel) 
 ---@return SteamNetConnectionRealTimeStatus_t -- Value of: pQuickStatus
 function NetworkingMessages.GetSessionConnectionInfo(identityRemote) end
 
-Steam.NetworkingMessages = NetworkingMessages
+Steam.NetworkingMessages_SteamAPI = NetworkingMessages
+Steam.GameServerNetworkingMessages_SteamAPI = NetworkingMessages

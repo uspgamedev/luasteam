@@ -833,6 +833,12 @@ pub struct Accessor {
     pub name_flat: String,
 }
 
+impl Accessor {
+    pub fn pretty_name(&self) -> &str {
+        self.name.strip_prefix("Steam").unwrap()
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Method {
     pub methodname: String,

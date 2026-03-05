@@ -174,6 +174,10 @@ impl DocGenerator {
             doc.push_str(".. note::\n");
             doc.push_str("   Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).\n\n");
         }
+        if interface.accessors.len() > 1 {
+            doc.push_str(".. note::\n");
+            doc.push_str(&format!("    This interface can be accessed has multiple accessors (e.g. a GameServer variant), the documentation shows ``{}`` everywhere but it can also be accessed with {}.\n\n", interface.accessors[0].pretty_name(), interface.accessors.iter().skip(1).map(|s| format!("``{}``", s.pretty_name())).collect::<Vec<_>>().join(", ")));
+        }
 
         // Collect manual methods for this interface (if any)
         let manual_methods: Vec<(&String, &ManualFunctionDoc)> = self

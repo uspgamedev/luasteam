@@ -16,7 +16,7 @@ impl LuaLsGenerator {
     pub fn write_index(
         &self,
         output_dir: &Path,
-        interface_names: &[String],
+        interface_names: &[&str],
         opaque_handles: &std::collections::HashSet<String>,
     ) {
         let path = output_dir.join("luasteam.d.lua");
@@ -38,9 +38,14 @@ impl LuaLsGenerator {
         callbacks: &[CallbackStruct],
     ) {
         let name = &interface.classname["ISteam".len()..];
+        let accessors: Vec<_> = interface
+            .accessors
+            .iter()
+            .map(|a| a.pretty_name())
+            .collect();
         let file_name = format!("{}.d.lua", name.to_lowercase());
         let path = output_dir.join(file_name);
-        let content = self.generate_interface(name, method_signatures, callbacks);
+        let content = self.generate_interface(name, &accessors, method_signatures, callbacks);
         fs::write(path, content).expect("Unable to write LuaLS interface file");
     }
 
@@ -81,7 +86,7 @@ impl LuaLsGenerator {
 
     fn generate_index(
         &self,
-        interface_names: &[String],
+        interface_names: &[&str],
         opaque_handles: &std::collections::HashSet<String>,
     ) -> String {
         let mut cb = CodeBuilder::new();
@@ -187,6 +192,7 @@ impl LuaLsGenerator {
     fn generate_interface(
         &self,
         name: &str,
+        accessors: &[&str],
         method_signatures: &[(String, LuaMethodSignature)],
         callbacks: &[CallbackStruct],
     ) -> String {
@@ -217,8 +223,9 @@ impl LuaLsGenerator {
         for (lua_method_name, signature) in method_signatures {
             self.write_method(&mut cb, name, lua_method_name, signature);
         }
-
-        cb.line(&format!("Steam.{} = {}", name, name));
+        for accessor in accessors {
+            cb.line(&format!("Steam.{} = {}", accessor, name));
+        }
         cb.finish()
     }
 

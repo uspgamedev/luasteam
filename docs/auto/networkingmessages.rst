@@ -6,6 +6,9 @@ ISteamNetworkingMessages
    This documentation is auto-generated. Methods marked with 🤖 are automatically generated bindings.
    Methods marked with ✍️ are manually implemented and methods marked with ✋ are currently not implemented.
 
+.. note::
+    This interface can be accessed has multiple accessors (e.g. a GameServer variant), the documentation shows ``NetworkingMessages_SteamAPI`` everywhere but it can also be accessed with ``GameServerNetworkingMessages_SteamAPI``.
+
 List of Functions
 -----------------
 

@@ -137,3 +137,4 @@ function HTTP.SetHTTPRequestAbsoluteTimeoutMS(hRequest, unMilliseconds) end
 function HTTP.GetHTTPRequestWasTimedOut(hRequest) end
 
 Steam.HTTP = HTTP
+Steam.GameServerHTTP = HTTP

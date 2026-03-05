@@ -223,3 +223,4 @@ function Inventory.SubmitUpdateProperties(handle) end
 function Inventory.InspectItem(pchItemToken) end
 
 Steam.Inventory = Inventory
+Steam.GameServerInventory = Inventory

@@ -557,3 +557,4 @@ function UGC.SetItemsDisabledLocally(pvecPublishedFileIDs, unNumPublishedFileIDs
 function UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs, unNumPublishedFileIDs) end
 
 Steam.UGC = UGC
+Steam.GameServerUGC = UGC

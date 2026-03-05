@@ -9,6 +9,9 @@ ISteamUGC
 .. note::
    Overloaded Steam methods are exposed as distinct Lua functions using a type suffix (for example ``GetStatInt32`` and ``SetStatFloat``).
 
+.. note::
+    This interface can be accessed has multiple accessors (e.g. a GameServer variant), the documentation shows ``UGC`` everywhere but it can also be accessed with ``GameServerUGC``.
+
 List of Functions
 -----------------
 

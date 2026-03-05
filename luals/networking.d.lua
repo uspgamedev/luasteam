@@ -133,3 +133,4 @@ function Networking.GetSocketConnectionType(hSocket) end
 function Networking.GetMaxPacketSize(hSocket) end
 
 Steam.Networking = Networking
+Steam.GameServerNetworking = Networking

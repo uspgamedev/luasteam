@@ -125,4 +125,4 @@ function NetworkingUtils.SteamNetworkingIdentity_ToString(identity, cbBuf) end
 ---@return SteamNetworkingIdentity -- Value of: pIdentity
 function NetworkingUtils.SteamNetworkingIdentity_ParseString(pszStr) end
 
-Steam.NetworkingUtils = NetworkingUtils
+Steam.NetworkingUtils_SteamAPI = NetworkingUtils

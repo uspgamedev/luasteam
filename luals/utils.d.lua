@@ -154,3 +154,4 @@ function Utils.DismissFloatingGamepadTextInput() end
 function Utils.DismissGamepadTextInput() end
 
 Steam.Utils = Utils
+Steam.GameServerUtils = Utils

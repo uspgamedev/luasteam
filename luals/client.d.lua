@@ -35,3 +35,4 @@ function Client.GetIPCCallCount() end
 function Client.BShutdownIfAllPipesClosed() end
 
 Steam.Client = Client
+Steam.GameServerClient = Client
