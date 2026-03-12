@@ -75,6 +75,8 @@ jobs:
         run: make linux64 && mkdir -p build && cp luasteam.so build/linux64_luasteam.so
       - name: Build linux32
         run: make clean && make linux32 && cp luasteam.so build/linux32_luasteam.so
+      - name: Print dependencies
+        run: ldd build/linux64_luasteam.so && ldd build/linux32_luasteam.so
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -93,6 +95,8 @@ jobs:
           unzip -q sdk.zip
       - name: Build
         run: make osx && mkdir -p build && cp luasteam.so build/osx_luasteam.so
+      - name: Print dependencies
+        run: otool -L build/osx_luasteam.so
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
