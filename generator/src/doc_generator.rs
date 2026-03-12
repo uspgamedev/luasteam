@@ -66,11 +66,19 @@ pub struct ManualFunctionDoc {
 }
 
 #[derive(Debug, Deserialize, Default)]
+pub struct InterfaceDoc {
+    #[serde(default)]
+    pub notes: Vec<String>,
+}
+
+#[derive(Debug, Deserialize, Default)]
 pub struct CustomDocs {
     #[serde(flatten)]
     pub methods: HashMap<String, HashMap<String, CustomDoc>>,
     #[serde(default)]
     pub manual: HashMap<String, HashMap<String, ManualFunctionDoc>>,
+    #[serde(default)]
+    pub interface: HashMap<String, InterfaceDoc>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -177,6 +185,16 @@ impl DocGenerator {
         if interface.accessors.len() > 1 {
             doc.push_str(".. note::\n");
             doc.push_str(&format!("    This interface can be accessed has multiple accessors (e.g. a GameServer variant), the documentation shows ``{}`` everywhere but it can also be accessed with {}.\n\n", interface.accessors[0].pretty_name(), interface.accessors.iter().skip(1).map(|s| format!("``{}``", s.pretty_name())).collect::<Vec<_>>().join(", ")));
+        }
+
+        if let Some(interface_doc) = self.custom_docs.interface.get(&interface.classname)
+            && !interface_doc.notes.is_empty()
+        {
+            doc.push_str(".. note::\n");
+            for note in &interface_doc.notes {
+                doc.push_str(&format!("   * {}\n", note));
+            }
+            doc.push('\n');
         }
 
         // Collect manual methods for this interface (if any)

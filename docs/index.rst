@@ -8,7 +8,7 @@
 
 luasteam enables you to use SteamWorks API from Lua, for example (but not limited to) when you're building games with `Love2D <https://love2d.org/>`_.
 
-To learn how to use luasteam, check our `Getting Started <getting_started.html>`_ section.
+To learn how to use luasteam, check our `Getting Started <getting_started.html>`_ section. If you're already familiar with luasteam v4, you can check the `Migration Guide <migration.html>`_ to see what's new in v5+, since at lot has changed.
 
 While using this documentation, you may also like to check the `SteamWorks API Reference <https://partner.steamgames.com/doc/api>`_ and `SteamWorks API Overview <https://partner.steamgames.com/doc/sdk/api>`_.
 
@@ -18,7 +18,7 @@ While using this documentation, you may also like to check the `SteamWorks API R
 
     Getting Started <getting_started>
     Migration Guide from v4 <migration>
-    ISteamNetworkingSockets <networking_sockets>
+    Networking Sockets Example <networking_sockets_example>
 
 .. toctree::
     :maxdepth: 2

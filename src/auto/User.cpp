@@ -356,7 +356,7 @@ template <> void CallResultListener<StoreAuthURLResponse_t>::Result(StoreAuthURL
 		lua_pushnil(L);
 	} else {
 		lua_createtable(L, 0, 1);
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_szURL), 512);
+		lua_pushstring(L, data->m_szURL);
 		lua_setfield(L, -2, "m_szURL");
 	}
 	lua_pushboolean(L, io_fail);

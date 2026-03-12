@@ -173,11 +173,11 @@ static int MatchMakingKeyValuePair_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	MatchMakingKeyValuePair_t *self = (MatchMakingKeyValuePair_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szKey") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szKey), 256);
+		lua_pushstring(L, self->m_szKey);
 		return 1;
 	}
 	if (strcmp(key, "m_szValue") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szValue), 256);
+		lua_pushstring(L, self->m_szValue);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -348,15 +348,15 @@ static int gameserveritem_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szGameDir") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameDir), 32);
+		lua_pushstring(L, self->m_szGameDir);
 		return 1;
 	}
 	if (strcmp(key, "m_szMap") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szMap), 32);
+		lua_pushstring(L, self->m_szMap);
 		return 1;
 	}
 	if (strcmp(key, "m_szGameDescription") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameDescription), 64);
+		lua_pushstring(L, self->m_szGameDescription);
 		return 1;
 	}
 	if (strcmp(key, "m_nAppID") == 0) {
@@ -392,7 +392,7 @@ static int gameserveritem_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szGameTags") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szGameTags), 128);
+		lua_pushstring(L, self->m_szGameTags);
 		return 1;
 	}
 	if (strcmp(key, "m_steamID") == 0) {
@@ -1345,11 +1345,11 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTitle") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTitle), 129);
+		lua_pushstring(L, self->m_rgchTitle);
 		return 1;
 	}
 	if (strcmp(key, "m_rgchDescription") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchDescription), 8000);
+		lua_pushstring(L, self->m_rgchDescription);
 		return 1;
 	}
 	if (strcmp(key, "m_ulSteamIDOwner") == 0) {
@@ -1385,7 +1385,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTags") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTags), 1025);
+		lua_pushstring(L, self->m_rgchTags);
 		return 1;
 	}
 	if (strcmp(key, "m_hFile") == 0) {
@@ -1397,7 +1397,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_pchFileName), 260);
+		lua_pushstring(L, self->m_pchFileName);
 		return 1;
 	}
 	if (strcmp(key, "m_nFileSize") == 0) {
@@ -1409,7 +1409,7 @@ static int SteamUGCDetails_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchURL), 256);
+		lua_pushstring(L, self->m_rgchURL);
 		return 1;
 	}
 	if (strcmp(key, "m_unVotesUp") == 0) {
@@ -2036,7 +2036,7 @@ static int RemotePlayInput_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "padding") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->padding), 56);
+		lua_pushstring(L, self->padding);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -2447,11 +2447,11 @@ static int SteamNetConnectionInfo_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_szEndDebug") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szEndDebug), 128);
+		lua_pushstring(L, self->m_szEndDebug);
 		return 1;
 	}
 	if (strcmp(key, "m_szConnectionDescription") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szConnectionDescription), 128);
+		lua_pushstring(L, self->m_szConnectionDescription);
 		return 1;
 	}
 	if (strcmp(key, "m_nFlags") == 0) {
@@ -3590,7 +3590,7 @@ static int GameWebCallback_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	GameWebCallback_t *self = (GameWebCallback_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szURL), 256);
+		lua_pushstring(L, self->m_szURL);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -3637,7 +3637,7 @@ static int StoreAuthURLResponse_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	StoreAuthURLResponse_t *self = (StoreAuthURLResponse_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szURL), 512);
+		lua_pushstring(L, self->m_szURL);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -4129,11 +4129,11 @@ static int GameServerChangeRequested_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	GameServerChangeRequested_t *self = (GameServerChangeRequested_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgchServer") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchServer), 64);
+		lua_pushstring(L, self->m_rgchServer);
 		return 1;
 	}
 	if (strcmp(key, "m_rgchPassword") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchPassword), 64);
+		lua_pushstring(L, self->m_rgchPassword);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -4454,7 +4454,7 @@ static int GameRichPresenceJoinRequested_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchConnect") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchConnect), 256);
+		lua_pushstring(L, self->m_rgchConnect);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -5104,7 +5104,7 @@ static int OverlayBrowserProtocolNavigation_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	OverlayBrowserProtocolNavigation_t *self = (OverlayBrowserProtocolNavigation_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "rgchURI") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->rgchURI), 1024);
+		lua_pushstring(L, self->rgchURI);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -6429,7 +6429,7 @@ static int JoinPartyCallback_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchConnectString") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchConnectString), 256);
+		lua_pushstring(L, self->m_rgchConnectString);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -6690,7 +6690,7 @@ static int RemoteStorageFileShareResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchFilename") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchFilename), 260);
+		lua_pushstring(L, self->m_rgchFilename);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -7285,7 +7285,7 @@ static int RemoteStorageDownloadUGCResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_pchFileName), 260);
+		lua_pushstring(L, self->m_pchFileName);
 		return 1;
 	}
 	if (strcmp(key, "m_ulSteamIDOwner") == 0) {
@@ -7397,11 +7397,11 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTitle") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTitle), 129);
+		lua_pushstring(L, self->m_rgchTitle);
 		return 1;
 	}
 	if (strcmp(key, "m_rgchDescription") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchDescription), 8000);
+		lua_pushstring(L, self->m_rgchDescription);
 		return 1;
 	}
 	if (strcmp(key, "m_hFile") == 0) {
@@ -7433,7 +7433,7 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchTags") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchTags), 1025);
+		lua_pushstring(L, self->m_rgchTags);
 		return 1;
 	}
 	if (strcmp(key, "m_bTagsTruncated") == 0) {
@@ -7441,7 +7441,7 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_pchFileName") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_pchFileName), 260);
+		lua_pushstring(L, self->m_pchFileName);
 		return 1;
 	}
 	if (strcmp(key, "m_nFileSize") == 0) {
@@ -7453,7 +7453,7 @@ static int RemoteStorageGetPublishedFileDetailsResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchURL), 256);
+		lua_pushstring(L, self->m_rgchURL);
 		return 1;
 	}
 	if (strcmp(key, "m_eFileType") == 0) {
@@ -8934,7 +8934,7 @@ static int UserAchievementStored_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchAchievementName") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchAchievementName), 128);
+		lua_pushstring(L, self->m_rgchAchievementName);
 		return 1;
 	}
 	if (strcmp(key, "m_nCurProgress") == 0) {
@@ -9351,7 +9351,7 @@ static int UserAchievementIconFetched_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchAchievementName") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchAchievementName), 128);
+		lua_pushstring(L, self->m_rgchAchievementName);
 		return 1;
 	}
 	if (strcmp(key, "m_bAchieved") == 0) {
@@ -9663,7 +9663,7 @@ static int AppProofOfPurchaseKeyResponse_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchKey") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchKey), 240);
+		lua_pushstring(L, self->m_rgchKey);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -10744,7 +10744,7 @@ static int SteamUGCQueryCompleted_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchNextCursor") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchNextCursor), 256);
+		lua_pushstring(L, self->m_rgchNextCursor);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14015,7 +14015,7 @@ static int SteamInventoryRequestPricesResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchCurrency") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchCurrency), 4);
+		lua_pushstring(L, self->m_rgchCurrency);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14071,7 +14071,7 @@ static int SteamTimelineGamePhaseRecordingExists_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamTimelineGamePhaseRecordingExists_t *self = (SteamTimelineGamePhaseRecordingExists_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_rgchPhaseID") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchPhaseID), 64);
+		lua_pushstring(L, self->m_rgchPhaseID);
 		return 1;
 	}
 	if (strcmp(key, "m_ulRecordingMS") == 0) {
@@ -14232,7 +14232,7 @@ static int GetVideoURLResult_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchURL), 256);
+		lua_pushstring(L, self->m_rgchURL);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14530,7 +14530,7 @@ static int SteamRemotePlayTogetherGuestInvite_t_index(lua_State *L) {
 	const char *key = lua_tostring(L, 2);
 	SteamRemotePlayTogetherGuestInvite_t *self = (SteamRemotePlayTogetherGuestInvite_t*)lua_touserdata(L, 1);
 	if (strcmp(key, "m_szConnectURL") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_szConnectURL), 1024);
+		lua_pushstring(L, self->m_szConnectURL);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14730,7 +14730,7 @@ static int SteamNetAuthenticationStatus_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_debugMsg") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_debugMsg), 256);
+		lua_pushstring(L, self->m_debugMsg);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14802,7 +14802,7 @@ static int SteamRelayNetworkStatus_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_debugMsg") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_debugMsg), 256);
+		lua_pushstring(L, self->m_debugMsg);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -14947,7 +14947,7 @@ static int GSClientDeny_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_rgchOptionalText") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_rgchOptionalText), 128);
+		lua_pushstring(L, self->m_rgchOptionalText);
 		return 1;
 	}
 	lua_pushnil(L);
@@ -15070,7 +15070,7 @@ static int GSClientAchievementStatus_t_index(lua_State *L) {
 		return 1;
 	}
 	if (strcmp(key, "m_pchAchievement") == 0) {
-		lua_pushlstring(L, reinterpret_cast<const char*>(self->m_pchAchievement), 128);
+		lua_pushstring(L, self->m_pchAchievement);
 		return 1;
 	}
 	if (strcmp(key, "m_bUnlocked") == 0) {

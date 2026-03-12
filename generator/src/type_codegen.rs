@@ -289,7 +289,13 @@ impl Generator {
                 size,
                 is_const: _,
             } => {
-                if resolved.is_buffer() {
+                if ttype == "char" {
+                    // The technically correct here would be pushlstring, but when using char steam actually means a \0-terminated string, so pushlstring would put a \0 in the middle of the string, which doesn't look right.
+                    (
+                        format!("lua_pushstring(L, {});", value_accessor),
+                        LType::String,
+                    )
+                } else if resolved.is_buffer() {
                     (
                         format!(
                             "lua_pushlstring(L, reinterpret_cast<const char*>({}), {});",

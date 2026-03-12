@@ -437,7 +437,7 @@ template <> void CallResultListener<RemoteStorageDownloadUGCResult_t>::Result(Re
 		lua_setfield(L, -2, "m_nAppID");
 		lua_pushinteger(L, data->m_nSizeInBytes);
 		lua_setfield(L, -2, "m_nSizeInBytes");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_pchFileName), 260);
+		lua_pushstring(L, data->m_pchFileName);
 		lua_setfield(L, -2, "m_pchFileName");
 		luasteam::pushuint64(L, data->m_ulSteamIDOwner);
 		lua_setfield(L, -2, "m_ulSteamIDOwner");
@@ -646,7 +646,7 @@ template <> void CallResultListener<RemoteStorageFileShareResult_t>::Result(Remo
 		lua_setfield(L, -2, "m_eResult");
 		luasteam::pushuint64(L, data->m_hFile);
 		lua_setfield(L, -2, "m_hFile");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchFilename), 260);
+		lua_pushstring(L, data->m_rgchFilename);
 		lua_setfield(L, -2, "m_rgchFilename");
 	}
 	lua_pushboolean(L, io_fail);
@@ -696,9 +696,9 @@ template <> void CallResultListener<RemoteStorageGetPublishedFileDetailsResult_t
 		lua_setfield(L, -2, "m_nCreatorAppID");
 		lua_pushinteger(L, data->m_nConsumerAppID);
 		lua_setfield(L, -2, "m_nConsumerAppID");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchTitle), 129);
+		lua_pushstring(L, data->m_rgchTitle);
 		lua_setfield(L, -2, "m_rgchTitle");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchDescription), 8000);
+		lua_pushstring(L, data->m_rgchDescription);
 		lua_setfield(L, -2, "m_rgchDescription");
 		luasteam::pushuint64(L, data->m_hFile);
 		lua_setfield(L, -2, "m_hFile");
@@ -714,17 +714,17 @@ template <> void CallResultListener<RemoteStorageGetPublishedFileDetailsResult_t
 		lua_setfield(L, -2, "m_eVisibility");
 		lua_pushboolean(L, data->m_bBanned);
 		lua_setfield(L, -2, "m_bBanned");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchTags), 1025);
+		lua_pushstring(L, data->m_rgchTags);
 		lua_setfield(L, -2, "m_rgchTags");
 		lua_pushboolean(L, data->m_bTagsTruncated);
 		lua_setfield(L, -2, "m_bTagsTruncated");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_pchFileName), 260);
+		lua_pushstring(L, data->m_pchFileName);
 		lua_setfield(L, -2, "m_pchFileName");
 		lua_pushinteger(L, data->m_nFileSize);
 		lua_setfield(L, -2, "m_nFileSize");
 		lua_pushinteger(L, data->m_nPreviewFileSize);
 		lua_setfield(L, -2, "m_nPreviewFileSize");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchURL), 256);
+		lua_pushstring(L, data->m_rgchURL);
 		lua_setfield(L, -2, "m_rgchURL");
 		lua_pushinteger(L, data->m_eFileType);
 		lua_setfield(L, -2, "m_eFileType");

@@ -2,17 +2,14 @@ local Steam = require 'luasteam'
 
 local connection = nil
 
+print("Initializing client...")
 local ok = Steam.Init()
-print("Steam init", ok)
 local auth = Steam.NetworkingSockets.InitAuthentication()
-print("Auth init", auth)
-
-function Steam.NetworkingSockets.onConnectionChanged(data)
-    print ('Connection changed', data)
-end
 
 function Steam.NetworkingSockets.OnSteamNetAuthenticationStatus(data)
+    print('Auth status', data.m_eAvail, data.m_debugMsg)
     if data.m_eAvail == 100 and not connection then
+        print("Connecting...")
         local addr = Steam.newSteamNetworkingIPAddr {}
         addr:ParseString("127.0.0.1:55556")
         connection = Steam.NetworkingSockets.ConnectByIPAddress(addr, 0, nil)
@@ -20,8 +17,15 @@ function Steam.NetworkingSockets.OnSteamNetAuthenticationStatus(data)
 end
 
 local run = true
+function Steam.NetworkingSockets.OnSteamNetConnectionStatusChangedCallback(data)
+    if data.m_info.m_eState == Steam.k_ESteamNetworkingConnectionState_ClosedByPeer and data.m_hConn == connection then
+        print("Server closed connection.")
+        Steam.NetworkingSockets.CloseConnection(connection, 0, "", false)
+        run = false
+    end
+end
+
 local counter = 0
-local msg_time = nil
 while run do
     Steam.RunCallbacks()
 
@@ -30,20 +34,16 @@ while run do
 
         if n > 0 then
             for j, m in ipairs(messages) do
-                print("received message", j, m, "from connection", connection)
+                print("Received message from connection " .. connection .. ": " .. m:GetData())
+                m:Release()
+                print("Sending message back...")
                 local data = "Hello server! This is the client! Thank you!"
                 Steam.NetworkingSockets.SendMessageToConnection(connection, data, #data, Steam.k_nSteamNetworkingSend_Reliable)
-                m:Release()
-                msg_time = os.time()
             end
         end
     end
-
-    if msg_time ~= nil and os.time() > msg_time + 3 then
-        run = false
-    end
 end
 
-Steam.NetworkingSockets.CloseConnection(connection, 0, "", false)
+print("Shutting down...")
 Steam.Shutdown()
 

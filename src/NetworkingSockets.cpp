@@ -87,6 +87,8 @@ void add_NetworkingSockets(lua_State *L) {
     add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_user);
     add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_user);
     add_func(L, "SendMessages", luasteam_SendMessages_user);
+    lua_pushvalue(L, -1);
+    luasteam::NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
     lua_setfield(L, -2, "NetworkingSockets");
 }
 
@@ -96,7 +98,9 @@ void add_GameServerNetworkingSockets(lua_State *L) {
     add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_gameserver);
     add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_gameserver);
     add_func(L, "SendMessages", luasteam_SendMessages_gameserver);
-    lua_setfield(L, -2, "NetworkingSockets");
+    lua_pushvalue(L, -1);
+    luasteam::GameServerNetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_setfield(L, -2, "GameServerNetworkingSockets");
 }
 
 } // namespace luasteam

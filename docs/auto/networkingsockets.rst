@@ -9,6 +9,9 @@ ISteamNetworkingSockets
 .. note::
     This interface can be accessed has multiple accessors (e.g. a GameServer variant), the documentation shows ``NetworkingSockets_SteamAPI`` everywhere but it can also be accessed with ``GameServerNetworkingSockets_SteamAPI``.
 
+.. note::
+   * For a complete client/server walkthrough, see :doc:`../networking_sockets_example`.
+
 List of Functions
 -----------------
 

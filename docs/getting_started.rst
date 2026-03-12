@@ -44,6 +44,24 @@ The rest of the document covers the most important differences and adjustments i
 
 ----
 
+
+IDE Autocompletion
+==================
+
+The ``luals/`` directory contains ``.d.lua`` type definitions for the entire API.
+Point the `Lua Language Server <https://github.com/LuaLS/lua-language-server>`_ at
+it for autocompletion, inline docs, and type checking in your editor.
+
+Add to ``.luarc.json``:
+
+.. code-block:: json
+
+    {
+      "workspace.library": ["path/to/luasteam/luals"]
+    }
+
+----
+
 Basic Usage
 ===========
 
@@ -137,23 +155,6 @@ Both persistent callbacks and one-shot call results are dispatched only when you
 
 Call this once per frame (e.g. in your game loop or ``love.update``). Without it,
 no callbacks will fire.
-
-----
-
-IDE Autocompletion
-==================
-
-The ``luals/`` directory contains ``.d.lua`` type definitions for the entire API.
-Point the `Lua Language Server <https://github.com/LuaLS/lua-language-server>`_ at
-it for autocompletion, inline docs, and type checking in your editor.
-
-Add to ``.luarc.json``:
-
-.. code-block:: json
-
-    {
-      "workspace.library": ["path/to/luasteam/luals"]
-    }
 
 ----
 

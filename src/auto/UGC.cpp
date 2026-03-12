@@ -583,7 +583,7 @@ template <> void CallResultListener<SteamUGCQueryCompleted_t>::Result(SteamUGCQu
 		lua_setfield(L, -2, "m_unTotalMatchingResults");
 		lua_pushboolean(L, data->m_bCachedData);
 		lua_setfield(L, -2, "m_bCachedData");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchNextCursor), 256);
+		lua_pushstring(L, data->m_rgchNextCursor);
 		lua_setfield(L, -2, "m_rgchNextCursor");
 	}
 	lua_pushboolean(L, io_fail);

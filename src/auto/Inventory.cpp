@@ -150,7 +150,7 @@ template <> void CallResultListener<SteamInventoryRequestPricesResult_t>::Result
 		lua_createtable(L, 0, 2);
 		lua_pushinteger(L, data->m_result);
 		lua_setfield(L, -2, "m_result");
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchCurrency), 4);
+		lua_pushstring(L, data->m_rgchCurrency);
 		lua_setfield(L, -2, "m_rgchCurrency");
 	}
 	lua_pushboolean(L, io_fail);

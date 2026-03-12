@@ -84,7 +84,7 @@ template <> void CallResultListener<SteamTimelineGamePhaseRecordingExists_t>::Re
 		lua_pushnil(L);
 	} else {
 		lua_createtable(L, 0, 5);
-		lua_pushlstring(L, reinterpret_cast<const char*>(data->m_rgchPhaseID), 64);
+		lua_pushstring(L, data->m_rgchPhaseID);
 		lua_setfield(L, -2, "m_rgchPhaseID");
 		luasteam::pushuint64(L, data->m_ulRecordingMS);
 		lua_setfield(L, -2, "m_ulRecordingMS");

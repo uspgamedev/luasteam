@@ -355,7 +355,11 @@ impl Generator {
             &dual_accessor_names,
             &interface_counts,
         );
-        let all_names: Vec<_> = interface_names.iter().chain(gs_names.iter()).map(String::as_str).collect();
+        let all_names: Vec<_> = interface_names
+            .iter()
+            .chain(gs_names.iter())
+            .map(String::as_str)
+            .collect();
         self.luals_generator
             .write_index(&luals_dir, &all_names, &self.opaque_handles);
         self.luals_generator

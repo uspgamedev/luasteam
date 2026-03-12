@@ -11,11 +11,15 @@ The old API was hand-written and made many convenience choices (renaming fields,
 directly from the API and mirrors the C++ signatures as closely as Lua
 allows. This may be less ergonomic to use, however, it scales better, we can support many more functions much more quickly. Implementing each function in v4 took a lot of work to analyze precisely what it does and how to make it as ergonomic as possible in Lua.
 
-Benefits:
-* **More functions supported**: the first release of v5 supported over 800 hundred Steam API functions (over 90% of all Steam API functions), while v4 supported only XXX.
-* **Less mental overhead**: Now the API works almost exactly the same as the Steam API, so you can just read that documentation and follow it, instead of having to constantly look up two distinct documentations.
-Drawbacks:
-* **Less ergonomic**
+.. list-table::
+  :header-rows: 0
+  :widths: 50
+
+  * - **BENEFITS:**
+  * - **More functions supported:** The first release of v5 supported over 800 hundred Steam API functions (over 90% of all Steam API functions), while v4 supported only XXX.
+  * - **Less mental overhead:** Now the API works almost exactly the same as the Steam API, so you can just read that documentation and follow it, instead of having to constantly look up two distinct documentations.
+  * - **DRAWBACKS:**
+  * - **Less ergonomic:** Sometimes you have to deal with buffer sizes, bitmasks, and other C++-isms manually.
 
 
 .. contents:: Contents
