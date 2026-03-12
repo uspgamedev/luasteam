@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_NETWORKINGMESSAGES
 #define LUASTEAM_NETWORKINGMESSAGES
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 

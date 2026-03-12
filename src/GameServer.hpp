@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_GAMESERVER
 #define LUASTEAM_GAMESERVER
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 

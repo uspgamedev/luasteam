@@ -463,7 +463,7 @@ impl Generator {
         structs_with_ptr_sorted.sort();
         for st in structs_with_ptr_sorted {
             if MANUAL_STRUCTS.iter().any(|(n, _)| *n == st.as_str()) {
-                continue; // declared in common.hpp
+                continue; // declared in Common.hpp
             }
             h.line(&format!(
                 "{} *check_{}_ptr(lua_State *L, int index);",

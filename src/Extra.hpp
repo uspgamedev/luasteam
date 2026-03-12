@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_EXTRA
 #define LUASTEAM_EXTRA
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 

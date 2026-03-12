@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_NETWORKINGSOCKETS
 #define LUASTEAM_NETWORKINGSOCKETS
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 

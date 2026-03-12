@@ -1,7 +1,7 @@
 #ifndef LUASTEAM_NETWORKINGUTILS
 #define LUASTEAM_NETWORKINGUTILS
 
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace luasteam {
 
