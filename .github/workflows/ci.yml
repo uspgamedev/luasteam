@@ -12,6 +12,45 @@ on:
     types: [created]
 
 jobs:
+  validate-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Update submodules
+        run: git submodule update --init
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format curl tar
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install LuaLS
+        run: |
+          API_JSON=$(curl -s https://api.github.com/repos/LuaLS/lua-language-server/releases/latest)
+          ASSET_URL=$(echo "$API_JSON" | grep -o 'https://[^"]*lua-language-server-[^"]*-linux-x64.tar.gz' | head -n1)
+          if [ -z "$ASSET_URL" ]; then
+            echo "Failed to find latest LuaLS linux-x64 asset URL"
+            exit 1
+          fi
+          curl -L "$ASSET_URL" -o luals.tar.gz
+          mkdir -p /tmp/luals
+          tar -xzf luals.tar.gz -C /tmp/luals
+          echo "/tmp/luals/bin" >> "$GITHUB_PATH"
+      - name: Validate make generate is clean
+        run: |
+          make generate
+          git diff --exit-code
+      - name: Validate make fmt is clean
+        env:
+          CLANG_FORMAT: clang-format
+        run: |
+          make fmt
+          git diff --exit-code
+      - name: Validate LuaLS typings
+        env:
+          LUA_LANGUAGE_SERVER: lua-language-server
+        run: make check-luals
+
   build-linux:
     runs-on: ubuntu-latest
     container: buildpack-deps:20.04 # Older version is better for compatibility
