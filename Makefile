@@ -26,13 +26,12 @@ OSX_FLAGS=$(IPATHS) -mmacosx-version-min=$(OSX_MIN_VERSION)
 
 .PHONY: all osx linux32 linux64 win32 win64 clean docs check-luals fmt
 
+all:
+	@echo "choose platform: linux64 | linux32 | win32 | win64 | osx"
 
 clean:
 	cd $(LUAJIT_PATH) && $(MAKE) clean
 	rm -f luasteam.so luasteam.dll
-
-all:
-	@echo "choose platform: linux64 | linux32 | win32 | win64 | osx"
 
 luajit-osx:
 	# Build x86_64
