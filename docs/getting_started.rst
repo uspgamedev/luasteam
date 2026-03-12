@@ -11,7 +11,7 @@ platform and rename it to ``luasteam.dll`` (Windows) or ``luasteam.so`` (Linux) 
 ``luasteam.dylib`` (macOS). Copy it to the same directory as your Lua files so that
 ``require 'luasteam'`` works.
 
-See the ``mwe/`` directory for a minimal working example.
+See the ``examples/basic`` directory for a minimal working example.
 
 On Linux you may need ``LD_LIBRARY_PATH=. love ...`` when running with LÖVE. This tells bash to look in the current directory for shared libraries.
 

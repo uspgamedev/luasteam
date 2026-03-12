@@ -14,14 +14,9 @@ cd generator && cargo run
 make linux64          # Linux 64-bit
 make osx              # macOS universal binary
 mingw32-make win64    # Windows 64-bit (MSYS2/MinGW)
-
-# Run integration test (after build)
-make test-linux64
-make test-win64
-make test-osx
 ```
 
-The test target runs `mwe/main-nolove.lua` via LuaJIT, which verifies the library loads and key enums/interfaces exist.
+The test runs `examples/basic/main.lua` via LuaJIT, which verifies the library loads and key enums/interfaces exist.
 
 ## Architecture
 
@@ -29,7 +24,7 @@ The test target runs `mwe/main-nolove.lua` via LuaJIT, which verifies the librar
 generator/          Rust code — reads sdk/steam_api.json, emits src/auto/*.cpp
 src/auto/           AUTO-GENERATED C++ — never edit manually
 src/*.cpp           Manual bindings for complex/unsupported cases
-mwe/                Minimal working example used as integration test
+examples/           Minimal working examples used as integration test
 docs/               Sphinx documentation
 luals/              LuaLS type definition files (.d.lua) — auto-generated
 ```
