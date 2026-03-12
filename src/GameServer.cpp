@@ -2,9 +2,9 @@
 #include "GameServer.hpp"
 #include "../sdk/public/steam/steam_gameserver.h"
 #include "Extra.hpp"
+#include "NetworkingSockets.hpp"
+#include "NetworkingUtils.hpp"
 #include "auto/auto.hpp"
-#include "networkingSockets.hpp"
-#include "networkingUtils.hpp"
 #include <sstream>
 #include <vector>
 
