@@ -2,7 +2,7 @@ use crate::lua_type_info::{LType, LuaMethodSignature};
 use crate::schema::{CallbackStruct, Interface, SkipReason, Struct};
 use crate::type_resolver::TypeResolver;
 use serde::Deserialize;
-use std::collections::HashMap;
+use std::collections::{BTreeSet, HashMap};
 use std::fs;
 
 /// Minimal doc info for an auto-generated struct, passed from main.rs to the generators.
@@ -296,15 +296,27 @@ impl DocGenerator {
 
         // Skipped methods
         if !skipped_methods.is_empty() {
+            let all_names: BTreeSet<&str> = method_signatures
+                .iter()
+                .map(|(n, _)| n.as_str())
+                .chain(manual_methods.iter().map(|(n, _)| n.as_str()))
+                .collect();
             doc.push_str("\nUnimplemented Methods\n");
             doc.push_str("---------------------\n\n");
             for (method_name, reason) in skipped_methods {
                 // Extract just the method name without interface prefix
                 let method_name_only = method_name.split("::").last().unwrap_or(method_name);
                 doc.push_str(&format!(
-                    ".. function:: {}.{}\n\n",
-                    lua_namespace, method_name_only
+                    ".. function:: {}.{}\n{}\n",
+                    lua_namespace,
+                    method_name_only,
+                    if all_names.contains(method_name_only) {
+                        "    :no-index:\n"
+                    } else {
+                        ""
+                    },
                 ));
+
                 doc.push_str(&format!(
                     "    ✋ **Not implemented** - {}\n",
                     reason.description()

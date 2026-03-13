@@ -147,9 +147,7 @@ impl Generator {
 
         blocklist.insert(
             "SteamAPI_ISteamUGC_GetQueryFirstUGCKeyValueTag".to_string(),
-            SkipReason::ManualBlocklist(
-                "overload where difference in name is not suffix".to_string(),
-            ),
+            SkipReason::ManualBlocklist("Overload which is not in documentation".to_string()),
         );
 
         // Has function pointers — manual implementation in Client.cpp shared with Utils
@@ -195,34 +193,20 @@ impl Generator {
         }
 
         // SteamNetworkingMessage_t is manually implemented (not in steam_api.json, pointer-based)
-        for (name, reason) in [
-            (
-                "SteamAPI_ISteamNetworkingUtils_AllocateMessage",
-                "SteamNetworkingMessage_t binding in NetworkingUtils.cpp",
-            ),
-            (
-                "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnConnection",
-                "SteamNetworkingMessage_t out-array in NetworkingSockets.cpp",
-            ),
-            (
-                "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnPollGroup",
-                "SteamNetworkingMessage_t out-array in NetworkingSockets.cpp",
-            ),
-            (
-                "SteamAPI_ISteamNetworkingSockets_SendMessages",
-                "SteamNetworkingMessage_t input-array in NetworkingSockets.cpp",
-            ),
+        for name in [
+            "SteamAPI_ISteamNetworkingUtils_AllocateMessage",
+            "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnConnection",
+            "SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnPollGroup",
+            "SteamAPI_ISteamNetworkingSockets_SendMessages",
+            "SteamAPI_ISteamNetworkingMessages_ReceiveMessagesOnChannel",
         ] {
-            blocklist.insert(name.to_string(), SkipReason::ManualImpl(reason.to_string()));
+            blocklist.insert(
+                name.to_string(),
+                SkipReason::ManualImpl(
+                    "Manually implemented due to SteamNetworkingMessage_t".to_string(),
+                ),
+            );
         }
-
-        // Not yet implemented — blocked until SteamNetworkingMessage_t out-array in NetworkingMessages
-        blocklist.insert(
-            "SteamAPI_ISteamNetworkingMessages_ReceiveMessagesOnChannel".to_string(),
-            SkipReason::ManualBlocklist(
-                "SteamNetworkingMessage_t out-array; not yet implemented".to_string(),
-            ),
-        );
 
         for m in self
             .api

@@ -34,7 +34,7 @@ When developing, make sure Steam is running and place a ``steam_appid.txt`` file
 executable.
 
 How to Use
-=========
+==========
 
 luasteam aims to be a **thin wrapper** around the C++ Steamworks API. It tries to follow the C++ API as closely as possible, with only a few adjustments where necessary to fit Lua's semantics. If you're familiar with the C++ API, you should be able to pick up luasteam easily.
 

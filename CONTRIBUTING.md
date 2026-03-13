@@ -60,7 +60,7 @@ To see the documentation, run `make docs` and then open `docs/_build/html/index.
 *   **C++:** Required to compile the bindings. On Windows, I recommend using MSYS2.
 *   **Steamworks SDK:** Download and extract into the project root (folder `sdk`).
 *   **LuaJIT:** Clone the submodule (`git submodule update --init`). It builds as part of the project.
-*   **Sphinx:** Required when building documentation. Use `pip install sphinx`.
+*   **Sphinx:** Required when building documentation. Use `pip install sphinx sphinx-rtd-theme`.
 *   **LuaLS:** Required when validating the `.d.lua` files.
 
 For basic usage, Rust, C++ and the SDK are enough.

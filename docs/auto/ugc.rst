@@ -1468,8 +1468,9 @@ Unimplemented Methods
 ---------------------
 
 .. function:: UGC.GetQueryUGCKeyValueTag
+    :no-index:
 
-    ✋ **Not implemented** - blocklist: overload where difference in name is not suffix
+    ✋ **Not implemented** - blocklist: Overload which is not in documentation
     
     :SteamWorks: `GetQueryUGCKeyValueTag <https://partner.steamgames.com/doc/api/ISteamUGC#GetQueryUGCKeyValueTag>`_
 

@@ -101,7 +101,7 @@ level to mirror ``Steam.Init`` / ``Shutdown`` / ``RunCallbacks``:
 ----
 
 Parameter, Function and Return Value Changes
-======================
+============================================
 
 Many functions now take a different number of parameters, or parameters of different sizes. Luasteam v4 aimed for ergonomics, so many useless parameters were removed (such as passing a table and also its size), while in v5 all parameters are required, so the conversion can be done automatically. The function return values might also be different, double check when migrating.
 
