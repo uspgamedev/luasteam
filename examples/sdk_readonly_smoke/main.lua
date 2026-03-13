@@ -449,7 +449,7 @@ run("Steam.UserStats.RequestUserStats(first friend)", function()
     return tostring(first_friend)
 end)
 
-local wait_until = os.clock() + 1.0
+local wait_until = os.clock() + 3.0
 while os.clock() < wait_until do
     Steam.RunCallbacks()
 end
