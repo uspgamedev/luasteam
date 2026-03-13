@@ -67,7 +67,8 @@ EXTERN int luasteam_GameServerClient_SetWarningMessageHook(lua_State *L) {
 namespace luasteam {
 
 void add_Client(lua_State *L) {
-    lua_createtable(L, 0, 1);
+    lua_createtable(L, 0, luasteam::Client_count + 1);
+    register_Client_auto(L, false);
     add_func(L, "SetWarningMessageHook", luasteam_Client_SetWarningMessageHook);
     lua_setfield(L, -2, "Client");
 }

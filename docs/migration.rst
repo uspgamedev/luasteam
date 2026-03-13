@@ -16,7 +16,7 @@ allows. This may be less ergonomic to use, however, it scales better, we can sup
   :widths: 50
 
   * - **BENEFITS:**
-  * - **More functions supported:** The first release of v5 supported over 800 hundred Steam API functions (over 90% of all Steam API functions), while v4 supported only XXX.
+  * - **More functions supported:** The first release of v5 supported over 800 hundred Steam API functions (over 90% of all Steam API functions), while v4 supported only 122.
   * - **Less mental overhead:** Now the API works almost exactly the same as the Steam API, so you can just read that documentation and follow it, instead of having to constantly look up two distinct documentations.
   * - **DRAWBACKS:**
   * - **Less ergonomic:** Sometimes you have to deal with buffer sizes, bitmasks, and other C++-isms manually.
