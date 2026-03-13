@@ -3,7 +3,7 @@
 
 static int ISteamMatchmakingServerListResponseMetatable_ref = LUA_NOREF;
 
-struct ISteamMatchmakingServerListResponseImpl : public ISteamMatchmakingServerListResponse {
+struct ISteamMatchmakingServerListResponseImpl final : public ISteamMatchmakingServerListResponse {
 	lua_State *L;
 	int ref_ServerResponded;
 	int ref_ServerFailedToRespond;
@@ -59,7 +59,7 @@ static int ISteamMatchmakingServerListResponse_gc(lua_State *L) {
 
 static int ISteamMatchmakingPingResponseMetatable_ref = LUA_NOREF;
 
-struct ISteamMatchmakingPingResponseImpl : public ISteamMatchmakingPingResponse {
+struct ISteamMatchmakingPingResponseImpl final : public ISteamMatchmakingPingResponse {
 	lua_State *L;
 	int ref_ServerResponded;
 	int ref_ServerFailedToRespond;
@@ -102,7 +102,7 @@ static int ISteamMatchmakingPingResponse_gc(lua_State *L) {
 
 static int ISteamMatchmakingPlayersResponseMetatable_ref = LUA_NOREF;
 
-struct ISteamMatchmakingPlayersResponseImpl : public ISteamMatchmakingPlayersResponse {
+struct ISteamMatchmakingPlayersResponseImpl final : public ISteamMatchmakingPlayersResponse {
 	lua_State *L;
 	int ref_AddPlayerToList;
 	int ref_PlayersFailedToRespond;
@@ -155,7 +155,7 @@ static int ISteamMatchmakingPlayersResponse_gc(lua_State *L) {
 
 static int ISteamMatchmakingRulesResponseMetatable_ref = LUA_NOREF;
 
-struct ISteamMatchmakingRulesResponseImpl : public ISteamMatchmakingRulesResponse {
+struct ISteamMatchmakingRulesResponseImpl final : public ISteamMatchmakingRulesResponse {
 	lua_State *L;
 	int ref_RulesResponded;
 	int ref_RulesFailedToRespond;

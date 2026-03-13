@@ -72,7 +72,7 @@ impl Generator {
             cpp.preceeding_blank_line();
 
             // Impl struct
-            cpp.line(&format!("struct {}Impl : public {} {{", name, name));
+            cpp.line(&format!("struct {}Impl final : public {} {{", name, name));
             cpp.indent_right();
             cpp.line("lua_State *L;");
             for method in &iface.methods {

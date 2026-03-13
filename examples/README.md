@@ -9,3 +9,4 @@ To test, copy the `luasteam.dll` or `luasteam.so`, and the Steam SDK .dll or .so
 - `basic`: Tests luasteam can be imported without crashing, and has some basic interfaces and enums set up. Does not need Steam running.
 - `basic_love`: Tests luasteam can be imported without crashing, and prints to the screen using LOVE2D. Does not need Steam running.
 - `socket_client`/`socket_server`: By running both, you can test the socket API.
+- `sdk_readonly_smoke`: End-to-end smoke test for many Steam SDK functions (User, Friends, Apps, Utils, Networking, RemoteStorage, UGC, Matchmaking, UserStats callbacks) using read-only/safe calls only.
