@@ -49,8 +49,8 @@ luajit-osx:
 	lipo -create -output $(LUAJIT_PATH)/src/luajit $(LUAJIT_PATH)/src/luajit_x86_64 $(LUAJIT_PATH)/src/luajit_arm64
 
 osx: luajit-osx
-	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
-	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib $(LUAJIT_PATH)/src/libluajit.a -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch arm64 ${STEAM_LIB}/osx/libsteam_api.dylib -undefined dynamic_lookup -o $(OSX_OUT).arm64 -shared -fPIC $(OSX_FLAGS)
+	$(CXX) $(SRC) $(CPP_FLAGS) -arch x86_64 ${STEAM_LIB}/osx/libsteam_api.dylib -undefined dynamic_lookup -o $(OSX_OUT).x86_64 -shared -fPIC $(OSX_FLAGS)
 	lipo -create -output $(OSX_OUT) $(OSX_OUT).arm64 $(OSX_OUT).x86_64
 	codesign -s - $(OSX_OUT)
 	# Test
@@ -72,12 +72,12 @@ luajit-32-win:
 	cd $(LUAJIT_PATH) && $(MAKE) -j HOST_CC=$(WINPREF32)gcc CROSS=$(WINPREF32) TARGET_STRIP=strip
 
 linux64: luajit-64
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux64/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && ls && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
 
 
 linux32: luajit-32
-	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS) ./luajit/src/libluajit.so
+	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
 	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux32/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && ls && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
 
 
