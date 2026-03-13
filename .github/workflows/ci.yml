@@ -9,7 +9,8 @@ on:
   pull_request:
     branches: [master]
   release:
-    types: [created]
+    types: [created, published, released]
+  workflow_dispatch:
 
 jobs:
   validate-consistency:
