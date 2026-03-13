@@ -874,13 +874,21 @@ impl DocGenerator {
 
     pub fn generate_structs_doc(&self, structs: &[StructDocInfo<'_>]) -> String {
         let mut doc = String::new();
+        let mut sorted_structs: Vec<&StructDocInfo<'_>> = structs.iter().collect();
+        sorted_structs.sort_by(|a, b| a.name.cmp(b.name));
 
         doc.push_str("=======\nStructs\n=======\n\n");
         doc.push_str(".. note::\n");
         doc.push_str("   These structs are auto-generated as Lua userdata objects.\n");
         doc.push_str("   Create them with the ``Steam.new<StructName>()`` constructor.\n\n");
+        doc.push_str("List of Structs\n");
+        doc.push_str("---------------\n");
+        for st in &sorted_structs {
+            doc.push_str(&format!("* :ref:`{} <struct-{}>`\n", st.name, st.name));
+        }
+        doc.push('\n');
 
-        for st in structs {
+        for st in &sorted_structs {
             // Section header with RST label for cross-referencing
             let bar = "-".repeat(st.name.len());
             doc.push_str(&format!(".. _struct-{}:\n\n", st.name));
