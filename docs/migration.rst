@@ -103,7 +103,7 @@ level to mirror ``Steam.Init`` / ``Shutdown`` / ``RunCallbacks``:
 Parameter, Function and Return Value Changes
 ============================================
 
-Many functions now take a different number of parameters, or parameters of different sizes. Luasteam v4 aimed for ergonomics, so many useless parameters were removed (such as passing a table and also its size), while in v5 all parameters are required, so the conversion can be done automatically. The function return values might also be different, double check when migrating.
+Many functions now take a different number of parameters, or parameters of different types. Luasteam v4 aimed for ergonomics, so many useless parameters were removed (such as passing a table and also its size), while in v5 all parameters are required, so the conversion can be done automatically. The function return values might also be different, double check when migrating.
 
 For example, ``UGC.getSubscribedItems()`` returned a table with the ids in v4, while ``UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)`` in v5 takes a ``cMaxEntries`` integer with the size of the array to be allocated, which can be obtained from ``UGC.GetNumSubscribedItems(bIncludeLocallyDisabled)``, as well as taking an extra parameter ``bIncludeLocallyDisabled`` which took a default value in v4. Furthermore, it returns an integer as its first returned value (the size of the returned table), which was ommitted in v4.
 
