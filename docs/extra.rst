@@ -25,7 +25,7 @@ Function Reference
 
     local function saveMyId()
         -- This is highly useless since your ID won't change, but you get the point.
-        writeFile('my_id.txt', tostring(Steam.user.getSteamID()))
+        writeFile('my_id.txt', tostring(Steam.User.GetSteamID()))
     end
 
     local function readMyId()

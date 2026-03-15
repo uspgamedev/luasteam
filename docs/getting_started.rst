@@ -357,8 +357,7 @@ Some callbacks carry no data — they are pure notifications:
 
 .. code-block:: lua
 
-    function Steam.User.OnSteamServersConnected(data)
-        -- data has no fields
+    function Steam.User.OnSteamServersConnected()
         print("Connected to Steam servers")
     end
 

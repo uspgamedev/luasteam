@@ -4,6 +4,7 @@
 #include "Extra.hpp"
 #include "NetworkingSockets.hpp"
 #include "NetworkingUtils.hpp"
+#include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
 #include <sstream>
 #include <vector>
@@ -25,6 +26,8 @@ EXTERN int luasteam_init_server(lua_State *L) {
     bool success = SteamGameServer_Init(ip, usGamePort, usQueryPort, eServerMode, version);
     if (success) {
         luasteam::init_Common(L);
+        luasteam::init_structs_auto(L);
+        luasteam::init_SteamNetworkingMessage_t(L);
         luasteam::init_GameServerNetworkingSockets_auto(L);
         luasteam::init_networkingUtils(L);
         luasteam::init_GameServer_auto(L);
@@ -64,6 +67,8 @@ EXTERN int luasteam_shutdown_server(lua_State *L) {
     luasteam::shutdown_GameServer_auto(L);
     luasteam::shutdown_networkingUtils(L);
     luasteam::shutdown_GameServerNetworkingSockets_auto(L);
+    luasteam::shutdown_SteamNetworkingMessage_t(L);
+    luasteam::shutdown_structs_auto(L);
     luasteam::shutdown_Common(L);
     return 0;
 }

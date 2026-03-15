@@ -156,7 +156,7 @@ Function Reference
 
     -- Connect to another player using their Steam identity
     local id = Steam.newSteamNetworkingIdentity {}
-    id:setSteamID(friendSteamID)
+    id:SetSteamID(friendSteamID)
     local hConn = Steam.NetworkingSockets.ConnectP2P(id, 0, 0, nil)
 
 .. function:: NetworkingSockets.ConnectToHostedDedicatedServer(identityTarget, nRemoteVirtualPort, nOptions, pOptions)

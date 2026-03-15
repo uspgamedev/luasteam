@@ -447,7 +447,12 @@ Steam.GameServer.SetDedicatedServer(true)
 [ISteamGameServer.BeginAuthSession]
 example = """
 -- Validate an auth ticket received from a client
-Steam.GameServer.BeginAuthSession(authTicket, steamID)
+local result = Steam.GameServer.BeginAuthSession(authTicket, authTicketSize, clientSteamID)
+if result == k_EBeginAuthSessionResultOK then
+    print('Started auth session for', clientSteamID)
+else
+    print('Failed to start auth session', result)
+end
 """
 
 [ISteamGameServer.EndAuthSession]
@@ -2460,7 +2465,7 @@ local hSocket = Steam.NetworkingSockets.CreateListenSocketP2P(0, 0, nil)
 example = """
 -- Connect to another player using their Steam identity
 local id = Steam.newSteamNetworkingIdentity {}
-id:setSteamID(friendSteamID)
+id:SetSteamID   (friendSteamID)
 local hConn = Steam.NetworkingSockets.ConnectP2P(id, 0, 0, nil)
 """
 
