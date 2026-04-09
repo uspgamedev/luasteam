@@ -92,8 +92,8 @@ win64: luajit-64
 
 
 win32: luajit-32-win
-	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/win32/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
-	cp luasteam.dll $(MWE_DIR) && cp $(STEAM_LIB)/win32/steam_api.dll $(MWE_DIR) && cd $(MWE_DIR) && $(LUAJIT) main.lua
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
+	cp luasteam.dll $(MWE_DIR) && cp $(STEAM_LIB)/steam_api.dll $(MWE_DIR) && cd $(MWE_DIR) && $(LUAJIT) main.lua
 
 generate:
 	cd generator && cargo run
