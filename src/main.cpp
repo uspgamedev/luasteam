@@ -7,7 +7,7 @@
 
 // Creates and returns a table with all functions
 EXTERN int luaopen_luasteam(lua_State *L) {
-    lua_createtable(L, 0, 6);
+    lua_createtable(L, 0, 0);
     luasteam::add_Core(L);
     luasteam::add_Common(L);
     luasteam::add_Extra(L);

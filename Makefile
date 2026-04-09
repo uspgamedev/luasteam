@@ -67,18 +67,18 @@ luajit-32:
 WINPREF32=i686-w64-mingw32-
 
 # The TARGET=strip is needed because otherwise it tries to use WINPREF32-strip
-# which doesn't exist. It's not actually the 32-bit one but I thin things work.
+# which doesn't exist. It's not actually the 32-bit one but I think things work.
 luajit-32-win:
 	cd $(LUAJIT_PATH) && $(MAKE) -j HOST_CC=$(WINPREF32)gcc CROSS=$(WINPREF32) TARGET_STRIP=strip
 
 linux64: luajit-64
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux64/libsteam_api.so -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
-	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux64/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && ls && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
+	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux64/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
 
 
 linux32: luajit-32
 	$(CXX) $(SRC) $(CPP_FLAGS) ${STEAM_LIB}/linux32/libsteam_api.so -m32 -o $(GNU_OUT) -shared -fPIC $(GNU_FLAGS)
-	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux32/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && ls && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
+	cp luasteam.so $(MWE_DIR) && cp $(LUAJIT_PATH)/src/libluajit.so $(MWE_DIR)/libluajit-5.1.so.2 && cp ${STEAM_LIB}/linux32/libsteam_api.so $(MWE_DIR) && cd $(MWE_DIR) && LD_LIBRARY_PATH=. $(LUAJIT) main.lua
 
 
 WINDOWS_LUAJIT_LIB=$(LUAJIT_PATH)/src/lua51.dll
@@ -92,8 +92,8 @@ win64: luajit-64
 
 
 win32: luajit-32-win
-	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
-	cp luasteam.dll $(MWE_DIR) && cp $(STEAM_LIB)/steam_api.dll $(MWE_DIR) && cd $(MWE_DIR) && $(LUAJIT) main.lua
+	i686-w64-mingw32-g++ $(SRC) $(CPP_FLAGS) -m32 $(IPATHS) $(WINDOWS_LUAJIT_LIB) $(STEAM_LIB)/win32/steam_api.lib $(WINDOWS_FLAGS) -shared -o $(WINDOWS_OUT)
+	cp luasteam.dll $(MWE_DIR) && cp $(STEAM_LIB)/win32/steam_api.dll $(MWE_DIR) && cd $(MWE_DIR) && $(LUAJIT) main.lua
 
 generate:
 	cd generator && cargo run

@@ -105,7 +105,7 @@ Parameter, Function and Return Value Changes
 
 Many functions now take a different number of parameters, or parameters of different types. Luasteam v4 aimed for ergonomics, so many useless parameters were removed (such as passing a table and also its size), while in v5 all parameters are required, so the conversion can be done automatically. The function return values might also be different, double check when migrating.
 
-For example, ``UGC.getSubscribedItems()`` returned a table with the ids in v4, while ``UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)`` in v5 takes a ``cMaxEntries`` integer with the size of the array to be allocated, which can be obtained from ``UGC.GetNumSubscribedItems(bIncludeLocallyDisabled)``, as well as taking an extra parameter ``bIncludeLocallyDisabled`` which took a default value in v4. Furthermore, it returns an integer as its first returned value (the size of the returned table), which was ommitted in v4.
+For example, ``UGC.getSubscribedItems()`` returned a table with the ids in v4, while ``UGC.GetSubscribedItems(cMaxEntries, bIncludeLocallyDisabled)`` in v5 takes a ``cMaxEntries`` integer with the size of the array to be allocated, which can be obtained from ``UGC.GetNumSubscribedItems(bIncludeLocallyDisabled)``, as well as taking an extra parameter ``bIncludeLocallyDisabled`` which took a default value in v4. Furthermore, it returns an integer as its first returned value (the size of the returned table), which was omitted in v4.
 
 .. code:: lua
 
@@ -118,7 +118,7 @@ For example, ``UGC.getSubscribedItems()`` returned a table with the ids in v4, w
     local items = Steam.UGC.getSubscribedItems()
     registerItems(items)
 
-In other times, some functions were fully ommitted in v4, and used automatically under the hood, while in v5 they must be manually used. As an example, ``userStats.downloadLeaderboardEntries`` automatically called ``GetDownloadedLeaderboardEntry`` for you in v4, while in v5 you must call it manually.
+In other times, some functions were fully omitted in v4, and used automatically under the hood, while in v5 they must be manually used. As an example, ``userStats.downloadLeaderboardEntries`` automatically called ``GetDownloadedLeaderboardEntry`` for you in v4, while in v5 you must call it manually.
 
 .. code:: lua
 
@@ -192,7 +192,7 @@ plain Lua integer. You can compare it directly to the constant:
 Bit Flags
 =============
 
-Some API values are **bitmasks** — an integer where each bit repreLsents an independent
+Some API values are **bitmasks** — an integer where each bit represents an independent
 boolean flag. ``GetItemState``, ``GetPersonaStateFlags``, and others work this way, either to receive bitmask parameter or return bitmask values.
 
 In v4, these values were returned as tables with many booleans, while in v5 they follow the C++ format exactly and return integers. In **LuaJIT**, use the built-in ``bit`` library for bitwise
@@ -229,8 +229,8 @@ Many Steamworks functions take or return C++ structs. luasteam v5 exposes these 
     ---- In v5 ----
     local addr = Steam.newSteamNetworkingIPAddr {}
     addr:ParseString("127.0.0.1:55556")
-    let opt1 = Steam.newSteamNetworkingConfigValue_t()
-    op1:SetInt32(Steam.k_ESteamNetworkingConfig_TimeoutInitial, 1000)
+    local opt1 = Steam.newSteamNetworkingConfigValue_t()
+    opt1:SetInt32(Steam.k_ESteamNetworkingConfig_TimeoutInitial, 1000)
     local id = Steam.NetworkingSockets.ConnectByIPAddress(addr, 1, {opt1})
 
     ---- In v4 ----
