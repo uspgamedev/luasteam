@@ -555,6 +555,29 @@ static int luasteam_Apps_SetActiveBeta(lua_State *L) {
 	return 1;
 }
 
+// In C++:
+// void SetGamePerformanceSetting(EGamePerformanceSetting setting);
+// In Lua:
+// Apps.SetGamePerformanceSetting(setting: int)
+static int luasteam_Apps_SetGamePerformanceSetting(lua_State *L) {
+	auto *iface = SteamApps();
+	EGamePerformanceSetting setting = static_cast<EGamePerformanceSetting>(luaL_checkint(L, 1));
+	SteamAPI_ISteamApps_SetGamePerformanceSetting(iface, setting);
+	return 0;
+}
+
+// In C++:
+// void SetGameRenderResolution(uint32 unWidth, uint32 unHeight);
+// In Lua:
+// Apps.SetGameRenderResolution(unWidth: int, unHeight: int)
+static int luasteam_Apps_SetGameRenderResolution(lua_State *L) {
+	auto *iface = SteamApps();
+	uint32 unWidth = static_cast<uint32>(luaL_checkint(L, 1));
+	uint32 unHeight = static_cast<uint32>(luaL_checkint(L, 2));
+	SteamAPI_ISteamApps_SetGameRenderResolution(iface, unWidth, unHeight);
+	return 0;
+}
+
 void register_Apps_auto(lua_State *L) {
 	add_func(L, "BIsSubscribed", luasteam_Apps_BIsSubscribed);
 	add_func(L, "BIsLowViolence", luasteam_Apps_BIsLowViolence);
@@ -589,6 +612,8 @@ void register_Apps_auto(lua_State *L) {
 	add_func(L, "GetNumBetas", luasteam_Apps_GetNumBetas);
 	add_func(L, "GetBetaInfo", luasteam_Apps_GetBetaInfo);
 	add_func(L, "SetActiveBeta", luasteam_Apps_SetActiveBeta);
+	add_func(L, "SetGamePerformanceSetting", luasteam_Apps_SetGamePerformanceSetting);
+	add_func(L, "SetGameRenderResolution", luasteam_Apps_SetGameRenderResolution);
 }
 
 void add_Apps_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {

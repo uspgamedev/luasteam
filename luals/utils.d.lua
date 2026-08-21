@@ -133,9 +133,6 @@ function Utils.FilterText(eContext, sourceSteamID, pchInputMessage, nByteSizeOut
 ---@return integer -- ESteamIPv6ConnectivityState
 function Utils.GetIPv6ConnectivityState(eProtocol) end
 
----@return boolean
-function Utils.IsSteamRunningOnSteamDeck() end
-
 ---@param eKeyboardMode integer -- EFloatingGamepadTextInputMode
 ---@param nTextFieldXPosition integer
 ---@param nTextFieldYPosition integer
@@ -152,6 +149,15 @@ function Utils.DismissFloatingGamepadTextInput() end
 
 ---@return boolean
 function Utils.DismissGamepadTextInput() end
+
+---@return integer -- ESteamHardwareType
+function Utils.IsRunningOnSteamHardware() end
+
+---@return integer -- ESteamHardwareDefaultConfig
+function Utils.GetSteamHardwareDefaultConfig() end
+
+---@return boolean
+function Utils.IsRunningUnderProton() end
 
 Steam.Utils = Utils
 Steam.GameServerUtils = Utils

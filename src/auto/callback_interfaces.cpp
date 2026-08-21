@@ -205,6 +205,59 @@ static int ISteamMatchmakingRulesResponse_gc(lua_State *L) {
 	return 0;
 }
 
+static int ISteamMatchmakingServerFriendsResponseMetatable_ref = LUA_NOREF;
+
+struct ISteamMatchmakingServerFriendsResponseImpl final : public ISteamMatchmakingServerFriendsResponse {
+	lua_State *L;
+	int ref_AddFriendToList;
+	int ref_FriendsFailedToRespond;
+	int ref_FriendsRefreshComplete;
+
+	~ISteamMatchmakingServerFriendsResponseImpl() {
+		luaL_unref(L, LUA_REGISTRYINDEX, ref_AddFriendToList);
+		luaL_unref(L, LUA_REGISTRYINDEX, ref_FriendsFailedToRespond);
+		luaL_unref(L, LUA_REGISTRYINDEX, ref_FriendsRefreshComplete);
+	}
+
+	void AddFriendToList(CSteamID steamID, const char * pchName, bool bCurrentlyConnected) override {
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref_AddFriendToList);
+		luasteam::pushuint64(L, steamID.ConvertToUint64());
+		lua_pushstring(L, reinterpret_cast<const char*>(pchName));
+		lua_pushboolean(L, bCurrentlyConnected);
+		lua_call(L, 3, 0);
+	}
+	void FriendsFailedToRespond() override {
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref_FriendsFailedToRespond);
+		lua_call(L, 0, 0);
+	}
+	void FriendsRefreshComplete() override {
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref_FriendsRefreshComplete);
+		lua_call(L, 0, 0);
+	}
+};
+
+static int lua_newISteamMatchmakingServerFriendsResponse(lua_State *L) {
+	luaL_checktype(L, 1, LUA_TTABLE);
+	auto *impl = (ISteamMatchmakingServerFriendsResponseImpl*)lua_newuserdata(L, sizeof(ISteamMatchmakingServerFriendsResponseImpl));
+	new (impl) ISteamMatchmakingServerFriendsResponseImpl();
+	impl->L = L;
+	lua_getfield(L, 1, "AddFriendToList");
+	impl->ref_AddFriendToList = luaL_ref(L, LUA_REGISTRYINDEX);
+	lua_getfield(L, 1, "FriendsFailedToRespond");
+	impl->ref_FriendsFailedToRespond = luaL_ref(L, LUA_REGISTRYINDEX);
+	lua_getfield(L, 1, "FriendsRefreshComplete");
+	impl->ref_FriendsRefreshComplete = luaL_ref(L, LUA_REGISTRYINDEX);
+	lua_rawgeti(L, LUA_REGISTRYINDEX, ISteamMatchmakingServerFriendsResponseMetatable_ref);
+	lua_setmetatable(L, -2);
+	return 1;
+}
+
+static int ISteamMatchmakingServerFriendsResponse_gc(lua_State *L) {
+	auto *impl = (ISteamMatchmakingServerFriendsResponseImpl*)luaL_checkudata(L, 1, "ISteamMatchmakingServerFriendsResponse");
+	impl->~ISteamMatchmakingServerFriendsResponseImpl();
+	return 0;
+}
+
 namespace luasteam {
 
 ISteamMatchmakingServerListResponse *check_ISteamMatchmakingServerListResponse(lua_State *L, int idx) {
@@ -221,6 +274,10 @@ ISteamMatchmakingPlayersResponse *check_ISteamMatchmakingPlayersResponse(lua_Sta
 
 ISteamMatchmakingRulesResponse *check_ISteamMatchmakingRulesResponse(lua_State *L, int idx) {
 	return (ISteamMatchmakingRulesResponseImpl*)luaL_checkudata(L, idx, "ISteamMatchmakingRulesResponse");
+}
+
+ISteamMatchmakingServerFriendsResponse *check_ISteamMatchmakingServerFriendsResponse(lua_State *L, int idx) {
+	return (ISteamMatchmakingServerFriendsResponseImpl*)luaL_checkudata(L, idx, "ISteamMatchmakingServerFriendsResponse");
 }
 
 void add_callback_interfaces_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
@@ -243,6 +300,10 @@ void add_callback_interfaces_auto(lua_State *L, std::initializer_list<luaL_Reg> 
 	luaL_newmetatable(L, "ISteamMatchmakingRulesResponse");
 	add_func(L, "__gc", ISteamMatchmakingRulesResponse_gc);
 	ISteamMatchmakingRulesResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newISteamMatchmakingServerFriendsResponse", lua_newISteamMatchmakingServerFriendsResponse);
+	luaL_newmetatable(L, "ISteamMatchmakingServerFriendsResponse");
+	add_func(L, "__gc", ISteamMatchmakingServerFriendsResponse_gc);
+	ISteamMatchmakingServerFriendsResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
 void shutdown_callback_interfaces_auto(lua_State *L) {
@@ -254,6 +315,8 @@ void shutdown_callback_interfaces_auto(lua_State *L) {
 	ISteamMatchmakingPlayersResponseMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, ISteamMatchmakingRulesResponseMetatable_ref);
 	ISteamMatchmakingRulesResponseMetatable_ref = LUA_NOREF;
+	luaL_unref(L, LUA_REGISTRYINDEX, ISteamMatchmakingServerFriendsResponseMetatable_ref);
+	ISteamMatchmakingServerFriendsResponseMetatable_ref = LUA_NOREF;
 }
 
 } // namespace luasteam

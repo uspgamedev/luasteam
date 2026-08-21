@@ -101,7 +101,7 @@ void add_consts_auto(lua_State *L) {
 	lua_setfield(L, -2, "k_UGCUpdateHandleInvalid");
 	lua_pushinteger(L, 50);
 	lua_setfield(L, -2, "kNumUGCResultsPerPage");
-	lua_pushinteger(L, 5000);
+	lua_pushinteger(L, 10000);
 	lua_setfield(L, -2, "k_cchDeveloperMetadataMax");
 	lua_pushinteger(L, 0);
 	lua_setfield(L, -2, "INVALID_HTMLBROWSER");

@@ -55,12 +55,13 @@ EXTERN int luasteam_ReceiveMessagesOnPollGroup_user(lua_State *L) { return luast
 EXTERN int luasteam_ReceiveMessagesOnPollGroup_gameserver(lua_State *L) { return luasteam_ReceiveMessagesOnPollGroup(L, SteamGameServerNetworkingSockets()); }
 
 // In C++:
-// void SendMessages( int nMessages, SteamNetworkingMessage_t *const *pMessages, int64 *pOutMessageNumberOrResult )
+// void SendMessages( int nMessages, SteamNetworkingMessage_t *const *pMessages, int64 *pOutMessageNumberOrResult, bool bDeleteFailedMessages )
 // In Lua:
-// int[] NetworkingSockets.SendMessages(nMessages: int, pMessages: SteamNetworkingMessage_t[])
+// int[] NetworkingSockets.SendMessages(nMessages: int, pMessages: SteamNetworkingMessage_t[], bDeleteFailedMessages: bool)
 int luasteam_SendMessages(lua_State *L, ISteamNetworkingSockets *iface) {
     int nMessages = luaL_checkinteger(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
+    bool bDeleteFailedMessages = lua_toboolean(L, 3);
     std::vector<int64> pOutMessageNumberOrResult(nMessages);
     std::vector<SteamNetworkingMessage_t *> pMessages(nMessages);
     for (int i = 0; i < nMessages; i++) {
@@ -68,7 +69,7 @@ int luasteam_SendMessages(lua_State *L, ISteamNetworkingSockets *iface) {
         pMessages[i] = luasteam::check_SteamNetworkingMessage_t(L, -1);
         lua_pop(L, 1);
     }
-    iface->SendMessages(nMessages, pMessages.data(), pOutMessageNumberOrResult.data());
+    iface->SendMessages(nMessages, pMessages.data(), pOutMessageNumberOrResult.data(), bDeleteFailedMessages);
     lua_createtable(L, nMessages, 0);
     for (int i = 0; i < nMessages; i++) {
         lua_pushinteger(L, pOutMessageNumberOrResult[i]);

@@ -4677,6 +4677,8 @@ gameserveritem_t
     * **m_nServerVersion** (int)
     * **m_szGameTags** (str)
     * **m_steamID** (uint64)
+    * **m_nCurrentFriendCount** (int)
+    * **m_nTotalFriendCount** (int)
 
 .. function:: gameserveritem_t:GetName()
 

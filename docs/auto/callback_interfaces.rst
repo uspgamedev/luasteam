@@ -93,3 +93,21 @@ ISteamMatchmakingRulesResponse
 
     :returns: (ISteamMatchmakingRulesResponse) New callback interface userdata.
 
+.. _struct-ISteamMatchmakingServerFriendsResponse:
+
+--------------------------------------
+ISteamMatchmakingServerFriendsResponse
+--------------------------------------
+
+.. function:: Steam.newISteamMatchmakingServerFriendsResponse(callbacks)
+
+    🤖 Constructor — creates a new callback interface userdata.
+
+    :param table callbacks: Table of callback functions:
+
+        * **AddFriendToList** ``function(steamID: uint64, pchName: str, bCurrentlyConnected: bool)``
+        * **FriendsFailedToRespond** ``function()``
+        * **FriendsRefreshComplete** ``function()``
+
+    :returns: (ISteamMatchmakingServerFriendsResponse) New callback interface userdata.
+

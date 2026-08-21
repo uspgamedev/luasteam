@@ -361,13 +361,6 @@ example = """
 print("My app id is " .. Steam.Utils.GetAppID())
 """
 
-[ISteamUtils.IsSteamRunningOnSteamDeck]
-example = """
-if Steam.Utils.IsSteamRunningOnSteamDeck() then
-    -- Enable Steam Deck specific controls
-end
-"""
-
 [ISteamUtils.ShowGamepadTextInput]
 example = """
 local Normal = Steam.k_EGamepadTextInputModeNormal
@@ -815,7 +808,7 @@ local msg = Steam.NetworkingUtils.AllocateMessage(#payload)
 msg.m_conn = hConn
 msg.m_nFlags = Steam.k_nSteamNetworkingSend_Reliable
 msg.m_pData = payload
-local results = Steam.NetworkingSockets.SendMessages(1, {msg})
+local results = Steam.NetworkingSockets.SendMessages(1, {msg}, true)
 if results[1] < 0 then
     print('Send failed, EResult:', results[1])
 end
@@ -830,6 +823,11 @@ description = "size of the array ``pMessages``"
 name = "pMessages"
 ptype = "SteamNetworkingMessage_t[]"
 description = "array of SteamNetworkingMessage_t userdata objects to send."
+
+[[manual.ISteamNetworkingSockets.SendMessages.params]]
+name = "bDeleteFailedMessages"
+ptype = "bool"
+description = "If true, then any messages that fail to send will be freed"
 
 [[manual.ISteamNetworkingSockets.SendMessages.returns]]
 ptype = "int[]"
@@ -3966,5 +3964,54 @@ function Steam.NetworkingUtils.OnSteamRelayNetworkStatus(data)
     if data.m_eAvail == Steam.k_ESteamNetworkingAvailability_Current then
         print('Relay network is ready')
     end
+end
+"""
+[ISteamApps.SetGamePerformanceSetting]
+example = """
+-- Set performance setting to 'High'
+Steam.Apps.SetGamePerformanceSetting(Steam.k_EGamePerformanceSetting_High)
+"""
+
+[ISteamApps.SetGameRenderResolution]
+example = """
+Steam.Apps.SetGameRenderResolution(1920, 1080)
+"""
+
+[ISteamMatchmakingServers.ServerFriends]
+example = """
+local friendsResponse = Steam.newISteamMatchmakingServerFriendsResponse({
+    AddFriendToList = function(steamID, pchName, bCurrentlyConnected)
+        print('Found friend: ' .. pchName)
+    end,
+    FriendsFailedToRespond = function()
+        print('Failed to respond')
+    end,
+    FriendsRefreshComplete = function()
+        print('Refresh complete')
+    end
+})
+Steam.MatchmakingServers.ServerFriends(ip, port, friendsResponse)
+"""
+
+[ISteamUtils.GetSteamHardwareDefaultConfig]
+example = """
+local config = Steam.Utils.GetSteamHardwareDefaultConfig()
+if config == Steam.k_ESteamHardwareDefaultConfigSteamDeck then
+    print('Running on Steam Deck')
+end
+"""
+
+[ISteamUtils.IsRunningOnSteamHardware]
+example = """
+local hardware = Steam.Utils.IsRunningOnSteamHardware()
+if hardware == Steam.k_ESteamHardwareTypeSteamDeck then
+    print('Hardware is Steam Deck')
+end
+"""
+
+[ISteamUtils.IsRunningUnderProton]
+example = """
+if Steam.Utils.IsRunningUnderProton() then
+    print('Running under Proton compatibility layer')
 end
 """

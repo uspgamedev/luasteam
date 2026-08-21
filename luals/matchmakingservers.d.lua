@@ -80,6 +80,12 @@ function MatchmakingServers.PlayerDetails(unIP, usPort, pRequestServersResponse)
 ---@return integer -- HServerQuery
 function MatchmakingServers.ServerRules(unIP, usPort, pRequestServersResponse) end
 
+---@param unIP integer
+---@param usPort integer
+---@param pRequestServersResponse ISteamMatchmakingServerFriendsResponse
+---@return integer -- HServerQuery
+function MatchmakingServers.ServerFriends(unIP, usPort, pRequestServersResponse) end
+
 ---@param hServerQuery integer -- HServerQuery
 function MatchmakingServers.CancelServerQuery(hServerQuery) end
 

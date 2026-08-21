@@ -595,18 +595,6 @@ static int luasteam_Utils_GetIPv6ConnectivityState_user(lua_State *L) { return l
 static int luasteam_Utils_GetIPv6ConnectivityState_gs(lua_State *L) { return luasteam_Utils_GetIPv6ConnectivityState(L, SteamGameServerUtils()); }
 
 // In C++:
-// bool IsSteamRunningOnSteamDeck();
-// In Lua:
-// bool Utils.IsSteamRunningOnSteamDeck()
-static int luasteam_Utils_IsSteamRunningOnSteamDeck(lua_State *L, ISteamUtils *iface) {
-	bool __ret = SteamAPI_ISteamUtils_IsSteamRunningOnSteamDeck(iface);
-	lua_pushboolean(L, __ret);
-	return 1;
-}
-static int luasteam_Utils_IsSteamRunningOnSteamDeck_user(lua_State *L) { return luasteam_Utils_IsSteamRunningOnSteamDeck(L, SteamUtils()); }
-static int luasteam_Utils_IsSteamRunningOnSteamDeck_gs(lua_State *L) { return luasteam_Utils_IsSteamRunningOnSteamDeck(L, SteamGameServerUtils()); }
-
-// In C++:
 // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
 // In Lua:
 // bool Utils.ShowFloatingGamepadTextInput(eKeyboardMode: int, nTextFieldXPosition: int, nTextFieldYPosition: int, nTextFieldWidth: int, nTextFieldHeight: int)
@@ -659,6 +647,42 @@ static int luasteam_Utils_DismissGamepadTextInput(lua_State *L, ISteamUtils *ifa
 static int luasteam_Utils_DismissGamepadTextInput_user(lua_State *L) { return luasteam_Utils_DismissGamepadTextInput(L, SteamUtils()); }
 static int luasteam_Utils_DismissGamepadTextInput_gs(lua_State *L) { return luasteam_Utils_DismissGamepadTextInput(L, SteamGameServerUtils()); }
 
+// In C++:
+// ESteamHardwareType IsRunningOnSteamHardware();
+// In Lua:
+// int Utils.IsRunningOnSteamHardware()
+static int luasteam_Utils_IsRunningOnSteamHardware(lua_State *L, ISteamUtils *iface) {
+	ESteamHardwareType __ret = SteamAPI_ISteamUtils_IsRunningOnSteamHardware(iface);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+static int luasteam_Utils_IsRunningOnSteamHardware_user(lua_State *L) { return luasteam_Utils_IsRunningOnSteamHardware(L, SteamUtils()); }
+static int luasteam_Utils_IsRunningOnSteamHardware_gs(lua_State *L) { return luasteam_Utils_IsRunningOnSteamHardware(L, SteamGameServerUtils()); }
+
+// In C++:
+// ESteamHardwareDefaultConfig GetSteamHardwareDefaultConfig();
+// In Lua:
+// int Utils.GetSteamHardwareDefaultConfig()
+static int luasteam_Utils_GetSteamHardwareDefaultConfig(lua_State *L, ISteamUtils *iface) {
+	ESteamHardwareDefaultConfig __ret = SteamAPI_ISteamUtils_GetSteamHardwareDefaultConfig(iface);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+static int luasteam_Utils_GetSteamHardwareDefaultConfig_user(lua_State *L) { return luasteam_Utils_GetSteamHardwareDefaultConfig(L, SteamUtils()); }
+static int luasteam_Utils_GetSteamHardwareDefaultConfig_gs(lua_State *L) { return luasteam_Utils_GetSteamHardwareDefaultConfig(L, SteamGameServerUtils()); }
+
+// In C++:
+// bool IsRunningUnderProton();
+// In Lua:
+// bool Utils.IsRunningUnderProton()
+static int luasteam_Utils_IsRunningUnderProton(lua_State *L, ISteamUtils *iface) {
+	bool __ret = SteamAPI_ISteamUtils_IsRunningUnderProton(iface);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+static int luasteam_Utils_IsRunningUnderProton_user(lua_State *L) { return luasteam_Utils_IsRunningUnderProton(L, SteamUtils()); }
+static int luasteam_Utils_IsRunningUnderProton_gs(lua_State *L) { return luasteam_Utils_IsRunningUnderProton(L, SteamGameServerUtils()); }
+
 void register_Utils_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetSecondsSinceAppActive", is_gs ? luasteam_Utils_GetSecondsSinceAppActive_gs : luasteam_Utils_GetSecondsSinceAppActive_user);
 	add_func(L, "GetSecondsSinceComputerActive", is_gs ? luasteam_Utils_GetSecondsSinceComputerActive_gs : luasteam_Utils_GetSecondsSinceComputerActive_user);
@@ -691,11 +715,13 @@ void register_Utils_auto(lua_State *L, bool is_gs) {
 	add_func(L, "InitFilterText", is_gs ? luasteam_Utils_InitFilterText_gs : luasteam_Utils_InitFilterText_user);
 	add_func(L, "FilterText", is_gs ? luasteam_Utils_FilterText_gs : luasteam_Utils_FilterText_user);
 	add_func(L, "GetIPv6ConnectivityState", is_gs ? luasteam_Utils_GetIPv6ConnectivityState_gs : luasteam_Utils_GetIPv6ConnectivityState_user);
-	add_func(L, "IsSteamRunningOnSteamDeck", is_gs ? luasteam_Utils_IsSteamRunningOnSteamDeck_gs : luasteam_Utils_IsSteamRunningOnSteamDeck_user);
 	add_func(L, "ShowFloatingGamepadTextInput", is_gs ? luasteam_Utils_ShowFloatingGamepadTextInput_gs : luasteam_Utils_ShowFloatingGamepadTextInput_user);
 	add_func(L, "SetGameLauncherMode", is_gs ? luasteam_Utils_SetGameLauncherMode_gs : luasteam_Utils_SetGameLauncherMode_user);
 	add_func(L, "DismissFloatingGamepadTextInput", is_gs ? luasteam_Utils_DismissFloatingGamepadTextInput_gs : luasteam_Utils_DismissFloatingGamepadTextInput_user);
 	add_func(L, "DismissGamepadTextInput", is_gs ? luasteam_Utils_DismissGamepadTextInput_gs : luasteam_Utils_DismissGamepadTextInput_user);
+	add_func(L, "IsRunningOnSteamHardware", is_gs ? luasteam_Utils_IsRunningOnSteamHardware_gs : luasteam_Utils_IsRunningOnSteamHardware_user);
+	add_func(L, "GetSteamHardwareDefaultConfig", is_gs ? luasteam_Utils_GetSteamHardwareDefaultConfig_gs : luasteam_Utils_GetSteamHardwareDefaultConfig_user);
+	add_func(L, "IsRunningUnderProton", is_gs ? luasteam_Utils_IsRunningUnderProton_gs : luasteam_Utils_IsRunningUnderProton_user);
 }
 
 void add_Utils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {

@@ -41,6 +41,8 @@ List of Functions
 * :func:`Apps.RequestAppProofOfPurchaseKey`
 * :func:`Apps.SetActiveBeta`
 * :func:`Apps.SetDlcContext`
+* :func:`Apps.SetGamePerformanceSetting`
+* :func:`Apps.SetGameRenderResolution`
 * :func:`Apps.UninstallDLC`
 
 List of Callbacks
@@ -465,6 +467,30 @@ Function Reference
     :param int - AppId_t nAppID:
     :returns: (bool) Return value
     :SteamWorks: `SetDlcContext <https://partner.steamgames.com/doc/api/ISteamApps#SetDlcContext>`_
+
+.. function:: Apps.SetGamePerformanceSetting(setting)
+
+    🤖 **Auto-generated binding**
+
+    :param int - EGamePerformanceSetting setting:
+    :SteamWorks: `SetGamePerformanceSetting <https://partner.steamgames.com/doc/api/ISteamApps#SetGamePerformanceSetting>`_
+
+**Example**::
+
+    -- Set performance setting to 'High'
+    Steam.Apps.SetGamePerformanceSetting(Steam.k_EGamePerformanceSetting_High)
+
+.. function:: Apps.SetGameRenderResolution(unWidth, unHeight)
+
+    🤖 **Auto-generated binding**
+
+    :param int unWidth:
+    :param int unHeight:
+    :SteamWorks: `SetGameRenderResolution <https://partner.steamgames.com/doc/api/ISteamApps#SetGameRenderResolution>`_
+
+**Example**::
+
+    Steam.Apps.SetGameRenderResolution(1920, 1080)
 
 .. function:: Apps.UninstallDLC(nAppID)
 

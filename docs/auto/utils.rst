@@ -32,14 +32,16 @@ List of Functions
 * :func:`Utils.GetSecondsSinceAppActive`
 * :func:`Utils.GetSecondsSinceComputerActive`
 * :func:`Utils.GetServerRealTime`
+* :func:`Utils.GetSteamHardwareDefaultConfig`
 * :func:`Utils.GetSteamUILanguage`
 * :func:`Utils.InitFilterText`
 * :func:`Utils.IsAPICallCompleted`
 * :func:`Utils.IsOverlayEnabled`
+* :func:`Utils.IsRunningOnSteamHardware`
+* :func:`Utils.IsRunningUnderProton`
 * :func:`Utils.IsSteamChinaLauncher`
 * :func:`Utils.IsSteamInBigPictureMode`
 * :func:`Utils.IsSteamRunningInVR`
-* :func:`Utils.IsSteamRunningOnSteamDeck`
 * :func:`Utils.IsVRHeadsetStreamingEnabled`
 * :func:`Utils.SetGameLauncherMode`
 * :func:`Utils.SetOverlayNotificationInset`
@@ -303,6 +305,20 @@ Function Reference
     local realTime = Steam.Utils.GetServerRealTime()
     print('Steam server time: ' .. realTime)
 
+.. function:: Utils.GetSteamHardwareDefaultConfig()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int - ESteamHardwareDefaultConfig) Return value
+    :SteamWorks: `GetSteamHardwareDefaultConfig <https://partner.steamgames.com/doc/api/ISteamUtils#GetSteamHardwareDefaultConfig>`_
+
+**Example**::
+
+    local config = Steam.Utils.GetSteamHardwareDefaultConfig()
+    if config == Steam.k_ESteamHardwareDefaultConfigSteamDeck then
+        print('Running on Steam Deck')
+    end
+
 .. function:: Utils.GetSteamUILanguage()
 
     🤖 **Auto-generated binding**
@@ -349,6 +365,33 @@ Function Reference
         print('Steam overlay is disabled')
     end
 
+.. function:: Utils.IsRunningOnSteamHardware()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int - ESteamHardwareType) Return value
+    :SteamWorks: `IsRunningOnSteamHardware <https://partner.steamgames.com/doc/api/ISteamUtils#IsRunningOnSteamHardware>`_
+
+**Example**::
+
+    local hardware = Steam.Utils.IsRunningOnSteamHardware()
+    if hardware == Steam.k_ESteamHardwareTypeSteamDeck then
+        print('Hardware is Steam Deck')
+    end
+
+.. function:: Utils.IsRunningUnderProton()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (bool) Return value
+    :SteamWorks: `IsRunningUnderProton <https://partner.steamgames.com/doc/api/ISteamUtils#IsRunningUnderProton>`_
+
+**Example**::
+
+    if Steam.Utils.IsRunningUnderProton() then
+        print('Running under Proton compatibility layer')
+    end
+
 .. function:: Utils.IsSteamChinaLauncher()
 
     🤖 **Auto-generated binding**
@@ -380,19 +423,6 @@ Function Reference
 
     if Steam.Utils.IsSteamRunningInVR() then
         enableVRMode()
-    end
-
-.. function:: Utils.IsSteamRunningOnSteamDeck()
-
-    🤖 **Auto-generated binding**
-
-    :returns: (bool) Return value
-    :SteamWorks: `IsSteamRunningOnSteamDeck <https://partner.steamgames.com/doc/api/ISteamUtils#IsSteamRunningOnSteamDeck>`_
-
-**Example**::
-
-    if Steam.Utils.IsSteamRunningOnSteamDeck() then
-        -- Enable Steam Deck specific controls
     end
 
 .. function:: Utils.IsVRHeadsetStreamingEnabled()

@@ -83,6 +83,8 @@ function Steam.newservernetadr_t(table) end
 ---@field m_nServerVersion integer
 ---@field m_szGameTags string
 ---@field m_steamID uint64
+---@field m_nCurrentFriendCount integer
+---@field m_nTotalFriendCount integer
 local gameserveritem_t = {}
 
 ---@return string

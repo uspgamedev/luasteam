@@ -144,4 +144,11 @@ function Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription) end
 ---@return boolean
 function Apps.SetActiveBeta(pchBetaName) end
 
+---@param setting integer -- EGamePerformanceSetting
+function Apps.SetGamePerformanceSetting(setting) end
+
+---@param unWidth integer
+---@param unHeight integer
+function Apps.SetGameRenderResolution(unWidth, unHeight) end
+
 Steam.Apps = Apps

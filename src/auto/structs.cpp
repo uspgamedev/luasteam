@@ -399,6 +399,14 @@ static int gameserveritem_t_index(lua_State *L) {
 		luasteam::pushuint64(L, self->m_steamID.ConvertToUint64());
 		return 1;
 	}
+	if (strcmp(key, "m_nCurrentFriendCount") == 0) {
+		lua_pushinteger(L, self->m_nCurrentFriendCount);
+		return 1;
+	}
+	if (strcmp(key, "m_nTotalFriendCount") == 0) {
+		lua_pushinteger(L, self->m_nTotalFriendCount);
+		return 1;
+	}
 	lua_pushnil(L);
 	return 1;
 }
@@ -485,6 +493,14 @@ static int gameserveritem_t_newindex(lua_State *L) {
 	}
 	if (strcmp(key, "m_steamID") == 0) {
 		self->m_steamID = CSteamID(luasteam::checkuint64(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "m_nCurrentFriendCount") == 0) {
+		self->m_nCurrentFriendCount = static_cast<int>(luaL_checkint(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "m_nTotalFriendCount") == 0) {
+		self->m_nTotalFriendCount = static_cast<int>(luaL_checkint(L, 3));
 		return 0;
 	}
 	return luaL_error(L, "gameserveritem_t has no field '%%s'", key);
@@ -590,6 +606,16 @@ EXTERN int luasteam_newgameserveritem_t(lua_State *L) {
 		lua_getfield(L, 1, "m_steamID");
 		if (!lua_isnil(L, -1)) {
 			ptr->m_steamID = CSteamID(luasteam::checkuint64(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_nCurrentFriendCount");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_nCurrentFriendCount = static_cast<int>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_nTotalFriendCount");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_nTotalFriendCount = static_cast<int>(luaL_checkint(L, -1));
 		}
 		lua_pop(L, 1);
 	}

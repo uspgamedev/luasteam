@@ -37,3 +37,13 @@ local ISteamMatchmakingRulesResponse = {}
 ---@return ISteamMatchmakingRulesResponse
 function Steam.newISteamMatchmakingRulesResponse(callbacks) end
 
+---@class ISteamMatchmakingServerFriendsResponse
+---@field AddFriendToList fun(steamID: uint64, pchName: string, bCurrentlyConnected: boolean)
+---@field FriendsFailedToRespond fun()
+---@field FriendsRefreshComplete fun()
+local ISteamMatchmakingServerFriendsResponse = {}
+
+---@param callbacks ISteamMatchmakingServerFriendsResponse
+---@return ISteamMatchmakingServerFriendsResponse
+function Steam.newISteamMatchmakingServerFriendsResponse(callbacks) end
+

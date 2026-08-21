@@ -99,12 +99,12 @@ function NetworkingSockets.GetDetailedConnectionStatus(hConn, cbBuf) end
 function NetworkingSockets.GetListenSocketAddress(hSocket) end
 
 ---@param bUseNetworkLoopback boolean
----@param pIdentity1 SteamNetworkingIdentity
----@param pIdentity2 SteamNetworkingIdentity
+---@param pPeerIdentity1 SteamNetworkingIdentity
+---@param pPeerIdentity2 SteamNetworkingIdentity
 ---@return boolean
 ---@return integer -- Value of: pOutConnection1
 ---@return integer -- Value of: pOutConnection2
-function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2) end
+function NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pPeerIdentity1, pPeerIdentity2) end
 
 ---@param hConn integer -- HSteamNetConnection
 ---@param nNumLanes integer size of the input arrays pLanePriorities and pLaneWeights

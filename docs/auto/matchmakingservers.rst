@@ -24,6 +24,7 @@ List of Functions
 * :func:`MatchmakingServers.RequestInternetServerList`
 * :func:`MatchmakingServers.RequestLANServerList`
 * :func:`MatchmakingServers.RequestSpectatorServerList`
+* :func:`MatchmakingServers.ServerFriends`
 * :func:`MatchmakingServers.ServerRules`
 
 Function Reference
@@ -228,6 +229,31 @@ Function Reference
     :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerListResponse <struct-ISteamMatchmakingServerListResponse>`)
     :returns: (HServerListRequest) Return value
     :SteamWorks: `RequestSpectatorServerList <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#RequestSpectatorServerList>`_
+
+.. function:: MatchmakingServers.ServerFriends(unIP, usPort, pRequestServersResponse)
+
+    🤖 **Auto-generated binding**
+
+    :param int unIP:
+    :param int usPort:
+    :param pRequestServersResponse: (:ref:`ISteamMatchmakingServerFriendsResponse <struct-ISteamMatchmakingServerFriendsResponse>`)
+    :returns: (int - HServerQuery) Return value
+    :SteamWorks: `ServerFriends <https://partner.steamgames.com/doc/api/ISteamMatchmakingServers#ServerFriends>`_
+
+**Example**::
+
+    local friendsResponse = Steam.newISteamMatchmakingServerFriendsResponse({
+        AddFriendToList = function(steamID, pchName, bCurrentlyConnected)
+            print('Found friend: ' .. pchName)
+        end,
+        FriendsFailedToRespond = function()
+            print('Failed to respond')
+        end,
+        FriendsRefreshComplete = function()
+            print('Refresh complete')
+        end
+    })
+    Steam.MatchmakingServers.ServerFriends(ip, port, friendsResponse)
 
 .. function:: MatchmakingServers.ServerRules(unIP, usPort, pRequestServersResponse)
 

@@ -240,6 +240,20 @@ static int luasteam_MatchmakingServers_ServerRules(lua_State *L) {
 }
 
 // In C++:
+// HServerQuery ServerFriends(uint32 unIP, uint16 usPort, ISteamMatchmakingServerFriendsResponse * pRequestServersResponse);
+// In Lua:
+// int MatchmakingServers.ServerFriends(unIP: int, usPort: int, pRequestServersResponse: ISteamMatchmakingServerFriendsResponse)
+static int luasteam_MatchmakingServers_ServerFriends(lua_State *L) {
+	auto *iface = SteamMatchmakingServers();
+	uint32 unIP = static_cast<uint32>(luaL_checkint(L, 1));
+	uint16 usPort = static_cast<uint16>(luaL_checkint(L, 2));
+	ISteamMatchmakingServerFriendsResponse *pRequestServersResponse = luasteam::check_ISteamMatchmakingServerFriendsResponse(L, 3);
+	HServerQuery __ret = SteamAPI_ISteamMatchmakingServers_ServerFriends(iface, unIP, usPort, pRequestServersResponse);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
 // void CancelServerQuery(HServerQuery hServerQuery);
 // In Lua:
 // MatchmakingServers.CancelServerQuery(hServerQuery: int)
@@ -266,6 +280,7 @@ void register_MatchmakingServers_auto(lua_State *L) {
 	add_func(L, "PingServer", luasteam_MatchmakingServers_PingServer);
 	add_func(L, "PlayerDetails", luasteam_MatchmakingServers_PlayerDetails);
 	add_func(L, "ServerRules", luasteam_MatchmakingServers_ServerRules);
+	add_func(L, "ServerFriends", luasteam_MatchmakingServers_ServerFriends);
 	add_func(L, "CancelServerQuery", luasteam_MatchmakingServers_CancelServerQuery);
 }
 

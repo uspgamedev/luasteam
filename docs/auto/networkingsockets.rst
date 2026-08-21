@@ -235,13 +235,13 @@ Function Reference
     -- Add connections to the poll group
     Steam.NetworkingSockets.SetConnectionPollGroup(hConn, hPollGroup)
 
-.. function:: NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pIdentity1, pIdentity2)
+.. function:: NetworkingSockets.CreateSocketPair(bUseNetworkLoopback, pPeerIdentity1, pPeerIdentity2)
 
     🤖 **Auto-generated binding**
 
     :param bool bUseNetworkLoopback:
-    :param pIdentity1: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
-    :param pIdentity2: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
+    :param pPeerIdentity1: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
+    :param pPeerIdentity2: (:ref:`SteamNetworkingIdentity <struct-SteamNetworkingIdentity>`)
     :returns: (bool) Return value
     :returns: (int) ``pOutConnection1``
     :returns: (int) ``pOutConnection2``
@@ -535,12 +535,13 @@ Function Reference
         print('Send failed:', result)
     end
 
-.. function:: NetworkingSockets.SendMessages(nMessages, pMessages)
+.. function:: NetworkingSockets.SendMessages(nMessages, pMessages, bDeleteFailedMessages)
 
     ✍️ **Manually implemented**
 
     :param int nMessages: size of the array ``pMessages``
     :param SteamNetworkingMessage_t[] pMessages: array of SteamNetworkingMessage_t userdata objects to send.
+    :param bool bDeleteFailedMessages: If true, then any messages that fail to send will be freed
     :returns: (int[]) array of per-message results: positive = message number assigned, negative = EResult error code.
     :SteamWorks: `SendMessages <https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SendMessages>`_
 
@@ -556,7 +557,7 @@ Function Reference
     msg.m_conn = hConn
     msg.m_nFlags = Steam.k_nSteamNetworkingSend_Reliable
     msg.m_pData = payload
-    local results = Steam.NetworkingSockets.SendMessages(1, {msg})
+    local results = Steam.NetworkingSockets.SendMessages(1, {msg}, true)
     if results[1] < 0 then
         print('Send failed, EResult:', results[1])
     end

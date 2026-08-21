@@ -357,16 +357,16 @@ static int luasteam_NetworkingSockets_GetListenSocketAddress_user(lua_State *L) 
 static int luasteam_NetworkingSockets_GetListenSocketAddress_gs(lua_State *L) { return luasteam_NetworkingSockets_GetListenSocketAddress(L, SteamGameServerNetworkingSockets_SteamAPI()); }
 
 // In C++:
-// bool CreateSocketPair(HSteamNetConnection * pOutConnection1, HSteamNetConnection * pOutConnection2, bool bUseNetworkLoopback, const SteamNetworkingIdentity * pIdentity1, const SteamNetworkingIdentity * pIdentity2);
+// bool CreateSocketPair(HSteamNetConnection * pOutConnection1, HSteamNetConnection * pOutConnection2, bool bUseNetworkLoopback, const SteamNetworkingIdentity * pPeerIdentity1, const SteamNetworkingIdentity * pPeerIdentity2);
 // In Lua:
-// (bool, pOutConnection1: int, pOutConnection2: int) NetworkingSockets.CreateSocketPair(bUseNetworkLoopback: bool, pIdentity1: SteamNetworkingIdentity, pIdentity2: SteamNetworkingIdentity)
+// (bool, pOutConnection1: int, pOutConnection2: int) NetworkingSockets.CreateSocketPair(bUseNetworkLoopback: bool, pPeerIdentity1: SteamNetworkingIdentity, pPeerIdentity2: SteamNetworkingIdentity)
 static int luasteam_NetworkingSockets_CreateSocketPair(lua_State *L, ISteamNetworkingSockets *iface) {
 	HSteamNetConnection pOutConnection1;
 	HSteamNetConnection pOutConnection2;
 	bool bUseNetworkLoopback = lua_toboolean(L, 1);
-	const SteamNetworkingIdentity *pIdentity1 = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 2);
-	const SteamNetworkingIdentity *pIdentity2 = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 3);
-	bool __ret = SteamAPI_ISteamNetworkingSockets_CreateSocketPair(iface, &pOutConnection1, &pOutConnection2, bUseNetworkLoopback, pIdentity1, pIdentity2);
+	const SteamNetworkingIdentity *pPeerIdentity1 = lua_isnil(L, 2) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 2);
+	const SteamNetworkingIdentity *pPeerIdentity2 = lua_isnil(L, 3) ? nullptr : luasteam::check_SteamNetworkingIdentity_ptr(L, 3);
+	bool __ret = SteamAPI_ISteamNetworkingSockets_CreateSocketPair(iface, &pOutConnection1, &pOutConnection2, bUseNetworkLoopback, pPeerIdentity1, pPeerIdentity2);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, pOutConnection1);
 	lua_pushinteger(L, pOutConnection2);
