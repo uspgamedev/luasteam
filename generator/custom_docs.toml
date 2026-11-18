@@ -3900,7 +3900,7 @@ end
 example = """
 local age, location = Steam.NetworkingUtils.GetLocalPingLocation()
 if age >= 0 then
-    local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, 1024)
+    local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, Steam.k_cchMaxSteamNetworkingPingLocationString)
     print('Local ping location (' .. age .. 's old): ' .. str)
 else
     print('Ping location not available yet')

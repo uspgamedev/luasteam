@@ -496,7 +496,7 @@ impl DocGenerator {
                     ));
                 } else {
                     doc.push_str(&format!(
-                        "    * Parameter ``{}`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.\n",
+                        "    * Parameter ``{}`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.\n",
                         output_param.name
                     ));
                 }

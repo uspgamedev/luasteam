@@ -732,8 +732,8 @@ impl Generator {
 
         // params used to call the function in C
         let mut cpp_call_params = Vec::new();
-        // Pointer params that are returned as output: (param_info, custom_push_code)
-        let mut pointer_params: Vec<(&Param, bool)> = Vec::new();
+        // Pointer or reference params that are returned as output: (param_info, is_array (only for pointers))
+        let mut output_params: Vec<(&Param, bool)> = Vec::new();
         let mut size_params_to_ignore: HashSet<String> = HashSet::new();
         // Maps size_name -> lua stack index where the user provides the size.
         // Used for nil checks on subsequent arrays sharing the same output size.
@@ -756,7 +756,7 @@ impl Generator {
                 {
                     s.line(&format!("char *{} = nullptr;", param.paramname));
                     cpp_call_params.push(format!("&{}", param.paramname));
-                    pointer_params.push((param, false));
+                    output_params.push((param, false));
                     i += 1;
                     continue;
                 }
@@ -817,7 +817,7 @@ impl Generator {
                     }
                     CppType::Pointer { .. } => {
                         // It is a value returned as well as the size passed in.
-                        pointer_params.push((param, false));
+                        output_params.push((param, false));
                         cpp_call_params.push(format!("&{}", param.paramname.clone()));
                     }
                     _ => unreachable!("No array sizes"),
@@ -987,7 +987,7 @@ impl Generator {
                             ));
                             cpp_call_params.push(format!("{}.data()", param.paramname));
                         }
-                        pointer_params.push((param, true));
+                        output_params.push((param, true));
                     } else {
                         // Create a default variable with that name and type
                         s.line(&format!(
@@ -999,7 +999,7 @@ impl Generator {
                             param.paramname
                         ));
                         cpp_call_params.push(format!("&{}", param.paramname));
-                        pointer_params.push((param, false));
+                        output_params.push((param, false));
                     }
                 }
                 Pointer {
@@ -1235,7 +1235,7 @@ impl Generator {
                     // Initialize so Lua doesn't get garbage if Steam doesn't write it on failure.
                     s.line(&format!("{} {}{{}};", ttype, param.paramname));
                     cpp_call_params.push(param.paramname.clone());
-                    pointer_params.push((param, false));
+                    output_params.push((param, false));
                 }
             }
             i += 1;
@@ -1341,7 +1341,7 @@ impl Generator {
         }
 
         // Push pointer output values onto stack
-        for (param, is_array) in pointer_params {
+        for (param, is_array) in output_params {
             let resolved = self.type_resolver.resolve_type(&param.paramtype);
             if is_array {
                 if resolved.is_buffer() {

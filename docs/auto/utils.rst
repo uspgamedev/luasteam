@@ -118,7 +118,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchOutFilteredText`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchOutFilteredText`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -149,8 +149,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallback`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pbFailed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pCallback`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pbFailed`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Utils.GetAppID()
 
@@ -195,7 +195,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchText`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchText`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Utils.GetEnteredGamepadTextLength()
 
@@ -243,7 +243,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pubDest`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pubDest`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -266,8 +266,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnWidth`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnHeight`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnWidth`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnHeight`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -350,7 +350,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbFailed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pbFailed`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Utils.IsOverlayEnabled()
 
