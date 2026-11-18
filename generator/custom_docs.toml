@@ -3896,6 +3896,28 @@ end
 # ISteamNetworkingUtils (additional examples)
 # =============================================================================
 
+[ISteamNetworkingUtils.GetLocalPingLocation]
+example = """
+local age, location = Steam.NetworkingUtils.GetLocalPingLocation()
+if age >= 0 then
+    local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, 1024)
+    print('Local ping location (' .. age .. 's old): ' .. str)
+else
+    print('Ping location not available yet')
+end
+"""
+
+[ISteamNetworkingUtils.ParsePingLocationString]
+example = """
+local ok, remoteLocation = Steam.NetworkingUtils.ParsePingLocationString(remoteStr)
+if ok then
+    local ping = Steam.NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation)
+    if ping >= 0 then
+        print('Estimated ping: ' .. ping .. 'ms')
+    end
+end
+"""
+
 [ISteamNetworkingUtils.CheckPingDataUpToDate]
 example = """
 local ok = Steam.NetworkingUtils.CheckPingDataUpToDate(60.0)

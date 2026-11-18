@@ -58,6 +58,19 @@ static int luasteam_NetworkingUtils_GetRelayNetworkStatus(lua_State *L) {
 }
 
 // In C++:
+// float GetLocalPingLocation(SteamNetworkPingLocation_t & result);
+// In Lua:
+// (float, result: SteamNetworkPingLocation_t) NetworkingUtils.GetLocalPingLocation()
+static int luasteam_NetworkingUtils_GetLocalPingLocation(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
+	SteamNetworkPingLocation_t result{};
+	float __ret = SteamAPI_ISteamNetworkingUtils_GetLocalPingLocation(iface, result);
+	lua_pushnumber(L, __ret);
+	luasteam::push_SteamNetworkPingLocation_t(L, result);
+	return 2;
+}
+
+// In C++:
 // int EstimatePingTimeBetweenTwoLocations(const SteamNetworkPingLocation_t & location1, const SteamNetworkPingLocation_t & location2);
 // In Lua:
 // int NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1: SteamNetworkPingLocation_t, location2: SteamNetworkPingLocation_t)
@@ -94,6 +107,20 @@ static int luasteam_NetworkingUtils_ConvertPingLocationToString(lua_State *L) {
 	SteamAPI_ISteamNetworkingUtils_ConvertPingLocationToString(iface, location, lua_isnil(L, 2) ? nullptr : pszBuf.data(), cchBufSize);
 	lua_pushstring(L, reinterpret_cast<const char*>(pszBuf.data()));
 	return 1;
+}
+
+// In C++:
+// bool ParsePingLocationString(const char * pszString, SteamNetworkPingLocation_t & result);
+// In Lua:
+// (bool, result: SteamNetworkPingLocation_t) NetworkingUtils.ParsePingLocationString(pszString: str)
+static int luasteam_NetworkingUtils_ParsePingLocationString(lua_State *L) {
+	auto *iface = SteamNetworkingUtils_SteamAPI();
+	const char *pszString = luaL_optstring(L, 1, nullptr);
+	SteamNetworkPingLocation_t result{};
+	bool __ret = SteamAPI_ISteamNetworkingUtils_ParsePingLocationString(iface, pszString, result);
+	lua_pushboolean(L, __ret);
+	luasteam::push_SteamNetworkPingLocation_t(L, result);
+	return 2;
 }
 
 // In C++:
@@ -384,9 +411,11 @@ static int luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString(lua_Stat
 void register_NetworkingUtils_auto(lua_State *L) {
 	add_func(L, "InitRelayNetworkAccess", luasteam_NetworkingUtils_InitRelayNetworkAccess);
 	add_func(L, "GetRelayNetworkStatus", luasteam_NetworkingUtils_GetRelayNetworkStatus);
+	add_func(L, "GetLocalPingLocation", luasteam_NetworkingUtils_GetLocalPingLocation);
 	add_func(L, "EstimatePingTimeBetweenTwoLocations", luasteam_NetworkingUtils_EstimatePingTimeBetweenTwoLocations);
 	add_func(L, "EstimatePingTimeFromLocalHost", luasteam_NetworkingUtils_EstimatePingTimeFromLocalHost);
 	add_func(L, "ConvertPingLocationToString", luasteam_NetworkingUtils_ConvertPingLocationToString);
+	add_func(L, "ParsePingLocationString", luasteam_NetworkingUtils_ParsePingLocationString);
 	add_func(L, "CheckPingDataUpToDate", luasteam_NetworkingUtils_CheckPingDataUpToDate);
 	add_func(L, "GetPingToDataCenter", luasteam_NetworkingUtils_GetPingToDataCenter);
 	add_func(L, "GetDirectPingToPOP", luasteam_NetworkingUtils_GetDirectPingToPOP);

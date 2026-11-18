@@ -17,6 +17,7 @@ List of Functions
 * :func:`NetworkingUtils.GetConfigValueInfo`
 * :func:`NetworkingUtils.GetDirectPingToPOP`
 * :func:`NetworkingUtils.GetIPv4FakeIPType`
+* :func:`NetworkingUtils.GetLocalPingLocation`
 * :func:`NetworkingUtils.GetPOPCount`
 * :func:`NetworkingUtils.GetPOPList`
 * :func:`NetworkingUtils.GetPingToDataCenter`
@@ -25,6 +26,7 @@ List of Functions
 * :func:`NetworkingUtils.InitRelayNetworkAccess`
 * :func:`NetworkingUtils.IsFakeIPv4`
 * :func:`NetworkingUtils.IterateGenericEditableConfigValues`
+* :func:`NetworkingUtils.ParsePingLocationString`
 * :func:`NetworkingUtils.SetConnectionConfigValueFloat`
 * :func:`NetworkingUtils.SetConnectionConfigValueInt32`
 * :func:`NetworkingUtils.SetConnectionConfigValueString`
@@ -149,6 +151,28 @@ Function Reference
     :returns: (int - ESteamNetworkingFakeIPType) Return value
     :SteamWorks: `GetIPv4FakeIPType <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetIPv4FakeIPType>`_
 
+.. function:: NetworkingUtils.GetLocalPingLocation()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (float) Return value
+    :returns: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`) ``result``
+    :SteamWorks: `GetLocalPingLocation <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetLocalPingLocation>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``result`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
+**Example**::
+
+    local age, location = Steam.NetworkingUtils.GetLocalPingLocation()
+    if age >= 0 then
+        local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, 1024)
+        print('Local ping location (' .. age .. 's old): ' .. str)
+    else
+        print('Ping location not available yet')
+    end
+
 .. function:: NetworkingUtils.GetPOPCount()
 
     🤖 **Auto-generated binding**
@@ -245,6 +269,29 @@ Function Reference
     :param bool bEnumerateDevVars:
     :returns: (int - ESteamNetworkingConfigValue) Return value
     :SteamWorks: `IterateGenericEditableConfigValues <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#IterateGenericEditableConfigValues>`_
+
+.. function:: NetworkingUtils.ParsePingLocationString(pszString)
+
+    🤖 **Auto-generated binding**
+
+    :param str? pszString:
+    :returns: (bool) Return value
+    :returns: (:ref:`SteamNetworkPingLocation_t <struct-SteamNetworkPingLocation_t>`) ``result``
+    :SteamWorks: `ParsePingLocationString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ParsePingLocationString>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``result`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
+**Example**::
+
+    local ok, remoteLocation = Steam.NetworkingUtils.ParsePingLocationString(remoteStr)
+    if ok then
+        local ping = Steam.NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation)
+        if ping >= 0 then
+            print('Estimated ping: ' .. ping .. 'ms')
+        end
+    end
 
 .. function:: NetworkingUtils.SetConnectionConfigValueFloat(hConn, eValue, val)
 
@@ -487,18 +534,6 @@ Function Reference
 
 Unimplemented Methods
 ---------------------
-
-.. function:: NetworkingUtils.GetLocalPingLocation
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &
-    
-    :SteamWorks: `GetLocalPingLocation <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#GetLocalPingLocation>`_
-
-.. function:: NetworkingUtils.ParsePingLocationString
-
-    ✋ **Not implemented** - unsupported type: SteamNetworkPingLocation_t &
-    
-    :SteamWorks: `ParsePingLocationString <https://partner.steamgames.com/doc/api/ISteamNetworkingUtils#ParsePingLocationString>`_
 
 .. function:: NetworkingUtils.GetLocalTimestamp
 

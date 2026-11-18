@@ -8,6 +8,10 @@ function NetworkingUtils.InitRelayNetworkAccess() end
 ---@return SteamRelayNetworkStatus_t -- Value of: pDetails
 function NetworkingUtils.GetRelayNetworkStatus() end
 
+---@return number
+---@return SteamNetworkPingLocation_t -- Value of: result
+function NetworkingUtils.GetLocalPingLocation() end
+
 ---@param location1 SteamNetworkPingLocation_t
 ---@param location2 SteamNetworkPingLocation_t
 ---@return integer
@@ -21,6 +25,11 @@ function NetworkingUtils.EstimatePingTimeFromLocalHost(remoteLocation) end
 ---@param cchBufSize integer? size of the buffer for pszBuf; if nil then the buffer will be NULL
 ---@return string -- Value of: pszBuf
 function NetworkingUtils.ConvertPingLocationToString(location, cchBufSize) end
+
+---@param pszString string?
+---@return boolean
+---@return SteamNetworkPingLocation_t -- Value of: result
+function NetworkingUtils.ParsePingLocationString(pszString) end
 
 ---@param flMaxAgeSeconds number
 ---@return boolean
