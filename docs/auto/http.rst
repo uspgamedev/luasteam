@@ -90,7 +90,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pflPercentOut`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pflPercentOut`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -109,7 +109,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pbWasTimedOut`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pbWasTimedOut`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: HTTP.GetHTTPResponseBodyData(hRequest, unBufferSize)
 
@@ -123,7 +123,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pBodyDataBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -140,7 +140,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unBodySize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``unBodySize`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -167,7 +167,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``unResponseHeaderSize`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``unResponseHeaderSize`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: HTTP.GetHTTPResponseHeaderValue(hRequest, pchHeaderName, unBufferSize)
 
@@ -182,7 +182,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pHeaderValueBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pHeaderValueBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -210,7 +210,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pBodyDataBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pBodyDataBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: HTTP.PrioritizeHTTPRequest(hRequest)
 
@@ -252,7 +252,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pCallHandle`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -271,7 +271,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pCallHandle`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pCallHandle`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: HTTP.SetCookie(hCookieContainer, pchHost, pchUrl, pchCookie)
 

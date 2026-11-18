@@ -71,9 +71,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAppID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pbAvailable`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pAppID`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pbAvailable`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Apps.BIsAppInstalled(appID)
 
@@ -171,8 +171,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punSecondsAllowed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punSecondsPlayed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punSecondsAllowed`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punSecondsPlayed`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -211,7 +211,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchFolder`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchFolder`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -264,11 +264,11 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punFlags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punBuildID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pchBetaName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pchDescription`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punLastUpdated`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punFlags`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punBuildID`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pchBetaName`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pchDescription`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punLastUpdated`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Apps.GetCurrentBetaName(cchNameBufferSize)
 
@@ -281,7 +281,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchName`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Apps.GetCurrentGameLanguage()
 
@@ -323,8 +323,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punBytesDownloaded`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punBytesTotal`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punBytesDownloaded`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punBytesTotal`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Apps.GetEarliestPurchaseUnixTime(nAppID)
 
@@ -360,7 +360,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvecDepots`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pvecDepots`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -380,7 +380,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszCommandLine`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pszCommandLine`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -416,8 +416,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAvailable`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnPrivate`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnAvailable`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnPrivate`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Apps.InstallDLC(nAppID)
 

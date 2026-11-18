@@ -179,8 +179,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``nBytesWritten`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pDestBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``nBytesWritten`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -215,8 +215,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pcbTicket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pTicket`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pcbTicket`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -245,7 +245,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pcbCompressed`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pcbCompressed`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -271,8 +271,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTicket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pcbTicket`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pTicket`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pcbTicket`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: User.GetGameBadgeLevel(nSeries, bFoil)
 
@@ -343,7 +343,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -365,8 +365,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDestBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``nBytesWritten`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pDestBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``nBytesWritten`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 

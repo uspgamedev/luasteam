@@ -96,7 +96,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pszBuf`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pszBuf`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: NetworkingUtils.EstimatePingTimeBetweenTwoLocations(location1, location2)
 
@@ -127,8 +127,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutDataType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pOutScope`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pOutDataType`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pOutScope`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: NetworkingUtils.GetDirectPingToPOP(popID)
 
@@ -161,13 +161,13 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``result`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``result`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
     local age, location = Steam.NetworkingUtils.GetLocalPingLocation()
     if age >= 0 then
-        local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, 1024)
+        local str = Steam.NetworkingUtils.ConvertPingLocationToString(location, Steam.k_cchMaxSteamNetworkingPingLocationString)
         print('Local ping location (' .. age .. 's old): ' .. str)
     else
         print('Ping location not available yet')
@@ -196,7 +196,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``list`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``list`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: NetworkingUtils.GetPingToDataCenter(popID)
 
@@ -209,7 +209,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pViaRelayPoP`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pViaRelayPoP`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: NetworkingUtils.GetRealIdentityForFakeIP(fakeIP)
 
@@ -222,7 +222,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pOutRealIdentity`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pOutRealIdentity`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: NetworkingUtils.GetRelayNetworkStatus()
 
@@ -234,7 +234,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pDetails`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -281,7 +281,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``result`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``result`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -465,7 +465,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pAddr`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pAddr`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -486,7 +486,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``buf`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -504,7 +504,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pIdentity`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pIdentity`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -524,7 +524,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``buf`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``buf`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 

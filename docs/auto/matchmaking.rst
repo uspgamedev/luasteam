@@ -188,12 +188,12 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAppID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnIP`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnConnPort`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnQueryPort`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punFlags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pRTime32LastPlayedOnServer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnAppID`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnIP`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnConnPort`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnQueryPort`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punFlags`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pRTime32LastPlayedOnServer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -241,9 +241,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pSteamIDUser`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``peChatEntryType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pSteamIDUser`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``peChatEntryType`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Matchmaking.GetLobbyData(steamIDLobby, pchKey)
 
@@ -274,8 +274,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pchKey`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pchValue`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pchKey`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pchValue`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: Matchmaking.GetLobbyDataCount(steamIDLobby)
 
@@ -298,9 +298,9 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``punGameServerIP`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``punGameServerPort`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``psteamIDGameServer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punGameServerIP`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``punGameServerPort`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``psteamIDGameServer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 

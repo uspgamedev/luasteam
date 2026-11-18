@@ -60,8 +60,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnResolutionX`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnResolutionY`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnResolutionX`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnResolutionY`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemotePlay.BSendRemotePlayTogetherInvite(steamIDFriend)
 
@@ -115,7 +115,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pInput`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pInput`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 

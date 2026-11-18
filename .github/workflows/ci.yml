@@ -106,7 +106,6 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-i686-gcc
-            mingw-w64-i686-make
       - uses: actions/checkout@v6
       - name: Update submodules
         shell: bash

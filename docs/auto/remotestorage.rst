@@ -266,7 +266,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -310,7 +310,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvBuffer`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pvBuffer`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -441,7 +441,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnFileSizeInBytes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnFileSizeInBytes`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
     **Notes:**
 
@@ -485,8 +485,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pEChangeType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pEFilePathType`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pEChangeType`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pEFilePathType`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.GetLocalFileChangeCount()
 
@@ -534,8 +534,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnTotalBytes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``puAvailableBytes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnTotalBytes`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``puAvailableBytes`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 **Example**::
 
@@ -564,10 +564,10 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnAppID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``ppchName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnFileSizeInBytes`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pSteamIDOwner`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnAppID`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``ppchName`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnFileSizeInBytes`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pSteamIDOwner`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.GetUGCDownloadProgress(hContent)
 
@@ -581,8 +581,8 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pnBytesDownloaded`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
-    * Parameter ``pnBytesExpected`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pnBytesDownloaded`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
+    * Parameter ``pnBytesExpected`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.GetUserPublishedItemVoteDetails(unPublishedFileId, callback)
 
@@ -632,7 +632,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.PublishWorkshopFile(pchFile, pchPreviewFile, nConsumerAppId, pchTitle, pchDescription, eVisibility, eWorkshopFileType, callback)
 
@@ -652,7 +652,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.SetCloudEnabledForApp(bEnabled)
 
@@ -729,7 +729,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pvData`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.UnsubscribePublishedFile(unPublishedFileId, callback)
 
@@ -787,7 +787,7 @@ Function Reference
 
     **Signature differences from C++ API:**
 
-    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``pTags`` is not a parameter in Lua — it is an output-only parameter in C++ and is returned as an additional return value.
 
 .. function:: RemoteStorage.UpdatePublishedFileTitle(updateHandle, pchTitle)
 
