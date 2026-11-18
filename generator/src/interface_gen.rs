@@ -1223,10 +1223,19 @@ impl Generator {
                     lua_idx += 1;
                 }
                 CppType::Reference {
-                    ttype: _,
+                    ttype,
                     is_const: false,
                 } => {
-                    return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                    // Non-const struct reference. Treat as an output param,
+                    // returned to Lua after the call.
+                    // NOTE: assumes the reference is output-only.
+                    if !self.added_structs.contains(ttype) {
+                        return Err(SkipReason::UnsupportedType(param.paramtype.clone()));
+                    }
+                    // Initialize so Lua doesn't get garbage if Steam doesn't write it on failure.
+                    s.line(&format!("{} {}{{}};", ttype, param.paramname));
+                    cpp_call_params.push(param.paramname.clone());
+                    pointer_params.push((param, false));
                 }
             }
             i += 1;
@@ -1462,7 +1471,11 @@ impl Generator {
                 } else {
                     let (push, ltype) = self
                         .generate_push(
-                            param.paramtype.strip_suffix(" *").expect("Invalid pointer"),
+                            param
+                                .paramtype
+                                .strip_suffix(" *")
+                                .or_else(|| param.paramtype.strip_suffix(" &"))
+                                .expect("Invalid pointer or reference"),
                             &param.paramname,
                             1,
                         )

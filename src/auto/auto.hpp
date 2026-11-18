@@ -814,7 +814,7 @@ void register_NetworkingUtils_auto(lua_State *L);
 void add_NetworkingUtils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs = {});
 void shutdown_NetworkingUtils_auto(lua_State *L);
 extern int NetworkingUtils_ref;
-static constexpr int NetworkingUtils_count = 26;
+static constexpr int NetworkingUtils_count = 28;
 void register_GameServer_auto(lua_State *L);
 void add_GameServer_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs = {});
 void shutdown_GameServer_auto(lua_State *L);
